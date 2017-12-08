@@ -26,7 +26,7 @@ open class AccommodationCertificate {
     public init() {
     }
     
-    public convenience init(json:JSON){
+    public convenience init(json:JSON) {
         self.init()
 
         if json["certificateNumber"].exists() {
@@ -67,5 +67,12 @@ open class AccommodationCertificate {
         }
     }
     
+    open func getDaysUntilExpirationDate() -> Int {
+        if let expDate = self.expirationDate {
+            let today = Date()
+            return today.daysBetween(to: expDate.dateFromShortFormat()!)
+        }
+        return -1 // Expired
+    }
 }
 

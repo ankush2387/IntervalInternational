@@ -37,6 +37,7 @@ open class LookupClient {
                         let countryList = json.arrayValue.map { Country(json: $0) }
                         var countries = [Country]()
                         
+                        // Clean up countries
                         for country in countryList {
                             if country.countryCode!.trim()!.characters.count == 3 {
                                 countries.append(country)
@@ -46,11 +47,11 @@ open class LookupClient {
                         // Sort 'countries'. Set USA in the first position of the list, and then alphabetically.
                         countries.sort(by: {
                             if $0.countryCode == "USA" {
-                                return true;
+                                return true
                             } else if $1.countryCode == "USA" {
-                                return false;
+                                return false
                             } else {
-                                return $0.countryCode! < $1.countryCode!;
+                                return $0.countryName! < $1.countryName!
                             }
                         })
                         

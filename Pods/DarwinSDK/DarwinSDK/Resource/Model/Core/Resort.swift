@@ -75,6 +75,8 @@ open class Resort {
 		self.tier = summaryJSON["tier"].string
         self.qualityResortRating = summaryJSON["qualityResortRating"].string
         self.allInclusive = summaryJSON["allInclusive"].boolValue
+        self.allInclusiveChargesText = summaryJSON["allInclusiveChargesText"].string
+        self.additionalCharges = summaryJSON["additionalCharges"].boolValue
         self.locked = summaryJSON["locked"].boolValue
 
         if let gpsJSON = summaryJSON["gps"] as JSON? {
@@ -108,8 +110,9 @@ open class Resort {
 		self.init(summaryJSON:detailJSON)
 		
         self.description = detailJSON["description"].string
+        self.allInclusive = detailJSON["allInclusive"].boolValue
         self.allInclusiveChargesText = detailJSON["allInclusiveChargesText"].string
-        self.allInclusive = detailJSON["additionalCharges"].boolValue
+        self.additionalCharges = detailJSON["additionalCharges"].boolValue
         self.golf = detailJSON["golf"].boolValue
         self.hasVideos = detailJSON["hasVideos"].boolValue
         self.phone = detailJSON["phone"].string

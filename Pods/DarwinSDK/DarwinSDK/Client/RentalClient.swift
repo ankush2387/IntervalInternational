@@ -273,7 +273,7 @@ open class RentalClient {
             "Authorization": "Bearer \(accessToken.token!)"
         ]
         
-        let params = alert.toDictionary()
+        let params = alert.toDictionaryForCreate()
         
         DarwinSDK.logger.debug("About to try \(endpoint) with token=\(accessToken.token!) and request payload=\(params)")
         
@@ -308,7 +308,7 @@ open class RentalClient {
             "Authorization": "Bearer \(accessToken.token!)"
         ]
         
-        let params = alert.toDictionary()
+        let params = alert.toDictionaryForUpdate()
         
         DarwinSDK.logger.debug("About to try \(endpoint) with token=\(accessToken.token!) and request payload=\(params)")
         

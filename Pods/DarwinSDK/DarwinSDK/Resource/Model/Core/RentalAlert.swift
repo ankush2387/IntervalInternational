@@ -59,18 +59,25 @@ open class RentalAlert {
         return self.earliestCheckInDate!
     }
     
-    open func toDictionary() -> Dictionary<String, AnyObject> {
+    open func toDictionaryForCreate() -> Dictionary<String, AnyObject> {
         var dictionary = Dictionary<String, AnyObject>()
         
         dictionary["name"] = self.name as AnyObject?
         dictionary["earliestCheckInDate"] = self.earliestCheckInDate as AnyObject?
         dictionary["latestCheckInDate"]   = self.latestCheckInDate as AnyObject?
-        dictionary["enabled"] = self.enabled as AnyObject?
         dictionary["destinations"] = self.destinationsToArray() as AnyObject?
         dictionary["resorts"] = self.resortsToArray() as AnyObject?
         dictionary["selections"] = self.selections as AnyObject?
         dictionary["unitSizes"] = self.unitSizes.map { $0.rawValue } as AnyObject?
    
+        return dictionary
+    }
+    
+    open func toDictionaryForUpdate() -> Dictionary<String, AnyObject> {
+        var dictionary = self.toDictionaryForCreate()
+        
+        dictionary["enabled"] = self.enabled as AnyObject?
+
         return dictionary
     }
     
