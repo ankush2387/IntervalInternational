@@ -85,7 +85,7 @@ class SelectBedroomViewController: UIViewController {
                         }
                 }
                 Constant.MyClassConstants.selectedBedRoomSize = selectedBedroomsizes
-                Constant.MyClassConstants.bedRoomSizeSelectedIndexArray = NSMutableArray(array: localArrayToHoldSelection)
+                Constant.MyClassConstants.bedRoomSizeSelectedIndexArray = localArrayToHoldSelection as? NSMutableArray ?? []
             }
         }
         dismiss(animated: true, completion: nil)

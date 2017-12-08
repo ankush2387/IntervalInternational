@@ -1584,10 +1584,10 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="acx-np-bcc">
-                                                    <rect key="frame" x="5" y="5" width="570" height="60"/>
+                                                    <rect key="frame" x="5" y="5" width="570" height="64"/>
                                                     <subviews>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dpg-uP-KaV">
-                                                            <rect key="frame" x="0.0" y="52" width="570" height="1"/>
+                                                            <rect key="frame" x="0.0" y="61" width="570" height="1"/>
                                                             <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                             <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                             <constraints>
@@ -1599,7 +1599,7 @@
                                                     <constraints>
                                                         <constraint firstAttribute="trailing" secondItem="dpg-uP-KaV" secondAttribute="trailing" id="072-IZ-o0V"/>
                                                         <constraint firstItem="dpg-uP-KaV" firstAttribute="leading" secondItem="acx-np-bcc" secondAttribute="leading" id="Zcf-1F-0Qn"/>
-                                                        <constraint firstAttribute="bottom" secondItem="dpg-uP-KaV" secondAttribute="bottom" constant="7" id="qQj-kq-j0L"/>
+                                                        <constraint firstAttribute="bottom" secondItem="dpg-uP-KaV" secondAttribute="bottom" constant="2" id="qQj-kq-j0L"/>
                                                     </constraints>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
@@ -1671,7 +1671,7 @@
                                                 <constraint firstAttribute="bottomMargin" secondItem="sda-0m-fif" secondAttribute="bottom" constant="7" id="0Lc-J8-LzO"/>
                                                 <constraint firstItem="sda-0m-fif" firstAttribute="trailing" secondItem="5bB-JQ-Bkz" secondAttribute="trailing" id="5PH-WQ-OwX"/>
                                                 <constraint firstItem="acx-np-bcc" firstAttribute="leading" secondItem="F2b-g7-DUh" secondAttribute="leading" constant="5" id="5XB-sR-sPn"/>
-                                                <constraint firstAttribute="bottom" secondItem="acx-np-bcc" secondAttribute="bottom" constant="5" id="BMG-Mt-jrc"/>
+                                                <constraint firstAttribute="bottom" secondItem="acx-np-bcc" secondAttribute="bottom" constant="1" id="BMG-Mt-jrc"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="nud-LB-IAm" secondAttribute="trailing" constant="12" id="FjF-Zv-PXL"/>
                                                 <constraint firstItem="nud-LB-IAm" firstAttribute="top" secondItem="F2b-g7-DUh" secondAttribute="topMargin" constant="17" id="P0x-5A-Cv7"/>
                                                 <constraint firstItem="acx-np-bcc" firstAttribute="top" secondItem="F2b-g7-DUh" secondAttribute="top" constant="5" id="VZI-dC-IQx"/>
@@ -2360,7 +2360,7 @@ EFJlc2VydmF0aW9uIERldGFpbHM
                 <navigationController storyboardIdentifier="ownershipnavigation" automaticallyAdjustsScrollViewInsets="NO" id="4ES-vh-RAq" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="6Rg-8O-31A">
-                        <rect key="frame" x="0.0" y="20" width="375" height="48"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>

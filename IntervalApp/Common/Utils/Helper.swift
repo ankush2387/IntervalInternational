@@ -848,7 +848,7 @@ public class Helper {
         case UnitSize.FourBedroom.rawValue:
             return "4 Bedroom"
         default:
-            return "Unknown"
+            return ""
         }
     }
     

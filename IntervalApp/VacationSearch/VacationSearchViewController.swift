@@ -234,12 +234,12 @@ class VacationSearchViewController: UIViewController {
     //***** Add location pressed action to show map screen with list of location to select *****//
     func addRelinquishmentSectionButtonPressed(_ sender: IUIKButton) {
         showHudAsync()
-        ExchangeClient.getMyUnits(Session.sharedSession.userAccessToken, onSuccess: { (Relinquishments) in
+        ExchangeClient.getMyUnits(Session.sharedSession.userAccessToken, onSuccess: { relinquishments in
             
-            Constant.MyClassConstants.relinquishmentDeposits = Relinquishments.deposits
-            Constant.MyClassConstants.relinquishmentOpenWeeks = Relinquishments.openWeeks
+            Constant.MyClassConstants.relinquishmentDeposits = relinquishments.deposits
+            Constant.MyClassConstants.relinquishmentOpenWeeks = relinquishments.openWeeks
             
-            if let pointsProgram = Relinquishments.pointsProgram {
+            if let pointsProgram = relinquishments.pointsProgram {
                 Constant.MyClassConstants.relinquishmentProgram = pointsProgram
                 if let availablePoints = pointsProgram.availablePoints {
                     Constant.MyClassConstants.relinquishmentAvailablePointsProgram = availablePoints
@@ -252,8 +252,9 @@ class VacationSearchViewController: UIViewController {
                 self.navigationController?.pushViewController(viewController, animated: true)
             }
                    
-        }, onError: { _ in
-            self.hideHudAsync()
+        }, onError: { [weak self] error in
+            self?.hideHudAsync()
+            self?.presentErrorAlert(UserFacingCommonError.serverError(error))
         })
         
     }
