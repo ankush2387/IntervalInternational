@@ -59,13 +59,15 @@ class RelinquishmentSelectionOpenWeeksCell: UITableViewCell {
         if let relinquishmentYear = deposit.relinquishmentYear {
             yearLabel.text = "\(relinquishmentYear)".localized()
         }
-        
-        if let unitSize = deposit.unit?.unitSize {
-            bedroomSizeAndKitchenClient.text = "\(Helper.getBedroomNumbers(bedroomType: unitSize))".localized()
-        }
-        
-        if let kitchenType = deposit.unit!.kitchenType {
-            bedroomSizeAndKitchenClient.text?.append(", \(Helper.getKitchenEnums(kitchenType: kitchenType))".localized())
+
+        if let kitchenType = deposit.unit?.kitchenType, let unitNumber = deposit.unit?.unitNumber, let unitSize = deposit.unit?.unitSize {
+            
+            let UnitSize = "\(Helper.getBedroomNumbers(bedroomType: unitSize)), \(Helper.getKitchenEnums(kitchenType: kitchenType)), \(unitNumber)"
+            let UnitNumber = unitNumber
+            let range = (UnitSize as NSString).range(of: UnitNumber)
+            let attributedString = NSMutableAttributedString(string:UnitSize)
+            attributedString.addAttribute(NSForegroundColorAttributeName, value: UIColor.red, range: range)
+            bedroomSizeAndKitchenClient.attributedText = attributedString
         }
         
         if let sleepCapacity = deposit.unit?.publicSleepCapacity {
