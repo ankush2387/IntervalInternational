@@ -62,10 +62,9 @@ class RelinquishmentSelectionOpenWeeksCell: UITableViewCell {
 
         if let kitchenType = deposit.unit?.kitchenType, let unitNumber = deposit.unit?.unitNumber, let unitSize = deposit.unit?.unitSize {
             
-            let UnitSize = "\(Helper.getBedroomNumbers(bedroomType: unitSize)), \(Helper.getKitchenEnums(kitchenType: kitchenType)), \(unitNumber)"
-            let UnitNumber = unitNumber
-            let range = (UnitSize as NSString).range(of: UnitNumber)
-            let attributedString = NSMutableAttributedString(string:UnitSize)
+            let unitSizeString = "\(Helper.getBedroomNumbers(bedroomType: unitSize)), \(Helper.getKitchenEnums(kitchenType: kitchenType)), \(unitNumber)"
+            let range = (unitSizeString as NSString).range(of: unitNumber)
+            let attributedString = NSMutableAttributedString(string:unitSizeString)
             attributedString.addAttribute(NSForegroundColorAttributeName, value: UIColor.red, range: range)
             bedroomSizeAndKitchenClient.attributedText = attributedString
         }
@@ -80,20 +79,20 @@ class RelinquishmentSelectionOpenWeeksCell: UITableViewCell {
         
         if deposit.checkInDate != nil {
             
-            let dateString = deposit.checkInDate
-            let date = Helper.convertStringToDate(dateString: dateString!, format: Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.yyyymmddDateFormat)
-            let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
-            let myComponents = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: date)
-            let day = myComponents.day!
-            var month = ""
-            if let monthNumber = myComponents.month {
-                if day < 10 {
-                    month = "\(Helper.getMonthnameFromInt(monthNumber: monthNumber)) 0\(day)"
-                } else {
-                    month = "\(Helper.getMonthnameFromInt(monthNumber: monthNumber)) \(day)"
+            if let dateString = deposit.checkInDate {
+               let date = Helper.convertStringToDate(dateString: dateString, format: Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.yyyymmddDateFormat)
+                let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
+                let myComponents = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: date)
+                var month = ""
+                if let monthNumber = myComponents.month, let day = myComponents.day {
+                    if day < 10 {
+                        month = "\(Helper.getMonthnameFromInt(monthNumber: monthNumber)) 0\(day)"
+                    } else {
+                        month = "\(Helper.getMonthnameFromInt(monthNumber: monthNumber)) \(day)"
+                    }
                 }
+                dayAndDateLabel.text = month.uppercased()
             }
-            dayAndDateLabel.text = month.uppercased()
         } else {
             dayAndDateLabel.text = ""
         }
@@ -126,6 +125,6 @@ class RelinquishmentSelectionOpenWeeksCell: UITableViewCell {
     func getDaysDiff(expiration: Date) -> Int {
         let cal = NSCalendar.current
         let returnDate = cal.dateComponents(Set<Calendar.Component>([.day]), from: Constant.MyClassConstants.todaysDate as Date, to: expiration )
-        return returnDate.day!
+        return returnDate.day ?? 0
     }
 }
