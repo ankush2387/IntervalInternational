@@ -154,11 +154,10 @@ class CheckOutViewController: UIViewController {
         ]
         ADBMobile.trackAction(Constant.omnitureEvents.event37, data: userInfo)
     }
-    
     //**** Remove added observers ****//
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(true)
-        navigationController?.isNavigationBarHidden = true
+        navigationController?.navigationBar.isHidden = true
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.updateResortHoldingTime), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.changeSliderStatus), object: nil)
     }
@@ -291,7 +290,7 @@ class CheckOutViewController: UIViewController {
 
         remainingResortHoldingTimeLable.text = "We are holding this unit for \(Constant.holdingTime) minutes".localized()
 
-        navigationController?.isNavigationBarHidden = false
+        navigationController?.navigationBar.isHidden = false
         emailTextToEnter = Session.sharedSession.contact?.emailAddress ?? ""
         checkoutOptionTBLview.reloadData()
 

@@ -58,10 +58,6 @@ class SearchResultViewController: UIViewController {
         self.searchResultTableView.reloadData()
         timer.invalidate()
     }
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(true)
-        //navigationController?.navigationBar.isHidden = true
-    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)

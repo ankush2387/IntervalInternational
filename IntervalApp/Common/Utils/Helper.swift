@@ -2220,33 +2220,20 @@ public class Helper {
             CompletionBlock(error)
         }
     }
-    static func getMonthNumberFromMonthName(month:String)-> String {
-        switch month {
-        case "January":
-            return "01"
-        case "February":
-            return "02"
-        case "March":
-            return "03"
-        case "April":
-            return "04"
-        case "May":
-            return "05"
-        case "June":
-            return "06"
-        case "July":
-            return "07"
-        case "August":
-            return "08"
-        case "September":
-            return "09"
-        case "October":
-            return "10"
-        case "November":
-            return "11"
-        default:
-            return "12"
-        }
+    enum MonthType { case number, monthName }
+    static func getMonth(_ monthType: MonthType, for month: String) -> String? {
         
+        let months: NSDictionary = ["JANUARY": "01", "FEBRUARY": "02", "MARCH": "03", "APRIL": "04", "MAY": "05", "JUNE": "06", "JULY": "07", "AUGUST": "08", "SEPTEMBER": "09", "OCTOBER": "10", "NOVEMBER": "11", "DECEMBER": "12"]
+        
+        switch monthType {
+        case .monthName:
+            guard let monthName = months.allKeys(for: month).first as? String else { return nil }
+            let lowerCasedMonthName = monthName.lowercased()
+            let firstLetter = String(lowerCasedMonthName.prefix(1)).capitalized
+            let restOfWord = String(lowerCasedMonthName.dropFirst())
+            return firstLetter + restOfWord
+        case .number:
+            return months.value(forKey: month.uppercased()) as? String
+        }
     }
 }
