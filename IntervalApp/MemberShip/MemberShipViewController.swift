@@ -60,11 +60,9 @@ class MemberShipViewController: UIViewController {
             self.membershipProductsArray.sort { $0.coreProduct && !$1.coreProduct } //sort Array coreProduct First Element
             //arrange array elements highestTier in second position
             if self.membershipProductsArray.count > 2 {
-                for (index, prod) in self.membershipProductsArray.enumerated() {
-                    if prod.highestTier == true {
-                        self.membershipProductsArray.remove(at: index)
-                        self.membershipProductsArray.insert(prod, at: 1)
-                    }
+                for (index, prod) in self.membershipProductsArray.enumerated()  where prod.highestTier == true {
+                    self.membershipProductsArray.remove(at: index)
+                    self.membershipProductsArray.insert(prod, at: 1)
                 }
             }
             self.tableView.reloadData()
@@ -183,16 +181,20 @@ extension MemberShipViewController: UITableViewDataSource {
             if let memberShips = Session.sharedSession.contact?.memberships {
                 cell.membershipTextLabel.text = "Member No"
                 cell.membershipNumber.text = memberShips[indexPath.row].memberNumber
-                let Product = memberShips[indexPath.row].getProductWithHighestTier()
-                let productcode = Product?.productCode
-                cell.membershipName.text = Product?.productName
-                cell.memberImageView.image = UIImage(named: productcode!)
+                let product = memberShips[indexPath.row].getProductWithHighestTier()
+                if let productcode = product?.productCode {
+                    cell.memberImageView.image = UIImage(named: productcode)
+                    print("~~~~~~~~~~~~~~~~",productcode)
+                }
+                
+                cell.membershipName.text = product?.productName
+                
             }
             if Constant.MyClassConstants.memberNumber == cell.membershipNumber.text {
-                cell.selectedImageView.image = UIImage(named: "Select-On")
+                cell.selectedImageView.image = #imageLiteral(resourceName: "Select-On")
                 previousSelectedMembershipCellIndex = indexPath
             } else {
-                cell.selectedImageView.image = UIImage(named: "Select-Off")
+                cell.selectedImageView.image = #imageLiteral(resourceName: "Select-Off")
             }
             cell.delegate = self
             return cell
@@ -204,8 +206,8 @@ extension MemberShipViewController: UITableViewDataSource {
                 return ownershipCell
             } else {
                 guard let membershipCell = tableView.dequeueReusableCell(withIdentifier: Constant.memberShipViewController.membershipDetailCellIdentifier) as? MemberShipDetailTableViewCell else { return UITableViewCell() }
-                let contact = Session.sharedSession.contact
-                if contact!.memberships!.count == 1 {
+                guard let contact = Session.sharedSession.contact else { return UITableViewCell() }
+                if contact.memberships?.count == 1 {
                     membershipCell.switchMembershipButton.isHidden = true
                     membershipCell.activememberOutOfTotalMemberLabel.isHidden = true
                 }
@@ -274,13 +276,13 @@ extension MemberShipViewController: UITableViewDelegate {
         
         if tableView.tag == 3 {
             guard let cell = tableView.cellForRow(at: indexPath) as? ActionSheetTblCell else { return }
-            cell.selectedImageView.image = UIImage(named: "Select-On")
+            cell.selectedImageView.image = #imageLiteral(resourceName: "Select-On")
             
             //change previously selected image
             if let previousIndex = previousSelectedMembershipCellIndex {
                 if previousIndex != indexPath {
                     let previousCell = tableView.cellForRow(at: previousIndex) as? ActionSheetTblCell
-                    previousCell?.selectedImageView.image = UIImage(named: "Select-Off")
+                    previousCell?.selectedImageView.image = #imageLiteral(resourceName: "Select-Off")
                 }
             }
             var membership: Membership?

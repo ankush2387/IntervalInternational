@@ -11,28 +11,24 @@ import IntervalUIKit
 import DarwinSDK
 class MemberShipDetailTableViewCell: UITableViewCell {
     //Outlets
-    @IBOutlet weak var contactnameInfoLabel: UILabel!
-    @IBOutlet weak var contactNameLabel: UILabel!
-    @IBOutlet weak var activeLabel: UILabel!
-    @IBOutlet weak var loginInfoLabel: UILabel!
-    @IBOutlet weak var loginIdLabel: UILabel!
-    @IBOutlet weak var emailInfoLabel: UILabel!
-    @IBOutlet weak var emailLabel: UILabel!
-    @IBOutlet weak var memberNumberInfoLabel: UILabel!
-    @IBOutlet weak var memberNumberLabel: UILabel!
-    @IBOutlet weak var memberSinceInfoLabel: UILabel!
-    @IBOutlet weak var memberSinceDateLabel: UILabel!
-    @IBOutlet weak var contactInfoMainView: UIView!
-    @IBOutlet weak var memberInfoMainView: UIView!
+    @IBOutlet private weak var contactnameInfoLabel: UILabel!
+    @IBOutlet private weak var contactNameLabel: UILabel!
+    @IBOutlet private weak var activeLabel: UILabel!
+    @IBOutlet private weak var loginInfoLabel: UILabel!
+    @IBOutlet private weak var loginIdLabel: UILabel!
+    @IBOutlet private weak var emailInfoLabel: UILabel!
+    @IBOutlet private weak var emailLabel: UILabel!
+    @IBOutlet private weak var memberNumberInfoLabel: UILabel!
+    @IBOutlet private weak var memberNumberLabel: UILabel!
+    @IBOutlet private weak var memberSinceInfoLabel: UILabel!
+    @IBOutlet private weak var memberSinceDateLabel: UILabel!
+    @IBOutlet private weak var contactInfoMainView: UIView!
+    @IBOutlet private weak var memberInfoMainView: UIView!
     @IBOutlet weak var switchMembershipButton: IUIKButton!
     @IBOutlet weak var activememberOutOfTotalMemberLabel: UILabel!
-    @IBOutlet weak var productExternalView: UIView!
-    @IBOutlet weak var ExternalViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var productExternalView: UIView!
+    @IBOutlet private weak var ExternalViewHeightConstraint: NSLayoutConstraint!
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        
-    }
     // MARK: get MembershipCell using informations
     /**
         Configure Cell Components.
@@ -118,7 +114,9 @@ class MemberShipDetailTableViewCell: UITableViewCell {
             let prodView = nonCoreProductView()
             prodView.initializeView()
             
-            prodView.productImageView.image = UIImage(named: prod.productCode!)
+            if let productCode = prod.productCode {
+                prodView.productImageView.image = UIImage(named: productCode)
+            }
             if prod.coreProduct {
                 prodView.productImageView.isHidden = true
                 prodView.triangleView.isHidden = true
@@ -126,7 +124,7 @@ class MemberShipDetailTableViewCell: UITableViewCell {
                 prodView.nameLabelLeadingConstraint.constant = 10
                 prodView.expiresLabelLeadingConstraint.constant = 10
             }
-            
+
             if count > 1 {
                 prodView.triangleView.isHidden = true
             }
@@ -185,10 +183,4 @@ class MemberShipDetailTableViewCell: UITableViewCell {
         switchMembershipButton.backgroundColor = UIColor(rgb: IUIKColorPalette.primary1.rawValue)
     }
     
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
-
 }

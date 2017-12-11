@@ -44,7 +44,8 @@ class OwnerShipDetailTableViewCell: UITableViewCell {
         }
         placeCode.text = ownership.resort?.resortCode?.localized()
         let bedroomSize = Helper.getBedroomNumbers(bedroomType: ownership.unit?.unitSize ?? "")
-        bedroomDetailLabel.text = bedroomSize.localized()
+        //bedroomDetailLabel.text = bedroomSize.localized()
+        bedroomDetailLabel.text = ownership.unit?.unitNumber
         weekNumberLabel.text = ownership.weekNumber?.localized()
         if let images = ownership.resort?.images {
             var imageURLStr = ""
