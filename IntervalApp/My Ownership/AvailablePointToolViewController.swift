@@ -101,10 +101,14 @@ extension AvailablePointToolViewController: UITableViewDataSource {
                         
                         let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
                         let myComponents = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: AblToolSelectedDate)
-                        if let weekday = myComponents.weekday, let month = myComponents.month, let year = myComponents.year, let day = myComponents.day {
+                        if let weekday = myComponents.weekday, let monthName = myComponents.month, let year = myComponents.year, let day = myComponents.day {
                             let year = String(describing: year)
                             let weekDay = "\(Helper.getWeekdayFromInt(weekDayNumber: weekday))"
-                            let month = "\(Helper.getMonthFullSpelledFromInt(monthNumber: month)) \( day)"
+                            var monthValue = "\(monthName)"
+                            if monthName < 10 {
+                                monthValue.insert("0", at: monthValue.startIndex)
+                            }
+                            let month = "\(Helper.getMonth(Helper.MonthType.monthName, for: "\(monthName)") ?? "") \( day)"
                             cell.dateLabel.text = "\(weekDay), \(month), \(year)".localized()
                         }
                     }
@@ -158,9 +162,13 @@ extension AvailablePointToolViewController: UITableViewDataSource {
                 let usage = programPointsUsage[indexPath.row - 1]
                 let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
                 let myComponents = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: Helper.convertStringToDate(dateString: usage.expirationDate ?? "", format: Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.yyyymmddDateFormat))
-                if let year = myComponents.year, let month = myComponents.month, let day = myComponents.day {
+                if let year = myComponents.year, let monthName = myComponents.month, let day = myComponents.day {
                     let year = String(describing: year)
-                    let month = "\(Helper.getMonthFullSpelledFromInt(monthNumber: month)) \(day)"
+                    var monthValue = "\(monthName)"
+                    if monthName < 10 {
+                        monthValue.insert("0", at: monthValue.startIndex)
+                    }
+                    let month = "\(Helper.getMonth(Helper.MonthType.monthName, for: monthValue) ?? "") \( day)"
                     if let points = usage.points {
                         cell.pointsLabel.text = String(points).localized()
                     }
