@@ -246,13 +246,16 @@ extension MemberShipViewController: UITableViewDelegate {
 	
 	/** This function is used to return Height for header In section */
 	func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-		if section == 0 {
-			return 0
-        } else if section == 1 {
+
+        switch section {
+        case 0 :
+            return 0
+        case 1 :
             return 40
-        } else {
-           return 0.0001
+        default :
+            return 0.0001
         }
+
 	}
 	
 	/** This function is used to return Height for a row at particular index In section */
