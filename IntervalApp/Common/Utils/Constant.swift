@@ -779,7 +779,7 @@ class Constant: NSObject {
         static var failureTitle = "Failure".localized()
         static var noUpComingTrips = "No upcoming trips.".localized()
         static var membershipFailureMessage = "Please contact your servicing office.  Could not select membership".localized()
-        static var upcomingTripMessage = "Hmmm no trips planned yet \n Thats weird. Let's fix it.".localized()
+        static var upcomingTripMessage = "You have no upcoming trips at this time.".localized()
         static var upcomingTripSearchVacationButtonMessage = " Search for a Vacation".localized()
         
     }
