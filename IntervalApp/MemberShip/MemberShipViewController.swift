@@ -178,17 +178,14 @@ extension MemberShipViewController: UITableViewDataSource {
         case 3:
             guard let cell: ActionSheetTblCell = tableView.dequeueReusableCell(withIdentifier: Constant.loginScreenReusableIdentifiers.CustomCell, for: indexPath) as? ActionSheetTblCell else { return UITableViewCell() }
             
-            if let memberShips = Session.sharedSession.contact?.memberships {
-                cell.membershipTextLabel.text = "Member No"
-                cell.membershipNumber.text = memberShips[indexPath.row].memberNumber
-                let product = memberShips[indexPath.row].getProductWithHighestTier()
+            if let memberships = Session.sharedSession.contact?.memberships {
+                cell.membershipTextLabel.text = "Member No".localized()
+                cell.membershipNumber.text = memberships[indexPath.row].memberNumber
+                let product = memberships[indexPath.row].getProductWithHighestTier()
                 if let productcode = product?.productCode {
                     cell.memberImageView.image = UIImage(named: productcode)
-                    print("~~~~~~~~~~~~~~~~",productcode)
                 }
-                
                 cell.membershipName.text = product?.productName
-                
             }
             if Constant.MyClassConstants.memberNumber == cell.membershipNumber.text {
                 cell.selectedImageView.image = #imageLiteral(resourceName: "Select-On")
@@ -241,7 +238,7 @@ extension MemberShipViewController: UITableViewDelegate {
 	/** This function is used to return Height for footer In section */
 	func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
 
-        return 0.0001
+        return 0
 	}
 	
 	/** This function is used to return Height for header In section */
@@ -253,7 +250,7 @@ extension MemberShipViewController: UITableViewDelegate {
         case 1 :
             return 40
         default :
-            return 0.0001
+            return 0
         }
 
 	}

@@ -184,18 +184,17 @@ extension MembershipIPadViewController: UITableViewDataSource {
         case 3:
             
             guard let cell: ActionSheetTblCell = tableView.dequeueReusableCell(withIdentifier: Constant.loginScreenReusableIdentifiers.CustomCell, for: indexPath) as? ActionSheetTblCell else { return UITableViewCell() }
-            var membership: Membership?
-            if let memberShips = Session.sharedSession.contact?.memberships {
-                membership = memberShips[indexPath.row]
+            if let memberships = Session.sharedSession.contact?.memberships {
+                cell.membershipNumber.text = memberships[indexPath.row].memberNumber
+                let Product = memberships[indexPath.row].getProductWithHighestTier()
+                cell.membershipName.text = Product?.productName
+                if let productcode = Product?.productCode {
+                    cell.memberImageView.image = UIImage(named: productcode)
+                }
             }
             
             cell.memberImageView.image = UIImage(named: "")
-            cell.membershipTextLabel.text = "Member No"
-            cell.membershipNumber.text = membership?.memberNumber
-            let Product = membership?.getProductWithHighestTier()
-            let productcode = Product?.productCode
-            cell.membershipName.text = Product?.productName
-            cell.memberImageView.image = UIImage(named: productcode!)
+            cell.membershipTextLabel.text = "Member No".localized()
             if Constant.MyClassConstants.memberNumber == cell.membershipNumber.text {
                 cell.selectedImageView.image = #imageLiteral(resourceName: "Select-On")
                 previousSelectedMembershipCellIndex = indexPath
@@ -251,7 +250,7 @@ extension MembershipIPadViewController: UITableViewDataSource {
 extension MembershipIPadViewController: UITableViewDelegate {
     /** This function is used to return Height for footer In section */
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 0.0001
+        return 0
     }
     
     /** This function is used to return Height for a row at particular index In section */
