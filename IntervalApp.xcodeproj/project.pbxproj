@@ -209,6 +209,7 @@
 		3AE0D8681E4B38B500FFF635 /* ResortDestinationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE0D8671E4B38B500FFF635 /* ResortDestinationCell.swift */; };
 		3AE0D86A1E4B396400FFF635 /* ResortsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE0D8691E4B396400FFF635 /* ResortsTableViewCell.swift */; };
 		3AE1A6191F6AC5D50069A118 /* FlexChangeSearchIpadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE1A6181F6AC5D50069A118 /* FlexChangeSearchIpadViewController.swift */; };
+		3AE69F3A1FE04F5E000F25EA /* SettingsiPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3AE69F391FE04F5E000F25EA /* SettingsiPad.storyboard */; };
 		3AE81DBF1E814DF7005C2CEA /* clubPointCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE81DBE1E814DF7005C2CEA /* clubPointCell.swift */; };
 		3AEC48171C7F21BA0044612B /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AEC48161C7F21BA0044612B /* QuartzCore.framework */; };
 		3AEF71091DDF1B0A00FA076D /* DestinationResortViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEF71081DDF1B0A00FA076D /* DestinationResortViewController.swift */; };
@@ -604,6 +605,7 @@
 		3AE0D8671E4B38B500FFF635 /* ResortDestinationCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResortDestinationCell.swift; sourceTree = "<group>"; };
 		3AE0D8691E4B396400FFF635 /* ResortsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResortsTableViewCell.swift; sourceTree = "<group>"; };
 		3AE1A6181F6AC5D50069A118 /* FlexChangeSearchIpadViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlexChangeSearchIpadViewController.swift; sourceTree = "<group>"; };
+		3AE69F391FE04F5E000F25EA /* SettingsiPad.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SettingsiPad.storyboard; sourceTree = "<group>"; };
 		3AE81DBE1E814DF7005C2CEA /* clubPointCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = clubPointCell.swift; sourceTree = "<group>"; };
 		3AEC48161C7F21BA0044612B /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		3AEF71081DDF1B0A00FA076D /* DestinationResortViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DestinationResortViewController.swift; sourceTree = "<group>"; };
@@ -1245,6 +1247,7 @@
 				3C2EABEF1FB244ED00BD2B2D /* SettingsViewModel.swift */,
 				3C2EABEB1FB21DBE00BD2B2D /* SettingsViewController.swift */,
 				3C2EABE91FB21AFF00BD2B2D /* Settings.storyboard */,
+				3AE69F391FE04F5E000F25EA /* SettingsiPad.storyboard */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -1875,6 +1878,7 @@
 				E9573D1D1F3CF69F00656C99 /* nonCoreProduct.xib in Resources */,
 				3A06C0A71CA9385A009A9574 /* AvailableDestinationsIphone.storyboard in Resources */,
 				3A0B25DE1CD2432A0080BF3F /* MembershipIPad.storyboard in Resources */,
+				3AE69F3A1FE04F5E000F25EA /* SettingsiPad.storyboard in Resources */,
 				61066FDD1F91B380000D33EB /* LoginViewController.xib in Resources */,
 				3A892F4B1CD3902F00AE6F45 /* SearchResultCollectionCell.xib in Resources */,
 				DC27F7C51DB81B6F00AA374F /* GetawayAlertsIpad.storyboard in Resources */,
