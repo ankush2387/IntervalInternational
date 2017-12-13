@@ -151,40 +151,7 @@ public class Helper {
         }
     }
     
-    //***** common  function that  takes month as int value and return month full spelled name name *****//
-    static func getMonthFullSpelledFromInt(monthNumber: Int) -> String {
-        
-        switch monthNumber {
-            
-        case 1:
-            return "January".localized()
-        case 2:
-            return "February".localized()
-        case 3:
-            return "March".localized()
-        case 4:
-            return "April".localized()
-        case 5:
-            return "May".localized()
-        case 6:
-            return "Jun".localized()
-        case 7:
-            return "July".localized()
-        case 8:
-            return "August".localized()
-        case 9:
-            return "September".localized()
-        case 10:
-            return "October".localized()
-        case 11:
-            return "November".localized()
-        case 12:
-            return "December".localized()
-        default:
-            return ""
-        }
-    }
-    
+
     //***** common  function that  takes UIView and color to and gradient view on passed view *****//
     static func addLinearGradientToView(view: UIView, colour: UIColor, transparntToOpaque: Bool, vertical: Bool) {
         let gradient = CAGradientLayer()
@@ -2218,6 +2185,23 @@ public class Helper {
             
         }) { error in
             CompletionBlock(error)
+        }
+    }
+    enum MonthType { case number, monthName }
+    static func getMonth(_ monthType: MonthType, for month: String) -> String? {
+        
+        let months: NSDictionary = ["JANUARY": "01", "FEBRUARY": "02", "MARCH": "03", "APRIL": "04", "MAY": "05", "JUNE": "06", "JULY": "07", "AUGUST": "08", "SEPTEMBER": "09", "OCTOBER": "10", "NOVEMBER": "11", "DECEMBER": "12"]
+        
+        switch monthType {
+        case .monthName:
+            guard let monthName = months.allKeys(for: month).first as? String else { return nil }
+            let lowerCasedMonthName = monthName.lowercased()
+            let firstLetter = String(lowerCasedMonthName.prefix(1)).capitalized
+            let restOfWord = String(lowerCasedMonthName.dropFirst())
+            return firstLetter + restOfWord
+        case .number:
+            return months.value(forKey: month.uppercased()) as? String
+
         }
     }
 }

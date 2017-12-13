@@ -99,14 +99,14 @@ protocol SlideButtonDelegate {
     }
     
     func setStyle() {
-        self.buttonLabel.text = self.buttonText
-        self.dragPointButtonLabel.text = self.buttonText
-        self.dragPoint.frame.size.width = self.dragPointWidth
-        self.dragPoint.backgroundColor = UIColor.clear
-        self.backgroundColor = UIColor.clear
-        self.imageView.image = imageName
-        self.buttonLabel.textColor = self.buttonTextColor
-        self.dragPointButtonLabel.textColor = self.dragPointTextColor
+        buttonLabel.text = self.buttonText
+        dragPointButtonLabel.text = self.buttonText
+        dragPoint.frame.size.width = self.dragPointWidth
+        dragPoint.backgroundColor = UIColor.clear
+        backgroundColor = UIColor.clear
+        imageView.image = imageName
+        buttonLabel.textColor = self.buttonTextColor
+        dragPointButtonLabel.textColor = self.dragPointTextColor
         
         self.dragPoint.layer.cornerRadius = buttonCornerRadius
         self.layer.cornerRadius = buttonCornerRadius
@@ -114,53 +114,45 @@ protocol SlideButtonDelegate {
     
     func setUpButton() {
         
-        if(self.dragPoint.subviews.count >= 1) {
-            
-            self.dragPoint.removeFromSuperview()
+        if dragPoint.subviews.count >= 1 {
+            dragPoint.removeFromSuperview()
         }
         self.backgroundColor = UIColor.clear
+        dragPoint = UIView(frame: CGRect(x: dragPointWidth - self.frame.size.width, y: 0, width: self.frame.size.width, height: self.frame.size.height))
+        dragPoint.backgroundColor = UIColor.clear
+        dragPoint.layer.cornerRadius = buttonCornerRadius
+        self.addSubview(dragPoint)
         
-        self.dragPoint = UIView(frame: CGRect(x: dragPointWidth - self.frame.size.width, y: 0, width: self.frame.size.width, height: self.frame.size.height))
-        self.dragPoint.backgroundColor = UIColor.clear
-        self.dragPoint.layer.cornerRadius = buttonCornerRadius
-        self.addSubview(self.dragPoint)
-        
-        if !self.buttonText.isEmpty {
-            
-            self.buttonLabel = UILabel(frame: CGRect(x: 0, y: 0, width: self.frame.size.width, height: self.frame.size.height))
-            self.buttonLabel.textAlignment = .center
-            self.buttonLabel.text = buttonText
-            self.buttonLabel.textColor = UIColor.white
-            self.buttonLabel.font = self.buttonFont
-            self.buttonLabel.textColor = self.buttonTextColor
-            self.addSubview(self.buttonLabel)
-            
-            self.dragPointButtonLabel = UILabel(frame: CGRect(x: 0, y: 0, width: self.frame.size.width, height: self.frame.size.height))
-            self.dragPointButtonLabel.textAlignment = .center
-            self.dragPointButtonLabel.text = buttonText
-            self.dragPointButtonLabel.textColor = UIColor.white
-            self.dragPointButtonLabel.font = self.buttonFont
-            self.dragPointButtonLabel.textColor = self.dragPointTextColor
-            self.dragPoint.addSubview(self.dragPointButtonLabel)
+        if !buttonText.isEmpty {
+            buttonLabel = UILabel(frame: CGRect(x: 0, y: 0, width: self.frame.size.width, height: self.frame.size.height))
+            buttonLabel.textAlignment = .center
+            buttonLabel.text = buttonText
+            buttonLabel.textColor = UIColor.white
+            buttonLabel.font = self.buttonFont
+            buttonLabel.textColor = self.buttonTextColor
+            addSubview(self.buttonLabel)
+            dragPointButtonLabel = UILabel(frame: CGRect(x: 0, y: 0, width: self.frame.size.width, height: self.frame.size.height))
+           dragPointButtonLabel.textAlignment = .center
+            dragPointButtonLabel.text = buttonText
+            dragPointButtonLabel.textColor = UIColor.white
+            dragPointButtonLabel.font = self.buttonFont
+            dragPointButtonLabel.textColor = self.dragPointTextColor
+           dragPoint.addSubview(self.dragPointButtonLabel)
         }
-        self.bringSubview(toFront: self.dragPoint)
+        self.bringSubview(toFront:dragPoint)
         
         if self.imageName != UIImage() {
-            if(Constant.RunningDevice.deviceIdiom == .phone) {
+            if Constant.RunningDevice.deviceIdiom == .phone {
                 self.imageView = UIImageView(frame: CGRect(x: self.frame.size.width - dragPointWidth + 5, y: 0, width: 30, height: self.frame.size.height))
             } else {
-                self.imageView = UIImageView(frame: CGRect(x: self.frame.size.width - dragPointWidth + 15, y: 5, width: 50, height: self.frame.size.height - 10))
+                imageView = UIImageView(frame: CGRect(x: self.frame.size.width - dragPointWidth + 15, y: 5, width: 50, height: self.frame.size.height - 10))
             }
-            self.imageView.isHidden = false
-            //self.imageView.contentMode = .center
-            self.imageView.image = self.imageName
-            self.imageView.backgroundColor = UIColor.clear
-            self.dragPoint.addSubview(self.imageView)
+            imageView.isHidden = false
+            imageView.image = imageName
+            imageView.backgroundColor = UIColor.clear
+            dragPoint.addSubview(imageView)
         }
-        
         self.layer.masksToBounds = true
-        
-        // start detecting pan gesture
         let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(self.panDetected(_:)))
         panGestureRecognizer.minimumNumberOfTouches = 1
         self.dragPoint.addGestureRecognizer(panGestureRecognizer)
@@ -204,15 +196,12 @@ protocol SlideButtonDelegate {
             self.dragPoint.frame = CGRect(x: self.frame.size.width - self.dragPoint.frame.size.width, y: 0, width: self.dragPoint.frame.size.width, height: self.dragPoint.frame.size.height)
         }) { (Status) in
             if Status {
-                //self.dragPointButtonLabel.text      = self.buttonUnlockedText
-                //self.imageView.isHidden               = true
-                if(Constant.RunningDevice.deviceIdiom == .phone) {
+                
+                if Constant.RunningDevice.deviceIdiom == .phone {
                     self.imageView.frame = CGRect(x: self.frame.width - 50, y: 0, width: 30, height: self.frame.size.height)
                 } else {
                     self.imageView.frame = CGRect(x: self.frame.width - 50, y: 0, width: 50, height: self.frame.size.height)
                 }
-                //self.dragPoint.backgroundColor      = self.buttonUnlockedColor
-                // self.dragPointButtonLabel.textColor = self.buttonUnlockedTextColor
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: "ChangeLabel"), object: self.imageView)
                 self.delegate?.buttonStatus("", sender: self)
             }
@@ -226,11 +215,7 @@ protocol SlideButtonDelegate {
         }) { (Status) in
             if Status {
                 self.dragPointButtonLabel.text = self.buttonText
-                //self.imageView.isHidden               = false
-                //self.dragPoint.backgroundColor      = UIColor.brown//self.dragPointColor
-                //self.dragPointButtonLabel.textColor = self.dragPointTextColor
                 self.unlocked = false
-                //self.delegate?.buttonStatus("Locked")
             }
         }
     }

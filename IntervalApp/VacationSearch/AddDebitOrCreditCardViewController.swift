@@ -40,9 +40,26 @@ class AddDebitOrCreditCardViewController: UIViewController {
     var months: [String]!
     var years: [Int]!
     var selectedrow: Int = 0
+    var expServerDate = ""
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        if let contact = Session.sharedSession.contact {
+            Constant.GetawaySearchResultCardFormDetailData.nameOnCard = "\(contact.firstName.unwrappedString) \(contact.lastName.unwrappedString)"
+        }
+        //address from contact list
+        if let address = Session.sharedSession.contact?.addresses {
+            if !address.isEmpty {
+                Constant.GetawaySearchResultCardFormDetailData.pinCode = address[0].postalCode ?? ""
+                Constant.GetawaySearchResultCardFormDetailData.city = address[0].cityName ?? ""
+                if address[0].addressLines.count > 1 {
+                    Constant.GetawaySearchResultCardFormDetailData.address1 = address[0].addressLines[0]
+                    Constant.GetawaySearchResultCardFormDetailData.address2 = address[0].addressLines[1]
+                } else if !address[0].addressLines.isEmpty {
+                    Constant.GetawaySearchResultCardFormDetailData.address1 = address[0].addressLines[0]
+                }
+            }
+        }
         
         // population months with localized names
         var months: [String] = []
@@ -69,6 +86,7 @@ class AddDebitOrCreditCardViewController: UIViewController {
         
        ADBMobile.trackAction(Constant.omnitureEvents.event57, data: nil)
        modalTransitionStyle = .flipHorizontal
+        cardDetailTBLview.reloadData()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -138,7 +156,7 @@ class AddDebitOrCreditCardViewController: UIViewController {
         Constant.GetawaySearchResultCardFormDetailData.city = ""
         Constant.GetawaySearchResultCardFormDetailData.state = ""
         Constant.GetawaySearchResultCardFormDetailData.country = ""
-        Constant.GetawaySearchResultCardFormDetailData.expDate = nil
+        Constant.GetawaySearchResultCardFormDetailData.expDate = ""
         Constant.GetawaySearchResultCardFormDetailData.cvv = ""
         
     }
@@ -146,7 +164,7 @@ class AddDebitOrCreditCardViewController: UIViewController {
     // function called when add new card button pressed to validate new card details.
     func addCardButtonPressed(_ sender: IUIKButton) {
         
-        if Constant.GetawaySearchResultCardFormDetailData.nameOnCard != "" && Constant.GetawaySearchResultCardFormDetailData.cardNumber != "" && Constant.GetawaySearchResultCardFormDetailData.cardType != "" && Constant.GetawaySearchResultCardFormDetailData.expDate != nil && Constant.GetawaySearchResultCardFormDetailData.cvv != "" && Constant.GetawaySearchResultCardFormDetailData.address1 != "" && Constant.GetawaySearchResultCardFormDetailData.address2 != "" && Constant.GetawaySearchResultCardFormDetailData.country != "" && Constant.GetawaySearchResultCardFormDetailData.city != "" && Constant.GetawaySearchResultCardFormDetailData.state != "" && Constant.GetawaySearchResultCardFormDetailData.pinCode != "" {
+        if Constant.GetawaySearchResultCardFormDetailData.nameOnCard != "" && Constant.GetawaySearchResultCardFormDetailData.cardNumber != "" && Constant.GetawaySearchResultCardFormDetailData.cardType != "" && Constant.GetawaySearchResultCardFormDetailData.expDate != "" && Constant.GetawaySearchResultCardFormDetailData.cvv != "" &&  Constant.GetawaySearchResultCardFormDetailData.country != "" &&  Constant.GetawaySearchResultCardFormDetailData.state != "" {
             
             var isNewCard = true
             
@@ -165,7 +183,25 @@ class AddDebitOrCreditCardViewController: UIViewController {
                 let newCreditCard = Creditcard()
                 newCreditCard.cardHolderName = Constant.GetawaySearchResultCardFormDetailData.nameOnCard
                 newCreditCard.cardNumber = Constant.GetawaySearchResultCardFormDetailData.cardNumber
-                newCreditCard.expirationDate = Constant.GetawaySearchResultCardFormDetailData.expDate
+                //creating date component with new exp date
+                let dateComp = expServerDate.components(separatedBy: "-")
+                var year = ""
+                var month = ""
+                if dateComp.count > 1 {
+                     year = dateComp[0]
+                    month = dateComp[1]
+                }
+                
+                var dateComponents = DateComponents()
+                dateComponents.year = Int(year)
+                dateComponents.month = Int(month)
+                dateComponents.day = 01
+                let date = Calendar.current.date(from: dateComponents)
+                let dateFor = DateFormatter()
+                dateFor.dateFormat = Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.dateTimeFormat
+                let expString: String = dateFor.string(from: date ?? Date())
+                debugPrint(expString)
+                newCreditCard.expirationDate = expString
                 newCreditCard.cvv = Constant.GetawaySearchResultCardFormDetailData.cvv
                 
                 let billingAdrs = Address()
@@ -173,11 +209,7 @@ class AddDebitOrCreditCardViewController: UIViewController {
                 address.append(Constant.GetawaySearchResultCardFormDetailData.address1)
                 address.append(Constant.GetawaySearchResultCardFormDetailData.address2)
                 billingAdrs.addressLines = address
-                
-                /*billingAdrs.addrLine1 = Constant.GetawaySearchResultCardFormDetailData.address1
-                billingAdrs.addrLine2 = Constant.GetawaySearchResultCardFormDetailData.address2*/
                 billingAdrs.cityName = Constant.GetawaySearchResultCardFormDetailData.city
-                
                 billingAdrs.countryCode = Constant.GetawaySearchResultCardFormDetailData.countryCode
                 billingAdrs.postalCode = Constant.GetawaySearchResultCardFormDetailData.pinCode
                 billingAdrs.territoryCode = Constant.GetawaySearchResultCardFormDetailData.stateCode
@@ -226,23 +258,17 @@ class AddDebitOrCreditCardViewController: UIViewController {
     func saveNewCreditCardPressed(_ sender: IUIKCheckbox) {
         
         if saveCardCheckBoxChecked == false {
-            
             saveCardCheckBoxChecked = true
         } else {
-            
             saveCardCheckBoxChecked = false
         }
     }
     
-    func dateSelectedFromDatePicker(_ sender: UIDatePicker) {
-        
-    }
-    
-    //function called when picker view done button pressed.
+    //function called when drop down button pressed
     func dropDownButtonPressed(_ sender: IUIKButton) {
         
         dropDownSelectionRow = sender.tag
-        dropDownSelectionSection = Int(sender.accessibilityValue!)!
+        dropDownSelectionSection = Int(sender.accessibilityValue ?? "") ?? 0
         if dropDownSelectionSection == 0 && dropDownSelectionRow == 3 {
             
             if hideStatus == false {
@@ -267,26 +293,6 @@ class AddDebitOrCreditCardViewController: UIViewController {
         }
     }
     
-    // function to create date picker view when drop down button pressed.
-    func createDatePicker() {
-        
-        pickerBaseView = UIView(frame: CGRect(x: 0, y: self.view.frame.size.height - 200, width: self.view.frame.size.width, height: 200))
-        pickerBaseView?.backgroundColor = IUIKColorPalette.primary1.color
-        let doneButton = UIButton(frame: CGRect(x: 0, y: 5, width: pickerBaseView.frame.size.width - 20, height: 50))
-        doneButton.setTitle(Constant.AlertPromtMessages.done, for: .normal)
-        doneButton.contentHorizontalAlignment = .right
-        doneButton.addTarget(self, action: #selector(AddDebitOrCreditCardViewController.pickerDoneButtonPressed(_:)), for: .touchUpInside)
-        
-        datePickerView = UIDatePicker(frame: CGRect(x: 0, y: 50, width: pickerBaseView.frame.size.width, height: pickerBaseView.frame.size.height - 60))
-        datePickerView.datePickerMode = .date
-        datePickerView.setValue(UIColor.white, forKeyPath: Constant.MyClassConstants.keyTextColor)
-        datePickerView.addTarget(self, action: #selector(AddDebitOrCreditCardViewController.dateSelectedFromDatePicker(_:)), for: UIControlEvents.valueChanged)
-        pickerBaseView.addSubview(doneButton)
-        pickerBaseView.addSubview(datePickerView)
-        
-        view.addSubview(pickerBaseView)
-    }
-    
     // function to create picker view when drop down button pressed.
     func createPickerView() {
         
@@ -304,20 +310,6 @@ class AddDebitOrCreditCardViewController: UIViewController {
         pickerView.dataSource = self
         
         view.addSubview(pickerBaseView)
-    }
-    
-    // function to create picker view when drop down button pressed.
-    func showDatePickerView() {
-
-        hideStatus = true
-        createDatePicker()
-    }
-    
-    //function to hide date picker view.
-    func hideDatePickerView() {
-        
-        hideStatus = false
-        pickerBaseView.isHidden = true
     }
     
     //function to show picker view.
@@ -338,11 +330,6 @@ class AddDebitOrCreditCardViewController: UIViewController {
         
         hideStatus = false
         pickerBaseView.isHidden = true
-        if datePickerView != nil {
-            
-            //Constant.GetawaySearchResultCardFormDetailData.expDate = datePickerView.date
-        }
-       
         let indexPath = NSIndexPath(row: dropDownSelectionRow, section: dropDownSelectionSection)
         cardDetailTBLview.reloadRows(at: [indexPath as IndexPath], with: UITableViewRowAnimation.automatic)
     }
@@ -482,10 +469,9 @@ extension AddDebitOrCreditCardViewController: UITableViewDataSource {
                 cell.nameTF.text = ""
                 if indexPath.row == 0 {
                     
-                    if !Constant.GetawaySearchResultCardFormDetailData.nameOnCard.isEmpty {
+                    if Constant.GetawaySearchResultCardFormDetailData.nameOnCard.isEmpty {
                         cell.nameTF.placeholder = Constant.textFieldTitles.nameOnCard
                     } else {
-                        
                         cell.nameTF.text = Constant.GetawaySearchResultCardFormDetailData.nameOnCard
                     }
                 } else if indexPath.row == 1 {
@@ -493,16 +479,14 @@ extension AddDebitOrCreditCardViewController: UITableViewDataSource {
                      if Constant.GetawaySearchResultCardFormDetailData.cardNumber.isEmpty {
                         cell.nameTF.placeholder = Constant.textFieldTitles.cardNumber
                      } else {
-                        
                         cell.nameTF.text = Constant.GetawaySearchResultCardFormDetailData.cardNumber
                     }
                     
                 } else {
-                   
+               
                      if Constant.GetawaySearchResultCardFormDetailData.cvv.isEmpty {
                         cell.nameTF.placeholder = Constant.textFieldTitles.cvv
                     } else {
-                        
                         cell.nameTF.text = Constant.GetawaySearchResultCardFormDetailData.cvv
                     }
                 }
@@ -532,13 +516,11 @@ extension AddDebitOrCreditCardViewController: UITableViewDataSource {
                 }
                 if indexPath.row == 3 {
                     
-                    if Constant.GetawaySearchResultCardFormDetailData.expDate == nil {
+                    if Constant.GetawaySearchResultCardFormDetailData.expDate.isEmpty {
                         cell.selectedTextLabel.text = Constant.textFieldTitles.expirationDate
                     } else {
                         let dateFormatter = DateFormatter()
                         dateFormatter.dateStyle = DateFormatter.Style.short
-                        
-                       // let strDate = dateFormatter.string(from: Constant.GetawaySearchResultCardFormDetailData.expDate!)
                         cell.selectedTextLabel.text = Constant.GetawaySearchResultCardFormDetailData.expDate //strDate
                     }
                     cell.selectedTextLabel.textColor = UIColor.lightGray
@@ -578,12 +560,7 @@ extension AddDebitOrCreditCardViewController: UITableViewDataSource {
                     if Constant.GetawaySearchResultCardFormDetailData.country.isEmpty {
                         cell.selectedTextLabel.text = Constant.textFieldTitles.guestFormSelectCountryPlaceholder
                     } else {
-                        if let address = Session.sharedSession.contact?.addresses?[0] {
-                            cell.selectedTextLabel.text = address.countryCode
-                            
-                        } else {
                             cell.selectedTextLabel.text = Constant.GetawaySearchResultCardFormDetailData.country
-                        }
                     }
                 } else {
                     //state name
@@ -627,18 +604,9 @@ extension AddDebitOrCreditCardViewController: UITableViewDataSource {
                         
                         cell.nameTF.placeholder = Constant.textFieldTitles.guestFormAddress1
                     } else {
-                        
-                        if let addressLine = Session.sharedSession.contact?.addresses![0].addressLines {
-                            cell.nameTF.text = addressLine[0]
+                        cell.nameTF.text = Constant.GetawaySearchResultCardFormDetailData.address1
                             
-                        } else {
-                            
-                            cell.nameTF.text = Constant.GetawaySearchResultCardFormDetailData.address1
-                            
-                        }
-                        
                     }
-                    
                 } else if indexPath.row == 2 {
                     //address line2 info
                     
@@ -646,27 +614,17 @@ extension AddDebitOrCreditCardViewController: UITableViewDataSource {
                         
                         cell.nameTF.placeholder = Constant.textFieldTitles.guestFormAddress2
                     } else {
-                        if let addressLine2 = Session.sharedSession.contact?.addresses![0].addressLines[1] {
-                            cell.nameTF.text = addressLine2
-                        } else {
-                            cell.nameTF.text = Constant.GetawaySearchResultCardFormDetailData.address2
-                        }
+                       cell.nameTF.text = Constant.GetawaySearchResultCardFormDetailData.address2
                     }
                 } else if indexPath.row == 3 {
                     
                     // city name info
                     if Constant.GetawaySearchResultCardFormDetailData.city.isEmpty {
-                        
                         cell.nameTF.placeholder = Constant.textFieldTitles.guestFormCity
                     } else {
-                        if let address = Session.sharedSession.contact?.addresses![0] {
-                            cell.nameTF.text = address.cityName
-                            
-                        } else {
-                            cell.nameTF.text = Constant.GetawaySearchResultCardFormDetailData.city
-                        }
-                        
+                       cell.nameTF.text = Constant.GetawaySearchResultCardFormDetailData.city
                     }
+                    
                 } else {
                     
                     //postal code info
@@ -674,13 +632,7 @@ extension AddDebitOrCreditCardViewController: UITableViewDataSource {
                         
                         cell.nameTF.placeholder = Constant.textFieldTitles.guestFormPostalCode
                     } else {
-                        if let address = Session.sharedSession.contact?.addresses![0] {
-                            cell.nameTF.text = address.postalCode
-                            
-                        } else {
-                            cell.nameTF.text = Constant.GetawaySearchResultCardFormDetailData.pinCode
-                            
-                        }
+                       cell.nameTF.text = Constant.GetawaySearchResultCardFormDetailData.pinCode
                     }
                 }
                 cell.nameTF.tag = indexPath.row
@@ -740,13 +692,14 @@ extension AddDebitOrCreditCardViewController: UIPickerViewDelegate {
                 let month = months[pickerView.selectedRow(inComponent: 0)]
                 let year = years[pickerView.selectedRow(inComponent: 1)]
                 let expiryDate = "\(year), \(month)"
-                intervalPrint(expiryDate)
+                expServerDate = "\(year)-\(Helper.getMonth(Helper.MonthType.number, for: month))"
+                
                 Constant.GetawaySearchResultCardFormDetailData.expDate = expiryDate
                 
             } else if dropDownSelectionRow == 2 {
                 
                 let cardType = Constant.MyClassConstants.allowedCreditCardType[row]
-                Constant.GetawaySearchResultCardFormDetailData.cardType = cardType.name!
+                Constant.GetawaySearchResultCardFormDetailData.cardType = cardType.name ?? ""
                 
             } else {
                 
@@ -764,6 +717,7 @@ extension AddDebitOrCreditCardViewController: UIPickerViewDelegate {
              } else {
                 guard let stateName = Constant.GetawaySearchResultGuestFormDetailData.stateListArray[row].name else { return }
                 Constant.GetawaySearchResultCardFormDetailData.state = stateName
+                Constant.GetawaySearchResultCardFormDetailData.stateCode = Constant.GetawaySearchResultGuestFormDetailData.stateCodeArray[row]
             }
         }
     }

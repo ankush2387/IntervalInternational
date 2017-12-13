@@ -58,14 +58,10 @@ class SearchResultViewController: UIViewController {
         self.searchResultTableView.reloadData()
         timer.invalidate()
     }
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(true)
-        self.navigationController?.navigationBar.isHidden = false
-    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
+        navigationController?.navigationBar.isHidden = false
         Constant.MyClassConstants.calendarDatesArray.removeAll()
         Constant.MyClassConstants.calendarDatesArray = Constant.MyClassConstants.totalBucketArray
         createSections()
@@ -721,7 +717,9 @@ class SearchResultViewController: UIViewController {
             
             // Got an access token!  Save it for later use.
             self.hideHudAsync()
-            Constant.MyClassConstants.membershipContactArray = Membership.contacts!
+            if let contacts = Membership.contacts {
+                 Constant.MyClassConstants.membershipContactArray = contacts
+            }
             let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
             let transitionManager = TransitionManager()
             self.navigationController?.transitioningDelegate = transitionManager
@@ -730,6 +728,7 @@ class SearchResultViewController: UIViewController {
                 // Navigate to Renewals Screen
                 let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.RenewelViewController) as! RenewelViewController
                 viewController.delegate = self
+                //self.navigationController?.pushViewController(viewController, animated: true)
                 self.present(viewController, animated: true, completion: nil)
             } else {
                 // Navigate to Who Will Be Checking in Screen
