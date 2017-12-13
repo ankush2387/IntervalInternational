@@ -15,31 +15,13 @@ import DarwinSDK
 class SideMenuItem {
     
     var menuTitle: String
-    var imageName: String
-    var segueName: String?
-    var selectorName: String?
+    var image: UIImage
     var storyboardId: String?
-    var initialControllerName: String?
     
-    init(title: String, image: String, segue: String) {
+    init(title: String, image: UIImage, storyboardid: String) {
         self.menuTitle = title
-        self.imageName = image
-        self.segueName = segue
-        self.selectorName = nil
-    }
-    
-    init(title: String, image: String, selector: String) {
-        self.menuTitle = title
-        self.imageName = image
-        self.segueName = nil
-        self.selectorName = selector
-    }
-    
-    init(title: String, image: String, storyboardid: String, initialcontrollername: String) {
-        self.menuTitle = title
-        self.imageName = image
+        self.image = image
         self.storyboardId = storyboardid
-        self.initialControllerName = initialcontrollername
     }
     
 }
@@ -53,31 +35,27 @@ class SideMenuTableViewController: UIViewController {
     //***** Define a global list os side menu items *****//
     static let SideMenuItems: [SideMenuItem] = [
         
-        SideMenuItem(title: "", image: "", storyboardid: "", initialcontrollername: ""),
-        SideMenuItem(title: "", image: Constant.assetImageNames.member, storyboardid: Constant.storyboardNames.membershipIphone, initialcontrollername: Constant.sideMenuTitles.sideMenuInitialController),
-        SideMenuItem(title: Constant.sideMenuTitles.home, image: Constant.assetImageNames.home, storyboardid: Constant.storyboardNames.dashboardIPhone, initialcontrollername: Constant.sideMenuTitles.sideMenuInitialController),
-        SideMenuItem(title: Constant.sideMenuTitles.searchVacation, image: Constant.assetImageNames.searchVacation, storyboardid: Constant.storyboardNames.vacationSearchIphone, initialcontrollername: Constant.sideMenuTitles.sideMenuInitialController),
-        SideMenuItem(title: Constant.sideMenuTitles.upcomingTrips, image: Constant.assetImageNames.upcomingTrips, storyboardid: Constant.storyboardNames.myUpcomingTripIphone, initialcontrollername: Constant.sideMenuTitles.sideMenuInitialController),
-        SideMenuItem(title: Constant.sideMenuTitles.getawayAlerts, image: Constant.assetImageNames.getawayAlerts, storyboardid: Constant.storyboardNames.getawayAlertsIphone, initialcontrollername: Constant.sideMenuTitles.sideMenuInitialController),
-        SideMenuItem(title: Constant.sideMenuTitles.favorites, image: Constant.assetImageNames.favorites, storyboardid: Constant.storyboardNames.iphone, initialcontrollername: Constant.sideMenuTitles.sideMenuInitialController),
-        SideMenuItem(title: Constant.sideMenuTitles.ownershipUnits, image: Constant.assetImageNames.ownershipUnits, storyboardid: Constant.storyboardNames.ownershipIphone, initialcontrollername: Constant.sideMenuTitles.sideMenuInitialController),
-        SideMenuItem(title: Constant.sideMenuTitles.resortDirectory, image: Constant.assetImageNames.resortDirectory, storyboardid: Constant.storyboardNames.iphone, initialcontrollername: Constant.sideMenuTitles.sideMenuInitialController),
-        SideMenuItem(title: Constant.sideMenuTitles.intervalHD, image: Constant.assetImageNames.intervalHD, storyboardid: Constant.storyboardNames.intervalHDIphone, initialcontrollername: Constant.sideMenuTitles.sideMenuInitialController),
-        SideMenuItem(title: Constant.sideMenuTitles.magazines, image: Constant.assetImageNames.magazines, storyboardid: Constant.storyboardNames.magazinesIphone, initialcontrollername: Constant.sideMenuTitles.sideMenuInitialController),
+        SideMenuItem(title: "", image: #imageLiteral(resourceName: "IntHD"), storyboardid: ""),
+        SideMenuItem(title: "", image: #imageLiteral(resourceName: "Member"), storyboardid: Constant.storyboardNames.membershipIphone),
+        SideMenuItem(title: Constant.sideMenuTitles.home, image: #imageLiteral(resourceName: "Home"), storyboardid: Constant.storyboardNames.dashboardIPhone),
+        SideMenuItem(title: Constant.sideMenuTitles.searchVacation, image: #imageLiteral(resourceName: "Search"), storyboardid: Constant.storyboardNames.vacationSearchIphone),
+        SideMenuItem(title: Constant.sideMenuTitles.upcomingTrips, image: #imageLiteral(resourceName: "Trips"), storyboardid: Constant.storyboardNames.myUpcomingTripIphone),
+        SideMenuItem(title: Constant.sideMenuTitles.getawayAlerts, image: #imageLiteral(resourceName: "Alerts"), storyboardid: Constant.storyboardNames.getawayAlertsIphone),
+        SideMenuItem(title: Constant.sideMenuTitles.favorites, image: #imageLiteral(resourceName: "Favorites"), storyboardid: Constant.storyboardNames.iphone),
+        SideMenuItem(title: Constant.sideMenuTitles.ownershipUnits, image: #imageLiteral(resourceName: "Ownership"), storyboardid: Constant.storyboardNames.ownershipIphone),
+        SideMenuItem(title: Constant.sideMenuTitles.resortDirectory, image: #imageLiteral(resourceName: "Directory"), storyboardid: Constant.storyboardNames.iphone),
+        SideMenuItem(title: Constant.sideMenuTitles.intervalHD, image: #imageLiteral(resourceName: "IntHD"), storyboardid: Constant.storyboardNames.intervalHDIphone),
+        SideMenuItem(title: Constant.sideMenuTitles.magazines, image: #imageLiteral(resourceName: "Magazines"), storyboardid: Constant.storyboardNames.magazinesIphone),
         
         // This is not a good design...
         // And the cell row calculations are hard coded
         // Forces storyboard
         SideMenuItem(title: "Settings".localized(),
-                     image: "Settings Icon",
-                     storyboardid: "Settings",
-                     initialcontrollername: Constant.sideMenuTitles.sideMenuInitialController),
-        ///
-        
-        SideMenuItem(title: Constant.sideMenuTitles.signOut, image: "", selector: Constant.MyClassConstants.signOutSelected )
+                     image: #imageLiteral(resourceName: "Settings Icon"),
+                     storyboardid: "Settings")
     ]
     
-    var memberId: String!
+    var memberId = ""
     var productCode: String!
     
     @IBOutlet var sideMenuTable: UITableView?
@@ -103,25 +81,7 @@ class SideMenuTableViewController: UIViewController {
         let cellNib1 = UINib(nibName: Constant.customCellNibNames.sideMenuBackgroundTableCell, bundle: nil)
         self.sideMenuTable!.register(cellNib1, forCellReuseIdentifier: Constant.customCellNibNames.sideMenuBackgroundTableCell)
         let membership = Session.sharedSession.selectedMembership
-        self.memberId = membership?.memberNumber
-    }
-    
-    //***** MARK: - Actions *****//
-    
-    func signOutSelected() {
-        Session.sharedSession.signOut()
-        //Remove all favorites for a user.
-        Constant.MyClassConstants.favoritesResortArray.removeAll()
-        Constant.MyClassConstants.favoritesResortCodeArray.removeAllObjects()
-        
-        //Remove available points for relinquishment program
-        Constant.MyClassConstants.relinquishmentProgram = PointsProgram()
-        
-        //Remove all saved alerts for a user.
-        Constant.MyClassConstants.getawayAlertsArray.removeAll()
-        Constant.MyClassConstants.isLoginSuccessfull = false
-        Constant.MyClassConstants.sideMenuOptionSelected = Constant.MyClassConstants.resortFunctionalityCheck
-        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "PopToLoginView"), object: nil)
+        self.memberId = membership?.memberNumber ?? ""
     }
     
     //***** Function called for getaway alerts notification *****//
@@ -137,47 +97,33 @@ extension SideMenuTableViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         Constant.MyClassConstants.googleMarkerArray.removeAll()
-        let smi = SideMenuTableViewController.SideMenuItems[ (indexPath as NSIndexPath).row ]
-        
-        if((indexPath as NSIndexPath).row == 6) {
+        let smi = SideMenuTableViewController.SideMenuItems[indexPath.row ]
+        switch indexPath.row {
+        case 6 :
             
             Constant.MyClassConstants.sideMenuOptionSelected = Constant.MyClassConstants.favoritesFunctionalityCheck
-        } else if((indexPath as NSIndexPath).row == 8) {
+        case 8 :
             Constant.MyClassConstants.runningFunctionality = Constant.MyClassConstants.resortFunctionalityCheck
             Constant.MyClassConstants.sideMenuOptionSelected = Constant.MyClassConstants.resortFunctionalityCheck
-        } else if(indexPath.row == 5) {
-            
+        case 5 :
             Constant.MyClassConstants.alertOriginationPoint = Constant.omnitureCommonString.sideMenu
-        } else {
-            
+        default :
             Constant.MyClassConstants.sideMenuOptionSelected = Constant.MyClassConstants.resortFunctionalityCheck
         }
         
-        if(smi.storyboardId?.characters.count != 0 && (indexPath as NSIndexPath).row != SideMenuTableViewController.SideMenuItems.count - 1) {
-            
-            Constant.MyClassConstants.upcomingOriginationPoint = Constant.omnitureCommonString.sideMenu
-            let mainStoryboard: UIStoryboard = UIStoryboard(name: smi.storyboardId!, bundle: nil)
-            let viewController = mainStoryboard.instantiateViewController(withIdentifier: smi.initialControllerName!) as! SWRevealViewController
-            navigationController?.pushViewController(viewController, animated: true)
+        guard let storyboardName = smi.storyboardId else { return }
+        
+        if let initialViewController = UIStoryboard(name: storyboardName, bundle: nil).instantiateInitialViewController() {
+            navigationController?.pushViewController(initialViewController, animated: true)
         }
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
         //***** return height for  row in each section of tableview *****//
-        
-        if((indexPath as NSIndexPath).row == 0) {
-            return 100
-        } else if((indexPath as NSIndexPath).row == 1) {
-            return 50
-        } else if((indexPath as NSIndexPath).row == SideMenuTableViewController.SideMenuItems.count - 1) {
-            
-            return 180
-        } else {
-            
-            return 50
-        }
-        
+        var height = 0
+        (indexPath.row == 0) ? (height = 100) : (height = 50)
+        return CGFloat(height)
     }
 }
 
@@ -200,8 +146,8 @@ extension SideMenuTableViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         //***** configuring  and returned cell for each row *****//
-        if((indexPath as NSIndexPath).row == 0) {
-            
+        switch indexPath.row {
+        case 0 :
             let cell = tableView.dequeueReusableCell(withIdentifier: Constant.loginScreenReusableIdentifiers.headerCell, for: indexPath) as! HeaderTableViewCell
             cell.selectionStyle = UITableViewCellSelectionStyle.none
             let imageview = UIImageView()
@@ -212,61 +158,27 @@ extension SideMenuTableViewController: UITableViewDataSource {
             imageview.contentMode = UIViewContentMode.scaleAspectFit
             cell.contentView.addSubview(imageview)
             return cell
-        } else if((indexPath as NSIndexPath).row == SideMenuTableViewController.SideMenuItems.count - 1 ) {
-            
-            let cell = tableView.dequeueReusableCell(withIdentifier: Constant.loginScreenReusableIdentifiers.menuCell, for: indexPath)
-            
-            let SignOutButton = IUIKButton(frame: CGRect(x: 15, y: 80, width: self.view.bounds.width - 90, height: 40))
-            SignOutButton.setTitle(Constant.sideMenuTitles.signOut, for: UIControlState.normal)
-            SignOutButton.layer.borderWidth = 0.5
-            SignOutButton.layer.borderColor = UIColor.lightGray.cgColor
-            SignOutButton.layer.masksToBounds = true
-            SignOutButton.layer.cornerRadius = 4
-            SignOutButton.setTitleColor(UIColor(red: 0 / 255.0, green: 119 / 255.0, blue: 190 / 255.0, alpha: 1.0), for: UIControlState.normal)
-            SignOutButton.titleLabel?.font = UIFont(name: Constant.fontName.helveticaNeueBold, size: 15)
-            SignOutButton.addTarget(self, action: #selector(SideMenuTableViewController.signOutSelected), for: .touchUpInside)
-            
-            let privacyLegalLabel = UILabel()
-            privacyLegalLabel.frame = CGRect(x: 15, y: 120, width: self.view.bounds.width - 65, height: 20)
-            
-            myMutableString = NSMutableAttributedString(string: Constant.MyClassConstants.sidemenuIntervalInternationalCorporationLabel, attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 12)])
-            
-            myMutableString.addAttribute(NSForegroundColorAttributeName, value: UIColor(red: 0.0 / 256.0, green: 0.0 / 256.0, blue: 0.0 / 256.0, alpha: 1.0), range: NSRange(location: 0, length: 28))
-            
-            myMutableString.addAttribute(NSForegroundColorAttributeName, value: UIColor(red: 0.0 / 256.0, green: 119.0 / 256.0, blue: 190.0 / 256.0, alpha: 1.0), range: NSRange(location: 29, length: 13))
-            
-            //***** set label Attribute *****//
-            privacyLegalLabel.attributedText = myMutableString
-            //cell.addSubview(privacyLegalLabel)
-            let bundleLabel = UILabel()
-            bundleLabel.frame = CGRect(x: 15, y: 140, width: self.view.bounds.width - 65, height: 20)
-            bundleLabel.text = Helper.getBuildVersion()
-            bundleLabel.font = UIFont(name: Constant.fontName.helveticaNeue, size: 12)
-            //cell.addSubview(bundleLabel)
-            cell.selectionStyle = UITableViewCellSelectionStyle.none
-            
-            return cell
-            
-        } else if((indexPath as NSIndexPath).row == 1) {
+        case 1 :
             
             let smi = SideMenuTableViewController.SideMenuItems[ (indexPath as NSIndexPath).row ]
             
-            let cell: MemberCell = tableView.dequeueReusableCell(withIdentifier: Constant.loginScreenReusableIdentifiers.memberCell, for: indexPath) as! MemberCell
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.loginScreenReusableIdentifiers.memberCell, for: indexPath) as? MemberCell else { return UITableViewCell() }
             
             let membership = Session.sharedSession.selectedMembership
             let Product = membership?.getProductWithHighestTier()
             if let productname = Product?.productName {
-                cell.customTextLabel!.text = "\(Constant.MyClassConstants.member)\(memberId!) \(productname)"
+                cell.customTextLabel.text = "\(Constant.MyClassConstants.member)\(memberId) \(productname)"
             }
-            cell.iconImageView!.image = UIImage(named: smi.imageName)
+            cell.iconImageView.image = smi.image
             cell.selectionStyle = UITableViewCellSelectionStyle.none
             return cell
-        } else {
-            let smi = SideMenuTableViewController.SideMenuItems[ (indexPath as NSIndexPath).row ]
             
-            let cell: SideMenuBackgroundTableCell = tableView.dequeueReusableCell( withIdentifier: Constant.customCellNibNames.sideMenuBackgroundTableCell, for: indexPath) as! SideMenuBackgroundTableCell
+        default :
+            let smi = SideMenuTableViewController.SideMenuItems[indexPath.row ]
             
-            cell.iconImageView.image = UIImage(named: smi.imageName)
+            guard let cell = tableView.dequeueReusableCell( withIdentifier: Constant.customCellNibNames.sideMenuBackgroundTableCell, for: indexPath) as? SideMenuBackgroundTableCell else { return UITableViewCell() }
+            
+            cell.iconImageView.image = smi.image
             cell.customTextLabel.text = smi.menuTitle
             
             if indexPath.row == 5 {
