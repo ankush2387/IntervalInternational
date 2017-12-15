@@ -56,8 +56,8 @@ class ResortDetails: NSObject, UITableViewDataSource, UITableViewDelegate {
             }
         }
         cell.resortName.text = resortDetails.resortName
-        if let cityName = resortDetails.address?.cityName {
-        cell.resortCountry.text = cityName
+        if let cityName = resortDetails.address?.cityName, let territoryCode = resortDetails.address?.territoryCode {
+        cell.resortCountry.text = "\(cityName), \(territoryCode)"
         }
         cell.resortCode.text = resortDetails.resortCode
         if let tier = resortDetails.tier {
