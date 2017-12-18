@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="XgI-eR-9EJ">
     <device id="ipad9_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -30,7 +30,7 @@
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                     <connections>
-                        <segue destination="ciw-GI-oRG" kind="show" identifier="sw_front" customClass="SWRevealViewControllerSegueSetController" id="Fmh-gM-r4O"/>
+                        <segue destination="ciw-GI-oRG" kind="custom" identifier="sw_front" customClass="SWRevealViewControllerSegueSetController" id="Fmh-gM-r4O"/>
                         <segue destination="YH8-KO-8u4" kind="show" identifier="sw_rear" customClass="SWRevealViewControllerSegueSetController" id="EQ5-TC-W6z"/>
                     </connections>
                 </viewController>
@@ -345,7 +345,7 @@
                                                             <color key="textColor" red="1" green="0.58431372549019611" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Week" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3BB-HO-wDP">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Week" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3BB-HO-wDP">
                                                             <rect key="frame" x="575" y="94.5" width="50" height="17.5"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="50" id="5IA-Tq-d2L"/>
@@ -354,7 +354,7 @@
                                                             <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.61568627450000002" alpha="1" colorSpace="calibratedRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NUM-bW-wSE">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NUM-bW-wSE">
                                                             <rect key="frame" x="641" y="91" width="103" height="21"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="103" id="t96-mp-GPe"/>
@@ -484,7 +484,7 @@
                     </view>
                     <connections>
                         <outlet property="sideMenuTable" destination="xxd-s0-Y0R" id="h6f-Va-5hU"/>
-                        <segue destination="ciw-GI-oRG" kind="show" identifier="sideMenuToDashboard" customClass="SWRevealViewControllerSeguePushController" id="BXg-yH-flt"/>
+                        <segue destination="ciw-GI-oRG" kind="custom" identifier="sideMenuToDashboard" customClass="SWRevealViewControllerSeguePushController" id="BXg-yH-flt"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="c4J-x3-mj9" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -496,6 +496,6 @@
         <image name="bkg-sunset" width="1080" height="1920"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="BXg-yH-flt"/>
+        <segue reference="Fmh-gM-r4O"/>
     </inferredMetricsTieBreakers>
 </document>
