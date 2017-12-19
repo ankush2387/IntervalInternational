@@ -48,18 +48,9 @@ class CreateAlertViewController: UIViewController {
         //set return key on Keyboard to DONE
         nameTextField.returnKeyType = .done
         
-        // omniture tracking with event 40
-        let pageView: [String: String] = [
-            Constant.omnitureEvars.eVar44: Constant.omnitureCommonString.createAnAlert
-        ]
-        ADBMobile.trackAction(Constant.omnitureEvents.event40, data: pageView)
-        
-        // omniture tracking with event 50
-        let userInfo: [String: String] = [
-            Constant.omnitureEvars.eVar41: Constant.omnitureCommonString.alert
-        ]
-        
-        ADBMobile.trackAction(Constant.omnitureEvents.event50, data: userInfo)
+        //Omniture Tracking
+        omnitureTrackEvent40()
+        omnitureTrackEvent50()
         
         //**** Check for iPhone 4s and iPhone 5s to align travel window start and end date *****//
         if UIScreen.main.bounds.width == 320 {
@@ -77,7 +68,7 @@ class CreateAlertViewController: UIViewController {
         Constant.MyClassConstants.alertWindowEndDate = nil
         
         //***** adding menu bar back button *****//
-        let menuButton = UIBarButtonItem(image: UIImage(named: Constant.assetImageNames.backArrowNav), style: .plain, target: self, action: #selector(menuBackButtonPressed(sender:)))
+        let menuButton = UIBarButtonItem(image: #imageLiteral(resourceName: "BackArrowNav"), style: .plain, target: self, action: #selector(menuBackButtonPressed(sender:)))
         menuButton.tintColor = UIColor.white
         
         self.navigationItem.leftBarButtonItem = menuButton
@@ -87,17 +78,18 @@ class CreateAlertViewController: UIViewController {
         self.textfieldBorderView.layer.borderColor = Constant.RGBColorCode.textFieldBorderRGB
         self.nameTextField.delegate = self
         
+        guard let iPadFont = UIFont(name: Constant.fontName.helveticaNeueBold, size: 25) else { return }
         var attributes = [
             NSForegroundColorAttributeName: UIColor.lightGray,
-            NSFontAttributeName: UIFont(name: Constant.fontName.helveticaNeueBold, size: 25)! // Note the !
+            NSFontAttributeName: iPadFont
         ]
         
         if Constant.RunningDevice.deviceIdiom == .phone {
+            guard let iPhoneFont = UIFont(name: Constant.fontName.helveticaNeueBold, size: 15) else { return }
             attributes = [
                 NSForegroundColorAttributeName: UIColor.lightGray,
-                NSFontAttributeName: UIFont(name: Constant.fontName.helveticaNeue, size: 15)! // Note the !
+                NSFontAttributeName: iPhoneFont
             ]
-            
         }
         
         self.nameTextField.attributedPlaceholder = NSAttributedString(string: Constant.textFieldTitles.alertNamePlaceholder, attributes: attributes)
@@ -105,45 +97,62 @@ class CreateAlertViewController: UIViewController {
     }
     override func viewWillAppear(_ animated: Bool) {
         
+        super.viewWillAppear(true)
         self.bedroomSize.text = Constant.MyClassConstants.selectedBedRoomSize
-        if let srartDate = Constant.MyClassConstants.alertWindowStartDate {
-            
-            self.travelWindowEndDateSelectionButton.isEnabled = true
-            let myCalendar = NSCalendar(calendarIdentifier: NSCalendar.Identifier.gregorian)!
-            let myComponents = myCalendar.components([.day, .weekday, .month, .year], from: srartDate)
-            
-            self.startDateDayLabel.text = String(describing: myComponents.day!)
-            self.startDateDayNameLabel.text = "\(Helper.getWeekdayFromInt(weekDayNumber: myComponents.weekday!))"
-            self.startDateMonthYearLabel.text = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month!)) \(myComponents.year!)"
-            
-        } else {
-            
+        
+        guard let startDate = Constant.MyClassConstants.alertWindowStartDate else {
             self.travelWindowEndDateSelectionButton.isEnabled = false
+            return
         }
-        if let endDate = Constant.MyClassConstants.alertWindowEndDate {
-            
-            if let startDate = Constant.MyClassConstants.alertWindowStartDate {
-            if startDate.isLessThanDate(endDate) {
+        
+        guard let endDate = Constant.MyClassConstants.alertWindowEndDate else {
+            return
+        }
+        
+        let calendar = Calendar(identifier: Calendar.Identifier.gregorian)
+        
+        let startDateComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: startDate)
+        let endDateComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: endDate)
+        
+        self.travelWindowEndDateSelectionButton.isEnabled = true
+        if let day = startDateComponents.day {
+            self.startDateDayLabel.text = String(describing: day)
+        }
+        
+        if let weekDay = startDateComponents.weekday {
+            self.startDateDayNameLabel.text = "\(Helper.getWeekdayFromInt(weekDayNumber: weekDay))"
+        }
+        
+        if let month = startDateComponents.month, let year = startDateComponents.year {
+            self.startDateMonthYearLabel.text = "\(Helper.getMonthnameFromInt(monthNumber: month)) \(year)"
+        }
+        
+        if startDate.isLessThanDate(endDate) {
+            if let day = endDateComponents.day {
+                self.endDateDayLabel.text = String(describing: day)
+            }
+            if let weekDay = endDateComponents.weekday {
+                self.endDateDayNameLabel.text = "\(Helper.getWeekdayFromInt(weekDayNumber: weekDay))"
+            }
+            if let month = endDateComponents.month, let year = endDateComponents.year {
+                self.endDateMonthYearLabel.text = "\(Helper.getMonthnameFromInt(monthNumber: month)) \(year)"
+            }
+        } else {
+            if let day = startDateComponents.day {
+                self.endDateDayLabel.text = String(describing: day)
+            }
+            if let weekDay = startDateComponents.weekday {
+                self.endDateDayNameLabel.text = "\(Helper.getWeekdayFromInt(weekDayNumber: weekDay))"
+            }
+            if let month = startDateComponents.month, let year = startDateComponents.year {
+                self.endDateMonthYearLabel.text = "\(Helper.getMonthnameFromInt(monthNumber: month)) \(year)"
                 
-                let myCalendar1 = NSCalendar(calendarIdentifier: NSCalendar.Identifier.gregorian)!
-                let myComponents1 = myCalendar1.components([.day, .weekday, .month, .year], from: endDate)
-                self.endDateDayLabel.text = String(describing: myComponents1.day!)
-                self.endDateDayNameLabel.text = "\(Helper.getWeekdayFromInt(weekDayNumber: myComponents1.weekday!))"
-                self.endDateMonthYearLabel.text = "\(Helper.getMonthnameFromInt(monthNumber: myComponents1.month!)) \(myComponents1.year!)"
-            } else {
-                
-                let myCalendar1 = NSCalendar(calendarIdentifier: NSCalendar.Identifier.gregorian)!
-                let myComponents1 = myCalendar1.components([.day, .weekday, .month, .year], from: startDate)
-                self.endDateDayLabel.text = String(describing: myComponents1.day!)
-                self.endDateDayNameLabel.text = "\(Helper.getWeekdayFromInt(weekDayNumber: myComponents1.weekday!))"
-                self.endDateMonthYearLabel.text = "\(Helper.getMonthnameFromInt(monthNumber: myComponents1.month!)) \(myComponents1.year!)"
             }
         }
-        }
-        if self.createAlertCollectionView != nil {
-            self.createAlertCollectionView.reloadData()
+        if case .some = createAlertCollectionView {
+            createAlertCollectionView.reloadData()
         } else {
-            self.createAlertTBLView.reloadData()
+            createAlertTBLView.reloadData()
         }
     }
     
@@ -161,20 +170,20 @@ class CreateAlertViewController: UIViewController {
     //***** function to create new alert *****//
     @IBAction func createAlertButtonPresseded(_ sender: AnyObject) {
         
-       let trimmedUsername = self.nameTextField.text!.trimmingCharacters(in: NSCharacterSet.whitespacesAndNewlines)
+        let trimmedUsername = self.nameTextField.text?.trimmingCharacters(in: .whitespaces)
         guard let startDate = Constant.MyClassConstants.alertWindowStartDate else { return  presentAlert(with: Constant.AlertPromtMessages.createAlertTitle, message: Constant.AlertMessages
             .editAlertEmptyWidowStartDateMessage) }
         guard let endDate = Constant.MyClassConstants.alertWindowEndDate else { return presentAlert(with: Constant.AlertPromtMessages.createAlertTitle, message: Constant.AlertMessages
             .editAlertEmptyWidowEndDateMessage) }
         if !Constant.MyClassConstants.selectedGetawayAlertDestinationArray.isEmpty {
-            if !trimmedUsername.isEmpty {
+            if let alertName = trimmedUsername {
                         
             showHudAsync()
             let rentalAlert = RentalAlert()
             rentalAlert.earliestCheckInDate = Helper.convertDateToString(date: startDate, format: Constant.MyClassConstants.dateFormat)
             rentalAlert.latestCheckInDate = Helper.convertDateToString(date: endDate, format: Constant.MyClassConstants.dateFormat)
             
-            rentalAlert.name = trimmedUsername
+            rentalAlert.name = alertName
             rentalAlert.enabled = true
             intervalPrint(Constant.MyClassConstants.alertSelectedResorts)
             rentalAlert.resorts = Constant.MyClassConstants.alertSelectedResorts
@@ -182,14 +191,14 @@ class CreateAlertViewController: UIViewController {
             rentalAlert.selections = []
             
             var unitsizearray = [UnitSize]()
-            if Constant.MyClassConstants.alertSelectedUnitSizeArray.count > 0 {
+            if !Constant.MyClassConstants.alertSelectedUnitSizeArray.isEmpty {
                 
                 for selectedSize in Constant.MyClassConstants.alertSelectedUnitSizeArray {
-                    
-                    let bedroomSize = Helper.bedRoomSizeToStringInteger(bedRoomSize: selectedSize as! String )
+                    let bedroomSize = Helper.bedRoomSizeToStringInteger(bedRoomSize: selectedSize)
                     self.anlyticsBedroomSize = self.anlyticsBedroomSize.appending(bedroomSize)
-                    let selectedUnitSize = UnitSize(rawValue: selectedSize as! String)
-                    unitsizearray.append(selectedUnitSize!)
+                    if let selectedUnitSize = UnitSize(rawValue: selectedSize) {
+                        unitsizearray.append(selectedUnitSize)
+                    }
                 }
                 rentalAlert.unitSizes = unitsizearray
             } else {
@@ -197,49 +206,27 @@ class CreateAlertViewController: UIViewController {
                 for unitsize in Constant.MyClassConstants.bedRoomSize {
                     let bedroomSize = Helper.bedRoomSizeToStringInteger(bedRoomSize: unitsize )
                     self.anlyticsBedroomSize = self.anlyticsBedroomSize.appending("\(bedroomSize), ")
-                    let selectedUnitSize = UnitSize(rawValue: unitsize )
-                    unitsizearray.append(selectedUnitSize!)
+                    if let selectedUnitSize = UnitSize(rawValue: unitsize ) {
+                        unitsizearray.append(selectedUnitSize)
+                    }
                 }
                 rentalAlert.unitSizes = unitsizearray
             }
             
-            RentalClient.createAlert(Session.sharedSession.userAccessToken, alert: rentalAlert, onSuccess: { (response) in
-                var deststr: String = ""
-                for dest in Constant.MyClassConstants.alertSelectedDestination {
-                    
-                    deststr = deststr.appending("\(dest.destinationName), ")
-                }
-                let userInfo: [String: Any] = [
-                    Constant.omnitureEvars.eVar43: " - \(Date())",
-                    Constant.omnitureCommonString.listItem: deststr,
-                    Constant.omnitureEvars.eVar41: Constant.omnitureCommonString.alert,
-                    Constant.omnitureEvars.eVar57: startDate,
-                    Constant.omnitureEvars.eVar58: endDate,
-                    Constant.omnitureEvars.eVar59: self.anlyticsBedroomSize,
-                    Constant.omnitureEvars.eVar60: Constant.MyClassConstants.alertOriginationPoint
-                ]
-                
-                ADBMobile.trackAction(Constant.omnitureEvents.event52, data: userInfo)
+            RentalClient.createAlert(Session.sharedSession.userAccessToken, alert: rentalAlert, onSuccess: { response in
+                self.omintureTrackEvent52(startDate:startDate, endDate:endDate)
                 self.hideHudAsync()
-                Constant.MyClassConstants.getawayAlertsArray.insert(rentalAlert, at: Constant.MyClassConstants.getawayAlertsArray.count)
-                let alertController = UIAlertController(title: Constant.AlertPromtMessages.createAlertTitle, message: Constant.AlertMessages.createAlertMessage, preferredStyle: .alert)
-                
-                // Create OK button
-                let OKAction = UIAlertAction(title: "OK", style: .default) { (_:UIAlertAction) in
-                     Constant.needToReloadAlert = true
-                    self.dismiss(animated: true, completion: nil)
-                }
-                alertController.addAction(OKAction)
-                
-                // Present Dialog message
-                self.present(alertController, animated: true, completion:nil)
+                let rentalSearchDateResponse = RentalSearchDatesResponse()
+                Constant.MyClassConstants.searchDateResponse.append((rentalAlert, rentalSearchDateResponse))
+                self.presentAlert(with: Constant.AlertPromtMessages.createAlertTitle, message: Constant.AlertMessages.createAlertMessage, hideCancelButton: true, cancelButtonTitle: "", acceptButtonTitle: "Ok".localized(), acceptButtonStyle: .default, cancelHandler: nil, acceptHandler: {
+                    Constant.needToReloadAlert = true
+                 self.dismiss(animated: true, completion: nil)
+                })
                 rentalAlert.alertId = response.alertId
                 
-            }) { (_) in
-                
-                self.hideHudAsync()
-                self.presentErrorAlert(UserFacingCommonError.generic)
-                
+            }) { [weak self] error in
+                self?.hideHudAsync()
+                self?.presentErrorAlert(UserFacingCommonError.serverError(error))
             }
           } else {
                 presentAlert(with: Constant.AlertPromtMessages.createAlertTitle, message: Constant.AlertMessages
@@ -309,6 +296,39 @@ class CreateAlertViewController: UIViewController {
             navigationController?.pushViewController(viewController, animated: true)
         }
         
+    }
+    
+    // MARK: - Omniture Tracking functions
+    
+    //Function to track event 40
+    func omnitureTrackEvent40() {
+        let pageView: [String: String] = [
+            Constant.omnitureEvars.eVar44: Constant.omnitureCommonString.createAnAlert
+        ]
+        ADBMobile.trackAction(Constant.omnitureEvents.event40, data: pageView)
+    }
+    
+    //Function to track event 50
+    func omnitureTrackEvent50() {
+        let userInfo: [String: String] = [
+            Constant.omnitureEvars.eVar41: Constant.omnitureCommonString.alert
+        ]
+        
+        ADBMobile.trackAction(Constant.omnitureEvents.event50, data: userInfo)
+    }
+    
+    //Function to track event 52
+    func omintureTrackEvent52(startDate: Date, endDate: Date) {
+        let userInfo: [String: Any] = [
+            Constant.omnitureEvars.eVar43: " - \(Date())",
+            Constant.omnitureCommonString.listItem: Constant.MyClassConstants.alertSelectedDestination,
+            Constant.omnitureEvars.eVar41: Constant.omnitureCommonString.alert,
+            Constant.omnitureEvars.eVar57: startDate,
+            Constant.omnitureEvars.eVar58: endDate,
+            Constant.omnitureEvars.eVar59: self.anlyticsBedroomSize,
+            Constant.omnitureEvars.eVar60: Constant.MyClassConstants.alertOriginationPoint
+        ]
+        ADBMobile.trackAction(Constant.omnitureEvents.event52, data: userInfo)
     }
     
     override func didReceiveMemoryWarning() {

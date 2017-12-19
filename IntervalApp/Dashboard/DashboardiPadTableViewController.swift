@@ -27,6 +27,7 @@ class DashboardIPadTableViewController: UITableViewController {
     var showAlertActivityIndicatorView = true
     var showSearchResults = false
     var alertFilterOptionsArray = [Constant.AlertResortDestination]()
+    private let getawayAlertCoordinator = GetawayAlertCoordinator(clientAPIStore: ClientAPI.sharedInstance)
     
     override func viewWillAppear(_ animated: Bool) {
         //***** Adding notification to reload table when all alerts have been fetched *****//
@@ -52,11 +53,9 @@ class DashboardIPadTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //get all alerts
-        Helper.getAllAlerts {[unowned self] error in
-            if case .some = error {
-                self.presentAlert(with: "Error".localized(), message: error?.localizedDescription ?? "")
-            }
+        //Get all alerts
+        if let accessToken = Session.sharedSession.userAccessToken {
+            getawayAlertCoordinator.readAllRentalAlerts(accessToken: accessToken)
         }
         title = Constant.ControllerTitles.dashboardTableViewController
         showHudAsync()
@@ -153,11 +152,12 @@ class DashboardIPadTableViewController: UITableViewController {
         
         showAlertActivityIndicatorView = true
         homeTableView.reloadData()
-        Helper.getAllAlerts {[unowned self] error in
+        ClientAPI.sharedInstance.readAllRentalAlerts(for: Session.sharedSession.userAccessToken!)
+        /*Helper.getAllAlerts {[unowned self] error in
             if case .some = error {
                 self.presentAlert(with: "Error".localized(), message: error?.localizedDescription ?? "")
             }
-        }
+        }*/
     }
     //Mark:- Button Clicked
     func searchVacationButtonPressed(_ sender: IUIKButton) {

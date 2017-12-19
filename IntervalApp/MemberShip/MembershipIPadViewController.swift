@@ -19,6 +19,7 @@ class MembershipIPadViewController: UIViewController {
     fileprivate var ownershipArray = [Ownership]()
     fileprivate var membershipProductsArray = [Product]()
     fileprivate var contactInfo = Contact()
+    private let getawayAlertCoordinator = GetawayAlertCoordinator(clientAPIStore: ClientAPI.sharedInstance)
     
     /**
      Show action sheet.
@@ -133,11 +134,9 @@ class MembershipIPadViewController: UIViewController {
             self.dismiss(animated: true, completion: nil)
             self.getContactMembershipInfo()
             //***** Getaway Alerts API call after successfull login *****//
-            Helper.getAllAlerts {[unowned self] error in
-                if case .some = error {
-                    self.presentAlert(with: "Error".localized(), message: error?.localizedDescription ?? "")
-                    }
-                }
+            if let accessToken = Session.sharedSession.userAccessToken {
+                self.getawayAlertCoordinator.readAllRentalAlerts(accessToken: accessToken)
+            }
         },
        onError: {[unowned self] _ in
         self.hideHudAsync()

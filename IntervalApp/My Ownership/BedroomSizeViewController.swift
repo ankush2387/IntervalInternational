@@ -190,25 +190,20 @@ class BedroomSizeViewController: UIViewController {
                         
                     } else {
                         var i = 0
-                        var selectedBedroomsizes = ""
+                        var selectedBedroomsizes = [String]()
                         for index in localArrayToHoldSelection {
                             
-                            Constant.MyClassConstants.alertSelectedUnitSizeArray.add(Constant.MyClassConstants.bedRoomSize[index as? Int ?? 0])
-                            if i < localArrayToHoldSelection.count - 1 {
+                            Constant.MyClassConstants.alertSelectedUnitSizeArray.append(Constant.MyClassConstants.bedRoomSize[index as? Int ?? 0])
+                            if i < localArrayToHoldSelection.count {
                                 
                                 let friendlyName = UnitSize.forDisplay[index as? Int ?? 0].friendlyName()
-                                
-                                selectedBedroomsizes = selectedBedroomsizes.appending("\(friendlyName), ")
+                                let bedroomSize = Helper.bedRoomSizeToStringInteger(bedRoomSize: friendlyName)
+                                selectedBedroomsizes.append(bedroomSize)
                                 
                                 i = i + 1
-                            } else {
-                                
-                                let friendlyName = UnitSize.forDisplay[index as? Int ?? 0].friendlyName()
-                                
-                                selectedBedroomsizes = selectedBedroomsizes.appending("\(friendlyName)")
                             }
                         }
-                        Constant.MyClassConstants.selectedBedRoomSize = selectedBedroomsizes
+                        Constant.MyClassConstants.selectedBedRoomSize = selectedBedroomsizes.joined(separator: ", ")
                         Constant.MyClassConstants.bedRoomSizeSelectedIndexArray = localArrayToHoldSelection
                     }
                 }

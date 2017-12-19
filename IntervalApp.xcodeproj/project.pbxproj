@@ -37,6 +37,7 @@
 		3A18D7BA1DE05DEC00966472 /* AddDebitOrCreditCardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A18D7B91DE05DEC00966472 /* AddDebitOrCreditCardViewController.swift */; };
 		3A18D7BC1DE0949D00966472 /* AddYourCardButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A18D7BB1DE0949D00966472 /* AddYourCardButtonCell.swift */; };
 		3A18D7BE1DE0967C00966472 /* SaveCardOptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A18D7BD1DE0967C00966472 /* SaveCardOptionCell.swift */; };
+		3A193A031FE2B7A10042E17B /* GetawayAlertCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A193A021FE2B7A10042E17B /* GetawayAlertCoordinator.swift */; };
 		3A202C731F3B0ABA00678C50 /* RentalInventoryCVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A202C721F3B0ABA00678C50 /* RentalInventoryCVCell.swift */; };
 		3A2089DC1E2525C1001AFFD2 /* RelinquishmentSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2089DB1E2525C1001AFFD2 /* RelinquishmentSelectionViewController.swift */; };
 		3A2089DE1E2544D0001AFFD2 /* RelinquishmentSelectionCIGCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2089DD1E2544D0001AFFD2 /* RelinquishmentSelectionCIGCell.swift */; };
@@ -429,6 +430,7 @@
 		3A18D7B91DE05DEC00966472 /* AddDebitOrCreditCardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddDebitOrCreditCardViewController.swift; sourceTree = "<group>"; };
 		3A18D7BB1DE0949D00966472 /* AddYourCardButtonCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddYourCardButtonCell.swift; sourceTree = "<group>"; };
 		3A18D7BD1DE0967C00966472 /* SaveCardOptionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SaveCardOptionCell.swift; sourceTree = "<group>"; };
+		3A193A021FE2B7A10042E17B /* GetawayAlertCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetawayAlertCoordinator.swift; sourceTree = "<group>"; };
 		3A202C721F3B0ABA00678C50 /* RentalInventoryCVCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RentalInventoryCVCell.swift; sourceTree = "<group>"; };
 		3A2089DB1E2525C1001AFFD2 /* RelinquishmentSelectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelinquishmentSelectionViewController.swift; sourceTree = "<group>"; };
 		3A2089DD1E2544D0001AFFD2 /* RelinquishmentSelectionCIGCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelinquishmentSelectionCIGCell.swift; sourceTree = "<group>"; };
@@ -1306,6 +1308,7 @@
 			children = (
 				3C466B611F86862D002D43F7 /* AppCoordinator.swift */,
 				3C8BA6CC1F8E74880024243A /* PreLoginCoordinator.swift */,
+				3A193A021FE2B7A10042E17B /* GetawayAlertCoordinator.swift */,
 			);
 			path = Coordinators;
 			sourceTree = "<group>";
@@ -2242,6 +2245,7 @@
 				3C4F17271FA391E7001EF71F /* String+NSRage.swift in Sources */,
 				3A3A012D1C99BD0B00B7EC37 /* AvailablePointToolViewController.swift in Sources */,
 				3A3A01411C99BD0B00B7EC37 /* OwnershipDetailWithDepositinformationTableViewCell.swift in Sources */,
+				3A193A031FE2B7A10042E17B /* GetawayAlertCoordinator.swift in Sources */,
 				3A3D56871DD33AFA00922FA9 /* WhoWillBeCheckingInViewController.swift in Sources */,
 				3A2089E01E2544FF001AFFD2 /* RelinquishmentSelectionOpenWeeksCell.swift in Sources */,
 				DC7EF5111D709F8800E9E360 /* ResortDirectoryTBLCell.swift in Sources */,
