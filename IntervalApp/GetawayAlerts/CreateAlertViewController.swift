@@ -102,12 +102,11 @@ class CreateAlertViewController: UIViewController {
         
         guard let startDate = Constant.MyClassConstants.alertWindowStartDate else {
             self.travelWindowEndDateSelectionButton.isEnabled = false
+            reloadView()
             return
         }
         
-        guard let endDate = Constant.MyClassConstants.alertWindowEndDate else {
-            return
-        }
+        let endDate = Constant.MyClassConstants.alertWindowEndDate ?? Date()
         
         let calendar = Calendar(identifier: Calendar.Identifier.gregorian)
         
@@ -149,6 +148,10 @@ class CreateAlertViewController: UIViewController {
                 
             }
         }
+        reloadView()
+    }
+    
+    private func reloadView() {
         if case .some = createAlertCollectionView {
             createAlertCollectionView.reloadData()
         } else {
