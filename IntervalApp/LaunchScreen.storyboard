@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -22,26 +21,18 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="rAR-O7-9qt">
-                                <rect key="frame" x="-4" y="0.0" width="383" height="667"/>
-                                <color key="backgroundColor" red="0.0" green="0.46666666670000001" blue="0.74509803919999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Interval_Splash_Logo " translatesAutoresizingMaskIntoConstraints="NO" id="UYv-Hg-YHJ">
-                                <rect key="frame" x="103.5" y="311.5" width="168" height="44"/>
+                                <rect key="frame" x="103" y="311" width="168" height="44"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="168" id="GF5-sh-R1i"/>
-                                    <constraint firstAttribute="height" constant="44" id="eki-B0-69u"/>
+                                    <constraint firstAttribute="width" constant="168" id="Div-ry-t1S"/>
+                                    <constraint firstAttribute="height" constant="44" id="U2E-di-bO2"/>
                                 </constraints>
                             </imageView>
                         </subviews>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.20070835947990417" green="0.46097773313522339" blue="0.72536474466323853" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <constraints>
-                            <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="rAR-O7-9qt" secondAttribute="bottom" id="1uh-qV-T9R"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="rAR-O7-9qt" secondAttribute="trailing" constant="-20" id="4mo-TF-OtL"/>
-                            <constraint firstItem="rAR-O7-9qt" firstAttribute="top" secondItem="Llm-lL-Icb" secondAttribute="bottom" constant="-20" id="5j7-bp-kL2"/>
-                            <constraint firstItem="UYv-Hg-YHJ" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="gLt-rU-0Vu"/>
-                            <constraint firstItem="UYv-Hg-YHJ" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="sFf-SL-omB"/>
-                            <constraint firstItem="rAR-O7-9qt" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leadingMargin" constant="-20" id="w0E-zT-hik"/>
+                            <constraint firstItem="UYv-Hg-YHJ" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="Hic-5z-Y1q"/>
+                            <constraint firstItem="UYv-Hg-YHJ" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="UaA-kc-9g0"/>
                         </constraints>
                     </view>
                 </viewController>
