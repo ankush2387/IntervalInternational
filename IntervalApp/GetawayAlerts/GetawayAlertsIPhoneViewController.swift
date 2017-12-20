@@ -21,7 +21,6 @@ class GetawayAlertsIPhoneViewController: UIViewController {
     var alertFilterOptionsArray = [Constant.AlertResortDestination]()
     var individualActivityIndicatorNeedToShow = false
     var searchDateResponse = RentalSearchDatesResponse()
-    private let getawayAlertCoordinator = GetawayAlertCoordinator(clientAPIStore: ClientAPI.sharedInstance)
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
@@ -29,7 +28,7 @@ class GetawayAlertsIPhoneViewController: UIViewController {
         
         if Constant.needToReloadAlert {
            Constant.needToReloadAlert = false
-           //needToReloadAlerts()
+           needToReloadAlerts()
         }
         
         //***** Adding notification to reload table when all alerts have been fetched *****//
@@ -130,15 +129,73 @@ class GetawayAlertsIPhoneViewController: UIViewController {
         
         //Present the AlertController
         self.present(actionSheetController, animated: true, completion: nil)
-        
     }
+    
     func needToReloadAlerts() {
         individualActivityIndicatorNeedToShow = true
         self.alertDisplayTableView.reloadData()
         if let accessToken = Session.sharedSession.userAccessToken {
-            getawayAlertCoordinator.readAllRentalAlerts(accessToken: accessToken)
+            readAllRentalAlerts(accessToken: accessToken)
         }
     }
+    
+    // MARK: - Getaway Alerts
+    func readAllRentalAlerts(accessToken: DarwinAccessToken) {
+        ClientAPI.sharedInstance.readAllRentalAlerts(for: accessToken)
+            .then { rentalAlertArray in
+                
+                Constant.MyClassConstants.getawayAlertsArray.removeAll()
+                Constant.MyClassConstants.getawayAlertsArray = rentalAlertArray
+                Constant.MyClassConstants.activeAlertsArray.removeAllObjects()
+                
+                for alert in rentalAlertArray {
+                    if let alertId = alert.alertId {
+                        self.readRentalAlert(accessToken: accessToken, alertId: alertId)
+                    }
+                }
+            }
+            .onError { [weak self] error in
+                self?.presentErrorAlert(UserFacingCommonError.serverError(error as NSError))
+                
+        }
+    }
+    
+    func readRentalAlert(accessToken: DarwinAccessToken, alertId: Int64) {
+        Constant.MyClassConstants.searchDateResponse.removeAll()
+        ClientAPI.sharedInstance.readRentalAlert(for: accessToken, and: alertId)
+            .then { rentalAlert in
+                
+                let rentalSearchDatesRequest = RentalSearchDatesRequest()
+                if let checkInTodate = rentalAlert.latestCheckInDate {
+                    rentalSearchDatesRequest.checkInToDate = Helper.convertStringToDate(dateString:checkInTodate, format:Constant.MyClassConstants.dateFormat)
+                }
+                if let checkInFromdate = rentalAlert.earliestCheckInDate {
+                    rentalSearchDatesRequest.checkInFromDate = Helper.convertStringToDate(dateString:checkInFromdate, format:Constant.MyClassConstants.dateFormat)
+                }
+                rentalSearchDatesRequest.resorts = rentalAlert.resorts
+                rentalSearchDatesRequest.destinations = rentalAlert.destinations
+                
+                Constant.MyClassConstants.dashBoardAlertsArray = Constant.MyClassConstants.getawayAlertsArray
+                self.readDates(accessToken: accessToken, request: rentalSearchDatesRequest, rentalAlert: rentalAlert)
+            }
+            .onError { [weak self] error in
+                self?.presentErrorAlert(UserFacingCommonError.serverError(error as NSError))
+        }
+    }
+    
+    func readDates(accessToken: DarwinAccessToken, request: RentalSearchDatesRequest, rentalAlert: RentalAlert) {
+        ClientAPI.sharedInstance.readDates(for: accessToken, and: request)
+            .then { rentalSearchDatesResponse in
+                intervalPrint("____-->\(rentalSearchDatesResponse)")
+                Constant.MyClassConstants.searchDateResponse.append(rentalAlert, rentalSearchDatesResponse)
+                Helper.performSortingForMemberNumberWithViewResultAndNothingYet()
+                
+            }
+            .onError { [weak self] error in
+                self?.presentErrorAlert(UserFacingCommonError.serverError(error as NSError))
+        }
+    }
+    
     //***** Create a new alert button action. *****//
     @IBAction func createNewAlertButtonPressed(_ sender: AnyObject) {
         self.alertDisplayTableView.setEditing(false, animated: true)
@@ -186,7 +243,7 @@ class GetawayAlertsIPhoneViewController: UIViewController {
     
         for (alert, searchDatesResponse) in Constant.MyClassConstants.searchDateResponse {
             intervalPrint(alert.alertId ?? -1, sender.tag)
-            if String(describing: alert.alertId!) == String(sender.tag) {
+            if String(describing: alert.alertId ?? -1) == String(sender.tag) {
                 self.searchDateResponse = searchDatesResponse
                 pushRentalAlertView(alertID: Int(alert.alertId ?? -1), getawayAlert: alert)
             }
@@ -279,7 +336,8 @@ class GetawayAlertsIPhoneViewController: UIViewController {
             Constant.MyClassConstants.vacationSearchResultHeaderLabel = destination.destinationName
             
         } else if (alert.resorts.count) > 0 {
-            Constant.MyClassConstants.initialVacationSearch.searchCriteria.resorts = alert.resorts
+            searchCriteria.resorts = alert.resorts
+             Constant.MyClassConstants.vacationSearchResultHeaderLabel = "\(String(describing: alert.resorts[0].resortName)) + \(alert.resorts.count) more"
         }
     }
     
@@ -300,21 +358,22 @@ class GetawayAlertsIPhoneViewController: UIViewController {
         
         // Get activeInterval
         let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval()
-        
+
         // Update active interval
         Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
-        
+
         Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
-        
+
         // Check not available checkIn dates for the active interval
         if let activeInterval = activeInterval, activeInterval.hasCheckInDates() {
             self.rentalSearchAvailability(activeInterval: activeInterval)
         } else {
             self.noResultsAvailability()
         }
-        
+
         Constant.MyClassConstants.runningFunctionality = Constant.MyClassConstants.getawayAlerts
         Constant.MyClassConstants.resortsArray.removeAll()
+        
     }
 }
 

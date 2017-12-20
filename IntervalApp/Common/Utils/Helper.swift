@@ -329,6 +329,13 @@ public class Helper {
         }
     }
     
+    static func performSortingForMemberNumberWithViewResultAndNothingYet() {
+        
+        Constant.MyClassConstants.searchDateResponse.sort { $0.0.alertId ?? 0 > $1.0.alertId ?? 0 }
+        Constant.MyClassConstants.searchDateResponse.sort { $0.1.checkInDates.count > $1.1.checkInDates.count }
+        NotificationCenter.default.post(name:NSNotification.Name(rawValue: Constant.notificationNames.getawayAlertsNotification), object: nil)
+    }
+    
     //**** Common function to get upcoming trips. ****//
     static func getUpcomingTripsForUser(CompletionBlock: @escaping ((Error?) -> Void)) {
         UserClient.getUpcomingTrips(Session.sharedSession.userAccessToken, onSuccess: {(upComingTrips) in
