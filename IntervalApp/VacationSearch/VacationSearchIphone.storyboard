@@ -545,7 +545,7 @@ transaction.</string>
                                             </mask>
                                         </variation>
                                         <connections>
-                                            <outlet property="fevoriteButton" destination="ggb-Ns-csQ" id="MAN-c2-jt3"/>
+                                            <outlet property="favoriteButton" destination="ggb-Ns-csQ" id="wB6-Ct-KB4"/>
                                             <outlet property="resortAddress" destination="EYY-4m-9Lh" id="7cw-Wl-8xZ"/>
                                             <outlet property="resortCode" destination="kHl-VH-pr0" id="N8p-Sr-Eds"/>
                                             <outlet property="resortCollectionView" destination="QMA-5Y-6vY" id="rxm-Qm-JR4"/>

@@ -107,7 +107,7 @@
             <objects>
                 <navigationController id="YXh-lN-KMw" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="6Ru-xD-idh">
-                        <rect key="frame" x="0.0" y="20" width="768" height="48"/>
+                        <rect key="frame" x="0.0" y="20" width="768" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -151,7 +151,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="150" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="LAg-BZ-YMZ">
-                                <rect key="frame" x="0.0" y="118" width="768" height="857"/>
+                                <rect key="frame" x="0.0" y="114" width="768" height="861"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="wereToGo" rowHeight="170" id="SEp-Mw-Q61" customClass="WereWantToGoTableViewCell" customModule="IntervalApp" customModuleProvider="target">
@@ -1499,7 +1499,7 @@
                                 </connections>
                             </tableView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qav-WX-Ho5">
-                                <rect key="frame" x="0.0" y="934" width="768" height="1024"/>
+                                <rect key="frame" x="0.0" y="930" width="768" height="1024"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zdf-V0-YYS">
                                         <rect key="frame" x="0.0" y="0.0" width="768" height="40"/>
@@ -1559,7 +1559,7 @@
                                 </variation>
                             </view>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="xrk-gZ-bcu">
-                                <rect key="frame" x="138" y="76" width="493" height="29"/>
+                                <rect key="frame" x="138" y="72" width="493" height="29"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="493" id="Ree-Ou-KHJ"/>
                                 </constraints>
@@ -1646,7 +1646,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" tag="-1" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="LUK-83-Qso">
-                                <rect key="frame" x="0.0" y="69" width="768" height="100"/>
+                                <rect key="frame" x="0.0" y="65" width="768" height="100"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="100" id="Z7O-LD-t64"/>
@@ -1785,7 +1785,7 @@
                                 </connections>
                             </collectionView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="349" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="WlK-Oh-1Oi">
-                                <rect key="frame" x="30" y="187" width="708" height="1010"/>
+                                <rect key="frame" x="30" y="183" width="708" height="1014"/>
                                 <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.94901960784313721" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="separatorColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <prototypes>
@@ -3337,7 +3337,7 @@
             <objects>
                 <navigationController id="Kj4-oV-nKd" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="PIk-h1-MHc">
-                        <rect key="frame" x="0.0" y="20" width="768" height="48"/>
+                        <rect key="frame" x="0.0" y="20" width="768" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -3361,7 +3361,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bZq-3q-DzJ">
-                                <rect key="frame" x="0.0" y="68" width="768" height="40"/>
+                                <rect key="frame" x="0.0" y="64" width="768" height="40"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="We are holding this unit for 17 minutes." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a4S-0u-g72">
                                         <rect key="frame" x="20" y="10" width="728" height="20"/>
@@ -3380,7 +3380,7 @@
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="202" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="YWS-o6-jIG">
-                                <rect key="frame" x="30" y="108" width="708" height="720"/>
+                                <rect key="frame" x="30" y="104" width="708" height="724"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="CheckingInUserListTBLcell" rowHeight="120" id="YXV-an-EfQ" customClass="CheckingInUserListTBLcell" customModule="IntervalApp" customModuleProvider="target">
@@ -3777,7 +3777,7 @@
             <objects>
                 <navigationController id="hie-AV-xvD" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="f6g-7W-eAZ">
-                        <rect key="frame" x="0.0" y="20" width="768" height="48"/>
+                        <rect key="frame" x="0.0" y="20" width="768" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -6388,10 +6388,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MEz-MS-DqD">
-                                <rect key="frame" x="0.0" y="4" width="400" height="1020"/>
+                                <rect key="frame" x="0.0" y="0.0" width="400" height="1024"/>
                                 <subviews>
                                     <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GAm-DW-4Da">
-                                        <rect key="frame" x="0.0" y="0.0" width="400" height="1012"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="400" height="1016"/>
                                         <connections>
                                             <segue destination="c6G-JH-1ZR" kind="embed" id="S5L-fB-1Mg"/>
                                         </connections>
@@ -6406,10 +6406,10 @@
                                 </constraints>
                             </view>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Erq-Cc-xDk">
-                                <rect key="frame" x="384" y="461" width="80" height="96"/>
+                                <rect key="frame" x="384" y="457" width="80" height="100"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4oc-RZ-roG">
-                                        <rect key="frame" x="0.0" y="7" width="80" height="96"/>
+                                        <rect key="frame" x="0.0" y="7" width="80" height="100"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                         <state key="normal" image="ForwardArrowNav-Blue"/>
                                         <connections>
@@ -6426,7 +6426,7 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kIH-rB-JEH" customClass="GMSMapView">
-                                <rect key="frame" x="0.0" y="4" width="768" height="1020"/>
+                                <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                         </subviews>
@@ -8483,7 +8483,7 @@ Units Upgrade with this selection.</string>
                                                         <constraint firstItem="ZVU-Pl-QFx" firstAttribute="leading" secondItem="yFo-1h-Yan" secondAttribute="leading" id="y4c-Xj-DJe"/>
                                                     </constraints>
                                                 </view>
-                                                <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mMf-Em-qPB">
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mMf-Em-qPB">
                                                     <rect key="frame" x="91" y="30" width="310" height="80"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="751" text="Westwood at Split Rock" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kWq-MR-zWj">
@@ -8665,7 +8665,7 @@ Units Upgrade with this selection.</string>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fCd-Fu-L36" customClass="FSCalendar">
-                                <rect key="frame" x="10" y="68" width="748" height="600"/>
+                                <rect key="frame" x="10" y="64" width="748" height="600"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="687" id="yYI-vh-HHY">
@@ -8742,7 +8742,7 @@ Units Upgrade with this selection.</string>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sUX-3W-SS3">
-                                <rect key="frame" x="0.0" y="68" width="768" height="50"/>
+                                <rect key="frame" x="0.0" y="64" width="768" height="50"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select at least one Destination" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hlk-2m-ULB">
                                         <rect key="frame" x="0.0" y="0.0" width="768" height="50"/>
@@ -8761,7 +8761,7 @@ Units Upgrade with this selection.</string>
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="BOR-Vk-mFK">
-                                <rect key="frame" x="30" y="118" width="708" height="757"/>
+                                <rect key="frame" x="30" y="114" width="708" height="761"/>
                                 <color key="backgroundColor" red="0.89411764705882346" green="0.89411764705882346" blue="0.89411764705882346" alpha="1" colorSpace="calibratedRGB"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="regionCell" rowHeight="60" id="Ocm-9G-C2E" customClass="AvailableDestinationCountryOrContinentsTableViewCell" customModule="IntervalApp" customModuleProvider="target">
@@ -8973,7 +8973,7 @@ Units Upgrade with this selection.</string>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="iMu-Yc-MO6">
-                                <rect key="frame" x="0.0" y="132" width="768" height="843"/>
+                                <rect key="frame" x="0.0" y="128" width="768" height="847"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="CertificateCell" rowHeight="478" id="iAL-ch-FPN" customClass="CertificateCell" customModule="IntervalApp" customModuleProvider="target">
@@ -9632,7 +9632,7 @@ Units Upgrade with this selection.</string>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Wc0-eI-yK9" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="98v-Sn-Axw">
-                        <rect key="frame" x="0.0" y="20" width="768" height="48"/>
+                        <rect key="frame" x="0.0" y="20" width="768" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -9653,7 +9653,7 @@ Units Upgrade with this selection.</string>
                         <viewControllerLayoutGuide type="bottom" id="qxj-YC-ewE"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="EKS-9A-7MW">
-                        <rect key="frame" x="0.0" y="0.0" width="400" height="1012"/>
+                        <rect key="frame" x="0.0" y="0.0" width="400" height="1016"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BbN-tU-nm7">
@@ -9693,7 +9693,7 @@ Units Upgrade with this selection.</string>
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="8Xn-OT-ihn">
-                                <rect key="frame" x="0.0" y="74" width="400" height="877"/>
+                                <rect key="frame" x="0.0" y="74" width="400" height="881"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="ResortDirectoryResortCell" rowHeight="200" id="5vw-fD-uh6" customClass="ResortDirectoryResortCell" customModule="IntervalApp" customModuleProvider="target">
@@ -9795,7 +9795,7 @@ Units Upgrade with this selection.</string>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="fevoriteButton" destination="qag-v4-T6X" id="2ph-F9-T2S"/>
+                                            <outlet property="favoriteButton" destination="qag-v4-T6X" id="zza-ho-aBU"/>
                                             <outlet property="resortAddress" destination="WuD-lI-CgD" id="pIX-h6-8b6"/>
                                             <outlet property="resortCode" destination="FLa-Sl-rgl" id="1WI-vf-xKs"/>
                                             <outlet property="resortCollectionView" destination="lvW-eQ-AHB" id="oMo-8x-dzg"/>
@@ -10013,7 +10013,7 @@ Units Upgrade with this selection.</string>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="h8X-dQ-5XW"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="lNH-0Y-9a5">
-                        <rect key="frame" x="0.0" y="20" width="768" height="48"/>
+                        <rect key="frame" x="0.0" y="20" width="768" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -10542,14 +10542,14 @@ Units Upgrade with this selection.</string>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="YZc-ym-UF5">
-                                                    <rect key="frame" x="15" y="21" width="33.5" height="20.5"/>
+                                                    <rect key="frame" x="15" y="21" width="33" height="21"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="tE9-qX-OLe">
-                                                    <rect key="frame" x="15" y="44.5" width="44" height="14.5"/>
+                                                    <rect key="frame" x="15" y="45" width="44" height="14"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                     <nil key="textColor"/>
