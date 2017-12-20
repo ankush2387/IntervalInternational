@@ -329,6 +329,13 @@ public class Helper {
         }
     }
     
+    static func performSortingForMemberNumberWithViewResultAndNothingYet() {
+        
+        Constant.MyClassConstants.searchDateResponse.sort { $0.0.alertId ?? 0 > $1.0.alertId ?? 0 }
+        Constant.MyClassConstants.searchDateResponse.sort { $0.1.checkInDates.count > $1.1.checkInDates.count }
+        NotificationCenter.default.post(name:NSNotification.Name(rawValue: Constant.notificationNames.getawayAlertsNotification), object: nil)
+    }
+    
     //**** Common function to get upcoming trips. ****//
     static func getUpcomingTripsForUser(CompletionBlock: @escaping ((Error?) -> Void)) {
         UserClient.getUpcomingTrips(Session.sharedSession.userAccessToken, onSuccess: {(upComingTrips) in
@@ -501,7 +508,6 @@ public class Helper {
     
     //***** function to get all local storage object on the basis of selected membership number *****//
     static func getLocalStorageWherewanttoGo() -> Results <RealmLocalStorage> {
-        
         let realm = try? Realm()
         let Membership = Session.sharedSession.selectedMembership
         let SelectedMembershipNumber = Membership?.memberNumber
@@ -528,7 +534,6 @@ public class Helper {
             }
             return realmLocalStorage
         }
-        
     }
     static func getLocalStorageWherewanttoTrade() -> Results <OpenWeeksStorage> {
         
@@ -2174,19 +2179,6 @@ public class Helper {
         return transition
     }
 
-    static func getAllAlerts(CompletionBlock: @escaping ((Error?) -> Void)) {
-
-        //***** Getaway Alerts API call after successfull login *****//
-        RentalClient.getAlerts(Session.sharedSession.userAccessToken, onSuccess: { (response) in
-            Constant.MyClassConstants.getawayAlertsArray.removeAll()
-            Constant.MyClassConstants.getawayAlertsArray = response
-            Constant.MyClassConstants.activeAlertsArray.removeAllObjects()
-            CreateActionSheet().getStatusForAllAlerts()
-            
-        }) { error in
-            CompletionBlock(error)
-        }
-    }
     enum MonthType { case number, monthName }
     static func getMonth(_ monthType: MonthType, for month: String) -> String? {
         

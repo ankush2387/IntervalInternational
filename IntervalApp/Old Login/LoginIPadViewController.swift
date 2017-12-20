@@ -424,12 +424,6 @@ class LoginIPadViewController: UIViewController {
                     self.presentAlert(with: "Error".localized(), message: error?.localizedDescription ?? "")
                 }
             }
-            //***** Getaway Alerts API call after successfull login *****//
-            Helper.getAllAlerts {[unowned self] error in
-                if case .some = error {
-                self.presentAlert(with: "Error".localized(), message: error?.localizedDescription ?? "")
-                }
-            }
             Constant.MyClassConstants.isLoginSuccessfull = true
             self.performSegue(withIdentifier: Constant.segueIdentifiers.dashboradSegueIdentifier, sender: nil)
         },

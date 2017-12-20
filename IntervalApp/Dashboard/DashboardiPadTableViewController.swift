@@ -52,11 +52,9 @@ class DashboardIPadTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //get all alerts
-        Helper.getAllAlerts {[unowned self] error in
-            if case .some = error {
-                self.presentAlert(with: "Error".localized(), message: error?.localizedDescription ?? "")
-            }
+        //Get all alerts
+        if let accessToken = Session.sharedSession.userAccessToken {
+            readAllRentalAlerts(accessToken: accessToken)
         }
         title = Constant.ControllerTitles.dashboardTableViewController
         showHudAsync()
@@ -92,6 +90,64 @@ class DashboardIPadTableViewController: UITableViewController {
             }
         }
     }
+    
+    // MARK: - Getaway Alerts
+    func readAllRentalAlerts(accessToken: DarwinAccessToken) {
+        ClientAPI.sharedInstance.readAllRentalAlerts(for: accessToken)
+            .then { rentalAlertArray in
+                
+                Constant.MyClassConstants.getawayAlertsArray.removeAll()
+                Constant.MyClassConstants.getawayAlertsArray = rentalAlertArray
+                Constant.MyClassConstants.activeAlertsArray.removeAllObjects()
+                
+                for alert in rentalAlertArray {
+                    if let alertId = alert.alertId {
+                        self.readRentalAlert(accessToken: accessToken, alertId: alertId)
+                    }
+                }
+            }
+            .onError { _ in
+                
+        }
+    }
+    
+    
+    func readRentalAlert(accessToken: DarwinAccessToken, alertId: Int64) {
+        Constant.MyClassConstants.searchDateResponse.removeAll()
+        ClientAPI.sharedInstance.readRentalAlert(for: accessToken, and: alertId)
+            .then { rentalAlert in
+                
+                let rentalSearchDatesRequest = RentalSearchDatesRequest()
+                if let checkInTodate = rentalAlert.latestCheckInDate {
+                    rentalSearchDatesRequest.checkInToDate = Helper.convertStringToDate(dateString:checkInTodate, format:Constant.MyClassConstants.dateFormat)
+                }
+                if let checkInFromdate = rentalAlert.earliestCheckInDate {
+                    rentalSearchDatesRequest.checkInFromDate = Helper.convertStringToDate(dateString:checkInFromdate, format:Constant.MyClassConstants.dateFormat)
+                }
+                rentalSearchDatesRequest.resorts = rentalAlert.resorts
+                rentalSearchDatesRequest.destinations = rentalAlert.destinations
+                
+                Constant.MyClassConstants.dashBoardAlertsArray = Constant.MyClassConstants.getawayAlertsArray
+                self.readDates(accessToken: accessToken, request: rentalSearchDatesRequest, rentalAlert: rentalAlert)
+            }
+            .onError { _ in
+                
+        }
+    }
+    
+    func readDates(accessToken: DarwinAccessToken, request: RentalSearchDatesRequest, rentalAlert: RentalAlert) {
+        ClientAPI.sharedInstance.readDates(for: accessToken, and: request)
+            .then { rentalSearchDatesResponse in
+                intervalPrint("____-->\(rentalSearchDatesResponse)")
+                Constant.MyClassConstants.searchDateResponse.append(rentalAlert, rentalSearchDatesResponse)
+                Helper.performSortingForMemberNumberWithViewResultAndNothingYet()
+                
+            }
+            .onError { _ in
+                
+        }
+    }
+    
     //***** Function to calculate number of sections. *****//
     func getNumberOfSections() {
         dashboardArray.removeAll()
@@ -153,10 +209,8 @@ class DashboardIPadTableViewController: UITableViewController {
         
         showAlertActivityIndicatorView = true
         homeTableView.reloadData()
-        Helper.getAllAlerts {[unowned self] error in
-            if case .some = error {
-                self.presentAlert(with: "Error".localized(), message: error?.localizedDescription ?? "")
-            }
+        if let accessToken = Session.sharedSession.userAccessToken {
+            readAllRentalAlerts(accessToken: accessToken)
         }
     }
     //Mark:- Button Clicked
@@ -314,7 +368,8 @@ class DashboardIPadTableViewController: UITableViewController {
             Constant.MyClassConstants.vacationSearchResultHeaderLabel = destination.destinationName
             
         } else if !alert.resorts.isEmpty {
-            Constant.MyClassConstants.initialVacationSearch.searchCriteria.resorts = alert.resorts
+            Constant.MyClassConstants.vacationSearchResultHeaderLabel = "\(String(describing: alert.resorts[0].resortName)) + \(alert.resorts.count) more"
+            searchCriteria.resorts = alert.resorts
         }
     }
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
