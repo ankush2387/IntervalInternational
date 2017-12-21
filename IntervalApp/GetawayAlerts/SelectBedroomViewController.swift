@@ -42,7 +42,7 @@ class SelectBedroomViewController: UIViewController {
             self.presentAlert(with: "Bedroom Sizes", message: "Please select at least one bedroom size.")
             return
         }
-        Constant.MyClassConstants.alertSelectedUnitSizeArray.removeAllObjects()
+        Constant.MyClassConstants.alertSelectedUnitSizeArray.removeAll()
         
         if selectedBedroomArray.count == 5 {
             Constant.MyClassConstants.selectedBedRoomSize = "All Bedroom Sizes"
@@ -70,21 +70,15 @@ class SelectBedroomViewController: UIViewController {
                 
             } else {
                 var i = 0
-                var selectedBedroomsizes = ""
-                for index in localArrayToHoldSelection {
-                        if i < localArrayToHoldSelection.count - 1 {
-                            let friendlyName = UnitSize.forDisplay[index].friendlyName()
-                            let bedroomSize = Helper.bedRoomSizeToStringInteger(bedRoomSize: friendlyName)
-                            selectedBedroomsizes = selectedBedroomsizes.appending("\(bedroomSize), ")
-                            i = i + 1
-                        } else {
-                            let friendlyName = UnitSize.forDisplay[index].friendlyName()
-                            let bedroomSize = Helper.bedRoomSizeToStringInteger(bedRoomSize: friendlyName)
-                            selectedBedroomsizes = selectedBedroomsizes.appending("\(bedroomSize), ")
-                           
-                        }
+                var selectedBedroomsizes = [String]()
+                for index in localArrayToHoldSelection where i < localArrayToHoldSelection.count {
+                    let friendlyName = UnitSize.forDisplay[index].friendlyName()
+                    let bedroomSize = Helper.bedRoomSizeToStringInteger(bedRoomSize: friendlyName)
+                    selectedBedroomsizes.append(bedroomSize)
+                    i = i + 1
+                    
                 }
-                Constant.MyClassConstants.selectedBedRoomSize = selectedBedroomsizes
+                Constant.MyClassConstants.selectedBedRoomSize = selectedBedroomsizes.joined(separator: ", ")
                 Constant.MyClassConstants.bedRoomSizeSelectedIndexArray = localArrayToHoldSelection as? NSMutableArray ?? []
             }
         }

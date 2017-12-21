@@ -17,7 +17,7 @@ class Constant: NSObject {
     static var decreaseValue = 1
     static var activeAlertCount = 0
     static var needToReloadAlert = false
-    static var selectedAletToEdit: RentalAlert?
+    static var selectedAlertToEdit: RentalAlert?
     
   
       //***** common function to get device orientation *****//

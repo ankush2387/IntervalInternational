@@ -53,10 +53,9 @@ class DashboardIPadTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         //get all alerts
-        Helper.getAllAlerts {[unowned self] error in
-            if case .some = error {
-                self.presentAlert(with: "Error".localized(), message: error?.localizedDescription ?? "")
-            }
+        //Get all alerts
+        if let accessToken = Session.sharedSession.userAccessToken {
+            readAllRentalAlerts(accessToken: accessToken)
         }
         title = Constant.ControllerTitles.dashboardTableViewController
         showHudAsync()
@@ -92,7 +91,7 @@ class DashboardIPadTableViewController: UITableViewController {
             }
         }
     }
-
+    
     // MARK: - Getaway Alerts
     func readAllRentalAlerts(accessToken: DarwinAccessToken) {
         ClientAPI.sharedInstance.readAllRentalAlerts(for: accessToken)
@@ -211,10 +210,9 @@ class DashboardIPadTableViewController: UITableViewController {
         
         showAlertActivityIndicatorView = true
         homeTableView.reloadData()
-        Helper.getAllAlerts {[unowned self] error in
-            if case .some = error {
-                self.presentAlert(with: "Error".localized(), message: error?.localizedDescription ?? "")
-            }
+        //Get all alerts
+        if let accessToken = Session.sharedSession.userAccessToken {
+            readAllRentalAlerts(accessToken: accessToken)
         }
     }
     //Mark:- Button Clicked
@@ -372,7 +370,8 @@ class DashboardIPadTableViewController: UITableViewController {
             Constant.MyClassConstants.vacationSearchResultHeaderLabel = destination.destinationName
             
         } else if !alert.resorts.isEmpty {
-            Constant.MyClassConstants.initialVacationSearch.searchCriteria.resorts = alert.resorts
+            Constant.MyClassConstants.vacationSearchResultHeaderLabel = "\(String(describing: alert.resorts[0].resortName)) + \(alert.resorts.count) more"
+            searchCriteria.resorts = alert.resorts
         }
     }
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -893,3 +892,4 @@ extension DashboardIPadTableViewController: HelperDelegate {
         
     }
 }
+

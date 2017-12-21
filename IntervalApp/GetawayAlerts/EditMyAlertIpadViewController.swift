@@ -50,7 +50,7 @@ class EditMyAlertIpadViewController: UIViewController {
         //set return key on Keyboard to DONE
         nameTextField.returnKeyType = .done
         Constant.MyClassConstants.selectedGetawayAlertDestinationArray.removeAll()
-        if let alert = Constant.selectedAletToEdit {
+       if let alert = Constant.selectedAlertToEdit {
             if let altId = alert.alertId {
                 alertId = altId
             }
@@ -60,7 +60,7 @@ class EditMyAlertIpadViewController: UIViewController {
         }
        
         showHudAsync()
-        RentalClient.getAlert(Session.sharedSession.userAccessToken, alertId: alertId, onSuccess: { (alert) in
+        RentalClient.getAlert(Session.sharedSession.userAccessToken, alertId: alertId, onSuccess: { alert in
             
              let earlyDate = Helper.convertStringToDate(dateString: alert.earliestCheckInDate!, format: "yyyy-MM-dd")
             
@@ -79,8 +79,7 @@ class EditMyAlertIpadViewController: UIViewController {
             }
             self.hideHudAsync()
             self.setupView()
-        }) { (error) in
-            intervalPrint(error)
+        }) {  [weak self] error in self?.presentErrorAlert(UserFacingCommonError.serverError(error))
         }
         // omniture tracking with event 40
         let pageView: [String: String] = [
@@ -122,14 +121,20 @@ class EditMyAlertIpadViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        
-        self.bedroomSize.text = Constant.MyClassConstants.selectedBedRoomSize
-        if Constant.MyClassConstants.isRunningOnIphone {
-            createAlertTBLView.reloadData()
-        } else {
-            createAlertCollectionView.reloadData()
-        }
+        super.viewWillAppear(true)
+        intervalPrint(Constant.selectedAlertToEdit)
+        Constant.MyClassConstants.isRunningOnIphone ? createAlertTBLView.reloadData() : createAlertCollectionView.reloadData()
+    
         self.setupView()
+        
+        guard let alertToEdit = Constant.selectedAlertToEdit else { return }
+        var selectedBedroomsizes = [String]()
+        for unitSize in alertToEdit.unitSizes {
+            let friendlyName = unitSize.friendlyName()
+            let bedroomSize = Helper.bedRoomSizeToStringInteger(bedRoomSize: friendlyName)
+            selectedBedroomsizes.append(bedroomSize)
+        }
+        self.bedroomSize.text = selectedBedroomsizes.joined(separator: ", ")
     }
     
     fileprivate func setupView() {
@@ -259,7 +264,7 @@ class EditMyAlertIpadViewController: UIViewController {
                 rentalAlert.selections = []
                 
                 var unitsizearray = [UnitSize]()
-                if Constant.MyClassConstants.alertSelectedUnitSizeArray.count > 0 {
+                if !Constant.MyClassConstants.alertSelectedUnitSizeArray.isEmpty {
                     
                     for selectedSize in Constant.MyClassConstants.alertSelectedUnitSizeArray {
                         
