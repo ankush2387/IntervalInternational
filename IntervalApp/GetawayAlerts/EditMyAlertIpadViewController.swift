@@ -268,7 +268,7 @@ class EditMyAlertIpadViewController: UIViewController {
                     
                     for selectedSize in Constant.MyClassConstants.alertSelectedUnitSizeArray {
                         
-                        let bedroomSize = Helper.bedRoomSizeToStringInteger(bedRoomSize: selectedSize as! String )
+                        let bedroomSize = Helper.bedRoomSizeToStringInteger(bedRoomSize: selectedSize)
                         self.anlyticsBedroomSize = self.anlyticsBedroomSize.appending(bedroomSize)
                         
                         let selectedUnitSize = UnitSize(rawValue: selectedSize as! String)

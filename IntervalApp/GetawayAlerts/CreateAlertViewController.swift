@@ -153,7 +153,7 @@ class CreateAlertViewController: UIViewController {
         if case .some = createAlertCollectionView {
             createAlertCollectionView.reloadData()
         } else {
-            self.createAlertTBLView.reloadData()
+            createAlertTBLView.reloadData()
         }
     }
     
