@@ -50,7 +50,7 @@ class EditMyAlertIpadViewController: UIViewController {
         //set return key on Keyboard to DONE
         nameTextField.returnKeyType = .done
         Constant.MyClassConstants.selectedGetawayAlertDestinationArray.removeAll()
-        if let alert = Constant.selectedAlertToEdit {
+       if let alert = Constant.selectedAlertToEdit {
             if let altId = alert.alertId {
                 alertId = altId
             }
@@ -79,7 +79,7 @@ class EditMyAlertIpadViewController: UIViewController {
             }
             self.hideHudAsync()
             self.setupView()
-        }) { [weak self] error in self?.presentErrorAlert(UserFacingCommonError.serverError(error))
+        }) {  [weak self] error in self?.presentErrorAlert(UserFacingCommonError.serverError(error))
         }
         // omniture tracking with event 40
         let pageView: [String: String] = [
@@ -89,6 +89,7 @@ class EditMyAlertIpadViewController: UIViewController {
         
         // omniture tracking with event 76
         let userInfo: [String: String] = [
+           
             Constant.omnitureEvars.eVar41: Constant.omnitureCommonString.alert
         ]
         
@@ -123,7 +124,7 @@ class EditMyAlertIpadViewController: UIViewController {
         super.viewWillAppear(true)
         intervalPrint(Constant.selectedAlertToEdit)
         Constant.MyClassConstants.isRunningOnIphone ? createAlertTBLView.reloadData() : createAlertCollectionView.reloadData()
-        
+    
         self.setupView()
         
         guard let alertToEdit = Constant.selectedAlertToEdit else { return }

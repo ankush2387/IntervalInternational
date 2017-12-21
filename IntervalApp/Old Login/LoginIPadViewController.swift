@@ -12,23 +12,23 @@ import LocalAuthentication
 import SVProgressHUD
 import IntervalUIKit
 private func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l < r
-  case (nil, _?):
-    return true
-  default:
-    return false
-  }
+    switch (lhs, rhs) {
+    case let (l?, r?):
+        return l < r
+    case (nil, _?):
+        return true
+    default:
+        return false
+    }
 }
 
 private func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l > r
-  default:
-    return rhs < lhs
-  }
+    switch (lhs, rhs) {
+    case let (l?, r?):
+        return l > r
+    default:
+        return rhs < lhs
+    }
 }
 
 class LoginIPadViewController: UIViewController {
@@ -68,15 +68,15 @@ class LoginIPadViewController: UIViewController {
     var password: String?
     var activeAlertCount = 0
     var alertsDictionary = NSMutableDictionary()
-	
-	// computed property for touchIDEnabled, will turn on/off the checkbox
-	var touchIDEnabled: Bool = false {
-		didSet {
-			enableTouchIdButton.isSelected = touchIDEnabled
-			enableTouchIdButton(touchIDEnabled)
-		}
-	}
-	
+    
+    // computed property for touchIDEnabled, will turn on/off the checkbox
+    var touchIDEnabled: Bool = false {
+        didSet {
+            enableTouchIdButton.isSelected = touchIDEnabled
+            enableTouchIdButton(touchIDEnabled)
+        }
+    }
+    
     //*****Called to check the screen orientation*****//
     
     override func viewWillAppear(_ animated: Bool) {
@@ -117,37 +117,37 @@ class LoginIPadViewController: UIViewController {
         }
         
         //***** Setting font size according to the running device width *****//
-		
-		enableTouchIdTextLabel.textColor = IUIKColorPalette.primary1.color
+        
+        enableTouchIdTextLabel.textColor = IUIKColorPalette.primary1.color
         
         //***** checking touch id sensor feature on running device *****//
         
         var hasTouchID: Bool = false
-//        hasTouchID =  TouchID.isTouchIDAvailable()
-//        if(!(hasTouchID)){
-//            self.touchIdImageView.isHidden = true
-//            self.enableTouchIdTextLabel.isHidden = true
-//            self.enableTouchIdButton.isHidden = true
-//        }
-
+        //        hasTouchID =  TouchID.isTouchIDAvailable()
+        //        if(!(hasTouchID)){
+        //            self.touchIdImageView.isHidden = true
+        //            self.enableTouchIdTextLabel.isHidden = true
+        //            self.enableTouchIdButton.isHidden = true
+        //        }
+        
         tableActionSheet.register(UINib(nibName: Constant.customCellNibNames.actionSheetTblCell, bundle: nil), forCellReuseIdentifier: Constant.loginScreenReusableIdentifiers.CustomCell)
         tableActionSheet.tag = 3
     }
-	
-	override func viewDidAppear(_ animated: Bool) {
+    
+    override func viewDidAppear(_ animated: Bool) {
         let firstTimeRunning = UserDefaults.standard.bool(forKey: Constant.MyClassConstants.firstTimeRunning)
         
         if !firstTimeRunning {
             presentOnboardingScreen()
         }
         
-		// attemp to auto-login the user if touch is enabled and credentails were saved
-//        if (TouchID.isTouchIDAvailable() && touchID.haveCredentials()) {
-//            userNameTextField.text = touchID.getAssociatedUsername() ?? ""
-//            enableTouchIdButton(true)
-//            performAutoTouchLogin()
-//        }
-	}
+        // attemp to auto-login the user if touch is enabled and credentails were saved
+        //        if (TouchID.isTouchIDAvailable() && touchID.haveCredentials()) {
+        //            userNameTextField.text = touchID.getAssociatedUsername() ?? ""
+        //            enableTouchIdButton(true)
+        //            performAutoTouchLogin()
+        //        }
+    }
     
     fileprivate func presentOnboardingScreen() {
         //blur
@@ -175,14 +175,14 @@ class LoginIPadViewController: UIViewController {
                 }
             }
         }
-
+        
         view.addSubview(onboardingVC.view)
         onboardingVC.didMove(toParentViewController: self)
         
     }
-	
+    
     override func willRotate(to toInterfaceOrientation: UIInterfaceOrientation, duration: TimeInterval) {
-      if(UIDeviceOrientationIsLandscape(UIDevice.current.orientation)) {
+        if(UIDeviceOrientationIsLandscape(UIDevice.current.orientation)) {
             getScreenInLandscape()
         }
         
@@ -208,7 +208,7 @@ class LoginIPadViewController: UIViewController {
             viewActionSheet.frame = CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: self.view.bounds.size.height)
         }
         //UIView.animateWithDuration(0.3) {
-            self.view.layoutIfNeeded()
+        self.view.layoutIfNeeded()
         //}
     }
     
@@ -221,7 +221,7 @@ class LoginIPadViewController: UIViewController {
             viewActionSheet.frame = CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: self.view.bounds.size.height)
         }
         //UIView.animateWithDuration(0.3) {
-            self.view.layoutIfNeeded()
+        self.view.layoutIfNeeded()
         //}
     }
     
@@ -233,30 +233,30 @@ class LoginIPadViewController: UIViewController {
         guard (self.userNameTextField.text?.characters.count > 0) else {
             SimpleAlert.alert(self, title: Constant.AlertPromtMessages.loginTitle, message: Constant.AlertMessages.emptyLoginIdMessage)
             return
-
+            
         }
         guard (self.passwordTextField.text?.characters.count > 0) else {
-			SimpleAlert.alert(self, title: Constant.AlertPromtMessages.loginTitle, message: Constant.AlertMessages.emptyPasswordLoginMessage)
-			return
-		}
-		
-		let trimmedUsername = self.userNameTextField.text?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-		let trimmedPassword = self.passwordTextField.text?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-		
-		// make sure we have valid text to send along
-		guard trimmedUsername != nil && trimmedPassword != nil else {
-			return
-		}
-		
-		// if touch is enabled
-		if(self.touchIDEnabled == true) {
-			performTouchLogin(trimmedUsername!, password: trimmedPassword!)
-		}
-		// touch disabled, perform standard login
-		else {
+            SimpleAlert.alert(self, title: Constant.AlertPromtMessages.loginTitle, message: Constant.AlertMessages.emptyPasswordLoginMessage)
+            return
+        }
+        
+        let trimmedUsername = self.userNameTextField.text?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+        let trimmedPassword = self.passwordTextField.text?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+        
+        // make sure we have valid text to send along
+        guard trimmedUsername != nil && trimmedPassword != nil else {
+            return
+        }
+        
+        // if touch is enabled
+        if(self.touchIDEnabled == true) {
+            performTouchLogin(trimmedUsername!, password: trimmedPassword!)
+        }
+            // touch disabled, perform standard login
+        else {
             saveUsername(user: trimmedUsername!)
-			performStandardLogin(trimmedUsername!, password: trimmedPassword!)
-		}
+            performStandardLogin(trimmedUsername!, password: trimmedPassword!)
+        }
     }
     
     //**** function for Login Help ****//
@@ -275,7 +275,7 @@ class LoginIPadViewController: UIViewController {
     @IBAction func resortDirectoryButtonPressed(_ sender: AnyObject) {
         Constant.MyClassConstants.googleMarkerArray.removeAll()
         Constant.MyClassConstants.runningFunctionality = Constant.sideMenuTitles.resortDirectory
-         Helper.getResortDirectoryRegionList(viewController: self)
+        Helper.getResortDirectoryRegionList(viewController: self)
     }
     
     //***** function called when IntervalHD button pressed *****//
@@ -319,21 +319,21 @@ class LoginIPadViewController: UIViewController {
         
         //***** Try to do the OAuth Request to obtain an access token *****//
         UserClient.getCurrentProfile(Session.sharedSession.userAccessToken,
-                onSuccess: {(contact) in
-                // Got an access token!  Save it for later use.
-                SVProgressHUD.dismiss()
-                self.hideHudAsync()
-                Session.sharedSession.contact = contact
+                                     onSuccess: {(contact) in
+                                        // Got an access token!  Save it for later use.
+                                        SVProgressHUD.dismiss()
+                                        self.hideHudAsync()
+                                        Session.sharedSession.contact = contact
                                         
-    //***** Next, get the contact information.  See how many memberships this user has. *****//
-            self.perform(#selector(LoginIPadViewController.contactDidChange), with: nil, afterDelay: 0.5)
-            },
-            onError: {(error) in
-                SVProgressHUD.dismiss()
-                self.hideHudAsync()
-                Logger.sharedInstance.warning(error.description)
-                SimpleAlert.alert(self, title: Constant.AlertErrorMessages.loginFailed, message: error.localizedDescription)
-            }
+                                        //***** Next, get the contact information.  See how many memberships this user has. *****//
+                                        self.perform(#selector(LoginIPadViewController.contactDidChange), with: nil, afterDelay: 0.5)
+        },
+                                     onError: {(error) in
+                                        SVProgressHUD.dismiss()
+                                        self.hideHudAsync()
+                                        Logger.sharedInstance.warning(error.description)
+                                        SimpleAlert.alert(self, title: Constant.AlertErrorMessages.loginFailed, message: error.localizedDescription)
+        }
         )
         
     }
@@ -368,34 +368,34 @@ class LoginIPadViewController: UIViewController {
         }
         
     }
-	
-	fileprivate func enableTouchIdButton(_ enable: Bool) {
-		if (enable) {
-			enableTouchIdTextLabel.textColor = IUIKColorPalette.primary1.color
-			self.touchIdImageView.image = UIImage(named: Constant.assetImageNames.TouchIdOn)
-			OldLoginViewController().touchIdButtonEnabled = true
-		} else {
-			self.touchIdImageView.image = UIImage(named: Constant.assetImageNames.TouchIdOff)
-			enableTouchIdTextLabel.textColor = IUIKColorPalette.primary1.color
-		}
-	}
-	
-	@IBAction func enableTouchIdButtonAction(_ sender: UIButton) {
-		
-		//***** selecting and deselecting enable touchID option *****//
-		sender.isSelected = !sender.isSelected
-		
-		// only display the alert when the button is pressed by the user
-		if (sender.isSelected) {
-			SimpleAlert.alert(self, title: Constant.enableTouchIdMessages.authenticationFailedTitle, message: Constant.enableTouchIdMessages.onSuccessMessage)
-		} else {
-			// clear the user's credentials when they turn off the toggle
-//            touchID.deactivateTouchID()
-		}
-		
-		// call the computed property to trigger the setting of touchid
-		self.touchIDEnabled = sender.isSelected
-	}
+    
+    fileprivate func enableTouchIdButton(_ enable: Bool) {
+        if (enable) {
+            enableTouchIdTextLabel.textColor = IUIKColorPalette.primary1.color
+            self.touchIdImageView.image = UIImage(named: Constant.assetImageNames.TouchIdOn)
+            OldLoginViewController().touchIdButtonEnabled = true
+        } else {
+            self.touchIdImageView.image = UIImage(named: Constant.assetImageNames.TouchIdOff)
+            enableTouchIdTextLabel.textColor = IUIKColorPalette.primary1.color
+        }
+    }
+    
+    @IBAction func enableTouchIdButtonAction(_ sender: UIButton) {
+        
+        //***** selecting and deselecting enable touchID option *****//
+        sender.isSelected = !sender.isSelected
+        
+        // only display the alert when the button is pressed by the user
+        if (sender.isSelected) {
+            SimpleAlert.alert(self, title: Constant.enableTouchIdMessages.authenticationFailedTitle, message: Constant.enableTouchIdMessages.onSuccessMessage)
+        } else {
+            // clear the user's credentials when they turn off the toggle
+            //            touchID.deactivateTouchID()
+        }
+        
+        // call the computed property to trigger the setting of touchid
+        self.touchIDEnabled = sender.isSelected
+    }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         //self.view.endEditing(true)
@@ -411,25 +411,25 @@ class LoginIPadViewController: UIViewController {
         let context = Session.sharedSession
         
         UserClient.putSessionsUser(context.userAccessToken, member: context.selectedMembership!,
-           onSuccess: {
-            //***** Favorites resort API call after successfull call *****//
-            Helper.getUserFavorites {[unowned self] error in
-                if case .some = error {
-                    self.presentAlert(with: "Error".localized(), message: error?.localizedDescription ?? "")
-                }
-            }
-            //***** Get upcoming trips for user API call after successfull call *****//
-            Helper.getUpcomingTripsForUser {[unowned self] error in
-                if case .some = error {
-                    self.presentAlert(with: "Error".localized(), message: error?.localizedDescription ?? "")
-                }
-            }
-            Constant.MyClassConstants.isLoginSuccessfull = true
-            self.performSegue(withIdentifier: Constant.segueIdentifiers.dashboradSegueIdentifier, sender: nil)
+                                   onSuccess: {
+                                    //***** Favorites resort API call after successfull call *****//
+                                    Helper.getUserFavorites {[unowned self] error in
+                                        if case .some = error {
+                                            self.presentAlert(with: "Error".localized(), message: error?.localizedDescription ?? "")
+                                        }
+                                    }
+                                    //***** Get upcoming trips for user API call after successfull call *****//
+                                    Helper.getUpcomingTripsForUser {[unowned self] error in
+                                        if case .some = error {
+                                            self.presentAlert(with: "Error".localized(), message: error?.localizedDescription ?? "")
+                                        }
+                                    }
+                                    Constant.MyClassConstants.isLoginSuccessfull = true
+                                    self.performSegue(withIdentifier: Constant.segueIdentifiers.dashboradSegueIdentifier, sender: nil)
         },
-           onError: {[unowned self](_) in
-            self.presentErrorAlert(UserFacingCommonError.generic)
-        }
+                                   onError: {[unowned self](_) in
+                                    self.presentErrorAlert(UserFacingCommonError.generic)
+            }
         )
     }
     func callForIndividualAlert(_ alert: RentalAlert) {
@@ -483,10 +483,10 @@ class LoginIPadViewController: UIViewController {
             
         }
     }
-
+    
     func getStatusForAllAlerts() {
         if(Constant.MyClassConstants.getawayAlertsArray.count > 0) {
-        self.callForIndividualAlert(Constant.MyClassConstants.getawayAlertsArray[activeAlertCount])
+            self.callForIndividualAlert(Constant.MyClassConstants.getawayAlertsArray[activeAlertCount])
         }
     }
 }
@@ -494,73 +494,73 @@ class LoginIPadViewController: UIViewController {
 
 // extension to handle login responsibilities
 extension LoginIPadViewController {
-	fileprivate func performStandardLogin(_ username: String, password: String) {
-		// login button pressed, confirm user sign-in
+    fileprivate func performStandardLogin(_ username: String, password: String) {
+        // login button pressed, confirm user sign-in
         Constant.MyClassConstants.loginOriginationPoint = Constant.omnitureCommonString.signInPage
-		Helper.loginButtonPressed(sender: self, userName: username, password: password, completionHandler: { (success) in
-			if (success) {
-				// let the login process continue
-				Helper.accessTokenDidChange(sender: self)
-			} else {
-				
-			}
-		})
-	}
-	
-	fileprivate func performTouchLogin(_ username: String, password: String) {
-		// login button pressed, confirm user sign-in
-//        Helper.loginButtonPressed(sender: self, userName: username, password: password, completionHandler: { (success) in
-////            if (success)
-////            {
-////                // save off credentials and authenticate user
-////                Constant.MyClassConstants.loginOriginationPoint = Constant.omnitureCommonString.signInPage
-////                self.touchID.saveAuthenticationInfo(username, password: password, completionHandler: { (success) in
-////                    if (success) {
-////                        
-////                        // let the login process continue
-////                        Helper.accessTokenDidChange(sender: self)
-////                    }
-////                    else {
-////                        DispatchQueue.main.async(execute: {
-////                            SVProgressHUD.dismiss()
-////                            self.hideHudAsync()
-////                            SimpleAlert.alert(self, title: Constant.enableTouchIdMessages.authenticationFailedTitle, message: Constant.enableTouchIdMessages.onTouchCancelMessage)
-////                        })
-////                    }
-////                })
-////            }
-////            else {
-////                // go through the login and save path
-////                self.touchIDEnabled = false;
-////            }
-////        })
-	}
-	
-	fileprivate func performAutoTouchLogin() {
-		// grab the saved credentials
-//        self.touchID.getAuthenticationInfo({ (authInfo) in
-//            if (authInfo != nil) {
-//                // login button pressed, confirm user sign-in
-//                Helper.loginButtonPressed(sender: self, userName: authInfo!.touchIDUser, password: authInfo!.touchIDPass, completionHandler: { (success) in
-//                    if (success) {
-//                        // let the login process continue
-//                        Helper.accessTokenDidChange(sender: self)
-//                    }
-//                    else {
-//
-//                    }
-//                })
-//            }
-				// user canceled touch authentication login
-//            else {
-//                DispatchQueue.main.async(execute: {
-//                    SimpleAlert.alert(self, title: Constant.enableTouchIdMessages.authenticationFailedTitle, message: Constant.enableTouchIdMessages.onTouchCancelMessage)
-//                })
-//
-//                // todo turn off the 'Enable Touch Id' button
-//            }
-//        })
-	}
+        Helper.loginButtonPressed(sender: self, userName: username, password: password, completionHandler: { (success) in
+            if (success) {
+                // let the login process continue
+                Helper.accessTokenDidChange(sender: self)
+            } else {
+                
+            }
+        })
+    }
+    
+    fileprivate func performTouchLogin(_ username: String, password: String) {
+        // login button pressed, confirm user sign-in
+        //        Helper.loginButtonPressed(sender: self, userName: username, password: password, completionHandler: { (success) in
+        ////            if (success)
+        ////            {
+        ////                // save off credentials and authenticate user
+        ////                Constant.MyClassConstants.loginOriginationPoint = Constant.omnitureCommonString.signInPage
+        ////                self.touchID.saveAuthenticationInfo(username, password: password, completionHandler: { (success) in
+        ////                    if (success) {
+        ////
+        ////                        // let the login process continue
+        ////                        Helper.accessTokenDidChange(sender: self)
+        ////                    }
+        ////                    else {
+        ////                        DispatchQueue.main.async(execute: {
+        ////                            SVProgressHUD.dismiss()
+        ////                            self.hideHudAsync()
+        ////                            SimpleAlert.alert(self, title: Constant.enableTouchIdMessages.authenticationFailedTitle, message: Constant.enableTouchIdMessages.onTouchCancelMessage)
+        ////                        })
+        ////                    }
+        ////                })
+        ////            }
+        ////            else {
+        ////                // go through the login and save path
+        ////                self.touchIDEnabled = false;
+        ////            }
+        ////        })
+    }
+    
+    fileprivate func performAutoTouchLogin() {
+        // grab the saved credentials
+        //        self.touchID.getAuthenticationInfo({ (authInfo) in
+        //            if (authInfo != nil) {
+        //                // login button pressed, confirm user sign-in
+        //                Helper.loginButtonPressed(sender: self, userName: authInfo!.touchIDUser, password: authInfo!.touchIDPass, completionHandler: { (success) in
+        //                    if (success) {
+        //                        // let the login process continue
+        //                        Helper.accessTokenDidChange(sender: self)
+        //                    }
+        //                    else {
+        //
+        //                    }
+        //                })
+        //            }
+        // user canceled touch authentication login
+        //            else {
+        //                DispatchQueue.main.async(execute: {
+        //                    SimpleAlert.alert(self, title: Constant.enableTouchIdMessages.authenticationFailedTitle, message: Constant.enableTouchIdMessages.onTouchCancelMessage)
+        //                })
+        //
+        //                // todo turn off the 'Enable Touch Id' button
+        //            }
+        //        })
+    }
 }
 
 extension LoginIPadViewController: UITextFieldDelegate {
@@ -601,24 +601,24 @@ extension LoginIPadViewController: UITableViewDelegate {
         membershipWasSelected()
         
     }
-	
-	func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-		let viewHeader = UIView(frame: CGRect(x: 0, y: 0, width: tableActionSheet.bounds.size.width, height: 44))
-		
-		let labelHeader = UILabel(frame: CGRect(x: 0, y: 0, width: tableActionSheet.bounds.size.width, height: 44))
-		labelHeader.text = Constant.actionSheetAttributedString.selectMembership
-		labelHeader.textColor = UIColor.black
-		labelHeader.textAlignment = NSTextAlignment.center
-		
-		viewHeader.addSubview(labelHeader)
-		
-		viewHeader.backgroundColor = IUIKColorPalette.titleBackdrop.color
-		return viewHeader
-	}
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let viewHeader = UIView(frame: CGRect(x: 0, y: 0, width: tableActionSheet.bounds.size.width, height: 44))
+        
+        let labelHeader = UILabel(frame: CGRect(x: 0, y: 0, width: tableActionSheet.bounds.size.width, height: 44))
+        labelHeader.text = Constant.actionSheetAttributedString.selectMembership
+        labelHeader.textColor = UIColor.black
+        labelHeader.textAlignment = NSTextAlignment.center
+        
+        viewHeader.addSubview(labelHeader)
+        
+        viewHeader.backgroundColor = IUIKColorPalette.titleBackdrop.color
+        return viewHeader
+    }
 }
 
 extension LoginIPadViewController: UITableViewDataSource {
-	
+    
     //***** UITableview dataSource methods definition here *****//
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -635,14 +635,14 @@ extension LoginIPadViewController: UITableViewDataSource {
         let contact = Session.sharedSession.contact
         let membership = contact?.memberships![indexPath.row]
         let cell: ActionSheetTblCell = tableView.dequeueReusableCell(withIdentifier: Constant.loginScreenReusableIdentifiers.CustomCell, for: indexPath) as! ActionSheetTblCell
-       
+        
         cell.membershipTextLabel.text = Constant.CommonLocalisedString.memberNumber
         cell.membershipNumber.text = membership?.memberNumber
         let Product = membership?.getProductWithHighestTier()
         let productcode = Product?.productCode
         cell.membershipName.text = Product?.productName
         if(Product != nil) {
-          cell.memberImageView.image = UIImage(named: productcode!)
+            cell.memberImageView.image = UIImage(named: productcode!)
         }
         return cell
         

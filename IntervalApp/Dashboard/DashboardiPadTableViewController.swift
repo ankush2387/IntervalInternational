@@ -52,6 +52,7 @@ class DashboardIPadTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        //get all alerts
         //Get all alerts
         if let accessToken = Session.sharedSession.userAccessToken {
             readAllRentalAlerts(accessToken: accessToken)
@@ -106,8 +107,8 @@ class DashboardIPadTableViewController: UITableViewController {
                     }
                 }
             }
-            .onError { _ in
-                
+            .onError { [weak self] error in
+                self?.presentErrorAlert(UserFacingCommonError.serverError(error as NSError))
         }
     }
     
@@ -130,8 +131,8 @@ class DashboardIPadTableViewController: UITableViewController {
                 Constant.MyClassConstants.dashBoardAlertsArray = Constant.MyClassConstants.getawayAlertsArray
                 self.readDates(accessToken: accessToken, request: rentalSearchDatesRequest, rentalAlert: rentalAlert)
             }
-            .onError { _ in
-                
+            .onError { [weak self] error in
+                self?.presentErrorAlert(UserFacingCommonError.serverError(error as NSError))
         }
     }
     
@@ -143,8 +144,8 @@ class DashboardIPadTableViewController: UITableViewController {
                 Helper.performSortingForMemberNumberWithViewResultAndNothingYet()
                 
             }
-            .onError { _ in
-                
+            .onError { [weak self] error in
+                self?.presentErrorAlert(UserFacingCommonError.serverError(error as NSError))
         }
     }
     
@@ -209,6 +210,7 @@ class DashboardIPadTableViewController: UITableViewController {
         
         showAlertActivityIndicatorView = true
         homeTableView.reloadData()
+        //Get all alerts
         if let accessToken = Session.sharedSession.userAccessToken {
             readAllRentalAlerts(accessToken: accessToken)
         }
@@ -890,3 +892,4 @@ extension DashboardIPadTableViewController: HelperDelegate {
         
     }
 }
+

@@ -47,7 +47,7 @@ final class ClientAPI: ClientAPIStore {
             UserClient.getCurrentProfile(accessToken, onSuccess: resolve, onError: reject)
         }
     }
-    
+
     func writeSelected(membership: Membership, for accessToken: DarwinAccessToken) -> Promise<Void> {
         return Promise { resolve, reject in
             UserClient.putSessionsUser(accessToken, member: membership, onSuccess: resolve, onError: reject)

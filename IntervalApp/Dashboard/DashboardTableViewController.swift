@@ -103,6 +103,7 @@ class DashboardTableViewController: UITableViewController {
         }
     }
     
+    
     // MARK: - Getaway Alerts
     func readAllRentalAlerts(accessToken: DarwinAccessToken) {
         ClientAPI.sharedInstance.readAllRentalAlerts(for: accessToken)
@@ -118,8 +119,8 @@ class DashboardTableViewController: UITableViewController {
                     }
                 }
             }
-            .onError { _ in
-                
+            .onError { [weak self] error in
+                self?.presentErrorAlert(UserFacingCommonError.serverError(error as NSError))
         }
     }
     
@@ -142,8 +143,7 @@ class DashboardTableViewController: UITableViewController {
                 Constant.MyClassConstants.dashBoardAlertsArray = Constant.MyClassConstants.getawayAlertsArray
                 self.readDates(accessToken: accessToken, request: rentalSearchDatesRequest, rentalAlert: rentalAlert)
             }
-            .onError { _ in
-                
+            .onError { [weak self] error in self?.presentErrorAlert(UserFacingCommonError.serverError(error as NSError))
         }
     }
     
@@ -155,11 +155,10 @@ class DashboardTableViewController: UITableViewController {
                 Helper.performSortingForMemberNumberWithViewResultAndNothingYet()
                 
             }
-            .onError { _ in
-                
+            .onError { [weak self] error in
+                self?.presentErrorAlert(UserFacingCommonError.serverError(error as NSError))
         }
     }
-    
     
     //***** Function to calculate number of sections. *****//
     func getNumberOfSections() {
@@ -362,7 +361,7 @@ class DashboardTableViewController: UITableViewController {
             cell.selectionStyle = UITableViewCellSelectionStyle.none
             
             let searchVacation = IUIKButton()
-              searchVacation.backgroundColor = UIColor(red: 224 / 255.0, green: 118 / 255.0, blue: 69 / 255.0, alpha: 1.0)
+            searchVacation.backgroundColor = UIColor(red: 224 / 255.0, green: 118 / 255.0, blue: 69 / 255.0, alpha: 1.0)
             searchVacation.setTitle(Constant.buttonTitles.searchVacation, for: UIControlState.normal)
             searchVacation.titleLabel?.font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: 22)
             searchVacation.addTarget(self, action:#selector(DashboardTableViewController.searchVactionPressed(_:)), for:UIControlEvents.touchUpInside)
@@ -371,12 +370,12 @@ class DashboardTableViewController: UITableViewController {
             searchVacation.translatesAutoresizingMaskIntoConstraints = false
             
             cell.contentView.addConstraint(NSLayoutConstraint(item: searchVacation, attribute: .leadingMargin, relatedBy: .equal, toItem: cell.contentView, attribute: .leadingMargin, multiplier: 1.0, constant: 20))
-          
+            
             cell.contentView.addConstraint( NSLayoutConstraint(item: searchVacation, attribute: .trailingMargin, relatedBy: .equal, toItem: cell.contentView, attribute:.trailingMargin, multiplier: 1.0, constant: -20))
             
             cell.contentView.addConstraint(NSLayoutConstraint(item: searchVacation, attribute: .top, relatedBy: .equal, toItem: cell.contentView, attribute: .top, multiplier: 1.0, constant: 20))
             cell.contentView.addConstraint(NSLayoutConstraint(item: searchVacation, attribute: .bottom, relatedBy: .equal, toItem: cell.contentView, attribute: .bottom, multiplier: 1.0, constant: -20))
-
+            
             return cell
             
         default :
@@ -472,9 +471,6 @@ class DashboardTableViewController: UITableViewController {
         homeTableView.reloadData()
     }
     
-    
-    
-    
     //***** View all trip button action *****//
     func viewAllTripButtonPressed(_ sender: IUIKButton) {
         
@@ -500,38 +496,53 @@ class DashboardTableViewController: UITableViewController {
     }
     
     func homeAlertSelected(indexPath: IndexPath) {
-        let (getawayAlert, searchDateResponse) = Constant.MyClassConstants.searchDateResponse[indexPath.row]
         
-        if !searchDateResponse.checkInDates.isEmpty {
-            showHudAsync()
-            let searchCriteria = createSearchCriteriaFor(alert: getawayAlert)
-            let settings = Helper.createSettings()
-            Constant.MyClassConstants.initialVacationSearch = VacationSearch(settings, searchCriteria)
-            Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.response = searchDateResponse
-            // Get activeInterval
-            guard let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval() else { return }
-            // Update active interval
-            Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
-            Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+        guard let alertID = Constant.MyClassConstants.getawayAlertsArray[indexPath.row].alertId else { return }
+        if let value = Constant.MyClassConstants.alertsSearchDatesDictionary.value(forKey: String(alertID)) as? NSArray {
             
-            // Check if active interval has check-in dates.
-            activeInterval.hasCheckInDates() ?self.rentalSearchAvailability(activeInterval: activeInterval) : self.noResultsAvailability()
-        } else {
-            let alertController = UIAlertController(title: title, message: Constant.AlertErrorMessages.getawayAlertMessage, preferredStyle: .alert)
-            showSearchResults = true
-            let startSearch = UIAlertAction(title: Constant.AlertPromtMessages.newSearch, style: .default) { (_:UIAlertAction) in
+            if value.count > 0 {
                 
-                let isRunningOnIphone = UIDevice.current.userInterfaceIdiom == .phone
-                let storyboardName = isRunningOnIphone ? Constant.storyboardNames.vacationSearchIphone : Constant.storyboardNames.vacationSearchIPad
-                if let initialViewController = UIStoryboard(name: storyboardName, bundle: nil).instantiateInitialViewController() {
-                    self.navigationController?.pushViewController(initialViewController, animated: true)
+                if let  getawayAlert = Constant.MyClassConstants.alertsDictionary.value(forKey: String(alertID)) as? RentalAlert {
+                    showHudAsync()
+                    let searchCriteria = createSearchCriteriaFor(alert: getawayAlert)
+                    let settings = Helper.createSettings()
+                    Constant.MyClassConstants.initialVacationSearch = VacationSearch(settings, searchCriteria)
+                    RentalClient.searchDates(Session.sharedSession.userAccessToken, request: Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request, onSuccess: {[unowned self] response in
+                        Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.response = response
+                        // Get activeInterval
+                        let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval()
+                        // Update active interval
+                        Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
+                        Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                        // Check not available checkIn dates for the active interval
+                        if activeInterval?.fetchedBefore != nil && activeInterval?.hasCheckInDates() != nil {
+                            if let activeInterval = activeInterval {
+                                activeInterval.hasCheckInDates() ?self.rentalSearchAvailability(activeInterval: activeInterval) :self.noResultsAvailability()
+                            }
+                        }
+                        },
+                                             onError: { [unowned self] error in
+                                                self.hideHudAsync()
+                                                self.presentErrorAlert(UserFacingCommonError.custom(title: "Error".localized(), body: error.localizedDescription))
+                    })
                 }
+            } else {
+                let alertController = UIAlertController(title: title, message: Constant.AlertErrorMessages.getawayAlertMessage, preferredStyle: .alert)
+                showSearchResults = true
+                let startSearch = UIAlertAction(title: Constant.AlertPromtMessages.newSearch, style: .default) { (_:UIAlertAction) in
+                    
+                    let isRunningOnIphone = UIDevice.current.userInterfaceIdiom == .phone
+                    let storyboardName = isRunningOnIphone ? Constant.storyboardNames.vacationSearchIphone : Constant.storyboardNames.vacationSearchIPad
+                    if let initialViewController = UIStoryboard(name: storyboardName, bundle: nil).instantiateInitialViewController() {
+                        self.navigationController?.pushViewController(initialViewController, animated: true)
+                    }
+                }
+                let close = UIAlertAction(title: Constant.AlertPromtMessages.close, style: .default, handler: nil)
+                //Add Custom Actions to Alert viewController
+                alertController.addAction(startSearch)
+                alertController.addAction(close)
+                self.present(alertController, animated: true, completion:nil)
             }
-            let close = UIAlertAction(title: Constant.AlertPromtMessages.close, style: .default, handler: nil)
-            //Add Custom Actions to Alert viewController
-            alertController.addAction(startSearch)
-            alertController.addAction(close)
-            self.present(alertController, animated: true, completion:nil)
         }
     }
     
@@ -612,8 +623,7 @@ class DashboardTableViewController: UITableViewController {
             Constant.MyClassConstants.vacationSearchResultHeaderLabel = destination.destinationName
             
         } else if !alert.resorts.isEmpty {
-            searchCriteria.resorts = alert.resorts
-             Constant.MyClassConstants.vacationSearchResultHeaderLabel = "\(String(describing: alert.resorts[0].resortName)) + \(alert.resorts.count) more"
+            Constant.MyClassConstants.initialVacationSearch.searchCriteria.resorts = alert.resorts
         }
     }
 }
@@ -785,9 +795,9 @@ extension DashboardTableViewController: UICollectionViewDataSource {
             
             let priceLabel = UILabel(frame: CGRect(x: 10, y: 35, width: centerView.frame.size.width - 20, height: 20))
             if let pricefrom = topTenDeals.price?.fromPrice {
-                 priceLabel.text = "From $ \(pricefrom) Wk."
+                priceLabel.text = "From $ \(pricefrom) Wk."
             }
-           
+            
             priceLabel.numberOfLines = 2
             priceLabel.textAlignment = NSTextAlignment.center
             priceLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: 15)
@@ -816,7 +826,7 @@ extension DashboardTableViewController: UICollectionViewDataSource {
                     
                     let alertFromDate = Helper.convertStringToDate(dateString:earliestCheckInDate, format: Constant.MyClassConstants.dateFormat)
                     
-                    fromDate = (Helper.getWeekDay(dateString: alertFromDate, getValue: "Month")).appendingFormat(". ").appending(Helper.getWeekDay(dateString: alertFromDate, getValue: "Date")).appending(", ").appending(Helper.getWeekDay(dateString: alertFromDate, getValue: "Year"))
+                    fromDate = (Helper.getWeekDay(dateString: alertFromDate, getValue: Constant.MyClassConstants.month)).appendingFormat(". ").appending(Helper.getWeekDay(dateString: alertFromDate, getValue: Constant.MyClassConstants.date)).appending(", ").appending(Helper.getWeekDay(dateString: alertFromDate, getValue: Constant.MyClassConstants.year))
                 }
                 
                 if let latestCheckInDate = alert.latestCheckInDate {
@@ -828,7 +838,6 @@ extension DashboardTableViewController: UICollectionViewDataSource {
                 
                 let dateRange = fromDate.appending(" - " + toDate)
                 cell.alertDate.text = dateRange
-                
                 if let alertID = alert.alertId {
                     if !searchDatesResponse.checkInDates.isEmpty {
                         cell.alertStatus.text = Constant.buttonTitles.viewResults
@@ -906,7 +915,7 @@ extension UIViewController {
                     Constant.omnitureEvars.eVar47: "\(Constant.MyClassConstants.checkInDates.count)" ,
                     Constant.omnitureEvars.eVar53: "\(Constant.MyClassConstants.resortsArray.count)",
                     Constant.omnitureEvars.eVar61: Constant.MyClassConstants.searchOriginationPoint
-                    ]
+                ]
                 
                 ADBMobile.trackAction(Constant.omnitureEvents.event9, data: userInfo)
                 
@@ -939,7 +948,7 @@ extension UIViewController {
                     self.hideHudAsync()
                     Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: initialSearchCheckInDate, senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                 }
-                }) {[unowned self] error in
+            }) {[unowned self] error in
                 self.hideHudAsync()
                 self.presentErrorAlert(UserFacingCommonError.custom(title: "Error".localized(), body: error.localizedDescription))
             }
@@ -974,7 +983,7 @@ extension UIViewController {
             let viewController = storyboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.vacationSearchController)
             self.navigationController?.pushViewController(viewController, animated: true)
         }
-
+        
     }
     
     // Function to get to date and from date for search dates API calling
@@ -1010,3 +1019,4 @@ extension UIViewController {
         return(toDate ?? Date(), fromDate ?? Date())
     }
 }
+

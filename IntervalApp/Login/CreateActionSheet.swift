@@ -149,7 +149,6 @@ class CreateActionSheet: UITableViewController {
         }
         )
     }
-    
 }
 
 // function to send omniture tracking event2

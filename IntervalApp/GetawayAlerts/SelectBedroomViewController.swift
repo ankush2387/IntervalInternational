@@ -76,6 +76,7 @@ class SelectBedroomViewController: UIViewController {
                     let bedroomSize = Helper.bedRoomSizeToStringInteger(bedRoomSize: friendlyName)
                     selectedBedroomsizes.append(bedroomSize)
                     i = i + 1
+                    
                 }
                 Constant.MyClassConstants.selectedBedRoomSize = selectedBedroomsizes.joined(separator: ", ")
                 Constant.MyClassConstants.bedRoomSizeSelectedIndexArray = localArrayToHoldSelection as? NSMutableArray ?? []

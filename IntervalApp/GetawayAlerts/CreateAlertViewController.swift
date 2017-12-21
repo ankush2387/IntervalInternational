@@ -90,6 +90,7 @@ class CreateAlertViewController: UIViewController {
                 NSForegroundColorAttributeName: UIColor.lightGray,
                 NSFontAttributeName: iPhoneFont
             ]
+            
         }
         
         self.nameTextField.attributedPlaceholder = NSAttributedString(string: Constant.textFieldTitles.alertNamePlaceholder, attributes: attributes)
@@ -97,9 +98,7 @@ class CreateAlertViewController: UIViewController {
     }
     override func viewWillAppear(_ animated: Bool) {
         
-        super.viewWillAppear(true)
         self.bedroomSize.text = Constant.MyClassConstants.selectedBedRoomSize
-        
         guard let startDate = Constant.MyClassConstants.alertWindowStartDate else {
             self.travelWindowEndDateSelectionButton.isEnabled = false
             reloadView()
@@ -145,7 +144,6 @@ class CreateAlertViewController: UIViewController {
             }
             if let month = startDateComponents.month, let year = startDateComponents.year {
                 self.endDateMonthYearLabel.text = "\(Helper.getMonthnameFromInt(monthNumber: month)) \(year)"
-                
             }
         }
         reloadView()
@@ -180,66 +178,67 @@ class CreateAlertViewController: UIViewController {
             .editAlertEmptyWidowEndDateMessage) }
         if !Constant.MyClassConstants.selectedGetawayAlertDestinationArray.isEmpty {
             if let alertName = trimmedUsername {
+                
+                showHudAsync()
+                let rentalAlert = RentalAlert()
+                rentalAlert.earliestCheckInDate = Helper.convertDateToString(date: startDate, format: Constant.MyClassConstants.dateFormat)
+                rentalAlert.latestCheckInDate = Helper.convertDateToString(date: endDate, format: Constant.MyClassConstants.dateFormat)
+                
+                rentalAlert.name = alertName
+                rentalAlert.enabled = true
+                intervalPrint(Constant.MyClassConstants.alertSelectedResorts)
+                rentalAlert.resorts = Constant.MyClassConstants.alertSelectedResorts
+                rentalAlert.destinations = Constant.MyClassConstants.alertSelectedDestination
+                rentalAlert.selections = []
+                
+                var unitsizearray = [UnitSize]()
+                if !Constant.MyClassConstants.alertSelectedUnitSizeArray.isEmpty {
+                    
+                    for selectedSize in Constant.MyClassConstants.alertSelectedUnitSizeArray {
                         
-            showHudAsync()
-            let rentalAlert = RentalAlert()
-            rentalAlert.earliestCheckInDate = Helper.convertDateToString(date: startDate, format: Constant.MyClassConstants.dateFormat)
-            rentalAlert.latestCheckInDate = Helper.convertDateToString(date: endDate, format: Constant.MyClassConstants.dateFormat)
-            
-            rentalAlert.name = alertName
-            rentalAlert.enabled = true
-            intervalPrint(Constant.MyClassConstants.alertSelectedResorts)
-            rentalAlert.resorts = Constant.MyClassConstants.alertSelectedResorts
-            rentalAlert.destinations = Constant.MyClassConstants.alertSelectedDestination
-            rentalAlert.selections = []
-            
-            var unitsizearray = [UnitSize]()
-            if !Constant.MyClassConstants.alertSelectedUnitSizeArray.isEmpty {
-                
-                for selectedSize in Constant.MyClassConstants.alertSelectedUnitSizeArray {
-                    let bedroomSize = Helper.bedRoomSizeToStringInteger(bedRoomSize: selectedSize)
-                    self.anlyticsBedroomSize = self.anlyticsBedroomSize.appending(bedroomSize)
-                    if let selectedUnitSize = UnitSize(rawValue: selectedSize) {
-                        unitsizearray.append(selectedUnitSize)
+                        let bedroomSize = Helper.bedRoomSizeToStringInteger(bedRoomSize: selectedSize)
+                        self.anlyticsBedroomSize = self.anlyticsBedroomSize.appending(bedroomSize)
+                        if let selectedUnitSize = UnitSize(rawValue: selectedSize) {
+                            unitsizearray.append(selectedUnitSize)
+                        }
                     }
+                    rentalAlert.unitSizes = unitsizearray
+                } else {
+                    
+                    for unitsize in Constant.MyClassConstants.bedRoomSize {
+                        let bedroomSize = Helper.bedRoomSizeToStringInteger(bedRoomSize: unitsize )
+                        self.anlyticsBedroomSize = self.anlyticsBedroomSize.appending("\(bedroomSize), ")
+                        if let selectedUnitSize = UnitSize(rawValue: unitsize ) {
+                            unitsizearray.append(selectedUnitSize)
+                        }
+                    }
+                    rentalAlert.unitSizes = unitsizearray
                 }
-                rentalAlert.unitSizes = unitsizearray
+                
+                RentalClient.createAlert(Session.sharedSession.userAccessToken, alert: rentalAlert, onSuccess: { response in
+                    self.omintureTrackEvent52(startDate:startDate, endDate:endDate)
+                    self.hideHudAsync()
+                    let rentalSearchDateResponse = RentalSearchDatesResponse()
+                    Constant.MyClassConstants.searchDateResponse.append((rentalAlert, rentalSearchDateResponse))
+                    self.presentAlert(with: Constant.AlertPromtMessages.createAlertTitle, message: Constant.AlertMessages.createAlertMessage, hideCancelButton: true, cancelButtonTitle: "", acceptButtonTitle: "Ok".localized(), acceptButtonStyle: .default, cancelHandler: nil, acceptHandler: {
+                        Constant.needToReloadAlert = true
+                        self.dismiss(animated: true, completion: nil)
+                    })
+                    rentalAlert.alertId = response.alertId
+                    
+                }) { [weak self] error in
+                    self?.hideHudAsync()
+                    self?.presentErrorAlert(UserFacingCommonError.serverError(error))
+                }
             } else {
-                
-                for unitsize in Constant.MyClassConstants.bedRoomSize {
-                    let bedroomSize = Helper.bedRoomSizeToStringInteger(bedRoomSize: unitsize )
-                    self.anlyticsBedroomSize = self.anlyticsBedroomSize.appending("\(bedroomSize), ")
-                    if let selectedUnitSize = UnitSize(rawValue: unitsize ) {
-                        unitsizearray.append(selectedUnitSize)
-                    }
-                }
-                rentalAlert.unitSizes = unitsizearray
-            }
-            
-            RentalClient.createAlert(Session.sharedSession.userAccessToken, alert: rentalAlert, onSuccess: { response in
-                self.omintureTrackEvent52(startDate:startDate, endDate:endDate)
-                self.hideHudAsync()
-                let rentalSearchDateResponse = RentalSearchDatesResponse()
-                Constant.MyClassConstants.searchDateResponse.append((rentalAlert, rentalSearchDateResponse))
-                self.presentAlert(with: Constant.AlertPromtMessages.createAlertTitle, message: Constant.AlertMessages.createAlertMessage, hideCancelButton: true, cancelButtonTitle: "", acceptButtonTitle: "Ok".localized(), acceptButtonStyle: .default, cancelHandler: nil, acceptHandler: {
-                    Constant.needToReloadAlert = true
-                 self.dismiss(animated: true, completion: nil)
-                })
-                rentalAlert.alertId = response.alertId
-                
-            }) { [weak self] error in
-                self?.hideHudAsync()
-                self?.presentErrorAlert(UserFacingCommonError.serverError(error))
-            }
-          } else {
                 presentAlert(with: Constant.AlertPromtMessages.createAlertTitle, message: Constant.AlertMessages
                     .editAlertEmptyNameMessage)
-          }
+            }
         } else {
             self.presentAlert(with: Constant.AlertPromtMessages.createAlertTitle, message: Constant.AlertMessages.editAlertdetinationrequiredMessage)
         }
-                    
-}
+        
+    }
     
     //***** function to dismiss present view controller on back button pressed *****//
     func menuBackButtonPressed(sender: UIBarButtonItem) {
@@ -257,7 +256,7 @@ class CreateAlertViewController: UIViewController {
             navigationController?.transitioningDelegate = transitionManager
             navigationController?.pushViewController(viewController, animated: true)
         }
-       
+        
     }
     
     //***** function to call calendar screen to select travel end date *****//
@@ -291,8 +290,8 @@ class CreateAlertViewController: UIViewController {
         Constant.MyClassConstants.runningFunctionality = Constant.MyClassConstants.createAlert
         let isRunningOnIphone = UIDevice.current.userInterfaceIdiom == .phone
         let storyboardName = isRunningOnIphone ? Constant.storyboardNames.iphone : Constant.storyboardNames.resortDirectoryIpad
-       let mainStoryboard: UIStoryboard = UIStoryboard(name: storyboardName, bundle: nil)
-       if let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.MyClassConstants.resortDirectoryVC) as? GoogleMapViewController {
+        let mainStoryboard: UIStoryboard = UIStoryboard(name: storyboardName, bundle: nil)
+        if let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.MyClassConstants.resortDirectoryVC) as? GoogleMapViewController {
             viewController.sourceController = Constant.MyClassConstants.createAlert
             let transitionManager = TransitionManager()
             navigationController?.transitioningDelegate = transitionManager
@@ -400,16 +399,16 @@ extension CreateAlertViewController: UICollectionViewDataSource {
         
         switch Constant.MyClassConstants.selectedGetawayAlertDestinationArray[indexPath.row] {
         case .resort( let resort):
-           
-                var resortNm = ""
-                var resortCode = ""
-                if let restName = resort.resortName {
-                    resortNm = restName
-                }
-                if let restcode = resort.resortCode {
-                    resortCode = restcode
-                }
-                cell.lblTitle.text = "\(resortNm) (\(resortCode))".localized()
+            
+            var resortNm = ""
+            var resortCode = ""
+            if let restName = resort.resortName {
+                resortNm = restName
+            }
+            if let restcode = resort.resortCode {
+                resortCode = restcode
+            }
+            cell.lblTitle.text = "\(resortNm) (\(resortCode))".localized()
             
         case .destination(let destination):
             var name = ""
@@ -480,7 +479,7 @@ extension CreateAlertViewController: UITableViewDelegate {
             
             let isRunningOnIphone = UIDevice.current.userInterfaceIdiom == .phone
             let storyboardName = isRunningOnIphone ? Constant.storyboardNames.iphone : Constant.storyboardNames.resortDirectoryIpad
-           let mainStoryboard: UIStoryboard = UIStoryboard(name: storyboardName, bundle: nil)
+            let mainStoryboard: UIStoryboard = UIStoryboard(name: storyboardName, bundle: nil)
             if let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.infoDetailViewController) as? InfoDetailViewController {
                 viewController.selectedIndex = indexPath.row
                 self.navigationController?.present(viewController, animated: true, completion: nil)
@@ -577,7 +576,7 @@ extension CreateAlertViewController: UITableViewDataSource {
                 }
                 cell.whereTogoTextLabel.text = resortNameString
             }
-           
+            
             cell.selectionStyle = UITableViewCellSelectionStyle.none
             return cell
         }
@@ -605,3 +604,4 @@ extension CreateAlertViewController: WhereToGoCollectionViewCellDelegate {
         
     }
 }
+

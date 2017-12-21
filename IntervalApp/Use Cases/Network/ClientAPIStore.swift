@@ -21,4 +21,3 @@ protocol ClientAPIStore {
     func readDates(for accessToken: DarwinAccessToken, and request: RentalSearchDatesRequest) -> Promise<RentalSearchDatesResponse>
 }
 
-

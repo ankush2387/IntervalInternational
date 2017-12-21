@@ -46,10 +46,10 @@ class BedroomSizeViewController: UIViewController {
             var flag = true
             let tempArray = NSMutableArray()
             for index in localArrayToHoldSelection where index as? Int ?? 0 == sender.tag {
-                    let objectAt = localArrayToHoldSelection.index(of: index)
-                    tempArray.add(objectAt)
-                    flag = false
-                    sender.isSelected = false
+                let objectAt = localArrayToHoldSelection.index(of: index)
+                tempArray.add(objectAt)
+                flag = false
+                sender.isSelected = false
             }
             let indexSet = NSMutableIndexSet()
             for index in tempArray {
@@ -112,7 +112,7 @@ class BedroomSizeViewController: UIViewController {
             // omniture tracking with event 40
             let userInfo: [String: String] = [
                 Constant.omnitureEvars.eVar44: Constant.omnitureCommonString.simpleLockOffUnitOptions
-                ]
+            ]
             ADBMobile.trackAction(Constant.omnitureEvents.event40, data: userInfo)
             
         } else if Constant.ControllerTitles.selectedControllerTitle == Constant.storyboardControllerID.floatViewController {
@@ -145,7 +145,7 @@ class BedroomSizeViewController: UIViewController {
             selectedUnit = unit
             selectedRelinquismentId = Constant.MyClassConstants.relinquismentSelectedDeposit.relinquishmentId
         }
-
+        
     }
     
     @IBAction private func closeButtonPressed(_ sender: AnyObject) {
@@ -197,6 +197,7 @@ class BedroomSizeViewController: UIViewController {
                             if i < localArrayToHoldSelection.count {
                                 
                                 let friendlyName = UnitSize.forDisplay[index as? Int ?? 0].friendlyName()
+                                
                                 let bedroomSize = Helper.bedRoomSizeToStringInteger(bedRoomSize: friendlyName)
                                 selectedBedroomsizes.append(bedroomSize)
                                 
@@ -212,7 +213,7 @@ class BedroomSizeViewController: UIViewController {
                 }
                 self.dismiss(animated: true, completion: nil)
             }
-        } else {            
+        } else {
             presentAlert(with: Constant.AlertPromtMessages.bedRoomSizeTitle, message: Constant.AlertMessages.bedroomSizeAlertMessage)
         }
         
@@ -260,8 +261,8 @@ extension BedroomSizeViewController: UITableViewDataSource {
                 
                 if selectedUnit.lockOffUnits.count > 0 {
                     
-                        let units = "\((selectedUnit.lockOffUnits[indexPath.row].unitNumber) ?? "")"
-                        let unitnumber = units.replacingOccurrences(of: "/", with: "")
+                    let units = "\((selectedUnit.lockOffUnits[indexPath.row].unitNumber) ?? "")"
+                    let unitnumber = units.replacingOccurrences(of: "/", with: "")
                     if let kitchenType = selectedUnit.lockOffUnits[indexPath.row].kitchenType {
                         unitDetails = "\(unitnumber), \(String(describing: Helper.getKitchenEnums(kitchenType: kitchenType)))"
                     }
@@ -288,25 +289,25 @@ extension BedroomSizeViewController: UITableViewDataSource {
                 cell.checkBoxButton.checked = false
             }
             intervalPrint(Constant.MyClassConstants.unitNumberSelectedArray)
-                let setUnitSize = cell.bedroomSizelabel.text?.components(separatedBy: ",")[0]
-                let setUnitNumber = cell.unitSizeLabel.text?.components(separatedBy: ",")[0]
-                for selectedUnitDetails in Constant.MyClassConstants.saveLockOffDetailsArray {
-                    guard let relinquishmentID =  Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId else { return cell }
-                    if selectedUnitDetails.components(separatedBy: ",")[0] == setUnitNumber && selectedUnitDetails.components(separatedBy: ",")[1] == setUnitSize && Constant.MyClassConstants.realmOpenWeeksID.contains(relinquishmentID) {
-                        cell.backgroundCellView.layer.borderColor = UIColor.orange.cgColor
-                        cell.unitSizeLabel.textColor = IUIKColorPalette.secondaryB.color
-                        cell.bedroomSizelabel.textColor = IUIKColorPalette.secondaryB.color
-                        cell.infoSavedLabel.isHidden = false
-                    }
+            let setUnitSize = cell.bedroomSizelabel.text?.components(separatedBy: ",")[0]
+            let setUnitNumber = cell.unitSizeLabel.text?.components(separatedBy: ",")[0]
+            for selectedUnitDetails in Constant.MyClassConstants.saveLockOffDetailsArray {
+                guard let relinquishmentID =  Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId else { return cell }
+                if selectedUnitDetails.components(separatedBy: ",")[0] == setUnitNumber && selectedUnitDetails.components(separatedBy: ",")[1] == setUnitSize && Constant.MyClassConstants.realmOpenWeeksID.contains(relinquishmentID) {
+                    cell.backgroundCellView.layer.borderColor = UIColor.orange.cgColor
+                    cell.unitSizeLabel.textColor = IUIKColorPalette.secondaryB.color
+                    cell.bedroomSizelabel.textColor = IUIKColorPalette.secondaryB.color
+                    cell.infoSavedLabel.isHidden = false
                 }
+            }
             return cell
             
         } else {
             if Constant.MyClassConstants.bedRoomSizeSelectedIndexArray.count != 0 {
                 var match = false
                 for index in Constant.MyClassConstants.bedRoomSizeSelectedIndexArray where indexPath.row == index as? Int ?? 0 {
-                        match = true
-                        break
+                    match = true
+                    break
                 }
                 if match {
                     
@@ -343,7 +344,7 @@ extension BedroomSizeViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-       
+        
         if Constant.ControllerTitles.selectedControllerTitle == Constant.storyboardControllerID.floatViewController {
             let selectedBedroom = Constant.MyClassConstants.bedRoomSizeSelectedIndexArray[indexPath.row] as? String ?? ""
             Constant.MyClassConstants.selectedBedRoomSize = selectedBedroom
@@ -356,7 +357,7 @@ extension BedroomSizeViewController: UITableViewDelegate {
                 }
                 
             } else {
-                 if let unitNUmber = selectedUnit.unitNumber {
+                if let unitNUmber = selectedUnit.unitNumber {
                     Constant.MyClassConstants.unitNumberLockOff = "\(unitNUmber)"
                 }
                 
@@ -366,26 +367,27 @@ extension BedroomSizeViewController: UITableViewDelegate {
                 
                 if !(floatWeek as AnyObject).isKind(of: List<rlmPointsProgram>.self) {
                     guard let floatWeekTraversed = floatWeek as? OpenWeeks else { return }
-                if floatWeekTraversed.isFloat && selectedRelinquismentId == floatWeekTraversed.relinquishmentID {
-                    if Constant.MyClassConstants.unitNumberLockOff == floatWeekTraversed.floatDetails[0].unitNumber {
-                        Constant.MyClassConstants.selectedFloatWeek = floatWeekTraversed
-                        Constant.MyClassConstants.savedClubFloatResort = floatWeekTraversed.floatDetails[0].clubResortDetails
-                    }
-                    
-                }
-            }
-            for floatWeek in Constant.MyClassConstants.floatRemovedArray {
-                guard let floatWeekTraversed = floatWeek as? OpenWeeks else { return }
-                if floatWeekTraversed.isFloatRemoved && selectedRelinquismentId == floatWeekTraversed.relinquishmentID {
-                    if Constant.MyClassConstants.unitNumberLockOff == floatWeekTraversed.floatDetails[0].unitNumber {
-                        Constant.MyClassConstants.selectedFloatWeek = floatWeekTraversed
-                        Constant.MyClassConstants.savedClubFloatResort = floatWeekTraversed.floatDetails[0].clubResortDetails
+                    if floatWeekTraversed.isFloat && selectedRelinquismentId == floatWeekTraversed.relinquishmentID {
+                        if Constant.MyClassConstants.unitNumberLockOff == floatWeekTraversed.floatDetails[0].unitNumber {
+                            Constant.MyClassConstants.selectedFloatWeek = floatWeekTraversed
+                            Constant.MyClassConstants.savedClubFloatResort = floatWeekTraversed.floatDetails[0].clubResortDetails
+                        }
+                        
                     }
                 }
+                for floatWeek in Constant.MyClassConstants.floatRemovedArray {
+                    guard let floatWeekTraversed = floatWeek as? OpenWeeks else { return }
+                    if floatWeekTraversed.isFloatRemoved && selectedRelinquismentId == floatWeekTraversed.relinquishmentID {
+                        if Constant.MyClassConstants.unitNumberLockOff == floatWeekTraversed.floatDetails[0].unitNumber {
+                            Constant.MyClassConstants.selectedFloatWeek = floatWeekTraversed
+                            Constant.MyClassConstants.savedClubFloatResort = floatWeekTraversed.floatDetails[0].clubResortDetails
+                        }
+                    }
+                }
             }
-        }
             delegate?.floatLockOffDetails?(bedroomDetails:Constant.MyClassConstants.bedRoomSizeSelectedIndexArray[indexPath.row] as? String ?? "")
             self.dismiss(animated: false, completion: nil)
         }
     }
 }
+

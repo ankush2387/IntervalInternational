@@ -151,7 +151,7 @@ public class Helper {
         }
     }
     
-
+    
     //***** common  function that  takes UIView and color to and gradient view on passed view *****//
     static func addLinearGradientToView(view: UIView, colour: UIColor, transparntToOpaque: Bool, vertical: Bool) {
         let gradient = CAGradientLayer()
@@ -221,10 +221,10 @@ public class Helper {
                 // Got an access token!  Save it for later use.
                 // Next, get the contact information.  See how many memberships this user has.
             },
-           onError: { _ in
-            sender.hideHudAsync()
-            sender.presentErrorAlert(UserFacingCommonError.generic)
-            completionHandler(false)
+                                               onError: { _ in
+                                                sender.hideHudAsync()
+                                                sender.presentErrorAlert(UserFacingCommonError.generic)
+                                                completionHandler(false)
             }
             )
         } else {
@@ -242,17 +242,17 @@ public class Helper {
             
             //***** Try to do the OAuth Request to obtain an access token *****//
             UserClient.getCurrentProfile(Session.sharedSession.userAccessToken,
-
-             onSuccess: {(contact) in
-                // Got an access token!  Save it for later use.
-                sender.hideHudAsync()
-                Session.sharedSession.contact = contact
-                //***** Next, get the contact information.  See how many memberships this user has. *****//
-                contactDidChange(sender: sender)
+                                         
+                                         onSuccess: {(contact) in
+                                            // Got an access token!  Save it for later use.
+                                            sender.hideHudAsync()
+                                            Session.sharedSession.contact = contact
+                                            //***** Next, get the contact information.  See how many memberships this user has. *****//
+                                            contactDidChange(sender: sender)
             },
-             onError: { _ in
-                sender.hideHudAsync()
-                sender.presentErrorAlert(UserFacingCommonError.generic)
+                                         onError: { _ in
+                                            sender.hideHudAsync()
+                                            sender.presentErrorAlert(UserFacingCommonError.generic)
             })
         } else {
             sender.presentAlert(with: Constant.AlertErrorMessages.networkError, message: Constant.AlertMessages.networkErrorMessage)
@@ -328,7 +328,6 @@ public class Helper {
             }
         }
     }
-    
     static func performSortingForMemberNumberWithViewResultAndNothingYet() {
         
         Constant.MyClassConstants.searchDateResponse.sort { $0.0.alertId ?? 0 > $1.0.alertId ?? 0 }
@@ -369,7 +368,7 @@ public class Helper {
                 Constant.GetawaySearchResultGuestFormDetailData.countryCodeArray.append(country.countryCode!)
             }
             viewController.hideHudAsync()
-        
+            
         }) { _ in
             viewController.hideHudAsync()
             viewController.presentErrorAlert(UserFacingCommonError.generic)
@@ -508,6 +507,7 @@ public class Helper {
     
     //***** function to get all local storage object on the basis of selected membership number *****//
     static func getLocalStorageWherewanttoGo() -> Results <RealmLocalStorage> {
+        
         let realm = try? Realm()
         let Membership = Session.sharedSession.selectedMembership
         let SelectedMembershipNumber = Membership?.memberNumber
@@ -534,6 +534,7 @@ public class Helper {
             }
             return realmLocalStorage
         }
+        
     }
     static func getLocalStorageWherewanttoTrade() -> Results <OpenWeeksStorage> {
         
@@ -924,9 +925,9 @@ public class Helper {
             
             senderVC.hideHudAsync()
         },
-           onError: {_ in
-            senderVC.hideHudAsync()
-            senderVC.presentErrorAlert(UserFacingCommonError.generic)
+                                   onError: {_ in
+                                    senderVC.hideHudAsync()
+                                    senderVC.presentErrorAlert(UserFacingCommonError.generic)
                                     
         })
     }
@@ -1355,8 +1356,8 @@ public class Helper {
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.notificationNames.reloadVideosNotification), object: nil)
                 senderViewcontroller.hideHudAsync()
             },
-                   onError: {_ in
-                    senderViewcontroller.hideHudAsync()
+                                   onError: {_ in
+                                    senderViewcontroller.hideHudAsync()
             })
         } else {
             
@@ -1452,7 +1453,7 @@ public class Helper {
     static func attributedString(from string: String, nonBoldRange: NSRange?, font: UIFont) -> NSAttributedString {
         let fontSize = UIFont.systemFontSize
         let attrs = [NSFontAttributeName: UIFont.boldSystemFont(ofSize: fontSize),
-            NSForegroundColorAttributeName: UIColor.black]
+                     NSForegroundColorAttributeName: UIColor.black]
         let nonBoldAttribute = [NSFontAttributeName: font ]
         let attrStr = NSMutableAttributedString(string: string, attributes: attrs)
         if let range = nonBoldRange {
@@ -1658,7 +1659,7 @@ public class Helper {
         senderViewController.navigationController?.transitioningDelegate = transitionManager
         senderViewController.navigationController!.present(viewController, animated: true, completion: nil)
     }
-
+    
     static func currencyCodeToSymbol(code: String) -> String {
         let currencyCode: String? = code
         let curr = Locale.availableIdentifiers.map { Locale(identifier: $0) }.filter { return currencyCode == $0.currencyCode }.map { ($0.identifier, $0.currencySymbol) }.flatMap { $0 }.first
@@ -1689,7 +1690,7 @@ public class Helper {
                                     Constant.MyClassConstants.initialVacationSearch = vacationSearch
                                     showScrollingCalendar(vacationSearch:vacationSearch)
                                     showAvailabilityResults(vacationSearch: vacationSearch)
-
+                                    
                                     if Constant.MyClassConstants.isFromSorting == false && Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType != VacationSearchType.Combined {
                                         helperDelegate?.resortSearchComplete()
                                     } else {
@@ -1700,11 +1701,11 @@ public class Helper {
                                     Constant.MyClassConstants.noAvailabilityView = false
                                     
         },
-           onError: {_ in
-            Constant.MyClassConstants.noAvailabilityView = true
-            Constant.MyClassConstants.isFromSorting = false
-            senderViewController.hideHudAsync()
-            senderViewController.presentErrorAlert(UserFacingCommonError.generic)
+                                   onError: {_ in
+                                    Constant.MyClassConstants.noAvailabilityView = true
+                                    Constant.MyClassConstants.isFromSorting = false
+                                    senderViewController.hideHudAsync()
+                                    senderViewController.presentErrorAlert(UserFacingCommonError.generic)
         }
         )
     }
@@ -1768,7 +1769,7 @@ public class Helper {
     }
     
     //Search both perform exchange search after rental
-
+    
     static func executeExchangeSearchDates(senderVC: UIViewController, vacationSearch: VacationSearch) {
         
         senderVC.showHudAsync()
@@ -2014,7 +2015,7 @@ public class Helper {
             })
         }
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-      
+        
         resendAlert.addAction(submitAction)
         resendAlert.addAction(cancelAction)
         
@@ -2178,7 +2179,7 @@ public class Helper {
         
         return transition
     }
-
+    
     enum MonthType { case number, monthName }
     static func getMonth(_ monthType: MonthType, for month: String) -> String? {
         
@@ -2193,7 +2194,8 @@ public class Helper {
             return firstLetter + restOfWord
         case .number:
             return months.value(forKey: month.uppercased()) as? String
-
+            
         }
     }
 }
+

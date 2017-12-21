@@ -146,7 +146,6 @@ class MembershipIPadViewController: UIViewController {
         )
     }
     
-    
     // MARK: - Getaway Alerts
     func readAllRentalAlerts(accessToken: DarwinAccessToken) {
         ClientAPI.sharedInstance.readAllRentalAlerts(for: accessToken)
@@ -162,8 +161,8 @@ class MembershipIPadViewController: UIViewController {
                     }
                 }
             }
-            .onError { _ in
-                
+            .onError { [weak self] error in
+                self?.presentErrorAlert(UserFacingCommonError.serverError(error as NSError))
         }
     }
     
@@ -185,8 +184,8 @@ class MembershipIPadViewController: UIViewController {
                 Constant.MyClassConstants.dashBoardAlertsArray = Constant.MyClassConstants.getawayAlertsArray
                 self.readDates(accessToken: accessToken, request: rentalSearchDatesRequest, rentalAlert: rentalAlert)
             }
-            .onError { _ in
-                
+            .onError { [weak self] error in
+                self?.presentErrorAlert(UserFacingCommonError.serverError(error as NSError))
         }
     }
     
@@ -198,8 +197,8 @@ class MembershipIPadViewController: UIViewController {
                 Helper.performSortingForMemberNumberWithViewResultAndNothingYet()
                 
             }
-            .onError { _ in
-                
+            .onError { [weak self] error in
+                self?.presentErrorAlert(UserFacingCommonError.serverError(error as NSError))
         }
     }
 }
