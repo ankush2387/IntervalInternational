@@ -295,6 +295,7 @@ class Constant: NSObject {
         static var allDestinations = "All Available Destinations".localized()
         
         static var redirect: (alertID: Int?, rentalAlert: RentalAlert?) = (nil, nil)
+        static var searchDateResponse: [(RentalAlert, RentalSearchDatesResponse)]  = []
         static var currentFromDate: Date?
         static var currentToDate: Date?
         static var checkInDates = [Date]()
@@ -302,7 +303,7 @@ class Constant: NSObject {
         static var combinedCheckInDates = [Date]()
         static var totalWindow = 90
         static var bedRoomSize = ["STUDIO", "ONE_BEDROOM", "TWO_BEDROOM", "THREE_BEDROOM", "FOUR_BEDROOM"]
-        static var alertSelectedUnitSizeArray: NSMutableArray = NSMutableArray()
+        static var alertSelectedUnitSizeArray = [String]()
         static var topDeals: [RentalDeal] = []
         static var flexExchangeDeals: [FlexExchangeDeal] = []
         static var resortDirectoryRegionArray = [Region]()
