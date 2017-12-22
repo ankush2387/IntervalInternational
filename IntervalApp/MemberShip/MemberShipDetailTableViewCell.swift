@@ -128,7 +128,8 @@ class MemberShipDetailTableViewCell: UITableViewCell {
             if count > 1 {
                 prodView.triangleView.isHidden = true
             }
-            if prod.billingEntity == "CORP" {
+            
+            if prod.billingEntity == "CORPORATE" {
                 prodView.expirationDateLabel.text = ""
             } else {
                 var dateString = ""
