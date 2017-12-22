@@ -372,22 +372,7 @@ class VacationSearchResultIPadController: UIViewController {
             
         }
     }
-    
-    //Function called when show resort details clicked.
-    func getResortFromResortCode(_ toDate: Date) {
-        
-        let searchResortRequest = RentalSearchResortsRequest()
-        searchResortRequest.checkInDate = toDate
-        searchResortRequest.resortCodes = Constant.MyClassConstants.resortCodesArray
-        RentalClient.searchResorts(Session.sharedSession.userAccessToken, request: searchResortRequest, onSuccess: { (response) in
-            Constant.MyClassConstants.resortsArray = response.resorts
-            self.resortDetailTBLView.reloadData()
-        }, onError: { (_) in
-            
-        })
-        
-    }
-    
+
     //Function called when resort details button clicked.
     func resortDetailsClicked(_ toDate: Date) {
         

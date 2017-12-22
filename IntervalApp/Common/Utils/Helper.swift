@@ -1801,6 +1801,7 @@ public class Helper {
                                     }
         },
                                    onError: { _ in
+                                    senderVC.hideHudAsync()
                                     senderVC.presentErrorAlert(UserFacingCommonError.generic)
                                     
         }
