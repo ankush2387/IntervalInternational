@@ -3,7 +3,7 @@
 //  IntervalApp
 //
 //  Created by Chetu on 15/11/16.
-//  Copyright © 2016 Interval International. All rights reserved.
+//  Copyright © 2016 Interval Internationa l. All rights reserved.
 //
 
 import UIKit
@@ -14,7 +14,6 @@ class ExchangeOptionsCell: UITableViewCell {
     //Outlets
     
     @IBOutlet weak var primaryPriceLabel: UILabel!
-    @IBOutlet weak var priceView: UIView!
     @IBOutlet weak var priceCheckBox: IUIKCheckbox!
 
     func setTotalPrice(with currencyDisplayes: String, and chargeAmount: Float) {

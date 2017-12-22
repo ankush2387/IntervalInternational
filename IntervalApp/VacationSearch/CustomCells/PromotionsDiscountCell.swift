@@ -11,7 +11,6 @@ import UIKit
 class PromotionsDiscountCell: UITableViewCell {
     
     @IBOutlet weak var discountLabel: UILabel!
-    @IBOutlet weak var priceView: UIView!
     @IBOutlet weak var amountLabel: UILabel!
     @IBOutlet weak var centsLabel: UILabel!
 
