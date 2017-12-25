@@ -252,9 +252,6 @@ extension AppCoordinator: LoginCoordinatorDelegate {
         // TODO: - ... These singletons must be removed gradually a.k.a. "Code Choke" them out.
         Constant.MyClassConstants.loginOriginationPoint = Constant.omnitureCommonString.signInPage
         Constant.MyClassConstants.signInRequestedController = topViewController!
-//        if session.contact?.memberships?.count == 1 {
-//            Session.sharedSession.selectedMembership = session.contact?.memberships?[0]
-//        }
 
         CreateActionSheet().membershipWasSelected()
         ///
