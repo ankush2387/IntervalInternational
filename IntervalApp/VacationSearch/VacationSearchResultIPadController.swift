@@ -343,7 +343,7 @@ class VacationSearchResultIPadController: UIViewController {
         Helper.helperDelegate = self
         
         if Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange() {
-            
+            showHudAsync()
             Helper.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: toDate, senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
 
         } else if Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental() {
