@@ -45,7 +45,7 @@ class MemberShipDetailTableViewCell: UITableViewCell {
         var status = ""
         var dateString = ""
         var membershipsAmount = 0
-        
+
         if let name = contactInfo.firstName {
             firstName = name
         }
@@ -64,6 +64,7 @@ class MemberShipDetailTableViewCell: UITableViewCell {
         
         if let memberStatus = contactInfo.status {
             status = memberStatus
+            
         }
         
         if let memberSinceDate = contactInfo.lastVerifiedDate {
@@ -73,7 +74,7 @@ class MemberShipDetailTableViewCell: UITableViewCell {
         if let count = contactInfo.memberships?.count {
             membershipsAmount = count
         }
-        
+
         self.updateCell(contactName: "\(firstName) \(lastName)", loginID: loginID, email: emailAddress, status: status, date: dateString, memberships: membershipsAmount, products: products)
         
     }
@@ -130,7 +131,7 @@ class MemberShipDetailTableViewCell: UITableViewCell {
             }
             
             if prod.billingEntity == "CORPORATE" {
-                prodView.expirationDateLabel.text = ""
+                prodView.expirationDateLabel.text = nil
             } else {
                 var dateString = ""
                 if let expDate = prod.expirationDate {

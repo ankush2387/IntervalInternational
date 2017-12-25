@@ -27,6 +27,7 @@ class UpComingTripDetailController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(reloadDetailsTable), name: NSNotification.Name(rawValue: Constant.notificationNames.reloadTripDetailsNotification), object: nil)
         requiredRowsForAdditionalProducts()
         requiredRowsForRelinquishment()
+        navigationController?.navigationBar.isHidden = false
     }
     
     override func viewDidLoad() {
