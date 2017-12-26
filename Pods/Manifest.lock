@@ -8,7 +8,7 @@ PODS:
     - Brightcove-Player-SDK/default (= 5.3.4)
   - Brightcove-Player-SDK/default (5.3.4)
   - CVCalendar (1.3.1)
-  - DarwinSDK (1.1.5-SNAPSHOT):
+  - DarwinSDK (1.1.6-SNAPSHOT):
     - Alamofire
     - SwiftyJSON
     - XCGLogger
@@ -86,7 +86,7 @@ DEPENDENCIES:
   - Bond (from `https://github.com/ReactiveKit/Bond.git`, tag `6.3.0`)
   - Brightcove-Player-SDK (~> 5.3.4)
   - CVCalendar (from `https://github.com/Mozharovsky/CVCalendar`, tag `1.4.0`)
-  - DarwinSDK (from `https://bitbucket.iilg.com/scm/iimob/darwin-sdk-ios.git`, commit `dd422969`, branch `develop`)
+  - DarwinSDK (from `https://bitbucket.iilg.com/scm/iimob/darwin-sdk-ios.git`, commit `740729cb`, branch `develop`)
   - Firebase/Core (~> 4.3.0)
   - Firebase/Messaging (~> 4.3.0)
   - FSCalendar (~> 2.1.1)
@@ -119,7 +119,7 @@ EXTERNAL SOURCES:
     :tag: 1.4.0
   DarwinSDK:
     :branch: develop
-    :commit: dd422969
+    :commit: 740729cb
     :git: https://bitbucket.iilg.com/scm/iimob/darwin-sdk-ios.git
   IntervalUIKit:
     :commit: 54a3661f
@@ -148,7 +148,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/Mozharovsky/CVCalendar
     :tag: 1.4.0
   DarwinSDK:
-    :commit: dd42296945fe5d1eba951a76e189e313a90c93d6
+    :commit: ab9740729cb2bb54f9f27d64fcf397ac1d2691c0
     :git: https://bitbucket.iilg.com/scm/iimob/darwin-sdk-ios.git
   IntervalUIKit:
     :commit: 54a3661f
@@ -172,7 +172,7 @@ SPEC CHECKSUMS:
   Bond: 2e90c5bf07f1ad80e5aaf9eb75d2e82ca9b5ef77
   Brightcove-Player-SDK: 797417ba9ca513d079df6844515a05498e3639d8
   CVCalendar: 7ed8a9cb7cd62c9fffc05ac92201d82b93e1546a
-  DarwinSDK: 78e178b2a6b555e38fe5c2c1243ec34d22acd11e
+  DarwinSDK: 7e7c4ba2ffe5cdd79637943556c98734dfbfbba8
   Diff: befa1d19c32726b2b36ce915d98793e2fbde8dcc
   Firebase: 83283761a1ef6dc9846e03d08059f51421afbd65
   FirebaseAnalytics: 722b53c7b32bfc7806b06e0093a2f5180d4f2c5a
@@ -202,6 +202,6 @@ SPEC CHECKSUMS:
   TPKeyboardAvoiding: 0d6af20e95e2850f4c621841225b59ec7d8dd852
   XCGLogger: 38063ea89b4c8b23232d18efd2e12eb0005f3ea4
 
-PODFILE CHECKSUM: 507f2fe6ec004229194c8b6c4cb9661b92afd280
+PODFILE CHECKSUM: 3f53a56165fca933671a512aa7aecde6292142d1
 
 COCOAPODS: 1.2.1

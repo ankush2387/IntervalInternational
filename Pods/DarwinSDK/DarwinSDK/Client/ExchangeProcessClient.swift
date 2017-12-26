@@ -87,11 +87,11 @@ open class ExchangeProcessClient {
     }
     
     // STATUS: Unit Test passed
-    // Darwin API endpoint: PUT /exchange/shop/processes/{processId}/prepare/back
+    // Darwin API endpoint: PUT /exchange/shop/processes/{processId}
     // Exchange Shop Process - Back To Choose Exchange. Requires an access token (user)
     //
     open static func backToChooseExchange( _ accessToken:DarwinAccessToken!, process:ExchangeProcess!, onSuccess:@escaping (_ response:ExchangeProcessEndResponse) -> Void, onError:@escaping (_ error:NSError) -> Void ) {
-        let endpoint = "\(DarwinSDK.sharedInstance.getApiUri())/exchange/shop/processes/\(process!.processId)/prepare/back"
+        let endpoint = "\(DarwinSDK.sharedInstance.getApiUri())/exchange/shop/processes/\(process!.processId)"
         
         let headers: [String: String] = [
             "Authorization": "Bearer \(accessToken.token!)"
@@ -101,7 +101,8 @@ open class ExchangeProcessClient {
         
         DarwinSDK.logger.debug("About to try \(endpoint) with token=\(accessToken.token!) and request payload=\(params)")
         
-        IntervalAlamofireManager.sharedInstance.defaultManager.request(endpoint, method: .put, parameters: params, encoding: JSONEncoding.default, headers: headers)
+        IntervalAlamofireManager.sharedInstance.defaultManager.request(endpoint, method: .delete, parameters: params,
+                                                                       encoding: JSONEncoding.default, headers: headers)
             //.validate(statusCode: 200...201)
             .responseJSON { response in
                 let statusCode = response.response?.statusCode ?? 200
@@ -110,7 +111,12 @@ open class ExchangeProcessClient {
                 
                 switch statusCode {
                 case 200...209:
-                    let exchangeProcessEndResponse = ExchangeProcessEndResponse(json:json)
+                    process.currentStep = ProcessStep.End
+                    
+                    let exchangeProcessEndResponse = ExchangeProcessEndResponse()
+                    exchangeProcessEndResponse.processId = process.processId
+                    exchangeProcessEndResponse.step = process.currentStep
+
                     // Update the ExchangeProcess ref
                     onSuccess(exchangeProcessEndResponse)
                     

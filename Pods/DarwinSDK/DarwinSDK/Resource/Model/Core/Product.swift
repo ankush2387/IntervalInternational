@@ -28,7 +28,7 @@ open class Product {
         self.billingEntity = json["billingEntity"].string
 		
 		if let dateStr = json["expirationDate"].string {
-			self.expirationDate = dateStr.dateFromLongFormat()
+			self.expirationDate = dateStr.dateFromShortFormat()
 		}
 
 		self.coreProduct = json["coreProduct"].boolValue

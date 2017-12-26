@@ -90,11 +90,11 @@ open class RentalProcessClient {
     }
 
     // STATUS: Unit Test passed
-    // Darwin API endpoint: PUT /rental/processes/{processId}/prepare/back
+    // Darwin API endpoint: DELETE /rental/processes/{processId}
     // Rental Process - Back To Choose Rental. Requires an access token (user)
     //
     open static func backToChooseRental( _ accessToken:DarwinAccessToken!, process:RentalProcess!, onSuccess:@escaping (_ response:RentalProcessEndResponse) -> Void, onError:@escaping (_ error:NSError) -> Void ) {
-        let endpoint = "\(DarwinSDK.sharedInstance.getApiUri())/rental/processes/\(process!.processId)/prepare/back"
+        let endpoint = "\(DarwinSDK.sharedInstance.getApiUri())/rental/processes/\(process!.processId)"
         
         let headers: [String: String] = [
             "Authorization": "Bearer \(accessToken.token!)"
@@ -104,7 +104,8 @@ open class RentalProcessClient {
         
         DarwinSDK.logger.debug("About to try \(endpoint) with token=\(accessToken.token!) and request payload=\(params)")
         
-        IntervalAlamofireManager.sharedInstance.defaultManager.request(endpoint, method: .put, parameters: params, encoding: JSONEncoding.default, headers: headers)
+        IntervalAlamofireManager.sharedInstance.defaultManager.request(endpoint, method: .delete, parameters: params,
+                                                                       encoding: JSONEncoding.default, headers: headers)
             //.validate(statusCode: 200...201)
             .responseJSON { response in
                 let statusCode = response.response?.statusCode ?? 200
@@ -113,7 +114,12 @@ open class RentalProcessClient {
                 
                 switch statusCode {
                     case 200...209:
-                        let rentalProcessEndResponse = RentalProcessEndResponse(json:json)
+                        process.currentStep = ProcessStep.End
+            
+                        let rentalProcessEndResponse = RentalProcessEndResponse()
+                        rentalProcessEndResponse.processId = process.processId
+                        rentalProcessEndResponse.step = process.currentStep
+                        
                         // Update the RentalProcess ref
                         onSuccess(rentalProcessEndResponse)
                     
