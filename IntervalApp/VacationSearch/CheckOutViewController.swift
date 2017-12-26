@@ -48,6 +48,7 @@ class CheckOutViewController: UIViewController {
     var totalFeesArray = NSMutableArray()
     var currencyCode: String = ""
     static let checkoutPromotionCell = "CheckoutPromotionCell"
+    var isPromotionApplied = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -153,11 +154,10 @@ class CheckOutViewController: UIViewController {
         ]
         ADBMobile.trackAction(Constant.omnitureEvents.event37, data: userInfo)
     }
-    
     //**** Remove added observers ****//
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(true)
-        navigationController?.isNavigationBarHidden = true
+        navigationController?.navigationBar.isHidden = true
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.updateResortHoldingTime), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.changeSliderStatus), object: nil)
     }
@@ -177,93 +177,80 @@ class CheckOutViewController: UIViewController {
             
             let strAccept = self.cellWebView.stringByEvaluatingJavaScript(from: jsStringAccept)
             let strReject = self.cellWebView.stringByEvaluatingJavaScript(from: jsStringReject)
-            
-            if (isAgreedToFees || !Constant.MyClassConstants.hasAdditionalCharges) && (strAccept == "true" || strReject == "true") && !Constant.MyClassConstants.selectedCreditCard.isEmpty {
+         
+            if (isAgreedToFees || !Constant.MyClassConstants.hasAdditionalCharges) && (strAccept == "true" || strReject == "true") && !Constant.MyClassConstants.selectedCreditCard.isEmpty && isPromotionApplied {
+
                 showHudAsync()
                 imageSlider.isHidden = true
                 
                 if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
+                    showLoader = true
+                    self.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
                     
-                    if !Constant.MyClassConstants.recapPromotionsArray.isEmpty && Constant.MyClassConstants.exchangeFees[0].shopExchange?.selectedOfferName == "" {
-                        hideHudAsync()
-                        imageSlider.isHidden = false
-                        self.presentAlert(with: Constant.AlertPromtMessages.failureTitle, message: Constant.AlertMessages.promotionsMessage)
-                    } else {
+                    let continueToPayRequest = ExchangeProcessContinueToPayRequest()
+                    continueToPayRequest.creditCard = Constant.MyClassConstants.selectedCreditCard.last!
+                    continueToPayRequest.confirmationDelivery = confirmationDelivery
+                    continueToPayRequest.acceptTermsAndConditions = true
+                    continueToPayRequest.acknowledgeAndAgreeResortFees = true
+                    
+                    ExchangeProcessClient.continueToPay(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.exchangeBookingLastStartedProcess, request: continueToPayRequest, onSuccess: { response in
                         
-                        showLoader = true
+                        Constant.MyClassConstants.exchangeBookingLastStartedProcess = nil
+                        Constant.MyClassConstants.exchangeContinueToPayResponse = response
+                        let selectedCard = Constant.MyClassConstants.selectedCreditCard
+                        if selectedCard[0].saveCardIndicator == true {
+                            Session.sharedSession.contact?.creditcards?.append(selectedCard[0])
+                        }
+                        Constant.MyClassConstants.selectedCreditCard.removeAll()
+                        Helper.removeStoredGuestFormDetials()
+                        self.isAgreed = true
+                        self.hideHudAsync()
                         self.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
+                        Constant.MyClassConstants.transactionNumber = (response.view?.fees?.shopExchange?.confirmationNumber)!
+                        self.performSegue(withIdentifier: Constant.segueIdentifiers.confirmationScreenSegue, sender: nil)
                         
-                        let continueToPayRequest = ExchangeProcessContinueToPayRequest()
-                        continueToPayRequest.creditCard = Constant.MyClassConstants.selectedCreditCard.last!
-                        continueToPayRequest.confirmationDelivery = confirmationDelivery
-                        continueToPayRequest.acceptTermsAndConditions = true
-                        continueToPayRequest.acknowledgeAndAgreeResortFees = true
-                        
-                        ExchangeProcessClient.continueToPay(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.exchangeBookingLastStartedProcess, request: continueToPayRequest, onSuccess: { response in
-                            
-                            Constant.MyClassConstants.exchangeBookingLastStartedProcess = nil
-                            Constant.MyClassConstants.exchangeContinueToPayResponse = response
-                            let selectedCard = Constant.MyClassConstants.selectedCreditCard
-                            if selectedCard[0].saveCardIndicator == true {
-                                Session.sharedSession.contact?.creditcards?.append(selectedCard[0])
-                            }
-                            Constant.MyClassConstants.selectedCreditCard.removeAll()
-                            Helper.removeStoredGuestFormDetials()
-                            self.isAgreed = true
-                            self.hideHudAsync()
-                            self.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
-                            Constant.MyClassConstants.transactionNumber = (response.view?.fees?.shopExchange?.confirmationNumber)!
-                            self.performSegue(withIdentifier: Constant.segueIdentifiers.confirmationScreenSegue, sender: nil)
-                            
-                        }, onError: { [weak self] error in
-                            self?.hideHudAsync()
-                            imageSlider.isHidden = false
-                            self?.isAgreed = false
-                            self?.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
-                            self?.presentErrorAlert(UserFacingCommonError.serverError(error))
-                        })
-                    }
+                    }, onError: { [weak self] error in
+                        self?.hideHudAsync()
+                        imageSlider.isHidden = false
+                        self?.isAgreed = false
+                        self?.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
+                        self?.presentErrorAlert(UserFacingCommonError.serverError(error))
+                    })
+                    
                 } else {
+                    showLoader = true
+                    self.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
                     
-                    if Constant.MyClassConstants.rentalFees[0].rental?.selectedOfferName == nil || Constant.MyClassConstants.rentalFees[0].rental?.selectedOfferName == "" {
-                        hideHudAsync()
-                        imageSlider.isHidden = false
-                        self.presentAlert(with: Constant.AlertPromtMessages.failureTitle, message: Constant.AlertMessages.promotionsMessage)
-                    } else {
+                    let continueToPayRequest = RentalProcessRecapContinueToPayRequest()
+                    continueToPayRequest.creditCard = Constant.MyClassConstants.selectedCreditCard.last!
+                    continueToPayRequest.confirmationDelivery = confirmationDelivery
+                    continueToPayRequest.acceptTermsAndConditions = true
+                    continueToPayRequest.acknowledgeAndAgreeResortFees = true
+                    
+                    RentalProcessClient.continueToPay(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.getawayBookingLastStartedProcess, request: continueToPayRequest, onSuccess: { response in
                         
-                        showLoader = true
+                        Constant.MyClassConstants.getawayBookingLastStartedProcess = nil
+                        Constant.MyClassConstants.continueToPayResponse = response
+                        let selectedCard = Constant.MyClassConstants.selectedCreditCard
+                        if selectedCard[0].saveCardIndicator == true {
+                            Session.sharedSession.contact?.creditcards?.append(selectedCard[0])
+                        }
+                        Constant.MyClassConstants.selectedCreditCard.removeAll()
+                        Helper.removeStoredGuestFormDetials()
+                        self.isAgreed = true
+                        self.hideHudAsync()
+                        Constant.MyClassConstants.transactionNumber = response.view?.fees?.rental?.confirmationNumber ?? ""
                         self.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
+                        self.performSegue(withIdentifier: Constant.segueIdentifiers.confirmationScreenSegue, sender: nil)
+                    }, onError: { [weak self] error in
+                        self?.hideHudAsync()
                         
-                        let continueToPayRequest = RentalProcessRecapContinueToPayRequest()
-                        continueToPayRequest.creditCard = Constant.MyClassConstants.selectedCreditCard.last!
-                        continueToPayRequest.confirmationDelivery = confirmationDelivery
-                        continueToPayRequest.acceptTermsAndConditions = true
-                        continueToPayRequest.acknowledgeAndAgreeResortFees = true
-                        
-                        RentalProcessClient.continueToPay(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.getawayBookingLastStartedProcess, request: continueToPayRequest, onSuccess: { response in
-                            
-                            Constant.MyClassConstants.getawayBookingLastStartedProcess = nil
-                            Constant.MyClassConstants.continueToPayResponse = response
-                            let selectedCard = Constant.MyClassConstants.selectedCreditCard
-                            if selectedCard[0].saveCardIndicator == true {
-                                Session.sharedSession.contact?.creditcards?.append(selectedCard[0])
-                            }
-                            Constant.MyClassConstants.selectedCreditCard.removeAll()
-                            Helper.removeStoredGuestFormDetials()
-                            self.isAgreed = true
-                            self.hideHudAsync()
-                            Constant.MyClassConstants.transactionNumber = response.view?.fees?.rental?.confirmationNumber ?? ""
-                            self.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
-                            self.performSegue(withIdentifier: Constant.segueIdentifiers.confirmationScreenSegue, sender: nil)
-                        }, onError: { [weak self] error in
-                            self?.hideHudAsync()
-                            
-                            imageSlider.isHidden = false
-                            self?.isAgreed = false
-                            self?.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
-                            self?.presentErrorAlert(UserFacingCommonError.serverError(error))
-                        })
-                    }
+                        imageSlider.isHidden = false
+                        self?.isAgreed = false
+                        self?.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
+                        self?.presentErrorAlert(UserFacingCommonError.serverError(error))
+                    })
+                    
               }
             } else if !isAgreedToFees && Constant.MyClassConstants.hasAdditionalCharges {
                 let indexPath = IndexPath(row: 0, section: 8)
@@ -275,11 +262,10 @@ class CheckOutViewController: UIViewController {
                 checkoutOptionTBLview.scrollToRow(at: indexPath, at: .top, animated: true)
                 imageSlider.isHidden = false
                 self.presentAlert(with: Constant.AlertPromtMessages.failureTitle, message: Constant.AlertMessages.insuranceSelectionMessage)
-            } else if (Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange) && !Constant.MyClassConstants.recapPromotionsArray.isEmpty && Constant.MyClassConstants.exchangeFees[0].shopExchange?.selectedOfferName == "" {
+
+            } else if !isPromotionApplied {
                 imageSlider.isHidden = false
-                self.presentAlert(with: Constant.AlertPromtMessages.failureTitle, message: Constant.AlertMessages.promotionsMessage)
-            } else if !Constant.MyClassConstants.isFromExchange && (Constant.MyClassConstants.rentalFees[0].rental?.selectedOfferName == nil || Constant.MyClassConstants.rentalFees[0].rental?.selectedOfferName == "") {
-                imageSlider.isHidden = true
+                checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
                 self.presentAlert(with: Constant.AlertPromtMessages.failureTitle, message: Constant.AlertMessages.promotionsMessage)
             } else {
                 let indexPath = IndexPath(row: 0, section: 6)
@@ -291,22 +277,23 @@ class CheckOutViewController: UIViewController {
         } else {
             isAgreedToFees = true
             imageSlider.isHidden = true
-            self.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
+            self.checkoutOptionTBLview.reloadSections([11, 12], with:.automatic)
         }
     }
-    
     //***** Function called when notification top show trip details is fired. *****//
     func showTripDetails(notification: NSNotification) {
         self.performSegue(withIdentifier: Constant.segueIdentifiers.confirmationScreenSegue, sender: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        
         super.viewWillAppear(true)
+
         remainingResortHoldingTimeLable.text = "We are holding this unit for \(Constant.holdingTime) minutes".localized()
-        navigationController?.isNavigationBarHidden = false
+
+        navigationController?.navigationBar.isHidden = false
         emailTextToEnter = Session.sharedSession.contact?.emailAddress ?? ""
         checkoutOptionTBLview.reloadData()
+
         if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
             if let selectedPromotion = Constant.MyClassConstants.exchangeFees[0].shopExchange?.selectedOfferName {
                 self.recapSelectedPromotion = selectedPromotion
@@ -344,6 +331,10 @@ class CheckOutViewController: UIViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(changeLabelStatus), name: NSNotification.Name(rawValue: Constant.notificationNames.changeSliderStatus), object: nil)
         
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(true)
+        navigationController?.navigationBar.isHidden = true
     }
     
     func updateResortHoldingTime() {
@@ -726,33 +717,8 @@ extension CheckOutViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         if indexPath.section == 9 {
-            
-            showHudAsync()
-            guard let userAccessToken = Session.sharedSession.userAccessToken else { return }
-            UserClient.getCreditCards(userAccessToken, onSuccess: { response in
-                
-                Constant.MyClassConstants.memberCreditCardList = response
-                DispatchQueue.main.async(execute: {
-                    
-                    if Constant.MyClassConstants.selectedCreditCard.isEmpty {
-                        self.hideHudAsync()
-                        self.performSegue(withIdentifier: Constant.segueIdentifiers.selectPaymentMethodSegue, sender: nil)
-                    } else {
-                        let selectedCard = Constant.MyClassConstants.selectedCreditCard[0]
-                        if selectedCard.creditcardId == 0 {
-                            Constant.MyClassConstants.memberCreditCardList.append(selectedCard)
-                            self.hideHudAsync()
-                            self.performSegue(withIdentifier: Constant.segueIdentifiers.selectPaymentMethodSegue, sender: nil)
-                        } else {
-                            self.hideHudAsync()
-                            self.performSegue(withIdentifier: Constant.segueIdentifiers.selectPaymentMethodSegue, sender: nil)
-                        }
-                    }
-                })
-            }, onError: { [weak self] error in
-                self?.hideHudAsync()
-                self?.presentErrorAlert(UserFacingCommonError.serverError(error))
-            })
+            self.performSegue(withIdentifier: Constant.segueIdentifiers.selectPaymentMethodSegue, sender: nil)
+
         }
     }
     
@@ -1075,6 +1041,7 @@ extension CheckOutViewController: UITableViewDataSource {
                 if cell.promotionSelectionCheckBox.isHidden {
                     cell.forwardArrowButton.addTarget(self, action: #selector(CheckOutViewController.checkBoxCheckedAtIndex(_:)), for: .touchUpInside)
                 } else {
+                    isPromotionApplied = true
                     cell.promotionSelectionCheckBox.addTarget(self, action: #selector(CheckOutViewController.checkBoxCheckedAtIndex(_:)), for: .touchUpInside)
                 }
                 
@@ -1119,7 +1086,6 @@ extension CheckOutViewController: UITableViewDataSource {
             return cell
             
         case 5 :
-            
             guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.customCellNibNames.exchangeOrProtectionCell, for: indexPath) as? ExchangeOrProtectionCell else { return UITableViewCell() }
                 
                 if !isHeightZero {
@@ -1247,7 +1213,6 @@ extension CheckOutViewController: UITableViewDataSource {
                 
                 if !isHeightZero {
                     for subviews in cell.subviews {
-                        
                         subviews.isHidden = false
                     }
                     cell.discountLabel.text = recapSelectedPromotion
@@ -1337,13 +1302,18 @@ extension CheckOutViewController: UITableViewDataSource {
             cell.agreeButton?.tag = indexPath.section
             cell.agreeButton?.accessibilityValue = String(indexPath.section)
             cell.feesTitleLabel.text = Constant.AlertMessages.feesPaymentMessage
-            
-            if isAgreed {
+           
+            if isAgreedToFees {
                 cell.agreeLabel.backgroundColor = UIColor(colorLiteralRed: 170 / 255, green: 202 / 255, blue: 92 / 255, alpha: 1.0)
                 cell.agreeLabel.layer.borderColor = UIColor(colorLiteralRed: 170 / 255, green: 202 / 255, blue: 92 / 255, alpha: 1.0).cgColor
                 cell.agreeLabel.text = Constant.AlertMessages.agreeToFeesMessage
                 cell.agreeLabel.textColor = UIColor.white
+                cell.allInclusiveSelectedCheckBox.isHidden = false
             } else {
+                if let image = UIImage(named: Constant.assetImageNames.swipeArrowOrgImage) {
+                   cell.agreeButton?.imageName = image
+                }
+                cell.allInclusiveSelectedCheckBox.isHidden = true
                 cell.agreeLabel.backgroundColor = UIColor.white
                 cell.agreeLabel.textColor = UIColor(colorLiteralRed: 248 / 255, green: 107 / 255, blue: 63 / 255, alpha: 1.0)
                 cell.agreeLabel.layer.borderColor = #colorLiteral(red: 0.9725490196, green: 0.4196078431, blue: 0.2470588235, alpha: 1).cgColor
@@ -1358,6 +1328,7 @@ extension CheckOutViewController: UITableViewDataSource {
             cell.feesTitleLabel.text = Constant.AlertMessages.termsConditionMessage
             cell.agreeButton?.dragPointWidth = 70
             cell.agreeButton?.tag = indexPath.section
+            cell.allInclusiveSelectedCheckBox.isHidden = true
             if isAgreed {
                 cell.agreeLabel.backgroundColor = UIColor(colorLiteralRed: 170 / 255, green: 202 / 255, blue: 92 / 255, alpha: 1.0)
                 cell.agreeLabel.layer.borderColor = UIColor(colorLiteralRed: 170 / 255, green: 202 / 255, blue: 92 / 255, alpha: 1.0).cgColor
@@ -1370,12 +1341,18 @@ extension CheckOutViewController: UITableViewDataSource {
                 cell.agreeLabel.backgroundColor = UIColor(colorLiteralRed: 255 / 255, green: 117 / 255, blue: 58 / 255, alpha: 1.0)
                 cell.agreeLabel.textColor = UIColor.white
             } else if isAgreedToFees {
+                if let image = UIImage(named: Constant.assetImageNames.swipeArrowOrgImage) {
+                    cell.agreeButton?.imageName = image
+                }
                 cell.agreeLabel.backgroundColor = UIColor.white
                 cell.agreeLabel.layer.borderColor = UIColor(colorLiteralRed: 255 / 255, green: 117 / 255, blue: 58 / 255, alpha: 1.0).cgColor
                 cell.agreeLabel.text = Constant.AlertMessages.agreePayMessage
                 cell.agreeLabel.textColor = UIColor(colorLiteralRed: 255 / 255, green: 117 / 255, blue: 58 / 255, alpha: 1.0)
                 cell.agreeButton?.imageName = UIImage(named:Constant.assetImageNames.swipeArrowOrgImage)!
             } else {
+                if let image = UIImage(named: Constant.assetImageNames.swipeArrowGryImage) {
+                    cell.agreeButton?.imageName = image
+                }
                 cell.agreeLabel.text = Constant.AlertMessages.agreePayMessage
                 cell.agreeLabel.backgroundColor = UIColor.white
                 cell.agreeLabel.layer.borderColor = UIColor.lightGray.cgColor

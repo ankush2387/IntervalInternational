@@ -133,11 +133,9 @@ class MembershipIPadViewController: UIViewController {
             self.dismiss(animated: true, completion: nil)
             self.getContactMembershipInfo()
             //***** Getaway Alerts API call after successfull login *****//
-            Helper.getAllAlerts {[unowned self] error in
-                if case .some = error {
-                    self.presentAlert(with: "Error".localized(), message: error?.localizedDescription ?? "")
-                    }
-                }
+            if let accessToken = Session.sharedSession.userAccessToken {
+                self.readAllRentalAlerts(accessToken: accessToken)
+            }
         },
        onError: {[unowned self] _ in
         self.hideHudAsync()
@@ -146,6 +144,62 @@ class MembershipIPadViewController: UIViewController {
 
             }
         )
+    }
+    
+    // MARK: - Getaway Alerts
+    func readAllRentalAlerts(accessToken: DarwinAccessToken) {
+        ClientAPI.sharedInstance.readAllRentalAlerts(for: accessToken)
+            .then { rentalAlertArray in
+                
+                Constant.MyClassConstants.getawayAlertsArray.removeAll()
+                Constant.MyClassConstants.getawayAlertsArray = rentalAlertArray
+                Constant.MyClassConstants.activeAlertsArray.removeAllObjects()
+                
+                for alert in rentalAlertArray {
+                    if let alertId = alert.alertId {
+                        self.readRentalAlert(accessToken: accessToken, alertId: alertId)
+                    }
+                }
+            }
+            .onError { [weak self] error in
+                self?.presentErrorAlert(UserFacingCommonError.serverError(error as NSError))
+        }
+    }
+    
+    func readRentalAlert(accessToken: DarwinAccessToken, alertId: Int64) {
+        Constant.MyClassConstants.searchDateResponse.removeAll()
+        ClientAPI.sharedInstance.readRentalAlert(for: accessToken, and: alertId)
+            .then { rentalAlert in
+                
+                let rentalSearchDatesRequest = RentalSearchDatesRequest()
+                if let checkInTodate = rentalAlert.latestCheckInDate {
+                    rentalSearchDatesRequest.checkInToDate = Helper.convertStringToDate(dateString:checkInTodate, format:Constant.MyClassConstants.dateFormat)
+                }
+                if let checkInFromdate = rentalAlert.earliestCheckInDate {
+                    rentalSearchDatesRequest.checkInFromDate = Helper.convertStringToDate(dateString:checkInFromdate, format:Constant.MyClassConstants.dateFormat)
+                }
+                rentalSearchDatesRequest.resorts = rentalAlert.resorts
+                rentalSearchDatesRequest.destinations = rentalAlert.destinations
+                
+                Constant.MyClassConstants.dashBoardAlertsArray = Constant.MyClassConstants.getawayAlertsArray
+                self.readDates(accessToken: accessToken, request: rentalSearchDatesRequest, rentalAlert: rentalAlert)
+            }
+            .onError { [weak self] error in
+                self?.presentErrorAlert(UserFacingCommonError.serverError(error as NSError))
+        }
+    }
+    
+    func readDates(accessToken: DarwinAccessToken, request: RentalSearchDatesRequest, rentalAlert: RentalAlert) {
+        ClientAPI.sharedInstance.readDates(for: accessToken, and: request)
+            .then { rentalSearchDatesResponse in
+                intervalPrint("____-->\(rentalSearchDatesResponse)")
+                Constant.MyClassConstants.searchDateResponse.append(rentalAlert, rentalSearchDatesResponse)
+                Helper.performSortingForMemberNumberWithViewResultAndNothingYet()
+                
+            }
+            .onError { [weak self] error in
+                self?.presentErrorAlert(UserFacingCommonError.serverError(error as NSError))
+        }
     }
 }
 /** extension to implement table view datasource methods */

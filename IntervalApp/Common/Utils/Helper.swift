@@ -151,39 +151,6 @@ public class Helper {
         }
     }
     
-    //***** common  function that  takes month as int value and return month full spelled name name *****//
-    static func getMonthFullSpelledFromInt(monthNumber: Int) -> String {
-        
-        switch monthNumber {
-            
-        case 1:
-            return "January".localized()
-        case 2:
-            return "February".localized()
-        case 3:
-            return "March".localized()
-        case 4:
-            return "April".localized()
-        case 5:
-            return "May".localized()
-        case 6:
-            return "Jun".localized()
-        case 7:
-            return "July".localized()
-        case 8:
-            return "August".localized()
-        case 9:
-            return "September".localized()
-        case 10:
-            return "October".localized()
-        case 11:
-            return "November".localized()
-        case 12:
-            return "December".localized()
-        default:
-            return ""
-        }
-    }
     
     //***** common  function that  takes UIView and color to and gradient view on passed view *****//
     static func addLinearGradientToView(view: UIView, colour: UIColor, transparntToOpaque: Bool, vertical: Bool) {
@@ -254,10 +221,10 @@ public class Helper {
                 // Got an access token!  Save it for later use.
                 // Next, get the contact information.  See how many memberships this user has.
             },
-           onError: { _ in
-            sender.hideHudAsync()
-            sender.presentErrorAlert(UserFacingCommonError.generic)
-            completionHandler(false)
+                                               onError: { _ in
+                                                sender.hideHudAsync()
+                                                sender.presentErrorAlert(UserFacingCommonError.generic)
+                                                completionHandler(false)
             }
             )
         } else {
@@ -275,17 +242,17 @@ public class Helper {
             
             //***** Try to do the OAuth Request to obtain an access token *****//
             UserClient.getCurrentProfile(Session.sharedSession.userAccessToken,
-
-             onSuccess: {(contact) in
-                // Got an access token!  Save it for later use.
-                sender.hideHudAsync()
-                Session.sharedSession.contact = contact
-                //***** Next, get the contact information.  See how many memberships this user has. *****//
-                contactDidChange(sender: sender)
+                                         
+                                         onSuccess: {(contact) in
+                                            // Got an access token!  Save it for later use.
+                                            sender.hideHudAsync()
+                                            Session.sharedSession.contact = contact
+                                            //***** Next, get the contact information.  See how many memberships this user has. *****//
+                                            contactDidChange(sender: sender)
             },
-             onError: { _ in
-                sender.hideHudAsync()
-                sender.presentErrorAlert(UserFacingCommonError.generic)
+                                         onError: { _ in
+                                            sender.hideHudAsync()
+                                            sender.presentErrorAlert(UserFacingCommonError.generic)
             })
         } else {
             sender.presentAlert(with: Constant.AlertErrorMessages.networkError, message: Constant.AlertMessages.networkErrorMessage)
@@ -361,6 +328,12 @@ public class Helper {
             }
         }
     }
+    static func performSortingForMemberNumberWithViewResultAndNothingYet() {
+        
+        Constant.MyClassConstants.searchDateResponse.sort { $0.0.alertId ?? 0 > $1.0.alertId ?? 0 }
+        Constant.MyClassConstants.searchDateResponse.sort { $0.1.checkInDates.count > $1.1.checkInDates.count }
+        NotificationCenter.default.post(name:NSNotification.Name(rawValue: Constant.notificationNames.getawayAlertsNotification), object: nil)
+    }
     
     //**** Common function to get upcoming trips. ****//
     static func getUpcomingTripsForUser(CompletionBlock: @escaping ((Error?) -> Void)) {
@@ -395,7 +368,7 @@ public class Helper {
                 Constant.GetawaySearchResultGuestFormDetailData.countryCodeArray.append(country.countryCode!)
             }
             viewController.hideHudAsync()
-        
+            
         }) { _ in
             viewController.hideHudAsync()
             viewController.presentErrorAlert(UserFacingCommonError.generic)
@@ -952,9 +925,9 @@ public class Helper {
             
             senderVC.hideHudAsync()
         },
-           onError: {_ in
-            senderVC.hideHudAsync()
-            senderVC.presentErrorAlert(UserFacingCommonError.generic)
+                                   onError: {_ in
+                                    senderVC.hideHudAsync()
+                                    senderVC.presentErrorAlert(UserFacingCommonError.generic)
                                     
         })
     }
@@ -1383,8 +1356,8 @@ public class Helper {
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.notificationNames.reloadVideosNotification), object: nil)
                 senderViewcontroller.hideHudAsync()
             },
-                   onError: {_ in
-                    senderViewcontroller.hideHudAsync()
+                                   onError: {_ in
+                                    senderViewcontroller.hideHudAsync()
             })
         } else {
             
@@ -1480,7 +1453,7 @@ public class Helper {
     static func attributedString(from string: String, nonBoldRange: NSRange?, font: UIFont) -> NSAttributedString {
         let fontSize = UIFont.systemFontSize
         let attrs = [NSFontAttributeName: UIFont.boldSystemFont(ofSize: fontSize),
-            NSForegroundColorAttributeName: UIColor.black]
+                     NSForegroundColorAttributeName: UIColor.black]
         let nonBoldAttribute = [NSFontAttributeName: font ]
         let attrStr = NSMutableAttributedString(string: string, attributes: attrs)
         if let range = nonBoldRange {
@@ -1686,7 +1659,7 @@ public class Helper {
         senderViewController.navigationController?.transitioningDelegate = transitionManager
         senderViewController.navigationController!.present(viewController, animated: true, completion: nil)
     }
-
+    
     static func currencyCodeToSymbol(code: String) -> String {
         let currencyCode: String? = code
         let curr = Locale.availableIdentifiers.map { Locale(identifier: $0) }.filter { return currencyCode == $0.currencyCode }.map { ($0.identifier, $0.currencySymbol) }.flatMap { $0 }.first
@@ -1717,7 +1690,7 @@ public class Helper {
                                     Constant.MyClassConstants.initialVacationSearch = vacationSearch
                                     showScrollingCalendar(vacationSearch:vacationSearch)
                                     showAvailabilityResults(vacationSearch: vacationSearch)
-
+                                    
                                     if Constant.MyClassConstants.isFromSorting == false && Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType != VacationSearchType.Combined {
                                         helperDelegate?.resortSearchComplete()
                                     } else {
@@ -1728,11 +1701,11 @@ public class Helper {
                                     Constant.MyClassConstants.noAvailabilityView = false
                                     
         },
-           onError: {_ in
-            Constant.MyClassConstants.noAvailabilityView = true
-            Constant.MyClassConstants.isFromSorting = false
-            senderViewController.hideHudAsync()
-            senderViewController.presentErrorAlert(UserFacingCommonError.generic)
+                                   onError: {_ in
+                                    Constant.MyClassConstants.noAvailabilityView = true
+                                    Constant.MyClassConstants.isFromSorting = false
+                                    senderViewController.hideHudAsync()
+                                    senderViewController.presentErrorAlert(UserFacingCommonError.generic)
         }
         )
     }
@@ -1796,7 +1769,7 @@ public class Helper {
     }
     
     //Search both perform exchange search after rental
-
+    
     static func executeExchangeSearchDates(senderVC: UIViewController, vacationSearch: VacationSearch) {
         
         senderVC.showHudAsync()
@@ -2042,7 +2015,7 @@ public class Helper {
             })
         }
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-      
+        
         resendAlert.addAction(submitAction)
         resendAlert.addAction(cancelAction)
         
@@ -2206,18 +2179,23 @@ public class Helper {
         
         return transition
     }
-
-    static func getAllAlerts(CompletionBlock: @escaping ((Error?) -> Void)) {
-
-        //***** Getaway Alerts API call after successfull login *****//
-        RentalClient.getAlerts(Session.sharedSession.userAccessToken, onSuccess: { (response) in
-            Constant.MyClassConstants.getawayAlertsArray.removeAll()
-            Constant.MyClassConstants.getawayAlertsArray = response
-            Constant.MyClassConstants.activeAlertsArray.removeAllObjects()
-            CreateActionSheet().getStatusForAllAlerts()
+    
+    enum MonthType { case number, monthName }
+    static func getMonth(_ monthType: MonthType, for month: String) -> String? {
+        
+        let months: NSDictionary = ["JANUARY": "01", "FEBRUARY": "02", "MARCH": "03", "APRIL": "04", "MAY": "05", "JUNE": "06", "JULY": "07", "AUGUST": "08", "SEPTEMBER": "09", "OCTOBER": "10", "NOVEMBER": "11", "DECEMBER": "12"]
+        
+        switch monthType {
+        case .monthName:
+            guard let monthName = months.allKeys(for: month).first as? String else { return nil }
+            let lowerCasedMonthName = monthName.lowercased()
+            let firstLetter = String(lowerCasedMonthName.prefix(1)).capitalized
+            let restOfWord = String(lowerCasedMonthName.dropFirst())
+            return firstLetter + restOfWord
+        case .number:
+            return months.value(forKey: month.uppercased()) as? String
             
-        }) { error in
-            CompletionBlock(error)
         }
     }
 }
+

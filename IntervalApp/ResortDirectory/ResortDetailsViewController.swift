@@ -268,30 +268,12 @@ class ResortDetailsViewController: UIViewController {
     //***** Function call for Done button *****//
     
     @IBAction func doneButtonClicked(_ sender: AnyObject) {
-        if UIDevice().userInterfaceIdiom == .pad {
-            
-            if Constant.MyClassConstants.isFromExchange {
-                
-                if Constant.MyClassConstants.runningFunctionality == Constant.MyClassConstants.vacationSearchFunctionalityCheck {
-                    
-                    self.dismiss(animated: true, completion: nil)
-                    
-                } else {
-                navigationController?.view.layer.add(Helper.topToBottomTransition(), forKey: nil)
-                    _ = navigationController?.popViewController(animated: false)
-                }
-                
-            }
-            NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: Constant.notificationNames.closeButtonClickedNotification), object: nil)
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            navigationController?.popViewController(animated: false)
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.notificationNames.closeButtonClickedNotification), object: nil)
             
         } else {
-
-            if Constant.MyClassConstants.runningFunctionality == Constant.MyClassConstants.vacationSearchFunctionalityCheck {
-                self.dismiss(animated: true, completion: nil)
-            } else {
-                navigationController?.view.layer.add(Helper.topToBottomTransition(), forKey: nil)
-             _ = navigationController?.popViewController(animated: false)
-            }
+                _ = navigationController?.popViewController(animated: false)
         }
     }
     

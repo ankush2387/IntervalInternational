@@ -23,6 +23,21 @@ class PaymentSelectionViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        showHudAsync()
+        UserClient.getCreditCards(Session.sharedSession.userAccessToken!, onSuccess: { response in
+            
+            Constant.MyClassConstants.memberCreditCardList = response
+            self.hideHudAsync()
+            DispatchQueue.main.async(execute: {
+                self.paymentSelectionTBLview.reloadData()
+            })
+        }, onError: { [unowned self] error in
+            self.hideHudAsync()
+            self.paymentSelectionTBLview.reloadData()
+            self.presentErrorAlert(UserFacingCommonError.serverError(error))
+            
+        })
     }
     
     // function to dismis current controller on cancel button button pressed
@@ -44,7 +59,6 @@ class PaymentSelectionViewController: UIViewController {
         paymentSelectionTBLview.reloadData()
         
         var isCardExpired: Bool = false
-      
         let creditcard = Constant.MyClassConstants.memberCreditCardList[selectedCardIndex]
       
         let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
@@ -144,7 +158,7 @@ class PaymentSelectionViewController: UIViewController {
                 dateComponents.year = Int(year)
                 dateComponents.month = Int(month)
                 dateComponents.day = 01
-        
+                
                 let dt = Calendar(identifier: Calendar.Identifier.gregorian).date(from: dateComponents)
                 let df = DateFormatter()
                 df.dateFormat = Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.dateTimeFormat
@@ -178,24 +192,12 @@ class PaymentSelectionViewController: UIViewController {
         } else {
         
         //1. Create the alert controller.
-
-        let alert = UIAlertController(title: Constant.PaymentSelectionControllerCellIdentifiersAndHardCodedStrings.cvvAlertTitle,
-                                      message: "\(cardType!) Ending in \(lastFourDigitCardNumber)", preferredStyle: .alert)
+        let alert = UIAlertController(title: Constant.PaymentSelectionControllerCellIdentifiersAndHardCodedStrings.cvvAlertTitle, message: "\(cardType!) Ending in \(lastFourDigitCardNumber)", preferredStyle: .alert)
         
         //2. Add the text field. You can configure it however you need.
         alert.addTextField { (textField) in
             textField.placeholder = Constant.textFieldTitles.cvv
             textField.keyboardType = UIKeyboardType.numberPad
-            
-            //Add done button to numeric pad keyboard
-            /*let toolbarDone = UIToolbar.init()
-            toolbarDone.sizeToFit()
-            let barBtnDone = UIBarButtonItem.init(barButtonSystemItem: UIBarButtonSystemItem.done,
-                                                  target: self, action: #selector(PaymentSelectionViewController.doneButton_Clicked(_:)))
-            
-            toolbarDone.items = [barBtnDone] // You can even add cancel button too
-            textField.inputAccessoryView = toolbarDone*/
-            
         }
         
         alert.addAction(UIAlertAction(title: Constant.AlertPromtMessages.cancel, style: .default, handler: nil))
@@ -237,29 +239,20 @@ class PaymentSelectionViewController: UIViewController {
 }
 
 //Extension class starts from here
-
 extension PaymentSelectionViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         if indexPath.row == Constant.MyClassConstants.memberCreditCardList.count {
             
-            if UIDevice.current.userInterfaceIdiom == .pad {
-                
-                let storyboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
-                let secondController = storyboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.addDebitOrCreditCardViewController) as! AddDebitOrCreditCardViewController
+            let isRunningOnIphone = UIDevice.current.userInterfaceIdiom == .phone
+            let storyboardName = isRunningOnIphone ? Constant.storyboardNames.vacationSearchIphone : Constant.storyboardNames.vacationSearchIPad
+            let storyboard = UIStoryboard(name: storyboardName, bundle: nil)
+            if let addCardController = storyboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.addDebitOrCreditCardViewController) as? AddDebitOrCreditCardViewController {
                 modalTransitionStyle = .flipHorizontal
-                secondController.delegate = self
-                self.present(secondController, animated: true, completion: nil)
-            } else {
-            let storyboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
-            let secondViewController = storyboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.addDebitOrCreditCardViewController) as! AddDebitOrCreditCardViewController
-            modalTransitionStyle = .flipHorizontal
-            secondViewController.delegate = self
-            self.present(secondViewController, animated: true, completion: nil)
-         }
-        } else {
-            
+                addCardController.delegate = self
+                self.present(addCardController, animated: true, completion: nil)
+            }
         }
     }
 }
@@ -303,7 +296,6 @@ extension PaymentSelectionViewController: UITableViewDataSource {
                 
                 return UITableViewCell()
             }
-
             return cell
         } else {
             
@@ -372,7 +364,7 @@ extension PaymentSelectionViewController: UITableViewDataSource {
                 if let typeCode = creditcard.typeCode {
                     let cardType = Helper.cardTypeCodeMapping(cardType: typeCode)
                     self.cardType = cardType
-                    cell.cardType.text = "\(cardType) ending in"
+                    cell.cardType.text = "\(cardType) ending in".localized()
                 }
                 if selectedCardIndex == indexPath.row {
                     cell.cardSelectionCheckBox.checked = true
@@ -387,13 +379,12 @@ extension PaymentSelectionViewController: UITableViewDataSource {
             
             return cell
         }
-        
     }
 }
 
 //custom delegate method
 extension PaymentSelectionViewController: AddDebitOrCreditCardViewControllerDelegate {
-
+    
     func newCreditCardAdded() {
         self.dismiss(animated: true, completion: nil)
     }

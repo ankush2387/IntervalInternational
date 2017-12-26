@@ -180,16 +180,14 @@ final class LoginCoordinator: ComputationHelper {
 
         let contactID = String(contact.contactId)
         let newNotificationTopic = "/topics/\(configuration.get(.Environment, defaultValue: "NONE").uppercased())\(contact.contactId)"
-        guard let notificationTopic = try? encryptedStore.getItem(for: Persistent.notificationTopic.key, and: contactID, ofType: String()),
-        let oldNotificationTopic = notificationTopic else {
-            try? encryptedStore.save(item: newNotificationTopic, for: Persistent.notificationTopic.key, and: contactID)
-            messaging.subscribe(toTopic: newNotificationTopic)
-            return
-        }
         
-        if oldNotificationTopic != newNotificationTopic {
+        if let notificationTopic = try? encryptedStore.getItem(for: Persistent.notificationTopic.key, and: contactID, ofType: String()),
+            let oldNotificationTopic = notificationTopic, oldNotificationTopic != newNotificationTopic {
             messaging.unsubscribe(fromTopic: oldNotificationTopic)
             messaging.subscribe(toTopic: newNotificationTopic)
+        } else {
+            messaging.subscribe(toTopic: newNotificationTopic)
+            try? encryptedStore.save(item: newNotificationTopic, for: Persistent.notificationTopic.key, and: contactID)
         }
 
         guard let memberShips = sessionStore.contact?.memberships else {

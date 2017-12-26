@@ -101,10 +101,14 @@ extension AvailablePointToolViewController: UITableViewDataSource {
                         
                         let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
                         let myComponents = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: AblToolSelectedDate)
-                        if let weekday = myComponents.weekday, let month = myComponents.month, let year = myComponents.year, let day = myComponents.day {
+                        if let weekday = myComponents.weekday, let monthNumber = myComponents.month, let year = myComponents.year, let day = myComponents.day {
                             let year = String(describing: year)
                             let weekDay = "\(Helper.getWeekdayFromInt(weekDayNumber: weekday))"
-                            let month = "\(Helper.getMonthFullSpelledFromInt(monthNumber: month)) \( day)"
+                            var monthValue = String(monthNumber)
+                            if monthNumber < 10 {
+                                monthValue.insert("0", at: monthValue.startIndex)
+                            }
+                            let month = "\(Helper.getMonth(.monthName, for: "\(monthValue)") ?? "") \( day)"
                             cell.dateLabel.text = "\(weekDay), \(month), \(year)".localized()
                         }
                     }
@@ -158,9 +162,13 @@ extension AvailablePointToolViewController: UITableViewDataSource {
                 let usage = programPointsUsage[indexPath.row - 1]
                 let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
                 let myComponents = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: Helper.convertStringToDate(dateString: usage.expirationDate ?? "", format: Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.yyyymmddDateFormat))
-                if let year = myComponents.year, let month = myComponents.month, let day = myComponents.day {
+                if let year = myComponents.year, let monthNumber = myComponents.month, let day = myComponents.day {
                     let year = String(describing: year)
-                    let month = "\(Helper.getMonthFullSpelledFromInt(monthNumber: month)) \(day)"
+                    var monthValue = String(monthNumber)
+                    if monthNumber < 10 {
+                        monthValue.insert("0", at: monthValue.startIndex)
+                    }
+                    let month = "\(Helper.getMonth(.monthName, for: monthValue) ?? "") \( day)"
                     if let points = usage.points {
                         cell.pointsLabel.text = String(points).localized()
                     }
@@ -176,6 +184,7 @@ extension AvailablePointToolViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
        let returnValue = (section == 0) ? 2 : self.availablePoints.usage.count + 2
         return returnValue
+
     }
 }
 /** Extension for UITableVieWDelegate */
@@ -192,6 +201,7 @@ extension AvailablePointToolViewController: UITableViewDelegate {
                 return 90
             }
         } else {
+
             if indexPath.row == self.availablePoints.usage.count + 1 {
                 return 90
             } else {
@@ -237,7 +247,6 @@ extension AvailablePointToolViewController: UITableViewDelegate {
             let transitionManager = TransitionManager()
             navigationController?.transitioningDelegate = transitionManager
             navigationController?.pushViewController(viewController, animated: true)
-            
         }
     }
 }

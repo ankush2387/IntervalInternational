@@ -94,11 +94,10 @@ extension ResortDirectoryResortCell: UICollectionViewDataSource {
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.customCellNibNames.whereToGoTableViewCell, for: indexPath) as? ResortCollectionViewCell else { return UICollectionViewCell() }
-        cell.imgView.contentMode = .scaleAspectFit
 		if !Constant.MyClassConstants.imagesArray.isEmpty {
 			cell.imgView.setImageWith(URL(string: Constant.MyClassConstants.imagesArray[indexPath.row]), completed: { (image:UIImage?, error:Error?, _:SDImageCacheType, _:URL?) in
-				if (error != nil) {
-					cell.imgView.image = UIImage(named: Constant.MyClassConstants.noImage)
+                if case .some = error {
+					cell.imgView.image = #imageLiteral(resourceName: "NoImageIcon")
 				}
 				}, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
 		}

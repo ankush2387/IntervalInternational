@@ -61,14 +61,8 @@ class DashboardTableViewController: UITableViewController {
         super.viewDidLoad()
         
         //Get all alerts
-        Helper.getAllAlerts { error in
-            if case .some = error {
-                DispatchQueue.main.async {[weak self] in
-                    guard let strongSelf = self else { return }
-                    strongSelf.presentAlert(with: "Error".localized(), message: error?.localizedDescription ?? "")
-                }
-                
-            }
+        if let accessToken = Session.sharedSession.userAccessToken {
+            readAllRentalAlerts(accessToken: accessToken)
         }
         title = Constant.ControllerTitles.dashboardTableViewController
         showHudAsync()
@@ -106,6 +100,63 @@ class DashboardTableViewController: UITableViewController {
             
             //***** This line allows the user to swipe left-to-right to reveal the menu. We might want to comment this out if it becomes confusing. *****//
             self.view.addGestureRecognizer( rvc.panGestureRecognizer() )
+        }
+    }
+    
+    
+    // MARK: - Getaway Alerts
+    func readAllRentalAlerts(accessToken: DarwinAccessToken) {
+        ClientAPI.sharedInstance.readAllRentalAlerts(for: accessToken)
+            .then { rentalAlertArray in
+                
+                Constant.MyClassConstants.getawayAlertsArray.removeAll()
+                Constant.MyClassConstants.getawayAlertsArray = rentalAlertArray
+                Constant.MyClassConstants.activeAlertsArray.removeAllObjects()
+                
+                for alert in rentalAlertArray {
+                    if let alertId = alert.alertId {
+                        self.readRentalAlert(accessToken: accessToken, alertId: alertId)
+                    }
+                }
+            }
+            .onError { [weak self] error in
+                self?.presentErrorAlert(UserFacingCommonError.serverError(error as NSError))
+        }
+    }
+    
+    
+    func readRentalAlert(accessToken: DarwinAccessToken, alertId: Int64) {
+        Constant.MyClassConstants.searchDateResponse.removeAll()
+        ClientAPI.sharedInstance.readRentalAlert(for: accessToken, and: alertId)
+            .then { rentalAlert in
+                
+                let rentalSearchDatesRequest = RentalSearchDatesRequest()
+                if let checkInTodate = rentalAlert.latestCheckInDate {
+                    rentalSearchDatesRequest.checkInToDate = Helper.convertStringToDate(dateString:checkInTodate, format:Constant.MyClassConstants.dateFormat)
+                }
+                if let checkInFromdate = rentalAlert.earliestCheckInDate {
+                    rentalSearchDatesRequest.checkInFromDate = Helper.convertStringToDate(dateString:checkInFromdate, format:Constant.MyClassConstants.dateFormat)
+                }
+                rentalSearchDatesRequest.resorts = rentalAlert.resorts
+                rentalSearchDatesRequest.destinations = rentalAlert.destinations
+                
+                Constant.MyClassConstants.dashBoardAlertsArray = Constant.MyClassConstants.getawayAlertsArray
+                self.readDates(accessToken: accessToken, request: rentalSearchDatesRequest, rentalAlert: rentalAlert)
+            }
+            .onError { [weak self] error in self?.presentErrorAlert(UserFacingCommonError.serverError(error as NSError))
+        }
+    }
+    
+    func readDates(accessToken: DarwinAccessToken, request: RentalSearchDatesRequest, rentalAlert: RentalAlert) {
+        ClientAPI.sharedInstance.readDates(for: accessToken, and: request)
+            .then { rentalSearchDatesResponse in
+                intervalPrint("____-->\(rentalSearchDatesResponse)")
+                Constant.MyClassConstants.searchDateResponse.append(rentalAlert, rentalSearchDatesResponse)
+                Helper.performSortingForMemberNumberWithViewResultAndNothingYet()
+                
+            }
+            .onError { [weak self] error in
+                self?.presentErrorAlert(UserFacingCommonError.serverError(error as NSError))
         }
     }
     
@@ -310,7 +361,7 @@ class DashboardTableViewController: UITableViewController {
             cell.selectionStyle = UITableViewCellSelectionStyle.none
             
             let searchVacation = IUIKButton()
-              searchVacation.backgroundColor = UIColor(red: 224 / 255.0, green: 118 / 255.0, blue: 69 / 255.0, alpha: 1.0)
+            searchVacation.backgroundColor = UIColor(red: 224 / 255.0, green: 118 / 255.0, blue: 69 / 255.0, alpha: 1.0)
             searchVacation.setTitle(Constant.buttonTitles.searchVacation, for: UIControlState.normal)
             searchVacation.titleLabel?.font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: 22)
             searchVacation.addTarget(self, action:#selector(DashboardTableViewController.searchVactionPressed(_:)), for:UIControlEvents.touchUpInside)
@@ -319,12 +370,12 @@ class DashboardTableViewController: UITableViewController {
             searchVacation.translatesAutoresizingMaskIntoConstraints = false
             
             cell.contentView.addConstraint(NSLayoutConstraint(item: searchVacation, attribute: .leadingMargin, relatedBy: .equal, toItem: cell.contentView, attribute: .leadingMargin, multiplier: 1.0, constant: 20))
-          
+            
             cell.contentView.addConstraint( NSLayoutConstraint(item: searchVacation, attribute: .trailingMargin, relatedBy: .equal, toItem: cell.contentView, attribute:.trailingMargin, multiplier: 1.0, constant: -20))
             
             cell.contentView.addConstraint(NSLayoutConstraint(item: searchVacation, attribute: .top, relatedBy: .equal, toItem: cell.contentView, attribute: .top, multiplier: 1.0, constant: 20))
             cell.contentView.addConstraint(NSLayoutConstraint(item: searchVacation, attribute: .bottom, relatedBy: .equal, toItem: cell.contentView, attribute: .bottom, multiplier: 1.0, constant: -20))
-
+            
             return cell
             
         default :
@@ -414,10 +465,8 @@ class DashboardTableViewController: UITableViewController {
     func refreshAlertButtonPressed(_ sender: IUIKButton) {
         
         showAlertActivityIndicatorView = true
-        Helper.getAllAlerts {[unowned self] error in
-            if case .some = error {
-                self.presentAlert(with: "Error".localized(), message: error?.localizedDescription ?? "")
-            }
+        if let accessToken = Session.sharedSession.userAccessToken {
+            readAllRentalAlerts(accessToken: accessToken)
         }
         homeTableView.reloadData()
     }
@@ -643,7 +692,7 @@ extension DashboardTableViewController: UICollectionViewDataSource {
         case 2 :
             return (Constant.MyClassConstants.topDeals.count)
         case 3:
-            return Constant.MyClassConstants.getawayAlertsArray.count
+            return Constant.MyClassConstants.searchDateResponse.count
         default :
             return 0
         }
@@ -746,9 +795,9 @@ extension DashboardTableViewController: UICollectionViewDataSource {
             
             let priceLabel = UILabel(frame: CGRect(x: 10, y: 35, width: centerView.frame.size.width - 20, height: 20))
             if let pricefrom = topTenDeals.price?.fromPrice {
-                 priceLabel.text = "From $ \(pricefrom) Wk."
+                priceLabel.text = "From $ \(pricefrom) Wk."
             }
-           
+            
             priceLabel.numberOfLines = 2
             priceLabel.textAlignment = NSTextAlignment.center
             priceLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: 15)
@@ -765,44 +814,36 @@ extension DashboardTableViewController: UICollectionViewDataSource {
             
         case 3 :
             if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HomeAlertCollectionCell", for: indexPath) as? HomeAlertCollectionCell {
-                if let alertTitle = Constant.MyClassConstants.getawayAlertsArray[indexPath.row].name {
+                
+                let (alert, searchDatesResponse) = Constant.MyClassConstants.searchDateResponse[indexPath.row]
+                if let alertTitle = alert.name {
                     cell.alertTitle.text = alertTitle
                 }
                 
                 var fromDate = ""
                 var toDate = ""
-                if let earchInDate = Constant.MyClassConstants.getawayAlertsArray[indexPath.row].earliestCheckInDate {
+                if let earliestCheckInDate = alert.earliestCheckInDate {
                     
-                    let alertFromDate = Helper.convertStringToDate(dateString:earchInDate, format: Constant.MyClassConstants.dateFormat)
+                    let alertFromDate = Helper.convertStringToDate(dateString:earliestCheckInDate, format: Constant.MyClassConstants.dateFormat)
                     
                     fromDate = (Helper.getWeekDay(dateString: alertFromDate, getValue: Constant.MyClassConstants.month)).appendingFormat(". ").appending(Helper.getWeekDay(dateString: alertFromDate, getValue: Constant.MyClassConstants.date)).appending(", ").appending(Helper.getWeekDay(dateString: alertFromDate, getValue: Constant.MyClassConstants.year))
                 }
                 
-                if let latchInDate = Constant.MyClassConstants.getawayAlertsArray[indexPath.row].latestCheckInDate {
+                if let latestCheckInDate = alert.latestCheckInDate {
                     
-                    let alertToDate = Helper.convertStringToDate(dateString: latchInDate, format: Constant.MyClassConstants.dateFormat)
+                    let alertToDate = Helper.convertStringToDate(dateString: latestCheckInDate, format: Constant.MyClassConstants.dateFormat)
                     
-                    toDate = Helper.getWeekDay(dateString: alertToDate, getValue: Constant.MyClassConstants.month).appending(". ").appending(Helper.getWeekDay(dateString: alertToDate, getValue: Constant.MyClassConstants.date)).appending(", ").appending(Helper.getWeekDay(dateString: alertToDate, getValue: Constant.MyClassConstants.year))
+                    toDate = Helper.getWeekDay(dateString: alertToDate, getValue: "Month").appending(". ").appending(Helper.getWeekDay(dateString: alertToDate, getValue: "Date")).appending(", ").appending(Helper.getWeekDay(dateString: alertToDate, getValue: "Year"))
                 }
                 
                 let dateRange = fromDate.appending(" - " + toDate)
                 cell.alertDate.text = dateRange
-                
-                if let alertID = Constant.MyClassConstants.getawayAlertsArray[indexPath.row].alertId {
-                    let value = Constant.MyClassConstants.alertsSearchDatesDictionary.value(forKey: String( alertID)) as? NSArray
-                    if let checkInDates = value {
-                        
-                        if checkInDates.count > 0 {
-                            cell.alertStatus.text = Constant.buttonTitles.viewResults
-                            cell.alertStatus.textColor = .white
-                            cell.layer.borderColor = UIColor(red: 224.0 / 255.0, green: 118.0 / 255.0, blue: 69.0 / 255.0, alpha: 1.0).cgColor
-                            cell.backgroundColor = UIColor(red: 224.0 / 255.0, green: 118.0 / 255.0, blue: 69.0 / 255.0, alpha: 1.0)
-                        } else {
-                            cell.alertStatus.text = Constant.buttonTitles.nothingYet
-                            cell.alertStatus.textColor = UIColor.white
-                            cell.layer.borderColor = UIColor(red: 167.0 / 255.0, green: 167.0 / 255.0, blue: 170.0 / 255.0, alpha: 1.0).cgColor
-                            cell.backgroundColor = UIColor(red: 167.0 / 255.0, green: 167.0 / 255.0, blue: 170.0 / 255.0, alpha: 1.0)
-                        }
+                if let alertID = alert.alertId {
+                    if !searchDatesResponse.checkInDates.isEmpty {
+                        cell.alertStatus.text = Constant.buttonTitles.viewResults
+                        cell.alertStatus.textColor = .white
+                        cell.layer.borderColor = UIColor(red: 224.0 / 255.0, green: 118.0 / 255.0, blue: 69.0 / 255.0, alpha: 1.0).cgColor
+                        cell.backgroundColor = UIColor(red: 224.0 / 255.0, green: 118.0 / 255.0, blue: 69.0 / 255.0, alpha: 1.0)
                     } else {
                         cell.alertStatus.text = Constant.buttonTitles.nothingYet
                         cell.alertStatus.textColor = UIColor.white
@@ -874,7 +915,7 @@ extension UIViewController {
                     Constant.omnitureEvars.eVar47: "\(Constant.MyClassConstants.checkInDates.count)" ,
                     Constant.omnitureEvars.eVar53: "\(Constant.MyClassConstants.resortsArray.count)",
                     Constant.omnitureEvars.eVar61: Constant.MyClassConstants.searchOriginationPoint
-                    ]
+                ]
                 
                 ADBMobile.trackAction(Constant.omnitureEvents.event9, data: userInfo)
                 
@@ -907,7 +948,7 @@ extension UIViewController {
                     self.hideHudAsync()
                     Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: initialSearchCheckInDate, senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                 }
-                }) {[unowned self] error in
+            }) {[unowned self] error in
                 self.hideHudAsync()
                 self.presentErrorAlert(UserFacingCommonError.custom(title: "Error".localized(), body: error.localizedDescription))
             }
@@ -942,7 +983,7 @@ extension UIViewController {
             let viewController = storyboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.vacationSearchController)
             self.navigationController?.pushViewController(viewController, animated: true)
         }
-
+        
     }
     
     // Function to get to date and from date for search dates API calling
@@ -978,3 +1019,4 @@ extension UIViewController {
         return(toDate ?? Date(), fromDate ?? Date())
     }
 }
+

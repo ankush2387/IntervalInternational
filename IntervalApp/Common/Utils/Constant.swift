@@ -17,7 +17,7 @@ class Constant: NSObject {
     static var decreaseValue = 1
     static var activeAlertCount = 0
     static var needToReloadAlert = false
-    static var selectedAletToEdit: RentalAlert?
+    static var selectedAlertToEdit: RentalAlert?
     
   
       //***** common function to get device orientation *****//
@@ -77,7 +77,6 @@ class Constant: NSObject {
         
         static var countryListArray = ["Canada", "USA", "India", "Austrelia", "South Africa"]
         static var countryCodeArray: [String] = []
-        static var cardTypeArray = ["Visa", "Master", "Coral"]
         static var textFieldChangedInSection = -1
         static var nameOnCard = ""
         static var cardNumber = ""
@@ -88,7 +87,7 @@ class Constant: NSObject {
         static var state = ""
         static var pinCode = ""
         static var cardType = ""
-        static var expDate: String?
+        static var expDate = ""
         static var cvv = ""
         static var countryCode = ""
         static var stateCode = ""
@@ -194,7 +193,7 @@ class Constant: NSObject {
         //***** New creditcard screen constant string *****//
         static var newCardalertTitle = "New Creditcard Form".localized()
         static var newCardalertMess = "Card already exist.".localized()
-        static var alertReqFieldMsg = "All fields are mandatory".localized()
+        static var alertReqFieldMsg = "Please fill mandatory fields!".localized()
         static var noResultError = "No Result".localized()
         static var tryAgainError = "Try Again".localized()
         static var tdi = "TDI".localized()
@@ -296,6 +295,7 @@ class Constant: NSObject {
         static var allDestinations = "All Available Destinations".localized()
         
         static var redirect: (alertID: Int?, rentalAlert: RentalAlert?) = (nil, nil)
+        static var searchDateResponse: [(RentalAlert, RentalSearchDatesResponse)]  = []
         static var currentFromDate: Date?
         static var currentToDate: Date?
         static var checkInDates = [Date]()
@@ -303,7 +303,7 @@ class Constant: NSObject {
         static var combinedCheckInDates = [Date]()
         static var totalWindow = 90
         static var bedRoomSize = ["STUDIO", "ONE_BEDROOM", "TWO_BEDROOM", "THREE_BEDROOM", "FOUR_BEDROOM"]
-        static var alertSelectedUnitSizeArray: NSMutableArray = NSMutableArray()
+        static var alertSelectedUnitSizeArray = [String]()
         static var topDeals: [RentalDeal] = []
         static var flexExchangeDeals: [FlexExchangeDeal] = []
         static var resortDirectoryRegionArray = [Region]()
