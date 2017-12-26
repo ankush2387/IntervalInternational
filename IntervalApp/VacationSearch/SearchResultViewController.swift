@@ -581,7 +581,7 @@ class SearchResultViewController: UIViewController {
                     
                 } else {
                     guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInViewController) as? WhoWillBeCheckingInViewController else { return }
-                    viewController.filterRelinquishments = Constant.MyClassConstants.filterRelinquishments[self.selectedRow]
+                    viewController.filterRelinquishments = Constant.MyClassConstants.filterRelinquishments[0]
                     self.navigationController?.pushViewController(viewController, animated: true)
                     
                 }
@@ -1837,7 +1837,7 @@ extension SearchResultViewController: RenewelViewControllerDelegate {
         guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: SearchResultViewController.whoWillBeCheckingInViewController) as? WhoWillBeCheckingInViewController else { return }
         viewController.renewalsArray = renewalArray
         intervalPrint("_______>self.selectedRow,\(self.selectedRow)")
-        viewController.filterRelinquishments = Constant.MyClassConstants.filterRelinquishments[self.selectedRow]
+        viewController.filterRelinquishments = Constant.MyClassConstants.filterRelinquishments[0]
         self.navigationController?.pushViewController(viewController, animated: true)
     }
   
@@ -1945,7 +1945,7 @@ extension SearchResultViewController: WhoWillBeCheckInDelegate {
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
         guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: SearchResultViewController.whoWillBeCheckingInViewController) as? WhoWillBeCheckingInViewController else { return }
         viewController.renewalsArray = renewalArray
-        viewController.filterRelinquishments = Constant.MyClassConstants.filterRelinquishments[selectedRow]
+        viewController.filterRelinquishments = Constant.MyClassConstants.filterRelinquishments[0]
         self.navigationController?.pushViewController(viewController, animated: true)
     }
 }

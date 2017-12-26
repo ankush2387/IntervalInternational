@@ -356,7 +356,7 @@ extension PaymentSelectionViewController: UITableViewDataSource {
                 cell.expireDate.text = ""
             }
             
-            if let cardNumber = creditcard.cardHolderName {
+            if let cardNumber = creditcard.cardNumber {
                 
                 let last4 = cardNumber.substring(from:(cardNumber.index((cardNumber.endIndex), offsetBy: -4)))
                 cell.cardLastFourDigitNumber.text = last4

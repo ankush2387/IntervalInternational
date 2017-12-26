@@ -22,9 +22,7 @@ class CheckOutViewController: UIViewController {
     
     //class variables
     var requiredSectionIntTBLview = 13
-    //var isPromotionsEnabled = false
     var isTripProtectionEnabled = false
-    //var isGetawayOptionEnabled = false
     var bookingCostRequiredRows = 1
     var promotionSelectedIndex = 0
     var isAgreed = false
@@ -68,12 +66,14 @@ class CheckOutViewController: UIViewController {
         Constant.MyClassConstants.generalAdvisementsArray.removeAll()
         
         if Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange() || Constant.MyClassConstants.searchBothExchange {
-            for advisement in (Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.advisements)! {
-                
-                if advisement.title == Constant.MyClassConstants.additionalAdv {
-                    Constant.MyClassConstants.additionalAdvisementsArray.append(advisement)
-                } else {
-                    Constant.MyClassConstants.generalAdvisementsArray.append(advisement)
+            if let advisementsArray = Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.advisements {
+                for advisement in advisementsArray {
+                    
+                    if advisement.title == Constant.MyClassConstants.additionalAdv {
+                        Constant.MyClassConstants.additionalAdvisementsArray.append(advisement)
+                    } else {
+                        Constant.MyClassConstants.generalAdvisementsArray.append(advisement)
+                    }
                 }
             }
             
@@ -98,16 +98,18 @@ class CheckOutViewController: UIViewController {
             
         }
         } else {
-            for advisement in (Constant.MyClassConstants.viewResponse.resort?.advisements)! {
-                
-                if advisement.title == Constant.MyClassConstants.additionalAdv {
-                    Constant.MyClassConstants.additionalAdvisementsArray.append(advisement)
-                } else {
-                    Constant.MyClassConstants.generalAdvisementsArray.append(advisement)
+            if let advisementsArray = Constant.MyClassConstants.viewResponse.resort?.advisements {
+                for advisement in advisementsArray {
+                    
+                    if advisement.title == Constant.MyClassConstants.additionalAdv {
+                        Constant.MyClassConstants.additionalAdvisementsArray.append(advisement)
+                    } else {
+                        Constant.MyClassConstants.generalAdvisementsArray.append(advisement)
+                    }
                 }
             }
             
-            if let _: String? = Constant.MyClassConstants.rentalFees[0].insurance?.insuranceOfferHTML! {
+            if let _ = Constant.MyClassConstants.rentalFees[0].insurance?.insuranceOfferHTML {
                 showInsurance = true
             } else {
                 showInsurance = false
@@ -178,7 +180,7 @@ class CheckOutViewController: UIViewController {
             let strAccept = self.cellWebView.stringByEvaluatingJavaScript(from: jsStringAccept)
             let strReject = self.cellWebView.stringByEvaluatingJavaScript(from: jsStringReject)
          
-            if (isAgreedToFees || !Constant.MyClassConstants.hasAdditionalCharges) && (strAccept == "true" || strReject == "true") && !Constant.MyClassConstants.selectedCreditCard.isEmpty && isPromotionApplied {
+            if (isAgreedToFees || !Constant.MyClassConstants.hasAdditionalCharges) && (strAccept == "true" || strReject == "true") && !Constant.MyClassConstants.selectedCreditCard.isEmpty && (isPromotionApplied || Constant.MyClassConstants.recapViewPromotionCodeArray.isEmpty) {
 
                 showHudAsync()
                 imageSlider.isHidden = true
@@ -188,7 +190,7 @@ class CheckOutViewController: UIViewController {
                     self.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
                     
                     let continueToPayRequest = ExchangeProcessContinueToPayRequest()
-                    continueToPayRequest.creditCard = Constant.MyClassConstants.selectedCreditCard.last!
+                    continueToPayRequest.creditCard = Constant.MyClassConstants.selectedCreditCard.last
                     continueToPayRequest.confirmationDelivery = confirmationDelivery
                     continueToPayRequest.acceptTermsAndConditions = true
                     continueToPayRequest.acknowledgeAndAgreeResortFees = true
@@ -205,8 +207,10 @@ class CheckOutViewController: UIViewController {
                         Helper.removeStoredGuestFormDetials()
                         self.isAgreed = true
                         self.hideHudAsync()
-                        self.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
-                        Constant.MyClassConstants.transactionNumber = (response.view?.fees?.shopExchange?.confirmationNumber)!
+                       self.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
+                        if let confirmationNumber = response.view?.fees?.shopExchange?.confirmationNumber {
+                            Constant.MyClassConstants.transactionNumber = confirmationNumber
+                        }
                         self.performSegue(withIdentifier: Constant.segueIdentifiers.confirmationScreenSegue, sender: nil)
                         
                     }, onError: { [weak self] error in
@@ -222,7 +226,7 @@ class CheckOutViewController: UIViewController {
                     self.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
                     
                     let continueToPayRequest = RentalProcessRecapContinueToPayRequest()
-                    continueToPayRequest.creditCard = Constant.MyClassConstants.selectedCreditCard.last!
+                    continueToPayRequest.creditCard = Constant.MyClassConstants.selectedCreditCard.last
                     continueToPayRequest.confirmationDelivery = confirmationDelivery
                     continueToPayRequest.acceptTermsAndConditions = true
                     continueToPayRequest.acknowledgeAndAgreeResortFees = true
@@ -263,14 +267,12 @@ class CheckOutViewController: UIViewController {
                 imageSlider.isHidden = false
                 self.presentAlert(with: Constant.AlertPromtMessages.failureTitle, message: Constant.AlertMessages.insuranceSelectionMessage)
 
-            } else if !isPromotionApplied {
+            } else if !isPromotionApplied && !Constant.MyClassConstants.recapViewPromotionCodeArray.isEmpty {
                 imageSlider.isHidden = false
                 checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
                 self.presentAlert(with: Constant.AlertPromtMessages.failureTitle, message: Constant.AlertMessages.promotionsMessage)
             } else {
-                let indexPath = IndexPath(row: 0, section: 6)
                 imageSlider.isHidden = true
-                checkoutOptionTBLview.scrollToRow(at: indexPath, at: .top, animated: true)
                 self.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
                 self.presentAlert(with: Constant.AlertPromtMessages.failureTitle, message: Constant.AlertMessages.paymentSelectionMessage)
             }
@@ -285,8 +287,8 @@ class CheckOutViewController: UIViewController {
         self.performSegue(withIdentifier: Constant.segueIdentifiers.confirmationScreenSegue, sender: nil)
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(true)
 
         remainingResortHoldingTimeLable.text = "We are holding this unit for \(Constant.holdingTime) minutes".localized()
 
@@ -374,8 +376,8 @@ class CheckOutViewController: UIViewController {
                 }
             }
             
-            if let upgradeCost = Constant.MyClassConstants.exchangeFees[0].unitSizeUpgrade {
-                totalFeesArray.add(upgradeCost)
+            if let _ = Constant.MyClassConstants.exchangeFees[0].unitSizeUpgrade {
+                totalFeesArray.add(Constant.MyClassConstants.upgradeCost)
             }
             
             if !Constant.MyClassConstants.exchangeFees[0].renewals.isEmpty {
@@ -437,7 +439,7 @@ class CheckOutViewController: UIViewController {
             self.showHudAsync()
             //Creating Request to recap with Promotion
             
-            if Constant.MyClassConstants.isFromExchange {
+            if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
                 let processResort = ExchangeProcess()
                 processResort.currentStep = ProcessStep.Recap
                 processResort.processId = Constant.MyClassConstants.exchangeProcessStartResponse.processId
@@ -576,7 +578,7 @@ class CheckOutViewController: UIViewController {
             })
             
         } else {
-            RentalProcessClient.backToWhoIsChecking(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.getawayBookingLastStartedProcess, onSuccess: {(response) in
+            RentalProcessClient.backToWhoIsChecking(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.getawayBookingLastStartedProcess, onSuccess: { response in
                 
                 self.hideHudAsync()
                 _ = self.navigationController?.popViewController(animated: true)
@@ -676,14 +678,34 @@ class CheckOutViewController: UIViewController {
             
         } else {
             if let clubPointResort = filterRelinquishments.clubPoints?.resort {
-                Helper.getRelinquishmentDetails(resortCode: (clubPointResort.resortCode), viewController: self)
+                if let resortCode = clubPointResort.resortCode {
+                    getRelinquishmentDetails(resortCode: resortCode)
+                }
             } else if let openWeekResort = filterRelinquishments.openWeek?.resort {
-                Helper.getRelinquishmentDetails(resortCode: (openWeekResort.resortCode), viewController: self)
+                if let resortCode = openWeekResort.resortCode {
+                    getRelinquishmentDetails(resortCode: resortCode)
+                }
             } else if let depositResort = filterRelinquishments.deposit?.resort {
-                Helper.getRelinquishmentDetails(resortCode: (depositResort.resortCode), viewController: self)
+                if let resortCode = depositResort.resortCode {
+                    getRelinquishmentDetails(resortCode: resortCode)
+                }
             }
         }
     }
+    
+    // MARK: - Function to get relinquishment details
+    
+    func getRelinquishmentDetails(resortCode: String) {
+        self.showHudAsync()
+        Helper.getRelinquishmentDetails(resortCode: resortCode, successCompletionBlock: {
+            self.hideHudAsync()
+            self.performSegue(withIdentifier: Constant.segueIdentifiers.showRelinguishmentsDetailsSegue, sender: self)
+        }(), errorCompletionBlock: { [unowned self] error  in
+            self.hideHudAsync()
+            self.presentErrorAlert(UserFacingCommonError.serverError(error))
+        })
+    }
+    
     
     //Function to add remove eplus
     @IBAction func checkBoxClicked(sender: IUIKCheckbox) {
@@ -766,7 +788,7 @@ extension CheckOutViewController: UITableViewDataSource {
             
             return numberOfCells
         case 3 :
-            if Constant.MyClassConstants.isFromExchange {
+            if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
                 return 1
             } else {
                 return 0
@@ -785,8 +807,23 @@ extension CheckOutViewController: UITableViewDataSource {
                 return 2
             } else if Constant.MyClassConstants.enableGuestCertificate || self.isTripProtectionEnabled {
                 return 1
+            } else {
+                return 0
             }
-            return 0
+        case 7 :
+            if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
+                if Constant.MyClassConstants.exchangeFees[0].shopExchange?.selectedOfferName == "No Thanks" || Constant.MyClassConstants.exchangeFees[0].shopExchange?.selectedOfferName?.isEmpty ?? false {
+                    return 0
+                } else {
+                    return 1
+                }
+            } else {
+                if Constant.MyClassConstants.rentalFees[0].rental?.selectedOfferName == "No Thanks" || Constant.MyClassConstants.rentalFees[0].rental?.selectedOfferName?.isEmpty ?? false {
+                    return 0
+                } else {
+                    return 1
+                }
+            }
             
         default :
             if section == 5 && eplusAdded {
@@ -808,11 +845,11 @@ extension CheckOutViewController: UITableViewDataSource {
                 return 50
             }
         case 2 :
-            if Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental() || !Constant.MyClassConstants.searchBothExchange {
+            if Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental() {
                 
                 return 0
             } else {
-                if Constant.MyClassConstants.exchangeFees.isEmpty {
+                if !Constant.MyClassConstants.exchangeFees.isEmpty {
                     if Constant.MyClassConstants.exchangeFees[0].eplus == nil {
                         return 0
                     } else {
@@ -1002,7 +1039,7 @@ extension CheckOutViewController: UITableViewDataSource {
             
         case 1:
             //Advisements Cell
-            if indexPath.row == (Constant.MyClassConstants.generalAdvisementsArray.count) {
+            if indexPath.row == Constant.MyClassConstants.generalAdvisementsArray.count {
                 
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.reUsableIdentifiers.advisementsCellIdentifier, for: indexPath) as? AvailableDestinationCountryOrContinentsTableViewCell else { return UITableViewCell() }
                 cell.tooglebutton.addTarget(self, action: #selector(CheckOutViewController.toggleButtonIsTapped(_:)), for: .touchUpInside)
@@ -1330,25 +1367,25 @@ extension CheckOutViewController: UITableViewDataSource {
             cell.agreeButton?.tag = indexPath.section
             cell.allInclusiveSelectedCheckBox.isHidden = true
             if isAgreed {
-                cell.agreeLabel.backgroundColor = UIColor(colorLiteralRed: 170 / 255, green: 202 / 255, blue: 92 / 255, alpha: 1.0)
-                cell.agreeLabel.layer.borderColor = UIColor(colorLiteralRed: 170 / 255, green: 202 / 255, blue: 92 / 255, alpha: 1.0).cgColor
+                cell.agreeLabel.backgroundColor = #colorLiteral(red: 0.6666666667, green: 0.7921568627, blue: 0.3607843137, alpha: 1)
+                cell.agreeLabel.layer.borderColor = #colorLiteral(red: 0.6666666667, green: 0.7921568627, blue: 0.3607843137, alpha: 1).cgColor
                 cell.agreeLabel.text = Constant.MyClassConstants.verifying
                 cell.agreeLabel.textColor = UIColor.white
             } else if showLoader {
                 showLoader = false
                 cell.activityIndicator.isHidden = false
                 cell.agreeLabel.text = Constant.MyClassConstants.verifying
-                cell.agreeLabel.backgroundColor = UIColor(colorLiteralRed: 255 / 255, green: 117 / 255, blue: 58 / 255, alpha: 1.0)
+                cell.agreeLabel.backgroundColor = #colorLiteral(red: 1, green: 0.4588235294, blue: 0.2274509804, alpha: 1)
                 cell.agreeLabel.textColor = UIColor.white
             } else if isAgreedToFees {
                 if let image = UIImage(named: Constant.assetImageNames.swipeArrowOrgImage) {
                     cell.agreeButton?.imageName = image
                 }
                 cell.agreeLabel.backgroundColor = UIColor.white
-                cell.agreeLabel.layer.borderColor = UIColor(colorLiteralRed: 255 / 255, green: 117 / 255, blue: 58 / 255, alpha: 1.0).cgColor
+                cell.agreeLabel.layer.borderColor = #colorLiteral(red: 1, green: 0.4588235294, blue: 0.2274509804, alpha: 1).cgColor
                 cell.agreeLabel.text = Constant.AlertMessages.agreePayMessage
-                cell.agreeLabel.textColor = UIColor(colorLiteralRed: 255 / 255, green: 117 / 255, blue: 58 / 255, alpha: 1.0)
-                cell.agreeButton?.imageName = UIImage(named:Constant.assetImageNames.swipeArrowOrgImage)!
+                cell.agreeLabel.textColor = #colorLiteral(red: 1, green: 0.4588235294, blue: 0.2274509804, alpha: 1)
+                cell.agreeButton?.imageName = #imageLiteral(resourceName: "SwipeArrow_ORG")
             } else {
                 if let image = UIImage(named: Constant.assetImageNames.swipeArrowGryImage) {
                     cell.agreeButton?.imageName = image
@@ -1404,10 +1441,8 @@ extension CheckOutViewController: UITextFieldDelegate {
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
-        self.emailTextToEnter = "\(textField.text!)\(string)"
+        self.emailTextToEnter = "\(String(describing: textField.text))\(string)"
         
-        if self.emailTextToEnter.caseInsensitiveCompare((Session.sharedSession.contact?.emailAddress)!) == ComparisonResult.orderedSame {
-        }
         if emailTextToEnter == Session.sharedSession.contact?.emailAddress {
             self.showUpdateEmail = false
             let indexPath = IndexPath(row: 0, section: 10)

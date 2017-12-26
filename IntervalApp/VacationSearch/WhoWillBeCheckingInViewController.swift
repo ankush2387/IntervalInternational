@@ -104,8 +104,8 @@ class WhoWillBeCheckingInViewController: UIViewController {
         
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(true)
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(true)
         navigationController?.navigationBar.isHidden = true
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.updateResortHoldingTime), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.enableGuestFormCheckout), object: nil)
@@ -400,23 +400,36 @@ class WhoWillBeCheckingInViewController: UIViewController {
 
             if let openWeek = filterRelinquishments.openWeek {
                 if let resortCode = openWeek.resort?.resortCode {
-                    Helper.getRelinquishmentDetails(resortCode: resortCode, viewController: self)
+                    getRelinquishmentDetails(resortCode: resortCode)
                 }
             }
             
             if let deposits = filterRelinquishments.deposit {
                 if let resortCode = deposits.resort?.resortCode {
-                    Helper.getRelinquishmentDetails(resortCode: resortCode, viewController: self)
+                    getRelinquishmentDetails(resortCode: resortCode)
                 }
             }
             
             if let clubPoints = filterRelinquishments.clubPoints {
                 if let resortCode = clubPoints.resort?.resortCode {
-                    Helper.getRelinquishmentDetails(resortCode: resortCode, viewController: self)
+                    getRelinquishmentDetails(resortCode: resortCode)
                 }
             }
         }
         
+    }
+    
+    // MARK: - Function to get relinquishment details
+    
+    func getRelinquishmentDetails(resortCode: String) {
+        self.showHudAsync()
+        Helper.getRelinquishmentDetails(resortCode: resortCode, successCompletionBlock: {
+            self.hideHudAsync()
+            self.performSegue(withIdentifier: Constant.segueIdentifiers.showRelinguishmentsDetailsSegue, sender: self)
+        }(), errorCompletionBlock: { [unowned self] error  in
+            self.hideHudAsync()
+            self.presentErrorAlert(UserFacingCommonError.serverError(error))
+        })
     }
     
     //***** Function to perform checkout *****//
