@@ -60,7 +60,7 @@ final class BiometricAuthentication {
                 return
             }
 
-            if #available(iOS 11.0, *), self.context.biometryType == .faceID {
+            if #available(iOS 11.0, *), self.context.biometryType == .typeFaceID {
                 self.authenticateWith(localizedReason: "Logging in with Face ID".localized())
                     .then(resolve)
                     .onError(reject)
@@ -71,7 +71,7 @@ final class BiometricAuthentication {
             }
         }
     }
-    
+
     private func authenticateWith(localizedReason: String) -> Promise<Void> {
         return Promise { [unowned self] resolve, reject in
             self.context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics,
