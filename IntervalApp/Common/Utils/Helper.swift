@@ -1715,7 +1715,6 @@ public class Helper {
      */
     
     static func executeExchangeSearchAvailability(activeInterval: BookingWindowInterval!, checkInDate: Date!, senderViewController: UIViewController, vacationSearch: VacationSearch) {
-        
         let request = ExchangeSearchAvailabilityRequest()
         request.checkInDate = checkInDate
         request.resortCodes = activeInterval.resortCodes!
@@ -1789,18 +1788,19 @@ public class Helper {
                                     
                                     // Check not available checkIn dates for the active interval
                                     if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
-                                        
+                                        senderVC.hideHudAsync()
                                         // We do not have available CheckInDates in Rental and Exchange
                                         //if (self.rentalHasNotAvailableCheckInDates) {
                                         // self.showNotAvailabilityResults()
                                         //}
-                                        
+                                       
                                     } else {
                                         vacationSearch.resolveCheckInDateForInitialSearch()
                                         executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: vacationSearch.searchCheckInDate!, format: Constant.MyClassConstants.dateFormat), senderViewController: senderVC, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                                     }
         },
                                    onError: { _ in
+                                    senderVC.hideHudAsync()
                                     senderVC.presentErrorAlert(UserFacingCommonError.generic)
                                     
         }
