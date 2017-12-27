@@ -375,7 +375,7 @@ class VacationSearchIPadViewController: UIViewController, UITableViewDelegate, U
             let realm = try! Realm()
             let allDest = Helper.getLocalStorageWherewanttoGo()
             if allDest.count > 0 {
-                try! realm.write {
+               try! realm.write {
                     realm.deleteAll()
                 }
             }
@@ -537,7 +537,15 @@ class VacationSearchIPadViewController: UIViewController, UITableViewDelegate, U
         )
         
     }
-    
+    func noAvailabilityResults(vacationSearch: VacationSearch) {
+        hideHudAsync()
+        Constant.MyClassConstants.initialVacationSearch = vacationSearch
+        let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
+        if let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.vacationSearchController) as? VacationSearchResultIPadController {
+            self.navigationController?.pushViewController(viewController, animated: true)
+        }
+        
+    }
 }
 
 extension VacationSearchIPadViewController: DateAndPassengerSelectionTableViewCellDelegate {
@@ -835,6 +843,7 @@ extension VacationSearchIPadViewController: SearchTableViewCellDelegate {
                                     sender.isEnabled = true
                                     self.hideHudAsync()
                                     Helper.showNotAvailabilityResults()
+                                    self.noAvailabilityResults(vacationSearch: vacationSearch)
                                 } else {
                                     vacationSearch.resolveCheckInDateForInitialSearch()
                                     if let searchCheckInDate = vacationSearch.searchCheckInDate {
