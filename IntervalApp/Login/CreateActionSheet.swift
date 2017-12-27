@@ -170,32 +170,32 @@ class CreateActionSheet: UITableViewController {
 // function to send omniture tracking event2
 func sendOmnitureTrackCallForEvent2() {
     
-    let Product = Session.sharedSession.selectedMembership?.getProductWithHighestTier()
+    let product = Session.sharedSession.selectedMembership?.getProductWithHighestTier()
     
     // omniture tracking with event 2
     let userInfo = NSMutableDictionary()
-    userInfo.addEntries(from: [Constant.omnitureEvars.eVar1: (Session.sharedSession.selectedMembership?.memberNumber) as Any])
+
+    userInfo.addEntries(from: [Constant.omnitureEvars.eVar1 : Session.sharedSession.selectedMembership?.memberNumber ?? ""])
     
-    userInfo.addEntries(from: [Constant.omnitureEvars.eVar3: "\(Product?.productCode ?? ""))-\(Session.sharedSession.selectedMembership?.membershipTypeCode ?? ""))"])
-    userInfo.addEntries(from: [Constant.omnitureEvars.eVar4: ""])
-    
+    userInfo.addEntries(from: [Constant.omnitureEvars.eVar3 : "\(String(describing: product?.productCode))-\(String(describing: Session.sharedSession.selectedMembership?.membershipTypeCode))"])
+    userInfo.addEntries(from: [Constant.omnitureEvars.eVar4 : ""])
+
     userInfo.addEntries(from: [Constant.omnitureEvars.eVar5: Constant.MyClassConstants.loginOriginationPoint])
     userInfo.addEntries(from: [Constant.omnitureEvars.eVar6: ""])
-    if let expirationDate = Product?.expirationDate {
-        
-        switch Product?.productCode {
-            
+    
+    if let expirationDate = product?.expirationDate {
+        switch product?.productCode {
         case Constant.productCodeImageNames.basic?:
-            userInfo.addEntries(from: [Constant.omnitureEvars.eVar7: Helper.getUpcommingcheckinDatesDiffrence(date: expirationDate)])
+            userInfo.addEntries(from: [Constant.omnitureEvars.eVar7 :Helper.getUpcommingcheckinDatesDiffrence(date: expirationDate)])
             
         case Constant.productCodeImageNames.cig?:
-            userInfo.addEntries(from: [Constant.omnitureEvars.eVar8: Helper.getUpcommingcheckinDatesDiffrence(date: expirationDate)])
+            userInfo.addEntries(from: [Constant.omnitureEvars.eVar8 :Helper.getUpcommingcheckinDatesDiffrence(date: expirationDate)])
             
         case Constant.productCodeImageNames.gold?:
-            userInfo.addEntries(from: [Constant.omnitureEvars.eVar9: Helper.getUpcommingcheckinDatesDiffrence(date: expirationDate)])
+            userInfo.addEntries(from: [Constant.omnitureEvars.eVar9 :Helper.getUpcommingcheckinDatesDiffrence(date: expirationDate)])
             
         case Constant.productCodeImageNames.platinum?:
-            userInfo.addEntries(from: [Constant.omnitureEvars.eVar10: Helper.getUpcommingcheckinDatesDiffrence(date: expirationDate)])
+            userInfo.addEntries(from: [Constant.omnitureEvars.eVar10 :Helper.getUpcommingcheckinDatesDiffrence(date: expirationDate)])
             
         default:
             break
@@ -212,47 +212,45 @@ func sendOmnitureTrackCallForEvent2() {
             [Constant.omnitureEvars.eVar16: Constant.AlertPromtMessages.no])
     }
     
-    var tripTypeString = ""
+    var tripTypeString = [String]()
     if Constant.MyClassConstants.exchangeCounter > 0 {
-        tripTypeString = tripTypeString.appending("\(Constant.omnitureCommonString.exchage)-\(Constant.MyClassConstants.exchangeCounter)")
+        tripTypeString.append("\(Constant.omnitureCommonString.exchage)-\(Constant.MyClassConstants.exchangeCounter)")
     } else {
-        tripTypeString = tripTypeString.appending("\(Constant.omnitureCommonString.exchage)-\(Constant.omnitureCommonString.notAvailable)")
+        tripTypeString.append("\(Constant.omnitureCommonString.exchage)-\(Constant.omnitureCommonString.notAvailable)")
     }
     
     if Constant.MyClassConstants.getawayCounter > 0 {
-        tripTypeString = tripTypeString.appending("\(Constant.omnitureCommonString.getaway)-\(Constant.MyClassConstants.getawayCounter)")
+        tripTypeString.append("\(Constant.omnitureCommonString.getaway)-\(Constant.MyClassConstants.getawayCounter)")
     } else {
-        tripTypeString = tripTypeString.appending("\(Constant.omnitureCommonString.getaway)-\(Constant.omnitureCommonString.notAvailable)")
+        tripTypeString.append("\(Constant.omnitureCommonString.getaway)-\(Constant.omnitureCommonString.notAvailable)")
     }
     
     if Constant.MyClassConstants.shortStayCounter > 0 {
-        tripTypeString = tripTypeString.appending("\(Constant.omnitureCommonString.shortStay)-\(Constant.MyClassConstants.shortStayCounter)")
+         tripTypeString.append("\(Constant.omnitureCommonString.shortStay)-\(Constant.MyClassConstants.shortStayCounter)")
     } else {
-        tripTypeString = tripTypeString.appending("\(Constant.omnitureCommonString.shortStay)-\(Constant.omnitureCommonString.notAvailable)")
+        tripTypeString.append("\(Constant.omnitureCommonString.shortStay)-\(Constant.omnitureCommonString.notAvailable)")
     }
     
     if Constant.MyClassConstants.acomodationCertificateCounter > 0 {
-        tripTypeString = tripTypeString.appending("\(Constant.omnitureCommonString.acomodationCertificate)-\(Constant.MyClassConstants.acomodationCertificateCounter)")
+        tripTypeString.append("\(Constant.omnitureCommonString.acomodationCertificate)-\(Constant.MyClassConstants.acomodationCertificateCounter)")
     } else {
-        tripTypeString = tripTypeString.appending("\(Constant.omnitureCommonString.acomodationCertificate)-\(Constant.omnitureCommonString.notAvailable)")
+       tripTypeString.append("\(Constant.omnitureCommonString.acomodationCertificate)-\(Constant.omnitureCommonString.notAvailable)")
     }
     
     if Constant.MyClassConstants.flightCounter > 0 {
-        tripTypeString = tripTypeString.appending("\(Constant.omnitureCommonString.flightBooking)-\(Constant.MyClassConstants.flightCounter)")
+        tripTypeString.append("\(Constant.omnitureCommonString.flightBooking)-\(Constant.MyClassConstants.flightCounter)")
     } else {
-        tripTypeString = tripTypeString.appending("\(Constant.omnitureCommonString.flightBooking)-\(Constant.omnitureCommonString.notAvailable)")
+        tripTypeString.append("\(Constant.omnitureCommonString.flightBooking)-\(Constant.omnitureCommonString.notAvailable)")
     }
     
     if Constant.MyClassConstants.carRentalCounter > 0 {
-        tripTypeString = tripTypeString.appending("\(Constant.omnitureCommonString.carRental)-\(Constant.MyClassConstants.carRentalCounter)")
+        tripTypeString.append("\(Constant.omnitureCommonString.carRental)-\(Constant.MyClassConstants.carRentalCounter)")
     } else {
-        tripTypeString = tripTypeString.appending("\(Constant.omnitureCommonString.carRental)-\(Constant.omnitureCommonString.notAvailable)")
+        tripTypeString.append("\(Constant.omnitureCommonString.carRental)-\(Constant.omnitureCommonString.notAvailable)")
     }
     
-    userInfo.addEntries(from: [Constant.omnitureEvars.eVar17: tripTypeString])
-    userInfo.addEntries(from: [Constant.omnitureEvars.eVar27: Session.sharedSession.contact?.contactId as Any])
+    userInfo.addEntries(from: [Constant.omnitureEvars.eVar17 : tripTypeString.joined(separator: ", ")])
+    userInfo.addEntries(from: [Constant.omnitureEvars.eVar27 : Session.sharedSession.contact?.contactId ?? 0])
     
-    intervalPrint(userInfo)
-    
-    ADBMobile.trackAction(Constant.omnitureEvents.event2, data: userInfo as! [AnyHashable: Any])
+    ADBMobile.trackAction(Constant.omnitureEvents.event2, data: userInfo as? [AnyHashable: Any])
 }

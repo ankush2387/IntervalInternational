@@ -239,7 +239,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
     }
     
     //***** Function called when detail button is pressed. ******//
-    func resortDetailsClicked(_ sender: IUIKButton) {
+    @IBAction func resortDetailsClicked(_ sender: IUIKButton) {
         if sender.tag == 0 {
             self.performSegue(withIdentifier: Constant.segueIdentifiers.showResortDetailsSegue, sender: nil)
         } else {
@@ -262,19 +262,6 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
                 }
             }
         }
-    }
-    
-    // MARK: - Function to get relinquishment details
-    
-    func getRelinquishmentDetails(resortCode: String) {
-        self.showHudAsync()
-        Helper.getRelinquishmentDetails(resortCode: resortCode, successCompletionBlock: {
-            self.hideHudAsync()
-            self.performSegue(withIdentifier: Constant.segueIdentifiers.showRelinguishmentsDetailsSegue, sender: self)
-        }(), errorCompletionBlock: { [unowned self] error  in
-            self.hideHudAsync()
-            self.presentErrorAlert(UserFacingCommonError.serverError(error))
-        })
     }
     
     // MARK: - Function to get relinquishment details
@@ -640,15 +627,17 @@ extension WhoWillBeCheckingInIPadViewController: UITableViewDataSource {
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        if indexPath.section == 0 {
+        switch indexPath.section {
             
-            let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.viewDetailsTBLcell, for: indexPath) as! ViewDetailsTBLcell
+        case 0 :
+            
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.viewDetailsTBLcell, for: indexPath) as? ViewDetailsTBLcell else { return UITableViewCell() }
             cell.setUpDetailsCell(indexPath: indexPath, filterRelinquishments: filterRelinquishments)
             
             return cell
-        } else if indexPath.section == 1 {
+        case 1 :
             
-            let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.checkingInUserListTBLcell, for: indexPath) as! CheckingInUserListTBLcell
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.checkingInUserListTBLcell, for: indexPath) as? CheckingInUserListTBLcell else { return UITableViewCell() }
             if indexPath.row == Constant.MyClassConstants.membershipContactArray.count {
                 cell.nameLabel.text = Constant.WhoWillBeCheckingInViewControllerCellIdentifiersAndHardCodedStrings.noneOfAboveContactString
             } else {
@@ -668,7 +657,7 @@ extension WhoWillBeCheckingInIPadViewController: UITableViewDataSource {
             cell.checkBox.addTarget(self, action: #selector(WhoWillBeCheckingInIPadViewController.checkBoxCheckedAtIndex(_:)), for: .touchUpInside)
             cell.selectionStyle = .none
             return cell
-        } else if indexPath.section == 2 {
+        case 2 :
             
             let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.guestCertificatePriceCell, for: indexPath) as! GuestCertificatePriceCell
             guard let guestPrices = Constant.MyClassConstants.guestCertificate?.prices else { return cell }
@@ -686,22 +675,22 @@ extension WhoWillBeCheckingInIPadViewController: UITableViewDataSource {
             }
             
             for price in guestPrices where price.productCode == memberTier {
-                    
-                    let floatPriceString = "\(price.price)"
-                    let priceArray = floatPriceString.components(separatedBy: ".")
-                    Constant.MyClassConstants.guestCertificatePrice = Double(price.price)
-                    cell.certificatePriceLabel.text = "\(priceArray.first!)."
-                    if (priceArray.last?.characters.count)! > 1 {
-                        cell.fractionValue.text = "\(priceArray.last!)"
-                    } else {
-                        cell.fractionValue.text = "\(priceArray.last!)0"
-                    }
+                
+                let floatPriceString = "\(price.price)"
+                let priceArray = floatPriceString.components(separatedBy: ".")
+                Constant.MyClassConstants.guestCertificatePrice = Double(price.price)
+                cell.certificatePriceLabel.text = "\(priceArray.first!)."
+                if (priceArray.last?.characters.count)! > 1 {
+                    cell.fractionValue.text = "\(priceArray.last!)"
+                } else {
+                    cell.fractionValue.text = "\(priceArray.last!)0"
+                }
             }
             
             cell.infoButton.addTarget(self, action: #selector(showCertificateInfo), for: .touchUpInside)
             return cell
             
-        } else if indexPath.section == 3 || indexPath.section == 5 {
+        case 3, 5 :
             
             let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.guestTextFieldCell, for: indexPath) as! GuestTextFieldCell
             cell.nameTF.text = ""
@@ -762,7 +751,7 @@ extension WhoWillBeCheckingInIPadViewController: UITableViewDataSource {
             cell.selectionStyle = .none
             return cell
             
-        } else {
+        default :
             
             if indexPath.row == 0 || indexPath.row == 4 {
                 

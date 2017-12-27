@@ -33,7 +33,7 @@ class ViewDetailsTBLcell: UITableViewCell {
     }
     
     func setUpDetailsCell (indexPath: IndexPath, filterRelinquishments: ExchangeRelinquishment) {
-        resortDetailsButton.addTarget(self, action: #selector(WhoWillBeCheckingInIPadViewController.resortDetailsClicked(_:)), for: .touchUpInside)
+        //resortDetailsButton.addTarget(self, action: #selector(WhoWillBeCheckingInIPadViewController.resortDetailsClicked(_:)), for: .touchUpInside)
         if indexPath.row == 0 {
             resortDetailsButton.tag = indexPath.row
             lblHeading.text = "Resort Detail"
@@ -55,7 +55,8 @@ class ViewDetailsTBLcell: UITableViewCell {
                     }
                 }
             }
-            resortDetailsButton.addTarget(self, action: #selector(WhoWillBeCheckingInViewController.resortDetailsClicked(_:)), for: .touchUpInside)
+//            let isRunningOnIpad = UIDevice.current.userInterfaceIdiom == .pad
+//            isRunningOnIpad ? resortDetailsButton.addTarget(self, action: #selector(WhoWillBeCheckingInIPadViewController.resortDetailsClicked(_:)), for: .touchUpInside) : resortDetailsButton.addTarget(self, action: #selector(WhoWillBeCheckingInViewController.resortDetailsClicked(_:)), for: .touchUpInside)
             resortDetailsButton.tag = indexPath.row
             resortImageView?.image = #imageLiteral(resourceName: "EXG_CO")
         }

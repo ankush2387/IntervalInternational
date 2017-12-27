@@ -744,7 +744,6 @@ extension CheckOutViewController: UITableViewDelegate {
         
         if indexPath.section == 9 {
             self.performSegue(withIdentifier: Constant.segueIdentifiers.selectPaymentMethodSegue, sender: nil)
-            
         }
     }
     

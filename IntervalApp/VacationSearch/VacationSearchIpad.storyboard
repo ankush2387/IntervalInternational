@@ -3501,6 +3501,9 @@
                                                             <color key="value" red="0.0" green="0.46666666666666667" blue="0.74509803921568629" alpha="1" colorSpace="calibratedRGB"/>
                                                         </userDefinedRuntimeAttribute>
                                                     </userDefinedRuntimeAttributes>
+                                                    <connections>
+                                                        <action selector="resortDetailsClicked:" destination="zkE-Tl-DU1" eventType="touchUpInside" id="UjO-zd-o2q"/>
+                                                    </connections>
                                                 </button>
                                             </subviews>
                                             <constraints>
@@ -5093,7 +5096,7 @@
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="170" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="UQr-UE-QNt">
-                                <rect key="frame" x="30" y="60" width="708" height="915"/>
+                                <rect key="frame" x="30" y="60" width="708" height="964"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="ViewDetailsTBLcell" rowHeight="130" id="nh8-hF-3hI" customClass="ViewDetailsTBLcell" customModule="IntervalApp" customModuleProvider="target">
@@ -10497,14 +10500,14 @@ Units Upgrade with this selection.</string>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="YZc-ym-UF5">
-                                                    <rect key="frame" x="15" y="21" width="33" height="21"/>
+                                                    <rect key="frame" x="15" y="21" width="33.5" height="20.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="tE9-qX-OLe">
-                                                    <rect key="frame" x="15" y="45" width="44" height="14"/>
+                                                    <rect key="frame" x="15" y="44.5" width="44" height="14.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                     <nil key="textColor"/>
@@ -10571,9 +10574,9 @@ Units Upgrade with this selection.</string>
         <image name="input_clear" width="15" height="15"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="bm5-1w-IwW"/>
+        <segue reference="AZs-HP-gzH"/>
         <segue reference="m4o-mh-cv9"/>
-        <segue reference="5di-wX-yoy"/>
+        <segue reference="sel-eD-RNr"/>
         <segue reference="qcI-7D-UcK"/>
         <segue reference="zQf-x1-cmb"/>
         <segue reference="TbB-bh-gK3"/>

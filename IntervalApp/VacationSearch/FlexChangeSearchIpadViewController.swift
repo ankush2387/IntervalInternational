@@ -124,9 +124,7 @@ class FlexChangeSearchIpadViewController: UIViewController {
             
             Constant.MyClassConstants.initialVacationSearch = VacationSearch(settings, searchCriteria)
             
-            ExchangeClient.searchDates(Session.sharedSession.userAccessToken, request:Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request, onSuccess: { (response) in
-                
-                self.hideHudAsync()
+            ExchangeClient.searchDates(Session.sharedSession.userAccessToken, request:Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request, onSuccess: { response in
                 Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.response = response
                 Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                 // Get activeInterval (or initial search interval)
