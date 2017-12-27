@@ -29,6 +29,11 @@ xcode-select --install
 </table>
 
 # Available Actions
+### certs
+```
+fastlane certs
+```
+Updates the provisioning profile on computer
 ### development
 ```
 fastlane development
