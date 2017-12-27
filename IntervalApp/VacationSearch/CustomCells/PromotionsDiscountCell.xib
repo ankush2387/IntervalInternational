@@ -30,39 +30,25 @@
                         <color key="textColor" red="0.50588235290000005" green="0.71764705880000002" blue="0.22352941179999999" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rk6-4J-dsv">
-                        <rect key="frame" x="229" y="8" width="75" height="40"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="VaN-GJ-ePY">
-                                <rect key="frame" x="8" y="9" width="59" height="20"/>
-                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
-                                <color key="textColor" red="0.50588235290000005" green="0.71764705880000002" blue="0.22352941179999999" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="VaN-GJ-ePY" firstAttribute="top" secondItem="Rk6-4J-dsv" secondAttribute="top" constant="9" id="1fJ-7O-RlU"/>
-                            <constraint firstItem="VaN-GJ-ePY" firstAttribute="leading" secondItem="Rk6-4J-dsv" secondAttribute="leading" constant="8" id="6mD-QM-kId"/>
-                            <constraint firstAttribute="bottom" secondItem="VaN-GJ-ePY" secondAttribute="bottom" constant="11" id="KHm-Cz-adK"/>
-                            <constraint firstAttribute="trailing" secondItem="VaN-GJ-ePY" secondAttribute="trailing" constant="8" id="Lxh-dB-d2X"/>
-                            <constraint firstAttribute="width" constant="75" id="kJZ-Pk-t3S"/>
-                        </constraints>
-                    </view>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="VaN-GJ-ePY">
+                        <rect key="frame" x="292" y="20" width="0.0" height="19"/>
+                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
+                        <color key="textColor" red="0.50588235290000005" green="0.71764705880000002" blue="0.22352941179999999" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="Rk6-4J-dsv" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="4eP-Ah-rmr"/>
                     <constraint firstItem="4P5-Bc-g7B" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="11" id="9l3-rD-Yw8"/>
                     <constraint firstItem="4P5-Bc-g7B" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="12" id="DoP-YL-XWi"/>
-                    <constraint firstAttribute="bottom" secondItem="Rk6-4J-dsv" secondAttribute="bottom" constant="11.5" id="Sch-Ce-Dbr"/>
-                    <constraint firstAttribute="trailing" secondItem="Rk6-4J-dsv" secondAttribute="trailing" constant="16" id="XLX-3a-8d4"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="VaN-GJ-ePY" secondAttribute="trailing" constant="20" id="WuF-77-CrS"/>
+                    <constraint firstItem="VaN-GJ-ePY" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="20" id="bkH-JI-VyD"/>
                     <constraint firstAttribute="bottomMargin" secondItem="4P5-Bc-g7B" secondAttribute="bottom" constant="11.5" id="fqN-Ri-O09"/>
+                    <constraint firstAttribute="bottom" secondItem="VaN-GJ-ePY" secondAttribute="bottom" constant="20" id="myM-U6-b6k"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
                 <outlet property="amountLabel" destination="VaN-GJ-ePY" id="elc-Qx-Fxn"/>
                 <outlet property="discountLabel" destination="4P5-Bc-g7B" id="sOJ-Y5-xKW"/>
-                <outlet property="priceView" destination="Rk6-4J-dsv" id="Uyy-bQ-CoS"/>
             </connections>
             <point key="canvasLocation" x="26" y="44"/>
         </tableViewCell>

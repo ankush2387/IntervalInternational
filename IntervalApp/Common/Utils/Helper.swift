@@ -394,29 +394,21 @@ public class Helper {
     }
     
     //Relinquishment details
-    static func getRelinquishmentDetails(resortCode: String?, viewController: UIViewController) {
-        
-        DirectoryClient.getResortDetails(Constant.MyClassConstants.systemAccessToken, resortCode: resortCode!, onSuccess: { (response) in
+    static func getRelinquishmentDetails(resortCode: String, successCompletionBlock: (()), errorCompletionBlock: @escaping ((NSError) -> Void)) {
+        DirectoryClient.getResortDetails(Constant.MyClassConstants.systemAccessToken, resortCode: resortCode, onSuccess: { response in
             
             Constant.MyClassConstants.resortsDescriptionArray = response
             Constant.MyClassConstants.imagesArray.removeAll()
             let imagesArray = Constant.MyClassConstants.resortsDescriptionArray.images
             
-            for imgStr in imagesArray {
-                
-                if imgStr.size == Constant.MyClassConstants.imageSize {
-                    if let url = imgStr.url {
-                        Constant.MyClassConstants.imagesArray.append(url)
-                    }
+            for imgStr in imagesArray where imgStr.size == Constant.MyClassConstants.imageSize {
+                if let url = imgStr.url {
+                    Constant.MyClassConstants.imagesArray.append(url)
                 }
             }
-            
-            viewController.hideHudAsync()
-            
-            viewController.performSegue(withIdentifier: Constant.segueIdentifiers.showRelinguishmentsDetailsSegue, sender: self)
-        }) { _ in
-            viewController.hideHudAsync()
-            viewController.presentErrorAlert(UserFacingCommonError.generic)
+            successCompletionBlock
+        }) { error in
+            errorCompletionBlock(error)
         }
         
     }

@@ -21,7 +21,6 @@ class ExchangeOrProtectionCell: UITableViewCell {
     @IBOutlet weak var priceLabel: UILabel!
     @IBOutlet weak var additionalPriceLabel: UILabel!
     @IBOutlet weak var primaryPriceLabel: UILabel!
-    @IBOutlet weak var priceView: UIView!
     @IBOutlet weak var cellContentView: UIView!
     
     // MARK: - Private properties
@@ -37,11 +36,6 @@ class ExchangeOrProtectionCell: UITableViewCell {
                                                NSForegroundColorAttributeName: #colorLiteral(red: 0.3423708081, green: 0.5919493437, blue: 0.7394192815, alpha: 1)]
         
         priceLabel.attributedText = NSAttributedString(string: priceLabel.text.unwrappedString, attributes: titleAttributes)
-        priceView.subviews.forEach {
-            if let label = $0 as? UILabel {
-                label.textColor = #colorLiteral(red: 0.3423708081, green: 0.5919493437, blue: 0.7394192815, alpha: 1)
-            }
-        }
     }
     
     func setTotalPrice(with currencyDisplayes: String, and chargeAmount: Float) {
