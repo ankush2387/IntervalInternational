@@ -451,18 +451,12 @@ class CheckOutIPadViewController: UIViewController {
         if sender.tag == 0 {
             self.performSegue(withIdentifier: Constant.segueIdentifiers.showResortDetailsSegue, sender: nil)
         } else {
-            if let clubPointResort = filterRelinquishments.clubPoints?.resort {
-                if let resortCode = clubPointResort.resortCode {
-                    getRelinquishmentDetails(resortCode: resortCode)
-                }
-            } else if let openWeekResort = filterRelinquishments.openWeek?.resort {
-                if let resortCode = openWeekResort.resortCode {
-                    getRelinquishmentDetails(resortCode: resortCode)
-                }
-            } else if let depositResort = filterRelinquishments.deposit?.resort {
-                if let resortCode = depositResort.resortCode {
-                    getRelinquishmentDetails(resortCode: resortCode)
-                }
+            if let clubPointResortCode = filterRelinquishments.clubPoints?.resort?.resortCode {
+                getRelinquishmentDetails(resortCode: clubPointResortCode)
+            } else if let openWeekResortCode = filterRelinquishments.openWeek?.resort?.resortCode {
+                getRelinquishmentDetails(resortCode: openWeekResortCode)
+            } else if let depositResortCode = filterRelinquishments.deposit?.resort?.resortCode {
+                getRelinquishmentDetails(resortCode: depositResortCode)
             }
         }
         

@@ -277,6 +277,19 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
         })
     }
     
+    // MARK: - Function to get relinquishment details
+    
+    func getRelinquishmentDetails(resortCode: String) {
+        self.showHudAsync()
+        Helper.getRelinquishmentDetails(resortCode: resortCode, successCompletionBlock: {
+            self.hideHudAsync()
+            self.performSegue(withIdentifier: Constant.segueIdentifiers.showRelinguishmentsDetailsSegue, sender: self)
+        }(), errorCompletionBlock: { [unowned self] error  in
+            self.hideHudAsync()
+            self.presentErrorAlert(UserFacingCommonError.serverError(error))
+        })
+    }
+    
     //***** Function called when drop down is pressed. *****//
     func dropDownButtonPressed(_ sender: IUIKButton) {
         self.dropDownSelectionRow = sender.tag

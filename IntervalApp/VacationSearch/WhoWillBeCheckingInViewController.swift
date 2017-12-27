@@ -47,7 +47,7 @@ class WhoWillBeCheckingInViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-
+        
         resortHoldingTimeLabel.text = "We are holding this unit for \(Constant.holdingTime) minutes".localized()
         navigationController?.navigationBar.isHidden = false
         Constant.GetawaySearchResultGuestFormDetailData.firstName = ""
@@ -80,7 +80,7 @@ class WhoWillBeCheckingInViewController: UIViewController {
         // omniture tracking with event 40
         let pageView: [String: String] = [
             Constant.omnitureEvars.eVar44: Constant.omnitureCommonString.vacationSearchCheckingIn
-            ]
+        ]
         ADBMobile.trackAction(Constant.omnitureEvents.event40, data: pageView)
         
         // omniture tracking with event 37
@@ -114,24 +114,24 @@ class WhoWillBeCheckingInViewController: UIViewController {
     func keyboardWasShown(aNotification: NSNotification) {
         
         isKeyBoardOpen = true
-    
+        
         if self.moved {
             let info = aNotification.userInfo as! [String: AnyObject],
             kbSize = (info[UIKeyboardFrameBeginUserInfoKey] as! NSValue).cgRectValue.size,
             contentInsets = UIEdgeInsets(top: 0, left: 0, bottom: kbSize.height, right: 0)
-        
+            
             self.checkingInUserTBLview.contentInset = contentInsets
             self.checkingInUserTBLview.scrollIndicatorInsets = contentInsets
-        
-        // If active text field is hidden by keyboard, scroll it so it's visible
-        // Your app might not need or want this behavior.
+            
+            // If active text field is hidden by keyboard, scroll it so it's visible
+            // Your app might not need or want this behavior.
             var aRect = self.view.frame
             aRect.size.height -= kbSize.height
-        
+            
             if !aRect.contains(activeField!.frame.origin) {
-           
+                
                 self.checkingInUserTBLview.scrollRectToVisible(activeField!.frame, animated: true)
-           
+                
             }
         }
     }
@@ -229,7 +229,7 @@ class WhoWillBeCheckingInViewController: UIViewController {
     func menuBackButtonPressed(_ sender: UIBarButtonItem) {
         
         showHudAsync()
-
+        
         if Constant.MyClassConstants.searchBothExchange || Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange() {
             Constant.holdingTimer?.invalidate()
             
@@ -254,28 +254,28 @@ class WhoWillBeCheckingInViewController: UIViewController {
             })
         } else {
             Constant.holdingTimer?.invalidate()
-        
-        RentalProcessClient.backToChooseRental(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.getawayBookingLastStartedProcess, onSuccess: {(_) in
             
+            RentalProcessClient.backToChooseRental(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.getawayBookingLastStartedProcess, onSuccess: {(_) in
+                
                 Constant.MyClassConstants.selectedCreditCard.removeAll()
                 Helper.removeStoredGuestFormDetials()
                 self.hideHudAsync()
-            
-            // pop and dismiss view according to conditions
-            if Constant.MyClassConstants.isDismissWhoWillBeCheckin {
-                Constant.MyClassConstants.isDismissWhoWillBeCheckin = false
-                self.dismiss(animated: true, completion: nil)
                 
-            } else {
-                _ = self.navigationController?.popViewController(animated: true)
-            }
-            
+                // pop and dismiss view according to conditions
+                if Constant.MyClassConstants.isDismissWhoWillBeCheckin {
+                    Constant.MyClassConstants.isDismissWhoWillBeCheckin = false
+                    self.dismiss(animated: true, completion: nil)
+                    
+                } else {
+                    _ = self.navigationController?.popViewController(animated: true)
+                }
+                
             }, onError: { [weak self] _ in
                 self?.hideHudAsync()
                 self?.presentAlert(with: Constant.ControllerTitles.whoWillBeCheckingInControllerTitle, message: Constant.AlertMessages.operationFailedMessage)
                 
-        })
-        
+            })
+            
         }
     }
     
@@ -294,11 +294,11 @@ class WhoWillBeCheckingInViewController: UIViewController {
             guard let systemAccessToken = Constant.MyClassConstants.systemAccessToken else { return }
             LookupClient.getCountries(systemAccessToken, onSuccess: { (response) in
                 Constant.GetawaySearchResultGuestFormDetailData.countryListArray = response
-
+                
             }, onError: { [weak self] _ in
                 self?.presentErrorAlert(UserFacingCommonError.generic)
             })
-
+            
         } else {
             
             self.requiredSectionIntTBLview = 2
@@ -378,7 +378,7 @@ class WhoWillBeCheckingInViewController: UIViewController {
                         Constant.GetawaySearchResultGuestFormDetailData.stateListArray = response
                     }, onError: { (error) in
                         intervalPrint(error)
-
+                        
                     })
                 }
             }
@@ -395,9 +395,9 @@ class WhoWillBeCheckingInViewController: UIViewController {
         
         if sender.tag == 0 {
             self.performSegue(withIdentifier: Constant.segueIdentifiers.showResortDetailsSegue, sender: nil)
-
+            
         } else {
-
+            
             if let openWeek = filterRelinquishments.openWeek {
                 if let resortCode = openWeek.resort?.resortCode {
                     getRelinquishmentDetails(resortCode: resortCode)
@@ -433,190 +433,189 @@ class WhoWillBeCheckingInViewController: UIViewController {
     }
     
     //***** Function to perform checkout *****//
-@IBAction func proceedToCheckoutPressed(_ sender: AnyObject) {
-    
-    if Constant.MyClassConstants.noThanksForNonCore && self.whoWillBeCheckingInSelectedIndex == Constant.MyClassConstants.membershipContactArray.count {
-        Constant.MyClassConstants.enableGuestCertificate = false
-        Constant.MyClassConstants.isNoThanksFromRenewalAgain = true
-        let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
-        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.RenewelViewController) as! RenewelViewController
-        //Constant.MyClassConstants.noThanksForNonCore = false
-        viewController.delegate = self
+    @IBAction func proceedToCheckoutPressed(_ sender: AnyObject) {
         
-        let transitionManager = TransitionManager()
-        self.navigationController?.transitioningDelegate = transitionManager
-        let navController = UINavigationController(rootViewController: viewController)
-        self.present(navController, animated: true, completion: nil)
-        
-    } else {
-        
-        if Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange() || Constant.MyClassConstants.searchBothExchange {
+        if Constant.MyClassConstants.noThanksForNonCore && self.whoWillBeCheckingInSelectedIndex == Constant.MyClassConstants.membershipContactArray.count {
+            Constant.MyClassConstants.enableGuestCertificate = false
+            Constant.MyClassConstants.isNoThanksFromRenewalAgain = true
+            let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+            let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.RenewelViewController) as! RenewelViewController
+            //Constant.MyClassConstants.noThanksForNonCore = false
+            viewController.delegate = self
             
-            let exchangeProcessRequest = ExchangeProcessContinueToCheckoutRequest()
+            let transitionManager = TransitionManager()
+            self.navigationController?.transitioningDelegate = transitionManager
+            let navController = UINavigationController(rootViewController: viewController)
+            self.present(navController, animated: true, completion: nil)
             
-            if self.whoWillBeCheckingInSelectedIndex == Constant.MyClassConstants.membershipContactArray.count {
-                
-                let guest = Guest()
-                
-                guest.firstName = Constant.GetawaySearchResultGuestFormDetailData.firstName
-                guest.lastName = Constant.GetawaySearchResultGuestFormDetailData.lastName
-                guest.primaryTraveler = true
-                
-                let guestAddress = Address()
-                var address = [String]()
-                address.append(Constant.GetawaySearchResultGuestFormDetailData.address1)
-                address.append(Constant.GetawaySearchResultGuestFormDetailData.address2)
-                guestAddress.addressLines = address
-                
-                guestAddress.cityName = Constant.GetawaySearchResultGuestFormDetailData.city
-                guestAddress.postalCode = Constant.GetawaySearchResultGuestFormDetailData.pinCode
-                guestAddress.addressType = "HADDR"
-                guestAddress.territoryCode = Constant.GetawaySearchResultCardFormDetailData.stateCode
-                guestAddress.countryCode = Constant.GetawaySearchResultCardFormDetailData.countryCode
-                
-                var phoneNumbers = [Phone]()
-                let homePhoneNo = Phone()
-                homePhoneNo.phoneNumber = Constant.GetawaySearchResultGuestFormDetailData.homePhoneNumber
-                homePhoneNo.countryPhoneCode = "1"
-                homePhoneNo.phoneType = "HOME_PRIMARY"
-                homePhoneNo.areaCode = "305"
-                homePhoneNo.countryCode = Constant.GetawaySearchResultCardFormDetailData.countryCode
-                phoneNumbers.append(homePhoneNo)
-                
-                guest.phones = phoneNumbers
-                guest.address = guestAddress
-                exchangeProcessRequest.guest = guest
-                
-                Constant.MyClassConstants.enableGuestCertificate = true
-            } else {
-                Constant.MyClassConstants.enableGuestCertificate = false
-            }
-            if !renewalsArray.isEmpty {
-                exchangeProcessRequest.renewals = renewalsArray
-            }
-            let processResort = ExchangeProcess()
-            processResort.holdUnitStartTimeInMillis = Constant.holdingTime
-            processResort.processId = Constant.MyClassConstants.exchangeProcessStartResponse.processId
-            showHudAsync()
-            
-            ExchangeProcessClient.continueToCheckout(Session.sharedSession.userAccessToken, process: processResort, request: exchangeProcessRequest, onSuccess: {(response) in
-                DarwinSDK.logger.debug(response)
-                self.hideHudAsync()
-                Constant.MyClassConstants.exchangeContinueToCheckoutResponse = response
-                
-                if let promotions = response.view?.fees?.shopExchange?.promotions {
-                    Constant.MyClassConstants.recapViewPromotionCodeArray = promotions
-                }
-                
-                DarwinSDK.logger.debug("Promo codes are : \(String(describing: response.view?.promoCodes))")
-                DarwinSDK.logger.debug("Response is : \(String(describing: response.view?.fees)) , -------->\(response)")
-                Constant.MyClassConstants.allowedCreditCardType = (response.view?.allowedCreditCardTypes)!
-                Constant.MyClassConstants.exchangeFees = [(response.view?.fees)!]
-                if Int((Constant.MyClassConstants.exchangeFees[0].shopExchange?.rentalPrice?.tax)!) != 0 {
-                    Constant.MyClassConstants.enableTaxes = true
-                } else {
-                    Constant.MyClassConstants.enableTaxes = false
-                }
-                
-                if let creditCardInfo = Session.sharedSession.contact?.creditcards {
-                    Constant.MyClassConstants.memberCreditCardList = creditCardInfo
-                }
-                
-                let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
-                let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.checkOutViewController) as! CheckOutViewController
-                viewController.filterRelinquishments = self.filterRelinquishments
-                
-                let transitionManager = TransitionManager()
-                self.navigationController?.transitioningDelegate = transitionManager
-                self.navigationController!.pushViewController(viewController, animated: true)
-            }, onError: { [weak self] _ in
-                self?.hideHudAsync()
-                self?.presentErrorAlert(UserFacingCommonError.generic)
-            })
         } else {
             
-            let processRequest1 = RentalProcessPrepareContinueToCheckoutRequest()
-            
-            if self.whoWillBeCheckingInSelectedIndex == Constant.MyClassConstants.membershipContactArray.count {
+            if Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange() || Constant.MyClassConstants.searchBothExchange {
                 
-                let guest = Guest()
+                let exchangeProcessRequest = ExchangeProcessContinueToCheckoutRequest()
                 
-                guest.firstName = Constant.GetawaySearchResultGuestFormDetailData.firstName
-                guest.lastName = Constant.GetawaySearchResultGuestFormDetailData.lastName
-                guest.primaryTraveler = true
-                
-                let guestAddress = Address()
-                var address = [String]()
-                address.append(Constant.GetawaySearchResultGuestFormDetailData.address1)
-                address.append(Constant.GetawaySearchResultGuestFormDetailData.address2)
-                guestAddress.addressLines = address
-                
-                guestAddress.cityName = Constant.GetawaySearchResultGuestFormDetailData.city
-                guestAddress.postalCode = Constant.GetawaySearchResultGuestFormDetailData.pinCode
-                guestAddress.addressType = "HADDR"
-                guestAddress.territoryCode = Constant.GetawaySearchResultCardFormDetailData.stateCode
-                guestAddress.countryCode = Constant.GetawaySearchResultCardFormDetailData.countryCode
-                
-                var phoneNumbers = [Phone]()
-                let homePhoneNo = Phone()
-                homePhoneNo.phoneNumber = Constant.GetawaySearchResultGuestFormDetailData.homePhoneNumber
-                homePhoneNo.countryPhoneCode = "1"
-                homePhoneNo.phoneType = "HOME_PRIMARY"
-                homePhoneNo.areaCode = "305"
-                homePhoneNo.countryCode = Constant.GetawaySearchResultCardFormDetailData.countryCode
-                phoneNumbers.append(homePhoneNo)
-                
-                guest.phones = phoneNumbers
-                guest.address = guestAddress
-                processRequest1.guest = guest
-                
-                Constant.MyClassConstants.enableGuestCertificate = true
-            }
-            
-            if renewalsArray.isEmpty == false {
-                processRequest1.renewals = renewalsArray
-            }
-            showHudAsync()
-            let processResort = RentalProcess()
-            processResort.holdUnitStartTimeInMillis = Constant.holdingTime
-            processResort.processId = Constant.MyClassConstants.processStartResponse.processId
-            
-            RentalProcessClient.continueToCheckout(Session.sharedSession.userAccessToken, process: processResort, request: processRequest1, onSuccess: {(response) in
-                DarwinSDK.logger.debug(response)
-                self.hideHudAsync()
-                Constant.MyClassConstants.continueToCheckoutResponse = response
-                
-                if let promotions = response.view?.fees?.rental?.promotions {
-                    Constant.MyClassConstants.recapViewPromotionCodeArray = promotions
-                }
-                
-                DarwinSDK.logger.debug("Promo codes are : \(String(describing: response.view?.promoCodes))")
-                DarwinSDK.logger.debug("Response is : \(String(describing: response.view?.fees)) , -------->\(response)")
-                Constant.MyClassConstants.allowedCreditCardType = (response.view?.allowedCreditCardTypes)!
-                Constant.MyClassConstants.rentalFees = [(response.view?.fees)!]
-                if Int((response.view?.fees?.rental?.rentalPrice?.tax)!) != 0 {
-                    Constant.MyClassConstants.enableTaxes = true
+                if self.whoWillBeCheckingInSelectedIndex == Constant.MyClassConstants.membershipContactArray.count {
+                    
+                    let guest = Guest()
+                    
+                    guest.firstName = Constant.GetawaySearchResultGuestFormDetailData.firstName
+                    guest.lastName = Constant.GetawaySearchResultGuestFormDetailData.lastName
+                    guest.primaryTraveler = true
+                    
+                    let guestAddress = Address()
+                    var address = [String]()
+                    address.append(Constant.GetawaySearchResultGuestFormDetailData.address1)
+                    address.append(Constant.GetawaySearchResultGuestFormDetailData.address2)
+                    guestAddress.addressLines = address
+                    
+                    guestAddress.cityName = Constant.GetawaySearchResultGuestFormDetailData.city
+                    guestAddress.postalCode = Constant.GetawaySearchResultGuestFormDetailData.pinCode
+                    guestAddress.addressType = "HADDR"
+                    guestAddress.territoryCode = Constant.GetawaySearchResultCardFormDetailData.stateCode
+                    guestAddress.countryCode = Constant.GetawaySearchResultCardFormDetailData.countryCode
+                    
+                    var phoneNumbers = [Phone]()
+                    let homePhoneNo = Phone()
+                    homePhoneNo.phoneNumber = Constant.GetawaySearchResultGuestFormDetailData.homePhoneNumber
+                    homePhoneNo.countryPhoneCode = "1"
+                    homePhoneNo.phoneType = "HOME_PRIMARY"
+                    homePhoneNo.areaCode = "305"
+                    homePhoneNo.countryCode = Constant.GetawaySearchResultCardFormDetailData.countryCode
+                    phoneNumbers.append(homePhoneNo)
+                    
+                    guest.phones = phoneNumbers
+                    guest.address = guestAddress
+                    exchangeProcessRequest.guest = guest
+                    
+                    Constant.MyClassConstants.enableGuestCertificate = true
                 } else {
-                    Constant.MyClassConstants.enableTaxes = false
+                    Constant.MyClassConstants.enableGuestCertificate = false
+                }
+                if !renewalsArray.isEmpty {
+                    exchangeProcessRequest.renewals = renewalsArray
+                }
+                let processResort = ExchangeProcess()
+                processResort.holdUnitStartTimeInMillis = Constant.holdingTime
+                processResort.processId = Constant.MyClassConstants.exchangeProcessStartResponse.processId
+                showHudAsync()
+                
+                ExchangeProcessClient.continueToCheckout(Session.sharedSession.userAccessToken, process: processResort, request: exchangeProcessRequest, onSuccess: {(response) in
+                    DarwinSDK.logger.debug(response)
+                    self.hideHudAsync()
+                    Constant.MyClassConstants.exchangeContinueToCheckoutResponse = response
+                    
+                    if let promotions = response.view?.fees?.shopExchange?.promotions {
+                        Constant.MyClassConstants.recapViewPromotionCodeArray = promotions
+                    }
+                    
+                    DarwinSDK.logger.debug("Promo codes are : \(String(describing: response.view?.promoCodes))")
+                    DarwinSDK.logger.debug("Response is : \(String(describing: response.view?.fees)) , -------->\(response)")
+                    Constant.MyClassConstants.allowedCreditCardType = (response.view?.allowedCreditCardTypes)!
+                    Constant.MyClassConstants.exchangeFees = [(response.view?.fees)!]
+                    if Int((Constant.MyClassConstants.exchangeFees[0].shopExchange?.rentalPrice?.tax)!) != 0 {
+                        Constant.MyClassConstants.enableTaxes = true
+                    } else {
+                        Constant.MyClassConstants.enableTaxes = false
+                    }
+                    
+                    if let creditCardInfo = Session.sharedSession.contact?.creditcards {
+                        Constant.MyClassConstants.memberCreditCardList = creditCardInfo
+                    }
+                    
+                    let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+                    let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.checkOutViewController) as! CheckOutViewController
+                    viewController.filterRelinquishments = self.filterRelinquishments
+                    let transitionManager = TransitionManager()
+                    self.navigationController?.transitioningDelegate = transitionManager
+                    self.navigationController!.pushViewController(viewController, animated: true)
+                }, onError: { [weak self] _ in
+                    self?.hideHudAsync()
+                    self?.presentErrorAlert(UserFacingCommonError.generic)
+                })
+            } else {
+                
+                let processRequest1 = RentalProcessPrepareContinueToCheckoutRequest()
+                
+                if self.whoWillBeCheckingInSelectedIndex == Constant.MyClassConstants.membershipContactArray.count {
+                    
+                    let guest = Guest()
+                    
+                    guest.firstName = Constant.GetawaySearchResultGuestFormDetailData.firstName
+                    guest.lastName = Constant.GetawaySearchResultGuestFormDetailData.lastName
+                    guest.primaryTraveler = true
+                    
+                    let guestAddress = Address()
+                    var address = [String]()
+                    address.append(Constant.GetawaySearchResultGuestFormDetailData.address1)
+                    address.append(Constant.GetawaySearchResultGuestFormDetailData.address2)
+                    guestAddress.addressLines = address
+                    
+                    guestAddress.cityName = Constant.GetawaySearchResultGuestFormDetailData.city
+                    guestAddress.postalCode = Constant.GetawaySearchResultGuestFormDetailData.pinCode
+                    guestAddress.addressType = "HADDR"
+                    guestAddress.territoryCode = Constant.GetawaySearchResultCardFormDetailData.stateCode
+                    guestAddress.countryCode = Constant.GetawaySearchResultCardFormDetailData.countryCode
+                    
+                    var phoneNumbers = [Phone]()
+                    let homePhoneNo = Phone()
+                    homePhoneNo.phoneNumber = Constant.GetawaySearchResultGuestFormDetailData.homePhoneNumber
+                    homePhoneNo.countryPhoneCode = "1"
+                    homePhoneNo.phoneType = "HOME_PRIMARY"
+                    homePhoneNo.areaCode = "305"
+                    homePhoneNo.countryCode = Constant.GetawaySearchResultCardFormDetailData.countryCode
+                    phoneNumbers.append(homePhoneNo)
+                    
+                    guest.phones = phoneNumbers
+                    guest.address = guestAddress
+                    processRequest1.guest = guest
+                    
+                    Constant.MyClassConstants.enableGuestCertificate = true
                 }
                 
-                if let creditCardInfo = Session.sharedSession.contact?.creditcards {
-                    Constant.MyClassConstants.memberCreditCardList = creditCardInfo
+                if renewalsArray.isEmpty == false {
+                    processRequest1.renewals = renewalsArray
                 }
+                showHudAsync()
+                let processResort = RentalProcess()
+                processResort.holdUnitStartTimeInMillis = Constant.holdingTime
+                processResort.processId = Constant.MyClassConstants.processStartResponse.processId
                 
-                let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
-                guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.checkOutViewController) as? CheckOutViewController else { return }
-                
-                let transitionManager = TransitionManager()
-                self.navigationController?.transitioningDelegate = transitionManager
-                self.navigationController?.pushViewController(viewController, animated: true)
-            }, onError: { [weak self] error in
-                self?.hideHudAsync()
-                self?.presentErrorAlert(UserFacingCommonError.serverError(error))
-            })
+                RentalProcessClient.continueToCheckout(Session.sharedSession.userAccessToken, process: processResort, request: processRequest1, onSuccess: {(response) in
+                    DarwinSDK.logger.debug(response)
+                    self.hideHudAsync()
+                    Constant.MyClassConstants.continueToCheckoutResponse = response
+                    
+                    if let promotions = response.view?.fees?.rental?.promotions {
+                        Constant.MyClassConstants.recapViewPromotionCodeArray = promotions
+                    }
+                    
+                    DarwinSDK.logger.debug("Promo codes are : \(String(describing: response.view?.promoCodes))")
+                    DarwinSDK.logger.debug("Response is : \(String(describing: response.view?.fees)) , -------->\(response)")
+                    Constant.MyClassConstants.allowedCreditCardType = (response.view?.allowedCreditCardTypes)!
+                    Constant.MyClassConstants.rentalFees = [(response.view?.fees)!]
+                    if Int((response.view?.fees?.rental?.rentalPrice?.tax)!) != 0 {
+                        Constant.MyClassConstants.enableTaxes = true
+                    } else {
+                        Constant.MyClassConstants.enableTaxes = false
+                    }
+                    
+                    if let creditCardInfo = Session.sharedSession.contact?.creditcards {
+                        Constant.MyClassConstants.memberCreditCardList = creditCardInfo
+                    }
+                    
+                    let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+                    guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.checkOutViewController) as? CheckOutViewController else { return }
+                    
+                    let transitionManager = TransitionManager()
+                    self.navigationController?.transitioningDelegate = transitionManager
+                    self.navigationController?.pushViewController(viewController, animated: true)
+                }, onError: { [weak self] error in
+                    self?.hideHudAsync()
+                    self?.presentErrorAlert(UserFacingCommonError.serverError(error))
+                })
+            }
         }
     }
-}
     
     func showCertificateInfo() {
         let storyboard = UIStoryboard(name: "VacationSearchIphone", bundle: nil)
@@ -788,7 +787,7 @@ extension WhoWillBeCheckingInViewController: UITableViewDataSource {
             
             let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.guestCertificatePriceCell, for: indexPath) as! GuestCertificatePriceCell
             guard let guestPrices = Constant.MyClassConstants.guestCertificate?.prices else { return cell }
-               
+            
             var memberTier = ""
             if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
                 if !Constant.MyClassConstants.exchangeFees.isEmpty {
@@ -946,40 +945,40 @@ extension WhoWillBeCheckingInViewController: UITableViewDataSource {
                 switch indexPath.row {
                 case 1 :
                     
-                        if Constant.GetawaySearchResultGuestFormDetailData.address1 == "" {
-                            cell.nameTF.placeholder = Constant.textFieldTitles.guestFormAddress1
-                            
-                        } else {
-                            cell.nameTF.text = Constant.GetawaySearchResultGuestFormDetailData.address1
-                        }
+                    if Constant.GetawaySearchResultGuestFormDetailData.address1 == "" {
+                        cell.nameTF.placeholder = Constant.textFieldTitles.guestFormAddress1
+                        
+                    } else {
+                        cell.nameTF.text = Constant.GetawaySearchResultGuestFormDetailData.address1
+                    }
                     
                 case 2 :
                     
-                        if Constant.GetawaySearchResultGuestFormDetailData.address2 == "" {
-                            cell.nameTF.placeholder = Constant.textFieldTitles.guestFormAddress2
-                            
-                        } else {
-                            cell.nameTF.text = Constant.GetawaySearchResultGuestFormDetailData.address2
-                        }
+                    if Constant.GetawaySearchResultGuestFormDetailData.address2 == "" {
+                        cell.nameTF.placeholder = Constant.textFieldTitles.guestFormAddress2
+                        
+                    } else {
+                        cell.nameTF.text = Constant.GetawaySearchResultGuestFormDetailData.address2
+                    }
                 case 3:
                     
-                        if Constant.GetawaySearchResultGuestFormDetailData.city == "" {
-                            cell.nameTF.placeholder = Constant.textFieldTitles.guestFormCity
-                            
-                        } else {
-                            cell.nameTF.text = Constant.GetawaySearchResultGuestFormDetailData.city
-                        }
+                    if Constant.GetawaySearchResultGuestFormDetailData.city == "" {
+                        cell.nameTF.placeholder = Constant.textFieldTitles.guestFormCity
+                        
+                    } else {
+                        cell.nameTF.text = Constant.GetawaySearchResultGuestFormDetailData.city
+                    }
                     
                 default :
                     
-                        if Constant.GetawaySearchResultGuestFormDetailData.pinCode == "" {
-                            cell.nameTF.placeholder = Constant.textFieldTitles.guestFormPostalCode
-                            
-                        } else {
-                            cell.nameTF.text = Constant.GetawaySearchResultGuestFormDetailData.pinCode
-                        }
+                    if Constant.GetawaySearchResultGuestFormDetailData.pinCode == "" {
+                        cell.nameTF.placeholder = Constant.textFieldTitles.guestFormPostalCode
                         
+                    } else {
+                        cell.nameTF.text = Constant.GetawaySearchResultGuestFormDetailData.pinCode
                     }
+                    
+                }
                 
                 self.cellUsedFor = Constant.MyClassConstants.guestString
                 cell.nameTF.tag = indexPath.row
@@ -1002,11 +1001,11 @@ extension WhoWillBeCheckingInViewController: UIPickerViewDelegate {
         if self.dropDownSelectionRow == 0 {
             
             return Constant.GetawaySearchResultGuestFormDetailData.countryListArray[row].countryName
-
+            
         } else {
             
             return Constant.GetawaySearchResultGuestFormDetailData.stateListArray[row].name
-
+            
         }
     }
     
@@ -1023,7 +1022,7 @@ extension WhoWillBeCheckingInViewController: UIPickerViewDelegate {
                 Constant.GetawaySearchResultCardFormDetailData.stateCode = Constant.GetawaySearchResultGuestFormDetailData.stateListArray[row].code!
                 
             }
-       
+            
         }
     }
 }
@@ -1179,42 +1178,42 @@ extension WhoWillBeCheckingInViewController: UITextFieldDelegate {
                     }
                     
                 case 1 :
-                        if range.length == 1 && string.characters.count == 0 {
-                            Constant.GetawaySearchResultGuestFormDetailData.homePhoneNumber.characters.removeLast()
-                        } else {
-                            Constant.GetawaySearchResultGuestFormDetailData.homePhoneNumber = "\(textFieldText)\(string)"
+                    if range.length == 1 && string.characters.count == 0 {
+                        Constant.GetawaySearchResultGuestFormDetailData.homePhoneNumber.characters.removeLast()
+                    } else {
+                        Constant.GetawaySearchResultGuestFormDetailData.homePhoneNumber = "\(textFieldText)\(string)"
+                        
+                        if Constant.GetawaySearchResultGuestFormDetailData.homePhoneNumber.characters.count > 9 {
                             
-                            if Constant.GetawaySearchResultGuestFormDetailData.homePhoneNumber.characters.count > 9 {
-                                
-                                textField.superview?.layer.borderColor = #colorLiteral(red: 0.9137254902, green: 0.9137254902, blue: 0.9215686275, alpha: 1).cgColor
-                                proceedStatus = true
-                                
-                            } else {
-                                
-                                textField.superview?.layer.borderColor = UIColor.red.cgColor
-                                proceedStatus = false
-                                
-                            }
+                            textField.superview?.layer.borderColor = #colorLiteral(red: 0.9137254902, green: 0.9137254902, blue: 0.9215686275, alpha: 1).cgColor
+                            proceedStatus = true
+                            
+                        } else {
+                            
+                            textField.superview?.layer.borderColor = UIColor.red.cgColor
+                            proceedStatus = false
+                            
                         }
+                    }
                 default :
-                        if range.length == 1 && string.characters.count == 0 {
-                            Constant.GetawaySearchResultGuestFormDetailData.businessPhoneNumber.characters.removeLast()
-                        } else {
-                            Constant.GetawaySearchResultGuestFormDetailData.businessPhoneNumber = "\(textFieldText)\(string)"
+                    if range.length == 1 && string.characters.count == 0 {
+                        Constant.GetawaySearchResultGuestFormDetailData.businessPhoneNumber.characters.removeLast()
+                    } else {
+                        Constant.GetawaySearchResultGuestFormDetailData.businessPhoneNumber = "\(textFieldText)\(string)"
+                        
+                        if Constant.GetawaySearchResultGuestFormDetailData.businessPhoneNumber.characters.count > 9 {
                             
-                            if Constant.GetawaySearchResultGuestFormDetailData.businessPhoneNumber.characters.count > 9 {
-                                
-                                textField.superview?.layer.borderColor = #colorLiteral(red: 0.9137254902, green: 0.9137254902, blue: 0.9215686275, alpha: 1).cgColor
-                                proceedStatus = true
-                                
-                            } else {
-                                
-                                textField.superview?.layer.borderColor = UIColor.red.cgColor
-                                proceedStatus = false
-                                
-                            }
+                            textField.superview?.layer.borderColor = #colorLiteral(red: 0.9137254902, green: 0.9137254902, blue: 0.9215686275, alpha: 1).cgColor
+                            proceedStatus = true
+                            
+                        } else {
+                            
+                            textField.superview?.layer.borderColor = UIColor.red.cgColor
+                            proceedStatus = false
                             
                         }
+                        
+                    }
                     
                 }
             }
@@ -1267,18 +1266,18 @@ extension WhoWillBeCheckingInViewController: UITextFieldDelegate {
                         Constant.GetawaySearchResultGuestFormDetailData.address1 = "\(textFieldText)\(string)"
                     }
                 case 2 :
-                if range.length == 1 && string.characters.count == 0 {
-                    Constant.GetawaySearchResultGuestFormDetailData.address2.characters.removeLast()
-                } else {
-                    
-                    Constant.GetawaySearchResultGuestFormDetailData.address2 = "\(textFieldText)\(string)"
-                }
+                    if range.length == 1 && string.characters.count == 0 {
+                        Constant.GetawaySearchResultGuestFormDetailData.address2.characters.removeLast()
+                    } else {
+                        
+                        Constant.GetawaySearchResultGuestFormDetailData.address2 = "\(textFieldText)\(string)"
+                    }
                 case 3:
-                if range.length == 1 && string.characters.count == 0 {
-                    Constant.GetawaySearchResultGuestFormDetailData.city.characters.removeLast()
-                } else {
-                    Constant.GetawaySearchResultGuestFormDetailData.city = "\(textFieldText)\(string)"
-                }
+                    if range.length == 1 && string.characters.count == 0 {
+                        Constant.GetawaySearchResultGuestFormDetailData.city.characters.removeLast()
+                    } else {
+                        Constant.GetawaySearchResultGuestFormDetailData.city = "\(textFieldText)\(string)"
+                    }
                 default :
                     if range.length == 1 && string.characters.count == 0 {
                         Constant.GetawaySearchResultGuestFormDetailData.pinCode.characters.removeLast()
@@ -1322,43 +1321,43 @@ extension WhoWillBeCheckingInViewController: UITextFieldDelegate {
                     }
                 case 1 :
                     
-                        if range.length == 1 && string.characters.count == 0 {
-                            Constant.GetawaySearchResultGuestFormDetailData.homePhoneNumber.characters.removeLast()
-                        } else {
-                            Constant.GetawaySearchResultGuestFormDetailData.homePhoneNumber = "\(textFieldText)\(string)"
+                    if range.length == 1 && string.characters.count == 0 {
+                        Constant.GetawaySearchResultGuestFormDetailData.homePhoneNumber.characters.removeLast()
+                    } else {
+                        Constant.GetawaySearchResultGuestFormDetailData.homePhoneNumber = "\(textFieldText)\(string)"
+                        
+                        if Constant.GetawaySearchResultGuestFormDetailData.homePhoneNumber.characters.count > 9 {
                             
-                            if Constant.GetawaySearchResultGuestFormDetailData.homePhoneNumber.characters.count > 9 {
-                                
-                                textField.superview?.layer.borderColor = #colorLiteral(red: 0.9137254902, green: 0.9137254902, blue: 0.9215686275, alpha: 1).cgColor
-                                proceedStatus = true
-                                
-                            } else {
-                                
-                                textField.superview?.layer.borderColor = UIColor.red.cgColor
-                                proceedStatus = false
-                                
-                            }
+                            textField.superview?.layer.borderColor = #colorLiteral(red: 0.9137254902, green: 0.9137254902, blue: 0.9215686275, alpha: 1).cgColor
+                            proceedStatus = true
+                            
+                        } else {
+                            
+                            textField.superview?.layer.borderColor = UIColor.red.cgColor
+                            proceedStatus = false
+                            
                         }
+                    }
                     
                 default :
-                 
-                        if range.length == 1 && string.characters.count == 0 {
-                            Constant.GetawaySearchResultGuestFormDetailData.businessPhoneNumber.characters.removeLast()
-                        } else {
-                            Constant.GetawaySearchResultGuestFormDetailData.businessPhoneNumber = "\(textFieldText)\(string)"
+                    
+                    if range.length == 1 && string.characters.count == 0 {
+                        Constant.GetawaySearchResultGuestFormDetailData.businessPhoneNumber.characters.removeLast()
+                    } else {
+                        Constant.GetawaySearchResultGuestFormDetailData.businessPhoneNumber = "\(textFieldText)\(string)"
+                        
+                        if Constant.GetawaySearchResultGuestFormDetailData.businessPhoneNumber.characters.count > 9 {
                             
-                            if Constant.GetawaySearchResultGuestFormDetailData.businessPhoneNumber.characters.count > 9 {
-                                
-                                textField.superview?.layer.borderColor = #colorLiteral(red: 0.9137254902, green: 0.9137254902, blue: 0.9215686275, alpha: 1).cgColor
-                                proceedStatus = true
-                                
-                            } else {
-                                
-                                textField.superview?.layer.borderColor = UIColor.red.cgColor
-                                proceedStatus = false
-                                
-                            }
+                            textField.superview?.layer.borderColor = #colorLiteral(red: 0.9137254902, green: 0.9137254902, blue: 0.9215686275, alpha: 1).cgColor
+                            proceedStatus = true
+                            
+                        } else {
+                            
+                            textField.superview?.layer.borderColor = UIColor.red.cgColor
+                            proceedStatus = false
+                            
                         }
+                    }
                 }
             }
             let detailStatus = guestFormCheckForDetails()
@@ -1368,12 +1367,12 @@ extension WhoWillBeCheckingInViewController: UITextFieldDelegate {
             return  true
             
         } else {
-   
+            
             if Int(accessibilityValue) == 0 {
                 
                 switch textField.tag {
                 case 0 :
-                     Constant.GetawaySearchResultCardFormDetailData.nameOnCard = "\(textFieldText)\(string)"
+                    Constant.GetawaySearchResultCardFormDetailData.nameOnCard = "\(textFieldText)\(string)"
                 case 1 :
                     Constant.GetawaySearchResultCardFormDetailData.cardNumber = "\(textFieldText)\(string)"
                 default :
@@ -1396,7 +1395,7 @@ extension WhoWillBeCheckingInViewController: UITextFieldDelegate {
             }
             return  true
         }
-       
+        
     }
     func textFieldDidBeginEditing(_ textField: UITextField) {
         
@@ -1436,7 +1435,7 @@ extension WhoWillBeCheckingInViewController: RenewelViewControllerDelegate {
     func dismissWhatToUse(renewalArray: [Renewal]) {
         
     }
-
+    
     func selectedRenewalFromWhoWillBeCheckingIn(renewalArray: [Renewal]) {
         self.renewalsArray = renewalArray
         Constant.MyClassConstants.noThanksForNonCore = false
@@ -1454,3 +1453,4 @@ extension WhoWillBeCheckingInViewController: RenewelViewControllerDelegate {
         self.proceedToCheckoutPressed(button)
     }
 }
+

@@ -13,11 +13,11 @@ class DestinationResortViewController: UIViewController {
     
     //***** Outlets *****//
     @IBOutlet weak var tableViewDestinations: UITableView!
-
+    
     //class variables
     fileprivate var tappedButtonDictionary = [Int: Bool]()
     var amenitiesString: String = ""
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -29,22 +29,22 @@ class DestinationResortViewController: UIViewController {
         
         // omniture tracking with event 35
         /* let userInfo: [String: String]
-        if Constant.MyClassConstants.isFromExchange {
-             userInfo = [
-                Constant.omnitureCommonString.productItem : (Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.resortCode)!,
-                Constant.omnitureEvars.eVar41 : Constant.omnitureCommonString.vactionSearch
-            ]
-            
-        } else {
-             userInfo = [
-                Constant.omnitureCommonString.productItem : (Constant.MyClassConstants.viewResponse.resort?.resortCode!)!,
-                Constant.omnitureEvars.eVar41 : Constant.omnitureCommonString.vactionSearch
-            ]
-        }
-        
-        
-        ADBMobile.trackAction(Constant.omnitureEvents.event35, data: userInfo)
-        amenitiesString = Constant.MyClassConstants.onsiteString.appending(Constant.MyClassConstants.nearbyString)*/
+         if Constant.MyClassConstants.isFromExchange {
+         userInfo = [
+         Constant.omnitureCommonString.productItem : (Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.resortCode)!,
+         Constant.omnitureEvars.eVar41 : Constant.omnitureCommonString.vactionSearch
+         ]
+         
+         } else {
+         userInfo = [
+         Constant.omnitureCommonString.productItem : (Constant.MyClassConstants.viewResponse.resort?.resortCode!)!,
+         Constant.omnitureEvars.eVar41 : Constant.omnitureCommonString.vactionSearch
+         ]
+         }
+         
+         
+         ADBMobile.trackAction(Constant.omnitureEvents.event35, data: userInfo)
+         amenitiesString = Constant.MyClassConstants.onsiteString.appending(Constant.MyClassConstants.nearbyString)*/
         // Do any additional setup after loading the view.
         
     }
@@ -108,111 +108,111 @@ extension DestinationResortViewController: UITableViewDataSource {
             return 1
         }
     }
-
+    
     @objc(tableView:heightForRowAtIndexPath:) func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
         switch indexPath.section {
         case 0 :
-        if Constant.RunningDevice.deviceIdiom == .pad {
-            return 130
-        } else {
-            return 80
-        }
+            if Constant.RunningDevice.deviceIdiom == .pad {
+                return 130
+            } else {
+                return 80
+            }
         case 1:
-        if Constant.RunningDevice.deviceIdiom == .pad {
-            return 120
-        } else {
-            return 80
-        }
+            if Constant.RunningDevice.deviceIdiom == .pad {
+                return 120
+            } else {
+                return 80
+            }
         case 2:
-        if Constant.RunningDevice.deviceIdiom == .pad {
-            return 130
-        } else {
-            return 80
-        }
+            if Constant.RunningDevice.deviceIdiom == .pad {
+                return 130
+            } else {
+                return 80
+            }
         case 3:
-        var height: CGFloat
-        if Constant.RunningDevice.deviceIdiom == .pad {
-            guard let font = UIFont(name: Constant.fontName.helveticaNeue, size: 16.0) else { return 0 }
-            if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
-                guard let description = Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.advisements[0].description else { return 0 }
-                height = heightForView(description, font: font, width: (view.frame.size.width / 2) - 100)
-                return height
-                
+            var height: CGFloat
+            if Constant.RunningDevice.deviceIdiom == .pad {
+                guard let font = UIFont(name: Constant.fontName.helveticaNeue, size: 16.0) else { return 0 }
+                if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
+                    guard let description = Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.advisements[0].description else { return 0 }
+                    height = heightForView(description, font: font, width: (view.frame.size.width / 2) - 100)
+                    return height
+                    
+                } else {
+                    guard let description = Constant.MyClassConstants.viewResponse.resort?.advisements[0].description else { return 0 }
+                    height = heightForView(description, font: font, width: (view.frame.size.width / 2) - 100)
+                    return height
+                }
             } else {
-                guard let description = Constant.MyClassConstants.viewResponse.resort?.advisements[0].description else { return 0 }
-                height = heightForView(description, font: font, width: (view.frame.size.width / 2) - 100)
-                return height
-            }
-        } else {
-            guard let font = UIFont(name: Constant.fontName.helveticaNeue, size: 15.0) else { return 60 }
-            if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
-                guard let description = Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.advisements[0].description else { return 60 }
-                height = heightForView((Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.advisements[0].description)!, font: font, width: view.frame.size.width - 40)
-                return height + 60
-            } else {
-                guard let description = Constant.MyClassConstants.viewResponse.resort?.advisements[0].description else { return 60 }
-                height = heightForView(description, font: font, width: view.frame.size.width - 40)
-                return height + 60
-            }
+                guard let font = UIFont(name: Constant.fontName.helveticaNeue, size: 15.0) else { return 60 }
+                if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
+                    guard let description = Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.advisements[0].description else { return 60 }
+                    height = heightForView((Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.advisements[0].description)!, font: font, width: view.frame.size.width - 40)
+                    return height + 60
+                } else {
+                    guard let description = Constant.MyClassConstants.viewResponse.resort?.advisements[0].description else { return 60 }
+                    height = heightForView(description, font: font, width: view.frame.size.width - 40)
+                    return height + 60
+                }
             }
         case 4, 5 :
-                if indexPath.row == 1 && indexPath.section == 4 {
+            if indexPath.row == 1 && indexPath.section == 4 {
+                
+                var count = 0
+                if Constant.MyClassConstants.onsiteArray.count > 0 {
+                    count = count + Constant.MyClassConstants.onsiteArray.count * 20 + 40
+                }
+                if Constant.MyClassConstants.nearbyArray.count > 0 {
+                    count = count + Constant.MyClassConstants.nearbyArray.count + 40
+                }
+                return CGFloat (count)
+                
+            } else if indexPath.row == 1 && indexPath.section == 5 {
+                
+                if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
                     
-                    var count = 0
-                    if Constant.MyClassConstants.onsiteArray.count > 0 {
-                        count = count + Constant.MyClassConstants.onsiteArray.count * 20 + 40
-                    }
-                    if Constant.MyClassConstants.nearbyArray.count > 0 {
-                        count = count + Constant.MyClassConstants.nearbyArray.count + 40
-                    }
-                    return CGFloat (count)
-                    
-                } else if indexPath.row == 1 && indexPath.section == 5 {
-                    
-                    if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
-                        
-                        if (Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.advisements.count)! > 1 {
-                            let font = UIFont(name: Constant.fontName.helveticaNeue, size: 16.0)
-                            var height: CGFloat
-                            if Constant.RunningDevice.deviceIdiom == .pad {
-                                height = heightForView((Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.advisements[1].description)!, font: font!, width: (view.frame.size.width / 2) - 100)
-                                return height
-                            } else {
-                                height = heightForView((Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.advisements[1].description)!, font: font!, width: view.frame.size.width)
-                                return height + 20
-                            }
-                        } else {
-                            return 0
-                        }
-                    } else {
+                    if (Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.advisements.count)! > 1 {
                         let font = UIFont(name: Constant.fontName.helveticaNeue, size: 16.0)
                         var height: CGFloat
-                        if (Constant.MyClassConstants.viewResponse.resort?.advisements.count)! > 0 {
-                            if Constant.RunningDevice.deviceIdiom == .pad {
-                                height = heightForView((Constant.MyClassConstants.viewResponse.resort?.advisements[1].description)!, font: font!, width: (view.frame.size.width / 2) - 100)
-                                return height
-                            } else {
-                                height = heightForView((Constant.MyClassConstants.viewResponse.resort?.advisements[1].description)!, font: font!, width: view.frame.size.width)
-                                return height + 20
-                            }
+                        if Constant.RunningDevice.deviceIdiom == .pad {
+                            height = heightForView((Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.advisements[1].description)!, font: font!, width: (view.frame.size.width / 2) - 100)
+                            return height
                         } else {
-                            return 0
+                            height = heightForView((Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.advisements[1].description)!, font: font!, width: view.frame.size.width)
+                            return height + 20
                         }
-                        
+                    } else {
+                        return 0
+                    }
+                } else {
+                    let font = UIFont(name: Constant.fontName.helveticaNeue, size: 16.0)
+                    var height: CGFloat
+                    if (Constant.MyClassConstants.viewResponse.resort?.advisements.count)! > 0 {
+                        if Constant.RunningDevice.deviceIdiom == .pad {
+                            height = heightForView((Constant.MyClassConstants.viewResponse.resort?.advisements[1].description)!, font: font!, width: (view.frame.size.width / 2) - 100)
+                            return height
+                        } else {
+                            height = heightForView((Constant.MyClassConstants.viewResponse.resort?.advisements[1].description)!, font: font!, width: view.frame.size.width)
+                            return height + 20
+                        }
+                    } else {
+                        return 0
                     }
                     
-                } else {
-                    return 80
                 }
+                
+            } else {
+                return 80
+            }
         default :
-                if Constant.RunningDevice.deviceIdiom == .pad {
-                    return 200
-                } else {
-                    return 80
-                }
+            if Constant.RunningDevice.deviceIdiom == .pad {
+                return 200
+            } else {
+                return 80
+            }
         }
-    
+        
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -233,7 +233,7 @@ extension DestinationResortViewController: UITableViewDataSource {
             for imgStr in imagesArray {
                 if imgStr.size?.caseInsensitiveCompare(Constant.MyClassConstants.imageSize) == ComparisonResult.orderedSame {
                     if let imgURL = imgStr.url {
-                     url = URL(string: imgURL)
+                        url = URL(string: imgURL)
                     }
                     break
                 }
@@ -242,7 +242,12 @@ extension DestinationResortViewController: UITableViewDataSource {
             
             if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
                 cell.resortName?.text = Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.resortName
-                cell.resortAddress?.text = Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.address?.cityName?.appending(", ").appending((Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.address?.territoryCode!)!)
+                var addressArray = [String]()
+                addressArray.append(Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.address?.cityName ?? "" )
+                if let territoryCode = Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.address?.territoryCode {
+                    addressArray.append(territoryCode)
+                }
+                cell.resortAddress?.text = addressArray.joined(separator: ", ")
                 cell.resortCode?.text = Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.resortCode
                 
             } else {
@@ -355,7 +360,7 @@ extension DestinationResortViewController: UITableViewDataSource {
                 return cell
                 
             } else {
-               guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.amenitiesCell, for: indexPath) as? AvailableDestinationPlaceTableViewCell else { return UITableViewCell() }
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.amenitiesCell, for: indexPath) as? AvailableDestinationPlaceTableViewCell else { return UITableViewCell() }
                 if indexPath.section == 4 {
                     cell.infoLabel.text = Constant.MyClassConstants.nearbyString.appending("\n\n").appending(Constant.MyClassConstants.onsiteString)
                 } else {
@@ -379,7 +384,8 @@ extension DestinationResortViewController: UITableViewDataSource {
             }
         default :
             guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.additionalAdvisementCell, for: indexPath) as? UpComingTripCell else { return UITableViewCell() }
-                return cell
+            return cell
         }
     }
 }
+

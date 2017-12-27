@@ -93,10 +93,10 @@ class CheckOutViewController: UIViewController {
                     showInsurance = false
                     self.isTripProtectionEnabled = false
                 }
-            guard let curCode = Constant.MyClassConstants.exchangeFees[0].currencyCode else { return }
-            currencyCode = Helper.currencyCodeToSymbol(code: curCode)
-            
-        }
+                guard let curCode = Constant.MyClassConstants.exchangeFees[0].currencyCode else { return }
+                currencyCode = Helper.currencyCodeToSymbol(code: curCode)
+                
+            }
         } else {
             if let advisementsArray = Constant.MyClassConstants.viewResponse.resort?.advisements {
                 for advisement in advisementsArray {
@@ -116,8 +116,8 @@ class CheckOutViewController: UIViewController {
             }
             guard let curCode = Constant.MyClassConstants.rentalFees[0].currencyCode else { return }
             currencyCode = Helper.currencyCodeToSymbol(code: curCode)
-      }
-    
+        }
+        
         //Register custom cell xib with tableview
         
         checkoutOptionTBLview.register(UINib(nibName: Constant.customCellNibNames.totalCostCell, bundle: nil), forCellReuseIdentifier: Constant.customCellNibNames.totalCostCell)
@@ -179,9 +179,9 @@ class CheckOutViewController: UIViewController {
             
             let strAccept = self.cellWebView.stringByEvaluatingJavaScript(from: jsStringAccept)
             let strReject = self.cellWebView.stringByEvaluatingJavaScript(from: jsStringReject)
-         
+            
             if (isAgreedToFees || !Constant.MyClassConstants.hasAdditionalCharges) && (strAccept == "true" || strReject == "true") && !Constant.MyClassConstants.selectedCreditCard.isEmpty && (isPromotionApplied || Constant.MyClassConstants.recapViewPromotionCodeArray.isEmpty) {
-
+                
                 showHudAsync()
                 imageSlider.isHidden = true
                 
@@ -207,7 +207,7 @@ class CheckOutViewController: UIViewController {
                         Helper.removeStoredGuestFormDetials()
                         self.isAgreed = true
                         self.hideHudAsync()
-                       self.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
+                        self.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
                         if let confirmationNumber = response.view?.fees?.shopExchange?.confirmationNumber {
                             Constant.MyClassConstants.transactionNumber = confirmationNumber
                         }
@@ -255,7 +255,7 @@ class CheckOutViewController: UIViewController {
                         self?.presentErrorAlert(UserFacingCommonError.serverError(error))
                     })
                     
-              }
+                }
             } else if !isAgreedToFees && Constant.MyClassConstants.hasAdditionalCharges {
                 let indexPath = IndexPath(row: 0, section: 8)
                 checkoutOptionTBLview.scrollToRow(at: indexPath, at: .top, animated: true)
@@ -266,7 +266,7 @@ class CheckOutViewController: UIViewController {
                 checkoutOptionTBLview.scrollToRow(at: indexPath, at: .top, animated: true)
                 imageSlider.isHidden = false
                 self.presentAlert(with: Constant.AlertPromtMessages.failureTitle, message: Constant.AlertMessages.insuranceSelectionMessage)
-
+                
             } else if !isPromotionApplied && !Constant.MyClassConstants.recapViewPromotionCodeArray.isEmpty {
                 imageSlider.isHidden = false
                 checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
@@ -289,13 +289,16 @@ class CheckOutViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
-
-        remainingResortHoldingTimeLable.text = "We are holding this unit for \(Constant.holdingTime) minutes".localized()
-
         navigationController?.navigationBar.isHidden = false
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        
+        remainingResortHoldingTimeLable.text = "We are holding this unit for \(Constant.holdingTime) minutes".localized()
+        
         emailTextToEnter = Session.sharedSession.contact?.emailAddress ?? ""
-        checkoutOptionTBLview.reloadData()
-
+        
         if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
             if let selectedPromotion = Constant.MyClassConstants.exchangeFees[0].shopExchange?.selectedOfferName {
                 self.recapSelectedPromotion = selectedPromotion
@@ -332,6 +335,7 @@ class CheckOutViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(updateResortHoldingTime), name: NSNotification.Name(rawValue: Constant.notificationNames.updateResortHoldingTime), object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(changeLabelStatus), name: NSNotification.Name(rawValue: Constant.notificationNames.changeSliderStatus), object: nil)
+        checkoutOptionTBLview.reloadData()
         
     }
     override func viewWillDisappear(_ animated: Bool) {
@@ -381,7 +385,7 @@ class CheckOutViewController: UIViewController {
             }
             
             if !Constant.MyClassConstants.exchangeFees[0].renewals.isEmpty {
-                    totalFeesArray.add(Constant.MyClassConstants.renewals)
+                totalFeesArray.add(Constant.MyClassConstants.renewals)
             }
             
         } else {
@@ -532,7 +536,7 @@ class CheckOutViewController: UIViewController {
     //Used to expand and contract sections
     func toggleButtonIsTapped(_ sender: UIButton) {
         if let tag = tappedButtonDictionary[sender.tag] {
-             tappedButtonDictionary.updateValue(!tag, forKey: sender.tag)
+            tappedButtonDictionary.updateValue(!tag, forKey: sender.tag)
         } else {
             tappedButtonDictionary.updateValue(true, forKey: sender.tag)
         }
@@ -740,7 +744,7 @@ extension CheckOutViewController: UITableViewDelegate {
         
         if indexPath.section == 9 {
             self.performSegue(withIdentifier: Constant.segueIdentifiers.selectPaymentMethodSegue, sender: nil)
-
+            
         }
     }
     
@@ -896,7 +900,7 @@ extension CheckOutViewController: UITableViewDataSource {
             } else {
                 return headerView
             }
-        
+            
         default :
             return nil
             
@@ -1124,95 +1128,95 @@ extension CheckOutViewController: UITableViewDataSource {
             
         case 5 :
             guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.customCellNibNames.exchangeOrProtectionCell, for: indexPath) as? ExchangeOrProtectionCell else { return UITableViewCell() }
-                
-                if !isHeightZero {
-                    for subviews in cell.subviews {
-                        subviews.isHidden = false
-                    }
-
-                    switch totalFeesArray[indexPath.row] as? String ?? "" {
-                    case Constant.MyClassConstants.exchangeFeeTitle:
-                        if let exchangeFees = Constant.MyClassConstants.exchangeFees[0].shopExchange?.rentalPrice?.price {
-                            cell.setTotalPrice(with: currencyCode, and: exchangeFees)
-                        }
-                        cell.priceLabel.text = Constant.MyClassConstants.exchangeFeeTitle
-                        
-                    case Constant.MyClassConstants.getawayFee:
-                        
-                        if let rentalPrice = Constant.MyClassConstants.rentalFees[0].rental?.rentalPrice?.price {
-                            cell.setTotalPrice(with: currencyCode, and: rentalPrice)
-                        }
-                        cell.priceLabel.text = Constant.MyClassConstants.getawayFee
-                        
-                    case Constant.MyClassConstants.eplus:
-                        
-                        if let ePlusPrice = Constant.MyClassConstants.exchangeFees[0].eplus?.price {
-                            cell.setTotalPrice(with: currencyCode, and: ePlusPrice)
-                        }
-                        cell.priceLabel.text = Constant.MyClassConstants.eplus
-                        
-                    case Constant.MyClassConstants.taxesTitle:
-                        
-                        cell.priceLabel.text = Constant.MyClassConstants.taxesTitle
-                        if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
-                            if let tax = Constant.MyClassConstants.exchangeContinueToCheckoutResponse.view?.fees?.shopExchange?.prices[0].tax {
-                                cell.setTotalPrice(with: currencyCode, and: tax)
-                            }
-                        } else {
-                            
-                            if let tax = Constant.MyClassConstants.continueToCheckoutResponse.view?.fees?.rental?.rentalPrice?.tax {
-                                cell.setTotalPrice(with: currencyCode, and: tax)
-                            }
-                        }
-                        
-                        let cellTapped: CallBack = { [unowned self] in
-                            if let taxBreakdown = Constant.MyClassConstants.continueToCheckoutResponse.view?.fees?.rental?.rentalPrice?.taxBreakdown {
-                                
-                                let dataSet = taxBreakdown
-                                    .filter { !$0.description.unwrappedString.isEmpty }
-                                    .map { ($0.description.unwrappedString, $0.amount) }
-                                
-                                let viewModel = ChargeSummaryViewModel(charge: dataSet,
-                                                                       headerTitle: "Detailed Tax Information".localized(),
-                                                                       descriptionTitle: "Tax Description".localized(),
-                                                                       currency: "US Dollars".localized(),
-                                                                       totalTitle: "Total Tax Amount".localized())
-                                
-                                let chargeSummaryViewController = ChargeSummaryViewController(viewModel: viewModel)
-                                chargeSummaryViewController.doneButtonPressed = { chargeSummaryViewController.dismiss(animated: true) }
-                                self.navigationController?.present(chargeSummaryViewController, animated: true)
-                            }
-                        }
-                        
-                        cell.setCell(callBack: cellTapped)
-                        
-                    default:
-                        
-                        var renewalIndex = 0
-                        cell.priceLabel.numberOfLines = 0
-                        if renewalsArray.count > 1 {
-                            renewalIndex = 1
-                            cell.priceLabel.text = "\(String(describing: renewalsArray[renewalIndex].displayName ?? "")) Package Renewal Fee".localized()
-                        } else {
-                            cell.priceLabel.text = "\(String(describing: renewalsArray[renewalIndex].displayName ?? "")) Renewal Fee".localized()
-                        }
-                        cell.setTotalPrice(with: currencyCode, and: renewalsArray[renewalIndex].price)
-                    }
-                } else {
-                    
-                    isHeightZero = false
-                    for subviews in cell.subviews {
-                        subviews.isHidden = true
-                    }
-                    
+            
+            if !isHeightZero {
+                for subviews in cell.subviews {
+                    subviews.isHidden = false
                 }
-                cell.selectionStyle = .none
-                cell.primaryPriceLabel.sizeToFit()
                 
-                return cell
-        
+                switch totalFeesArray[indexPath.row] as? String ?? "" {
+                case Constant.MyClassConstants.exchangeFeeTitle:
+                    if let exchangeFees = Constant.MyClassConstants.exchangeFees[0].shopExchange?.rentalPrice?.price {
+                        cell.setTotalPrice(with: currencyCode, and: exchangeFees)
+                    }
+                    cell.priceLabel.text = Constant.MyClassConstants.exchangeFeeTitle
+                    
+                case Constant.MyClassConstants.getawayFee:
+                    
+                    if let rentalPrice = Constant.MyClassConstants.rentalFees[0].rental?.rentalPrice?.price {
+                        cell.setTotalPrice(with: currencyCode, and: rentalPrice)
+                    }
+                    cell.priceLabel.text = Constant.MyClassConstants.getawayFee
+                    
+                case Constant.MyClassConstants.eplus:
+                    
+                    if let ePlusPrice = Constant.MyClassConstants.exchangeFees[0].eplus?.price {
+                        cell.setTotalPrice(with: currencyCode, and: ePlusPrice)
+                    }
+                    cell.priceLabel.text = Constant.MyClassConstants.eplus
+                    
+                case Constant.MyClassConstants.taxesTitle:
+                    
+                    cell.priceLabel.text = Constant.MyClassConstants.taxesTitle
+                    if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
+                        if let tax = Constant.MyClassConstants.exchangeContinueToCheckoutResponse.view?.fees?.shopExchange?.prices[0].tax {
+                            cell.setTotalPrice(with: currencyCode, and: tax)
+                        }
+                    } else {
+                        
+                        if let tax = Constant.MyClassConstants.continueToCheckoutResponse.view?.fees?.rental?.rentalPrice?.tax {
+                            cell.setTotalPrice(with: currencyCode, and: tax)
+                        }
+                    }
+                    
+                    let cellTapped: CallBack = { [unowned self] in
+                        if let taxBreakdown = Constant.MyClassConstants.continueToCheckoutResponse.view?.fees?.rental?.rentalPrice?.taxBreakdown {
+                            
+                            let dataSet = taxBreakdown
+                                .filter { !$0.description.unwrappedString.isEmpty }
+                                .map { ($0.description.unwrappedString, $0.amount) }
+                            
+                            let viewModel = ChargeSummaryViewModel(charge: dataSet,
+                                                                   headerTitle: "Detailed Tax Information".localized(),
+                                                                   descriptionTitle: "Tax Description".localized(),
+                                                                   currency: "US Dollars".localized(),
+                                                                   totalTitle: "Total Tax Amount".localized())
+                            
+                            let chargeSummaryViewController = ChargeSummaryViewController(viewModel: viewModel)
+                            chargeSummaryViewController.doneButtonPressed = { chargeSummaryViewController.dismiss(animated: true) }
+                            self.navigationController?.present(chargeSummaryViewController, animated: true)
+                        }
+                    }
+                    
+                    cell.setCell(callBack: cellTapped)
+                    
+                default:
+                    
+                    var renewalIndex = 0
+                    cell.priceLabel.numberOfLines = 0
+                    if renewalsArray.count > 1 {
+                        renewalIndex = 1
+                        cell.priceLabel.text = "\(String(describing: renewalsArray[renewalIndex].displayName ?? "")) Package Renewal Fee".localized()
+                    } else {
+                        cell.priceLabel.text = "\(String(describing: renewalsArray[renewalIndex].displayName ?? "")) Renewal Fee".localized()
+                    }
+                    cell.setTotalPrice(with: currencyCode, and: renewalsArray[renewalIndex].price)
+                }
+            } else {
+                
+                isHeightZero = false
+                for subviews in cell.subviews {
+                    subviews.isHidden = true
+                }
+                
+            }
+            cell.selectionStyle = .none
+            cell.primaryPriceLabel.sizeToFit()
+            
+            return cell
+            
         case 6 :
-        
+            
             guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.customCellNibNames.exchangeOrProtectionCell, for: indexPath) as? ExchangeOrProtectionCell else { return UITableViewCell() }
             
             if !isHeightZero {
@@ -1247,43 +1251,43 @@ extension CheckOutViewController: UITableViewDataSource {
         case 7 :
             
             guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.customCellNibNames.promotionsDiscountCell, for: indexPath) as? PromotionsDiscountCell else { return UITableViewCell() }
-                
-                if !isHeightZero {
-                    for subviews in cell.subviews {
-                        subviews.isHidden = false
-                    }
-                    cell.discountLabel.text = recapSelectedPromotion
-                    for promotion in Constant.MyClassConstants.recapPromotionsArray where promotion.offerName == recapSelectedPromotion {
-                        cell.setPromotionPrice(with: currencyCode, and: promotion.amount)
-                    }
-                } else {
-                    isHeightZero = false
-                    for subviews in cell.subviews {
-                        subviews.isHidden = true
-                    }
+            
+            if !isHeightZero {
+                for subviews in cell.subviews {
+                    subviews.isHidden = false
                 }
-                cell.selectionStyle = .none
-                return cell
+                cell.discountLabel.text = recapSelectedPromotion
+                for promotion in Constant.MyClassConstants.recapPromotionsArray where promotion.offerName == recapSelectedPromotion {
+                    cell.setPromotionPrice(with: currencyCode, and: promotion.amount)
+                }
+            } else {
+                isHeightZero = false
+                for subviews in cell.subviews {
+                    subviews.isHidden = true
+                }
+            }
+            cell.selectionStyle = .none
+            return cell
             
         case 8 :
             
             guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.customCellNibNames.totalCostCell, for: indexPath) as? TotalCostCell else { return UITableViewCell() }
-                cell.selectionStyle = .none
-
-                if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
-                    
-                    cell.setTotalPrice(with: currencyCode, and: (Constant.MyClassConstants.exchangeFees[0].total))
-                    if let total = recapFeesTotal {
-                        cell.setTotalPrice(with: currencyCode, and: total)
-                    }
-                } else {
-                    cell.setTotalPrice(with: currencyCode, and: (Constant.MyClassConstants.rentalFees[0].total))
-                    if let total = recapFeesTotal {
-                        cell.setTotalPrice(with: currencyCode, and: total)
-                    }
-                }
-                return cell
+            cell.selectionStyle = .none
+            
+            if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
                 
+                cell.setTotalPrice(with: currencyCode, and: (Constant.MyClassConstants.exchangeFees[0].total))
+                if let total = recapFeesTotal {
+                    cell.setTotalPrice(with: currencyCode, and: total)
+                }
+            } else {
+                cell.setTotalPrice(with: currencyCode, and: (Constant.MyClassConstants.rentalFees[0].total))
+                if let total = recapFeesTotal {
+                    cell.setTotalPrice(with: currencyCode, and: total)
+                }
+            }
+            return cell
+            
         case 9 :
             
             let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.additionalAdvisementCell, for: indexPath)
@@ -1339,7 +1343,7 @@ extension CheckOutViewController: UITableViewDataSource {
             cell.agreeButton?.tag = indexPath.section
             cell.agreeButton?.accessibilityValue = String(indexPath.section)
             cell.feesTitleLabel.text = Constant.AlertMessages.feesPaymentMessage
-           
+            
             if isAgreedToFees {
                 cell.agreeLabel.backgroundColor = UIColor(colorLiteralRed: 170 / 255, green: 202 / 255, blue: 92 / 255, alpha: 1.0)
                 cell.agreeLabel.layer.borderColor = UIColor(colorLiteralRed: 170 / 255, green: 202 / 255, blue: 92 / 255, alpha: 1.0).cgColor
@@ -1348,7 +1352,7 @@ extension CheckOutViewController: UITableViewDataSource {
                 cell.allInclusiveSelectedCheckBox.isHidden = false
             } else {
                 if let image = UIImage(named: Constant.assetImageNames.swipeArrowOrgImage) {
-                   cell.agreeButton?.imageName = image
+                    cell.agreeButton?.imageName = image
                 }
                 cell.allInclusiveSelectedCheckBox.isHidden = true
                 cell.agreeLabel.backgroundColor = UIColor.white
@@ -1455,3 +1459,4 @@ extension CheckOutViewController: UITextFieldDelegate {
         
     }
 }
+
