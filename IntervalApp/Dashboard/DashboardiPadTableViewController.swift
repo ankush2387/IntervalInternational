@@ -336,9 +336,7 @@ class DashboardIPadTableViewController: UITableViewController {
     func rentalSearchAvailability(activeInterval: BookingWindowInterval) {
         Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
         Helper.helperDelegate = self
-        if let searchDate = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate {
-            Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate:  Helper.convertStringToDate(dateString: searchDate, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
-        }
+        Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate:  Helper.convertStringToDate(dateString: Constant.MyClassConstants.initialVacationSearch.searchCheckInDate ?? "", format: Constant.MyClassConstants.dateFormat), senderViewController: self)
     }
     
     //Function for no results availability
@@ -827,7 +825,7 @@ extension DashboardIPadTableViewController: UICollectionViewDataSource {
                 var formatedCheckOutDate = ""
                 if let unitCheckInDate = upcomingTrip.unit?.checkInDate {
                     
-                    let checkInDate = Helper.convertStringToDate(dateString:unitCheckInDate, format: Constant.MyClassConstants.dateFormat1)
+                    let checkInDate = Helper.convertStringToDate(dateString:unitCheckInDate, format: Constant.MyClassConstants.dateFormat)
                     
                     let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
                     let myComponents = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: checkInDate)
@@ -838,7 +836,7 @@ extension DashboardIPadTableViewController: UICollectionViewDataSource {
                 
                 if let unitCheckOutDate = upcomingTrip.unit?.checkOutDate {
                     
-                    let checkOutDate = Helper.convertStringToDate(dateString: unitCheckOutDate, format: Constant.MyClassConstants.dateFormat1)
+                    let checkOutDate = Helper.convertStringToDate(dateString: unitCheckOutDate, format: Constant.MyClassConstants.dateFormat)
                     let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
                     let myComponents1 = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: checkOutDate)
                     

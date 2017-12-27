@@ -71,11 +71,6 @@ class VacationSearchResultIPadController: UIViewController {
         
         self.navigationController?.setNavigationBarHidden(false, animated: true)
         self.navigationController?.navigationBar.barTintColor = #colorLiteral(red: 0.2745098039, green: 0.5333333333, blue: 0.7568627451, alpha: 1)
-        
-        Constant.MyClassConstants.calendarDatesArray.removeAll()
-        intervalPrint(Constant.MyClassConstants.calendarDatesArray.count)
-        Constant.MyClassConstants.calendarDatesArray = Constant.MyClassConstants.totalBucketArray
-        
         let nib = UINib(nibName: Constant.customCellNibNames.searchResultCollectionCell, bundle: nil)
         searchedDateCollectionView?.register(nib, forCellWithReuseIdentifier: Constant.customCellNibNames.searchResultCollectionCell)
         
@@ -175,7 +170,7 @@ class VacationSearchResultIPadController: UIViewController {
         
         //self.searchedDateCollectionView.reloadData()
         
-        if (Constant.MyClassConstants.showAlert == true) {
+        if Constant.MyClassConstants.showAlert == true {
             
             self.alertView = Helper.noResortView(senderView: self.view)
             self.alertView.isHidden = false
@@ -215,17 +210,14 @@ class VacationSearchResultIPadController: UIViewController {
 
     func intervalBucketClicked(calendarItem: CalendarItem!, cell: UICollectionViewCell) {
         
-        Helper.helperDelegate = self
-        
-        myActivityIndicator.hidesWhenStopped = true
-    
         // Resolve the next active interval based on the Calendar interval selected
-        let activeInterval = Constant.MyClassConstants.initialVacationSearch.resolveNextActiveIntervalFor(intervalStartDate: calendarItem.intervalStartDate, intervalEndDate: calendarItem.intervalEndDate)
+        guard let activeInterval = Constant.MyClassConstants.initialVacationSearch.resolveNextActiveIntervalFor(intervalStartDate: calendarItem.intervalStartDate, intervalEndDate: calendarItem.intervalEndDate) else { return }
         
-        //Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
+        Helper.helperDelegate = self
+        myActivityIndicator.hidesWhenStopped = true
         
         // Fetch CheckIn dates only in the active interval doesn't have CheckIn dates
-        if (activeInterval != nil && !(activeInterval?.hasCheckInDates())!) {
+        if !activeInterval.hasCheckInDates() {
                 
             // Execute Search Dates
             if (Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental()) {
@@ -236,21 +228,16 @@ class VacationSearchResultIPadController: UIViewController {
                 RentalClient.searchDates(Session.sharedSession.userAccessToken, request: Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request,
                             onSuccess: { (response) in
                                             
-                                Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.response = response
-                                // Update active interval
-                                Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
-                                
-                                Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
-                                // Check not available checkIn dates for the active interval
-                                if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
-                                }
-                                Constant.MyClassConstants.calendarDatesArray.removeAll()
-                                Constant.MyClassConstants.calendarDatesArray = Constant.MyClassConstants.totalBucketArray
-                                self.searchedDateCollectionView.reloadData()
+                    Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.response = response
+                    // Update active interval
+                    Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
+                    
+                    Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                    self.searchedDateCollectionView.reloadData()
                                 
                 }, onError: { (_) in
                                             
-                            self.presentErrorAlert(UserFacingCommonError.generic)
+                    self.presentErrorAlert(UserFacingCommonError.generic)
                 }
                 )
             } else if Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange() {
@@ -262,30 +249,16 @@ class VacationSearchResultIPadController: UIViewController {
                 ExchangeClient.searchDates(Session.sharedSession.userAccessToken, request: Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request,
                                 onSuccess: { (response) in
                                                 
-                                                Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.response = response
-                                                // Update active interval
-                                                Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
-                                                
-                                                Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
-                                                
-                                                //expectation.fulfill()
-                                                
-                                                // Check not available checkIn dates for the active interval
-                                                if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
-                                                    //self.showNotAvailabilityResults()
-                                                    
-                                                } else {
-            
-                                                }
-                                                Constant.MyClassConstants.calendarDatesArray.removeAll()
-                                                
-                                                Constant.MyClassConstants.calendarDatesArray = Constant.MyClassConstants.totalBucketArray
-                                                
-                                                self.searchedDateCollectionView.reloadData()
+                        Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.response = response
+                        // Update active interval
+                        Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
+                        
+                        Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                        self.searchedDateCollectionView.reloadData()
                                                 
                     },
-                                             onError: { (_) in
-                                                self.presentErrorAlert(UserFacingCommonError.generic)
+                     onError: { (_) in
+                        self.presentErrorAlert(UserFacingCommonError.generic)
                     }
                     )
                     
@@ -299,41 +272,37 @@ class VacationSearchResultIPadController: UIViewController {
                     
                     // Execute Rental Search Dates
                     RentalClient.searchDates(Session.sharedSession.userAccessToken, request: Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request,
-                                             onSuccess: { (response) in
-                                                Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.response = response
-                                                
-                                                // Update active interval
-                                                Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
-                                                
-                                                // Check not available checkIn dates for the active interval for Rental
-                                                if (!(activeInterval?.hasCheckInDates())!) {
-                                                    Constant.MyClassConstants.rentalHasNotAvailableCheckInDatesAfterSelectInterval = true
-                                                }
-                                                
-                                                // Run Exchange Search Dates
-                                                Helper.executeExchangeSearchDatesAfterSelectInterval(senderVC: self, datesCV: self.searchedDateCollectionView)
-                                                
-                                                //expectation.fulfill()
+                     onSuccess: { (response) in
+                        Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.response = response
+                        
+                        // Update active interval
+                        Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
+                        
+                        // Check not available checkIn dates for the active interval for Rental
+                        if !activeInterval.hasCheckInDates() {
+                            Constant.MyClassConstants.rentalHasNotAvailableCheckInDatesAfterSelectInterval = true
+                        }
+                        
+                        // Run Exchange Search Dates
+                        Helper.executeExchangeSearchDatesAfterSelectInterval(senderVC: self, datesCV: self.searchedDateCollectionView, activeInterval: activeInterval)
+                        
+                        //expectation.fulfill()
                     },
-                                             onError: { (_) in
-                                                // Run Exchange Search Dates
-                                                Helper.executeExchangeSearchDatesAfterSelectInterval(senderVC: self, datesCV: self.searchedDateCollectionView)
+                         onError: { (_) in
+                            // Run Exchange Search Dates
+                            Helper.executeExchangeSearchDatesAfterSelectInterval(senderVC: self, datesCV: self.searchedDateCollectionView, activeInterval: activeInterval)
                     }
                     )
                     
                 }
             } else {
                 
-                if activeInterval != nil {
-                    Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
-                }
+                Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
                 Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                 self.searchedDateCollectionView.reloadData()
                 myActivityIndicator.stopAnimating()
                 cell.alpha = 1.0
-            
         }
-            
     }
     
     //*****Function for single date item press *****//
@@ -344,11 +313,12 @@ class VacationSearchResultIPadController: UIViewController {
         
         if Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange() {
             showHudAsync()
-            Helper.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: toDate, senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+            Helper.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: toDate, senderViewController: self)
+
 
         } else if Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental() {
             showHudAsync()
-            Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: toDate, senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+            Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: toDate, senderViewController: self)
         } else {
             showHudAsync()
             let request = RentalSearchResortsRequest()
@@ -361,7 +331,7 @@ class VacationSearchResultIPadController: UIViewController {
                 Constant.MyClassConstants.initialVacationSearch.rentalSearch?.inventory = response.resorts
                 
                 // Run Exchange Search Dates
-                Helper.executeExchangeSearchAvailabilityAfterSelectCheckInDate(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: Constant.MyClassConstants.initialVacationSearch.searchCheckInDate!, format: Constant.MyClassConstants.dateFormat), searchCriteria: Constant.MyClassConstants.initialVacationSearch.searchCriteria, senderVC: self)
+                Helper.executeExchangeSearchAvailabilityAfterSelectCheckInDate(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: Constant.MyClassConstants.initialVacationSearch.searchCheckInDate!, format: Constant.MyClassConstants.dateFormat), senderVC: self)
                                         
             },
                onError: {[unowned self] (_) in
@@ -1527,8 +1497,6 @@ extension VacationSearchIPadViewController: ImageWithNameCellDelegate {
 extension VacationSearchResultIPadController: HelperDelegate {
     
     func resortSearchComplete() {
-        Constant.MyClassConstants.calendarDatesArray.removeAll()
-        Constant.MyClassConstants.calendarDatesArray = Constant.MyClassConstants.totalBucketArray
         self.hideHudAsync()
         exchangeExactMatchResortsArray.removeAll()
         exchangeSurroundingMatchResortsArray.removeAll()

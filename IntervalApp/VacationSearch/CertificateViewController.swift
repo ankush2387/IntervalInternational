@@ -59,17 +59,12 @@ class CertificateViewController: UIViewController {
     
     func navigateToCertificateDetailsVC(response: AccommodationCertificateSummary) {
         
-        if Constant.MyClassConstants.isRunningOnIphone {
-            let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
-            let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.certificateDetailsViewController) as! CertificateDetailsViewController
+        let isRunningOnIphone = UIDevice.current.userInterfaceIdiom == .phone
+        let storyboardName = isRunningOnIphone ? Constant.storyboardNames.vacationSearchIphone : Constant.storyboardNames.vacationSearchIPad
+        let mainStoryboard: UIStoryboard = UIStoryboard(name: storyboardName, bundle: nil)
+        if let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.certificateDetailsViewController) as? CertificateDetailsViewController {
             viewController.certificateDetailsResponse = response
             self.present(viewController, animated: true, completion: nil)
-        } else {
-            let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
-            let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.certificateDetailsViewController) as! CertificateDetailsViewController
-            viewController.certificateDetailsResponse = response
-            self.present(viewController, animated: true, completion: nil)
-            
         }
     }
     
@@ -138,6 +133,9 @@ extension CertificateViewController: UITableViewDataSource {
             }
         }
         
+        let diffInDays = Constant.MyClassConstants.certificateArray[indexPath.row].getDaysUntilExpirationDate()
+        intervalPrint(diffInDays)
+        
         if let unitSize = Constant.MyClassConstants.certificateArray[indexPath.row].unit?.unitSize, let kitchenType = Constant.MyClassConstants.certificateArray[indexPath.row].unit?.kitchenType {
             
                 cell.bedroomSize.text = "\((Helper.getBedroomNumbers(bedroomType: unitSize )) ), \((Helper.getKitchenEnums(kitchenType: kitchenType)))".localized()
@@ -148,9 +146,9 @@ extension CertificateViewController: UITableViewDataSource {
             
             let calendarFromDate = Helper.convertStringToDate(dateString: fromDate, format: Constant.MyClassConstants.dateFormat)
             let calendarToDate = Helper.convertStringToDate(dateString: toDate, format: Constant.MyClassConstants.dateFormat)
-            let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
-            let startComponents = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: calendarFromDate)
-            let endComponents = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: calendarToDate)
+   
+            let startComponents = Calendar.current.dateComponents([.day, .weekday, .month, .year], from: calendarFromDate)
+            let endComponents = Calendar.current.dateComponents([.day, .weekday, .month, .year], from: calendarToDate)
             if let year = startComponents.year, let month = startComponents.month, let day = startComponents.day, let weekDay = startComponents.weekday {
                 let monthName = "\(Helper.getMonthnameFromInt(monthNumber: month))"
                 cell.travelWindowStartDateLbl.text = "\(day)".uppercased()

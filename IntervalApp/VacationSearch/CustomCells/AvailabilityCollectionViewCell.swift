@@ -14,36 +14,31 @@ class AvailabilityCollectionViewCell: UICollectionViewCell {
     //***** Outlets *****//
 
     @IBOutlet weak var resortImageView: UIImageView!
-   
     @IBOutlet weak var resortName: UILabel!
- 
     @IBOutlet weak var favourite: UIButton!
-   
     @IBOutlet weak var resortCode: UILabel!
     @IBOutlet weak var resortAddress: UILabel!
- 
     @IBOutlet weak var viewGradient: UIView!
-    
     @IBOutlet weak var tierImage: UIImageView!
     //***** class variables *****//
     //var delegate:ResortDirectoryCollectionViewCellDelegate?
     
     func setResortDetails(inventoryItem: Resort) {
         for layer in self.viewGradient.layer.sublayers! {
-            if(layer.isKind(of: CAGradientLayer.self)) {
+            if layer.isKind(of: CAGradientLayer.self) {
                 layer.removeFromSuperlayer()
             }
         }
-        
+
         var url = URL(string: "")
         for imgStr in inventoryItem.images {
-            if(imgStr.size!.caseInsensitiveCompare(Constant.MyClassConstants.imageSize) == ComparisonResult.orderedSame) {
-                url = URL(string: imgStr.url!)!
+            if imgStr.size!.caseInsensitiveCompare(Constant.MyClassConstants.imageSize) == ComparisonResult.orderedSame {
+                url = URL(string: imgStr.url ?? "")
                 break
             }
         }
         Helper.addLinearGradientToView(view: self.viewGradient, colour: UIColor.white, transparntToOpaque: true, vertical: false)
-        if(url == nil) {
+        if url == nil {
             self.resortImageView?.image = UIImage(named: Constant.MyClassConstants.noImage)
             self.resortImageView.contentMode = .scaleAspectFit
         } else {

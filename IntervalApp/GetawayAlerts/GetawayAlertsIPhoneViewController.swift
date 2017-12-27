@@ -255,9 +255,8 @@ class GetawayAlertsIPhoneViewController: UIViewController {
     func rentalSearchAvailability(activeInterval: BookingWindowInterval) {
         Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
         Helper.helperDelegate = self
-        if let searchDate = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate {
-            Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate:  Helper.convertStringToDate(dateString: searchDate, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
-        }
+        Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate:  Helper.convertStringToDate(dateString: Constant.MyClassConstants.initialVacationSearch.searchCheckInDate ?? "", format: Constant.MyClassConstants.dateFormat), senderViewController: self)
+        
     }
     
     //Function for navigating to search results
@@ -539,9 +538,5 @@ extension GetawayAlertsIPhoneViewController: HelperDelegate {
             Helper.showNearestCheckInDateSelectedMessage()
         }
         navigateToSearchResults()
-    }
-    func resetCalendar() {
-        Constant.MyClassConstants.calendarDatesArray.removeAll()
-        Constant.MyClassConstants.calendarDatesArray = Constant.MyClassConstants.totalBucketArray
     }
 }

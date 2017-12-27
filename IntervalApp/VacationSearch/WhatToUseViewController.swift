@@ -266,12 +266,12 @@ class WhatToUseViewController: UIViewController {
             
             for amenity in (response.view?.resort?.amenities)! {
                 if amenity.nearby == false {
-                    Constant.MyClassConstants.onsiteArray.add(amenity.amenityName!)
-                    Constant.MyClassConstants.onsiteString = Constant.MyClassConstants.onsiteString.appending(amenity.amenityName!)
+                    Constant.MyClassConstants.onsiteArray.add(amenity.amenityName ?? "")
+                    Constant.MyClassConstants.onsiteString = Constant.MyClassConstants.onsiteString.appending(amenity.amenityName ?? "")
                     Constant.MyClassConstants.onsiteString = Constant.MyClassConstants.onsiteString.appending("\n")
                 } else {
-                    Constant.MyClassConstants.nearbyArray.add(amenity.amenityName!)
-                    Constant.MyClassConstants.nearbyString = Constant.MyClassConstants.nearbyString.appending(amenity.amenityName!)
+                    Constant.MyClassConstants.nearbyArray.add(amenity.amenityName ?? "")
+                    Constant.MyClassConstants.nearbyString = Constant.MyClassConstants.nearbyString.appending(amenity.amenityName ?? "")
                     Constant.MyClassConstants.nearbyString = Constant.MyClassConstants.nearbyString.appending("\n")
                 }
             }
@@ -428,7 +428,7 @@ extension WhatToUseViewController: UITableViewDelegate {
             
             let bottomLabel = UILabel(frame: CGRect(x: 15, y: 30, width: self.view.bounds.width - 30, height: 30))
             bottomLabel.textColor = UIColor.gray
-            bottomLabel.text = "\(Constant.MyClassConstants.filterRelinquishments.count) of the \(Constant.MyClassConstants.whatToTradeArray.count) relquishments are avialable for exchange"
+            bottomLabel.text = "\(Constant.MyClassConstants.filterRelinquishments.count) of the \(Constant.MyClassConstants.whatToTradeArray.count) relquishments are avialable for exchange".localized()
             return headerView
         } else {
             
@@ -521,8 +521,7 @@ extension WhatToUseViewController: UITableViewDataSource {
         } else if indexPath.section == 1 {
             
             let exchange = Constant.MyClassConstants.filterRelinquishments[indexPath.row]
-            
-            if (exchange.pointsProgram) != nil {
+            if exchange.pointsProgram != nil {
                 
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: "ExchangeCell0", for: indexPath) as? AvailablePointCell else { return UITableViewCell() }
                 
@@ -617,21 +616,21 @@ extension WhatToUseViewController: UITableViewDataSource {
                         cell.checkBox.checked = false
                     }
                     
-                    cell.resortName.text = exchange.openWeek?.resort?.resortName!
-                    cell.yearLabel.text = "\(String(describing: (exchange.openWeek?.relinquishmentYear!)!))"
-                    cell.totalWeekLabel.text = "Week \(Constant.getWeekNumber(weekType: (exchange.openWeek?.weekNumber!)!))"
-                    cell.bedroomSizeAndKitchenClient.text = "\(String(describing: Helper.getBedroomNumbers(bedroomType:(exchange.openWeek?.unit!.unitSize!)!))), \(Helper.getKitchenEnums(kitchenType:(exchange.openWeek?.unit!.kitchenType!)!))"
-                    cell.totalSleepAndPrivate.text = "Sleeps \(String(describing: exchange.openWeek!.unit!.publicSleepCapacity)), \(String(describing: exchange.openWeek!.unit!.privateSleepCapacity)) Private"
-                    let dateString = exchange.openWeek!.checkInDate
-                    let date = Helper.convertStringToDate(dateString: dateString!, format: Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.yyyymmddDateFormat)
-                    let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
-                    let myComponents = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: date)
-                    let day = myComponents.day!
+                    cell.resortName.text = exchange.openWeek?.resort?.resortName ?? "".localized()
+                    cell.yearLabel.text = "\(String(describing: exchange.openWeek?.relinquishmentYear ?? 0))".localized()
+                    cell.totalWeekLabel.text = "Week \(Constant.getWeekNumber(weekType: exchange.openWeek?.weekNumber ?? ""))".localized()
+                    cell.bedroomSizeAndKitchenClient.text = "\(String(describing: Helper.getBedroomNumbers(bedroomType:exchange.openWeek?.unit?.unitSize ?? ""))), \(Helper.getKitchenEnums(kitchenType:exchange.openWeek?.unit?.kitchenType ?? ""))".localized()
+                    cell.totalSleepAndPrivate.text = "Sleeps \(String(describing: exchange.openWeek?.unit?.publicSleepCapacity)), \(String(describing: exchange.openWeek?.unit?.privateSleepCapacity)) Private".localized()
+                    let dateString = exchange.openWeek?.checkInDate
+                    let date = Helper.convertStringToDate(dateString: dateString!, format: Constant.MyClassConstants.dateFormat)
+                    let myCalendar = Calendar.current
+                    let myComponents = myCalendar.dateComponents([.day, .weekday, .month, .year], from: date)
+                    let day = myComponents.day ?? 0
                     var month = ""
                     if day < 10 {
-                        month = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month!)) 0\(day)"
+                        month = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month ?? 0)) 0\(day)"
                     } else {
-                        month = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month!)) \(day)"
+                        month = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month ?? 0)) \(day)"
                     }
                     
                     cell.dayAndDateLabel.text = month.uppercased()
@@ -659,21 +658,21 @@ extension WhatToUseViewController: UITableViewDataSource {
                         cell.checkBox.checked = false
                     }
                     
-                    cell.resortName.text = exchange.openWeek?.resort?.resortName!
-                    cell.yearLabel.text = "\(String(describing: (exchange.openWeek?.relinquishmentYear!)!))"
-                    cell.totalWeekLabel.text = "Week \(Constant.getWeekNumber(weekType: (exchange.openWeek?.weekNumber!)!))"
-                    cell.bedroomSizeAndKitchenClient.text = "\(String(describing: Helper.getBedroomNumbers(bedroomType:(exchange.openWeek?.unit!.unitSize!)!))), \(Helper.getKitchenEnums(kitchenType:(exchange.openWeek?.unit!.kitchenType!)!))"
-                    cell.totalSleepAndPrivate.text = "Sleeps \(String(describing: exchange.openWeek!.unit!.publicSleepCapacity)), \(String(describing: exchange.openWeek!.unit!.privateSleepCapacity)) Private"
-                    let dateString = exchange.openWeek!.checkInDate
-                    let date = Helper.convertStringToDate(dateString: dateString!, format: Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.yyyymmddDateFormat)
-                    let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
-                    let myComponents = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: date)
-                    let day = myComponents.day!
+                    cell.resortName.text = exchange.openWeek?.resort?.resortName ?? ""
+                    cell.yearLabel.text = "\(String(describing: exchange.openWeek?.relinquishmentYear ?? 0))".localized()
+                    cell.totalWeekLabel.text = "Week \(Constant.getWeekNumber(weekType: exchange.openWeek?.weekNumber ?? ""))".localized()
+                    cell.bedroomSizeAndKitchenClient.text = "\(String(describing: Helper.getBedroomNumbers(bedroomType:exchange.openWeek?.unit?.unitSize ?? ""))), \(Helper.getKitchenEnums(kitchenType:exchange.openWeek?.unit?.kitchenType ?? ""))".localized()
+                    cell.totalSleepAndPrivate.text = "Sleeps \(String(describing: exchange.openWeek?.unit?.publicSleepCapacity)), \(String(describing: exchange.openWeek?.unit?.privateSleepCapacity)) Private".localized()
+                    let dateString = exchange.openWeek?.checkInDate
+                    let date = Helper.convertStringToDate(dateString: dateString ?? "", format: Constant.MyClassConstants.dateFormat)
+                    let myCalendar = Calendar.current
+                    let myComponents = myCalendar.dateComponents([.day, .weekday, .month, .year], from: date)
+                    let day = myComponents.day ?? 0
                     var month = ""
                     if day < 10 {
-                        month = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month!)) 0\(day)"
+                        month = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month ?? 0)) 0\(day)"
                     } else {
-                        month = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month!)) \(day)"
+                        month = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month ?? 0)) \(day)"
                     }
                     
                     //display Promotion

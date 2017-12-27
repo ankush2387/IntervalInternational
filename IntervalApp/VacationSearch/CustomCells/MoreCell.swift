@@ -12,33 +12,30 @@ import IntervalUIKit
 class MoreCell: UICollectionViewCell {
     
     @IBOutlet weak var lblMonth: UILabel!
-    
     @IBOutlet weak var lblStartYear: UILabel!
-    
     @IBOutlet weak var lblEndYear: UILabel!
-    
     @IBOutlet weak var lblHeader: UILabel!
     
     func setDateForBucket(index: Int, selectedIndex: Int, color: String) {
         
         setUpCell(index: index, collectionViewSelectedIndex: selectedIndex, dateSelectionColor: color)
         
-        let startDate = Helper.convertStringToDate(dateString: Constant.MyClassConstants.calendarDatesArray[index].intervalStartDate!, format: Constant.MyClassConstants.dateFormat)
-        let endDate = Helper.convertStringToDate(dateString: Constant.MyClassConstants.calendarDatesArray[index].intervalEndDate!, format: Constant.MyClassConstants.dateFormat)
+        let startDate = Helper.convertStringToDate(dateString: Constant.MyClassConstants.calendarDatesArray[index].intervalStartDate ?? "", format: Constant.MyClassConstants.dateFormat)
+        let endDate = Helper.convertStringToDate(dateString: Constant.MyClassConstants.calendarDatesArray[index].intervalEndDate ?? "", format: Constant.MyClassConstants.dateFormat)
         
         intervalPrint(startDate, endDate)
         
-        let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
-        let startComponents = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: startDate)
-        let endComponents = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: endDate)
-        let startYear = String(describing: startComponents.year!)
-        let endYear = String(describing: endComponents.year!)
+        let myCalendar = Calendar.current
+        let startComponents = myCalendar.dateComponents([.day, .weekday, .month, .year], from: startDate)
+        let endComponents = myCalendar.dateComponents([.day, .weekday, .month, .year], from: endDate)
+        let startYear =  "\(startComponents.year ?? 0)"
+        let endYear = "\(endComponents.year ?? 0)"
         
-        let monthStartName = "\(Helper.getMonthnameFromInt(monthNumber: startComponents.month!))"
-        let monthEndName = "\(Helper.getMonthnameFromInt(monthNumber: endComponents.month!))"
-        lblMonth.text = "\(monthStartName) - \(monthEndName)".uppercased()
-        lblStartYear.text = "\(startYear)"
-        lblEndYear.text = "\(endYear)"
+        let monthStartName = "\(Helper.getMonthnameFromInt(monthNumber: startComponents.month ?? 0))"
+        let monthEndName = "\(Helper.getMonthnameFromInt(monthNumber: endComponents.month ?? 0))"
+        lblMonth.text = "\(monthStartName) - \(monthEndName)".localizedUppercase
+        lblStartYear.text = "\(startYear)".localized()
+        lblEndYear.text = "\(endYear)".localized()
         
     }
     

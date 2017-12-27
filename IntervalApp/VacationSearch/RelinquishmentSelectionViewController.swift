@@ -1012,7 +1012,7 @@ extension RelinquishmentSelectionViewController: UITableViewDataSource {
                     if(date.count > 0) {
                         
                         let dateString = date[0]
-                        let date = Helper.convertStringToDate(dateString: dateString, format: Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.yyyymmddDateFormat)
+                        let date = Helper.convertStringToDate(dateString: dateString, format: Constant.MyClassConstants.dateFormat)
                         let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
                         let myComponents = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: date)
                         let day = myComponents.day!
@@ -1083,7 +1083,7 @@ extension RelinquishmentSelectionViewController: UITableViewDataSource {
                 if(date.count > 0) {
                     
                     let dateString = date[0]
-                    let date = Helper.convertStringToDate(dateString: dateString, format: Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.yyyymmddDateFormat)
+                    let date = Helper.convertStringToDate(dateString: dateString, format: Constant.MyClassConstants.dateFormat)
                     let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
                     let myComponents = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: date)
                     let day = myComponents.day!

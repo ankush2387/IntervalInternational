@@ -63,7 +63,7 @@ class PaymentSelectionViewController: UIViewController {
       
         let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.dateTimeFormat
+        dateFormatter.dateFormat = Constant.MyClassConstants.dateTimeFormat
         var expiryDate: Date?
         if let date = creditcard.expirationDate {
             
@@ -161,7 +161,7 @@ class PaymentSelectionViewController: UIViewController {
                 
                 let dt = Calendar(identifier: Calendar.Identifier.gregorian).date(from: dateComponents)
                 let df = DateFormatter()
-                df.dateFormat = Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.dateTimeFormat
+                df.dateFormat = Constant.MyClassConstants.dateTimeFormat
                 let dateString: String = df.string(from: dt!)
 
                 (Constant.MyClassConstants.memberCreditCardList[self.selectedCardIndex]).expirationDate = dateString
@@ -310,7 +310,7 @@ extension PaymentSelectionViewController: UITableViewDataSource {
             }
             let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
             let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.dateTimeFormat
+            dateFormatter.dateFormat = Constant.MyClassConstants.dateTimeFormat
             var expiryDate: Date?
             if let date = creditcard.expirationDate {
                 

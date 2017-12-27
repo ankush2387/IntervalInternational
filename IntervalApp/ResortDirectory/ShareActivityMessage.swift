@@ -10,6 +10,7 @@ import UIKit
 import DarwinSDK
 
 class ShareActivityMessage: NSObject, UIActivityItemSource {
+    
     var message: NSMutableAttributedString?
     var messageStr: String?
     var subjectMessage: String?
@@ -84,20 +85,17 @@ class ShareActivityMessage: NSObject, UIActivityItemSource {
             location.append("\(countryCode)")
         }
         message.append("Location: \(location)\n")
-        
-        //format checkIn Date
-        let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
         if (Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.unit?.checkInDate) != nil {
-            let checkInDate = Helper.convertStringToDate(dateString: (Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.unit?.checkInDate)!, format: Constant.MyClassConstants.dateFormat)
-            let myComponents = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: checkInDate)
+            let checkInDate = Helper.convertStringToDate(dateString: Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.unit?.checkInDate ?? "", format: Constant.MyClassConstants.dateFormat)
+            let myComponents = Calendar.current.dateComponents([.day, .weekday, .month, .year], from: checkInDate)
             let formatedCheckInDate = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month ?? 0))/\(myComponents.day ?? 0)/\(myComponents.year ?? 0)"
             message.append("CheckIn: \(formatedCheckInDate)\n")
         }
         
         //format CheckOut Date
         if (Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.unit?.checkOutDate) != nil {
-        let checkOutDate = Helper.convertStringToDate(dateString: Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.unit?.checkOutDate ?? "", format: Constant.MyClassConstants.dateFormat1)
-        let myComponents1 = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: checkOutDate)
+        let checkOutDate = Helper.convertStringToDate(dateString: Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.unit?.checkOutDate ?? "", format: Constant.MyClassConstants.dateFormat)
+        let myComponents1 = Calendar.current.dateComponents([.day, .weekday, .month, .year], from: checkOutDate)
         let formatedCheckOutDate = "\(Helper.getMonthnameFromInt(monthNumber: myComponents1.month ?? 0))/\(myComponents1.day ?? 0)/\(myComponents1.year ?? 0)"
         message.append("CheckOut: \(formatedCheckOutDate)\n")
         }
@@ -116,14 +114,10 @@ class ShareActivityMessage: NSObject, UIActivityItemSource {
     func activityViewController(_ activityViewController: UIActivityViewController, itemForActivityType activityType: UIActivityType) -> Any? {
         //Message for UpcomingTrip Details
         if isConfirmationDetails {
-            if activityType == UIActivityType.mail {
-                return self.message
-            }
-            
+            if activityType == UIActivityType.mail { return self.message }
             if activityType == UIActivityType.postToFacebook || activityType == UIActivityType.postToTwitter {
                 return "Vacations with #intervalinternational"
             }
-                        
             return self.messageStr
         }
         
@@ -135,7 +129,6 @@ class ShareActivityMessage: NSObject, UIActivityItemSource {
         if activityType == UIActivityType.message {
             return "Look at this Resort I found Using Interval International's app."
         }
-        
         return "Check out this #intervalinternational resort."
     }
     
@@ -145,12 +138,8 @@ class ShareActivityMessage: NSObject, UIActivityItemSource {
             if activityType == UIActivityType.mail {
                 return subject
             }
-            
             return subject
         }
-        
         return "Look at this Resort I found Using Interval International's app."
-        
     }
-
 }

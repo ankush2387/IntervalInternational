@@ -123,8 +123,8 @@ class FlexchangeSearchViewController: UIViewController {
                         self.navigateToSearchResults()
                     } else {
                         Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
-                        guard let checkInDate = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate else { return }
-                        Helper.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: checkInDate, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                        Helper.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: Constant.MyClassConstants.initialVacationSearch.searchCheckInDate ?? "", format: Constant.MyClassConstants.dateFormat), senderViewController: self)
+
                     }
                     
                 }, onError: { [weak self] error  in

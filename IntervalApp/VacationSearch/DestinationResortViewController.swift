@@ -260,7 +260,7 @@ extension DestinationResortViewController: UITableViewDataSource {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.dateCell, for: indexPath) as? CaledarDateCell else { return UITableViewCell() }
             let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
             let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.yyyymmddDateFormat
+            dateFormatter.dateFormat = Constant.MyClassConstants.dateFormat
             
             if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange { // for exchange process
                 if let checkInDate = dateFormatter.date(from: (Constant.MyClassConstants.exchangeViewResponse.destination?.unit?.checkInDate)!) {
@@ -273,7 +273,7 @@ extension DestinationResortViewController: UITableViewDataSource {
                 
                 let myCalendar1 = Calendar(identifier: Calendar.Identifier.gregorian)
                 let dateFormatter1 = DateFormatter()
-                dateFormatter1.dateFormat = Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.yyyymmddDateFormat
+                dateFormatter1.dateFormat = Constant.MyClassConstants.dateFormat
                 //checkout date
                 if  let checkOutDate = dateFormatter.date(from: (Constant.MyClassConstants.exchangeViewResponse.destination?.unit?.checkOutDate)!) {
                     let myComponents1 = (myCalendar1 as NSCalendar).components([.day, .weekday, .month, .year], from: checkOutDate)
@@ -297,7 +297,7 @@ extension DestinationResortViewController: UITableViewDataSource {
                 
                 let myCalendar1 = Calendar(identifier: Calendar.Identifier.gregorian)
                 let dateFormatter1 = DateFormatter()
-                dateFormatter1.dateFormat = Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.yyyymmddDateFormat
+                dateFormatter1.dateFormat = Constant.MyClassConstants.dateFormat
                 let checkOutDate = dateFormatter.date(from: (Constant.MyClassConstants.viewResponse.unit?.checkOutDate)!)
                 let myComponents1 = (myCalendar1 as NSCalendar).components([.day, .weekday, .month, .year], from: checkOutDate!)
                 //updating date label with date components.
