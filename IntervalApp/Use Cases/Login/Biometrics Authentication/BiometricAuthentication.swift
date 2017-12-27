@@ -60,7 +60,7 @@ final class BiometricAuthentication {
                 return
             }
 
-            if #available(iOS 11.0, *), self.context.biometryType == .faceID {
+            if #available(iOS 11.0, *) {
                 self.authenticateWith(localizedReason: "Logging in with Face ID".localized())
                     .then(resolve)
                     .onError(reject)

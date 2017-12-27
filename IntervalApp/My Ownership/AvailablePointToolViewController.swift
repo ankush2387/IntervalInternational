@@ -186,9 +186,6 @@ extension AvailablePointToolViewController: UITableViewDelegate {
 		if section == 0 {
 			return nil
 		} else {
-            
-            let headerView = UIView(frame: CGRect(x: 0, y: 0, width: self.availablePointTableView.frame.size.width, height: 50))
-            
             let headerView = UIView(frame: CGRect(x: 0, y: 0, width: availablePointTableView.frame.size.width, height: 50))
             let headerStringLabel = UILabel(frame: CGRect(x: 5, y: 5, width: availablePointTableView.frame.size.width, height: 40))
             headerStringLabel.text = Constant.availablePointToolViewController.depositedPointHistoryinformationLabelText.localized()

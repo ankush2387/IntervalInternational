@@ -198,7 +198,7 @@ class AddDebitOrCreditCardViewController: UIViewController {
                 dateComponents.day = 01
                 let date = Calendar.current.date(from: dateComponents)
                 let dateFor = DateFormatter()
-                dateFor.dateFormat = Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.dateTimeFormat
+                dateFor.dateFormat = Constant.MyClassConstants.dateTimeFormat
                 let expString: String = dateFor.string(from: date ?? Date())
                 debugPrint(expString)
                 newCreditCard.expirationDate = expString
@@ -692,7 +692,7 @@ extension AddDebitOrCreditCardViewController: UIPickerViewDelegate {
                 let month = months[pickerView.selectedRow(inComponent: 0)]
                 let year = years[pickerView.selectedRow(inComponent: 1)]
                 let expiryDate = "\(year), \(month)"
-                expServerDate = "\(year)-\(Helper.getMonth(Helper.MonthType.number, for: month))"
+                expServerDate = "\(year)-\(String(describing: Helper.getMonth(Helper.MonthType.number, for: month)))"
                 
                 Constant.GetawaySearchResultCardFormDetailData.expDate = expiryDate
                 
