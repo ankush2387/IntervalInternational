@@ -50,7 +50,13 @@ class CheckOutIPadViewController: UIViewController {
     var renewalsArray = [Renewal]()
     var currencyCode: String = ""
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        navigationController?.navigationBar.isHidden = false
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         self.hideHudAsync()
         
         self.emailTextToEnter = Session.sharedSession.contact?.emailAddress ?? ""
@@ -96,6 +102,10 @@ class CheckOutIPadViewController: UIViewController {
     override func viewDidDisappear(_ animated: Bool) {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.changeSliderStatus), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.updateResortHoldingTime), object: nil)
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.navigationBar.isHidden = true
     }
     
     override func viewDidLoad() {
@@ -451,18 +461,12 @@ class CheckOutIPadViewController: UIViewController {
         if sender.tag == 0 {
             self.performSegue(withIdentifier: Constant.segueIdentifiers.showResortDetailsSegue, sender: nil)
         } else {
-            if let clubPointResort = filterRelinquishments.clubPoints?.resort {
-                if let resortCode = clubPointResort.resortCode {
-                    getRelinquishmentDetails(resortCode: resortCode)
-                }
-            } else if let openWeekResort = filterRelinquishments.openWeek?.resort {
-                if let resortCode = openWeekResort.resortCode {
-                    getRelinquishmentDetails(resortCode: resortCode)
-                }
-            } else if let depositResort = filterRelinquishments.deposit?.resort {
-                if let resortCode = depositResort.resortCode {
-                    getRelinquishmentDetails(resortCode: resortCode)
-                }
+            if let clubPointResortCode = filterRelinquishments.clubPoints?.resort?.resortCode {
+                getRelinquishmentDetails(resortCode: clubPointResortCode)
+            } else if let openWeekResortCode = filterRelinquishments.openWeek?.resort?.resortCode {
+                getRelinquishmentDetails(resortCode: openWeekResortCode)
+            } else if let depositResortCode = filterRelinquishments.deposit?.resort?.resortCode {
+                getRelinquishmentDetails(resortCode: depositResortCode)
             }
         }
         
@@ -737,35 +741,7 @@ extension CheckOutIPadViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         if indexPath.section == 5 && tableView.tag == 3 {
-            
-            showHudAsync()
-            if let accessToken = Session.sharedSession.userAccessToken {
-                UserClient.getCreditCards(accessToken, onSuccess: { response in
-                    
-                    Constant.MyClassConstants.memberCreditCardList = response
-                    
-                    if Constant.MyClassConstants.selectedCreditCard.count == 0 {
-                        
-                        self.hideHudAsync()
-                        self.performSegue(withIdentifier: Constant.segueIdentifiers.selectPaymentMethodSegue, sender: nil)
-                    } else {
-                        
-                        let selectedCard = Constant.MyClassConstants.selectedCreditCard[0]
-                        if selectedCard.creditcardId == 0 {
-                            Constant.MyClassConstants.memberCreditCardList.append(selectedCard)
-                            self.hideHudAsync()
-                            self.performSegue(withIdentifier: Constant.segueIdentifiers.selectPaymentMethodSegue, sender: nil)
-                        } else {
-                            self.hideHudAsync()
-                            self.performSegue(withIdentifier: Constant.segueIdentifiers.selectPaymentMethodSegue, sender: nil)
-                        }
-                    }
-                    
-                }, onError: { [unowned self] error in
-                    self.hideHudAsync()
-                    self.presentErrorAlert(UserFacingCommonError.serverError(error))
-                })
-            }
+            self.performSegue(withIdentifier: Constant.segueIdentifiers.selectPaymentMethodSegue, sender: nil)
         }
     }
 }

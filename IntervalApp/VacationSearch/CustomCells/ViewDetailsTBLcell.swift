@@ -33,10 +33,9 @@ class ViewDetailsTBLcell: UITableViewCell {
     }
     
     func setUpDetailsCell (indexPath: IndexPath, filterRelinquishments: ExchangeRelinquishment) {
-        resortDetailsButton.addTarget(self, action: #selector(WhoWillBeCheckingInIPadViewController.resortDetailsClicked(_:)), for: .touchUpInside)
         if indexPath.row == 0 {
             resortDetailsButton.tag = indexPath.row
-            lblHeading.text = "Resort Detail"
+            lblHeading.text = "Resort Detail".localized()
             resortName?.text = Constant.MyClassConstants.selectedResort.resortName
         } else {
             lblHeading.text = Constant.MyClassConstants.relinquishment
@@ -55,11 +54,9 @@ class ViewDetailsTBLcell: UITableViewCell {
                     }
                 }
             }
-            resortDetailsButton.addTarget(self, action: #selector(WhoWillBeCheckingInViewController.resortDetailsClicked(_:)), for: .touchUpInside)
             resortDetailsButton.tag = indexPath.row
             resortImageView?.image = #imageLiteral(resourceName: "EXG_CO")
         }
-        
         selectionStyle = .none
         
     }

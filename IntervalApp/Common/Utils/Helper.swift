@@ -2039,8 +2039,7 @@ public class Helper {
         let travelParty = TravelParty()
         travelParty.adults = 2
         travelParty.children = 0
-        
-        let relinquishmentId = "Ek83chJmdS6ESNRpVfhH8XUt24BdWzaYpSIODLB0Scq6rxirAlGksihR1PCb1xSC"
+        Constant.MyClassConstants.travelPartyInfo = travelParty
         
         let area = Area()
         area.areaCode = deal.areaCode
@@ -2052,8 +2051,7 @@ public class Helper {
         searchCriteria.checkInFromDate = deal.getCheckInFromDate()
         searchCriteria.checkInToDate = deal.getCheckInToDate()
         searchCriteria.travelParty = travelParty
-        //searchCriteria.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as? [String]
-        searchCriteria.relinquishmentsIds = [relinquishmentId]
+        searchCriteria.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray
         return searchCriteria
     }
     
