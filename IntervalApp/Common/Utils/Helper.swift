@@ -63,11 +63,13 @@ public class Helper {
     }
     
     //***** Common function to format the date *****//
+    //TODO: Need to revisit this code, and dynamically get locale identifier from server, or a decision should be made to calculate this information on the client
     static func getWeekDay(dateString: Date, getValue: String) -> String {
         let dateFormatter = DateFormatter()
         switch getValue {
         case "Date":
             dateFormatter.dateFormat = "d"
+             dateFormatter.locale = Locale(identifier: "en_US_POSIX")
             var dateFromString = dateFormatter.string(from: dateString as Date)
             if dateFromString.characters.count == 1 {
                 dateFromString = "0\(dateFromString)"

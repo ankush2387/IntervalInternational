@@ -18,10 +18,14 @@ class CreateActionSheet: UITableViewController {
     var activeAlertCount = 0
     
     override func viewWillAppear(_ animated: Bool) {
-        let rect = CGRect(x: 0, y: 0, width: self.view.bounds.width - 20, height: CGFloat((Session.sharedSession.contact?.memberships?.count)! * 100))
-        self.tableView.frame = rect
-        self.automaticallyAdjustsScrollViewInsets = false
-        self.view.bounds = rect
+        super.viewWillAppear(true)
+        if let memberShipCount = Session.sharedSession.contact?.memberships?.count {
+            
+            let rect = CGRect(x: 0, y: 0, width: self.view.bounds.width - 20, height: CGFloat(memberShipCount * 100))
+            self.tableView.frame = rect
+            self.automaticallyAdjustsScrollViewInsets = false
+            self.view.bounds = rect
+        }
     }
     
     override func viewDidLoad() {
@@ -49,23 +53,26 @@ class CreateActionSheet: UITableViewController {
         self.tableView.allowsSelection = true
         if viewController.isKind(of:GetawayAlertsIPhoneViewController.self) {
             self.tableView.tag = 100
-            let height: NSLayoutConstraint = NSLayoutConstraint(item: self.tableView, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: CGFloat((Session.sharedSession.contact?.memberships?.count)! * 100))
-            self.tableView.addConstraint(height)
+            if let memberShipCount = Session.sharedSession.contact?.memberships?.count {
+                
+                let height: NSLayoutConstraint = NSLayoutConstraint(item: self.tableView, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: CGFloat(memberShipCount * 100))
+                self.tableView.addConstraint(height)
+            }
         }
         let actionSheet: UIAlertController = UIAlertController(title: "", message: "", preferredStyle: UIAlertControllerStyle.actionSheet)
         actionSheet.view.frame = CGRect(x: 0, y: 0, width: self.view.bounds.width - 20, height: 500)
         
         var attributedString = NSAttributedString(string: Constant.actionSheetAttributedString.selectMembership, attributes: [
-            NSFontAttributeName : UIFont(name: Constant.fontName.helveticaNeue, size: 18)!
+            NSFontAttributeName: UIFont(name: Constant.fontName.helveticaNeue, size: 18) ?? 0
             ,
-            NSForegroundColorAttributeName : UIColor.black
+            NSForegroundColorAttributeName: UIColor.black
             ])
         
         if self.tableView.tag == 100 {
             attributedString = NSAttributedString(string: Constant.actionSheetAttributedString.noMatches, attributes: [
-                NSFontAttributeName : UIFont(name: Constant.fontName.helveticaNeue, size: 18)!
+                NSFontAttributeName: UIFont(name: Constant.fontName.helveticaNeue, size: 18) ?? 0
                 ,
-                NSForegroundColorAttributeName : UIColor.black
+                NSForegroundColorAttributeName: UIColor.black
                 ])
         }
         
@@ -75,7 +82,7 @@ class CreateActionSheet: UITableViewController {
         actionSheet.setValue(attributedString, forKey: Constant.actionSheetAttributedString.attributedTitle)
         actionSheet.setValue(self, forKey: Constant.actionSheetAttributedString.contentViewController)
         actionSheet.addAction(action)
-        if(Constant.RunningDevice.deviceIdiom == .pad) {
+        if Constant.RunningDevice.deviceIdiom == .pad {
             actionSheet.popoverPresentationController?.sourceView = self.view
             actionSheet.popoverPresentationController?.sourceRect = self.view.bounds
         }
@@ -89,66 +96,75 @@ class CreateActionSheet: UITableViewController {
         
         //***** Update the API session for the current access token *****//
         let context = Session.sharedSession
-        UserClient.putSessionsUser(context.userAccessToken, member: context.selectedMembership!,
-           onSuccess: {[unowned self] in
-            self.hideHudAsync()
-            Constant.MyClassConstants.isLoginSuccessfull = true
+        if let selectedMemberShip = context.selectedMembership {
             
-            let Product = Session.sharedSession.selectedMembership?.getProductWithHighestTier()
-            
-            // omniture tracking with event 2
-            let userInfo: [String: String] = [
-                Constant.omnitureEvars.eVar1 : (Session.sharedSession.selectedMembership?.memberNumber!)!,
-                Constant.omnitureEvars.eVar3 : "\(String(describing: Product?.productCode!))-\(String(describing: Session.sharedSession.selectedMembership?.membershipTypeCode))",
-                Constant.omnitureEvars.eVar4 : "",
-                Constant.omnitureEvars.eVar5 : Constant.MyClassConstants.loginOriginationPoint,
-                Constant.omnitureEvars.eVar6 : "",
-                Constant.omnitureEvars.eVar7 : ""
-            ]
-            ADBMobile.trackAction(Constant.omnitureEvents.event2, data: userInfo)
-            
-            //***** Done!  Segue to the Home page *****//
-           
-            if let memberships = Session.sharedSession.contact?.memberships {
-                if !memberships.isEmpty {
-                    if let controller = Constant.MyClassConstants.signInRequestedController {
-                        controller.dismiss(animated: true, completion: nil)
-                    }
-                }
-            }
-            if let controller = Constant.MyClassConstants.signInRequestedController {
-               if  controller.isKind(of:SignInPreLoginViewController.self) {
-                    controller.navigationController?.popViewController(animated: true)
-                    NotificationCenter.default.post(name:NSNotification.Name(rawValue: Constant.notificationNames.reloadFavoritesTabNotification), object: nil)
-                } else {
-                    NotificationCenter.default.post(name:NSNotification.Name(rawValue: Constant.notificationNames.reloadFavoritesTabNotification), object: nil)
-                }
-            }
-            
-            //***** Favorites resort API call after successfull call *****//
-            Helper.getUserFavorites {[weak self] error in
-                if case .some = error {
-                    self?.presentAlert(with: "Error".localized(), message: error?.localizedDescription ?? "")
-                }
-            }
-            //***** Get upcoming trips for user API call after successfull call *****//
-            Helper.getUpcomingTripsForUser {[weak self] error in
-                if case .some = error {
-                    self?.presentAlert(with: "Error".localized(), message: error?.localizedDescription ?? "")
-                }
-            }
-                                    
-        },
-           onError: {_ in
-            self.hideHudAsync()
-            if let controller = Constant.MyClassConstants.signInRequestedController {
-                controller.dismiss(animated: true, completion: nil)
-            }
-            
-            self.presentAlert(with: Constant.AlertErrorMessages.loginFailed, message: "\(Constant.AlertPromtMessages.membershipFailureMessage) \(String(describing: context.selectedMembership?.memberNumber))")
+            //if let selectedMemberShip = context.selectedMemberShip
+            UserClient.putSessionsUser(context.userAccessToken, member: selectedMemberShip,
+                                       onSuccess: {[unowned self] in
+                                        self.hideHudAsync()
+                                        Constant.MyClassConstants.isLoginSuccessfull = true
+                                        
+                                        let Product = Session.sharedSession.selectedMembership?.getProductWithHighestTier()
+                                        
+                                        // omniture tracking with event 2
+                                        if let memberNumber = Session.sharedSession.selectedMembership?.memberNumber {
+       
+                                            let userInfo: [String: String] = [
+                                                Constant.omnitureEvars.eVar1: memberNumber,
+                                                Constant.omnitureEvars.eVar3: "\(Product?.productCode ?? "")-\(Session.sharedSession.selectedMembership?.membershipTypeCode ?? "")",
+                                                Constant.omnitureEvars.eVar4: "",
+                                                Constant.omnitureEvars.eVar5: Constant.MyClassConstants.loginOriginationPoint,
+                                                Constant.omnitureEvars.eVar6: "",
+                                                Constant.omnitureEvars.eVar7: ""
+                                            ]
+                                            ADBMobile.trackAction(Constant.omnitureEvents.event2, data: userInfo)
+                                        }
+                                        
+                                        //***** Done!  Segue to the Home page *****//
+                                        
+                                        if let memberships = Session.sharedSession.contact?.memberships {
+                                            if !memberships.isEmpty {
+                                                if let controller = Constant.MyClassConstants.signInRequestedController {
+                                                    controller.dismiss(animated: true, completion: nil)
+                                                }
+                                            }
+                                        }
+                                        if let controller = Constant.MyClassConstants.signInRequestedController {
+                                            if  controller.isKind(of:SignInPreLoginViewController.self) {
+                                                controller.navigationController?.popViewController(animated: true)
+                                                NotificationCenter.default.post(name:NSNotification.Name(rawValue: Constant.notificationNames.reloadFavoritesTabNotification), object: nil)
+                                            } else {
+                                                NotificationCenter.default.post(name:NSNotification.Name(rawValue: Constant.notificationNames.reloadFavoritesTabNotification), object: nil)
+                                            }
+                                        }
+                                        
+                                        //***** Favorites resort API call after successfull call *****//
+                                        Helper.getUserFavorites {[weak self] error in
+                                            if case .some = error {
+                                                self?.presentAlert(with: "Error".localized(), message: error?.localizedDescription ?? "")
+                                            }
+                                        }
+                                        //***** Get upcoming trips for user API call after successfull call *****//
+                                        Helper.getUpcomingTripsForUser {[weak self] error in
+                                            if case .some = error {
+                                                self?.presentAlert(with: "Error".localized(), message: error?.localizedDescription ?? "")
+                                            }
+                                        }
+                                        
+                },
+                                       onError: {_ in
+                                        self.hideHudAsync()
+                                        if let controller = Constant.MyClassConstants.signInRequestedController {
+                                            controller.dismiss(animated: true, completion: nil)
+                                        }
+                                        
+                                        self.presentAlert(with: Constant.AlertErrorMessages.loginFailed, message: "\(Constant.AlertPromtMessages.membershipFailureMessage) \(context.selectedMembership?.memberNumber ?? ""))")
+               }
+            )
         }
-        )
+
     }
+
 }
 
 // function to send omniture tracking event2
@@ -158,80 +174,83 @@ func sendOmnitureTrackCallForEvent2() {
     
     // omniture tracking with event 2
     let userInfo = NSMutableDictionary()
-    userInfo.addEntries(from: [Constant.omnitureEvars.eVar1 : (Session.sharedSession.selectedMembership?.memberNumber) as Any])
+    userInfo.addEntries(from: [Constant.omnitureEvars.eVar1: (Session.sharedSession.selectedMembership?.memberNumber) as Any])
     
-    userInfo.addEntries(from: [Constant.omnitureEvars.eVar3 : "\(String(describing: Product?.productCode))-\(String(describing: Session.sharedSession.selectedMembership?.membershipTypeCode))"])
-    userInfo.addEntries(from: [Constant.omnitureEvars.eVar4 : ""])
+    userInfo.addEntries(from: [Constant.omnitureEvars.eVar3: "\(Product?.productCode ?? ""))-\(Session.sharedSession.selectedMembership?.membershipTypeCode ?? ""))"])
+    userInfo.addEntries(from: [Constant.omnitureEvars.eVar4: ""])
     
-    userInfo.addEntries(from: [Constant.omnitureEvars.eVar5 : Constant.MyClassConstants.loginOriginationPoint])
-    userInfo.addEntries(from: [Constant.omnitureEvars.eVar6 :""])
-    
-    switch Product?.productCode {
+    userInfo.addEntries(from: [Constant.omnitureEvars.eVar5: Constant.MyClassConstants.loginOriginationPoint])
+    userInfo.addEntries(from: [Constant.omnitureEvars.eVar6: ""])
+    if let expirationDate = Product?.expirationDate {
         
-    case Constant.productCodeImageNames.basic?:
-        userInfo.addEntries(from: [Constant.omnitureEvars.eVar7 :Helper.getUpcommingcheckinDatesDiffrence(date: (Product?.expirationDate!)!)])
+        switch Product?.productCode {
+            
+        case Constant.productCodeImageNames.basic?:
+            userInfo.addEntries(from: [Constant.omnitureEvars.eVar7: Helper.getUpcommingcheckinDatesDiffrence(date: expirationDate)])
+            
+        case Constant.productCodeImageNames.cig?:
+            userInfo.addEntries(from: [Constant.omnitureEvars.eVar8: Helper.getUpcommingcheckinDatesDiffrence(date: expirationDate)])
+            
+        case Constant.productCodeImageNames.gold?:
+            userInfo.addEntries(from: [Constant.omnitureEvars.eVar9: Helper.getUpcommingcheckinDatesDiffrence(date: expirationDate)])
+            
+        case Constant.productCodeImageNames.platinum?:
+            userInfo.addEntries(from: [Constant.omnitureEvars.eVar10: Helper.getUpcommingcheckinDatesDiffrence(date: expirationDate)])
+            
+        default:
+            break
+        }
         
-    case Constant.productCodeImageNames.cig?:
-        userInfo.addEntries(from: [Constant.omnitureEvars.eVar8 :Helper.getUpcommingcheckinDatesDiffrence(date: (Product?.expirationDate!)!)])
-        
-    case Constant.productCodeImageNames.gold?:
-        userInfo.addEntries(from: [Constant.omnitureEvars.eVar9 :Helper.getUpcommingcheckinDatesDiffrence(date: (Product?.expirationDate!)!)])
-        
-    case Constant.productCodeImageNames.platinum?:
-        userInfo.addEntries(from: [Constant.omnitureEvars.eVar10 :Helper.getUpcommingcheckinDatesDiffrence(date: (Product?.expirationDate!)!)])
-        
-    default:
-        break
     }
-    
-    userInfo.addEntries(from: [Constant.omnitureEvars.eVar11 :Constant.MyClassConstants.activeAlertsArray.count])
-    userInfo.addEntries(from: [Constant.omnitureEvars.eVar14 :""])
-    if let _ = Session.sharedSession.contact?.memberships {
-        userInfo.addEntries(from: [Constant.omnitureEvars.eVar16 :(Session.sharedSession.contact?.memberships?.count)! > 0 ? Constant.AlertPromtMessages.yes : Constant.AlertPromtMessages.no])
+
+    userInfo.addEntries(from: [Constant.omnitureEvars.eVar11: Constant.MyClassConstants.activeAlertsArray.count])
+    userInfo.addEntries(from: [Constant.omnitureEvars.eVar14: ""])
+    if let _ = Session.sharedSession.contact?.memberships, let memberShipCount = Session.sharedSession.contact?.memberships?.count {
+        userInfo.addEntries(from: [Constant.omnitureEvars.eVar16: memberShipCount > 0 ? Constant.AlertPromtMessages.yes : Constant.AlertPromtMessages.no])
     } else {
         userInfo.addEntries(from:
-            [Constant.omnitureEvars.eVar16 : Constant.AlertPromtMessages.no])
+            [Constant.omnitureEvars.eVar16: Constant.AlertPromtMessages.no])
     }
     
     var tripTypeString = ""
-    if(Constant.MyClassConstants.exchangeCounter > 0) {
+    if Constant.MyClassConstants.exchangeCounter > 0 {
         tripTypeString = tripTypeString.appending("\(Constant.omnitureCommonString.exchage)-\(Constant.MyClassConstants.exchangeCounter)")
     } else {
         tripTypeString = tripTypeString.appending("\(Constant.omnitureCommonString.exchage)-\(Constant.omnitureCommonString.notAvailable)")
     }
     
-    if(Constant.MyClassConstants.getawayCounter > 0) {
+    if Constant.MyClassConstants.getawayCounter > 0 {
         tripTypeString = tripTypeString.appending("\(Constant.omnitureCommonString.getaway)-\(Constant.MyClassConstants.getawayCounter)")
     } else {
         tripTypeString = tripTypeString.appending("\(Constant.omnitureCommonString.getaway)-\(Constant.omnitureCommonString.notAvailable)")
     }
     
-    if(Constant.MyClassConstants.shortStayCounter > 0) {
+    if Constant.MyClassConstants.shortStayCounter > 0 {
         tripTypeString = tripTypeString.appending("\(Constant.omnitureCommonString.shortStay)-\(Constant.MyClassConstants.shortStayCounter)")
     } else {
         tripTypeString = tripTypeString.appending("\(Constant.omnitureCommonString.shortStay)-\(Constant.omnitureCommonString.notAvailable)")
     }
     
-    if(Constant.MyClassConstants.acomodationCertificateCounter > 0) {
+    if Constant.MyClassConstants.acomodationCertificateCounter > 0 {
         tripTypeString = tripTypeString.appending("\(Constant.omnitureCommonString.acomodationCertificate)-\(Constant.MyClassConstants.acomodationCertificateCounter)")
     } else {
         tripTypeString = tripTypeString.appending("\(Constant.omnitureCommonString.acomodationCertificate)-\(Constant.omnitureCommonString.notAvailable)")
     }
     
-    if(Constant.MyClassConstants.flightCounter > 0) {
+    if Constant.MyClassConstants.flightCounter > 0 {
         tripTypeString = tripTypeString.appending("\(Constant.omnitureCommonString.flightBooking)-\(Constant.MyClassConstants.flightCounter)")
     } else {
         tripTypeString = tripTypeString.appending("\(Constant.omnitureCommonString.flightBooking)-\(Constant.omnitureCommonString.notAvailable)")
     }
     
-    if(Constant.MyClassConstants.carRentalCounter > 0) {
+    if Constant.MyClassConstants.carRentalCounter > 0 {
         tripTypeString = tripTypeString.appending("\(Constant.omnitureCommonString.carRental)-\(Constant.MyClassConstants.carRentalCounter)")
     } else {
         tripTypeString = tripTypeString.appending("\(Constant.omnitureCommonString.carRental)-\(Constant.omnitureCommonString.notAvailable)")
     }
     
-    userInfo.addEntries(from: [Constant.omnitureEvars.eVar17 :tripTypeString])
-    userInfo.addEntries(from: [Constant.omnitureEvars.eVar27 :Session.sharedSession.contact?.contactId as Any])
+    userInfo.addEntries(from: [Constant.omnitureEvars.eVar17: tripTypeString])
+    userInfo.addEntries(from: [Constant.omnitureEvars.eVar27: Session.sharedSession.contact?.contactId as Any])
     
     intervalPrint(userInfo)
     

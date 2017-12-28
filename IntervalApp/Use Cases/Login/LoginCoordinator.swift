@@ -27,6 +27,7 @@ final class LoginCoordinator: ComputationHelper {
     private var loginViewController: LoginViewController!
     
     // MARK: - Private properties
+    fileprivate let session = Session.sharedSession
     private let configuration: Config
     private let sessionStore: Session
     private let backgroundImages: [UIImage]
@@ -176,6 +177,9 @@ final class LoginCoordinator: ComputationHelper {
         guard let contact = sessionStore.contact else {
             delegate?.didError(message: "Could not load contact. Please try logging in again".localized())
             return
+        }
+        if session.contact?.memberships?.count == 1 {
+            Session.sharedSession.selectedMembership = session.contact?.memberships?[0]
         }
 
         let contactID = String(contact.contactId)
