@@ -189,7 +189,7 @@
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hLc-SJ-ScP">
                                             <rect key="frame" x="20" y="20" width="320" height="170"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="IGx-cF-CcE">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dashboardBackground" translatesAutoresizingMaskIntoConstraints="NO" id="IGx-cF-CcE">
                                                     <rect key="frame" x="0.0" y="0.0" width="320" height="170"/>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your next vacation is just a touch away" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GNK-Xe-sfB">
@@ -693,6 +693,7 @@
     </scenes>
     <resources>
         <image name="ForwardArrowIcon" width="33" height="33"/>
+        <image name="dashboardBackground" width="630" height="330"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="lqG-uC-F7s"/>

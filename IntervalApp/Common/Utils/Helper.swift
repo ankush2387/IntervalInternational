@@ -68,6 +68,7 @@ public class Helper {
         switch getValue {
         case "Date":
             dateFormatter.dateFormat = "d"
+             dateFormatter.locale = Locale(identifier: "en_US_POSIX")
             var dateFromString = dateFormatter.string(from: dateString as Date)
             if dateFromString.characters.count == 1 {
                 dateFromString = "0\(dateFromString)"

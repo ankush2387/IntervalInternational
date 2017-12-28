@@ -36,7 +36,7 @@ class MemberShipDetailTableViewCell: UITableViewCell {
         - returns : No value is return
     */
     func getCell(contactInfo: Contact, products: [Product]) {
-        self.setPropertiesTocellElements()
+        setPropertiesTocellElements()
         
         var firstName = ""
         var lastName = ""
@@ -75,7 +75,7 @@ class MemberShipDetailTableViewCell: UITableViewCell {
             membershipsAmount = count
         }
 
-        self.updateCell(contactName: "\(firstName) \(lastName)", loginID: loginID, email: emailAddress, status: status, date: dateString, memberships: membershipsAmount, products: products)
+        updateCell(contactName: "\(firstName) \(lastName)", loginID: loginID, email: emailAddress, status: status, date: dateString, memberships: membershipsAmount, products: products)
         
     }
     // MARK: Update value according to server response
@@ -130,14 +130,14 @@ class MemberShipDetailTableViewCell: UITableViewCell {
                 prodView.triangleView.isHidden = true
             }
             
-            if prod.billingEntity == "CORPORATE" {
+            if prod.billingEntity == "CORP" {
                 prodView.expirationDateLabel.text = nil
             } else {
-                var dateString = ""
+                
                 if let expDate = prod.expirationDate {
-                    dateString = Helper.convertDateToString(date: expDate, format: Constant.MyClassConstants.dateFormat)
+                    prodView.expirationDateLabel.text = Helper.getWeekDay(dateString: expDate, getValue: Constant.MyClassConstants.month).appending(". ").appending(Helper.getWeekDay(dateString: expDate, getValue: Constant.MyClassConstants.date)).appending(", ").appending(Helper.getWeekDay(dateString: expDate, getValue: Constant.MyClassConstants.year))
                 }
-                prodView.expirationDateLabel.text = dateString
+                prodView.expirationDateLabel.font = UIFont(name: Constant.fontName.helveticaNeue, size: 15)
             }
             if let name = prod.productName?.capitalized {
                     prodView.productNameLabel.text = "\(name) Membership".localized()
@@ -159,7 +159,7 @@ class MemberShipDetailTableViewCell: UITableViewCell {
     */
     fileprivate func setPropertiesTocellElements() {
         
-        self.switchMembershipButton.layer.cornerRadius = 4
+        switchMembershipButton.layer.cornerRadius = 4
         
         //ContactInfo Main View Properties
         
