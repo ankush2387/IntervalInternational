@@ -52,7 +52,6 @@ class DashboardIPadTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //get all alerts
         //Get all alerts
         if let accessToken = Session.sharedSession.userAccessToken {
             readAllRentalAlerts(accessToken: accessToken)
@@ -210,7 +209,6 @@ class DashboardIPadTableViewController: UITableViewController {
         
         showAlertActivityIndicatorView = true
         homeTableView.reloadData()
-        //Get all alerts
         if let accessToken = Session.sharedSession.userAccessToken {
             readAllRentalAlerts(accessToken: accessToken)
         }
@@ -890,4 +888,3 @@ extension DashboardIPadTableViewController: HelperDelegate {
         
     }
 }
-

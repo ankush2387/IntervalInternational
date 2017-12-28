@@ -50,7 +50,7 @@ class EditMyAlertIpadViewController: UIViewController {
         //set return key on Keyboard to DONE
         nameTextField.returnKeyType = .done
         Constant.MyClassConstants.selectedGetawayAlertDestinationArray.removeAll()
-       if let alert = Constant.selectedAlertToEdit {
+        if let alert = Constant.selectedAlertToEdit {
             if let altId = alert.alertId {
                 alertId = altId
             }
@@ -58,11 +58,11 @@ class EditMyAlertIpadViewController: UIViewController {
                 editAlertName = alrtName
             }
         }
-       
+        
         showHudAsync()
         RentalClient.getAlert(Session.sharedSession.userAccessToken, alertId: alertId, onSuccess: { alert in
             
-             let earlyDate = Helper.convertStringToDate(dateString: alert.earliestCheckInDate!, format: "yyyy-MM-dd")
+            let earlyDate = Helper.convertStringToDate(dateString: alert.earliestCheckInDate!, format: "yyyy-MM-dd")
             
             let lateDate = Helper.convertStringToDate(dateString: alert.latestCheckInDate!, format: "yyyy-MM-dd")
             
@@ -89,7 +89,6 @@ class EditMyAlertIpadViewController: UIViewController {
         
         // omniture tracking with event 76
         let userInfo: [String: String] = [
-           
             Constant.omnitureEvars.eVar41: Constant.omnitureCommonString.alert
         ]
         
@@ -121,20 +120,11 @@ class EditMyAlertIpadViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
-        intervalPrint(Constant.selectedAlertToEdit)
+        super.viewWillAppear(animated)
         Constant.MyClassConstants.isRunningOnIphone ? createAlertTBLView.reloadData() : createAlertCollectionView.reloadData()
-    
-        self.setupView()
         
-        guard let alertToEdit = Constant.selectedAlertToEdit else { return }
-        var selectedBedroomsizes = [String]()
-        for unitSize in alertToEdit.unitSizes {
-            let friendlyName = unitSize.friendlyName()
-            let bedroomSize = Helper.bedRoomSizeToStringInteger(bedRoomSize: friendlyName)
-            selectedBedroomsizes.append(bedroomSize)
-        }
-        self.bedroomSize.text = selectedBedroomsizes.joined(separator: ", ")
+        self.setupView()
+        self.bedroomSize.text = Constant.MyClassConstants.selectedBedRoomSize
     }
     
     fileprivate func setupView() {
@@ -154,21 +144,21 @@ class EditMyAlertIpadViewController: UIViewController {
         if let endDate = Constant.MyClassConstants.alertWindowEndDate {
             if let startDate = Constant.MyClassConstants.alertWindowStartDate {
                 if endDate.isGreaterThanDate(startDate) {
-                
-                let calendar = Calendar.current
-                let anchorComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: endDate)
-                self.endDateDayLabel.text = "\(anchorComponents.day ?? 0)"
-                self.endDateDayNameLabel.text = "\(Helper.getWeekdayFromInt(weekDayNumber: anchorComponents.weekday ?? 0))".localized()
-                self.endDateMonthYearLabel.text = "\(Helper.getMonthnameFromInt(monthNumber: anchorComponents.month ?? 0)) \(anchorComponents.year ?? 0)".localized()
-            } else {
-                
-                let calendar = Calendar.current
-                let anchorComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: startDate)
-                self.endDateDayLabel.text = "\(anchorComponents.day ?? 0)".localized()
-                self.endDateDayNameLabel.text = "\(Helper.getWeekdayFromInt(weekDayNumber: anchorComponents.weekday ?? 0))".localized()
-                self.endDateMonthYearLabel.text = "\(Helper.getMonthnameFromInt(monthNumber: anchorComponents.month ?? 0)) \(anchorComponents.year ?? 0)".localized()
+                    
+                    let calendar = Calendar.current
+                    let anchorComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: endDate)
+                    self.endDateDayLabel.text = "\(anchorComponents.day ?? 0)"
+                    self.endDateDayNameLabel.text = "\(Helper.getWeekdayFromInt(weekDayNumber: anchorComponents.weekday ?? 0))".localized()
+                    self.endDateMonthYearLabel.text = "\(Helper.getMonthnameFromInt(monthNumber: anchorComponents.month ?? 0)) \(anchorComponents.year ?? 0)".localized()
+                } else {
+                    
+                    let calendar = Calendar.current
+                    let anchorComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: startDate)
+                    self.endDateDayLabel.text = "\(anchorComponents.day ?? 0)".localized()
+                    self.endDateDayNameLabel.text = "\(Helper.getWeekdayFromInt(weekDayNumber: anchorComponents.weekday ?? 0))".localized()
+                    self.endDateMonthYearLabel.text = "\(Helper.getMonthnameFromInt(monthNumber: anchorComponents.month ?? 0)) \(anchorComponents.year ?? 0)".localized()
+                }
             }
-          }
         }
         if Constant.RunningDevice.deviceIdiom == .pad {
             self.createAlertCollectionView.reloadData()
@@ -180,7 +170,7 @@ class EditMyAlertIpadViewController: UIViewController {
     //***** function to dismiss present view controller on back button pressed *****//
     func menuBackButtonPressed(sender: UIBarButtonItem) {
         
-         dismiss(animated: true)
+        dismiss(animated: true)
         
     }
     //***** function to call calendar screen to select travel start date *****//
@@ -212,13 +202,8 @@ class EditMyAlertIpadViewController: UIViewController {
     
     //***** function to call bedroom size screen to select bedroom size *****//
     @IBAction func selectRoomSizePressed(_ sender: AnyObject) {
-        
-        var mainStoryboard = UIStoryboard()
-        
-        mainStoryboard = UIStoryboard(name: Constant.storyboardNames.getawayAlertsIphone, bundle: nil)
+        var mainStoryboard = UIStoryboard(name: Constant.storyboardNames.getawayAlertsIphone, bundle: nil)
         if let viewController = mainStoryboard.instantiateViewController(withIdentifier: "BedroomSizeNav") as? UINavigationController {
-            let transitionManager = TransitionManager()
-            self.navigationController?.transitioningDelegate = transitionManager
             self.navigationController?.present(viewController, animated: true, completion: nil)
         }
     }
@@ -238,113 +223,123 @@ class EditMyAlertIpadViewController: UIViewController {
     
     @IBAction func SaveMyAlertButtonPressed(_ sender: AnyObject) {
         
-        let trimmedUsername = self.nameTextField.text!.trimmingCharacters(in: NSCharacterSet.whitespacesAndNewlines)
+        guard let trimmedUsername = self.nameTextField.text?.trimmingCharacters(in: NSCharacterSet.whitespacesAndNewlines) else {
+            self.presentAlert(with: Constant.AlertPromtMessages.editAlertTitle, message: Constant.AlertMessages.editAlertEmptyNameMessage)
+            return
+        }
         guard let startDate = Constant.MyClassConstants.alertWindowStartDate else { return  presentAlert(with: Constant.AlertPromtMessages.createAlertTitle, message: Constant.AlertMessages
             .editAlertEmptyWidowStartDateMessage) }
         guard let endDate = Constant.MyClassConstants.alertWindowEndDate else { return presentAlert(with: Constant.AlertPromtMessages.createAlertTitle, message: Constant.AlertMessages
             .editAlertEmptyWidowEndDateMessage) }
-        if !trimmedUsername.isEmpty {
-            if Constant.MyClassConstants.selectedGetawayAlertDestinationArray.count > 0 {
-                        
-                showHudAsync()
-                let rentalAlert = RentalAlert()
-                rentalAlert.alertId = self.alertId
-                rentalAlert.earliestCheckInDate = Helper.convertDateToString(date: startDate, format: Constant.MyClassConstants.dateFormat)
-                rentalAlert.latestCheckInDate = Helper.convertDateToString(date: endDate, format: Constant.MyClassConstants.dateFormat)
+        if Constant.MyClassConstants.selectedGetawayAlertDestinationArray.count > 0 {
+            
+            showHudAsync()
+            let rentalAlert = RentalAlert()
+            rentalAlert.alertId = self.alertId
+            rentalAlert.earliestCheckInDate = Helper.convertDateToString(date: startDate, format: Constant.MyClassConstants.dateFormat)
+            rentalAlert.latestCheckInDate = Helper.convertDateToString(date: endDate, format: Constant.MyClassConstants.dateFormat)
+            rentalAlert.enabled = true
+            rentalAlert.name = trimmedUsername
+            if self.alertStatusButton.isOn {
                 rentalAlert.enabled = true
-                rentalAlert.name = trimmedUsername
-                if self.alertStatusButton.isOn {
-                    rentalAlert.enabled = true
-                } else {
-                    rentalAlert.enabled = false
-                }
-                
-                rentalAlert.resorts = Constant.MyClassConstants.alertSelectedResorts
-                rentalAlert.destinations = Constant.MyClassConstants.alertSelectedDestination
-                rentalAlert.selections = []
-                
-                var unitsizearray = [UnitSize]()
-                if !Constant.MyClassConstants.alertSelectedUnitSizeArray.isEmpty {
-                    
-                    for selectedSize in Constant.MyClassConstants.alertSelectedUnitSizeArray {
-                        
-                        let bedroomSize = Helper.bedRoomSizeToStringInteger(bedRoomSize: selectedSize)
-                        self.anlyticsBedroomSize = self.anlyticsBedroomSize.appending(bedroomSize)
-                        
-                        let selectedUnitSize = UnitSize(rawValue: selectedSize as! String)
-                        unitsizearray.append(selectedUnitSize!)
-                    }
-                    
-                    rentalAlert.unitSizes = unitsizearray
-                } else {
-                    
-                    for unitsize in Constant.MyClassConstants.bedRoomSize {
-                        
-                        let bedroomSize = Helper.bedRoomSizeToStringInteger(bedRoomSize: unitsize )
-                        self.anlyticsBedroomSize = self.anlyticsBedroomSize.appending("\(bedroomSize), ")
-                        
-                        let selectedUnitSize = UnitSize(rawValue: unitsize )
-                        unitsizearray.append(selectedUnitSize!)
-                    }
-                    rentalAlert.unitSizes = unitsizearray
-                }
-                
-                RentalClient.updateAlert(Session.sharedSession.userAccessToken, alert: rentalAlert, onSuccess: { (_) in
-                    
-                    self.hideHudAsync()
-                    
-                    var deststr: String = ""
-                    for dest in Constant.MyClassConstants.alertSelectedDestination {
-                        
-                        deststr = deststr.appending("\(dest.destinationName), ")
-                    }
-                    
-                    for resort in Constant.MyClassConstants.alertSelectedResorts {
-                        
-                        deststr = deststr.appending("\(resort.resortName!), ")
-                    }
-                    
-                    // omniture tracking with event 53
-                    let userInfo: [String: Any] = [
-                        Constant.omnitureEvars.eVar43: " - \(Date())",
-                        Constant.omnitureCommonString.listItem: deststr,
-                        Constant.omnitureEvars.eVar41: Constant.omnitureCommonString.alert,
-                        Constant.omnitureEvars.eVar57: startDate,
-                        Constant.omnitureEvars.eVar58: endDate,
-                        Constant.omnitureEvars.eVar59: self.anlyticsBedroomSize,
-                        Constant.omnitureEvars.eVar60: Constant.MyClassConstants.alertOriginationPoint,
-                        Constant.omnitureEvars.eVar69: Constant.AlertPromtMessages.yes
-                    ]
-                    
-                    ADBMobile.trackAction(Constant.omnitureEvents.event53, data: userInfo)
-                    let alertController = UIAlertController(title: Constant.AlertPromtMessages.editAlertTitle, message: Constant.AlertMessages.editAlertMessage, preferredStyle: .alert)
-                    
-                    // Create OK button
-                    let OKAction = UIAlertAction(title: "OK", style: .default) { (_:UIAlertAction) in
-                        Constant.needToReloadAlert = true
-                        self.dismiss(animated: true)
-                    }
-                    alertController.addAction(OKAction)
-                    self.present(alertController, animated: true, completion:nil)
-                    
-                }) { (_) in
-                    
-                    // omniture tracking with event 53
-                    let userInfo: [String: Any] = [
-                        Constant.omnitureEvars.eVar41: Constant.omnitureCommonString.alert,
-                        Constant.omnitureEvars.eVar69: Constant.AlertPromtMessages.no
-                    ]
-                    
-                    ADBMobile.trackAction(Constant.omnitureEvents.event53, data: userInfo)
-                    self.hideHudAsync()
-                    self.presentErrorAlert(UserFacingCommonError.generic)
-                    
-                }
             } else {
-                self.presentAlert(with: Constant.AlertPromtMessages.editAlertTitle, message: Constant.AlertMessages.editAlertdetinationrequiredMessage)
+                rentalAlert.enabled = false
+            }
+            
+            rentalAlert.resorts = Constant.MyClassConstants.alertSelectedResorts
+            rentalAlert.destinations = Constant.MyClassConstants.alertSelectedDestination
+            rentalAlert.selections = []
+            
+            var unitsizearray = [UnitSize]()
+            let brWithoutSpaces = Constant.MyClassConstants.selectedBedRoomSize.replacingOccurrences(of: " ", with: "")
+            let selectedUnits = brWithoutSpaces.components(separatedBy: ",")
+            Constant.MyClassConstants.alertSelectedUnitSizeArray.removeAll()
+            print(Int("\(selectedUnits)") ?? 0)
+            for selectedUnit in selectedUnits {
+                
+               let selectedUnitSize = UnitSize(rawValue: Constant.MyClassConstants.bedRoomSize[Int("\(selectedUnit)") ?? 0] )
+                Constant.MyClassConstants.alertSelectedUnitSizeArray.append(selectedUnitSize!.rawValue)
+            }
+            
+            if !Constant.MyClassConstants.alertSelectedUnitSizeArray.isEmpty {
+                
+                for selectedSize in Constant.MyClassConstants.alertSelectedUnitSizeArray {
+                    
+                    let bedroomSize = Helper.bedRoomSizeToStringInteger(bedRoomSize: selectedSize)
+                    self.anlyticsBedroomSize = self.anlyticsBedroomSize.appending(bedroomSize)
+                    
+                    if let selectedUnitSize = UnitSize(rawValue: selectedSize) {
+                        unitsizearray.append(selectedUnitSize)
+                    }
+                }
+                
+                rentalAlert.unitSizes = unitsizearray
+            } else {
+                
+                for unitsize in Constant.MyClassConstants.bedRoomSize {
+                    
+                    let bedroomSize = Helper.bedRoomSizeToStringInteger(bedRoomSize: unitsize )
+                    self.anlyticsBedroomSize = self.anlyticsBedroomSize.appending("\(bedroomSize), ")
+                    
+                    let selectedUnitSize = UnitSize(rawValue: unitsize )
+                    unitsizearray.append(selectedUnitSize!)
+                }
+                rentalAlert.unitSizes = unitsizearray
+            }
+            
+            RentalClient.updateAlert(Session.sharedSession.userAccessToken, alert: rentalAlert, onSuccess: { (_) in
+                
+                self.hideHudAsync()
+                
+                var deststr: String = ""
+                for dest in Constant.MyClassConstants.alertSelectedDestination {
+                    
+                    deststr = deststr.appending("\(dest.destinationName), ")
+                }
+                
+                for resort in Constant.MyClassConstants.alertSelectedResorts {
+                    
+                    deststr = deststr.appending("\(resort.resortName!), ")
+                }
+                
+                // omniture tracking with event 53
+                let userInfo: [String: Any] = [
+                    Constant.omnitureEvars.eVar43: " - \(Date())",
+                    Constant.omnitureCommonString.listItem: deststr,
+                    Constant.omnitureEvars.eVar41: Constant.omnitureCommonString.alert,
+                    Constant.omnitureEvars.eVar57: startDate,
+                    Constant.omnitureEvars.eVar58: endDate,
+                    Constant.omnitureEvars.eVar59: self.anlyticsBedroomSize,
+                    Constant.omnitureEvars.eVar60: Constant.MyClassConstants.alertOriginationPoint,
+                    Constant.omnitureEvars.eVar69: Constant.AlertPromtMessages.yes
+                ]
+                
+                ADBMobile.trackAction(Constant.omnitureEvents.event53, data: userInfo)
+                let alertController = UIAlertController(title: Constant.AlertPromtMessages.editAlertTitle, message: Constant.AlertMessages.editAlertMessage, preferredStyle: .alert)
+                
+                // Create OK button
+                let OKAction = UIAlertAction(title: "OK", style: .default) { (_:UIAlertAction) in
+                    Constant.needToReloadAlert = true
+                    self.dismiss(animated: true)
+                }
+                alertController.addAction(OKAction)
+                self.present(alertController, animated: true, completion:nil)
+                
+            }) { (_) in
+                
+                // omniture tracking with event 53
+                let userInfo: [String: Any] = [
+                    Constant.omnitureEvars.eVar41: Constant.omnitureCommonString.alert,
+                    Constant.omnitureEvars.eVar69: Constant.AlertPromtMessages.no
+                ]
+                
+                ADBMobile.trackAction(Constant.omnitureEvents.event53, data: userInfo)
+                self.hideHudAsync()
+                self.presentErrorAlert(UserFacingCommonError.generic)
+                
             }
         } else {
-            self.presentAlert(with: Constant.AlertPromtMessages.editAlertTitle, message: Constant.AlertMessages.editAlertEmptyNameMessage)
+            self.presentAlert(with: Constant.AlertPromtMessages.editAlertTitle, message: Constant.AlertMessages.editAlertdetinationrequiredMessage)
         }
         
     }
@@ -585,16 +580,16 @@ extension EditMyAlertIpadViewController: UITableViewDataSource {
         let delete = UITableViewRowAction(style: UITableViewRowActionStyle.destructive, title: Constant.buttonTitles.remove) { (_, index) in
             if Constant.MyClassConstants.selectedGetawayAlertDestinationArray.count > 0 {
                 Constant.MyClassConstants.selectedGetawayAlertDestinationArray.remove(at: indexPath.row)
-            tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
-            tableView.reloadData()
-            let delayTime = DispatchTime.now() + Double(Int64(0.5 * Double(NSEC_PER_SEC)))
-            DispatchQueue.main.asyncAfter(deadline: delayTime, execute: {
-                tableView.reloadSections(NSIndexSet(index: indexPath.section) as IndexSet, with: .automatic)
-                //tableView.reloadData()
-                tableView.setEditing(false, animated: true)
-                
-            })
-          }
+                tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
+                tableView.reloadData()
+                let delayTime = DispatchTime.now() + Double(Int64(0.5 * Double(NSEC_PER_SEC)))
+                DispatchQueue.main.asyncAfter(deadline: delayTime, execute: {
+                    tableView.reloadSections(NSIndexSet(index: indexPath.section) as IndexSet, with: .automatic)
+                    //tableView.reloadData()
+                    tableView.setEditing(false, animated: true)
+                    
+                })
+            }
         }
         delete.backgroundColor = UIColor(red: 224 / 255.0, green: 96.0 / 255.0, blue: 84.0 / 255.0, alpha: 1.0)
         
@@ -609,15 +604,15 @@ extension EditMyAlertIpadViewController: UITableViewDataSource {
             }
         }
         details.backgroundColor = UIColor(red: 0 / 255.0, green: 119.0 / 255.0, blue: 190.0 / 255.0, alpha: 1.0)
-            switch Constant.MyClassConstants.selectedGetawayAlertDestinationArray[indexPath.row] {
-            case .resorts(_):
-                return [delete, details]
-                
-            default:
-                return [delete]
-            }
+        switch Constant.MyClassConstants.selectedGetawayAlertDestinationArray[indexPath.row] {
+        case .resorts(_):
+            return [delete, details]
+            
+        default:
+            return [delete]
         }
     }
+}
 
 extension EditMyAlertIpadViewController: WhereToGoCollectionViewCellDelegate {
     

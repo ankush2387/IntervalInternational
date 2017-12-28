@@ -124,7 +124,6 @@ class DashboardTableViewController: UITableViewController {
         }
     }
     
-    
     func readRentalAlert(accessToken: DarwinAccessToken, alertId: Int64) {
         Constant.MyClassConstants.searchDateResponse.removeAll()
         ClientAPI.sharedInstance.readRentalAlert(for: accessToken, and: alertId)
