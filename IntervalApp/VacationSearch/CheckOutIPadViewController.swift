@@ -51,12 +51,12 @@ class CheckOutIPadViewController: UIViewController {
     var currencyCode: String = ""
     
     override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(true)
+        super.viewDidAppear(animated)
         navigationController?.navigationBar.isHidden = false
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
+        super.viewWillAppear(animated)
         self.hideHudAsync()
         
         self.emailTextToEnter = Session.sharedSession.contact?.emailAddress ?? ""
@@ -104,7 +104,7 @@ class CheckOutIPadViewController: UIViewController {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.updateResortHoldingTime), object: nil)
     }
     override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(true)
+        super.viewWillDisappear(animated)
         navigationController?.navigationBar.isHidden = true
     }
     

@@ -231,22 +231,22 @@ class VacationSearchIPadViewController: UIViewController, UITableViewDelegate, U
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if tableView.tag == 1 {
             let cellIdentifier = Constant.customCellNibNames.featuredTableViewCell
-            let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier)
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) else { return UITableViewCell() }
             
-            cell?.selectionStyle = UITableViewCellSelectionStyle.none
-            for subview in (cell?.subviews)! {
+            cell.selectionStyle = UITableViewCellSelectionStyle.none
+            for subview in cell.subviews {
                 subview.removeFromSuperview()
             }
             
             if indexPath.section == 1 {
-                let resortImageNameLabel = UILabel(frame: CGRect(x: 10, y: 10, width: (cell?.contentView.frame.width)! - 20, height: 20))
+                let resortImageNameLabel = UILabel(frame: CGRect(x: 10, y: 10, width: cell.contentView.frame.width - 20, height: 20))
                 resortImageNameLabel.text = Constant.segmentControlItems.getawaysLabelText
                 
                 resortImageNameLabel.textColor = UIColor.black
                 resortImageNameLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: 15)
-                cell?.addSubview(resortImageNameLabel)
+                cell.addSubview(resortImageNameLabel)
             } else {
-                let resortImageNameLabel = UILabel(frame: CGRect(x: 10, y: 10, width: (cell?.contentView.frame.width)! - 20, height: 20))
+                let resortImageNameLabel = UILabel(frame: CGRect(x: 10, y: 10, width: cell.contentView.frame.width - 20, height: 20))
                 if showExchange == false {
                     resortImageNameLabel.text = Constant.segmentControlItems.getawaysLabelText
                 } else {
@@ -254,7 +254,7 @@ class VacationSearchIPadViewController: UIViewController, UITableViewDelegate, U
                 }
                 resortImageNameLabel.textColor = UIColor.black
                 resortImageNameLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: 15)
-                cell?.addSubview(resortImageNameLabel)
+                cell.addSubview(resortImageNameLabel)
             }
             
             //***** Creating collectionview and  layout for collectionView to show getaways and flexchange images on it *****//
@@ -262,7 +262,6 @@ class VacationSearchIPadViewController: UIViewController, UITableViewDelegate, U
             let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
             layout.sectionInset = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
             layout.itemSize = CGSize(width: 280, height: 175)
-            // layout.minimumInteritemSpacing = 1.0
             layout.minimumLineSpacing = 10
             layout.minimumInteritemSpacing = 0.0001
             layout.scrollDirection = .horizontal
@@ -272,23 +271,23 @@ class VacationSearchIPadViewController: UIViewController, UITableViewDelegate, U
             homeTableCollectionView.backgroundColor = UIColor.clear
             homeTableCollectionView.delegate = self
             homeTableCollectionView.dataSource = self
-            if indexPath.section == 0 {
-                homeTableCollectionView.tag = 2
-            } else {
+            if indexPath.section == 0 && (!showGetaways || (showGetaways && showExchange)) {
                 homeTableCollectionView.tag = 1
+            } else {
+                homeTableCollectionView.tag = 2
             }
             
             homeTableCollectionView.isScrollEnabled = true
-            cell?.backgroundColor = UIColor(red: 240.0 / 255.0, green: 239.0 / 255.0, blue: 244.0 / 255.0, alpha: 1.0)
-            cell?.addSubview(homeTableCollectionView)
+            cell.backgroundColor = #colorLiteral(red: 0.9411764706, green: 0.937254902, blue: 0.9568627451, alpha: 1)
+            cell.addSubview(homeTableCollectionView)
             
-            return cell!
+            return cell
             
         } else {
             switch indexPath.row {
             case 0:
                 let cellIdentifier = Constant.customCellNibNames.wereToGoTableViewCell
-                let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) as! WereWantToGoTableViewCell
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) as? WereWantToGoTableViewCell else { return UITableViewCell() }
                 cell.lblCellTitle.text = "  \(Constant.MyClassConstants.fourSegmentHeaderTextArray[indexPath.section])"
                 cell.lblCellTitle.backgroundColor = IUIKColorPalette.titleBackdrop.color
                 cell.delegate = self
@@ -299,7 +298,7 @@ class VacationSearchIPadViewController: UIViewController, UITableViewDelegate, U
                 return cell
             case 1:
                 let cellIdentifier = Constant.customCellNibNames.whereToTradeTableViewCell
-                let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) as! WereWantToTradeTableViewCell
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) as? WereWantToTradeTableViewCell else { return UITableViewCell() }
                 cell.lblCellTitle.text = "  \(Constant.MyClassConstants.fourSegmentHeaderTextArray[indexPath.row])"
                 cell.lblCellTitle.backgroundColor = IUIKColorPalette.titleBackdrop.color
                 cell.selectionStyle = .none
@@ -309,14 +308,14 @@ class VacationSearchIPadViewController: UIViewController, UITableViewDelegate, U
                 return cell
             case 3:
                 let cellIdentifier = Constant.customCellNibNames.searchTableViewCell
-                let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) as! SearchTableViewCell
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) as? SearchTableViewCell else { return UITableViewCell() }
                 cell.selectionStyle = .none
                 cell.delegate = self
                 
                 return cell
             default:
                 let cellIdentifier = Constant.customCellNibNames.dateAndPassengerTableViewCell
-                let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) as! DateAndPassengerSelectionTableViewCell
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) as? DateAndPassengerSelectionTableViewCell else { return UITableViewCell() }
                 
                 cell.checkInClosestToHeaderLabel.text = "  \(Constant.MyClassConstants.fourSegmentHeaderTextArray[2])"
                 cell.checkInClosestToHeaderLabel.backgroundColor = IUIKColorPalette.titleBackdrop.color
@@ -324,17 +323,17 @@ class VacationSearchIPadViewController: UIViewController, UITableViewDelegate, U
                 cell.whoIsTravellingHeaderLabel.backgroundColor = IUIKColorPalette.titleBackdrop.color
                 cell.selectionStyle = .none
                 let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
-                let myComponents = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: Constant.MyClassConstants.vacationSearchShowDate as Date)
-                cell.dayName.text = "\(Helper.getWeekdayFromInt(weekDayNumber: myComponents.weekday!))"
-                cell.dayDate.text = "\(myComponents.day!)"
-                
-                cell.year.text = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month!)) \(myComponents.year!)"
+                let myComponents = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: Constant.MyClassConstants.vacationSearchShowDate)
+                if let weekDay = myComponents.weekday, let day =  myComponents.day, let month = myComponents.month, let year = myComponents.year {
+                    cell.dayName.text = "\(Helper.getWeekdayFromInt(weekDayNumber: weekDay))"
+                    cell.dayDate.text = "\(day)"
+                    cell.year.text = "\(Helper.getMonthnameFromInt(monthNumber: month)) \(year)"
+                }
                 cell.delegate = self
                 cell.childCountLabel.text = String(childCounter)
                 cell.adultCountLabel.text = String(adultCounter)
                 return cell
             }
-            
         }
     }
     

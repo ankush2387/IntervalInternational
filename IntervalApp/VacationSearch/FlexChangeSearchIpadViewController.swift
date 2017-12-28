@@ -102,7 +102,7 @@ class FlexChangeSearchIpadViewController: UIViewController {
     
     @IBAction func searchButtonClicked(_ sender: UIButton) {
         
-        if Constant.MyClassConstants.relinquishmentIdArray.count == 0 {
+        if !Constant.MyClassConstants.relinquishmentIdArray.isEmpty {
             return self.presentAlert(with: Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.tradeItemMessage)
         }
         
