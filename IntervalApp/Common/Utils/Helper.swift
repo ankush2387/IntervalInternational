@@ -1152,7 +1152,7 @@ public class Helper {
         
         titleLabel.frame = CGRect(x: 5, y: 0, width: noResortView.frame.size.width, height: noResortView.frame.size.height / 5)
         titleLabel.text = "No match found. Please select another date.".localized()
-        titleLabel.textAlignment = NSTextAlignment.justified
+        titleLabel.textAlignment = .justified
         titleLabel.textColor = UIColor.white
         titleLabel.font = UIFont(name: "Helvetica", size: 12)
         noResortView.addSubview(titleLabel)
