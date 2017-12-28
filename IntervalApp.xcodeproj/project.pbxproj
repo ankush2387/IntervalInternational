@@ -239,6 +239,7 @@
 		3C466B621F86862D002D43F7 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C466B611F86862D002D43F7 /* AppCoordinator.swift */; };
 		3C466B641F86884A002D43F7 /* AutoLogoutTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C466B631F86884A002D43F7 /* AutoLogoutTimer.swift */; };
 		3C4957611F9145BB00B7727D /* RenewelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C4957601F9145BB00B7727D /* RenewelViewController.swift */; };
+		3C49BE6E1FF58DD800A2707F /* CertificateViewControllerBypass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C49BE6D1FF58DD800A2707F /* CertificateViewControllerBypass.swift */; };
 		3C4F17271FA391E7001EF71F /* String+NSRage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C4F17261FA391E7001EF71F /* String+NSRage.swift */; };
 		3C4F17291FA39204001EF71F /* Float+CurrencyFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C4F17281FA39204001EF71F /* Float+CurrencyFormatter.swift */; };
 		3C4F172B1FA77056001EF71F /* EntityDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C4F172A1FA77056001EF71F /* EntityDataSource.swift */; };
@@ -640,6 +641,7 @@
 		3C466B611F86862D002D43F7 /* AppCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		3C466B631F86884A002D43F7 /* AutoLogoutTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoLogoutTimer.swift; sourceTree = "<group>"; };
 		3C4957601F9145BB00B7727D /* RenewelViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RenewelViewController.swift; sourceTree = "<group>"; };
+		3C49BE6D1FF58DD800A2707F /* CertificateViewControllerBypass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CertificateViewControllerBypass.swift; sourceTree = "<group>"; };
 		3C4F17261FA391E7001EF71F /* String+NSRage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+NSRage.swift"; sourceTree = "<group>"; };
 		3C4F17281FA39204001EF71F /* Float+CurrencyFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Float+CurrencyFormatter.swift"; sourceTree = "<group>"; };
 		3C4F172A1FA77056001EF71F /* EntityDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntityDataSource.swift; sourceTree = "<group>"; };
@@ -1190,6 +1192,7 @@
 				08E3BCF51F2A30F80021F2BC /* RelinquishmentDetailsViewController.swift */,
 				3AAA5A211C720F4500A5EA6D /* VacationSearchViewController.swift */,
 				3A05D44F1C7B7CF400258C72 /* CertificateViewController.swift */,
+				3C49BE6D1FF58DD800A2707F /* CertificateViewControllerBypass.swift */,
 				3AF7CC121C848C5900FB9AC6 /* AccomodationCertsDetailController.swift */,
 				3A0326211C8EE684000758E3 /* CalendarViewController.swift */,
 				3A894C1E1C9081FF00CF2D54 /* SearchResultViewController.swift */,
@@ -2369,6 +2372,7 @@
 				3A59DE161F013767005280D3 /* SearchResultMapviewController.swift in Sources */,
 				3A0326221C8EE684000758E3 /* CalendarViewController.swift in Sources */,
 				0887C97B1F6A99F5007F57C3 /* SearchFlexchangeButtonCell.swift in Sources */,
+				3C49BE6E1FF58DD800A2707F /* CertificateViewControllerBypass.swift in Sources */,
 				08E3BCF81F2A31330021F2BC /* RelinquishmentDetailsCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
