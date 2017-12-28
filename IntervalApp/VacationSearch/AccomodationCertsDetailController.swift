@@ -32,21 +32,8 @@ class AccomodationCertsDetailController: UIViewController {
     }
     
     func menuBackButtonPressed(_ sender: UIBarButtonItem) {
-        
-        let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
-        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.revialViewController) as! SWRevealViewController
-        
-        //***** creating animation transition to show custom transition animation *****//
-        let transition: CATransition = CATransition()
-        let timeFunc: CAMediaTimingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
-        transition.duration = 0.25
-        transition.timingFunction = timeFunc
-        transition.type = kCATransitionPush
-        transition.subtype = kCATransitionFromRight
-        viewController.view.layer.add(transition, forKey: Constant.MyClassConstants.switchToView)
-        UIApplication.shared.keyWindow?.rootViewController = viewController
+        performSegue(withIdentifier: "unwindToCertificateViewController", sender: self)
     }
-    
 }
 
 //***** MARK: Extension classes starts from here *****//

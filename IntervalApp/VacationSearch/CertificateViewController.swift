@@ -33,6 +33,10 @@ class CertificateViewController: UIViewController {
         
         self.getAccommodationCertificateSummary(sendertag: (sender as AnyObject).tag)
     }
+
+    @IBAction func unwindToCertificateViewController(segue: UIStoryboardSegue) {
+        // Left blank intentionally
+    }
     
     func getAccommodationCertificateSummary(sendertag: Int) {
        
