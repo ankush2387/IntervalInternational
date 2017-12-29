@@ -111,7 +111,7 @@ extension SideMenuTableViewController: UITableViewDelegate {
             Constant.MyClassConstants.sideMenuOptionSelected = Constant.MyClassConstants.resortFunctionalityCheck
         }
         
-        guard let storyboardName = smi.storyboardId else { return }
+        guard let storyboardName = smi.storyboardId, !storyboardName.isEmpty else { return }
         
         if let initialViewController = UIStoryboard(name: storyboardName, bundle: nil).instantiateInitialViewController() {
             navigationController?.pushViewController(initialViewController, animated: true)
