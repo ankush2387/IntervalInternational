@@ -2,9 +2,9 @@
     "version" : "1.0",
     "analytics" : {
         "rsids" : "intmobileappredesigndev",
-        "server" : "smetrics.intervalworld.com",
+        "server" : "172.24.106.76",
         "charset" : "UTF-8",
-        "ssl" : true,
+        "ssl" : false,
 		"offlineEnabled" : false,
         "lifecycleTimeout" : 300,
 		"referrerTimeout" : 0,
