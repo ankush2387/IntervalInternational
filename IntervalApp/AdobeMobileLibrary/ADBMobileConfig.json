@@ -2,7 +2,7 @@
     "version" : "1.0",
     "analytics" : {
         "rsids" : "intmobileappredesigndev",
-        "server" : "172.24.106.76",
+        "server" : "172.24.106.76:50000",
         "charset" : "UTF-8",
         "ssl" : false,
 		"offlineEnabled" : false,
