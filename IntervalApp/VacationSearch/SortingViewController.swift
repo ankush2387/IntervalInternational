@@ -422,8 +422,7 @@ extension SortingViewController: UITableViewDataSource {
 extension SortingViewController: HelperDelegate {
     
     func resortSearchComplete() {
-        self.hideHudAsync()
-        
-        self.dismiss(animated: true, completion: nil)
+        hideHudAsync()
+        dismiss(animated: true, completion: nil)
     }
 }

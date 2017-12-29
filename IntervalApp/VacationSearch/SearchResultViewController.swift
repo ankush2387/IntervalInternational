@@ -58,7 +58,7 @@ class SearchResultViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
+        super.viewWillAppear(animated)
 
         navigationController?.navigationBar.isHidden = false
         createSections()
@@ -1744,9 +1744,9 @@ extension SearchResultViewController: SearchResultContentTableCellDelegate {
                     Constant.MyClassConstants.favoritesResortCodeArray.add(resortCode)
                     self.searchResultTableView.reloadData()
                     
-                }, onError: {(_) in
+                }, onError: {[unowned self](_) in
                     self.hideHudAsync()
-                    self.presentAlert(with: "Add Favorites", message: "Oops server error please try again!")
+                    self.presentAlert(with: "Add Favorites", message: "Oops server error please try again!".localized())
                 })
             } else {
                 
@@ -1757,7 +1757,7 @@ extension SearchResultViewController: SearchResultContentTableCellDelegate {
                     self.hideHudAsync()
                     Constant.MyClassConstants.favoritesResortCodeArray.remove(resortCode)
                     self.update()
-                }, onError: {(_) in
+                }, onError: {[unowned self](_) in
                     self.hideHudAsync()
                     self.presentAlert(with: "Remove Favorites".localized(), message: "Oops server error please try again!".localized())
                 })

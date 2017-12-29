@@ -919,12 +919,12 @@ func startProcess() {
             let transitionManager = TransitionManager()
             self.navigationController?.transitioningDelegate = transitionManager
             self.navigationController!.pushViewController(viewController, animated: true)
-        }, onError: { (_) in
+        }, onError: {[unowned self] (_) in
             self.hideHudAsync()
             self.presentErrorAlert(UserFacingCommonError.generic)
         })
         
-    }, onError: {(_) in
+    }, onError: {[unowned self](_) in
         self.hideHudAsync()
         self.presentErrorAlert(UserFacingCommonError.generic)
     })
