@@ -198,10 +198,9 @@ func sendOmnitureTrackCallForEvent2() {
         
     case Constant.productCodeImageNames.platinum?:
         userInfo.addEntries(from: [Constant.omnitureEvars.eVar10 :Helper.getUpcommingcheckinDatesDiffrence(date: product.expirationDate ?? Date())])
-    case .none:
-        <#code#>
-    case .some(_):
-        <#code#>
+        
+    default:
+        break
     }
     
     userInfo.addEntries(from: [Constant.omnitureEvars.eVar11 :Constant.MyClassConstants.activeAlertsArray.count])
