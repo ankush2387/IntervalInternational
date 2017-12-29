@@ -25,6 +25,12 @@ class SelectBedroomViewController: UIViewController {
             Constant.MyClassConstants.bedRoomSizeSelectedIndexArray = [0, 1, 2, 3, 4]
             Constant.MyClassConstants.alertSelectedBedroom = []
         }
+        
+        let brWithoutSpaces = Constant.MyClassConstants.selectedBedRoomSize.replacingOccurrences(of: " ", with: "")
+        let bedroomSizes = brWithoutSpaces.components(separatedBy: ",")
+        for value in bedroomSizes {
+            localArrayToHoldSelection.append(Int("\(value)") ?? 0)
+        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -39,18 +45,18 @@ class SelectBedroomViewController: UIViewController {
     @IBAction func doneButtonPressed(_ sender: Any) {
         let brWithoutSpaces = Constant.MyClassConstants.selectedBedRoomSize.replacingOccurrences(of: " ", with: "")
         let bedroomSizes = brWithoutSpaces.components(separatedBy: ",")
-        guard bedroomSizes.count > 0 else {
+        guard localArrayToHoldSelection.count > 0 else {
             self.presentAlert(with: "Bedroom Sizes", message: "Please select at least one bedroom size.")
             return
         }
         Constant.MyClassConstants.alertSelectedUnitSizeArray.removeAll()
         
-        if bedroomSizes.count == 5 {
+        if localArrayToHoldSelection.count == 5 {
             Constant.MyClassConstants.selectedBedRoomSize = "All Bedroom Sizes"
             Constant.MyClassConstants.alertSelectedBedroom = selectedBedroomArray
         } else {
             Constant.MyClassConstants.selectedBedRoomSize = ""
-            for (index, selected) in bedroomSizes.enumerated() {
+            for (index, selected) in localArrayToHoldSelection.enumerated() {
                 if index == selectedBedroomArray.count - 1 {
                     Constant.MyClassConstants.selectedBedRoomSize.append("\(selected)")
                 } else {
@@ -106,6 +112,9 @@ extension SelectBedroomViewController: UITableViewDataSource {
         if bedroomSizes.count > 0 {
             bedroomSizes.contains("\(indexPath.row)") ?
                 (cell.checkedImageView.image = #imageLiteral(resourceName: "Checkmark-On") ) : (cell.checkedImageView.image = #imageLiteral(resourceName: "Checkmark-Off"))
+            if bedroomSizes.contains("Studio") && indexPath.row == 0 {
+                (cell.checkedImageView.image = #imageLiteral(resourceName: "Checkmark-On") )
+            }
         } else {
             if let text = cell.bedroomTitleLabel.text {
                 selectedBedroomArray.append(text)

@@ -322,7 +322,7 @@ class GetawayAlertsIPhoneViewController: UIViewController {
     
     // MARK: - Get data for an alert
     func getDestinationsResortsForAlert(alert: RentalAlert, searchCriteria: VacationSearchCriteria) {
-        if (alert.destinations.count) > 0 {
+        if !alert.destinations.isEmpty {
             let destination = AreaOfInfluenceDestination()
             if let destinationName = alert.destinations[0].destinationName {
                 destination.destinationName = destinationName
@@ -334,7 +334,7 @@ class GetawayAlertsIPhoneViewController: UIViewController {
             searchCriteria.destination = destination
             Constant.MyClassConstants.vacationSearchResultHeaderLabel = destination.destinationName
             
-        } else if (alert.resorts.count) > 0 {
+        } else if !alert.resorts.isEmpty {
             searchCriteria.resorts = alert.resorts
             Constant.MyClassConstants.vacationSearchResultHeaderLabel = "\(String(describing: alert.resorts[0].resortName)) + \(alert.resorts.count) more"
         }
@@ -432,13 +432,20 @@ extension GetawayAlertsIPhoneViewController: UITableViewDelegate {
         } else {
             
             let edit = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: Constant.buttonTitles.edit) { (action, index) -> Void in
-                intervalPrint(self.alertsDictionary)
-                Constant.MyClassConstants.selectedBedRoomSize = "All Bedroom Sizes"
                 Constant.MyClassConstants.selectedGetawayAlertDestinationArray.removeAll()
                 
                 Constant.selectedAlertToEdit = Constant.MyClassConstants.searchDateResponse[indexPath.row].0
                 Constant.MyClassConstants.bedRoomSizeSelectedIndexArray.removeAllObjects()
                 guard let alertToEdit = Constant.selectedAlertToEdit else { return }
+                
+                for destination in alertToEdit.destinations {
+                    Constant.MyClassConstants.selectedGetawayAlertDestinationArray.append(Constant.selectedDestType.destination(destination))
+                }
+                
+                for resort in alertToEdit.resorts {
+                 Constant.MyClassConstants.selectedGetawayAlertDestinationArray.append(Constant.selectedDestType.resort(resort))
+                }
+                
                 var selectedBedroomsizes = [String]()
                 for unitSize in alertToEdit.unitSizes {
                     let friendlyName = unitSize.friendlyName()
@@ -449,7 +456,7 @@ extension GetawayAlertsIPhoneViewController: UITableViewDelegate {
                 self.performSegue(withIdentifier: Constant.segueIdentifiers.editAlertSegue, sender: self)
                 
             }
-            edit.backgroundColor = UIColor(red: 0 / 255.0, green: 119.0 / 255.0, blue: 190.0 / 255.0, alpha: 1.0)
+            edit.backgroundColor = #colorLiteral(red: 0, green: 0.4666666667, blue: 0.7450980392, alpha: 1)
             return [delete, edit]
         }
     }
