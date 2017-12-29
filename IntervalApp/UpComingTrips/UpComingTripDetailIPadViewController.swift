@@ -365,23 +365,23 @@ extension UpComingTripDetailIPadViewController: UITableViewDataSource {
             
             //***** configuring prototype cell for unit details with dynamic button to shwo unit details *****//
             
-            let cell = tableView.dequeueReusableCell(withIdentifier: Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.dateCell, for: indexPath) as! UpComingTripCell
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.dateCell, for: indexPath) as? UpComingTripCell else { return UITableViewCell() }
             
-            let checkInDate = Helper.convertStringToDate(dateString: Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.unit!.checkInDate!, format: Constant.MyClassConstants.dateFormat)
+            let checkInDate = Helper.convertStringToDate(dateString: Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.unit?.checkInDate  ?? "", format: Constant.MyClassConstants.dateFormat)
             
-            let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
-            let myComponents = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: checkInDate)
+            let myCalendar = Calendar.current
+            let myComponents = myCalendar.dateComponents([.day, .weekday, .month, .year], from: checkInDate)
             
             let formatedCheckInDate = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month!)). \(myComponents.year!)"
             
-            cell.checkInDateLabel.text = "\(myComponents.day!)"
+            cell.checkInDateLabel.text = "\(myComponents.day ?? 0)".localized()
             if(cell.checkInDateLabel.text?.characters.count == 1) {
-                cell.checkInDateLabel.text = "0\(myComponents.day!)"
+                cell.checkInDateLabel.text = "0\(myComponents.day ?? 0)"
             }
-            cell.inDateHeading.text = "\(Helper.getWeekdayFromInt(weekDayNumber: myComponents.weekday!))"
+            cell.inDateHeading.text = "\(Helper.getWeekdayFromInt(weekDayNumber: myComponents.weekday ?? 0))"
             cell.checkInMonthYearLabel.text = formatedCheckInDate
             
-            let checkOutDate = Helper.convertStringToDate(dateString: Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.unit!.checkOutDate!, format: Constant.MyClassConstants.dateFormat1)
+            let checkOutDate = Helper.convertStringToDate(dateString: Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.unit?.checkOutDate ?? "", format: Constant.MyClassConstants.dateFormat)
             
             let myComponents1 = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: checkOutDate)
             
@@ -440,7 +440,7 @@ extension UpComingTripDetailIPadViewController: UITableViewDataSource {
                 
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.upComingTripDetailControllerReusableIdentifiers.unitCell, for: indexPath) as! UpComingTripCell
                 let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
-                let checkInDate = Helper.convertStringToDate(dateString: Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment!.deposit!.checkInDate!, format: Constant.MyClassConstants.dateFormat1)
+                let checkInDate = Helper.convertStringToDate(dateString: Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment!.deposit!.checkInDate!, format: Constant.MyClassConstants.dateFormat)
                 
                 let myComponents1 = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: checkInDate)
                 cell.checkInDateLabel.text = "\(myComponents1.day!)"
@@ -767,7 +767,7 @@ extension UpComingTripDetailIPadViewController: MFMessageComposeViewControllerDe
         message.append("CheckIn: \(formatedCheckInDate)\n")
         
         //format CheckOut Date
-        let checkOutDate = Helper.convertStringToDate(dateString: Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.unit!.checkOutDate!, format: Constant.MyClassConstants.dateFormat1)
+        let checkOutDate = Helper.convertStringToDate(dateString: Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.unit!.checkOutDate!, format: Constant.MyClassConstants.dateFormat)
         let myComponents1 = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: checkOutDate)
         let formatedCheckOutDate = "\(Helper.getMonthnameFromInt(monthNumber: myComponents1.month!))/\(myComponents1.day!)/\(myComponents1.year!)"
         message.append("CheckOut: \(formatedCheckOutDate)\n")

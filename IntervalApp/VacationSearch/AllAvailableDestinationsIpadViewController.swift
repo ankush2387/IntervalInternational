@@ -14,13 +14,9 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
     
     // class outlet
     @IBOutlet weak var allAvailableDestinatontableview: UITableView!
-    
     @IBOutlet weak var searchButtonHeightConstraint: NSLayoutConstraint!
-    
     @IBOutlet weak var viewButtonHeightConstraint: NSLayoutConstraint!
-    
     @IBOutlet weak var searchButton: UIButton!
-    
     @IBOutlet weak var viewSearchButton: UIView!
     
     //Class Varaiables
@@ -75,18 +71,8 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
     }
     
     func resetCounter() {
+        
         sectionCounter = 0
-        
-        /*if(sectionCounter == 0){
-            
-            self.viewButtonHeightConstraint.constant = 0
-            self.searchButtonHeightConstraint.constant = 0
-            self.searchButton.isHidden = false
-            UIView.animate(withDuration: 0.5) {
-                self.view.layoutIfNeeded()
-            }
-        }*/
-        
         for values in selectedAreaDictionary {
 
             intervalPrint(values)
@@ -101,24 +87,24 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
     func addRemoveAreasInRegion(indexPathForSelectedRegion: IndexPath) {
         
         let region = Constant.MyClassConstants.regionArray[indexPathForSelectedRegion.section]
-        if(selectedAreaDictionary.value(forKey: region.regionName!) != nil) {
-            let selectedAreasArray = selectedAreaDictionary.value(forKey: region.regionName!) as! [String]
+        if selectedAreaDictionary.value(forKey: region.regionName ?? "") != nil {
+            let selectedAreasArray = selectedAreaDictionary.value(forKey: region.regionName ?? "") as! [String]
             let areaAtIndex = region.areas[indexPathForSelectedRegion.row]
             var newSelectedArray: [String] = selectedAreasArray
-            if(selectedAreasArray.contains(areaAtIndex.areaName!)) {
-                let index1 = selectedAreasArray.index(of: areaAtIndex.areaName!)
+            if selectedAreasArray.contains(areaAtIndex.areaName ?? "") {
+                let index1 = selectedAreasArray.index(of: areaAtIndex.areaName ?? "")
                 newSelectedArray.remove(at: index1!)
             } else {
-                newSelectedArray.append(areaAtIndex.areaName!)
+                newSelectedArray.append(areaAtIndex.areaName ?? "")
             }
-            if(newSelectedArray.count != 0) {
+            if newSelectedArray.count != 0 {
                 selectedAreaDictionary.setValue(newSelectedArray, forKey: region.regionName!)
             } else {
                 selectedAreaDictionary.removeObject(forKey: region.regionName!)
             }
             
             //Manage dictionary for performing search with area codes
-            if(Constant.MyClassConstants.selectedAreaCodeDictionary.value(forKey: "\(areaAtIndex.areaCode)") != nil) {
+            if Constant.MyClassConstants.selectedAreaCodeDictionary.value(forKey: "\(areaAtIndex.areaCode)") != nil {
                 Constant.MyClassConstants.selectedAreaCodeDictionary.removeObject(forKey: "\(areaAtIndex.areaCode)")
                 Constant.MyClassConstants.selectedAreaCodeArray.remove("\(areaAtIndex.areaCode)")
             } else {
@@ -145,34 +131,30 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
     // MARK: - Navigation
     
     func menuBackButtonPressed(_ sender: UIBarButtonItem) {
-        
         _ = self.navigationController?.popViewController(animated: true)
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
-        if (segue.destination.isKind(of: SelectedResortsIpadViewController.self)) {
-            
+        if segue.destination.isKind(of: SelectedResortsIpadViewController.self) {
             let selectedResort = segue.destination as! SelectedResortsIpadViewController
             selectedResort.areaDictionary = self.selectedAreaDictionary
             intervalPrint(selectedResort.areaDictionary)
-
         }
-        
     }
     
     //Function for navigating to search results
     func navigateToSearchResults() {
+        
         Constant.MyClassConstants.vacationSearchResultHeaderLabel = (Constant.MyClassConstants.selectedAreaCodeDictionary.value(forKey: Constant.MyClassConstants.selectedAreaCodeArray[0] as! String) as? String)!
         Constant.MyClassConstants.filteredIndex = 0
         
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
-        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.vacationSearchController) as! VacationSearchResultIPadController
-        
-        let transitionManager = TransitionManager()
-        self.navigationController?.transitioningDelegate = transitionManager
-        
-        self.navigationController!.pushViewController(viewController, animated: true)
+        if let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.vacationSearchController) as? VacationSearchResultIPadController {
+            let transitionManager = TransitionManager()
+            navigationController?.transitioningDelegate = transitionManager
+            navigationController?.pushViewController(viewController, animated: true)
+        }
     }
 
     // MARK: - Buttons  Clicked
@@ -180,16 +162,13 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
     @IBAction func headerButtonClicked(_ sender: UIButton) {
         
         sectionSelected = sender.tag
-       // let strNew = String(sectionSelected)
-        
         let rsregion = Constant.MyClassConstants.regionArray [sender.tag]
-
         intervalPrint(Constant.MyClassConstants.regionAreaDictionary)
 
         if Constant.MyClassConstants.regionAreaDictionary.count == 0 {
             Constant.MyClassConstants.regionAreaDictionary.setValue(rsregion.areas, forKey: String(rsregion.regionCode))
             self.upDownArray.add("\(sender.tag)")
-        } else if (Constant.MyClassConstants.regionAreaDictionary.value(forKey: "\(rsregion.regionCode)") == nil) {
+        } else if Constant.MyClassConstants.regionAreaDictionary.value(forKey: "\(rsregion.regionCode)") == nil {
             Constant.MyClassConstants.regionAreaDictionary.setValue(rsregion.areas, forKey: String(rsregion.regionCode))
             self.upDownArray.add("\(sender.tag)")
         } else {
@@ -201,8 +180,7 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
     
     func menuButtonClicked() {
         
-        if(selectedAreaDictionary.allKeys.count == 0) {
-            
+        if selectedAreaDictionary.allKeys.count == 0 {
             presentAlert(with: Constant.dashboardTableScreenReusableIdentifiers.alert, message: Constant.AlertMessages.editAlertdetinationMessage)
             
         } else {
@@ -222,7 +200,7 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
             optionMenu.addAction(viewSelectedResorts)
             optionMenu.addAction(cancelAction)
             
-            if(Constant.RunningDevice.deviceIdiom == .pad) {
+            if Constant.RunningDevice.deviceIdiom == .pad {
                 optionMenu.popoverPresentationController?.sourceView = self.view
                 optionMenu.popoverPresentationController?.sourceRect = CGRect(x: self.view.bounds.size.width, y: 0, width: 100, height: 60)
                 optionMenu.popoverPresentationController!.permittedArrowDirections = .up
@@ -240,63 +218,56 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
     
     @IBAction func searchButtonClicked(_ sender: UIButton) {
         
+        var isNetworkAbl: String?
+        if Reachability.isConnectedToNetwork() { isNetworkAbl = "Yes" }
+        guard let _ = isNetworkAbl else { return presentErrorAlert(UserFacingCommonError.noNetConnection) }
         Helper.helperDelegate = self
         
-        if(Constant.MyClassConstants.isFromExchangeAllAvailable == true) {
+        if Constant.MyClassConstants.isFromExchangeAllAvailable == true {
             
             showHudAsync()
-            if Reachability.isConnectedToNetwork() == true {
+            //use later
+            let checkInDate = Constant.MyClassConstants.vacationSearchShowDate
+            let exchangeSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Exchange)
+            exchangeSearchCriteria.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray
+            //set check in date
+            exchangeSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
+            exchangeSearchCriteria.travelParty = Constant.MyClassConstants.travelPartyInfo
+            exchangeSearchCriteria.searchType = VacationSearchType.Exchange
+            
+            //let storedData = Helper.getLocalStorageWherewanttoGo()
+            exchangeSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
+            Constant.MyClassConstants.initialVacationSearch = VacationSearch(Session.sharedSession.appSettings, exchangeSearchCriteria)
+            let area = Area()
+            area.areaCode = Int(Constant.MyClassConstants.selectedAreaCodeArray[0] as! String)!
+            area.areaName = Constant.MyClassConstants.selectedAreaCodeDictionary.value(forKey: Constant.MyClassConstants.selectedAreaCodeArray[0] as! String) as? String
+            Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request.areas = [area]
+            
+            ExchangeClient.searchDates(Session.sharedSession.userAccessToken, request:Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request, onSuccess: { (response) in
                 
-                //use later
-                let checkInDate = Constant.MyClassConstants.vacationSearchShowDate
+                self.hideHudAsync()
+                Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.response = response
+                Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                // Get activeInterval (or initial search interval)
+                let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval()
                 
-                let exchangeSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Exchange)
+                // Update active interval
+                Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
                 
-                exchangeSearchCriteria.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as? [String]
+                // Check not available checkIn dates for the active interval
+                if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
+                    Helper.showNotAvailabilityResults()
+                    //self.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
+                    self.navigateToSearchResults()
+                } else {
+                    Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
+                    Helper.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: Constant.MyClassConstants.initialVacationSearch.searchCheckInDate ?? "", format: Constant.MyClassConstants.dateFormat), senderViewController: self)
+                }
                 
-                //set check in date
-                exchangeSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
-                
-                exchangeSearchCriteria.travelParty = Constant.MyClassConstants.travelPartyInfo
-                
-                exchangeSearchCriteria.searchType = VacationSearchType.Exchange
-                
-                //let storedData = Helper.getLocalStorageWherewanttoGo()
-                
-                exchangeSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
-                Constant.MyClassConstants.initialVacationSearch = VacationSearch(Session.sharedSession.appSettings, exchangeSearchCriteria)
-                let area = Area()
-                area.areaCode = Int(Constant.MyClassConstants.selectedAreaCodeArray[0] as! String)!
-                area.areaName = Constant.MyClassConstants.selectedAreaCodeDictionary.value(forKey: Constant.MyClassConstants.selectedAreaCodeArray[0] as! String) as? String
-                Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request.areas = [area]
-                
-                ExchangeClient.searchDates(Session.sharedSession.userAccessToken, request:Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request, onSuccess: { (response) in
-                    
-                    self.hideHudAsync()
-                    Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.response = response
-                    Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
-                    // Get activeInterval (or initial search interval)
-                    let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval()
-                    
-                    // Update active interval
-                    Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
-                    
-                    // Check not available checkIn dates for the active interval
-                    if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
-                        Helper.showNotAvailabilityResults()
-                        //self.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
-                        self.navigateToSearchResults()
-                    } else {
-                        Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
-                        Helper.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: Constant.MyClassConstants.initialVacationSearch.searchCheckInDate!, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
-                    }
-                    
-                }, onError: { (_) in
-                    self.hideHudAsync()
-                    self.presentErrorAlert(UserFacingCommonError.generic)
-                })
-                
-            }
+            }, onError: { (_) in
+                self.hideHudAsync()
+                self.presentErrorAlert(UserFacingCommonError.generic)
+            })
             
         } else {
             
@@ -321,23 +292,20 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
                     self.hideHudAsync()
                     
                     Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.response = response
-                    let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval()
+                    guard let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval() else {return self.hideHudAsync()}
                     // Update active interval
                     Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
                     Helper.helperDelegate = self
                     
                     Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                     // Check not available checkIn dates for the active interval
-                    if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
+                    if activeInterval.fetchedBefore && !activeInterval.hasCheckInDates() {
                         self.hideHudAsync()
-                        Helper.executeExchangeSearchDates(senderVC: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                        Helper.executeExchangeSearchDates(senderVC: self)
                     } else {
                         self.hideHudAsync()
-                        if(response.checkInDates.count > 0) {
-                            Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
-                        }
-                        let vacationSearchInitialDate = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate
-                        Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: vacationSearchInitialDate!, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                        Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
+                        Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: Constant.MyClassConstants.initialVacationSearch.searchCheckInDate ?? "", format: Constant.MyClassConstants.dateFormat), senderViewController: self)
                     }
                     Constant.MyClassConstants.checkInDates = response.checkInDates
                     Constant.MyClassConstants.isFromSearchBoth = true
@@ -349,53 +317,45 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
                 
             } else {
                 rentalSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
-                vacationSearch = VacationSearch(Session.sharedSession.appSettings, rentalSearchCriteria)
-                vacationSearch.rentalSearch?.searchContext.request.areas = [area]
-                Constant.MyClassConstants.initialVacationSearch = vacationSearch
+                Constant.MyClassConstants.initialVacationSearch = VacationSearch(Session.sharedSession.appSettings, rentalSearchCriteria)
+                Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request.areas = [area]
                 
-                RentalClient.searchDates(Session.sharedSession.userAccessToken, request:vacationSearch.rentalSearch?.searchContext.request,
-                                         onSuccess: { (response) in
-                                            vacationSearch.rentalSearch?.searchContext.response = response
-                                            
-                                            // Get activeInterval
-                                            let activeInterval = vacationSearch.bookingWindow.getActiveInterval()
-                                            
-                                            // Update active interval
-                                            Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
-                                            Constant.MyClassConstants.initialVacationSearch = vacationSearch
-                                            
-                                            // Always show a fresh copy of the Scrolling Calendar
-                                            
-                                            Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
-                                            
-                                            // Check not available checkIn dates for the active interval
-                                            if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
-                                                
-                                                Helper.showNotAvailabilityResults()
-                                                self.navigateToSearchResults()
-                                                
-                                            } else {
-                                                
-                                                Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
-                                                let initialSearchCheckInDate = Helper.convertStringToDate(dateString: vacationSearch.searchCheckInDate!, format: Constant.MyClassConstants.dateFormat)
-                                                Constant.MyClassConstants.checkInDates = response.checkInDates
-                                                //sender.isEnabled = true
-                                                self.hideHudAsync()
-                                                Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: initialSearchCheckInDate, senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
-                                            }
+                RentalClient.searchDates(Session.sharedSession.userAccessToken, request:Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request,
+                 onSuccess: { (response) in
+                    Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.response = response
+                    // Get activeInterval
+                    guard let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval() else {return}
+                    
+                    // Update active interval
+                    Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
+                    
+                    // Always show a fresh copy of the Scrolling Calendar
+                    Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                    
+                    // Check not available checkIn dates for the active interval
+                    if activeInterval.fetchedBefore && !activeInterval.hasCheckInDates() {
+                        Helper.showNotAvailabilityResults()
+                        self.navigateToSearchResults()
+                        
+                    } else {
+                        
+                        Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
+                        let initialSearchCheckInDate = Helper.convertStringToDate(dateString: Constant.MyClassConstants.initialVacationSearch.searchCheckInDate ?? "", format: Constant.MyClassConstants.dateFormat)
+                        Constant.MyClassConstants.checkInDates = response.checkInDates
+                        
+                        self.hideHudAsync()
+                        Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: initialSearchCheckInDate, senderViewController: self)
+                    }
                 },
-                                         onError: { (_) in
-                                            self.hideHudAsync()
-                                            self.presentErrorAlert(UserFacingCommonError.generic)
+                 onError: { (_) in
+                    self.hideHudAsync()
+                    self.presentErrorAlert(UserFacingCommonError.generic)
                 }
                 )
                 
             }
-            
         }
-        
     }
-    
 }
 
 extension AllAvailableDestinationsIpadViewController: UITableViewDataSource {
@@ -421,14 +381,14 @@ extension AllAvailableDestinationsIpadViewController: UITableViewDataSource {
         cell.selectionStyle = UITableViewCellSelectionStyle.none
         let areasInRegionArray = Constant.MyClassConstants.regionAreaDictionary.value(forKey: String(Constant.MyClassConstants.regionArray[indexPath.section].regionCode)) as! [Area]
         self.areaArray.removeAll()
-        if(selectedAreaDictionary.count > 0) {
-            if let selectedAreas = selectedAreaDictionary.value(forKey: Constant.MyClassConstants.regionArray[indexPath.section].regionName!) {
+        if selectedAreaDictionary.count > 0 {
+            if let selectedAreas = selectedAreaDictionary.value(forKey: Constant.MyClassConstants.regionArray[indexPath.section].regionName ?? "") {
 
                 let area = selectedAreas as! [String]
                 intervalPrint(area.count, area, area.count)
 
                 let areaName = areasInRegionArray[indexPath.row].areaName
-                if(area.contains(areaName!)) {
+                if area.contains(areaName ?? "") {
                     cell.placeSelectionCheckBox.checked = true
                 } else {
                     cell.placeSelectionCheckBox.checked = false
@@ -443,7 +403,6 @@ extension AllAvailableDestinationsIpadViewController: UITableViewDataSource {
         for areas in areasInRegionArray {
             self.areaArray.append(areas)
         }
-        
         cell.setAllAvailableAreaCell(index: indexPath.row, area: self.areaArray[indexPath.row])
         
         return cell
@@ -455,7 +414,7 @@ extension AllAvailableDestinationsIpadViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        let selectedCell = tableView.cellForRow(at: indexPath) as! AvailableDestinationPlaceTableViewCell
+         let selectedCell = tableView.cellForRow(at: indexPath) as? AvailableDestinationPlaceTableViewCell
         
         // Only six items can be selected
         self.viewButtonHeightConstraint.constant = 100
@@ -466,7 +425,7 @@ extension AllAvailableDestinationsIpadViewController: UITableViewDelegate {
             self.view.layoutIfNeeded()
         }
         
-        if(selectedCell.placeSelectionCheckBox.checked) {
+        if selectedCell?.placeSelectionCheckBox.checked ?? false {
             sectionCounter = sectionCounter - 1
             selectedSectionArray.remove(indexPath.section)
             self.addRemoveAreasInRegion(indexPathForSelectedRegion: indexPath)
@@ -482,7 +441,7 @@ extension AllAvailableDestinationsIpadViewController: UITableViewDelegate {
             }
             
         } else {
-            if(sectionCounter == 6) {
+            if sectionCounter == 6 {
                 
                 // show alert when maximum limit is reached
                 DispatchQueue.main.async(execute: {
@@ -505,11 +464,11 @@ extension AllAvailableDestinationsIpadViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.regionCell) as! AvailableDestinationCountryOrContinentsTableViewCell
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.regionCell) as? AvailableDestinationCountryOrContinentsTableViewCell else { return UITableViewCell() }
         cell.setDataForAllAvailableDestinations(index: section)
         cell.expandRegionButton.tag = section
         
-        if(sectionCounter == 0) {
+        if sectionCounter == 0 {
             cell.selectdDestinationCountLabel?.isHidden = true
             
             self.viewButtonHeightConstraint.constant = 0
@@ -520,37 +479,31 @@ extension AllAvailableDestinationsIpadViewController: UITableViewDelegate {
             }
             
         } else {
+            
             let region = Constant.MyClassConstants.regionArray[section]
             for selectedRegion in selectedAreaDictionary.allKeys {
+                
                 if String(describing: selectedRegion) == region.regionName {
                     let totalAreas = selectedAreaDictionary.value(forKey: selectedRegion as! String) as! [String]
                     cell.selectdDestinationCountLabel?.text = String(totalAreas.count)
                     cell.selectdDestinationCountLabel?.isHidden = false
                 }
             }
-            
         }
-        
         if upDownArray.contains("\(section)") {
             UIView.animate(withDuration: 0.1, animations: {
+                
                 cell.imgIconPlus?.transform = CGAffineTransform.identity
                 cell.imgIconPlus?.transform = CGAffineTransform(rotationAngle: (180.0 * CGFloat(Double.pi)) / 180.0)
             })
         }
-        
         return cell
     }
-        
 }
 
 extension AllAvailableDestinationsIpadViewController: HelperDelegate {
     
     func resortSearchComplete() {
      self.navigateToSearchResults()
-        
-    }
-    
-    func resetCalendar() {
-        
     }
 }

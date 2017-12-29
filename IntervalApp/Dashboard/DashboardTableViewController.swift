@@ -567,9 +567,8 @@ class DashboardTableViewController: UITableViewController {
     func rentalSearchAvailability(activeInterval: BookingWindowInterval) {
         Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
         Helper.helperDelegate = self
-        if let searchDate = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate {
-            Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate:  Helper.convertStringToDate(dateString: searchDate, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
-        }
+        Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate:  Helper.convertStringToDate(dateString: Constant.MyClassConstants.initialVacationSearch.searchCheckInDate ?? "", format: Constant.MyClassConstants.dateFormat), senderViewController: self)
+        
     }
     
     func createSearchCriteriaFor(alert: RentalAlert) -> VacationSearchCriteria {
@@ -643,10 +642,6 @@ extension DashboardTableViewController: HelperDelegate {
             self.navigationController?.pushViewController(viewController, animated: true)
         }
         
-    }
-    func resetCalendar() {
-        Constant.MyClassConstants.calendarDatesArray.removeAll()
-        Constant.MyClassConstants.calendarDatesArray = Constant.MyClassConstants.totalBucketArray
     }
 }
 extension DashboardTableViewController: UICollectionViewDelegate {
@@ -946,7 +941,7 @@ extension UIViewController {
                     //sender.isEnabled = true
                     Helper.helperDelegate = self as? HelperDelegate
                     self.hideHudAsync()
-                    Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: initialSearchCheckInDate, senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                    Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: initialSearchCheckInDate, senderViewController: self)
                 }
             }) {[unowned self] error in
                 self.hideHudAsync()
@@ -984,39 +979,6 @@ extension UIViewController {
             self.navigationController?.pushViewController(viewController, animated: true)
         }
         
-    }
-    
-    // Function to get to date and from date for search dates API calling
-    func getSearchDatesTop() -> (Date, Date) {
-        
-        var fromDate: Date?
-        var toDate: Date?
-        fromDate = Calendar.current.date(byAdding: .day, value: Constant.MyClassConstants.totalWindow / 2, to: Constant.MyClassConstants.vacationSearchShowDate)
-        
-        if let fromdate = fromDate {
-            if fromdate.isGreaterThanDate(Constant.MyClassConstants.todaysDate) {
-                toDate = Calendar.current.date(byAdding: .day, value: (Constant.MyClassConstants.totalWindow / 2), to: Constant.MyClassConstants.vacationSearchShowDate)
-            } else {
-                _ = Helper.getDifferenceOfDates()
-                fromDate = Constant.MyClassConstants.todaysDate
-                toDate = Calendar.current.date(byAdding: .day, value: (Constant.MyClassConstants.totalWindow) + Helper.getDifferenceOfDates(), to: Constant.MyClassConstants.vacationSearchShowDate)
-            }
-        }
-        if let dateafteryear = Constant.MyClassConstants.dateAfterTwoYear {
-            if let todate = toDate {
-                if todate.isGreaterThanDate(dateafteryear) {
-                    
-                    toDate = Constant.MyClassConstants.dateAfterTwoYear
-                    fromDate = Calendar.current.date(byAdding: .day,
-                                                     value: -(Constant.MyClassConstants.totalWindow) + Helper.getDifferenceOfDatesAhead(),
-                                                     to: Constant.MyClassConstants.vacationSearchShowDate)
-                }
-            }
-            
-        }
-        Constant.MyClassConstants.currentFromDate = fromDate
-        Constant.MyClassConstants.currentToDate = toDate
-        return(toDate ?? Date(), fromDate ?? Date())
     }
 }
 

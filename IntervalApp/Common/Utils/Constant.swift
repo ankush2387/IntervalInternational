@@ -18,7 +18,6 @@ class Constant: NSObject {
     static var activeAlertCount = 0
     static var needToReloadAlert = false
     static var selectedAlertToEdit: RentalAlert?
-    
   
       //***** common function to get device orientation *****//
     struct RunningDevice {
@@ -123,7 +122,7 @@ class Constant: NSObject {
         static var carRentalCounter = 0
         static var isEvent2Ready = 0
         
-        static var rentalSortingOptionArray = ["Recommended","Resort Name:", "Resort Name:", "Price:", "Price:", "City:", "City:", "Resort Tier:", "Resort Tier:"]
+        static var rentalSortingOptionArray = ["Recommended", "Resort Name:", "Resort Name:", "Price:", "Price:", "City:", "City:", "Resort Tier:", "Resort Tier:"]
         static var sortingSetValues = ["DEFAULT", "RESORT_NAME_ASC", "RESORT_NAME_DESC", "CITY_NAME_ASC", "CITY_NAME_DESC", "RESORT_TIER_LOW_TO_HIGH", "RESORT_TIER_HIGH_TO_LOW", "PRICE_LOW_TO_HIGH", "PRICE_HIGH_TO_LOW", "UNKNOWN"]
         
         static var rentalSortingRangeArray = ["Default", "A - Z", "Z - A", "Low - High", "High - Low", "A - Z", "Z - A", "Low - High", "High - Low"]
@@ -224,7 +223,6 @@ class Constant: NSObject {
         static var membershipContactArray = [Contact]()
         static var vacationSearchDestinationArray: NSMutableArray = []
         static var calendarDatesArray = [CalendarItem]()
-        static var totalBucketArray = [CalendarItem]()
         static var calendarCount = 0
         static var realmStoredDestIdOrCodeArray: NSMutableArray = []
         static var resortCodesArray: [String] = []
@@ -465,8 +463,8 @@ class Constant: NSObject {
         static var guestString = "guest"
         static var additionalAdv = "ADDITIONAL INFORMATION"
         static var dateFormat = "yyyy-MM-dd"
-        static var dateFormat1 = "yyyy-MM-dd"
         static var monthDateFormat = "yyyy-MM"
+        static var dateTimeFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
         
         //use for no Availability Cell
         static var isShowAvailability = false
@@ -1119,8 +1117,7 @@ class Constant: NSObject {
         static var unitDetailsCell1 = "UnitDetails"
         static var dateCell = "DateCell"
         static var additionalAdvisementCell = "AdditionalAdvisementCell"
-        static var dateTimeFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
-        static var yyyymmddDateFormat = "yyyy-MM-dd"
+      
     }
     
     //***** common  structure to provide all Payment Selection View Controller CellIdentifiers And HardCoded Strings *****//

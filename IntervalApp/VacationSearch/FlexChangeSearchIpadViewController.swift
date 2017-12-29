@@ -140,11 +140,7 @@ class FlexChangeSearchIpadViewController: UIViewController {
                     
                 } else {
                     Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
-                    if let date = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate {
-                        Helper.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: date, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
-                    } else {
-                        self.hideHudAsync()
-                    }
+                    Helper.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: Constant.MyClassConstants.initialVacationSearch.searchCheckInDate ?? "", format: Constant.MyClassConstants.dateFormat), senderViewController: self)
                 }
                 
             }, onError: { [weak self] error in

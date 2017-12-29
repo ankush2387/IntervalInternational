@@ -170,43 +170,44 @@ class CreateActionSheet: UITableViewController {
 // function to send omniture tracking event2
 func sendOmnitureTrackCallForEvent2() {
     
-    let product = Session.sharedSession.selectedMembership?.getProductWithHighestTier()
+    guard let product = Session.sharedSession.selectedMembership?.getProductWithHighestTier() else { return }
     
     // omniture tracking with event 2
     let userInfo = NSMutableDictionary()
 
     userInfo.addEntries(from: [Constant.omnitureEvars.eVar1 : Session.sharedSession.selectedMembership?.memberNumber ?? ""])
     
-    userInfo.addEntries(from: [Constant.omnitureEvars.eVar3 : "\(String(describing: product?.productCode))-\(String(describing: Session.sharedSession.selectedMembership?.membershipTypeCode))"])
+    userInfo.addEntries(from: [Constant.omnitureEvars.eVar3 : "\(String(describing: product.productCode))-\(String(describing: Session.sharedSession.selectedMembership?.membershipTypeCode))"])
     userInfo.addEntries(from: [Constant.omnitureEvars.eVar4 : ""])
 
     userInfo.addEntries(from: [Constant.omnitureEvars.eVar5: Constant.MyClassConstants.loginOriginationPoint])
     userInfo.addEntries(from: [Constant.omnitureEvars.eVar6: ""])
+    userInfo.addEntries(from: [Constant.omnitureEvars.eVar5 : Constant.MyClassConstants.loginOriginationPoint])
+    userInfo.addEntries(from: [Constant.omnitureEvars.eVar6 :""])
     
-    if let expirationDate = product?.expirationDate {
-        switch product?.productCode {
-        case Constant.productCodeImageNames.basic?:
-            userInfo.addEntries(from: [Constant.omnitureEvars.eVar7 :Helper.getUpcommingcheckinDatesDiffrence(date: expirationDate)])
-            
-        case Constant.productCodeImageNames.cig?:
-            userInfo.addEntries(from: [Constant.omnitureEvars.eVar8 :Helper.getUpcommingcheckinDatesDiffrence(date: expirationDate)])
-            
-        case Constant.productCodeImageNames.gold?:
-            userInfo.addEntries(from: [Constant.omnitureEvars.eVar9 :Helper.getUpcommingcheckinDatesDiffrence(date: expirationDate)])
-            
-        case Constant.productCodeImageNames.platinum?:
-            userInfo.addEntries(from: [Constant.omnitureEvars.eVar10 :Helper.getUpcommingcheckinDatesDiffrence(date: expirationDate)])
-            
-        default:
-            break
-        }
+    switch product.productCode {
         
+    case Constant.productCodeImageNames.basic?:
+        userInfo.addEntries(from: [Constant.omnitureEvars.eVar7 :Helper.getUpcommingcheckinDatesDiffrence(date: product.expirationDate ?? Date())])
+        
+    case Constant.productCodeImageNames.cig?:
+        userInfo.addEntries(from: [Constant.omnitureEvars.eVar8 :Helper.getUpcommingcheckinDatesDiffrence(date: product.expirationDate ?? Date())])
+        
+    case Constant.productCodeImageNames.gold?:
+        userInfo.addEntries(from: [Constant.omnitureEvars.eVar9 :Helper.getUpcommingcheckinDatesDiffrence(date: product.expirationDate ?? Date())])
+        
+    case Constant.productCodeImageNames.platinum?:
+        userInfo.addEntries(from: [Constant.omnitureEvars.eVar10 :Helper.getUpcommingcheckinDatesDiffrence(date: product.expirationDate ?? Date())])
+    case .none:
+        <#code#>
+    case .some(_):
+        <#code#>
     }
-
-    userInfo.addEntries(from: [Constant.omnitureEvars.eVar11: Constant.MyClassConstants.activeAlertsArray.count])
-    userInfo.addEntries(from: [Constant.omnitureEvars.eVar14: ""])
-    if let _ = Session.sharedSession.contact?.memberships, let memberShipCount = Session.sharedSession.contact?.memberships?.count {
-        userInfo.addEntries(from: [Constant.omnitureEvars.eVar16: memberShipCount > 0 ? Constant.AlertPromtMessages.yes : Constant.AlertPromtMessages.no])
+    
+    userInfo.addEntries(from: [Constant.omnitureEvars.eVar11 :Constant.MyClassConstants.activeAlertsArray.count])
+    userInfo.addEntries(from: [Constant.omnitureEvars.eVar14 :""])
+    if let _ = Session.sharedSession.contact?.memberships {
+        userInfo.addEntries(from: [Constant.omnitureEvars.eVar16 :Session.sharedSession.contact?.memberships?.count ?? 0 > 0 ? Constant.AlertPromtMessages.yes : Constant.AlertPromtMessages.no])
     } else {
         userInfo.addEntries(from:
             [Constant.omnitureEvars.eVar16: Constant.AlertPromtMessages.no])

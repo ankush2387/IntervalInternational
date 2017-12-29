@@ -79,17 +79,21 @@ class RelinquishmentSelectionOpenWeeksCell: UITableViewCell {
         
         if deposit.checkInDate != nil {
             
-            if let dateString = deposit.checkInDate {
-               let date = Helper.convertStringToDate(dateString: dateString, format: Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.yyyymmddDateFormat)
-                let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
-                let myComponents = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: date)
-                var month = ""
-                if let monthNumber = myComponents.month, let day = myComponents.day {
-                    if day < 10 {
-                        month = "\(Helper.getMonthnameFromInt(monthNumber: monthNumber)) 0\(day)"
-                    } else {
-                        month = "\(Helper.getMonthnameFromInt(monthNumber: monthNumber)) \(day)"
-                    }
+
+            var dateString = ""
+            if let dateStr = deposit.checkInDate {
+                dateString = dateStr
+            }
+            let date = Helper.convertStringToDate(dateString: dateString, format: Constant.MyClassConstants.dateFormat)
+            let myCalendar = Calendar.current
+            let myComponents = myCalendar.dateComponents([.day, .weekday, .month, .year], from: date)
+            let day = myComponents.day ?? 0
+            var month = ""
+            if let monthNumber = myComponents.month {
+                if day < 10 {
+                    month = "\(Helper.getMonthnameFromInt(monthNumber: monthNumber)) 0\(day)"
+                } else {
+                    month = "\(Helper.getMonthnameFromInt(monthNumber: monthNumber)) \(day)"
                 }
                 dayAndDateLabel.text = month.uppercased()
             }

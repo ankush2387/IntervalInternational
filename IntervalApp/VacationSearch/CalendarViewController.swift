@@ -60,27 +60,32 @@ class CalendarViewController: UIViewController {
 extension CalendarViewController: FSCalendarDelegate {
     
     func calendar(_ calendar: FSCalendar, didSelect date: Date) {
-        
+
+        let df = DateFormatter()
+            df.dateFormat = "yyyy/MM/dd"
+        let dateStr = df.string(from: date)
+            df.timeZone = TimeZone(abbreviation: "UTC")
+        let selectedDate = df.date(from: dateStr)
         if self.requestedController == Constant.MyClassConstants.relinquishment {
             
-            Constant.MyClassConstants.relinquishmentAvalableToolSelectedDate = date
+            Constant.MyClassConstants.relinquishmentAvalableToolSelectedDate = selectedDate
             _ = self.navigationController?.popViewController(animated: true)
         } else if self.requestedController == Constant.MyClassConstants.relinquishmentFlaotWeek {
             
-            Constant.MyClassConstants.relinquishmentFloatDetialSelectedDate = date
+            Constant.MyClassConstants.relinquishmentFloatDetialSelectedDate = selectedDate
             
             _ = self.navigationController?.popViewController(animated: true)
         } else {
             
-            defaults.set(date, forKey: Constant.MyClassConstants.selectedDate)
-            Constant.MyClassConstants.vacationSearchShowDate = date
+            defaults.set(selectedDate, forKey: Constant.MyClassConstants.selectedDate)
+            Constant.MyClassConstants.vacationSearchShowDate = selectedDate.unsafelyUnwrapped
             
             if self.requestedDateWindow != "" && self.requestedDateWindow == Constant.MyClassConstants.start {
                 
-                Constant.MyClassConstants.alertWindowStartDate = date
+                Constant.MyClassConstants.alertWindowStartDate = selectedDate
             } else if self.requestedDateWindow != "" && self.requestedDateWindow == Constant.MyClassConstants.end {
                 
-                Constant.MyClassConstants.alertWindowEndDate = date
+                Constant.MyClassConstants.alertWindowEndDate = selectedDate
             }
             _ = self.navigationController?.popViewController(animated: true)
         }
