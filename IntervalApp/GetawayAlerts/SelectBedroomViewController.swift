@@ -43,9 +43,8 @@ class SelectBedroomViewController: UIViewController {
     }
     
     @IBAction func doneButtonPressed(_ sender: Any) {
-        let brWithoutSpaces = Constant.MyClassConstants.selectedBedRoomSize.replacingOccurrences(of: " ", with: "")
-        let bedroomSizes = brWithoutSpaces.components(separatedBy: ",")
-        guard localArrayToHoldSelection.count > 0 else {
+        
+        guard !localArrayToHoldSelection.isEmpty else {
             self.presentAlert(with: "Bedroom Sizes", message: "Please select at least one bedroom size.")
             return
         }
@@ -65,7 +64,7 @@ class SelectBedroomViewController: UIViewController {
             }
         }
         
-        if localArrayToHoldSelection.count != 0 {
+        if !localArrayToHoldSelection.isEmpty {
             if localArrayToHoldSelection.count == 5 {
                 Constant.MyClassConstants.selectedBedRoomSize = Constant.MyClassConstants.allBedrommSizes
                 Constant.MyClassConstants.bedRoomSizeSelectedIndexArray.removeAllObjects()
@@ -109,7 +108,7 @@ extension SelectBedroomViewController: UITableViewDataSource {
         cell.tag = indexPath.row
         let brWithoutSpaces = Constant.MyClassConstants.selectedBedRoomSize.replacingOccurrences(of: " ", with: "")
         let bedroomSizes = brWithoutSpaces.components(separatedBy: ",")
-        if bedroomSizes.count > 0 {
+        if !bedroomSizes.isEmpty {
             bedroomSizes.contains("\(indexPath.row)") ?
                 (cell.checkedImageView.image = #imageLiteral(resourceName: "Checkmark-On") ) : (cell.checkedImageView.image = #imageLiteral(resourceName: "Checkmark-Off"))
             if bedroomSizes.contains("Studio") && indexPath.row == 0 {
