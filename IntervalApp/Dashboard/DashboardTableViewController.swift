@@ -190,10 +190,8 @@ class DashboardTableViewController: UITableViewController {
         if Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.confirmationNumber != nil {
             let mainStoryboard: UIStoryboard = UIStoryboard(name:Constant.storyboardNames.myUpcomingTripIphone, bundle: nil)
             if let resultController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.upcomingTripsViewController) as? UpComingTripDetailController {
-                let navController = UINavigationController(rootViewController: resultController)
-                self.present(navController, animated:true, completion: nil)
+                navigationController?.pushViewController(resultController, animated: true)
             }
-            
         }
     }
     
