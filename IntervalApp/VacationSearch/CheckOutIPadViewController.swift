@@ -145,7 +145,7 @@ class CheckOutIPadViewController: UIViewController {
                     showInsurance = false
                 }
                 
-                if let eplusSelect =  Constant.MyClassConstants.exchangeFees[0].eplus?.selected {
+                if let eplusSelect = Constant.MyClassConstants.exchangeFees[0].eplus?.selected {
                     if eplusSelect {
                         eplusAdded = true
                     }
@@ -227,6 +227,7 @@ class CheckOutIPadViewController: UIViewController {
         
         if Constant.MyClassConstants.searchBothExchange || Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange() {
             ExchangeProcessClient.backToChooseExchange(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.exchangeBookingLastStartedProcess, onSuccess: { _ in
+                _ = self.navigationController?.popViewController(animated: true)
                 self.hideHudAsync()
             }, onError: {[weak self] error in
                 self?.hideHudAsync()
@@ -266,7 +267,7 @@ class CheckOutIPadViewController: UIViewController {
             let strAccept = self.cellWebView.stringByEvaluatingJavaScript(from: jsStringAccept)
             let strReject = self.cellWebView.stringByEvaluatingJavaScript(from: jsStringReject)
             
-            if (isAgreedToFees || !Constant.MyClassConstants.hasAdditionalCharges) && (strAccept == Constant.MyClassConstants.status || strReject == Constant.MyClassConstants.status) && !Constant.MyClassConstants.selectedCreditCard.isEmpty && (isPromotionApplied || isDepositPromotionAvailable) {
+            if (isAgreedToFees || !Constant.MyClassConstants.hasAdditionalCharges) && (strAccept == Constant.MyClassConstants.status || strReject == Constant.MyClassConstants.status) && !Constant.MyClassConstants.selectedCreditCard.isEmpty && (isPromotionApplied || Constant.MyClassConstants.recapViewPromotionCodeArray.isEmpty) {
                 
                 let continueToPayRequest = RentalProcessRecapContinueToPayRequest()
                 continueToPayRequest.creditCard = Constant.MyClassConstants.selectedCreditCard.last!
@@ -347,7 +348,7 @@ class CheckOutIPadViewController: UIViewController {
                 checkoutTableView.scrollToRow(at: indexPath as IndexPath, at: .top, animated: true)
                 imageSlider.isHidden = false
                 presentAlert(with: Constant.AlertPromtMessages.failureTitle, message: Constant.AlertMessages.insuranceSelectionMessage)
-            } else if !isPromotionApplied && isDepositPromotionAvailable {
+            } else if !isPromotionApplied && !Constant.MyClassConstants.recapViewPromotionCodeArray.isEmpty {
                 imageSlider.isHidden = false
                 checkoutTableView.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
                 self.presentAlert(with: Constant.AlertPromtMessages.failureTitle, message: Constant.AlertMessages.promotionsMessage)
@@ -855,7 +856,7 @@ extension CheckOutIPadViewController: UITableViewDataSource {
                 if !self.isTripProtectionEnabled && !Constant.MyClassConstants.enableGuestCertificate {
                     isHeightZero = true
                     return 0
-                }else {
+                } else {
                     return UITableViewAutomaticDimension
                 }
             case 3 :
@@ -1240,14 +1241,12 @@ extension CheckOutIPadViewController: UITableViewDataSource {
                     tapRecognizer.numberOfTapsRequired = 1
                     tapRecognizer.delegate = self
                     cellWebView.addGestureRecognizer(tapRecognizer)
-                    if showInsurance && !Constant.MyClassConstants.isFromExchange {
-                        if let str = Constant.MyClassConstants.rentalFees[indexPath.row].insurance?.insuranceOfferHTML {
-                             cellWebView.loadHTMLString(str, baseURL: nil)
-                        }
-                       
-                    } else {
-                        
+                    if showInsurance && !Constant.MyClassConstants.exchangeFees.isEmpty {
                         if let str = Constant.MyClassConstants.exchangeFees[0].insurance?.insuranceOfferHTML {
+                            cellWebView.loadHTMLString(str, baseURL: nil)
+                        }
+                    } else {
+                        if let str = Constant.MyClassConstants.rentalFees[0].insurance?.insuranceOfferHTML {
                             cellWebView.loadHTMLString(str, baseURL: nil)
                         }
                     }

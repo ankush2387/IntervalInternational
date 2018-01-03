@@ -500,4 +500,3 @@ extension FlexChangeSearchIpadViewController: HelperDelegate {
         
     }
 }
-

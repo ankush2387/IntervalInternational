@@ -72,5 +72,16 @@ final class ClientAPI: ClientAPIStore {
         }
     }
     
-}
+    func readTopTenDeals(for accessToken: DarwinAccessToken) -> Promise<[RentalDeal]> {
+        return Promise { resolve, reject in
+            RentalClient.getTop10Deals(accessToken, onSuccess: resolve, onError: reject)
+        }
+    }
 
+    func readFlexchangeDeals(for accessToken: DarwinAccessToken) -> Promise<[FlexExchangeDeal]> {
+        return Promise { resolve, reject in
+            ExchangeClient.getFlexExchangeDeals(accessToken, onSuccess: resolve, onError: reject)
+        }
+    }
+    
+}

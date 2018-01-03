@@ -58,7 +58,7 @@ class FlexchangeSearchViewController: UIViewController {
             Constant.MyClassConstants.relinquishmentDeposits = relinquishments.deposits
             Constant.MyClassConstants.relinquishmentOpenWeeks = relinquishments.openWeeks
             
-            if let pointsProgram = relinquishments.pointsProgram, let availablePoints =  relinquishments.pointsProgram?.availablePoints {
+            if let pointsProgram = relinquishments.pointsProgram, let availablePoints = relinquishments.pointsProgram?.availablePoints {
                 Constant.MyClassConstants.relinquishmentProgram = pointsProgram
                 Constant.MyClassConstants.relinquishmentAvailablePointsProgram = availablePoints
             }
@@ -469,4 +469,3 @@ extension FlexchangeSearchViewController: HelperDelegate {
     }
     
 }
-

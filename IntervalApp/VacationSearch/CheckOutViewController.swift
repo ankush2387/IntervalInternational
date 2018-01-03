@@ -724,7 +724,6 @@ class CheckOutViewController: UIViewController {
         })
     }
     
-    
     //Function to add remove eplus
     @IBAction func checkBoxClicked(sender: IUIKCheckbox) {
         guard let exchangeFees = Constant.MyClassConstants.exchangeFees.last else { return }
@@ -1383,6 +1382,7 @@ extension CheckOutViewController: UITableViewDataSource {
             cell.agreeButton?.dragPointWidth = 70
             cell.agreeButton?.tag = indexPath.section
             cell.allInclusiveSelectedCheckBox.isHidden = true
+            cell.isUserInteractionEnabled = true
             if isAgreed {
                 cell.agreeLabel.backgroundColor = #colorLiteral(red: 0.6666666667, green: 0.7921568627, blue: 0.3607843137, alpha: 1)
                 cell.agreeLabel.layer.borderColor = #colorLiteral(red: 0.6666666667, green: 0.7921568627, blue: 0.3607843137, alpha: 1).cgColor
@@ -1411,6 +1411,7 @@ extension CheckOutViewController: UITableViewDataSource {
                 cell.agreeLabel.backgroundColor = UIColor.white
                 cell.agreeLabel.layer.borderColor = UIColor.lightGray.cgColor
                 cell.agreeLabel.textColor = UIColor.lightGray
+                cell.isUserInteractionEnabled = false
             }
             cell.selectionStyle = .none
             return cell
@@ -1472,4 +1473,3 @@ extension CheckOutViewController: UITextFieldDelegate {
         
     }
 }
-

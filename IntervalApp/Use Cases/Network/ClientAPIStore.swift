@@ -19,5 +19,6 @@ protocol ClientAPIStore {
     func readAllRentalAlerts(for accessToken: DarwinAccessToken) -> Promise<[RentalAlert]>
     func readRentalAlert(for accessToken: DarwinAccessToken, and alertId: Int64) -> Promise<RentalAlert>
     func readDates(for accessToken: DarwinAccessToken, and request: RentalSearchDatesRequest) -> Promise<RentalSearchDatesResponse>
+    func readTopTenDeals(for accessToken: DarwinAccessToken) -> Promise<[RentalDeal]>
+    func readFlexchangeDeals(for accessToken: DarwinAccessToken) -> Promise<[FlexExchangeDeal]>
 }
-
