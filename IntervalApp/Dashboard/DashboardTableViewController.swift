@@ -69,14 +69,14 @@ class DashboardTableViewController: UITableViewController {
                 .then { topTenDeals in
                     Constant.MyClassConstants.topDeals = topTenDeals
                     ClientAPI.sharedInstance.readFlexchangeDeals(for: accessToken)
-                        .then { flexExchangeDeal in
+                        .then { [weak self] flexExchangeDeal in
                             Constant.MyClassConstants.flexExchangeDeals = flexExchangeDeal
-                            self.showGetaways = true
-                            self.getNumberOfSections()
-                            self.homeTableView.reloadData()
-                            self.hideHudAsync()
+                            self?.showGetaways = true
+                            self?.getNumberOfSections()
+                            self?.homeTableView.reloadData()
+                            self?.hideHudAsync()
                         }
-                        .onError {[weak self] error in
+                        .onError { [weak self] error in
                             self?.presentErrorAlert(UserFacingCommonError.serverError(error as NSError))
                             self?.hideHudAsync()
                     }
