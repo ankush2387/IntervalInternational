@@ -499,7 +499,7 @@ class WhoWillBeCheckingInViewController: UIViewController {
                 processResort.processId = Constant.MyClassConstants.exchangeProcessStartResponse.processId
                 showHudAsync()
                 
-                ExchangeProcessClient.continueToCheckout(Session.sharedSession.userAccessToken, process: processResort, request: exchangeProcessRequest, onSuccess: {(response) in
+                ExchangeProcessClient.continueToCheckout(Session.sharedSession.userAccessToken, process: processResort, request: exchangeProcessRequest, onSuccess: { [unowned self] (response) in
                     DarwinSDK.logger.debug(response)
                     self.hideHudAsync()
                     Constant.MyClassConstants.exchangeContinueToCheckoutResponse = response
@@ -522,12 +522,11 @@ class WhoWillBeCheckingInViewController: UIViewController {
                         Constant.MyClassConstants.memberCreditCardList = creditCardInfo
                     }
                     
-                    let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
-                    let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.checkOutViewController) as! CheckOutViewController
-                    viewController.filterRelinquishments = self.filterRelinquishments
-                    let transitionManager = TransitionManager()
-                    self.navigationController?.transitioningDelegate = transitionManager
-                    self.navigationController!.pushViewController(viewController, animated: true)
+                    if let checkOutViewController = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil).instantiateViewController(withIdentifier: Constant.storyboardControllerID.checkOutViewController) as? CheckOutViewController {
+                        checkOutViewController.filterRelinquishments = self.filterRelinquishments
+                        self.navigationController?.pushViewController(checkOutViewController, animated: true)
+                    }
+                    
                 }, onError: { [weak self] _ in
                     self?.hideHudAsync()
                     self?.presentErrorAlert(UserFacingCommonError.generic)

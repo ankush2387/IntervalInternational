@@ -180,7 +180,7 @@ class CheckOutViewController: UIViewController {
             let strAccept = self.cellWebView.stringByEvaluatingJavaScript(from: jsStringAccept)
             let strReject = self.cellWebView.stringByEvaluatingJavaScript(from: jsStringReject)
             
-            if (isAgreedToFees || !Constant.MyClassConstants.hasAdditionalCharges) && (strAccept == "true" || strReject == "true") && !Constant.MyClassConstants.selectedCreditCard.isEmpty && (isPromotionApplied || Constant.MyClassConstants.recapViewPromotionCodeArray.isEmpty) {
+            if (isAgreedToFees || !Constant.MyClassConstants.hasAdditionalCharges) && !Constant.MyClassConstants.selectedCreditCard.isEmpty && (isPromotionApplied || Constant.MyClassConstants.recapViewPromotionCodeArray.isEmpty) {
                 
                 showHudAsync()
                 imageSlider.isHidden = true
@@ -570,28 +570,42 @@ class CheckOutViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    func menuBackButtonPressed(_ sender: UIBarButtonItem) {
+    
+    @objc private func menuBackButtonPressed(_ sender: UIBarButtonItem) {
         
         showHudAsync()
+        
+        let accessToken = Session.sharedSession.userAccessToken
+        let lastRentalProcess = Constant.MyClassConstants.getawayBookingLastStartedProcess
+        let lastProcessStarted = Constant.MyClassConstants.exchangeBookingLastStartedProcess
+        
+        let onSuccess = { [weak self] (_: Any) in
+            self?.hideHudAsync()
+            self?.navigationController?.popViewController(animated: true)
+        }
+        
+        let onError = { [weak self] (_: Any) in
+            self?.hideHudAsync()
+            self?.presentErrorAlert(UserFacingCommonError.generic)
+        }
+        
         if Constant.MyClassConstants.searchBothExchange || Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange() {
-            ExchangeProcessClient.backToChooseExchange(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.exchangeBookingLastStartedProcess, onSuccess: { _  in
-                self.hideHudAsync()
-            }, onError: { [weak self] _ in
-                self?.hideHudAsync()
-                self?.presentErrorAlert(UserFacingCommonError.generic)
-            })
             
+            ExchangeProcessClient.backToChooseExchange(accessToken,
+                                                       process: lastProcessStarted,
+                                                       onSuccess: onSuccess,
+                                                       onError: onError)
+            
+            ExchangeProcessClient.backToChooseExchange(accessToken,
+                                                       process: lastProcessStarted,
+                                                       onSuccess: onSuccess,
+                                                       onError: onError)
         } else {
-            RentalProcessClient.backToWhoIsChecking(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.getawayBookingLastStartedProcess, onSuccess: { response in
-                
-                self.hideHudAsync()
-                _ = self.navigationController?.popViewController(animated: true)
-                
-            }, onError: { [weak self] _ in
-                
-                self?.hideHudAsync()
-                self?.presentAlert(with: Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.operationFailedMessage)
-            })
+            
+            RentalProcessClient.backToWhoIsChecking(accessToken,
+                                                    process: lastRentalProcess,
+                                                    onSuccess: onSuccess,
+                                                    onError: onError)
         }
     }
     
