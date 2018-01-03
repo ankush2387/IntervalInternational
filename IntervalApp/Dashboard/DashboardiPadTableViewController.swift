@@ -344,7 +344,9 @@ class DashboardIPadTableViewController: UITableViewController {
             Constant.MyClassConstants.vacationSearchResultHeaderLabel = destination.destinationName
             
         } else if !alert.resorts.isEmpty {
-            Constant.MyClassConstants.vacationSearchResultHeaderLabel = "\(String(describing: alert.resorts[0].resortName)) + \(alert.resorts.count) more"
+            if let resortName = alert.resorts[0].resortName {
+                Constant.MyClassConstants.vacationSearchResultHeaderLabel = "\(resortName) + \(alert.resorts.count) more"
+            }
             searchCriteria.resorts = alert.resorts
         }
     }

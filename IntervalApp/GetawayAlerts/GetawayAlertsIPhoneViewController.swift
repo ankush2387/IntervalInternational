@@ -23,7 +23,7 @@ class GetawayAlertsIPhoneViewController: UIViewController {
     var searchDateResponse = RentalSearchDatesResponse()
     
     override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
+        super.viewWillAppear(animated)
         navigationController?.navigationBar.isHidden = false
         
         if Constant.needToReloadAlert {
@@ -85,7 +85,7 @@ class GetawayAlertsIPhoneViewController: UIViewController {
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(true)
+        super.viewWillDisappear(animated)
         navigationController?.navigationBar.isHidden = true
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.getawayAlertsNotification), object: nil)
     }
@@ -336,7 +336,9 @@ class GetawayAlertsIPhoneViewController: UIViewController {
             
         } else if !alert.resorts.isEmpty {
             searchCriteria.resorts = alert.resorts
-            Constant.MyClassConstants.vacationSearchResultHeaderLabel = "\(String(describing: alert.resorts[0].resortName)) + \(alert.resorts.count) more"
+            if let resortName = alert.resorts[0].resortName {
+                Constant.MyClassConstants.vacationSearchResultHeaderLabel = "\(resortName) + \(alert.resorts.count) more"
+            }
         }
     }
     
@@ -419,8 +421,9 @@ extension GetawayAlertsIPhoneViewController: UITableViewDelegate {
                 self.showHudAsync()
                 let editedAlert = getawayAlert
                 editedAlert.enabled = true
-                RentalClient.updateAlert(Session.sharedSession.userAccessToken, alert: editedAlert, onSuccess: { _ in
-                    self.hideHudAsync()
+                RentalClient.updateAlert(Session.sharedSession.userAccessToken, alert: editedAlert, onSuccess: { [weak self] _ in
+                    self?.hideHudAsync()
+                    self?.presentAlert(with: "", message: "Alert updated sucessfully".localized())
                 }) { [weak self] error in
                     self?.hideHudAsync()
                     self?.presentErrorAlert(UserFacingCommonError.serverError(error))
@@ -489,7 +492,7 @@ extension GetawayAlertsIPhoneViewController: UITableViewDataSource {
         
         cell.alertDateLabel.text = dateRange
         
-        if getawayAlert.enabled == true {
+        if getawayAlert.enabled ?? false {
             cell.alertStatusButton.isHidden = true
             cell.alertStatusButton.backgroundColor = UIColor(red: 240.0 / 255.0, green: 111.0 / 255.0, blue: 54.0 / 255.0, alpha: 1.0)
             cell.alertStatusButton.setTitleColor(UIColor.white, for: .normal)

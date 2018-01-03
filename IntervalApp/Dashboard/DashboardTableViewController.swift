@@ -605,7 +605,9 @@ class DashboardTableViewController: UITableViewController {
             
         } else if !alert.resorts.isEmpty {
            searchCriteria.resorts = alert.resorts
-            Constant.MyClassConstants.vacationSearchResultHeaderLabel = "\(String(describing: alert.resorts[0].resortName)) + \(alert.resorts.count) more"
+            if let resortName = alert.resorts[0].resortName {
+                Constant.MyClassConstants.vacationSearchResultHeaderLabel = "\(resortName) + \(alert.resorts.count) more"
+            }
         }
     }
 }

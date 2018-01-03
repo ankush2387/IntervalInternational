@@ -227,7 +227,7 @@ class EditMyAlertIpadViewController: UIViewController {
             rentalAlert.latestCheckInDate = Helper.convertDateToString(date: endDate, format: Constant.MyClassConstants.dateFormat)
             rentalAlert.enabled = true
             rentalAlert.name = trimmedUsername
-            self.alertStatusButton.isOn ? (rentalAlert.enabled = true) : (rentalAlert.enabled = false)
+            rentalAlert.enabled = alertStatusButton.isOn
             
             rentalAlert.resorts = Constant.MyClassConstants.alertSelectedResorts
             rentalAlert.destinations = Constant.MyClassConstants.alertSelectedDestination
@@ -279,27 +279,27 @@ class EditMyAlertIpadViewController: UIViewController {
                 rentalAlert.unitSizes = unitsizearray
             }
             
-            RentalClient.updateAlert(Session.sharedSession.userAccessToken, alert: rentalAlert, onSuccess: { (_) in
+            RentalClient.updateAlert(Session.sharedSession.userAccessToken, alert: rentalAlert, onSuccess: { [weak self] _ in
                 
-                self.hideHudAsync()
+                self?.hideHudAsync()
                 
                 // omniture tracking with event 53
-                self.omnitureTrackingForEvent53Success()
+                self?.omnitureTrackingForEvent53Success()
                 
-                self.presentAlert(with: Constant.AlertPromtMessages.editAlertTitle, message: Constant.AlertMessages.editAlertMessage, hideCancelButton: true, cancelButtonTitle: "", acceptButtonTitle: "Ok".localized(), acceptButtonStyle: .default, cancelHandler: nil, acceptHandler: {
+                self?.presentAlert(with: Constant.AlertPromtMessages.editAlertTitle, message: Constant.AlertMessages.editAlertMessage, hideCancelButton: true, cancelButtonTitle: "", acceptButtonTitle: "Ok".localized(), acceptButtonStyle: .default, cancelHandler: nil, acceptHandler: {
                     Constant.needToReloadAlert = true
-                    self.dismiss(animated: true)
+                    self?.dismiss(animated: true)
                 })
-            }) { _ in
+            }) { [weak self] error in
                 
                 // omniture tracking with event 53
-                self.omnitureTrackingForEvent53Error()
-                self.hideHudAsync()
-                self.presentErrorAlert(UserFacingCommonError.generic)
+                self?.omnitureTrackingForEvent53Error()
+                self?.hideHudAsync()
+                self?.presentErrorAlert(UserFacingCommonError.serverError(error))
                 
             }
         } else {
-            self.presentAlert(with: Constant.AlertPromtMessages.editAlertTitle, message: Constant.AlertMessages.editAlertdetinationrequiredMessage)
+            presentAlert(with: Constant.AlertPromtMessages.editAlertTitle, message: Constant.AlertMessages.editAlertdetinationrequiredMessage)
         }
         
     }
@@ -310,7 +310,7 @@ class EditMyAlertIpadViewController: UIViewController {
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.getawayAlertsIpad, bundle: nil)
         guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.infoDetailViewController) as? InfoDetailViewController else { return }
         viewController.selectedIndex = self.selectedIndex
-        self.navigationController?.present(viewController, animated: true, completion: nil)
+        navigationController?.present(viewController, animated: true, completion: nil)
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
