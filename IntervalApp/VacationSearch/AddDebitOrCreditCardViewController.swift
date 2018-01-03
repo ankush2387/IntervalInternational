@@ -10,6 +10,8 @@ import UIKit
 import IntervalUIKit
 import DarwinSDK
 import SVProgressHUD
+import TPKeyboardAvoiding
+import TPKeyboardAvoiding.UIScrollView_TPKeyboardAvoidingAdditions
 
 //***** Custom delegate method declaration *****//
 protocol AddDebitOrCreditCardViewControllerDelegate {
@@ -692,8 +694,7 @@ extension AddDebitOrCreditCardViewController: UIPickerViewDelegate {
                 let month = months[pickerView.selectedRow(inComponent: 0)]
                 let year = years[pickerView.selectedRow(inComponent: 1)]
                 let expiryDate = "\(year), \(month)"
-                expServerDate = "\(year)-\(String(describing: Helper.getMonth(Helper.MonthType.number, for: month)))"
-                
+                expServerDate = "\(year)-\(Helper.getMonth(Helper.MonthType.number, for: month) ?? "")"
                 Constant.GetawaySearchResultCardFormDetailData.expDate = expiryDate
                 
             } else if dropDownSelectionRow == 2 {
@@ -707,17 +708,21 @@ extension AddDebitOrCreditCardViewController: UIPickerViewDelegate {
         } else {
             
              if dropDownSelectionRow == 0 {
-
-                if let countryName = Constant.GetawaySearchResultGuestFormDetailData.countryListArray[row].countryName {
-                   Constant.GetawaySearchResultCardFormDetailData.country = countryName
+                if !Constant.GetawaySearchResultGuestFormDetailData.countryListArray.isEmpty {
+                    if let countryName = Constant.GetawaySearchResultGuestFormDetailData.countryListArray[row].countryName {
+                        Constant.GetawaySearchResultCardFormDetailData.country = countryName
+                    }
+                    Constant.GetawaySearchResultCardFormDetailData.countryCode = Constant.GetawaySearchResultGuestFormDetailData.countryCodeArray[row]
                 }
-                Constant.GetawaySearchResultCardFormDetailData.countryCode = Constant.GetawaySearchResultGuestFormDetailData.countryCodeArray[row]
-                
                 Helper.getStates(country: Constant.GetawaySearchResultCardFormDetailData.countryCode, viewController: self)
              } else {
-                guard let stateName = Constant.GetawaySearchResultGuestFormDetailData.stateListArray[row].name else { return }
-                Constant.GetawaySearchResultCardFormDetailData.state = stateName
-                Constant.GetawaySearchResultCardFormDetailData.stateCode = Constant.GetawaySearchResultGuestFormDetailData.stateCodeArray[row]
+                if !Constant.GetawaySearchResultGuestFormDetailData.stateListArray.isEmpty {
+                    if let stateName = Constant.GetawaySearchResultGuestFormDetailData.stateListArray[0].name {
+                        Constant.GetawaySearchResultCardFormDetailData.state = stateName
+                        Constant.GetawaySearchResultCardFormDetailData.stateCode = Constant.GetawaySearchResultGuestFormDetailData.stateCodeArray[row]
+                    }
+                }
+
             }
         }
     }
@@ -880,6 +885,5 @@ extension AddDebitOrCreditCardViewController: UITextFieldDelegate {
             }
             
         }
-        
     }
 }
