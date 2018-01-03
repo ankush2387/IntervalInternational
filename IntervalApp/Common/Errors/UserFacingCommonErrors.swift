@@ -14,7 +14,7 @@ enum UserFacingCommonError: ViewError {
     case generic
     case noNetConnection
     case noServerResponse
-    case serverError(NSError)
+    case serverError(NSError?)
     case custom(title: String, body: String)
 
     var description: (title: String, body: String) {
@@ -35,8 +35,11 @@ enum UserFacingCommonError: ViewError {
         case .generic:
             return ("Error".localized(), "An error occurred. Please try again.".localized())
             
-        case let .serverError(error):
+        case let .serverError(error?):
             return ("Error".localized(), error.localizedDescription)
+            
+        case .serverError(.none):
+            return UserFacingCommonError.generic.description
             
         case let .custom(title, body):
             return (title, body)

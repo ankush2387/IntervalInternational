@@ -82,10 +82,13 @@ class ResortDetails: NSObject, UITableViewDataSource, UITableViewDelegate {
 extension ResortDetails: SearchResultContentTableCellDelegate {
     func favoriteButtonClicked(_ sender: UIButton) {
         
+        let validIndex = 0..<Constant.MyClassConstants.favoritesResortArray.count ~= sender.tag
+        let rowNumber = validIndex ? sender.tag : 0
         if sender.isSelected == false {
             
-            intervalPrint(Constant.MyClassConstants.resortsArray[sender.tag].resortCode!)
-            UserClient.addFavoriteResort(Session.sharedSession.userAccessToken, resortCode: Constant.MyClassConstants.resortsArray[sender.tag].resortCode!, onSuccess: {(response) in
+            UserClient.addFavoriteResort(Session.sharedSession.userAccessToken,
+                                         resortCode: Constant.MyClassConstants.resortsArray[rowNumber].resortCode.unwrappedString,
+                                         onSuccess: {(response) in
                 
                 intervalPrint(response)
                 sender.isSelected = true
@@ -96,7 +99,7 @@ extension ResortDetails: SearchResultContentTableCellDelegate {
         } else {
             sender.isSelected = false
             intervalPrint()
-            unfavHandler(sender.tag)
+            unfavHandler(rowNumber)
         }
 
     }
