@@ -1748,6 +1748,7 @@
 				619F1F791F92EBA4003A797B /* Git Revision Update */,
 				3CA1FEB61F9A830400CE0387 /* Reveal */,
 				3C0F1CBE1FBB4C9800AACFDC /* Swiftlint */,
+				3C22BAE91FFD688F00CFE9B9 /* Appsee */,
 			);
 			buildRules = (
 			);
@@ -1917,6 +1918,20 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/SwiftLint/swiftlint\"";
+		};
+		3C22BAE91FFD688F00CFE9B9 /* Appsee */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = Appsee;
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#!/bin/sh\necho \"Appsee - Starting debug symbols upload...\"\n\nAPIKEY=\"0733ae33c128460aa32daf2a20e1f9df\"\nAPIURL=\"https://api.appsee.com/crashes/upload-symbols\"\n\n# Check given APIKey\nif [ ! \"${APIKEY}\" ]; then\necho \"Appsee - Please provide your API Key\"\necho \"Appsee - Usage: ./upload_symbols.sh APIKEY\"\nexit 1\nfi\n\n# Skip simulator build\nif [ \"$EFFECTIVE_PLATFORM_NAME\" == \"-iphonesimulator\" ]; then\necho \"Appsee - Ignoring Simulator build\"\nexit 0\nfi\n\n# Skip simulator build\nif [ \"$CONFIGURATION\" != \"Release\" ]; then\necho \"Appsee - Ignoring Debug build\"\nexit 0\nfi\n\nDSYM_PATH=${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}\nZIP_DIR=\"/tmp/Appsee\"\nZIP_PATH=\"${ZIP_DIR}/$DWARF_DSYM_FILE_NAME.zip\"\n\n# Check if zip directory available\nif [ ! -d \"$ZIP_DIR\" ]; then\nmkdir \"${ZIP_DIR}\"\nfi\n\n# Check if dSym available\nif [ ! -d \"$DSYM_PATH\" ]; then\necho \"Appsee - dSYM file not found on: ${DSYM_PATH}. Please contact support@appsee.com for assistance\"\nexit 1\nfi\n\n# Zip dSYM\ncd \"${DWARF_DSYM_FOLDER_PATH}\"\n/usr/bin/zip -D -r -q  \"${ZIP_PATH}\" \"${DWARF_DSYM_FILE_NAME}\"\n\nif [ $? -ne 0 ]; then\necho \"Appsee - dSYM zip failed. Please contact support@appsee.com for assistance\"\nexit 1\nfi\n\n# Upload dSYM\nRES=$(curl \"${APIURL}?APIKey=${APIKEY}\" --write-out %{http_code} --silent --output /dev/null -F dsym=@\"${ZIP_PATH}\")\nif [ $RES -ne 200 ]; then\necho \"Appsee - Upload failed with status $RES. Please contact support@appsee.com for assistance\"\nexit 1\nfi\n\n# Remove Zip file\n/bin/rm -f \"${ZIP_PATH}\"\n\necho \"Appsee - Debug symbols uploaded successfully\"\n";
 		};
 		3CA1FEB61F9A830400CE0387 /* Reveal */ = {
 			isa = PBXShellScriptBuildPhase;
