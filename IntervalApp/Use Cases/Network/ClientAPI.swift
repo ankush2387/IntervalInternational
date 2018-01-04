@@ -83,5 +83,4 @@ final class ClientAPI: ClientAPIStore {
             ExchangeClient.getFlexExchangeDeals(accessToken, onSuccess: resolve, onError: reject)
         }
     }
-    
 }
