@@ -23,7 +23,7 @@ class RentalInventoryCVCell: UICollectionViewCell {
 
     func setCurrencyCode(code: String) {
         
-        if Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.Combined {
+        if Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.COMBINED {
             getawayPrice.isHidden = true
             currencySymbol.isHidden = true
             getawayNameLabel.text = "Getaway"

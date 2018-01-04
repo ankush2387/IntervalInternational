@@ -65,7 +65,6 @@ class SearchResultViewController: UIViewController {
              let inventoryData = Constant.MyClassConstants.resortsArray[0].inventory
              if let code = inventoryData?.currencyCode {
                 currencyCode = Helper.currencyCodeToSymbol(code: code)
-                intervalPrint(currencyCode )
             }
         }
         navigationController?.navigationBar.isHidden = false
