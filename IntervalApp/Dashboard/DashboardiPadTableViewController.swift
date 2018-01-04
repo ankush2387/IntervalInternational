@@ -256,7 +256,7 @@ class DashboardIPadTableViewController: UITableViewController {
         } else {
             let alertController = UIAlertController(title: title, message: Constant.AlertErrorMessages.getawayAlertMessage, preferredStyle: .alert)
             showSearchResults = true
-            let startSearch = UIAlertAction(title: Constant.AlertPromtMessages.newSearch, style: .default) { (_:UIAlertAction) in
+            let startSearch = UIAlertAction(title: Constant.AlertPromtMessages.newSearch, style: .default) { [unowned self]  (_:UIAlertAction) in
                 
                 let isRunningOnIphone = UIDevice.current.userInterfaceIdiom == .phone
                 let storyboardName = isRunningOnIphone ? Constant.storyboardNames.vacationSearchIphone : Constant.storyboardNames.vacationSearchIPad
@@ -268,7 +268,7 @@ class DashboardIPadTableViewController: UITableViewController {
             //Add Custom Actions to Alert viewController
             alertController.addAction(startSearch)
             alertController.addAction(close)
-            self.present(alertController, animated: true, completion:nil)
+            present(alertController, animated: true)
         }
     }
     

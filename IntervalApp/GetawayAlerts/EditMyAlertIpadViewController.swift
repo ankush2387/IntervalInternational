@@ -73,7 +73,6 @@ class EditMyAlertIpadViewController: UIViewController {
             }
             self.hideHudAsync()
             self.setupView()
-        }) {  [weak self] error in self?.presentErrorAlert(UserFacingCommonError.handleError(error))
         }
         self.setupView()
         
@@ -295,7 +294,7 @@ class EditMyAlertIpadViewController: UIViewController {
                 // omniture tracking with event 53
                 self?.omnitureTrackingForEvent53Error()
                 self?.hideHudAsync()
-                self?.presentErrorAlert(UserFacingCommonError.serverError(error))
+                self?.presentErrorAlert(UserFacingCommonError.handleError(error))
                 
             }
         } else {

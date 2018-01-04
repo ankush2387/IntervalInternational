@@ -524,7 +524,7 @@ class DashboardTableViewController: UITableViewController {
             //Add Custom Actions to Alert viewController
             alertController.addAction(startSearch)
             alertController.addAction(close)
-            self.present(alertController, animated: true, completion:nil)
+            present(alertController, animated: true)
         }
     }
     

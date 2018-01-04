@@ -389,7 +389,7 @@ extension GetawayAlertsIPhoneViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let getawayAlert = Constant.MyClassConstants.searchDateResponse[indexPath.row].0
         
-        let delete = UITableViewRowAction(style: UITableViewRowActionStyle.destructive, title: Constant.buttonTitles.remove) { (action, index) -> Void in
+        let delete = UITableViewRowAction(style: UITableViewRowActionStyle.destructive, title: Constant.buttonTitles.remove) { [unowned self] (action, index) -> Void in
             if let alertID = getawayAlert.alertId {
                 self.showHudAsync()
                 //Remove Alert API call
@@ -397,14 +397,13 @@ extension GetawayAlertsIPhoneViewController: UITableViewDelegate {
                     self.hideHudAsync()
                     Constant.MyClassConstants.searchDateResponse.remove(at: indexPath.row)
                     tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
+                    tableView.beginUpdates()
+                    tableView.reloadSections(NSIndexSet(index:indexPath.section) as IndexSet, with: .automatic)
+                    tableView.endUpdates()
                     
-                    let delayTime = DispatchTime.now() + Double(Int64(0.5 * Double(NSEC_PER_SEC)))
-                    DispatchQueue.main.asyncAfter(deadline: delayTime, execute: {
-                        tableView.reloadSections(NSIndexSet(index:indexPath.section) as IndexSet, with: .automatic)
-                    })
                 }) {[unowned self] error in
                     self.hideHudAsync()
-                    self.presentErrorAlert(UserFacingCommonError.serverError(error))
+                    self.presentErrorAlert(UserFacingCommonError.handleError(error))
                 }
             } else {
                 self.presentErrorAlert(UserFacingCommonError.generic)
@@ -426,7 +425,7 @@ extension GetawayAlertsIPhoneViewController: UITableViewDelegate {
                     self?.presentAlert(with: "", message: "Alert updated sucessfully".localized())
                 }) { [weak self] error in
                     self?.hideHudAsync()
-                    self?.presentErrorAlert(UserFacingCommonError.serverError(error))
+                    self?.presentErrorAlert(UserFacingCommonError.handleError(error))
                 }
             }
             activate.backgroundColor = UIColor(red: 0 / 255.0, green: 119.0 / 255.0, blue: 190.0 / 255.0, alpha: 1.0)
