@@ -1035,7 +1035,7 @@ extension CheckOutViewController: UITableViewDataSource {
                 if Constant.MyClassConstants.isCIGAvailable {
                     cell.resortDetailsButton.isHidden = true
                     cell.lblHeading.text = "CIG Points".localized()
-                    cell.resortName?.text = "\(Constant.MyClassConstants.selectedExchangeCigPoints)"
+                    cell.resortName?.text = "\(Constant.MyClassConstants.selectedExchangeCigPoints)".localized()
                     
                 } else {
                     cell.resortDetailsButton.addTarget(self, action: #selector(WhoWillBeCheckingInViewController.resortDetailsClicked(_:)), for: .touchUpInside)
