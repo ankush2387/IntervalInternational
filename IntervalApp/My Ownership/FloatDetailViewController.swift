@@ -333,7 +333,7 @@ class FloatDetailViewController: UIViewController {
         }) { error in
             //Pop to vacation search screen
             self.popToVacationSearch()
-            self.presentErrorAlert(UserFacingCommonError.serverError(error))
+            self.presentErrorAlert(UserFacingCommonError.handleError(error))
         }
     }
     

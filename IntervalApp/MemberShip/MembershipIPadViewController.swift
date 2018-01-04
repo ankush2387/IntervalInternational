@@ -162,7 +162,7 @@ class MembershipIPadViewController: UIViewController {
                 }
             }
             .onError { [weak self] error in
-                self?.presentErrorAlert(UserFacingCommonError.serverError(error as NSError))
+                self?.presentErrorAlert(UserFacingCommonError.handleError(error as NSError))
         }
     }
     
@@ -185,7 +185,7 @@ class MembershipIPadViewController: UIViewController {
                 self.readDates(accessToken: accessToken, request: rentalSearchDatesRequest, rentalAlert: rentalAlert)
             }
             .onError { [weak self] error in
-                self?.presentErrorAlert(UserFacingCommonError.serverError(error as NSError))
+                self?.presentErrorAlert(UserFacingCommonError.handleError(error as NSError))
         }
     }
     
@@ -198,7 +198,7 @@ class MembershipIPadViewController: UIViewController {
                 
             }
             .onError { [weak self] error in
-                self?.presentErrorAlert(UserFacingCommonError.serverError(error as NSError))
+                self?.presentErrorAlert(UserFacingCommonError.handleError(error as NSError))
         }
     }
 }

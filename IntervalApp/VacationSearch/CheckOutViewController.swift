@@ -218,7 +218,7 @@ class CheckOutViewController: UIViewController {
                         imageSlider.isHidden = false
                         self?.isAgreed = false
                         self?.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
-                        self?.presentErrorAlert(UserFacingCommonError.serverError(error))
+                        self?.presentErrorAlert(UserFacingCommonError.handleError(error))
                     })
                     
                 } else {
@@ -252,7 +252,7 @@ class CheckOutViewController: UIViewController {
                         imageSlider.isHidden = false
                         self?.isAgreed = false
                         self?.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
-                        self?.presentErrorAlert(UserFacingCommonError.serverError(error))
+                        self?.presentErrorAlert(UserFacingCommonError.handleError(error))
                     })
                     
                 }
@@ -479,7 +479,7 @@ class CheckOutViewController: UIViewController {
                     self.hideHudAsync()
                     
                 }, onError: { [weak self] error in
-                    self?.presentErrorAlert(UserFacingCommonError.serverError(error))
+                    self?.presentErrorAlert(UserFacingCommonError.handleError(error))
                     self?.hideHudAsync()
                 })
             } else {
@@ -516,7 +516,7 @@ class CheckOutViewController: UIViewController {
                     self.checkoutOptionTBLview.reloadData()
                     self.hideHudAsync()
                 }, onError: { [weak self] error in
-                    self?.presentErrorAlert(UserFacingCommonError.serverError(error))
+                    self?.presentErrorAlert(UserFacingCommonError.handleError(error))
                     self?.hideHudAsync()
                 })
             }
@@ -660,7 +660,7 @@ class CheckOutViewController: UIViewController {
                 self?.isTripProtectionEnabled = false
                 self?.checkoutOptionTBLview.reloadData()
                 self?.hideHudAsync()
-                self?.presentErrorAlert(UserFacingCommonError.serverError(error))
+                self?.presentErrorAlert(UserFacingCommonError.handleError(error))
             })
         } else {
             
@@ -684,7 +684,7 @@ class CheckOutViewController: UIViewController {
                 self?.isTripProtectionEnabled = false
                 self?.checkoutOptionTBLview.reloadData()
                 self?.hideHudAsync()
-                self?.presentErrorAlert(UserFacingCommonError.serverError(error))
+                self?.presentErrorAlert(UserFacingCommonError.handleError(error))
             })
         }
     }
@@ -720,10 +720,9 @@ class CheckOutViewController: UIViewController {
             self.performSegue(withIdentifier: Constant.segueIdentifiers.showRelinguishmentsDetailsSegue, sender: self)
         }(), errorCompletionBlock: { [unowned self] error  in
             self.hideHudAsync()
-            self.presentErrorAlert(UserFacingCommonError.serverError(error))
+            self.presentErrorAlert(UserFacingCommonError.handleError(error))
         })
     }
-    
     
     //Function to add remove eplus
     @IBAction func checkBoxClicked(sender: IUIKCheckbox) {
@@ -744,7 +743,7 @@ class CheckOutViewController: UIViewController {
             self?.eplusAdded = !sender.checked
             Constant.MyClassConstants.exchangeFees[0].eplus?.selected = sender.checked
             self?.hideHudAsync()
-            self?.presentErrorAlert(UserFacingCommonError.serverError(error))
+            self?.presentErrorAlert(UserFacingCommonError.handleError(error))
             self?.checkSectionsForFees()
             self?.checkoutOptionTBLview.reloadData()
         })
@@ -1383,6 +1382,7 @@ extension CheckOutViewController: UITableViewDataSource {
             cell.agreeButton?.dragPointWidth = 70
             cell.agreeButton?.tag = indexPath.section
             cell.allInclusiveSelectedCheckBox.isHidden = true
+            cell.isUserInteractionEnabled = true
             if isAgreed {
                 cell.agreeLabel.backgroundColor = #colorLiteral(red: 0.6666666667, green: 0.7921568627, blue: 0.3607843137, alpha: 1)
                 cell.agreeLabel.layer.borderColor = #colorLiteral(red: 0.6666666667, green: 0.7921568627, blue: 0.3607843137, alpha: 1).cgColor
@@ -1411,6 +1411,7 @@ extension CheckOutViewController: UITableViewDataSource {
                 cell.agreeLabel.backgroundColor = UIColor.white
                 cell.agreeLabel.layer.borderColor = UIColor.lightGray.cgColor
                 cell.agreeLabel.textColor = UIColor.lightGray
+                cell.isUserInteractionEnabled = false
             }
             cell.selectionStyle = .none
             return cell
@@ -1472,4 +1473,3 @@ extension CheckOutViewController: UITextFieldDelegate {
         
     }
 }
-

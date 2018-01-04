@@ -58,7 +58,7 @@ class FlexchangeSearchViewController: UIViewController {
             Constant.MyClassConstants.relinquishmentDeposits = relinquishments.deposits
             Constant.MyClassConstants.relinquishmentOpenWeeks = relinquishments.openWeeks
             
-            if let pointsProgram = relinquishments.pointsProgram, let availablePoints =  relinquishments.pointsProgram?.availablePoints {
+            if let pointsProgram = relinquishments.pointsProgram, let availablePoints = relinquishments.pointsProgram?.availablePoints {
                 Constant.MyClassConstants.relinquishmentProgram = pointsProgram
                 Constant.MyClassConstants.relinquishmentAvailablePointsProgram = availablePoints
             }
@@ -130,7 +130,7 @@ class FlexchangeSearchViewController: UIViewController {
                 }, onError: { [weak self] error  in
                     
                     self?.hideHudAsync()
-                    self?.presentErrorAlert(UserFacingCommonError.serverError(error))
+                    self?.presentErrorAlert(UserFacingCommonError.handleError(error))
                 })
                 
             }
@@ -469,4 +469,3 @@ extension FlexchangeSearchViewController: HelperDelegate {
     }
     
 }
-

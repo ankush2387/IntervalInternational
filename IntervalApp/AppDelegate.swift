@@ -44,7 +44,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     
     // MARK: - Private functions
     private func setAppseeSDK() {
-        Appsee.start("0733ae33c128460aa32daf2a20e1f9df")
+        Appsee.start("4c587be2b8cd474593cd47e88d4ca407")
     }
     
     private func setWindow() {

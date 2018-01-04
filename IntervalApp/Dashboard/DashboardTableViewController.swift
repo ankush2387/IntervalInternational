@@ -60,33 +60,39 @@ class DashboardTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //Get all alerts
-        if let accessToken = Session.sharedSession.userAccessToken {
-            readAllRentalAlerts(accessToken: accessToken)
-        }
         title = Constant.ControllerTitles.dashboardTableViewController
-        showHudAsync()
-        let delayInSeconds = 1.5
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + delayInSeconds) {
-            
-            // omniture tracking with event40
-            let userInfo: [String: String] = [
-                Constant.omnitureEvars.eVar44: Constant.omnitureCommonString.homeDashboard
-            ]
-            
-            ADBMobile.trackState( Constant.omnitureEvents.event40, data: userInfo)
-        }
-        Helper.getTopDeals(senderVC: self)
-        Helper.getFlexExchangeDeals(senderVC: self) { (success) in
-            if success {
-                DispatchQueue.main.async {[weak self] in
-                    guard let strongSelf = self else { return }
-                    strongSelf.getNumberOfSections()
-                    strongSelf.homeTableView.reloadData()
+        if let accessToken = Session.sharedSession.userAccessToken {
+            //Get all alerts
+            readAllRentalAlerts(accessToken: accessToken)
+            showHudAsync()
+            ClientAPI.sharedInstance.readTopTenDeals(for: accessToken)
+                .then { topTenDeals in
+                    Constant.MyClassConstants.topDeals = topTenDeals
+                    ClientAPI.sharedInstance.readFlexchangeDeals(for: accessToken)
+                        .then { [weak self] flexExchangeDeal in
+                            guard let strongSelf = self else { return }
+                            Constant.MyClassConstants.flexExchangeDeals = flexExchangeDeal
+                            strongSelf.showGetaways = true
+                            strongSelf.getNumberOfSections()
+                            strongSelf.homeTableView.reloadData()
+                            strongSelf.hideHudAsync()
+                        }
+                        .onError { [weak self] error in
+                           guard let strongSelf = self else { return }
+                            strongSelf.presentErrorAlert(UserFacingCommonError.handleError(error))
+                            strongSelf.hideHudAsync()
+                    }
                 }
+                .onError { [weak self] error in
+                    self?.presentErrorAlert(UserFacingCommonError.handleError(error))
+                    self?.hideHudAsync()
             }
         }
-        
+        // omniture tracking with event40
+        let userInfo: [String: String] = [
+            Constant.omnitureEvars.eVar44: Constant.omnitureCommonString.homeDashboard
+        ]
+        ADBMobile.trackState( Constant.omnitureEvents.event40, data: userInfo)
         //***** Setup the hamburger menu.  This will reveal the side menu. *****//
         if let rvc = self.revealViewController() {
             //set SWRevealViewController's Delegate
@@ -102,7 +108,6 @@ class DashboardTableViewController: UITableViewController {
             self.view.addGestureRecognizer( rvc.panGestureRecognizer() )
         }
     }
-    
     
     // MARK: - Getaway Alerts
     func readAllRentalAlerts(accessToken: DarwinAccessToken) {
@@ -120,10 +125,9 @@ class DashboardTableViewController: UITableViewController {
                 }
             }
             .onError { [weak self] error in
-                self?.presentErrorAlert(UserFacingCommonError.serverError(error as NSError))
+                self?.presentErrorAlert(UserFacingCommonError.handleError(error as NSError))
         }
     }
-    
     
     func readRentalAlert(accessToken: DarwinAccessToken, alertId: Int64) {
         Constant.MyClassConstants.searchDateResponse.removeAll()
@@ -143,7 +147,7 @@ class DashboardTableViewController: UITableViewController {
                 Constant.MyClassConstants.dashBoardAlertsArray = Constant.MyClassConstants.getawayAlertsArray
                 self.readDates(accessToken: accessToken, request: rentalSearchDatesRequest, rentalAlert: rentalAlert)
             }
-            .onError { [weak self] error in self?.presentErrorAlert(UserFacingCommonError.serverError(error as NSError))
+            .onError { [weak self] error in self?.presentErrorAlert(UserFacingCommonError.handleError(error as NSError))
         }
     }
     
@@ -156,7 +160,7 @@ class DashboardTableViewController: UITableViewController {
                 
             }
             .onError { [weak self] error in
-                self?.presentErrorAlert(UserFacingCommonError.serverError(error as NSError))
+                self?.presentErrorAlert(UserFacingCommonError.handleError(error as NSError))
         }
     }
     
@@ -979,4 +983,3 @@ extension UIViewController {
         
     }
 }
-

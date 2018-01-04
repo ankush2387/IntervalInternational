@@ -43,9 +43,10 @@ class FevoritesResortController: UIViewController {
         //***** Register delegate and data source with tableview *****//
         resortTableView.dataSource = datasource
         resortTableView.delegate = datasource
-        datasource.unfavHandler = {(rowNumber) in
-            self.unfavClicked(rowNumber: rowNumber)
-            
+        datasource.unfavHandler = { [weak self] (rowNumber) in
+            guard let strongSelf = self else { return }
+            strongSelf.unfavClicked(rowNumber: rowNumber)
+            strongSelf.resortTableView.reloadData()
         }
     }
     override func viewWillLayoutSubviews() {
@@ -306,45 +307,48 @@ class FevoritesResortController: UIViewController {
     }
     
     //***** method called when resort favorites button clicked to make resort unfavorite *****//
-    func unfavClicked(rowNumber: Int) {
-        
-        var indexPath: IndexPath
-        indexPath = IndexPath(row: rowNumber, section: 0)
-        
-        //call API
-        let resortCode = Constant.MyClassConstants.favoritesResortArray[indexPath.row].resortCode
-        UserClient.removeFavoriteResort(Session.sharedSession.userAccessToken, resortCode: resortCode!, onSuccess: {(_) in
-            Constant.MyClassConstants.favoritesResortArray .remove(at: rowNumber)
-            Constant.MyClassConstants.favoritesResortCodeArray.remove(resortCode)
-            self.resortTableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
-            ADBMobile.trackAction(Constant.omnitureEvents.event51, data: nil)
-            self.resortTableView.reloadData()
-        }, onError: {(error) in
-            intervalPrint(error)
+    @objc private func unfavClicked(rowNumber: Int) {
+
+        if let userAccessToken = Session.sharedSession.userAccessToken,
+            let resortCode = Constant.MyClassConstants.favoritesResortArray[rowNumber].resortCode {
             
-        })
-        
-        if Constant.RunningDevice.deviceIdiom == .pad {
-            for marker in Constant.MyClassConstants.googleMarkerArray {
-                Constant.MyClassConstants.googleMarkerArray.remove(at: Constant.MyClassConstants.googleMarkerArray.index(of: marker)!)
-                createMapWithMarkers()
+            let onSuccess = { [weak self] in
+                guard let strongSelf = self else { return }
+                Constant.MyClassConstants.favoritesResortArray.remove(at: rowNumber)
+                Constant.MyClassConstants.favoritesResortCodeArray.remove(resortCode)
+                
+                strongSelf.resortTableView.beginUpdates()
+                strongSelf.resortTableView.deleteRows(at: [IndexPath(row: rowNumber, section: 0)], with: .automatic)
+                ADBMobile.trackAction(Constant.omnitureEvents.event51, data: nil)
+                
+                if Constant.RunningDevice.deviceIdiom == .pad {
+                    Constant.MyClassConstants.googleMarkerArray.flatMap {
+                        Constant.MyClassConstants.googleMarkerArray.index(of: $0)
+                        }.forEach {
+                            Constant.MyClassConstants.googleMarkerArray.remove(at: $0)
+                            strongSelf.createMapWithMarkers()
+                    }
+                }
+                
+                if Constant.MyClassConstants.favoritesResortArray.isEmpty {
+                    strongSelf.setupView()
+                }
+                
+                strongSelf.resortTableView.endUpdates()
             }
-        }
-        //TODO - Jhon: review this code.
-        let delayTime = DispatchTime.now() + Double(Int64(0.5 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
-        DispatchQueue.main.asyncAfter(deadline: delayTime) {
             
-            if Constant.MyClassConstants.favoritesResortArray.count > 0 {
-                
-                indexPath = IndexPath(row: (rowNumber) - 1, section: 0)
-                
-                self.resortTableView.reloadSections(IndexSet(integer: 0), with: .automatic)
-                
-            } else {
-                self.setupView()
+            let onError = { [weak self] (error: NSError?) in
+                intervalPrint(error as Any)
+                self?.presentErrorAlert(UserFacingCommonError.handleError(error))
             }
+            
+            UserClient.removeFavoriteResort(userAccessToken,
+                                            resortCode: resortCode,
+                                            onSuccess: onSuccess,
+                                            onError: onError)
+        } else {
+            presentErrorAlert(UserFacingCommonError.generic)
         }
-        
     }
     
     //***** Function is called when done button is clicked in details side menu *****/

@@ -79,7 +79,7 @@ class EditMyAlertIpadViewController: UIViewController {
             }
             self.hideHudAsync()
             self.setupView()
-        }) {  [weak self] error in self?.presentErrorAlert(UserFacingCommonError.serverError(error))
+        }) {  [weak self] error in self?.presentErrorAlert(UserFacingCommonError.handleError(error))
         }
         // omniture tracking with event 40
         let pageView: [String: String] = [

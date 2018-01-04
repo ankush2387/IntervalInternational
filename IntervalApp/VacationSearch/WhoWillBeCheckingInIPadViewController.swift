@@ -273,7 +273,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
             self.performSegue(withIdentifier: Constant.segueIdentifiers.showRelinguishmentsDetailsSegue, sender: self)
         }(), errorCompletionBlock: { [unowned self] error  in
             self.hideHudAsync()
-            self.presentErrorAlert(UserFacingCommonError.serverError(error))
+            self.presentErrorAlert(UserFacingCommonError.handleError(error))
         })
     }
     
@@ -453,7 +453,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
                     self.navigationController?.transitioningDelegate = transitionManager
                     self.navigationController!.pushViewController(viewController, animated: true)
                 }, onError: { [weak self] error in
-                    self?.presentErrorAlert(UserFacingCommonError.serverError(error))
+                    self?.presentErrorAlert(UserFacingCommonError.handleError(error))
                     self?.hideHudAsync()
                 })
             } else {
@@ -527,7 +527,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
                     self.navigationController!.pushViewController(viewController, animated: true)
                 }, onError: {[weak self] error in
                     self?.hideHudAsync()
-                    self?.presentErrorAlert(UserFacingCommonError.serverError(error))
+                    self?.presentErrorAlert(UserFacingCommonError.handleError(error))
                     
                 })
             }

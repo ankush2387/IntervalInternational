@@ -140,7 +140,7 @@ class ClubPointSelectionViewController: UIViewController {
             intervalPrint(response)
             
          }, onError: { error in
-            self.presentErrorAlert(UserFacingCommonError.serverError(error))
+            self.presentErrorAlert(UserFacingCommonError.handleError(error))
         })
         
     }

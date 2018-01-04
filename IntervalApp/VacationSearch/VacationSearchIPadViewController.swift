@@ -883,7 +883,7 @@ extension VacationSearchIPadViewController: SearchTableViewCellDelegate {
                         }, onError: { [weak self] error in
                             sender.isEnabled = true
                             self?.hideHudAsync()
-                            self?.presentErrorAlert(UserFacingCommonError.serverError(error))
+                            self?.presentErrorAlert(UserFacingCommonError.handleError(error))
                         })
                     }
                   Constant.MyClassConstants.isFromExchange = true
@@ -931,7 +931,7 @@ extension VacationSearchIPadViewController: SearchTableViewCellDelegate {
                             
                         }) { error in
                             self.hideHudAsync()
-                            self.presentErrorAlert(UserFacingCommonError.serverError(error))
+                            self.presentErrorAlert(UserFacingCommonError.handleError(error))
                         }
                     }
                 }

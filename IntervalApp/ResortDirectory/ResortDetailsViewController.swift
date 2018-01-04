@@ -195,7 +195,7 @@ class ResortDetailsViewController: UIViewController {
                     self.tableViewResorts.reloadData()
                 }) { [weak self] error in
                     self?.hideHudAsync()
-                    self?.presentErrorAlert(UserFacingCommonError.serverError(error))
+                    self?.presentErrorAlert(UserFacingCommonError.handleError(error))
                 }
             }
         }
@@ -241,7 +241,7 @@ class ResortDetailsViewController: UIViewController {
                     }
                 }) { [unowned self] error in
                     self.hideHudAsync()
-                    self.presentErrorAlert(UserFacingCommonError.serverError(error))
+                    self.presentErrorAlert(UserFacingCommonError.handleError(error))
                 }
                 
             } else {
@@ -934,7 +934,7 @@ extension ResortDetailsViewController: UITableViewDataSource {
                     ADBMobile.trackAction(Constant.omnitureEvents.event48, data: nil)
                 }, onError: {[weak self] error in
                     self?.hideHudAsync()
-                    self?.presentErrorAlert(UserFacingCommonError.serverError(error))
+                    self?.presentErrorAlert(UserFacingCommonError.handleError(error))
                 })
             } else {
                 showHudAsync()
@@ -946,7 +946,7 @@ extension ResortDetailsViewController: UITableViewDataSource {
                     ADBMobile.trackAction(Constant.omnitureEvents.event51, data: nil)
                 }, onError: {[weak self] error in
                     self?.hideHudAsync()
-                    self?.presentErrorAlert(UserFacingCommonError.serverError(error))
+                    self?.presentErrorAlert(UserFacingCommonError.handleError(error))
                 })
             }
             
