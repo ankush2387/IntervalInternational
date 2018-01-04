@@ -43,6 +43,7 @@ class SearchResultViewController: UIViewController {
     var myActivityIndicator = UIActivityIndicatorView()
     var value: String = ""
     var alertFilterOptionsArray = [Constant.AlertResortDestination]()
+    var currencyCode = ""
     
     // Only one section with surroundings found
     var onlySurroundingsFound = false
@@ -59,7 +60,14 @@ class SearchResultViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
+        
+        if !Constant.MyClassConstants.resortsArray.isEmpty {
+             let inventoryData = Constant.MyClassConstants.resortsArray[0].inventory
+             if let code = inventoryData?.currencyCode {
+                currencyCode = Helper.currencyCodeToSymbol(code: code)
+                intervalPrint(currencyCode )
+            }
+        }
         navigationController?.navigationBar.isHidden = false
         createSections()
         self.searchResultTableView.reloadData()
@@ -649,6 +657,7 @@ class SearchResultViewController: UIViewController {
     // Common method to get exchange collection view cell
     func getGetawayCollectionCell(indexPath: IndexPath, collectionView: UICollectionView) -> RentalInventoryCVCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.reUsableIdentifiers.resortInventoryCell, for: indexPath) as? RentalInventoryCVCell else { return RentalInventoryCVCell() }
+        cell.setCurrencyCode(code: currencyCode)
         return cell
     }
     
