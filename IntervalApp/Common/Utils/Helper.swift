@@ -517,7 +517,7 @@ public class Helper {
         } else {
             
             let realm = try? Realm()
-            let allDest = realm?.objects(AllAvailableDestination.self)
+            let allDest = realm?.objects(allAvailableDestination.self)
             Constant.MyClassConstants.whereTogoContentArray.removeAllObjects()
             for obj in allDest! {
                 intervalPrint(obj.destination)
@@ -542,17 +542,17 @@ public class Helper {
         
     }
     //***** function to get all destination class objects from Realm storage *****//
-    static func getLocalStorageAllDest() -> Results<AllAvailableDestination> {
+    static func getLocalStorageAllDest() -> Results<allAvailableDestination> {
         
         let realm = try! Realm()
-        let allDest = realm.objects(AllAvailableDestination.self)
+        let allDest = realm.objects(allAvailableDestination.self)
         return allDest
     }
     //***** function that remove all objects stored in all destionation class *****//
     static func deleteObjectFromAllDest() {
         
         let realm = try! Realm()
-        let allDest = realm.objects(AllAvailableDestination.self)
+        let allDest = realm.objects(allAvailableDestination.self)
         try! realm.write {
             realm.delete(allDest)
         }
@@ -617,7 +617,7 @@ public class Helper {
         } else {
             
             let realm = try! Realm()
-            let allDest = realm.objects(AllAvailableDestination.self)
+            let allDest = realm.objects(allAvailableDestination.self)
             for obj in allDest {
                 Constant.MyClassConstants.whereTogoContentArray.add(obj.destination)
             }

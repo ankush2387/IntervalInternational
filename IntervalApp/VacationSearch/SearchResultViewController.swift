@@ -877,7 +877,7 @@ extension SearchResultViewController: UICollectionViewDelegate {
                     }
                 }
                 
-                DirectoryClient.getResortDetails(Constant.MyClassConstants.systemAccessToken, resortCode: resortCode, onSuccess: { (response) in
+                DirectoryClient.getResortDetails(Constant.MyClassConstants.systemAccessToken, resortCode: resortCode, onSuccess: {[weak self](response) in
                     
                     Constant.MyClassConstants.resortsDescriptionArray = response
                     Constant.MyClassConstants.imagesArray.removeAll()
@@ -890,12 +890,12 @@ extension SearchResultViewController: UICollectionViewDelegate {
                         }
                     }
                     Constant.MyClassConstants.vacationSearchContentPagerRunningIndex = collectionView.tag + 1
-                    self.hideHudAsync()
-                self.navigationController?.view.layer.add(Helper.bottomToTopTransition(), forKey: nil)
-                    self.performSegue(withIdentifier: Constant.segueIdentifiers.vacationSearchDetailSegue, sender: nil)
-                }) { (_) in
-                    self.hideHudAsync()
-                    self.presentErrorAlert(UserFacingCommonError.generic)
+                    self?.hideHudAsync()
+                    self?.navigationController?.view.layer.add(Helper.bottomToTopTransition(), forKey: nil)
+                    self?.performSegue(withIdentifier: Constant.segueIdentifiers.vacationSearchDetailSegue, sender: nil)
+                }) {[weak self] (_) in
+                    self?.hideHudAsync()
+                    self?.presentErrorAlert(UserFacingCommonError.generic)
                 }
             } else {
                 

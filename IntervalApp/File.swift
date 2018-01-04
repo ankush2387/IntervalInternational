@@ -68,7 +68,7 @@ final class ResortByMap: Object {
     dynamic var territorrycode = ""
 }
 
-final class AllAvailableDestination: Object {
+final class allAvailableDestination: Object {
     
      dynamic var destination = ""
 }

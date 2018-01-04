@@ -52,7 +52,7 @@ class ResortDetailsViewController: UIViewController {
         
         navigationController?.navigationBar.isHidden = true
         if !Constant.MyClassConstants.isFromSearchResult {
-            self.cancelButton?.setTitle("Done", for: .normal)
+            self.cancelButton?.setTitle("Done".localized(), for: .normal)
             if Constant.MyClassConstants.isFromExchange && Constant.RunningDevice.deviceIdiom == .phone {
                 self.previousButton?.isHidden = true
                 self.forwordButton?.isHidden = true
@@ -273,7 +273,7 @@ class ResortDetailsViewController: UIViewController {
             
         } else {
             navigationController?.view.layer.add(Helper.topToBottomTransition(), forKey: nil)
-            _ = navigationController?.popViewController(animated: false)
+            navigationController?.popViewController(animated: false)
         }
     }
     
@@ -294,8 +294,8 @@ class ResortDetailsViewController: UIViewController {
                         realm.deleteAll()
                     }
                 }
-                let allavailabledest = AllAvailableDestination()
-                allavailabledest.destination = Constant.MyClassConstants.allDestinations
+                let allAvailableDest = allAvailableDestination()
+                allAvailableDest.destination = Constant.MyClassConstants.allDestinations
                 let dict = Constant.MyClassConstants.resortsDescriptionArray
                 let address = dict.address
                 
@@ -754,12 +754,7 @@ extension ResortDetailsViewController: UITableViewDataSource {
                     }
                 }
                 if let resortCode = Constant.MyClassConstants.resortsDescriptionArray.resortCode {
-                    let status = Helper.isResrotFavorite(resortCode: resortCode)
-                    if status {
-                        cell.favoriteButton.isSelected = true
-                    } else {
-                        cell.favoriteButton.isSelected = false
-                    }
+                    cell.favoriteButton.isSelected = Helper.isResrotFavorite(resortCode: resortCode)
                 }
                 cell.resortNameGradientView.backgroundColor = UIColor.clear
                 let frame = CGRect(x: 0, y: 300 - 68, width: cell.frame.size.width + 200, height: cell.resortNameGradientView.frame.size.height)

@@ -88,17 +88,9 @@ class WeatherViewController: UIViewController {
         if let countryCode = self.countryCode {
             resortNameLabel.text?.append(", \(countryCode)")
         }
-        
-        self.navigationController?.navigationBar.isHidden = false
+        navigationController?.navigationBar.isHidden = false
         weatherConditionLabel.text = resortWeather?.condition
-        
-//        let doneButton = UIBarButtonItem(image: UIImage(named: Constant.AlertPromtMessages.done), style: .plain, target: self, action: #selector(WeatherViewController.menuBackButtonPressed))
-//        doneButton.tintColor = UIColor.blue
-//
-//        //doneButton.tintColor = UIColor(red: 0/255.0, green: 128.0/255.0, blue: 255.0/255.0, alpha: 1.0)
-//        self.navigationItem.rightBarButtonItem = doneButton
-        
-        self.displayFarenheit()
+        displayFarenheit()
     
     }
     
@@ -173,7 +165,7 @@ class WeatherViewController: UIViewController {
     
     func menuBackButtonPressed(_ sender: UIBarButtonItem) {
         view.layer.add(Helper.topToBottomTransition(), forKey: nil)
-        self.dismiss(animated: true, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
 
     override func didReceiveMemoryWarning() {
