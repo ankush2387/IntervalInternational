@@ -69,15 +69,18 @@ class VacationSearchResultIPadController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        
+
+        navigationController?.navigationBar.isHidden = false
+        navigationController?.navigationBar.barTintColor = #colorLiteral(red: 0.2745098039, green: 0.5333333333, blue: 0.7568627451, alpha: 1)
+
         if !Constant.MyClassConstants.resortsArray.isEmpty {
             let inventoryData = Constant.MyClassConstants.resortsArray[0].inventory
             if let code = inventoryData?.currencyCode {
-                currencyCode = Helper.currencyCodeToSymbol(code: code)
+                let currencyHelper = CurrencyHelperLocator.sharedInstance.provideHelper()
+                let currency = currencyHelper.getCurrency(currencyCode: code)
+                currencyCode = ("\(currencyHelper.getCurrencyFriendlySymbol(currencyCode: currency.code))")
             }
         }
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
-        self.navigationController?.navigationBar.barTintColor = #colorLiteral(red: 0.2745098039, green: 0.5333333333, blue: 0.7568627451, alpha: 1)
         let nib = UINib(nibName: Constant.customCellNibNames.searchResultCollectionCell, bundle: nil)
         searchedDateCollectionView?.register(nib, forCellWithReuseIdentifier: Constant.customCellNibNames.searchResultCollectionCell)
         
@@ -1073,8 +1076,10 @@ extension VacationSearchResultIPadController: UICollectionViewDataSource {
                 } else {
                     
                     guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "RentalInventory", for: indexPath) as? RentalInventoryCVCell else { return UICollectionViewCell() }
-                    cell.setDataForRentalInventory(invetoryItem: inventoryItem, indexPath: indexPath)
-                    cell.setCurrencyCode(code: currencyCode)
+
+                    cell.setDataForRentalInventory(invetoryItem: inventoryItem, indexPath: indexPath, code: currencyCode)
+                    //cell.setCurrencyCode(code: currencyCode)
+
                     return cell
                 }
             } else if Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.EXCHANGE {
@@ -1166,7 +1171,10 @@ extension VacationSearchResultIPadController: UICollectionViewDataSource {
                         if combinedExactSearchItems[collectionView.tag].hasRentalAvailability() {
                             
                             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "RentalInventory", for: indexPath) as? RentalInventoryCVCell else { return UICollectionViewCell() }
-                            cell.setDataForRentalInventory( invetoryItem: combinedExactSearchItems[collectionView.tag].rentalAvailability!, indexPath: indexPath)
+                            if let rentalAvailability = combinedExactSearchItems[collectionView.tag].rentalAvailability {
+                                cell.setDataForRentalInventory( invetoryItem: rentalAvailability, indexPath: indexPath, code: currencyCode)
+                            }
+
                             return cell
                             
                         } else {
@@ -1182,8 +1190,11 @@ extension VacationSearchResultIPadController: UICollectionViewDataSource {
                         if combinedSurroundingSearchItems[collectionView.tag].hasRentalAvailability() {
                             
                             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.reUsableIdentifiers.resortInventoryCell, for: indexPath) as? RentalInventoryCVCell else { return UICollectionViewCell() }
-                            cell.setDataForRentalInventory( invetoryItem: combinedSurroundingSearchItems[collectionView.tag].rentalAvailability!, indexPath: indexPath)
-                            return cell
+                            if let rentalAvailability = combinedSurroundingSearchItems[collectionView.tag].rentalAvailability {
+                                cell.setDataForRentalInventory( invetoryItem: rentalAvailability, indexPath: indexPath, code: currencyCode)
+                            }
+                             return cell
+
                             
                         } else {
                             

@@ -37,8 +37,9 @@ class RentalInventoryCVCell: UICollectionViewCell {
         
     }
 
-    func setDataForRentalInventory(invetoryItem: Resort, indexPath: IndexPath) {
-        
+
+    func setDataForRentalInventory(invetoryItem: Resort, indexPath: IndexPath, code: String) {
+
         if let unit = (invetoryItem.inventory?.units[indexPath.item]) {
 
             let price = Int(unit.prices[0].price)

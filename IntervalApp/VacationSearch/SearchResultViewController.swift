@@ -62,10 +62,12 @@ class SearchResultViewController: UIViewController {
         super.viewWillAppear(animated)
         
         if !Constant.MyClassConstants.resortsArray.isEmpty {
-             let inventoryData = Constant.MyClassConstants.resortsArray[0].inventory
-             if let code = inventoryData?.currencyCode {
-                currencyCode = Helper.currencyCodeToSymbol(code: code)
-            }
+           let inventoryData = Constant.MyClassConstants.resortsArray[0].inventory
+           let currencyHelper = CurrencyHelperLocator.sharedInstance.provideHelper()
+           let currency = currencyHelper.getCurrency(currencyCode: (inventoryData?.currencyCode)! )
+           currencyCode = ("\(currencyHelper.getCurrencyFriendlySymbol(currencyCode: currency.code))")
+
+
         }
         navigationController?.navigationBar.isHidden = false
         createSections()
@@ -1002,6 +1004,7 @@ extension SearchResultViewController: UICollectionViewDelegate {
                     selectedSection = (collectionView.superview?.superview?.tag)!
                     selectedRow = collectionView.tag
                     Constant.MyClassConstants.selectedUnitIndex = indexPath.item
+
                     if collectionView.superview?.superview?.tag == 0 {
                         
                         if combinedExactSearchItems.count > 0 {
@@ -1285,7 +1288,7 @@ extension SearchResultViewController: UICollectionViewDataSource {
                     
                 } else {
                     let cell = self.getGetawayCollectionCell(indexPath: indexPath, collectionView: collectionView)
-                    cell.setDataForRentalInventory(invetoryItem: inventoryItem, indexPath: indexPath)
+                    cell.setDataForRentalInventory(invetoryItem: inventoryItem, indexPath: indexPath, code: currencyCode)
                     return cell
                 }
                 
@@ -1366,7 +1369,11 @@ extension SearchResultViewController: UICollectionViewDataSource {
                     } else if collectionView.superview?.superview?.tag == 0 && combinedExactSearchItems.count > 0 {
                         if combinedExactSearchItems[collectionView.tag].hasRentalAvailability() {
                             let cell = self.getGetawayCollectionCell(indexPath: indexPath, collectionView: collectionView)
-                            cell.setDataForRentalInventory( invetoryItem: combinedExactSearchItems[collectionView.tag].rentalAvailability!, indexPath: indexPath)
+
+                            if let rentalAvailability = combinedExactSearchItems[collectionView.tag].rentalAvailability {
+                                cell.setDataForRentalInventory( invetoryItem: rentalAvailability, indexPath: indexPath, code: currencyCode)
+                            }
+
                             return cell
                         } else {
                             let cell = self.getExchangeCollectionCell(indexPath: indexPath, collectionView: collectionView)
@@ -1377,7 +1384,9 @@ extension SearchResultViewController: UICollectionViewDataSource {
                     } else {
                         if combinedSurroundingSearchItems[collectionView.tag].hasRentalAvailability() {
                             let cell = self.getGetawayCollectionCell(indexPath: indexPath, collectionView: collectionView)
-                            cell.setDataForRentalInventory( invetoryItem: combinedSurroundingSearchItems[collectionView.tag].rentalAvailability!, indexPath: indexPath)
+
+                            guard let rentalAvailability = combinedSurroundingSearchItems[collectionView.tag].rentalAvailability else { return cell }
+                                cell.setDataForRentalInventory( invetoryItem: rentalAvailability, indexPath: indexPath, code: currencyCode)
                             return cell
                         } else {
                             let cell = self.getExchangeCollectionCell(indexPath: indexPath, collectionView: collectionView)
