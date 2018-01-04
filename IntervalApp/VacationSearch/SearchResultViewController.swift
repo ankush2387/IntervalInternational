@@ -62,11 +62,11 @@ class SearchResultViewController: UIViewController {
         super.viewWillAppear(animated)
         
         if !Constant.MyClassConstants.resortsArray.isEmpty {
+
            let inventoryData = Constant.MyClassConstants.resortsArray[0].inventory
            let currencyHelper = CurrencyHelperLocator.sharedInstance.provideHelper()
            let currency = currencyHelper.getCurrency(currencyCode: (inventoryData?.currencyCode)! )
            currencyCode = ("\(currencyHelper.getCurrencyFriendlySymbol(currencyCode: currency.code))")
-
 
         }
         navigationController?.navigationBar.isHidden = false

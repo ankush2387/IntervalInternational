@@ -81,6 +81,7 @@ class VacationSearchResultIPadController: UIViewController {
                 currencyCode = ("\(currencyHelper.getCurrencyFriendlySymbol(currencyCode: currency.code))")
             }
         }
+
         let nib = UINib(nibName: Constant.customCellNibNames.searchResultCollectionCell, bundle: nil)
         searchedDateCollectionView?.register(nib, forCellWithReuseIdentifier: Constant.customCellNibNames.searchResultCollectionCell)
         
@@ -1076,7 +1077,6 @@ extension VacationSearchResultIPadController: UICollectionViewDataSource {
                 } else {
                     
                     guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "RentalInventory", for: indexPath) as? RentalInventoryCVCell else { return UICollectionViewCell() }
-
                     cell.setDataForRentalInventory(invetoryItem: inventoryItem, indexPath: indexPath, code: currencyCode)
                     //cell.setCurrencyCode(code: currencyCode)
 
