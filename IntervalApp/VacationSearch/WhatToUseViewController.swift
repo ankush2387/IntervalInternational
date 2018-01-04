@@ -201,7 +201,7 @@ class WhatToUseViewController: UIViewController {
                 self?.selectedRow = -1
                 self?.selectedRowSection = -1
                 self?.tableView.reloadData()
-                self?.presentErrorAlert(UserFacingCommonError.serverError(error))
+                self?.presentErrorAlert(UserFacingCommonError.handleError(error))
                 
             })
             
@@ -210,7 +210,7 @@ class WhatToUseViewController: UIViewController {
             self?.selectedRow = -1
             self?.selectedRowSection = -1
             self?.tableView.reloadData()
-            self?.presentErrorAlert(UserFacingCommonError.serverError(error))
+            self?.presentErrorAlert(UserFacingCommonError.handleError(error))
         })
     }
     }
@@ -337,7 +337,7 @@ class WhatToUseViewController: UIViewController {
                 self?.selectedRow = -1
                 self?.selectedRowSection = -1
                 self?.tableView.reloadData()
-                self?.presentErrorAlert(UserFacingCommonError.serverError(error))
+                self?.presentErrorAlert(UserFacingCommonError.handleError(error))
                 
             })
             
@@ -347,7 +347,7 @@ class WhatToUseViewController: UIViewController {
             self?.selectedRowSection = -1
             self?.tableView.reloadData()
             self?.hideHudAsync()
-            self?.presentErrorAlert(UserFacingCommonError.serverError(error))
+            self?.presentErrorAlert(UserFacingCommonError.handleError(error))
         })
         
     }

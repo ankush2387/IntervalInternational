@@ -230,7 +230,7 @@ class CheckOutIPadViewController: UIViewController {
                 self.hideHudAsync()
             }, onError: {[weak self] error in
                 self?.hideHudAsync()
-                self?.presentErrorAlert(UserFacingCommonError.serverError(error))
+                self?.presentErrorAlert(UserFacingCommonError.handleError(error))
             })
             
         } else {
@@ -304,7 +304,7 @@ class CheckOutIPadViewController: UIViewController {
                         imageSlider.isHidden = false
                         self?.isAgreed = false
                         self?.checkoutTableView.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with: .automatic)
-                        self?.presentErrorAlert(UserFacingCommonError.serverError(error))
+                        self?.presentErrorAlert(UserFacingCommonError.handleError(error))
                     })
                     
                 } else {
@@ -333,7 +333,7 @@ class CheckOutIPadViewController: UIViewController {
                         imageSlider.isHidden = false
                         self?.isAgreed = false
                         self?.checkoutTableView.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with: .automatic)
-                        self?.presentErrorAlert(UserFacingCommonError.serverError(error))
+                        self?.presentErrorAlert(UserFacingCommonError.handleError(error))
                     })
                 }
                 
@@ -433,7 +433,7 @@ class CheckOutIPadViewController: UIViewController {
                 self?.isTripProtectionEnabled = false
                 self?.bookingTableView.reloadData()
                 self?.hideHudAsync()
-                self?.presentErrorAlert(UserFacingCommonError.serverError(error))
+                self?.presentErrorAlert(UserFacingCommonError.handleError(error))
             })
         } else {
             Constant.MyClassConstants.rentalFees.last?.insurance?.selected = shouldAddTripProtection
@@ -481,7 +481,7 @@ class CheckOutIPadViewController: UIViewController {
             self.performSegue(withIdentifier: Constant.segueIdentifiers.showRelinguishmentsDetailsSegue, sender: self)
         }(), errorCompletionBlock: { [unowned self] error  in
             self.hideHudAsync()
-            self.presentErrorAlert(UserFacingCommonError.serverError(error))
+            self.presentErrorAlert(UserFacingCommonError.handleError(error))
         })
     }
     
@@ -506,7 +506,7 @@ class CheckOutIPadViewController: UIViewController {
             self?.eplusAdded = !sender.checked
             Constant.MyClassConstants.exchangeFees[0].eplus?.selected = sender.checked
             self?.hideHudAsync()
-            self?.presentErrorAlert(UserFacingCommonError.serverError(error))
+            self?.presentErrorAlert(UserFacingCommonError.handleError(error))
             self?.checkSectionsForFees()
             self?.bookingTableView.reloadData()
             self?.checkoutTableView.reloadData()
@@ -724,7 +724,7 @@ class CheckOutIPadViewController: UIViewController {
                     
                 }, onError: { [weak self] error in
                     self?.hideHudAsync()
-                    self?.presentErrorAlert(UserFacingCommonError.serverError(error))
+                    self?.presentErrorAlert(UserFacingCommonError.handleError(error))
                 })
             }
             

@@ -339,7 +339,7 @@ class FevoritesResortController: UIViewController {
             
             let onError = { [weak self] (error: NSError?) in
                 intervalPrint(error as Any)
-                self?.presentErrorAlert(UserFacingCommonError.serverError(error))
+                self?.presentErrorAlert(UserFacingCommonError.handleError(error))
             }
             
             UserClient.removeFavoriteResort(userAccessToken,

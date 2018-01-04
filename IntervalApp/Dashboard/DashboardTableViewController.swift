@@ -120,7 +120,7 @@ class DashboardTableViewController: UITableViewController {
                 }
             }
             .onError { [weak self] error in
-                self?.presentErrorAlert(UserFacingCommonError.serverError(error as NSError))
+                self?.presentErrorAlert(UserFacingCommonError.handleError(error as NSError))
         }
     }
     
@@ -143,7 +143,7 @@ class DashboardTableViewController: UITableViewController {
                 Constant.MyClassConstants.dashBoardAlertsArray = Constant.MyClassConstants.getawayAlertsArray
                 self.readDates(accessToken: accessToken, request: rentalSearchDatesRequest, rentalAlert: rentalAlert)
             }
-            .onError { [weak self] error in self?.presentErrorAlert(UserFacingCommonError.serverError(error as NSError))
+            .onError { [weak self] error in self?.presentErrorAlert(UserFacingCommonError.handleError(error as NSError))
         }
     }
     
@@ -156,7 +156,7 @@ class DashboardTableViewController: UITableViewController {
                 
             }
             .onError { [weak self] error in
-                self?.presentErrorAlert(UserFacingCommonError.serverError(error as NSError))
+                self?.presentErrorAlert(UserFacingCommonError.handleError(error as NSError))
         }
     }
     

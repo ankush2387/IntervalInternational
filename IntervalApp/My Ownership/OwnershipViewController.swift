@@ -503,7 +503,7 @@ class OwnershipViewController: UIViewController {
             
         }, onError: { (error) in
             self.hideHudAsync()
-            self.presentErrorAlert(UserFacingCommonError.serverError(error))
+            self.presentErrorAlert(UserFacingCommonError.handleError(error))
 
         })
     }

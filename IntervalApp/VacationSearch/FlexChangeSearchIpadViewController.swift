@@ -145,7 +145,7 @@ class FlexChangeSearchIpadViewController: UIViewController {
                 
             }, onError: { [weak self] error in
                 self?.hideHudAsync()
-                self?.presentErrorAlert(UserFacingCommonError.serverError(error))
+                self?.presentErrorAlert(UserFacingCommonError.handleError(error))
             })
             
         }
@@ -181,7 +181,7 @@ class FlexChangeSearchIpadViewController: UIViewController {
             
         }, onError: { [weak self] error in
             self?.hideHudAsync()
-            self?.presentErrorAlert(UserFacingCommonError.serverError(error))
+            self?.presentErrorAlert(UserFacingCommonError.handleError(error))
         })
     }
 }

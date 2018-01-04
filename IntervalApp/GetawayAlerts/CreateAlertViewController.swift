@@ -228,7 +228,7 @@ class CreateAlertViewController: UIViewController {
                     
                 }) { [weak self] error in
                     self?.hideHudAsync()
-                    self?.presentErrorAlert(UserFacingCommonError.serverError(error))
+                    self?.presentErrorAlert(UserFacingCommonError.handleError(error))
                 }
             } else {
                 presentAlert(with: Constant.AlertPromtMessages.createAlertTitle, message: Constant.AlertMessages

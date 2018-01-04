@@ -35,7 +35,7 @@ class PaymentSelectionViewController: UIViewController {
         }, onError: { [unowned self] error in
             self.hideHudAsync()
             self.paymentSelectionTBLview.reloadData()
-            self.presentErrorAlert(UserFacingCommonError.serverError(error))
+            self.presentErrorAlert(UserFacingCommonError.handleError(error))
             
         })
     }
