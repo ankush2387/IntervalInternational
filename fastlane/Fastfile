@@ -51,6 +51,9 @@ end
 desc "Builds development target and uploads to HockeyApp"
 lane :development_manual do
 
+# Run Unit Tests
+scan(scheme: "IntervalApp")
+
 # Increment project build number
 increment_build_number(xcodeproj: "/Users/aolivas/interval-app-ios/IntervalApp.xcodeproj")
 buildNumber = get_build_number
@@ -61,8 +64,7 @@ commit_version_bump(force: true, message: "Auto-increment build version: " + bui
 # Push to remote/origin the version bump commit
 push_to_git_remote()
 
-# Run Unit Tests
-scan(scheme: "IntervalApp")
+sh("sudo ifconfig en0 down")
 
 # Package IPA with release configurations
 gym(workspace: "IntervalApp.xcworkspace",
@@ -77,9 +79,13 @@ export_method: "development"
 hockey(api_token: "98ee87f6ff104da086210a5ff4597b44",
 public_identifier: "bde61378ac204256b1e52748bd34f688",
 notes: "Changelog",
-notify: '0',
+notify: '1',
+status: "2",
+mandatory: "1",
 notes: "Develop Build (Uploaded via fastlane)."
 )
+
+sh("sudo ifconfig en0 up")
 
 end
 
