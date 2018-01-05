@@ -76,7 +76,7 @@ class ConfirmationViewController: UIViewController {
             Constant.omnitureEvars.eVar41: Constant.omnitureCommonString.vactionSearch ,
             Constant.omnitureCommonString.productItem: Constant.MyClassConstants.selectedResort.resortCode ?? "" ,
             Constant.omnitureEvars.eVar13: "\(String(describing: Constant.MyClassConstants.continueToPayResponse.view?.fees?.rental?.confirmationNumber))",
-            Constant.omnitureEvars.eVar22: "\(17 - Constant.holdingTime)",
+            Constant.omnitureEvars.eVar22: "\(18 - Constant.holdingTime)",
             Constant.omnitureEvars.eVar29: Helper.convertDateToString(date: Constant.MyClassConstants.vacationSearchShowDate, format: Constant.MyClassConstants.dateFormat)  ,
             Constant.omnitureEvars.eVar30: "" ,
             Constant.omnitureEvars.eVar37: Helper.selectedSegment(index: Constant.MyClassConstants.searchForSegmentIndex) ,

@@ -51,6 +51,7 @@ class GoogleMapViewController: UIViewController {
     var applyButton: UIBarButtonItem!
     var locationManager = CLLocationManager()
     var needCameraChange = false
+    var selectedDestination = AreaOfInfluenceDestination()
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
@@ -255,7 +256,7 @@ class GoogleMapViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(loginNotification), name: NSNotification.Name(rawValue: Constant.notificationNames.reloadFavoritesTabNotification), object: nil)
         self.googleMapSearchBar.delegate = self
     }
-    //***** Method called when search result map button pressed *****//
+    // MARK: -***** Method called when search result map button pressed *****//
     
     func resortShowMapPressedAtIndex(sender: UIButton) {
         
@@ -280,6 +281,7 @@ class GoogleMapViewController: UIViewController {
             
             showHudAsync()
             DirectoryClient.getResortsWithinGeoArea(Session.sharedSession.userAccessToken, geoArea: Constant.MyClassConstants.destinations![sender.tag].geoArea, onSuccess: { (response) in
+                self.needCameraChange = true
                 Constant.MyClassConstants.resortsArray.removeAll()
                 Constant.MyClassConstants.resortsArray = response
                 Constant.MyClassConstants.googleMarkerArray.removeAll()
@@ -298,6 +300,13 @@ class GoogleMapViewController: UIViewController {
                     if self.mapTableView != nil {
                         self.mapTableView.reloadData()
                     }
+                } else {
+                    
+                    if let destination = Constant.MyClassConstants.destinations?[sender.tag] {
+                        self.selectedDestination = destination
+                    }
+                    self.mapView.clear()
+                    self.showDestinationWithoutResorts()
                 }
                 
                 self.hideHudAsync()
@@ -413,30 +422,49 @@ class GoogleMapViewController: UIViewController {
     }
     
     func apiCallWithRectangleRequest(request: GeoArea) {
-        DirectoryClient.getResortsWithinGeoArea(Constant.MyClassConstants.systemAccessToken, geoArea: request, onSuccess: { (response) in
+        DirectoryClient.getResortsWithinGeoArea(Constant.MyClassConstants.systemAccessToken, geoArea: request, onSuccess: { response in
             
-            if response.count > 0 {
-                
+            if !response.isEmpty {
                 Constant.MyClassConstants.googleMarkerArray.removeAll()
                 Constant.MyClassConstants.resortsArray.removeAll()
                 Constant.MyClassConstants.resortsArray = response
                 self.mapView.clear()
                 self.displaySearchedResort()
-                
+            } else {
+                Constant.MyClassConstants.googleMarkerArray.removeAll()
+                Constant.MyClassConstants.resortsArray.removeAll()
+                Constant.MyClassConstants.resortsArray = response
+                self.mapView.clear()
+                self.showDestinationWithoutResorts()
             }
             if Constant.RunningDevice.deviceIdiom == .pad && !self.hideSideView && self.containerView != nil && self.containerView.isHidden == true {
                 Constant.MyClassConstants.addResortSelectedIndex.removeAll()
                 self.alertView.isHidden = true
                 self.mapTableView.isHidden = false
                 self.mapTableView.reloadData()
-                
             }
             self.hideHudAsync()
-        }) {
-            (_) in
-            self.hideHudAsync()
+        }) { [weak self] _ in
+            self?.hideHudAsync()
         }
     }
+    
+    func showDestinationWithoutResorts() {
+        if needCameraChange {
+            needCameraChange = false
+            if let latitude = selectedDestination.geoArea?.southEastCoordinate?.latitude, let longitude = selectedDestination.geoArea?.northWestCoordinate?.longitude {
+                let targetDestination = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+                mapView.camera = GMSCameraPosition.camera(withTarget: targetDestination, zoom: 8)
+            }
+        }
+        
+        if !Constant.MyClassConstants.isRunningOnIphone && self.mapTableView != nil {
+            mapTableView.isHidden = false
+            alertView.isHidden = true
+            mapTableView.reloadData()
+        }
+    }
+    
     //***** Updating map with resorts getting from map search bar from resorsts or destination *****//
     func displaySearchedResort() {
         
@@ -1122,8 +1150,9 @@ class GoogleMapViewController: UIViewController {
             i = i + 1
         }
         Constant.MyClassConstants.googleMarkerArray.removeAll()
-        self.mapView.clear()
-        self.displaySearchedResort()
+        mapView.clear()
+        needCameraChange = true
+        displaySearchedResort()
         
         if Constant.RunningDevice.deviceIdiom == .pad {
             mapTableView.reloadData()
@@ -1156,11 +1185,9 @@ extension GoogleMapViewController: CLLocationManagerDelegate {
             locationManager.startUpdatingLocation()
             mapView.isMyLocationEnabled = true
         } else {
-            
-            let latitude: Double = 40.68
-            let longitude: Double = -97.83
-            mapView.camera = GMSCameraPosition.camera(withLatitude: latitude, longitude: longitude, zoom: 5.0)
-            
+            let latitude = 40.68
+            let longitude = -97.83
+            mapView.camera = GMSCameraPosition.camera(withLatitude: latitude, longitude: longitude, zoom: 8.0)
         }
     }
     
@@ -1504,7 +1531,12 @@ extension GoogleMapViewController: UITableViewDelegate {
                     
                     showHudAsync()
                     needCameraChange = true
-                    self.apiCallWithRectangleRequest(request: Constant.MyClassConstants.destinations![indexPath.row].geoArea!)
+                    if let geoArea = Constant.MyClassConstants.destinations?[indexPath.row].geoArea {
+                        if let destination = Constant.MyClassConstants.destinations?[indexPath.row] {
+                            self.selectedDestination = destination
+                        }
+                        self.apiCallWithRectangleRequest(request: geoArea)
+                    }
                     
                     self.hidePopUpView()
                 }

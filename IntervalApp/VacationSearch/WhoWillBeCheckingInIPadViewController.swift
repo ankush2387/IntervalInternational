@@ -31,7 +31,6 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
     var dropDownSelectionRow = -1
     var dropDownSelectionSection = -1
     var holdingTimer: Timer!
-    var holdingTime = 17
     var decreaseValue = 1
     var selectedCountryIndex: Int?
     var isFromRenewals = false
