@@ -27,7 +27,7 @@ lane :development do
 scan(scheme: "IntervalApp")
 
 # Increment project build number
-increment_build_number(xcodeproj: "/Users/aolivas/interval-app-ios/IntervalApp.xcodeproj")
+increment_build_number(xcodeproj: "/Users/aolivas/bamboo-agent-home/xml-data/build-dir/IM-IMB-BLD/IntervalApp.xcodeproj")
 buildNumber = get_build_number
 
 # Commit build number bump
