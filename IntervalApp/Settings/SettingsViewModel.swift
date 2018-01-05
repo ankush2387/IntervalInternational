@@ -20,10 +20,22 @@ final class SettingsViewModel {
     
     // MARK: - Private properties
     private let disposeBag = DisposeBag()
-    
-    init(appBundle: AppBundle, encryptedStore: EncryptedItemDataStore, authentication: BiometricAuthentication) {
+
+    // MARK: - Lifecycle
+
+    convenience init () {
+        self.init(appBundle: AppBundle(),
+                  encryptedStore: Keychain(),
+                  adobeConfigManager: ADBMobileConfigManager(),
+                  authentication: BiometricAuthentication())
+    }
+
+    init(appBundle: AppBundle,
+         encryptedStore: EncryptedItemDataStore,
+         adobeConfigManager: ADBMobileConfigManager,
+         authentication: BiometricAuthentication) {
         
-        appVersion = Observable("App Version: \(appBundle.appVersion)")
+        appVersion = Observable("App Version: \(appBundle.appVersion) (\(appBundle.build))")
         let touchIDEnabled = (try? encryptedStore.getItem(for: Persistent.touchIDEnabled.key, ofType: Bool()) ?? false) ?? false
         
         var viewModels = [SimpleCellViewModel]()
@@ -42,6 +54,24 @@ final class SettingsViewModel {
 
         privacyPolicy = Observable("Privacy Policy".localized())
         viewModels.append(SimpleLabelLabelCellViewModel(label2: privacyPolicy.value))
+
+        let simpleLabelSwitchCellViewModel = SimpleLabelSwitchCellViewModel(label: "Custom Omniture URL",
+                                                                            switchOn: adobeConfigManager.customURLPathBeingUsed)
+
+        simpleLabelSwitchCellViewModel.switchOn.observeNext { enabled in
+
+            if enabled {
+                // Save then show pop up confirming
+            } else {
+                try? adobeConfigManager.reset()
+            }
+
+        }.dispose(in: disposeBag)
+
+        viewModels.append(simpleLabelSwitchCellViewModel)
+
+        let simpleButtonCellViewModel = SimpleButtonCellViewModel(buttonCellTitle: "Sign Out".localized())
+        viewModels.append(simpleButtonCellViewModel)
         cellViewModels = viewModels
     }
 }

@@ -21,6 +21,12 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     var appCoordinator = AppCoordinator()
     
     // MARK: - Public functions
+    
+    func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey : Any]? = nil) -> Bool {
+        setAdobeAnalytics()
+        return true
+    }
+    
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
@@ -28,7 +34,6 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         setXCTLogger()
         setGoogleMapsAPI()
         setHockeyManager()
-        setAdobeAnalytics()
         
         // TODO: There might need to be check to see if the iPhone device is jail broken.
         // Otherwise our payloads may be intercepted from third party applications
@@ -100,7 +105,12 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         #if DEBUG
             enable = true
         #endif
-        
+
+        let adobeConfigManager = ADBMobileConfigManager()
+        if let path = adobeConfigManager.path {
+            ADBMobile.overrideConfigPath(path)
+        }
+
         ADBMobile.setDebugLogging(enable)
     }
 

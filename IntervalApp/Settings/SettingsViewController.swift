@@ -23,7 +23,7 @@ final class SettingsViewController: UIViewController {
     
     // Since we are currently forced to use a storyBoard we cannot inject a viewModel
     // Therefore, must initialize the dependency internally...
-    fileprivate let viewModel = SettingsViewModel(appBundle: AppBundle(), encryptedStore: Keychain(), authentication: BiometricAuthentication())
+    fileprivate let viewModel = SettingsViewModel()
     
     // MARK: - Overrides
     override func viewDidLoad() {
@@ -39,8 +39,6 @@ final class SettingsViewController: UIViewController {
         setMenuButton()
         registerSimpleCellViews(withTableView: tableView)
         tableView.tableFooterView = UIView()
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Sign Out".localized(),
-                                                            style: .plain, target: self, action: #selector(signOut))
     }
     
     private func bindUI() {
@@ -65,7 +63,7 @@ final class SettingsViewController: UIViewController {
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.MyClassConstants.popToLoginView), object: nil)
     }
 
-    @objc private func signOut() {
+    fileprivate func signOut() {
         // Horrible sigleton code moved from other viewController here...
         // Also this singleton pattern forces me to import the DarwinSDK just to reset the PointsProgram.
         // I could add code to the constants class to do it via an interface but don't want to keep feeding the beast.
@@ -95,6 +93,12 @@ extension SettingsViewController: UITableViewDataSource, SimpleViewModelBinder {
 
         if let cell = cell as? SimpleLabelLabelCell {
             cell.accessoryType = .disclosureIndicator
+        }
+
+        if let cell = cell as? SimpleButtonCell {
+            cell.buttonPressed = { [weak self] in
+                self?.signOut()
+            }
         }
 
         bindSimpleCellView(cell, withSimpleViewModel: cellViewModel)

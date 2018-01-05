@@ -236,6 +236,7 @@
 		3C2EABEC1FB21DBE00BD2B2D /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C2EABEB1FB21DBE00BD2B2D /* SettingsViewController.swift */; };
 		3C2EABF01FB244ED00BD2B2D /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C2EABEF1FB244ED00BD2B2D /* SettingsViewModel.swift */; };
 		3C367B111F86B66C00056394 /* AutoLogoutTimerSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C367B101F86B66C00056394 /* AutoLogoutTimerSpec.swift */; };
+		3C409295200014D900658D06 /* ADBMobileConfigManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C409294200014D900658D06 /* ADBMobileConfigManager.swift */; };
 		3C466B621F86862D002D43F7 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C466B611F86862D002D43F7 /* AppCoordinator.swift */; };
 		3C466B641F86884A002D43F7 /* AutoLogoutTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C466B631F86884A002D43F7 /* AutoLogoutTimer.swift */; };
 		3C4957611F9145BB00B7727D /* RenewelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C4957601F9145BB00B7727D /* RenewelViewController.swift */; };
@@ -638,6 +639,7 @@
 		3C367B0E1F86B66C00056394 /* IntervalAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = IntervalAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3C367B101F86B66C00056394 /* AutoLogoutTimerSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoLogoutTimerSpec.swift; sourceTree = "<group>"; };
 		3C367B121F86B66C00056394 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3C409294200014D900658D06 /* ADBMobileConfigManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ADBMobileConfigManager.swift; sourceTree = "<group>"; };
 		3C466B611F86862D002D43F7 /* AppCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		3C466B631F86884A002D43F7 /* AutoLogoutTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoLogoutTimer.swift; sourceTree = "<group>"; };
 		3C4957601F9145BB00B7727D /* RenewelViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RenewelViewController.swift; sourceTree = "<group>"; };
@@ -811,6 +813,7 @@
 			children = (
 				3AF870171EA63B8400056A14 /* ADBMobile.h */,
 				3AF870181EA63B8400056A14 /* ADBMobileConfig.json */,
+				3C409294200014D900658D06 /* ADBMobileConfigManager.swift */,
 			);
 			name = "Adobe Analytics";
 			path = IntervalApp;
@@ -2238,6 +2241,7 @@
 				3A3A012F1C99BD0B00B7EC37 /* BedroomSizeViewController.swift in Sources */,
 				3C584A231FBCA63A00584831 /* UIViewController+SimpleActionSheetPicker.swift in Sources */,
 				E94FB5EA1EF0609C00314C5D /* VerticalProgressView.swift in Sources */,
+				3C409295200014D900658D06 /* ADBMobileConfigManager.swift in Sources */,
 				E9ED1B591F44B89A00794C53 /* CertificateInfoViewController.swift in Sources */,
 				3A3BE3ED1CA0441200CDE3AA /* MyOwnershipAvailablePointTooolTableViewCell.swift in Sources */,
 				089416731F72D94300F03229 /* BedroomTableViewCell.swift in Sources */,

@@ -16,9 +16,10 @@ enum Persistent: String {
     case password
     case encryption
     case touchIDEnabled
+    case newAppInstance
+    case adobeMobileConfig
     case notificationTopic
     case appHasPreviousLogin
-    case newAppInstance
 
     var key: String {
         
