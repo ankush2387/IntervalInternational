@@ -436,6 +436,7 @@ class Constant: NSObject {
         
         static var inventoryPrice = [InventoryPrice]()
         static var selectedResort = Resort()
+        static var selectedExchangeCigPoints = 0
         static var selectedExchange = ""
         
         static var paymentMethodTitle = "Payment Method".localized()
