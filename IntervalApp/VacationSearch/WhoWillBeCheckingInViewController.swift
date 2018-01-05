@@ -739,13 +739,12 @@ extension WhoWillBeCheckingInViewController: UITableViewDataSource {
                     cell.resortName?.text = openWeek.resort?.resortName
                 } else if let deposits = filterRelinquishments.deposit {
                     cell.resortName?.text = deposits.resort?.resortName
-                } else if filterRelinquishments.pointsProgram != nil {
+                } else {
                     if Constant.MyClassConstants.isCIGAvailable {
                         cell.resortDetailsButton.isHidden = true
                         cell.lblHeading.text = "CIG Points"
-                        if let availablePoints = Constant.MyClassConstants.exchangeViewResponse.relinquishment?.pointsProgram?.availablePoints {
-                            cell.resortName?.text = "\(availablePoints)"
-                        }
+                        cell.resortName?.text = "\(Constant.MyClassConstants.selectedExchangeCigPoints)".localized()
+                        
                     }
                 }
                 cell.resortDetailsButton.addTarget(self, action: #selector(WhoWillBeCheckingInViewController.resortDetailsClicked(_:)), for: .touchUpInside)

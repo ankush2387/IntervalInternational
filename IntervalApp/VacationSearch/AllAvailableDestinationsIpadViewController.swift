@@ -292,7 +292,7 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
                     self.hideHudAsync()
                     
                     Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.response = response
-                    guard let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval() else {return self.hideHudAsync()}
+                    guard let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval() else { return self.hideHudAsync() }
                     // Update active interval
                     Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
                     Helper.helperDelegate = self
@@ -324,7 +324,7 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
                  onSuccess: { (response) in
                     Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.response = response
                     // Get activeInterval
-                    guard let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval() else {return}
+                    guard let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval() else { return }
                     
                     // Update active interval
                     Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)

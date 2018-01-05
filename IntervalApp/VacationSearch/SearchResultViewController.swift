@@ -909,6 +909,7 @@ extension SearchResultViewController: UICollectionViewDelegate {
                             }
                             if let inventory = exactMatchResortsArrayExchange[collectionView.tag].inventory {
                                 self.getFilterRelinquishments(selectedInventoryUnit: Inventory(), selectedIndex: indexPath.item, selectedExchangeInventory: inventory)
+                                Constant.MyClassConstants.selectedExchangeCigPoints = inventory.buckets[indexPath.row].pointsCost
                             }
                         } else {
                             if let resort = surroundingMatchResortsArrayExchange[collectionView.tag].resort {
@@ -916,6 +917,7 @@ extension SearchResultViewController: UICollectionViewDelegate {
                             }
                             if let inventory = surroundingMatchResortsArrayExchange[collectionView.tag].inventory {
                                 self.getFilterRelinquishments(selectedInventoryUnit: Inventory(), selectedIndex: indexPath.item, selectedExchangeInventory: inventory)
+                                Constant.MyClassConstants.selectedExchangeCigPoints = inventory.buckets[indexPath.row].pointsCost
                             }
                         }
                     

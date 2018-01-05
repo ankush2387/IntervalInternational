@@ -53,41 +53,48 @@ class DashboardIPadTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         //Get all alerts
-        if let accessToken = Session.sharedSession.userAccessToken {
-            readAllRentalAlerts(accessToken: accessToken)
-        }
         title = Constant.ControllerTitles.dashboardTableViewController
-        showHudAsync()
-        let delayInSeconds = 1.5
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + delayInSeconds) {
-            
-            Helper.getTopDeals(senderVC: self)
-            Helper.getFlexExchangeDeals(senderVC: self) { (success) in
-                if success {
-                    DispatchQueue.main.async {[weak self] in
-                        guard let strongSelf = self else { return }
-                        strongSelf.getNumberOfSections()
+        if let accessToken = Session.sharedSession.userAccessToken {
+            //Get all alerts
+            readAllRentalAlerts(accessToken: accessToken)
+            showHudAsync()
+            ClientAPI.sharedInstance.readTopTenDeals(for: accessToken)
+                .then { topTenDeals in
+                    Constant.MyClassConstants.topDeals = topTenDeals
+                    ClientAPI.sharedInstance.readFlexchangeDeals(for: accessToken)
+                        .then { [weak self] flexExchangeDeal in
+                            guard let strongSelf = self else { return }
+                            Constant.MyClassConstants.flexExchangeDeals = flexExchangeDeal
+                            strongSelf.showGetaways = true
+                            strongSelf.getNumberOfSections()
+                            strongSelf.homeTableView.reloadData()
+                            strongSelf.hideHudAsync()
+                        }
+                        .onError { [weak self] error in
+                           guard let strongSelf = self else { return }
+                            strongSelf.presentErrorAlert(UserFacingCommonError.handleError(error))
+                            strongSelf.hideHudAsync()
                     }
-                    self.homeTableView.reloadData()
-                    
-                } else {
-                    
                 }
+                .onError { [weak self] error in self?.presentErrorAlert(UserFacingCommonError.handleError(error))
+                    self?.hideHudAsync()
             }
-            //***** Setup the hamburger menu.  This will reveal the side menu. *****//
-            if let rvc = self.revealViewController() {
-                //set SWRevealViewController's Delegate
-                rvc.delegate = self
-                
-                //***** Add the hamburger menu *****//
-                let menuButton = UIBarButtonItem(image: UIImage(named:Constant.assetImageNames.ic_menu), style: .plain, target: rvc, action:#selector(SWRevealViewController.revealToggle(_:)))
-                menuButton.tintColor = UIColor.white
-                
-                self.navigationItem.leftBarButtonItem = menuButton
-                
-                //***** This line allows the user to swipe left-to-right to reveal the menu. We might want to comment this out if it becomes confusing. *****//
-                self.view.addGestureRecognizer( rvc.panGestureRecognizer() )
-            }
+
+        }
+        
+        //***** Setup the hamburger menu.  This will reveal the side menu. *****//
+        if let rvc = self.revealViewController() {
+            //set SWRevealViewController's Delegate
+            rvc.delegate = self
+            
+            //***** Add the hamburger menu *****//
+            let menuButton = UIBarButtonItem(image: UIImage(named:Constant.assetImageNames.ic_menu), style: .plain, target: rvc, action:#selector(SWRevealViewController.revealToggle(_:)))
+            menuButton.tintColor = UIColor.white
+            
+            self.navigationItem.leftBarButtonItem = menuButton
+            
+            //***** This line allows the user to swipe left-to-right to reveal the menu. We might want to comment this out if it becomes confusing. *****//
+            self.view.addGestureRecognizer( rvc.panGestureRecognizer() )
         }
     }
     
@@ -110,7 +117,6 @@ class DashboardIPadTableViewController: UITableViewController {
             self?.presentErrorAlert(UserFacingCommonError.handleError(error as NSError))
         }
     }
-    
     
     func readRentalAlert(accessToken: DarwinAccessToken, alertId: Int64) {
         Constant.MyClassConstants.searchDateResponse.removeAll()
