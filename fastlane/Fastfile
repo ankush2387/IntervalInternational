@@ -24,34 +24,6 @@ desc "Builds development target and uploads to HockeyApp"
 lane :development do
 
 # Run Unit Tests
-scan(scheme: "IntervalApp", output_types: "junit")
-
-# Increment project build number
-increment_build_number(xcodeproj: "/Users/aolivas/interval-app-ios/IntervalApp.xcodeproj")
-buildNumber = get_build_number
-
-# Package IPA with release configurations
-gym(workspace: "IntervalApp.xcworkspace",
-configuration: "Release",
-scheme: "IntervalApp",
-silent: true,
-clean: true,
-output_directory: "/Users/aolivas/exchange-ios-ipaholder",
-output_name: "build-" + buildNumber + ".ipa",
-export_method: "development"
-)
-
-# Commit build number bump
-commit_version_bump(force: true, message: "Auto-increment build version: " + buildNumber)
-
-# Push to remote/origin the version bump commit
-push_to_git_remote(remote: "origin", local_branch: "HEAD", remote_branch: "develop", force: true, tags: true)
-end
-
-desc "Builds development target and uploads to HockeyApp"
-lane :development_manual do
-
-# Run Unit Tests
 scan(scheme: "IntervalApp")
 
 # Increment project build number
@@ -64,6 +36,7 @@ commit_version_bump(force: true, message: "Auto-increment build version: " + bui
 # Push to remote/origin the version bump commit
 push_to_git_remote()
 
+# Shut down ethernet connection
 sh("sudo ifconfig en0 down")
 
 # Package IPA with release configurations
@@ -85,6 +58,7 @@ mandatory: "1",
 notes: "Develop Build (Uploaded via fastlane)."
 )
 
+# Activate ethernet connection
 sh("sudo ifconfig en0 up")
 
 end
