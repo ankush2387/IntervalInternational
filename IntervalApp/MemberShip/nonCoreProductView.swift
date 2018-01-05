@@ -19,7 +19,7 @@ class nonCoreProductView: UIView {
     @IBOutlet weak var nameLabelLeadingConstraint: NSLayoutConstraint!
     @IBOutlet weak var expirationDateLabel: UILabel!
     @IBOutlet weak var expiresLabelLeadingConstraint: NSLayoutConstraint!
-    
+    @IBOutlet weak var expireLabel: UILabel!
     override init(frame: CGRect) {
         super.init(frame: frame)
         initializeView()
