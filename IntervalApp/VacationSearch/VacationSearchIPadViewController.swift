@@ -156,7 +156,7 @@ class VacationSearchIPadViewController: UIViewController, UITableViewDelegate, U
             menuButton.tintColor = UIColor.white
             self.parent!.navigationItem.leftBarButtonItem = menuButton
             
-            moreButton = UIBarButtonItem(image: UIImage(named: Constant.assetImageNames.MoreNav), style: .plain, target: self, action: #selector(MoreNavButtonPressed(_:)))
+            moreButton = UIBarButtonItem(image: UIImage(named: Constant.assetImageNames.MoreNav), style: .plain, target: self, action: #selector(moreNavButtonPressed(_:)))
             
             moreButton!.tintColor = UIColor.white
             
@@ -360,14 +360,17 @@ class VacationSearchIPadViewController: UIViewController, UITableViewDelegate, U
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
     }
-    func MoreNavButtonPressed(_ sender: UIBarButtonItem) {
-        let actionSheetController: UIAlertController = UIAlertController(title: Constant.buttonTitles.searchOption, message: "", preferredStyle: .actionSheet)
+    func moreNavButtonPressed(_ sender: UIBarButtonItem) {
+        let actionSheetController = UIAlertController(title: "", message: Constant.buttonTitles.searchOption, preferredStyle: .actionSheet)
         
-        //***** Create and add the View my recent search *****//
-        let viewMyRecentSearchAction: UIAlertAction = UIAlertAction(title: Constant.buttonTitles.viewMyRecentSearches, style: .default) { _ -> Void in
-            //Just dismiss the action sheet
+        let attributedText = NSMutableAttributedString(string: Constant.buttonTitles.searchOption)
+        
+        let range = NSRange(location: 0, length: attributedText.length)
+        attributedText.addAttribute(NSKernAttributeName, value: 1.5, range: range)
+        if let font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: 18.0) {
+            attributedText.addAttribute(NSFontAttributeName, value: font, range: range)
+            actionSheetController.setValue(attributedText, forKey: "attributedMessage")
         }
-        actionSheetController.addAction(viewMyRecentSearchAction)
         //***** Create and add the Reset my search *****//
         let resetMySearchAction: UIAlertAction = UIAlertAction(title: Constant.buttonTitles.resetMySearch, style: .default) { _ -> Void in
             Constant.MyClassConstants.whereTogoContentArray.removeAllObjects()
