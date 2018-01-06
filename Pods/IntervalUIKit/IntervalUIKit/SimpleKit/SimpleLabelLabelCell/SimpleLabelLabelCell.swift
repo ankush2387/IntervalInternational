@@ -30,10 +30,9 @@ open class SimpleLabelLabelCell: SimpleTableViewCell {
     }
 
     open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        let font = IntervalThemeFactory.deviceTheme.font
-        label1.font = font
+        label1.font = IntervalThemeFactory.deviceTheme.font
         label1.textColor = IntervalThemeFactory.deviceTheme.primaryTextColor
-        label2.font = font
-        label2.textColor = (label1.text ?? "").isEmpty ? IntervalThemeFactory.deviceTheme.primaryTextColor : IntervalThemeFactory.deviceTheme.secondaryTextColor
+        label2.font = IntervalThemeFactory.deviceTheme.font
+        label2.textColor = IntervalThemeFactory.deviceTheme.primaryTextColor
     }
 }

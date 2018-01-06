@@ -50,6 +50,13 @@ public extension SimpleViewModelBinder {
             view.viewModel = viewModel
         case (let viewModel as SimpleButtonCellViewModel, let view as SimpleButtonCell):
             view.viewModel = viewModel
+        case (let viewModel as SimpleLabelTextLabelTextCellViewModel, let view as SimpleLabelTextLabelTextCell):
+            view.viewModel = viewModel
+        case (let viewModel as SimpleTextFieldCellViewModel, let view as SimpleTextFieldCell):
+            view.viewModel = viewModel
+        case (let viewModel as SimpleLabelTextFieldLabelTextFieldButtonButtonCellViewModel, let view as SimpleLabelTextFieldLabelTextFieldButtonButtonCell):
+            view.viewModel = viewModel
+
         default:
             fatalError("Could not match SimpleViewModel with SimpleCellView!")
         }

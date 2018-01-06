@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="101" id="KGk-i7-Jjw" customClass="SimpleTextFieldCell" customModule="IntervalUIKit" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="504" height="101"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="504" height="100.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="UaT-ul-Oef" customClass="SimpleMaskedTextField" customModule="IntervalUIKit" customModuleProvider="target">
+                        <rect key="frame" x="45" y="23" width="311" height="55"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="55" id="0el-SK-M6K"/>
+                            <constraint firstAttribute="width" constant="311" id="ivy-vX-bIa"/>
+                        </constraints>
+                        <nil key="textColor"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <textInputTraits key="textInputTraits"/>
+                    </textField>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="UaT-ul-Oef" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="23" id="JNa-eX-UdH"/>
+                    <constraint firstAttribute="bottom" secondItem="UaT-ul-Oef" secondAttribute="bottom" constant="22" id="czV-t6-XFg"/>
+                    <constraint firstItem="UaT-ul-Oef" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="45" id="j9Q-Ki-6jw"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="textField" destination="UaT-ul-Oef" id="L95-KR-fDL"/>
+            </connections>
+            <point key="canvasLocation" x="126" y="103"/>
+        </tableViewCell>
+    </objects>
+</document>
