@@ -11,6 +11,15 @@ import Foundation
 struct ADBMobileConfigManager {
 
     // MARK: - Public properties
+    var isRunningInTestingEnvironment: Bool {
+        switch intervalConfig.getEnvironment() {
+        case .staging_dns, .staging, .qa_dns, .qa2_dns, .qa2, .qa, .omniture, .development2, .development:
+            return true
+        default:
+            return false
+        }
+    }
+
     var customURLPathBeingUsed: Bool {
         guard let path = try? decryptedStore.getItem(for: Persistent.adobeMobileConfig.key, ofType: String()) else {
             return false
@@ -19,7 +28,24 @@ struct ADBMobileConfigManager {
         return !path.unwrappedString.isEmpty
     }
 
-    var path: String? {
+    var base: String? {
+        guard let customServerURL = try? decryptedStore.getItem(for: Persistent.adobeMobileConfigCustomURL.key, ofType: String()),
+        !customServerURL.unwrappedString.isEmpty else {
+            return nil
+        }
+        
+        return customServerURL?.components(separatedBy: ":").first
+    }
+
+    var port: String? {
+        guard let customServerURL = try? decryptedStore.getItem(for: Persistent.adobeMobileConfigCustomURL.key, ofType: String()),
+        !customServerURL.unwrappedString.isEmpty else {
+            return nil
+        }
+        return customServerURL?.components(separatedBy: ":").last
+    }
+
+    var configFilePathURL: String? {
 
         guard let path = try? decryptedStore.getItem(for: Persistent.adobeMobileConfig.key, ofType: String()),
         !path.unwrappedString.isEmpty else {
@@ -30,6 +56,7 @@ struct ADBMobileConfigManager {
     }
 
     // MARK: - Private properties
+    private let intervalConfig: Config
     private let decryptedStore: DecryptedItemDataStore
     private let directoryForOriginalConfigFile = Bundle.main.url(forResource: "ADBMobileConfig", withExtension: "json")
     private var documentsDirectory: URL? {
@@ -38,17 +65,18 @@ struct ADBMobileConfigManager {
     }
 
     // MARK: - Lifecycle
-    init(decryptedStore: DecryptedItemDataStore) {
+    init(decryptedStore: DecryptedItemDataStore, intervalConfig: Config) {
         self.decryptedStore = decryptedStore
+        self.intervalConfig = intervalConfig
     }
 
     init() {
-        self.init(decryptedStore: UserDafaultsWrapper())
+        self.init(decryptedStore: UserDafaultsWrapper(), intervalConfig: Config.sharedInstance)
     }
 
     // MARK: - Public functions
     /// Sets a custom Omniture URL
-    func set(server: String, useSSL: Bool) throws {
+    func set(serverURL: String) throws {
         
         guard let url = directoryForOriginalConfigFile else {
             throw CommonErrors.parsingError
@@ -68,8 +96,8 @@ struct ADBMobileConfigManager {
                 throw CommonErrors.parsingError
             }
             
-            analytics["server"] = server
-            analytics["ssl"] = useSSL
+            analytics["server"] = serverURL
+            analytics["ssl"] = !serverURL.contains(":")
             object["analytics"] = analytics
 
             guard JSONSerialization.isValidJSONObject(object) else {
@@ -89,6 +117,7 @@ struct ADBMobileConfigManager {
 
             let filename = directory.appendingPathComponent("ADBMobileConfig.json")
             try json.write(to: filename, atomically: true, encoding: String.Encoding.utf8)
+            try decryptedStore.save(item: serverURL, for: Persistent.adobeMobileConfigCustomURL.key)
             try decryptedStore.save(item: filename.absoluteString, for: Persistent.adobeMobileConfig.key)
 
         } catch {
@@ -98,6 +127,11 @@ struct ADBMobileConfigManager {
 
     /// Erases custom Omniture URL, and sets the default
     func reset() throws {
-        return try decryptedStore.save(item: "", for: Persistent.adobeMobileConfig.key)
+        do {
+            try decryptedStore.save(item: "", for: Persistent.adobeMobileConfigCustomURL.key)
+            try decryptedStore.save(item: "", for: Persistent.adobeMobileConfig.key)
+        } catch {
+            throw error
+        }
     }
 }

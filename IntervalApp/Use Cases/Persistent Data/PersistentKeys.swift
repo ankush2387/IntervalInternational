@@ -20,6 +20,7 @@ enum Persistent: String {
     case adobeMobileConfig
     case notificationTopic
     case appHasPreviousLogin
+    case adobeMobileConfigCustomURL
 
     var key: String {
         

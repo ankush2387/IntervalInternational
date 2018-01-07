@@ -107,7 +107,8 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         #endif
 
         let adobeConfigManager = ADBMobileConfigManager()
-        if let path = adobeConfigManager.path {
+        if let path = adobeConfigManager.configFilePathURL {
+            print(path)
             ADBMobile.overrideConfigPath(path)
         }
 

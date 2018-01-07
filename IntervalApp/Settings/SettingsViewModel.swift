@@ -6,6 +6,7 @@
 //  Copyright © 2017 Interval International. All rights reserved.
 //
 
+import then
 import Bond
 import Foundation
 import ReactiveKit
@@ -14,12 +15,15 @@ import IntervalUIKit
 final class SettingsViewModel {
     
     // MARK: - Public properties
-    let privacyPolicy: Observable<String>
     let appVersion: Observable<String>
+    let privacyPolicy: Observable<String>
     let cellViewModels: [SimpleCellViewModel]
+    let simpleLabelSwitchCellViewModel: SimpleLabelSwitchCellViewModel
+    var omnitureConfigurationViewModel: SimpleLabelTextFieldLabelTextFieldButtonButtonCellViewModel?
     
     // MARK: - Private properties
     private let disposeBag = DisposeBag()
+    private let adobeConfigManager: ADBMobileConfigManager
 
     // MARK: - Lifecycle
 
@@ -44,7 +48,7 @@ final class SettingsViewModel {
 
             let simpleLabelSwitchCellViewModel = SimpleLabelSwitchCellViewModel(label: "Touch ID".localized(),
                                                                                 switchOn: touchIDEnabled)
-            
+
             simpleLabelSwitchCellViewModel.switchOn.observeNext { enabled in
                 try? encryptedStore.save(item: enabled, for: Persistent.touchIDEnabled.key)
                 }.dispose(in: disposeBag)
@@ -55,23 +59,57 @@ final class SettingsViewModel {
         privacyPolicy = Observable("Privacy Policy".localized())
         viewModels.append(SimpleLabelLabelCellViewModel(label2: privacyPolicy.value))
 
-        let simpleLabelSwitchCellViewModel = SimpleLabelSwitchCellViewModel(label: "Custom Omniture URL",
+        self.adobeConfigManager = adobeConfigManager
+        simpleLabelSwitchCellViewModel = SimpleLabelSwitchCellViewModel(label: "Show Omniture Section".localized(),
                                                                             switchOn: adobeConfigManager.customURLPathBeingUsed)
 
-        simpleLabelSwitchCellViewModel.switchOn.observeNext { enabled in
-
-            if enabled {
-                // Save then show pop up confirming
-            } else {
-                try? adobeConfigManager.reset()
-            }
-
-        }.dispose(in: disposeBag)
-
         viewModels.append(simpleLabelSwitchCellViewModel)
+        if adobeConfigManager.isRunningInTestingEnvironment {
+            // Note: Won't go to production, no need to localize
+
+            let omnitureConfigurationViewModel = SimpleLabelTextFieldLabelTextFieldButtonButtonCellViewModel(label1: "Server",
+                                                                                                             textFieldValue1: adobeConfigManager.base,
+                                                                                                             placeholderText1: "example.com",
+                                                                                                             label2: "Port",
+                                                                                                             textFieldValue2: adobeConfigManager.port,
+                                                                                                             placeholderText2: "8080",
+                                                                                                             button1Title: "Reset",
+                                                                                                             button2Title: "Save")
+            self.omnitureConfigurationViewModel = omnitureConfigurationViewModel
+            viewModels.append(omnitureConfigurationViewModel)
+        }
 
         let simpleButtonCellViewModel = SimpleButtonCellViewModel(buttonCellTitle: "Sign Out".localized())
         viewModels.append(simpleButtonCellViewModel)
         cellViewModels = viewModels
+    }
+
+    // MARK: - Public functions
+    func saveCustomOmnitureURL() -> Promise<Void> {
+
+        // Note: Won't go to production, no need to localize
+        return Promise { [unowned self] resolve, reject in
+            if let omnitureConfigurationViewModel = self.omnitureConfigurationViewModel {
+                guard var url = omnitureConfigurationViewModel.textFieldValue1.value, !url.isEmpty else {
+                    reject(UserFacingCommonError.custom(title: "Missing URL", body: "Please fill in to save"))
+                    return
+                }
+
+                if let port = omnitureConfigurationViewModel.textFieldValue2.value, !port.isEmpty {
+                    url += ":" + port
+                }
+
+                do {
+                    try self.adobeConfigManager.set(serverURL: url)
+                    resolve()
+                } catch {
+                    reject(UserFacingCommonError.generic)
+                }
+            }
+        }
+    }
+
+    func resetOmnitureURL() {
+        try? self.adobeConfigManager.reset()
     }
 }
