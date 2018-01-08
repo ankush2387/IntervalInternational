@@ -22,6 +22,7 @@ open class SimpleButtonCell: SimpleTableViewCell {
 
     open weak var viewModel: SimpleButtonCellViewModel? {
         didSet {
+            buttonCell.setTitleColor(IntervalThemeFactory.deviceTheme.primaryTextColor, for: .normal)
             buttonCell.titleLabel?.font = IntervalThemeFactory.deviceTheme.font
             if let viewModel = self.viewModel {
                 viewModel.buttonCellTitle.bind(to: buttonCell.reactive.title).dispose(in: onReuseBag)

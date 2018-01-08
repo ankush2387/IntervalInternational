@@ -22,12 +22,9 @@ public enum SimpleViewModelType {
     case labelSwitch
     case labelLabel
     case buttonCell
-    case labelTextLabelText
-    case textField
-    case labelTextFieldLabelTextFieldButtonButton
 
     // Careful all future additions must be kept in sync with the enumeration!
-    static let allValues = [labelSwitch, labelLabel, buttonCell, labelTextLabelText, textField, labelTextFieldLabelTextFieldButtonButton]
+    static let allValues = [labelSwitch, labelLabel, buttonCell]
 
     func defaultReuseIdentifier() -> String {
         switch self {
@@ -40,15 +37,6 @@ public enum SimpleViewModelType {
 
         case .buttonCell:
             return String(describing: SimpleButtonCell.self)
-
-        case .labelTextLabelText:
-            return String(describing: SimpleLabelTextLabelTextCell.self)
-
-        case .textField:
-            return String(describing: SimpleTextFieldCell.self)
-
-        case .labelTextFieldLabelTextFieldButtonButton:
-            return String(describing: SimpleLabelTextFieldLabelTextFieldButtonButtonCell.self)
         }
     }
 
