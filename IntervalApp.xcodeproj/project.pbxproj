@@ -98,7 +98,6 @@
 		3A476F111CECE07F00607185 /* MoreCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A476F101CECE07F00607185 /* MoreCell.swift */; };
 		3A4801E31F60050600AB6D68 /* SelectedResortsIpadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A4801E21F60050600AB6D68 /* SelectedResortsIpadViewController.swift */; };
 		3A4801E51F60055F00AB6D68 /* SelectedResortsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A4801E41F60055F00AB6D68 /* SelectedResortsCell.swift */; };
-		3A552DEE1FFE389000C69ED7 /* RelinquishmentSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A552DED1FFE388F00C69ED7 /* RelinquishmentSelectionViewController.swift */; };
 		3A586CC01DDCA22900EF6756 /* ExchangeOrProtectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A586CBE1DDCA22900EF6756 /* ExchangeOrProtectionCell.swift */; };
 		3A586CC11DDCA22900EF6756 /* ExchangeOrProtectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3A586CBF1DDCA22900EF6756 /* ExchangeOrProtectionCell.xib */; };
 		3A586CC41DDCA24F00EF6756 /* TotalCostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A586CC21DDCA24F00EF6756 /* TotalCostCell.swift */; };
@@ -119,6 +118,7 @@
 		3A645C0E1CF853180033EEB7 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A645C0D1CF853180033EEB7 /* Reachability.swift */; };
 		3A6DB3CD1FBB2D9B00D8100F /* HomeAlertCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A6DB3CC1FBB2D9B00D8100F /* HomeAlertCollectionCell.swift */; };
 		3A733AC61CEF2A2E0068CF15 /* ImageWithNameCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A733AC51CEF2A2E0068CF15 /* ImageWithNameCell.swift */; };
+		3A75DFF32003A66200C22B24 /* RelinquishmentSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A75DFF22003A66100C22B24 /* RelinquishmentSelectionViewController.swift */; };
 		3A7858E61FB1B7170027E7EC /* Print+IntervalDebug.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7858E51FB1B7160027E7EC /* Print+IntervalDebug.swift */; };
 		3A7858E81FB1B8120027E7EC /* CertificateDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7858E71FB1B8110027E7EC /* CertificateDetailsViewController.swift */; };
 		3A795A8D1CF5D22E0098C26D /* HeaderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A795A8C1CF5D22E0098C26D /* HeaderTableViewCell.swift */; };
@@ -491,7 +491,6 @@
 		3A476F101CECE07F00607185 /* MoreCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoreCell.swift; sourceTree = "<group>"; };
 		3A4801E21F60050600AB6D68 /* SelectedResortsIpadViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectedResortsIpadViewController.swift; sourceTree = "<group>"; };
 		3A4801E41F60055F00AB6D68 /* SelectedResortsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectedResortsCell.swift; sourceTree = "<group>"; };
-		3A552DED1FFE388F00C69ED7 /* RelinquishmentSelectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RelinquishmentSelectionViewController.swift; path = ../../../../../../../Desktop/backup/RelinquishmentSelectionViewController.swift; sourceTree = "<group>"; };
 		3A586CBE1DDCA22900EF6756 /* ExchangeOrProtectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExchangeOrProtectionCell.swift; sourceTree = "<group>"; };
 		3A586CBF1DDCA22900EF6756 /* ExchangeOrProtectionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExchangeOrProtectionCell.xib; sourceTree = "<group>"; };
 		3A586CC21DDCA24F00EF6756 /* TotalCostCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TotalCostCell.swift; sourceTree = "<group>"; };
@@ -513,6 +512,7 @@
 		3A645C0D1CF853180033EEB7 /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		3A6DB3CC1FBB2D9B00D8100F /* HomeAlertCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeAlertCollectionCell.swift; sourceTree = "<group>"; };
 		3A733AC51CEF2A2E0068CF15 /* ImageWithNameCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageWithNameCell.swift; sourceTree = "<group>"; };
+		3A75DFF22003A66100C22B24 /* RelinquishmentSelectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelinquishmentSelectionViewController.swift; sourceTree = "<group>"; };
 		3A7858E51FB1B7160027E7EC /* Print+IntervalDebug.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Print+IntervalDebug.swift"; sourceTree = "<group>"; };
 		3A7858E71FB1B8110027E7EC /* CertificateDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CertificateDetailsViewController.swift; sourceTree = "<group>"; };
 		3A795A8C1CF5D22E0098C26D /* HeaderTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeaderTableViewCell.swift; sourceTree = "<group>"; };
@@ -1174,7 +1174,7 @@
 		3AAA5A1A1C720F4500A5EA6D /* VacationSearch */ = {
 			isa = PBXGroup;
 			children = (
-				3A552DED1FFE388F00C69ED7 /* RelinquishmentSelectionViewController.swift */,
+				3A75DFF22003A66100C22B24 /* RelinquishmentSelectionViewController.swift */,
 				3AE1A6181F6AC5D50069A118 /* FlexChangeSearchIpadViewController.swift */,
 				DC7EF4E51D709F2000E9E360 /* RelinquishmentSearchViewController.swift */,
 				3AAA5A121C720F4500A5EA6D /* Login */,
@@ -2388,7 +2388,7 @@
 				DC7EF5121D709F8800E9E360 /* ResortDirectoryViewController.swift in Sources */,
 				DC7EF5131D709F8800E9E360 /* ResortFavoritesTableViewCell.swift in Sources */,
 				61066FD51F919803000D33EB /* ClientAPIStore.swift in Sources */,
-				3A552DEE1FFE389000C69ED7 /* RelinquishmentSelectionViewController.swift in Sources */,
+				3A75DFF32003A66200C22B24 /* RelinquishmentSelectionViewController.swift in Sources */,
 				3AE1A6191F6AC5D50069A118 /* FlexChangeSearchIpadViewController.swift in Sources */,
 				3AA88B541F44DAD8001ADC4C /* ExchangeInventoryCVCell.swift in Sources */,
 				E9C5EF381F19555B00E658DA /* UIViewController+Swipe.swift in Sources */,
