@@ -8,4 +8,3 @@
 #import "SDWebImage/UIImageView+WebCache.h"
 #import "UIImageView+UIActivityIndicatorForSDWebImage.h"
 #import <BrightcovePlayerSDK/BrightcovePlayerSDK.h>
-#import "ADBMobile.h"

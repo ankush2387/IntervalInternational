@@ -225,7 +225,6 @@
 		3AF7CC111C847CDD00FB9AC6 /* UpComingTripDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF7CC101C847CDD00FB9AC6 /* UpComingTripDetailController.swift */; };
 		3AF7CC131C848C5900FB9AC6 /* AccomodationCertsDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF7CC121C848C5900FB9AC6 /* AccomodationCertsDetailController.swift */; };
 		3AF8701B1EA63B8400056A14 /* ADBMobileConfig.json in Resources */ = {isa = PBXBuildFile; fileRef = 3AF870181EA63B8400056A14 /* ADBMobileConfig.json */; };
-		3AF870211EA6423700056A14 /* AdobeMobileLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AF8701F1EA6423700056A14 /* AdobeMobileLibrary.a */; };
 		3AF870241EA6429600056A14 /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AF870221EA6429600056A14 /* libsqlite3.0.tbd */; };
 		3AF870251EA6429600056A14 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AF870231EA6429600056A14 /* libsqlite3.tbd */; };
 		3AFA86681DF305A300DCAECF /* CheckOutIPadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFA86671DF305A300DCAECF /* CheckOutIPadViewController.swift */; };
@@ -236,7 +235,6 @@
 		3C2EABEC1FB21DBE00BD2B2D /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C2EABEB1FB21DBE00BD2B2D /* SettingsViewController.swift */; };
 		3C2EABF01FB244ED00BD2B2D /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C2EABEF1FB244ED00BD2B2D /* SettingsViewModel.swift */; };
 		3C367B111F86B66C00056394 /* AutoLogoutTimerSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C367B101F86B66C00056394 /* AutoLogoutTimerSpec.swift */; };
-		3C409295200014D900658D06 /* ADBMobileConfigManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C409294200014D900658D06 /* ADBMobileConfigManager.swift */; };
 		3C466B621F86862D002D43F7 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C466B611F86862D002D43F7 /* AppCoordinator.swift */; };
 		3C466B641F86884A002D43F7 /* AutoLogoutTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C466B631F86884A002D43F7 /* AutoLogoutTimer.swift */; };
 		3C4957611F9145BB00B7727D /* RenewelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C4957601F9145BB00B7727D /* RenewelViewController.swift */; };
@@ -268,6 +266,7 @@
 		61066FD91F91AB9F000D33EB /* SessionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61066FD81F91AB9F000D33EB /* SessionStore.swift */; };
 		61066FDB1F91AD0A000D33EB /* String+Unwrapped.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61066FDA1F91AD0A000D33EB /* String+Unwrapped.swift */; };
 		61066FDD1F91B380000D33EB /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 61066FDC1F91B380000D33EB /* LoginViewController.xib */; };
+		6106832B2004454900FBFBB6 /* ADBMobileConfigManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6106832A2004454900FBFBB6 /* ADBMobileConfigManager.swift */; };
 		611316BF1F9BBFD800B84A54 /* APNSCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611316BE1F9BBFD800B84A54 /* APNSCoordinator.swift */; };
 		612EFAB11F8D902C005010DE /* ComputationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 612EFAB01F8D902C005010DE /* ComputationHelper.swift */; };
 		612EFAB31F8D9138005010DE /* ComputationHelperSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 612EFAB21F8D9138005010DE /* ComputationHelperSpec.swift */; };
@@ -622,10 +621,7 @@
 		3AF7CC071C8450FF00FB9AC6 /* TransitionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransitionManager.swift; sourceTree = "<group>"; };
 		3AF7CC101C847CDD00FB9AC6 /* UpComingTripDetailController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpComingTripDetailController.swift; sourceTree = "<group>"; };
 		3AF7CC121C848C5900FB9AC6 /* AccomodationCertsDetailController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccomodationCertsDetailController.swift; sourceTree = "<group>"; };
-		3AF870171EA63B8400056A14 /* ADBMobile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ADBMobile.h; path = AdobeMobileLibrary/ADBMobile.h; sourceTree = "<group>"; };
 		3AF870181EA63B8400056A14 /* ADBMobileConfig.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ADBMobileConfig.json; path = AdobeMobileLibrary/ADBMobileConfig.json; sourceTree = "<group>"; };
-		3AF8701E1EA6423700056A14 /* AdobeMobileLibrary_Extension.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = AdobeMobileLibrary_Extension.a; path = IntervalApp/AdobeMobileLibrary/AdobeMobileLibrary_Extension.a; sourceTree = "<group>"; };
-		3AF8701F1EA6423700056A14 /* AdobeMobileLibrary.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = AdobeMobileLibrary.a; path = IntervalApp/AdobeMobileLibrary/AdobeMobileLibrary.a; sourceTree = "<group>"; };
 		3AF870221EA6429600056A14 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
 		3AF870231EA6429600056A14 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		3AFA86671DF305A300DCAECF /* CheckOutIPadViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckOutIPadViewController.swift; sourceTree = "<group>"; };
@@ -639,7 +635,6 @@
 		3C367B0E1F86B66C00056394 /* IntervalAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = IntervalAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3C367B101F86B66C00056394 /* AutoLogoutTimerSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoLogoutTimerSpec.swift; sourceTree = "<group>"; };
 		3C367B121F86B66C00056394 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		3C409294200014D900658D06 /* ADBMobileConfigManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ADBMobileConfigManager.swift; sourceTree = "<group>"; };
 		3C466B611F86862D002D43F7 /* AppCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		3C466B631F86884A002D43F7 /* AutoLogoutTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoLogoutTimer.swift; sourceTree = "<group>"; };
 		3C4957601F9145BB00B7727D /* RenewelViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RenewelViewController.swift; sourceTree = "<group>"; };
@@ -671,6 +666,7 @@
 		61066FD81F91AB9F000D33EB /* SessionStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionStore.swift; sourceTree = "<group>"; };
 		61066FDA1F91AD0A000D33EB /* String+Unwrapped.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Unwrapped.swift"; sourceTree = "<group>"; };
 		61066FDC1F91B380000D33EB /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
+		6106832A2004454900FBFBB6 /* ADBMobileConfigManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ADBMobileConfigManager.swift; path = AdobeMobileLibrary/ADBMobileConfigManager.swift; sourceTree = "<group>"; };
 		611316BE1F9BBFD800B84A54 /* APNSCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APNSCoordinator.swift; sourceTree = "<group>"; };
 		612EFAB01F8D902C005010DE /* ComputationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComputationHelper.swift; sourceTree = "<group>"; };
 		612EFAB21F8D9138005010DE /* ComputationHelperSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComputationHelperSpec.swift; sourceTree = "<group>"; };
@@ -791,7 +787,6 @@
 			files = (
 				3AF870241EA6429600056A14 /* libsqlite3.0.tbd in Frameworks */,
 				3AF870251EA6429600056A14 /* libsqlite3.tbd in Frameworks */,
-				3AF870211EA6423700056A14 /* AdobeMobileLibrary.a in Frameworks */,
 				3AEC48171C7F21BA0044612B /* QuartzCore.framework in Frameworks */,
 				CE533D6620FB623EC9811046 /* Pods_IntervalApp.framework in Frameworks */,
 			);
@@ -811,9 +806,8 @@
 		08A46FCC1E9265E1002DC306 /* Adobe Analytics */ = {
 			isa = PBXGroup;
 			children = (
-				3AF870171EA63B8400056A14 /* ADBMobile.h */,
 				3AF870181EA63B8400056A14 /* ADBMobileConfig.json */,
-				3C409294200014D900658D06 /* ADBMobileConfigManager.swift */,
+				6106832A2004454900FBFBB6 /* ADBMobileConfigManager.swift */,
 			);
 			name = "Adobe Analytics";
 			path = IntervalApp;
@@ -1570,8 +1564,6 @@
 			children = (
 				3AF870221EA6429600056A14 /* libsqlite3.0.tbd */,
 				3AF870231EA6429600056A14 /* libsqlite3.tbd */,
-				3AF8701E1EA6423700056A14 /* AdobeMobileLibrary_Extension.a */,
-				3AF8701F1EA6423700056A14 /* AdobeMobileLibrary.a */,
 				3AEC48161C7F21BA0044612B /* QuartzCore.framework */,
 				E2CBCD7E8490E488AB822061 /* Pods_IntervalApp.framework */,
 				9A1F9F039DD01C61F912475E /* Pods_IntervalAppTests.framework */,
@@ -2122,7 +2114,7 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-IntervalApp/Pods-IntervalApp-resources.sh",
 				"$PODS_CONFIGURATION_BUILD_DIR/Brightcove-Player-SDK/BCOVPUIResources.bundle",
 				"${PODS_ROOT}/GoogleMaps/Maps/Frameworks/GoogleMaps.framework/Versions/A/Resources/GoogleMaps.bundle",
-				"$PODS_CONFIGURATION_BUILD_DIR/HockeySDK/HockeySDKResources.bundle",
+				$PODS_CONFIGURATION_BUILD_DIR/HockeySDK/HockeySDKResources.bundle,
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
@@ -2255,6 +2247,7 @@
 				3A3A01461C99BD0B00B7EC37 /* OwnershipViewController.swift in Sources */,
 				3A968E0E1DD62ECD0004E0EB /* CheckOutViewController.swift in Sources */,
 				3ACC27931DDDBDA40057B809 /* PaymentSelectionViewController.swift in Sources */,
+				6106832B2004454900FBFBB6 /* ADBMobileConfigManager.swift in Sources */,
 				3A06C0A81CA9385A009A9574 /* AvailableDestinationsTableViewController.swift in Sources */,
 				DC7EF4CD1D709E9600E9E360 /* ClubPointWithCheckBoxTableViewCell.swift in Sources */,
 				3A2089DE1E2544D0001AFFD2 /* RelinquishmentSelectionCIGCell.swift in Sources */,
@@ -2287,7 +2280,6 @@
 				3A3A012F1C99BD0B00B7EC37 /* BedroomSizeViewController.swift in Sources */,
 				3C584A231FBCA63A00584831 /* UIViewController+SimpleActionSheetPicker.swift in Sources */,
 				E94FB5EA1EF0609C00314C5D /* VerticalProgressView.swift in Sources */,
-				3C409295200014D900658D06 /* ADBMobileConfigManager.swift in Sources */,
 				E9ED1B591F44B89A00794C53 /* CertificateInfoViewController.swift in Sources */,
 				3A3BE3ED1CA0441200CDE3AA /* MyOwnershipAvailablePointTooolTableViewCell.swift in Sources */,
 				089416731F72D94300F03229 /* BedroomTableViewCell.swift in Sources */,
