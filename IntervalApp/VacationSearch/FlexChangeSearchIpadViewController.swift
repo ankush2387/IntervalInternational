@@ -28,29 +28,28 @@ class FlexChangeSearchIpadViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.title = Constant.ControllerTitles.flexChangeSearch
+        title = Constant.ControllerTitles.flexChangeSearch
         
         //set corner radius
         
-        self.searchButton.layer.cornerRadius = 7
+        searchButton.layer.cornerRadius = 7
         
         // set navigation right bar buttons
         let menuButton = UIBarButtonItem(image: UIImage(named: Constant.assetImageNames.MoreNav), style: .plain, target: self, action: #selector(FlexChangeSearchIpadViewController.menuButtonClicked))
         menuButton.tintColor = UIColor.white
-        
-        self.navigationItem.rightBarButtonItem = menuButton
+        navigationItem.rightBarButtonItem = menuButton
         
         // custom back button
         
         let menuButtonleft = UIBarButtonItem(image: UIImage(named: Constant.assetImageNames.backArrowNav), style: .plain, target: self, action: #selector(FlexChangeSearchIpadViewController.menuBackButtonPressed(_:)))
         menuButton.tintColor = UIColor.white
-        self.navigationItem.leftBarButtonItem = menuButtonleft
+        navigationItem.leftBarButtonItem = menuButtonleft
         
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        self.navigationController?.navigationBar.isHidden = false
-        self.flexchangeSearchTableView.reloadData()
+        navigationController?.navigationBar.isHidden = false
+        flexchangeSearchTableView.reloadData()
         Helper.getLocalStorageWherewanttoTrade()
     }
     
@@ -59,18 +58,15 @@ class FlexChangeSearchIpadViewController: UIViewController {
         if Constant.RunningDevice.deviceIdiom == .pad {
             frameChangeOnPortraitandLandscape()
         }
-        
     }
     
     func frameChangeOnPortraitandLandscape() {
         
         if UIDevice.current.orientation == .landscapeLeft || UIDevice.current.orientation == .landscapeRight {
-            self.flexchangeSearchTableView.reloadData()
+            flexchangeSearchTableView.reloadData()
             
         }
-        
-        self.flexchangeSearchTableView.reloadData()
-        
+            flexchangeSearchTableView.reloadData()
     }
     
     func navigateToSearchResults() {
@@ -84,9 +80,9 @@ class FlexChangeSearchIpadViewController: UIViewController {
         guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.vacationSearchController) as? VacationSearchResultIPadController else { return }
         
         let transitionManager = TransitionManager()
-        self.navigationController?.transitioningDelegate = transitionManager
+        navigationController?.transitioningDelegate = transitionManager
         
-        self.navigationController?.pushViewController(viewController, animated: true)
+        navigationController?.pushViewController(viewController, animated: true)
     }
     
     override func didReceiveMemoryWarning() {
@@ -102,7 +98,7 @@ class FlexChangeSearchIpadViewController: UIViewController {
     
     @IBAction func searchButtonClicked(_ sender: UIButton) {
         
-        if !Constant.MyClassConstants.relinquishmentIdArray.isEmpty {
+        if Constant.MyClassConstants.relinquishmentIdArray.isEmpty {
             return self.presentAlert(with: Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.tradeItemMessage)
         }
         
@@ -396,9 +392,8 @@ extension FlexChangeSearchIpadViewController: UITableViewDelegate {
         }
         
         headerNameLabel.textAlignment = .center
-        headerNameLabel.textColor = UIColor.lightGray
+        headerNameLabel.textColor = .lightGray
         headerNameLabel.font = UIFont(name: Constant.fontName.helveticaNeue, size: 18)
-        
         view.addSubview(headerNameLabel)
         
         return view
@@ -483,9 +478,7 @@ extension FlexChangeSearchIpadViewController: UITableViewDelegate {
         } else {
             return nil
         }
-        
     }
-    
 }
 
 // MARK: - Helper delegate
