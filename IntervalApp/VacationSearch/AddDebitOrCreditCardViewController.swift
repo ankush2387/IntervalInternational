@@ -717,7 +717,7 @@ extension AddDebitOrCreditCardViewController: UIPickerViewDelegate {
                 Helper.getStates(country: Constant.GetawaySearchResultCardFormDetailData.countryCode, viewController: self)
              } else {
                 if !Constant.GetawaySearchResultGuestFormDetailData.stateListArray.isEmpty {
-                    if let stateName = Constant.GetawaySearchResultGuestFormDetailData.stateListArray[0].name {
+                    if let stateName = Constant.GetawaySearchResultGuestFormDetailData.stateListArray[row].name {
                         Constant.GetawaySearchResultCardFormDetailData.state = stateName
                         Constant.GetawaySearchResultCardFormDetailData.stateCode = Constant.GetawaySearchResultGuestFormDetailData.stateCodeArray[row]
                     }
@@ -787,15 +787,15 @@ extension AddDebitOrCreditCardViewController: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
         intervalPrint(string)
-        if range.length == 1 && string.characters.count == 0 {
+        if range.length == 1 && string.isEmpty {
             intervalPrint("backspace tapped")
         }
 
         if Int(textField.accessibilityValue.unwrappedString) == 0 {
                 if textField.tag == 0 {
                     
-                    if range.length == 1 && string.characters.count == 0 {
-                        Constant.GetawaySearchResultCardFormDetailData.nameOnCard.characters.removeLast()
+                    if range.length == 1 && string.isEmpty {
+                        Constant.GetawaySearchResultCardFormDetailData.nameOnCard.removeLast()
                     } else {
                         if let textfieldText = textField.text {
                           Constant.GetawaySearchResultCardFormDetailData.nameOnCard = "\(textfieldText)\(string)"
@@ -804,8 +804,8 @@ extension AddDebitOrCreditCardViewController: UITextFieldDelegate {
 
                 } else if textField.tag == 1 {
                     
-                    if range.length == 1 && string.characters.count == 0 {
-                        Constant.GetawaySearchResultCardFormDetailData.cardNumber.characters.removeLast()
+                    if range.length == 1 && string.isEmpty {
+                        Constant.GetawaySearchResultCardFormDetailData.cardNumber.removeLast()
                     } else {
                         if let textfieldText = textField.text {
                             Constant.GetawaySearchResultCardFormDetailData.cardNumber = "\(textfieldText)\(string)"
@@ -814,8 +814,8 @@ extension AddDebitOrCreditCardViewController: UITextFieldDelegate {
                     
                 } else {
                     
-                    if range.length == 1 && string.characters.count == 0 {
-                        Constant.GetawaySearchResultCardFormDetailData.cvv.characters.removeLast()
+                    if range.length == 1 && string.isEmpty {
+                        Constant.GetawaySearchResultCardFormDetailData.cvv.removeLast()
                     } else {
                         if let textfieldText = textField.text {
                          Constant.GetawaySearchResultCardFormDetailData.cvv = "\(textfieldText)\(string)"
@@ -826,16 +826,16 @@ extension AddDebitOrCreditCardViewController: UITextFieldDelegate {
                 
                 if textField.tag == 1 {
                     
-                    if range.length == 1 && string.characters.count == 0 {
-                        Constant.GetawaySearchResultCardFormDetailData.address1.characters.removeLast()
+                    if range.length == 1 && string.isEmpty {
+                        Constant.GetawaySearchResultCardFormDetailData.address1.removeLast()
                     } else {
                         Constant.GetawaySearchResultCardFormDetailData.address1 = "\(textField.text ?? "")\(string)"
                     }
                     
                 } else if textField.tag == 2 {
                     
-                    if range.length == 1 && string.characters.count == 0 {
-                        Constant.GetawaySearchResultCardFormDetailData.address2.characters.removeLast()
+                    if range.length == 1 && string.isEmpty {
+                        Constant.GetawaySearchResultCardFormDetailData.address2.removeLast()
                     } else {
                         Constant.GetawaySearchResultCardFormDetailData.address2 = "\(textField.text ?? "")\(string)"
 
@@ -843,15 +843,15 @@ extension AddDebitOrCreditCardViewController: UITextFieldDelegate {
                     
                 } else if textField.tag == 3 {
                     
-                    if range.length == 1 && string.characters.count == 0 {
-                        Constant.GetawaySearchResultCardFormDetailData.city.characters.removeLast()
+                    if range.length == 1 && string.isEmpty {
+                        Constant.GetawaySearchResultCardFormDetailData.city.removeLast()
                     } else {
                         Constant.GetawaySearchResultCardFormDetailData.city = "\(textField.text ?? "")\(string)"
                     }
                 } else {
                     
-                    if range.length == 1 && string.characters.count == 0 {
-                        Constant.GetawaySearchResultCardFormDetailData.pinCode.characters.removeLast()
+                    if range.length == 1 && string.isEmpty {
+                        Constant.GetawaySearchResultCardFormDetailData.pinCode.removeLast()
                     } else {
                        Constant.GetawaySearchResultCardFormDetailData.pinCode = "\(textField.text ?? "")\(string)"
                     }
