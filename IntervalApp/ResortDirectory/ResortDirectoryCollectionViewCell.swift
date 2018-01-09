@@ -10,7 +10,7 @@ import UIKit
 import IntervalUIKit
 
 //***** custom delegate method declaration *****//
-protocol ResortDirectoryCollectionViewCellDelegate {
+protocol ResortDirectoryCollectionViewCellDelegate : class {
     
     func favoriteCollectionButtonClicked(_ sender: UIButton)
     func unfavoriteCollectionButtonClicked(_ sender: UIButton)
@@ -28,11 +28,11 @@ class ResortDirectoryCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var tierImageView: UIImageView!
     
     //***** class variables *****//
-    var delegate: ResortDirectoryCollectionViewCellDelegate?
+    weak var delegate: ResortDirectoryCollectionViewCellDelegate?
 
 //***** custom cell favorites button action implementation *****//
 @IBAction func feboriteButtonPressed(_ sender: UIButton) {
-    if(sender.isSelected == false) {
+    if sender.isSelected == false {
         
         sender.isSelected = true
         self.delegate?.favoriteCollectionButtonClicked(sender)

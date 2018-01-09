@@ -311,16 +311,13 @@ public class Helper {
     //***** Common function for user Favorites resort API call after successfull call *****//
     static func getUserFavorites(CompletionBlock: @escaping ((Error?) -> Void)) {
         if Session.sharedSession.userAccessToken != nil {
-            UserClient.getFavoriteResorts(Session.sharedSession.userAccessToken, onSuccess: { (response) in
+            UserClient.getFavoriteResorts(Session.sharedSession.userAccessToken, onSuccess: { response in
                 Constant.MyClassConstants.favoritesResortArray.removeAll()
-                for item in [response][0] {
-                    if let resortFav = item as? ResortFavorite {
-                        if let resort = resortFav.resort {
-                            let code = resort.resortCode
-                            Constant.MyClassConstants.favoritesResortCodeArray.add(code ?? "")
+                for item in response {
+                        if let resort = item.resort, let code = resort.resortCode {
+                            Constant.MyClassConstants.favoritesResortCodeArray.add(code)
                             Constant.MyClassConstants.favoritesResortArray.append(resort)
                         }
-                    }
                     
                 }
                 NotificationCenter.default.post(name:NSNotification.Name(rawValue: Constant.notificationNames.reloadFavoritesTabNotification), object: nil)

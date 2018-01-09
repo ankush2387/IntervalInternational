@@ -77,6 +77,21 @@ class ResortDirectoryResortCell: UITableViewCell {
             self.favoriteButton.isSelected = true
         }
     }
+    
+    @IBAction func favoriteButtonPressed(_ sender: IUIKButton) {
+        
+        if favoriteButton.isSelected == false {
+            
+            if Session.sharedSession.userAccessToken == nil {
+                self.delegate?.favoritesButtonSelectedAtIndex(sender.tag)
+            } else {
+                
+            }
+        } else {
+            
+            //favoriteButton.isSelected = false
+        }
+    }
 }
 
 //***** collectionview delegate methods for collection view actons *****//
@@ -117,7 +132,7 @@ extension ResortDirectoryResortCell: UICollectionViewDelegateFlowLayout {
         return 0
     }
 	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-		if(Constant.RunningDevice.deviceIdiom == .pad) {
+		if Constant.RunningDevice.deviceIdiom == .pad {
 			return CGSize(width: collectionView.frame.size.width, height: collectionView.frame.height)
 		} else {
 			return CGSize(width: UIScreen.main.bounds.width, height: collectionView.frame.height)

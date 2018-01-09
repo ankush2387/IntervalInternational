@@ -49,7 +49,6 @@ class ResortDirectoryViewController: UIViewController {
         
         if self.containerView != nil {
             self.containerView.isHidden = true
-            Constant.MyClassConstants.btnTag = -1
         }
         setNavigationBar()
         
@@ -128,10 +127,10 @@ class ResortDirectoryViewController: UIViewController {
         //***** handle hamberger menu button for prelogin and post login case *****//
         self.navigationController?.navigationBar.barTintColor = UIColor(red: 0 / 255, green: 119.0 / 255, blue: 190.0 / 255, alpha: 1.0)
       
-        if (Session.sharedSession.userAccessToken) != nil && Constant.MyClassConstants.isLoginSuccessfull {
+        if Session.sharedSession.userAccessToken != nil && Constant.MyClassConstants.isLoginSuccessfull {
             if self.navigationController?.viewControllers.count > 1 {
                 
-                let menuButton = UIBarButtonItem(image: UIImage(named: Constant.assetImageNames.backArrowNav), style: .plain, target: self, action: #selector(ResortDirectoryViewController.menuBackButtonPressed(_:)))
+                let menuButton = UIBarButtonItem(image: #imageLiteral(resourceName: "BackArrowNav"), style: .plain, target: self, action: #selector(ResortDirectoryViewController.menuBackButtonPressed(_:)))
                 menuButton.tintColor = UIColor.white
                 self.navigationItem.leftBarButtonItem = menuButton
                 
@@ -159,9 +158,9 @@ class ResortDirectoryViewController: UIViewController {
             self.navigationItem.leftBarButtonItem = menuButton
         }
         
-        if (resortTableView != nil) {
+        if resortTableView != nil {
             resortTableView.reloadData()
-        } else if (resortCollectionView != nil) {
+        } else if resortCollectionView != nil {
             resortCollectionView.reloadData()
         }
     }
@@ -277,9 +276,9 @@ class ResortDirectoryViewController: UIViewController {
     
     func favoriteButtonClicked(_ sender: UIButton) {
         
-        if (Session.sharedSession.userAccessToken) != nil {
+        if Session.sharedSession.userAccessToken != nil {
             
-            if (sender.isSelected == false) {
+            if !sender.isSelected {
                 
                 showHudAsync()
                 UserClient.addFavoriteResort(Session.sharedSession.userAccessToken, resortCode: Constant.MyClassConstants.resortDirectoryResortArray[sender.tag].resortCode!, onSuccess: {(response) in
@@ -289,8 +288,8 @@ class ResortDirectoryViewController: UIViewController {
                     Constant.MyClassConstants.favoritesResortCodeArray.add(Constant.MyClassConstants.resortDirectoryResortArray[sender.tag].resortCode!)
                     self.resortTableView.reloadData()
                     
-                }, onError: {(error) in
-                    self.hideHudAsync()
+                }, onError: { [weak self] error in
+                    self?.hideHudAsync()
                     intervalPrint(error)
                 })
             } else {
@@ -308,8 +307,8 @@ class ResortDirectoryViewController: UIViewController {
                     intervalPrint(error)
                 })
                 
-            }        } else {
-            
+            }
+        } else {
             Constant.MyClassConstants.btnTag = sender.tag
             self.performSegue(withIdentifier: Constant.segueIdentifiers.preLoginSegue, sender: nil)
         }
@@ -322,7 +321,9 @@ extension ResortDirectoryViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        if tableView.tag == 0 {
+        Constant.MyClassConstants.btnTag = -1
+        switch tableView.tag {
+        case 0 :
             let region = Constant.MyClassConstants.resortDirectoryRegionArray[indexPath.row]
             Constant.MyClassConstants.resortDirectoryCommonHearderText = region.regionName!
             
@@ -343,7 +344,7 @@ extension ResortDirectoryViewController: UITableViewDelegate {
                     self.hideHudAsync()
                 })
             }
-        } else if tableView.tag == 1 {
+        case 1 :
             
             showHudAsync()
             let subregion = Constant.MyClassConstants.resortDirectorySubRegionArray[indexPath.row]
@@ -360,7 +361,7 @@ extension ResortDirectoryViewController: UITableViewDelegate {
                 self.hideHudAsync()
             })
             
-        } else if tableView.tag == 2 {
+        case 2 :
             
             let area = Constant.MyClassConstants.resortDirectoryAreaListArray[indexPath.row]
             Constant.MyClassConstants.resortDirectoryCommonHearderText = area.areaName!
@@ -368,7 +369,7 @@ extension ResortDirectoryViewController: UITableViewDelegate {
                 
                 Constant.MyClassConstants.backgroundImageUrl = area.images[1].url!
                 self.backgroundImageView.setImageWith(URL(string: area.images[1].url!), completed: { (image:UIImage?, error:Swift.Error?, _:SDImageCacheType, _:URL?) in
-                    if (error != nil) {
+                    if error != nil {
                         self.backgroundImageView.image = UIImage(named: Constant.MyClassConstants.noImage)
                     }
                     
@@ -388,12 +389,12 @@ extension ResortDirectoryViewController: UITableViewDelegate {
             }, onError: {(_) in
                 self.hideHudAsync()
             })
-        } else if tableView.tag == 3 {
+        case 3 :
             
             if Constant.MyClassConstants.systemAccessToken != nil {
                 resort = Constant.MyClassConstants.resortDirectoryResortArray[indexPath.row]
                 let selectedResort = Constant.MyClassConstants.resortDirectoryResortArray[indexPath.row]
-               showHudAsync()
+                showHudAsync()
                 //***** Favorites resort API call after successfull call *****//
                 Helper.getUserFavorites {[unowned self] error in
                     if case .some = error {
@@ -405,7 +406,7 @@ extension ResortDirectoryViewController: UITableViewDelegate {
                     Helper.getResortWithResortCode(code: selectedResort.resortCode!, viewcontroller: self)
                 }
             }
-        } else if (tableView.tag == 5) {
+        case 5 :
             let containerView = UIView()
             containerView.frame = CGRect(x: 0, y: 0, width: 200, height: 568)
             self.view.addSubview(containerView)
@@ -414,6 +415,8 @@ extension ResortDirectoryViewController: UITableViewDelegate {
             let controller: UIViewController = storyboard.instantiateViewController(withIdentifier: Constant.MyClassConstants.resortDirectoryVCTitle) as UIViewController
             containerView.addSubview(controller.view)
             self.addChildViewController(controller)
+        default :
+            return
         }
     }
     
@@ -527,7 +530,7 @@ extension ResortDirectoryViewController: UITableViewDataSource {
                 
                 if resort.images.count > 0 {
                     cell.imageViewTop.setImageWith(URL(string: Constant.MyClassConstants.backgroundImageUrl as String), completed: { (image:UIImage?, error:Swift.Error?, _:SDImageCacheType, _:URL?) in
-                        if (error != nil) {
+                        if error != nil {
                             cell.imageViewTop.image = UIImage(named: Constant.MyClassConstants.noImage)
                         }
                     }, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
@@ -655,10 +658,38 @@ extension ResortDirectoryViewController: ResortFavoritesTableViewCellDelegate {
             
         }
     }
-    func favoritesResortSelectedAtIndex(_ index: Int) {
-        let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.resortDirectoryIpad, bundle: nil)
-        let resultController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardNames.signInPreLoginViewControlleriPad) as? SignInPreLoginViewController
-        //let navController = UINavigationController(rootViewController: resultController!)
-        self.navigationController?.pushViewController(resultController!, animated: true)
+    func favoritesResortSelectedAtIndex(_ index: Int, signInRequired: Bool, isFavorite: Bool) {
+        Constant.MyClassConstants.btnTag = index
+        if signInRequired {
+            let mainStoryboard = UIStoryboard(name: Constant.storyboardNames.resortDirectoryIpad, bundle: nil)
+            guard let resultController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardNames.signInPreLoginViewControlleriPad) as? SignInPreLoginViewController else { return }
+            navigationController?.pushViewController(resultController, animated: true)
+        } else {
+            guard let resortCode = Constant.MyClassConstants.resortDirectoryResortArray[index].resortCode else { return }
+             showHudAsync()
+            if !isFavorite {
+                
+                UserClient.addFavoriteResort(Session.sharedSession.userAccessToken, resortCode:resortCode, onSuccess: { [weak self]  in
+                    guard let strongSelf = self else { return }
+                    strongSelf.hideHudAsync()
+                }, onError: { [weak self] error in
+                    self?.presentErrorAlert(UserFacingCommonError.handleError(error))
+                    self?.hideHudAsync()
+                })
+                
+            } else {
+                
+                UserClient.removeFavoriteResort(Session.sharedSession.userAccessToken, resortCode: resortCode, onSuccess: { [weak self] in
+                    guard let strongSelf = self else { return }
+                    strongSelf.hideHudAsync()
+                    Constant.MyClassConstants.favoritesResortCodeArray.remove(resortCode)
+    
+                }, onError: {[weak self] error in
+                    self?.hideHudAsync()
+                    self?.presentErrorAlert(UserFacingCommonError.handleError(error))
+                })
+                
+            }
+        }
     }
 }

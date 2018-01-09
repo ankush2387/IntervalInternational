@@ -174,23 +174,24 @@ class SignInPreLoginViewController: UIViewController {
     //***** Method called when sign in button pressed from prelogin screen *****//
     @IBAction func signInButtonPressed(_ sender: AnyObject) {
         self.view.endEditing(true)
-        if(userIdTF.text!.characters.count > 0 && passwordTF.text?.characters.count > 0 ) {
-            Helper.loginButtonPressed(sender: self, userName: userIdTF.text!, password: passwordTF.text!, completionHandler: { (_) in
+        guard let userId = userIdTF.text else { return }
+        guard let password = passwordTF.text else { return }
+        if !userId.isEmpty && !password.isEmpty {
+            self.showHudAsync()
+            Helper.loginButtonPressed(sender: self, userName: userId, password: password, completionHandler: { [weak self] _ in
+                guard let strongSelf = self else { return }
                 Constant.MyClassConstants.loginOriginationPoint = "Resort Directory - Sign In Modal"
-                Helper.accessTokenDidChange(sender: self)
+                Helper.accessTokenDidChange(sender: strongSelf)
             })
         } else {
-            guard userIdTF.text?.characters.count > 0 else {
+            if userId.isEmpty {
                 presentAlert(with: Constant.AlertPromtMessages.loginTitle, message: Constant.AlertMessages.emptyLoginIdMessage)
                 return
-            }
-            
-            guard passwordTF.text?.characters.count > 0 else {
+            } else if password.isEmpty {
                 presentAlert(with: Constant.AlertPromtMessages.loginTitle, message: Constant.AlertMessages.emptyPasswordLoginMessage)
                 return
             }
         }
-        
     }
     
     //***** Method to create action sheet for to show membership for ipad screen *****//

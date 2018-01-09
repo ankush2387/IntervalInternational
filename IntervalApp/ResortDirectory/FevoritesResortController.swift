@@ -28,10 +28,6 @@ class FevoritesResortController: UIViewController {
     var camera: GMSCameraPosition!
     let backgroundView = UIView()
     
-    override func viewDidAppear(_ animated: Bool) {
-        
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -43,7 +39,7 @@ class FevoritesResortController: UIViewController {
         //***** Register delegate and data source with tableview *****//
         resortTableView.dataSource = datasource
         resortTableView.delegate = datasource
-        datasource.unfavHandler = { [weak self] (rowNumber) in
+        datasource.unfavHandler = { [weak self] rowNumber in
             guard let strongSelf = self else { return }
             strongSelf.unfavClicked(rowNumber: rowNumber)
             strongSelf.resortTableView.reloadData()
@@ -77,27 +73,22 @@ class FevoritesResortController: UIViewController {
     }
     override func viewWillAppear(_ animated: Bool) {
         
+        super.viewWillAppear(animated)
         if Session.sharedSession.userAccessToken != nil {
             showHudAsync()
-            UserClient.getFavoriteResorts(Session.sharedSession.userAccessToken, onSuccess: { (response) in
+            UserClient.getFavoriteResorts(Session.sharedSession.userAccessToken, onSuccess: { response in
                 Constant.MyClassConstants.favoritesResortArray.removeAll()
-                for item in [response][0] {
-                    if let resortFav = item as? ResortFavorite {
-                        if let resort = resortFav.resort {
-                            let code = resort.resortCode
-                            Constant.MyClassConstants.favoritesResortCodeArray.add(code)
-                            Constant.MyClassConstants.favoritesResortArray.append(resort)
-                            
-                        }
-                        
+                for item in response {
+                    if let resort = item.resort, let resortCode = resort.resortCode {
+                        Constant.MyClassConstants.favoritesResortCodeArray.add(resortCode)
+                        Constant.MyClassConstants.favoritesResortArray.append(resort)
                     }
-                    
                 }
                 self.setupView()
                 self.hideHudAsync()
-            }) { (_) in
-                self.setupView()
-                self.hideHudAsync()
+            }) { [weak self] _ in
+                self?.setupView()
+                self?.hideHudAsync()
             }
         } else {
             setupView()
@@ -110,10 +101,8 @@ class FevoritesResortController: UIViewController {
             self.signInView.isHidden = false
             self.resortTableBaseView.isHidden = true
         } else {
-            
             self.resortTableBaseView.isHidden = true
             if self.resortTableBaseView != nil {
-                
                 self.resortTableBaseView.isHidden = false
             }
             
@@ -121,7 +110,7 @@ class FevoritesResortController: UIViewController {
             if UIDevice().userInterfaceIdiom == .pad {
                 createMapWithMarkers()
             }
-            if Constant.MyClassConstants.favoritesResortArray.count > 0 {
+            if !Constant.MyClassConstants.favoritesResortArray.isEmpty {
                 
                 self.resortTableView.reloadData()
                 if self.emptyFavoritesMessageView != nil {
@@ -131,7 +120,7 @@ class FevoritesResortController: UIViewController {
             } else {
                 
                 if UIDevice().userInterfaceIdiom == .pad {
-                    if Constant.MyClassConstants.favoritesResortArray.count == 0 {
+                    if Constant.MyClassConstants.favoritesResortArray.isEmpty {
                         backgroundView.frame = CGRect(x: 0, y: 0, width: self.resortTableView.frame.size.width - 20, height: UIScreen.main.bounds.height)
                         backgroundView.backgroundColor = UIColor.white
                         self.view.addSubview(backgroundView)
@@ -156,7 +145,7 @@ class FevoritesResortController: UIViewController {
         self.navigationItem.title = Constant.ControllerTitles.favoritesViewController
         
         //***** Condition for maintaining the back button and hamberger menu according to logged in or pre login *****//
-        if (Session.sharedSession.userAccessToken) != nil && Constant.MyClassConstants.isLoginSuccessfull {
+        if Session.sharedSession.userAccessToken != nil && Constant.MyClassConstants.isLoginSuccessfull {
             if let rvc = self.revealViewController() {
                 //set SWRevealViewController's Delegate
                 rvc.delegate = self
@@ -171,7 +160,7 @@ class FevoritesResortController: UIViewController {
             }
             
         } else {
-            let menuButton = UIBarButtonItem(image: UIImage(named: Constant.assetImageNames.backArrowNav), style: .plain, target: self, action: #selector(FevoritesResortController.menuBackButtonPressed(_:)))
+            let menuButton = UIBarButtonItem(image: #imageLiteral(resourceName: "BackArrowNav"), style: .plain, target: self, action: #selector(FevoritesResortController.menuBackButtonPressed(_:)))
             menuButton.tintColor = UIColor.white
             self.navigationItem.leftBarButtonItem = menuButton
         }
@@ -190,40 +179,46 @@ class FevoritesResortController: UIViewController {
     }
     
     override func viewDidDisappear(_ animated: Bool) {
-        /*NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.closeButtonClickedNotification), object: nil)
+        super.viewDidDisappear(animated)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.closeButtonClickedNotification), object: nil)
          NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.reloadFavoritesTabNotification), object: nil)
          NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.showHelp), object: nil)
-         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.showUnfavorite), object: nil)*/
+         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.showUnfavorite), object: nil)
     }
     //****** Function to create map for iPad with markers *****//
     
     func createMapWithMarkers() {
-        if Constant.MyClassConstants.favoritesResortArray.count == 0 {
-            let camera = GMSCameraPosition.camera(withLatitude: 4.739001, longitude: -74.059616, zoom: 17)
-            let mapframe = CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: self.view.bounds.size.height - 64 - 49)
-            let myGSMMap = GMSMapView.map(withFrame: mapframe, camera: camera)
-            myGSMMap.isMyLocationEnabled = true
-            myGSMMap.settings.myLocationButton = true
-            myGSMMap.delegate = self
+        Constant.MyClassConstants.googleMarkerArray.removeAll()
+        if Constant.MyClassConstants.favoritesResortArray.isEmpty {
+            var mapCount = 0
             for subView in resortTableBaseView.subviews {
-                if (subView .isKind(of: GMSMapView.self)) {
-                    subView.removeFromSuperview()
+                if subView .isKind(of: GMSMapView.self) {
+                    mapCount = mapCount + 1
+                    let mapView = subView as? GMSMapView
+                    mapView?.clear()
                 }
             }
-            resortTableBaseView.addSubview(mapView)
+            if mapCount == 0 {
+                let mapframe = CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: self.view.bounds.size.height)
+                let camera = GMSCameraPosition.camera(withLatitude: 4.739001, longitude: -74.059616, zoom: 8)
+                mapView = GMSMapView.map(withFrame: mapframe, camera: camera)
+                resortTableBaseView.addSubview(mapView)
+            }
             self.backgroundView.isHidden = false
             
-        } else if Constant.MyClassConstants.favoritesResortArray.count > 0 {
+        } else if !Constant.MyClassConstants.favoritesResortArray.isEmpty {
             backgroundView.isHidden = true
-            camera = GMSCameraPosition.camera(withLatitude: (Constant.MyClassConstants.favoritesResortArray.last!.coordinates?.latitude)!, longitude: (Constant.MyClassConstants.favoritesResortArray.last!.coordinates?.longitude)!, zoom: 12)
-            
-            let mapframe = CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: self.view.bounds.size.height - 64 - 49)
-            mapView = GMSMapView.map(withFrame: mapframe, camera: camera)
+            if let latitude = Constant.MyClassConstants.favoritesResortArray.last?.coordinates?.latitude, let longitude = Constant.MyClassConstants.favoritesResortArray.last?.coordinates?.longitude {
+                camera = GMSCameraPosition.camera(withLatitude:latitude, longitude:longitude, zoom: 8)
+                
+                let mapframe = CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: self.view.bounds.size.height)
+                mapView = GMSMapView.map(withFrame: mapframe, camera: camera)
+            }
             mapView.isMyLocationEnabled = true
             mapView.settings.myLocationButton = true
             mapView.delegate = self
             for subView in resortTableBaseView.subviews {
-                if (subView .isKind(of: GMSMapView.self)) {
+                if subView .isKind(of: GMSMapView.self) {
                     subView.removeFromSuperview()
                 }
             }
@@ -232,24 +227,26 @@ class FevoritesResortController: UIViewController {
             
             for resort in Constant.MyClassConstants.favoritesResortArray {
                 
-                if let latitude = resort.coordinates?.latitude {
-                    let  position = CLLocationCoordinate2DMake((latitude), resort.coordinates!.longitude)
+                if let latitude = resort.coordinates?.latitude, let longitude = resort.coordinates?.longitude {
+                    let  position = CLLocationCoordinate2DMake(latitude, longitude)
                     let marker = GMSMarker()
                     marker.position = position
                     marker.isFlat = false
                     marker.userData = tag
                     tag = tag + 1
-                    marker.icon = UIImage(named: Constant.assetImageNames.pinActiveImage)
+                    marker.icon = #imageLiteral(resourceName: "PinActive")
                     marker.appearAnimation = GMSMarkerAnimation.pop
                     bounds = bounds.includingCoordinate(marker.position)
                     marker.map = mapView
-                    Constant.MyClassConstants.googleMarkerArray.append(marker)
+                    if !Constant.MyClassConstants.googleMarkerArray.contains(marker) {
+                        Constant.MyClassConstants.googleMarkerArray.append(marker)
+                    }
                 }
                 
             }
             mapView.animate(with: GMSCameraUpdate.fit(bounds))
             mapView.settings.allowScrollGesturesDuringRotateOrZoom = false
-            mapView.animate(toZoom: 12.0)
+            mapView.animate(toZoom: 8.0)
             
             if self.resortTableBaseView != nil && self.resortTableBaseView.isHidden == false {
                 resortTableBaseView.backgroundColor = UIColor.clear
@@ -267,8 +264,9 @@ class FevoritesResortController: UIViewController {
         super.didReceiveMemoryWarning()
         
     }
+    
     override func viewWillDisappear(_ animated: Bool) {
-        
+        super.viewWillDisappear(animated)
         if self.emptyFavoritesMessageView != nil {
             self.emptyFavoritesMessageView.removeFromSuperview()
         }
@@ -303,7 +301,7 @@ class FevoritesResortController: UIViewController {
         transition.type = kCATransitionPush
         transition.subtype = kCATransitionFromRight
         viewController.view.layer.add(transition, forKey: Constant.MyClassConstants.switchToView)
-        self.navigationController?.setViewControllers([viewController], animated: false)
+        navigationController?.setViewControllers([viewController], animated: false)
     }
     
     //***** method called when resort favorites button clicked to make resort unfavorite *****//
@@ -314,6 +312,7 @@ class FevoritesResortController: UIViewController {
             
             let onSuccess = { [weak self] in
                 guard let strongSelf = self else { return }
+                strongSelf.hideHudAsync()
                 Constant.MyClassConstants.favoritesResortArray.remove(at: rowNumber)
                 Constant.MyClassConstants.favoritesResortCodeArray.remove(resortCode)
                 
@@ -322,12 +321,8 @@ class FevoritesResortController: UIViewController {
                 ADBMobile.trackAction(Constant.omnitureEvents.event51, data: nil)
                 
                 if Constant.RunningDevice.deviceIdiom == .pad {
-                    Constant.MyClassConstants.googleMarkerArray.flatMap {
-                        Constant.MyClassConstants.googleMarkerArray.index(of: $0)
-                        }.forEach {
-                            Constant.MyClassConstants.googleMarkerArray.remove(at: $0)
-                            strongSelf.createMapWithMarkers()
-                    }
+                    Constant.MyClassConstants.googleMarkerArray.remove(at: rowNumber)
+                    strongSelf.createMapWithMarkers()
                 }
                 
                 if Constant.MyClassConstants.favoritesResortArray.isEmpty {
@@ -337,15 +332,17 @@ class FevoritesResortController: UIViewController {
                 strongSelf.resortTableView.endUpdates()
             }
             
-            let onError = { [weak self] (error: NSError?) in
-                intervalPrint(error as Any)
+            let onError = { [weak self] (error: NSError) in
+                self?.hideHudAsync()
                 self?.presentErrorAlert(UserFacingCommonError.handleError(error))
+                return
             }
-            
+            self.showHudAsync()
             UserClient.removeFavoriteResort(userAccessToken,
                                             resortCode: resortCode,
                                             onSuccess: onSuccess,
                                             onError: onError)
+            
         } else {
             presentErrorAlert(UserFacingCommonError.generic)
         }
@@ -377,23 +374,24 @@ extension FevoritesResortController: GMSMapViewDelegate {
         
         if UIDevice.current.userInterfaceIdiom == .pad {
             
-            if (Constant.MyClassConstants.googleMarkerArray.count == 0) {
+            if Constant.MyClassConstants.googleMarkerArray.count == 0 {
                 
             } else {
                 if self.containerView != nil {
                 self.containerView.isHidden = false
                 self.view.bringSubview(toFront: self.containerView)
                 }
-                Constant.MyClassConstants.resortsDescriptionArray = Constant.MyClassConstants.favoritesResortArray[marker.userData as! Int]
+                Constant.MyClassConstants.resortsDescriptionArray = Constant.MyClassConstants.favoritesResortArray[marker.userData as? Int ?? 0]
+                if let resortCode = Constant.MyClassConstants.resortsDescriptionArray.resortCode {
+                    Helper.getResortWithResortCode(code: resortCode, viewcontroller: self)
+                }
                 
-                Helper.getResortWithResortCode(code: Constant.MyClassConstants.resortsDescriptionArray.resortCode!, viewcontroller: self)
-                
-                let containerVC = self.childViewControllers[0] as! ResortDetailsViewController
+                guard let containerVC = self.childViewControllers[0] as? ResortDetailsViewController else { return false }
                 containerVC.senderViewController = Constant.MyClassConstants.searchResult
                 containerVC.viewWillAppear(true)
                 
                 if self.containerView != nil {
-                UIView.animate (withDuration: 0.5, delay: 0.1, options: UIViewAnimationOptions.curveEaseIn, animations: {
+                    UIView.animate (withDuration: 0.5, delay: 0.1, options: UIViewAnimationOptions.curveEaseIn, animations: {
                     
                     self.containerView.frame = CGRect(x: 0, y: 64, width: self.containerView.frame.size.width, height: self.containerView.frame.size.height)
                     
@@ -414,9 +412,11 @@ extension FevoritesResortController: ResortDetailsDelegate {
         if Constant.RunningDevice.deviceIdiom == .pad {
             self.containerView.isHidden = false
             let selectedResort = Constant.MyClassConstants.favoritesResortArray[index]
-            Helper.getResortWithResortCode(code: selectedResort.resortCode!, viewcontroller: self)
+            if let resortCode = selectedResort.resortCode {
+                Helper.getResortWithResortCode(code: resortCode, viewcontroller: self)
+            }
             
-            let containerVC = self.childViewControllers[0] as! ResortDetailsViewController
+            guard let containerVC = self.childViewControllers[0] as? ResortDetailsViewController else { return }
             containerVC.senderViewController = Constant.MyClassConstants.searchResult
             containerVC.viewWillAppear(true)
             
@@ -429,7 +429,9 @@ extension FevoritesResortController: ResortDetailsDelegate {
             })
         } else {
             let selectedResort = Constant.MyClassConstants.favoritesResortArray[index]
-            Helper.getResortWithResortCode(code: selectedResort.resortCode!, viewcontroller: self)
+            if let resortCode = selectedResort.resortCode {
+                Helper.getResortWithResortCode(code: resortCode, viewcontroller: self)
+            }
         }
     }
 }
