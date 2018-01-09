@@ -61,7 +61,7 @@ final class SettingsViewModel {
 
         // Note: Won't go to production, no need to localize
         self.adobeConfigManager = adobeConfigManager
-        simpleLabelSwitchCellViewModel = SimpleLabelSwitchCellViewModel(label: "Analytics",
+        simpleLabelSwitchCellViewModel = SimpleLabelSwitchCellViewModel(label: "Enable Bloodhound",
                                                                             switchOn: adobeConfigManager.customURLPathBeingUsed)
 
         viewModels.append(simpleLabelSwitchCellViewModel)
