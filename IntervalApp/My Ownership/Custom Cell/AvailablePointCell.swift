@@ -16,7 +16,6 @@ class AvailablePointCell: UITableViewCell {
     @IBOutlet weak var availablePointValueLabel: UILabel!
     @IBOutlet weak var pointsInfoLabel: UILabel!
     @IBOutlet weak var mainView: UIView!
-   
     @IBOutlet weak var checkBOx: IUIKCheckbox!
     @IBOutlet weak var infoButton: UIButton!
 
