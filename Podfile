@@ -24,6 +24,7 @@ target 'IntervalApp' do
     pod 'SwiftyJSON','~>3.1.4'
     pod 'Firebase/Core','~>4.3.0'
     pod 'SVProgressHUD','~>2.2.1'
+    pod 'AdobeMobileSDK','~>4.13.8'
     pod 'Firebase/Messaging','~>4.3.0'
     pod 'TPKeyboardAvoiding','~>1.3.1'
     pod 'Brightcove-Player-SDK','~>5.3.4'

@@ -11,6 +11,7 @@ import Firebase
 import GoogleMaps
 import HockeySDK
 import UserNotifications
+@_exported import AdobeMobileSDK
 
 final class AppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -108,7 +109,6 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
 
         let adobeConfigManager = ADBMobileConfigManager()
         if let path = adobeConfigManager.configFilePathURL {
-            print(path)
             ADBMobile.overrideConfigPath(path)
         }
 

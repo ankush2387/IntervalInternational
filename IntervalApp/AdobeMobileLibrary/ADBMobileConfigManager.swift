@@ -21,7 +21,8 @@ struct ADBMobileConfigManager {
     }
 
     var customURLPathBeingUsed: Bool {
-        guard let path = try? decryptedStore.getItem(for: Persistent.adobeMobileConfig.key, ofType: String()) else {
+
+        guard let path = try? decryptedStore.getItem(for: Persistent.adobeMobileConfigCustomURL.key, ofType: String()) else {
             return false
         }
 
@@ -30,38 +31,38 @@ struct ADBMobileConfigManager {
 
     var base: String? {
         guard let customServerURL = try? decryptedStore.getItem(for: Persistent.adobeMobileConfigCustomURL.key, ofType: String()),
-        !customServerURL.unwrappedString.isEmpty else {
-            return nil
+            !customServerURL.unwrappedString.isEmpty else {
+                return nil
         }
-        
+
         return customServerURL?.components(separatedBy: ":").first
     }
 
     var port: String? {
         guard let customServerURL = try? decryptedStore.getItem(for: Persistent.adobeMobileConfigCustomURL.key, ofType: String()),
-        !customServerURL.unwrappedString.isEmpty else {
-            return nil
+            !customServerURL.unwrappedString.isEmpty else {
+                return nil
         }
         return customServerURL?.components(separatedBy: ":").last
     }
 
     var configFilePathURL: String? {
 
-        guard let path = try? decryptedStore.getItem(for: Persistent.adobeMobileConfig.key, ofType: String()),
-        !path.unwrappedString.isEmpty else {
-            return directoryForOriginalConfigFile?.absoluteString
+        guard let path = try? decryptedStore.getItem(for: Persistent.adobeMobileConfigCustomURL.key, ofType: String()),
+            !path.unwrappedString.isEmpty else {
+                return directoryForOriginalConfigFile?.path
         }
 
-        return path
+        return filename?.path
     }
 
     // MARK: - Private properties
     private let intervalConfig: Config
     private let decryptedStore: DecryptedItemDataStore
     private let directoryForOriginalConfigFile = Bundle.main.url(forResource: "ADBMobileConfig", withExtension: "json")
-    private var documentsDirectory: URL? {
+    private var filename: URL? {
         let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-        return paths.last
+        return paths.last?.appendingPathComponent("ADBMobileConfig.json")
     }
 
     // MARK: - Lifecycle
@@ -77,25 +78,25 @@ struct ADBMobileConfigManager {
     // MARK: - Public functions
     /// Sets a custom Omniture URL
     func set(serverURL: String) throws {
-        
+
         guard let url = directoryForOriginalConfigFile else {
             throw CommonErrors.parsingError
         }
-    
+
         guard let data = try? Data(contentsOf: url) else {
             throw CommonErrors.nilDataError
         }
-        
+
         do {
-            
+
             guard var object = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any] else {
                 throw CommonErrors.parsingError
             }
-        
+
             guard var analytics = object["analytics"] as? [String: Any] else {
                 throw CommonErrors.parsingError
             }
-            
+
             analytics["server"] = serverURL
             analytics["ssl"] = !serverURL.contains(":")
             object["analytics"] = analytics
@@ -111,14 +112,12 @@ struct ADBMobileConfigManager {
                 throw CommonErrors.parsingError
             }
 
-            guard let directory = documentsDirectory else {
+            guard let filename = filename else {
                 throw CommonErrors.emptyInstance
             }
 
-            let filename = directory.appendingPathComponent("ADBMobileConfig.json")
             try json.write(to: filename, atomically: true, encoding: String.Encoding.utf8)
             try decryptedStore.save(item: serverURL, for: Persistent.adobeMobileConfigCustomURL.key)
-            try decryptedStore.save(item: filename.absoluteString, for: Persistent.adobeMobileConfig.key)
 
         } catch {
             throw error
@@ -129,7 +128,6 @@ struct ADBMobileConfigManager {
     func reset() throws {
         do {
             try decryptedStore.save(item: "", for: Persistent.adobeMobileConfigCustomURL.key)
-            try decryptedStore.save(item: "", for: Persistent.adobeMobileConfig.key)
         } catch {
             throw error
         }

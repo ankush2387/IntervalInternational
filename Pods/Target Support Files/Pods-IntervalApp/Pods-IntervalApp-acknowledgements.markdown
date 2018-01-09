@@ -1,6 +1,10 @@
 # Acknowledgements
 This application makes use of the following third party libraries:
 
+## AdobeMobileSDK
+
+Adobe Systems Incorporated All Rights Reserved
+
 ## Alamofire
 
 Copyright (c) 2014-2016 Alamofire Software Foundation (http://alamofire.org/)

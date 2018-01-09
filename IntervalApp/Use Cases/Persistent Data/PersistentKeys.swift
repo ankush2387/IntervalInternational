@@ -17,7 +17,6 @@ enum Persistent: String {
     case encryption
     case touchIDEnabled
     case newAppInstance
-    case adobeMobileConfig
     case notificationTopic
     case appHasPreviousLogin
     case adobeMobileConfigCustomURL
