@@ -59,20 +59,20 @@ final class SettingsViewModel {
         privacyPolicy = Observable("Privacy Policy".localized())
         viewModels.append(SimpleLabelLabelCellViewModel(label2: privacyPolicy.value))
 
+        // Note: Won't go to production, no need to localize
         self.adobeConfigManager = adobeConfigManager
-        simpleLabelSwitchCellViewModel = SimpleLabelSwitchCellViewModel(label: "Show Omniture Section".localized(),
+        simpleLabelSwitchCellViewModel = SimpleLabelSwitchCellViewModel(label: "Analytics",
                                                                             switchOn: adobeConfigManager.customURLPathBeingUsed)
 
         viewModels.append(simpleLabelSwitchCellViewModel)
         if adobeConfigManager.isRunningInTestingEnvironment {
-            // Note: Won't go to production, no need to localize
-
+            
             let omnitureConfigurationViewModel = SimpleLabelTextFieldLabelTextFieldButtonButtonCellViewModel(label1: "Server",
                                                                                                              textFieldValue1: adobeConfigManager.base,
-                                                                                                             placeholderText1: "example.com",
+                                                                                                             placeholderText1: "172.24.105.156",
                                                                                                              label2: "Port",
                                                                                                              textFieldValue2: adobeConfigManager.port,
-                                                                                                             placeholderText2: "8080",
+                                                                                                             placeholderText2: "50000",
                                                                                                              button1Title: "Reset",
                                                                                                              button2Title: "Save")
             self.omnitureConfigurationViewModel = omnitureConfigurationViewModel
