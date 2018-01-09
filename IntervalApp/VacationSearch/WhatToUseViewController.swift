@@ -698,14 +698,11 @@ extension WhatToUseViewController: UITableViewDataSource {
                     //display Promotion
                     if let promotion = exchange.openWeek?.promotion {
                         cell.promLabel.text = promotion.offerName
+                        cell.promImgView.image = UIImage(named: "PromoImoge")
                     } else {
-                        
                         cell.promLabel.text = ""
                         cell.promImgView.image = nil
-                        //cell.promLabel.isHidden = true
-                        //cell.promImgView.isHidden = true
                     }
-                    
                     cell.dayAndDateLabel.text = month.uppercased()
                     cell.selectionStyle = UITableViewCellSelectionStyle.none
                     return cell
