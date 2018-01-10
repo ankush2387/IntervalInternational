@@ -1917,9 +1917,6 @@
                                                     </constraints>
                                                     <state key="normal" image="FavoriteIcon-On"/>
                                                     <state key="selected" image="FavoriteIcon-On"/>
-                                                    <connections>
-                                                        <action selector="favoriteButtonPressed:" destination="vJH-Uz-StG" eventType="touchUpInside" id="QIU-Je-bFf"/>
-                                                    </connections>
                                                 </button>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qbg-IU-VZv">
                                                     <rect key="frame" x="25" y="92.5" width="30" height="30"/>
@@ -2079,6 +2076,7 @@
                                             <constraints>
                                                 <constraint firstItem="g1G-Fl-9Ep" firstAttribute="top" secondItem="xTl-b2-7dA" secondAttribute="topMargin" constant="1" id="0Bq-zv-Xii"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="a9U-XJ-rkd" secondAttribute="bottom" constant="-6" id="4yS-7c-e2f"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="a9U-XJ-rkd" secondAttribute="bottom" constant="-13" id="Cek-ZJ-w4s"/>
                                                 <constraint firstItem="a9U-XJ-rkd" firstAttribute="top" secondItem="g1G-Fl-9Ep" secondAttribute="bottom" constant="8" symbolic="YES" id="Cgv-gS-Z6f"/>
                                                 <constraint firstItem="g1G-Fl-9Ep" firstAttribute="leading" secondItem="a9U-XJ-rkd" secondAttribute="leading" id="IqB-Cf-uVN"/>
                                                 <constraint firstItem="a9U-XJ-rkd" firstAttribute="centerX" secondItem="xTl-b2-7dA" secondAttribute="centerX" id="SOB-Gy-Urj"/>

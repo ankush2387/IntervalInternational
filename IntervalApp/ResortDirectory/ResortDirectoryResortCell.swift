@@ -77,21 +77,6 @@ class ResortDirectoryResortCell: UITableViewCell {
             self.favoriteButton.isSelected = true
         }
     }
-    
-    @IBAction func favoriteButtonPressed(_ sender: IUIKButton) {
-        
-        if favoriteButton.isSelected == false {
-            
-            if Session.sharedSession.userAccessToken == nil {
-                self.delegate?.favoritesButtonSelectedAtIndex(sender.tag)
-            } else {
-                
-            }
-        } else {
-            
-            //favoriteButton.isSelected = false
-        }
-    }
 }
 
 //***** collectionview delegate methods for collection view actons *****//

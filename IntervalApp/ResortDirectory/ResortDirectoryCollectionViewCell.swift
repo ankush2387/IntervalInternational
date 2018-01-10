@@ -10,7 +10,7 @@ import UIKit
 import IntervalUIKit
 
 //***** custom delegate method declaration *****//
-protocol ResortDirectoryCollectionViewCellDelegate : class {
+protocol ResortDirectoryCollectionViewCellDelegate: class {
     
     func favoriteCollectionButtonClicked(_ sender: UIButton)
     func unfavoriteCollectionButtonClicked(_ sender: UIButton)
