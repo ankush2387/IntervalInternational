@@ -117,7 +117,7 @@ extension ResortDirectoryResortCell: UICollectionViewDelegateFlowLayout {
         return 0
     }
 	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-		if(Constant.RunningDevice.deviceIdiom == .pad) {
+		if Constant.RunningDevice.deviceIdiom == .pad {
 			return CGSize(width: collectionView.frame.size.width, height: collectionView.frame.height)
 		} else {
 			return CGSize(width: UIScreen.main.bounds.width, height: collectionView.frame.height)

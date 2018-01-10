@@ -67,8 +67,6 @@ class ResortDetailsViewController: UIViewController {
             }
 
         }
-        // Notification to perform vacation search after user pre-login
-        NotificationCenter.default.addObserver(self, selector: #selector(showVacationSearch), name: NSNotification.Name(rawValue: Constant.notificationNames.reloadFavoritesTabNotification), object: nil)
         
         if self.headerTextForShowingResortCounter != nil {
             
@@ -331,8 +329,9 @@ class ResortDetailsViewController: UIViewController {
                 } else {
                     storyboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
                 }
-                guard let viewController = storyboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.revialViewController) as? SWRevealViewController else { return }
-                self.present(viewController, animated: true, completion: nil)
+                if let initialViewController = storyboard.instantiateInitialViewController() {
+                    navigationController?.pushViewController(initialViewController, animated: true)
+                }
             } catch {
                 presentErrorAlert(UserFacingCommonError.generic)
             }
@@ -926,24 +925,27 @@ extension ResortDetailsViewController: UITableViewDataSource {
                 
                 showHudAsync()
                 
-                UserClient.addFavoriteResort(Session.sharedSession.userAccessToken, resortCode: resortCode, onSuccess: {(_) in
+                UserClient.addFavoriteResort(Session.sharedSession.userAccessToken, resortCode: resortCode, onSuccess: { _ in
                     self.hideHudAsync()
                     sender.isSelected = true
                     Constant.MyClassConstants.favoritesResortCodeArray.add(resortCode)
                     self.tableViewResorts.reloadData()
                     ADBMobile.trackAction(Constant.omnitureEvents.event48, data: nil)
+                    
+                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.notificationNames.reloadFavoritesTabNotification), object: sender)
                 }, onError: {[weak self] error in
                     self?.hideHudAsync()
                     self?.presentErrorAlert(UserFacingCommonError.handleError(error))
                 })
             } else {
                 showHudAsync()
-                UserClient.removeFavoriteResort(Session.sharedSession.userAccessToken, resortCode: resortCode, onSuccess: {(_) in
+                UserClient.removeFavoriteResort(Session.sharedSession.userAccessToken, resortCode: resortCode, onSuccess: { _ in
                     sender.isSelected = false
                     self.hideHudAsync()
                     Constant.MyClassConstants.favoritesResortCodeArray.remove(resortCode)
                     self.tableViewResorts.reloadData()
                     ADBMobile.trackAction(Constant.omnitureEvents.event51, data: nil)
+                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.notificationNames.reloadFavoritesTabNotification), object: sender)
                 }, onError: {[weak self] error in
                     self?.hideHudAsync()
                     self?.presentErrorAlert(UserFacingCommonError.handleError(error))

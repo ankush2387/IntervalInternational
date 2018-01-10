@@ -11,9 +11,9 @@ import IntervalUIKit
 import DarwinSDK
 
 //***** Custom delegate method declaration *****//
-protocol ResortFavoritesTableViewCellDelegate {
+protocol ResortFavoritesTableViewCellDelegate : class {
     
-    func favoritesResortSelectedAtIndex(_ index: Int)
+    func favoritesResortSelectedAtIndex(_ index: Int, signInRequired: Bool, isFavorite: Bool)
     func showResortDetails(_ index: Int)
 }
 
@@ -27,7 +27,7 @@ class ResortFavoritesTableViewCell: UITableViewCell {
     @IBOutlet weak var favoritesCollectionView: UICollectionView!
     
     //***** Class variables *****//
-    var delegate: ResortFavoritesTableViewCellDelegate?
+    weak var delegate: ResortFavoritesTableViewCellDelegate?
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -96,7 +96,7 @@ extension ResortFavoritesTableViewCell: UICollectionViewDataSource {
         
         let resort = Constant.MyClassConstants.resortDirectoryResortArray[indexPath.row]
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.customCellNibNames.resortDetailCell, for: indexPath) as! ResortDirectoryCollectionViewCell
-        if(resort.images.count > 0) {
+        if !resort.images.isEmpty {
             
             if let stringUrl = resort.images[2].url {
                 let url = URL(string: stringUrl)
@@ -106,37 +106,30 @@ extension ResortFavoritesTableViewCell: UICollectionViewDataSource {
         
         for layer in cell.resortNameGradientView.layer.sublayers! {
             
-            if(layer.isKind(of: CAGradientLayer.self)) {
+            if layer.isKind(of: CAGradientLayer.self) {
                 layer.removeFromSuperlayer()
             }
         }
         let frame = CGRect(x: 0, y: (collectionView.frame.size.width - 10) / 2 - 80, width: (collectionView.frame.size.width - 10) / 2, height: 80)
         cell.resortNameGradientView.frame = frame
-        
-        //cell.resortImageView.frame = cell.frame
-        
         Helper.addLinearGradientToView(view: cell.resortNameGradientView, colour: UIColor.white, transparntToOpaque: true, vertical: false)
         cell.backgroundColor = IUIKColorPalette.contentBackground.color
         cell.favoriteButton.tag = indexPath.row
-        let status = Helper.isResrotFavorite(resortCode: resort.resortCode!)
-        if(status) {
-            cell.favoriteButton.isSelected = true
-        } else {
-            cell.favoriteButton.isSelected = false
+        if let resortCode = resort.resortCode {
+            let status = Helper.isResrotFavorite(resortCode: resortCode)
+            status ? (cell.favoriteButton.isSelected = true) :  (cell.favoriteButton.isSelected = false)
         }
-        if(Constant.MyClassConstants.btnTag == (indexPath as NSIndexPath).row) {
+        if Constant.MyClassConstants.btnTag == indexPath.row {
             cell.favoriteButton.isSelected = true
         }
         cell.regionNameLabel.text = resort.resortName
         cell.regionResortCode.text = resort.resortCode
         let tierImage = Helper.getTierImageName(tier: resort.tier!.uppercased())
-        if(resort.tier != nil && cell.tierImageView != nil) {
+        if resort.tier != nil && cell.tierImageView != nil {
             cell.tierImageView.image = UIImage(named: tierImage)
         }
         if let city = resort.address?.cityName {
-            
             cell.regionAreaLabel.text = "\(city)"
-            
         }
         cell.delegate = self
         cell.backgroundColor = IUIKColorPalette.contentBackground.color
@@ -149,31 +142,21 @@ extension ResortFavoritesTableViewCell: UICollectionViewDataSource {
 extension ResortFavoritesTableViewCell: ResortDirectoryCollectionViewCellDelegate {
     func favoriteCollectionButtonClicked(_ sender: UIButton) {
         
-        sender.isSelected = false
-        if((Session.sharedSession.userAccessToken) != nil && Constant.MyClassConstants.isLoginSuccessfull) {
-            
-            if (sender.isSelected == false) {
-                
-                UserClient.addFavoriteResort(Session.sharedSession.userAccessToken, resortCode: Constant.MyClassConstants.resortDirectoryResortArray[sender.tag].resortCode!, onSuccess: {(response) in
-                    
-                    intervalPrint(response)
-                    sender.isSelected = true
-                    
-                }, onError: {(error) in
-                    
-                    intervalPrint(error)
-                })
-            } else {
-                sender.isSelected = false
-            }
-
+        Constant.MyClassConstants.btnTag = sender.tag
+        if Session.sharedSession.userAccessToken != nil && Constant.MyClassConstants.isLoginSuccessfull {
+            self.delegate?.favoritesResortSelectedAtIndex(sender.tag, signInRequired: false, isFavorite: false)
         } else {
-            
-            Constant.MyClassConstants.btnTag = sender.tag
-            self.delegate?.favoritesResortSelectedAtIndex(sender.tag)
+            self.delegate?.favoritesResortSelectedAtIndex(sender.tag, signInRequired: true, isFavorite: false)
         }
     }
     func unfavoriteCollectionButtonClicked(_ sender: UIButton) {
         
+        Constant.MyClassConstants.btnTag = sender.tag
+        if Session.sharedSession.userAccessToken != nil && Constant.MyClassConstants.isLoginSuccessfull {
+            self.delegate?.favoritesResortSelectedAtIndex(sender.tag, signInRequired: false, isFavorite: true)
+        } else {
+            self.delegate?.favoritesResortSelectedAtIndex(sender.tag, signInRequired: true, isFavorite: true)
+        }
     }
+    
 }
