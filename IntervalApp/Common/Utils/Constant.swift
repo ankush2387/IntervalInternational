@@ -13,7 +13,7 @@ import GoogleMaps
 class Constant: NSObject {
     
     static var holdingTimer: Timer?
-    static var holdingTime = 17
+    static var holdingTime = 18
     static var decreaseValue = 1
     static var activeAlertCount = 0
     static var needToReloadAlert = false
@@ -1633,7 +1633,7 @@ class Constant: NSObject {
     
     static func startTimer() {
         
-        self.holdingTime = 17
+        self.holdingTime = 18
         self.holdingTimer = Timer.scheduledTimer(timeInterval: 60.0, target: self, selector: #selector(updateResortHoldingTimeLabel), userInfo: nil, repeats: true)
     }
     
