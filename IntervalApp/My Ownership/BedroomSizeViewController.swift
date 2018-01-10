@@ -177,7 +177,6 @@ class BedroomSizeViewController: UIViewController {
                             if i < localArrayToHoldSelection.count {
                                 
                                 let friendlyName = UnitSize.forDisplay[index as? Int ?? 0].friendlyName()
-                                
                                 let bedroomSize = Helper.bedRoomSizeToStringInteger(bedRoomSize: friendlyName)
                                 selectedBedroomsizes.append(bedroomSize)
                                 
@@ -372,4 +371,3 @@ extension BedroomSizeViewController: UITableViewDelegate {
         }
     }
 }
-

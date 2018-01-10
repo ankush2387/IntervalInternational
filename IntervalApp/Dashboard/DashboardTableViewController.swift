@@ -454,6 +454,7 @@ class DashboardTableViewController: UITableViewController {
     }
     //***** View all alerts button pressed *****//
     func viewAllAlertButtonPressed(_ sender: IUIKButton) {
+        showSearchResults = false
         Constant.MyClassConstants.alertOriginationPoint = Constant.CommonStringIdentifiers.alertOriginationPoint
         let isRunningOnIphone = UIDevice.current.userInterfaceIdiom == .phone
         let storyboardName = isRunningOnIphone ? Constant.storyboardNames.getawayAlertsIphone : Constant.storyboardNames.getawayAlertsIpad
@@ -498,53 +499,38 @@ class DashboardTableViewController: UITableViewController {
     }
     
     func homeAlertSelected(indexPath: IndexPath) {
+        let (getawayAlert, searchDateResponse) = Constant.MyClassConstants.searchDateResponse[indexPath.row]
         
-        guard let alertID = Constant.MyClassConstants.getawayAlertsArray[indexPath.row].alertId else { return }
-        if let value = Constant.MyClassConstants.alertsSearchDatesDictionary.value(forKey: String(alertID)) as? NSArray {
+        if !searchDateResponse.checkInDates.isEmpty {
+            showHudAsync()
+            let searchCriteria = createSearchCriteriaFor(alert: getawayAlert)
+            let settings = Helper.createSettings()
+            Constant.MyClassConstants.initialVacationSearch = VacationSearch(settings, searchCriteria)
+            Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.response = searchDateResponse
+            // Get activeInterval
+            guard let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval() else { return }
+            // Update active interval
+            Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
+            Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
             
-            if value.count > 0 {
+            // Check if active interval has check-in dates.
+            activeInterval.hasCheckInDates() ?self.rentalSearchAvailability(activeInterval: activeInterval) : self.noResultsAvailability()
+        } else {
+            let alertController = UIAlertController(title: title, message: Constant.AlertErrorMessages.getawayAlertMessage, preferredStyle: .alert)
+            showSearchResults = true
+            let startSearch = UIAlertAction(title: Constant.AlertPromtMessages.newSearch, style: .default) { (_:UIAlertAction) in
                 
-                if let  getawayAlert = Constant.MyClassConstants.alertsDictionary.value(forKey: String(alertID)) as? RentalAlert {
-                    showHudAsync()
-                    let searchCriteria = createSearchCriteriaFor(alert: getawayAlert)
-                    let settings = Helper.createSettings()
-                    Constant.MyClassConstants.initialVacationSearch = VacationSearch(settings, searchCriteria)
-                    RentalClient.searchDates(Session.sharedSession.userAccessToken, request: Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request, onSuccess: {[unowned self] response in
-                        Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.response = response
-                        // Get activeInterval
-                        let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval()
-                        // Update active interval
-                        Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
-                        Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
-                        // Check not available checkIn dates for the active interval
-                        if activeInterval?.fetchedBefore != nil && activeInterval?.hasCheckInDates() != nil {
-                            if let activeInterval = activeInterval {
-                                activeInterval.hasCheckInDates() ?self.rentalSearchAvailability(activeInterval: activeInterval) :self.noResultsAvailability()
-                            }
-                        }
-                        },
-                                             onError: { [unowned self] error in
-                                                self.hideHudAsync()
-                                                self.presentErrorAlert(UserFacingCommonError.custom(title: "Error".localized(), body: error.localizedDescription))
-                    })
+                let isRunningOnIphone = UIDevice.current.userInterfaceIdiom == .phone
+                let storyboardName = isRunningOnIphone ? Constant.storyboardNames.vacationSearchIphone : Constant.storyboardNames.vacationSearchIPad
+                if let initialViewController = UIStoryboard(name: storyboardName, bundle: nil).instantiateInitialViewController() {
+                    self.navigationController?.pushViewController(initialViewController, animated: true)
                 }
-            } else {
-                let alertController = UIAlertController(title: title, message: Constant.AlertErrorMessages.getawayAlertMessage, preferredStyle: .alert)
-                showSearchResults = true
-                let startSearch = UIAlertAction(title: Constant.AlertPromtMessages.newSearch, style: .default) { (_:UIAlertAction) in
-                    
-                    let isRunningOnIphone = UIDevice.current.userInterfaceIdiom == .phone
-                    let storyboardName = isRunningOnIphone ? Constant.storyboardNames.vacationSearchIphone : Constant.storyboardNames.vacationSearchIPad
-                    if let initialViewController = UIStoryboard(name: storyboardName, bundle: nil).instantiateInitialViewController() {
-                        self.navigationController?.pushViewController(initialViewController, animated: true)
-                    }
-                }
-                let close = UIAlertAction(title: Constant.AlertPromtMessages.close, style: .default, handler: nil)
-                //Add Custom Actions to Alert viewController
-                alertController.addAction(startSearch)
-                alertController.addAction(close)
-                self.present(alertController, animated: true, completion:nil)
             }
+            let close = UIAlertAction(title: Constant.AlertPromtMessages.close, style: .default, handler: nil)
+            //Add Custom Actions to Alert viewController
+            alertController.addAction(startSearch)
+            alertController.addAction(close)
+            present(alertController, animated: true)
         }
     }
     
@@ -624,7 +610,10 @@ class DashboardTableViewController: UITableViewController {
             Constant.MyClassConstants.vacationSearchResultHeaderLabel = destination.destinationName
             
         } else if !alert.resorts.isEmpty {
-            Constant.MyClassConstants.initialVacationSearch.searchCriteria.resorts = alert.resorts
+           searchCriteria.resorts = alert.resorts
+            if let resortName = alert.resorts[0].resortName {
+                Constant.MyClassConstants.vacationSearchResultHeaderLabel = "\(resortName) + \(alert.resorts.count) more"
+            }
         }
     }
 }

@@ -52,7 +52,7 @@ class DashboardIPadTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        //Get all alerts
         title = Constant.ControllerTitles.dashboardTableViewController
         if let accessToken = Session.sharedSession.userAccessToken {
             //Get all alerts
@@ -114,7 +114,7 @@ class DashboardIPadTableViewController: UITableViewController {
                 }
             }
             .onError { [weak self] error in
-                self?.presentErrorAlert(UserFacingCommonError.handleError(error as NSError))
+            self?.presentErrorAlert(UserFacingCommonError.handleError(error as NSError))
         }
     }
     
@@ -137,7 +137,7 @@ class DashboardIPadTableViewController: UITableViewController {
                 self.readDates(accessToken: accessToken, request: rentalSearchDatesRequest, rentalAlert: rentalAlert)
             }
             .onError { [weak self] error in
-                self?.presentErrorAlert(UserFacingCommonError.handleError(error as NSError))
+        self?.presentErrorAlert(UserFacingCommonError.handleError(error as NSError))
         }
     }
     
@@ -215,7 +215,6 @@ class DashboardIPadTableViewController: UITableViewController {
         
         showAlertActivityIndicatorView = true
         homeTableView.reloadData()
-        //Get all alerts
         if let accessToken = Session.sharedSession.userAccessToken {
             readAllRentalAlerts(accessToken: accessToken)
         }
@@ -244,60 +243,38 @@ class DashboardIPadTableViewController: UITableViewController {
     }
     
     func homeAlertSelected(indexPath: IndexPath) {
+        let (getawayAlert, searchDateResponse) = Constant.MyClassConstants.searchDateResponse[indexPath.row]
         
-        guard let alertID = Constant.MyClassConstants.getawayAlertsArray[indexPath.row].alertId else { return }
-        if let value = Constant.MyClassConstants.alertsSearchDatesDictionary.value(forKey: String(alertID)) as? NSArray {
-            //unable to perform isEmpty with value
-            if value.count > 0 {
-                if let  getawayAlert = Constant.MyClassConstants.alertsDictionary.value(forKey: String(alertID)) as? RentalAlert {
-                    
-                    showHudAsync()
-                    let searchCriteria = createSearchCriteriaFor(alert: getawayAlert)
-                    let settings = Helper.createSettings()
-                    Constant.MyClassConstants.initialVacationSearch = VacationSearch(settings, searchCriteria)
-                    
-                    RentalClient.searchDates(Session.sharedSession.userAccessToken, request: Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request, onSuccess: { response in
-                        Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.response = response
-                        // Get activeInterval
-                        let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval()
-                        // Update active interval
-                        Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
-                        Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
-                        // Check not available checkIn dates for the active interval
-                        if activeInterval?.fetchedBefore != nil && activeInterval?.hasCheckInDates() != nil {
-                            
-                            if  let activeInterval = activeInterval {
-                                activeInterval.hasCheckInDates() ?self.rentalSearchAvailability(activeInterval: activeInterval) :self.noResultsAvailability()
-                            }
-                            
-                        }
-                    },
-                                             onError: {[unowned self] error in
-                                                self.hideHudAsync()
-                                                self.presentErrorAlert(UserFacingCommonError.custom(title: "Error".localized(), body: error.localizedDescription))
-                    })
-                }
-            } else {
-                let alertController = UIAlertController(title: title, message: Constant.AlertErrorMessages.getawayAlertMessage, preferredStyle: .alert)
-                showSearchResults = true
-                let startSearch = UIAlertAction(title: Constant.AlertPromtMessages.newSearch, style: .default) { (action: UIAlertAction!) in
-                    
-                    let isRunningOnIphone = UIDevice.current.userInterfaceIdiom == .phone
-                    let storyboardName = isRunningOnIphone ? Constant.storyboardNames.vacationSearchIphone : Constant.storyboardNames.vacationSearchIPad
-                    if let initialViewController = UIStoryboard(name: storyboardName, bundle: nil).instantiateInitialViewController() {
-                        self.navigationController?.pushViewController(initialViewController, animated: true)
-                    }
-                }
+        if !searchDateResponse.checkInDates.isEmpty {
+            showHudAsync()
+            let searchCriteria = createSearchCriteriaFor(alert: getawayAlert)
+            let settings = Helper.createSettings()
+            Constant.MyClassConstants.initialVacationSearch = VacationSearch(settings, searchCriteria)
+            Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.response = searchDateResponse
+            // Get activeInterval
+            guard let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval() else { return }
+            // Update active interval
+            Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
+            Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+            
+            // Check if active interval has check-in dates.
+            activeInterval.hasCheckInDates() ?self.rentalSearchAvailability(activeInterval: activeInterval) : self.noResultsAvailability()
+        } else {
+            let alertController = UIAlertController(title: title, message: Constant.AlertErrorMessages.getawayAlertMessage, preferredStyle: .alert)
+            showSearchResults = true
+            let startSearch = UIAlertAction(title: Constant.AlertPromtMessages.newSearch, style: .default) { [unowned self]  (_:UIAlertAction) in
                 
-                let close = UIAlertAction(title: Constant.AlertPromtMessages.close, style: .default) { (_:UIAlertAction) in
-                    
+                let isRunningOnIphone = UIDevice.current.userInterfaceIdiom == .phone
+                let storyboardName = isRunningOnIphone ? Constant.storyboardNames.vacationSearchIphone : Constant.storyboardNames.vacationSearchIPad
+                if let initialViewController = UIStoryboard(name: storyboardName, bundle: nil).instantiateInitialViewController() {
+                    self.navigationController?.pushViewController(initialViewController, animated: true)
                 }
-                
-                //Add Custom Actions to Alert viewController
-                alertController.addAction(startSearch)
-                alertController.addAction(close)
-                self.present(alertController, animated: true, completion:nil)
             }
+            let close = UIAlertAction(title: Constant.AlertPromtMessages.close, style: .default, handler: nil)
+            //Add Custom Actions to Alert viewController
+            alertController.addAction(startSearch)
+            alertController.addAction(close)
+            present(alertController, animated: true)
         }
     }
     
@@ -373,7 +350,9 @@ class DashboardIPadTableViewController: UITableViewController {
             Constant.MyClassConstants.vacationSearchResultHeaderLabel = destination.destinationName
             
         } else if !alert.resorts.isEmpty {
-            Constant.MyClassConstants.vacationSearchResultHeaderLabel = "\(String(describing: alert.resorts[0].resortName)) + \(alert.resorts.count) more"
+            if let resortName = alert.resorts[0].resortName {
+                Constant.MyClassConstants.vacationSearchResultHeaderLabel = "\(resortName) + \(alert.resorts.count) more"
+            }
             searchCriteria.resorts = alert.resorts
         }
     }
@@ -650,7 +629,7 @@ extension DashboardIPadTableViewController: UICollectionViewDataSource {
         case 2:
             return (Constant.MyClassConstants.topDeals.count)
         case 3:
-            return Constant.MyClassConstants.getawayAlertsArray.count
+            return Constant.MyClassConstants.searchDateResponse.count
         case 4:
             return Constant.MyClassConstants.upcomingTripsArray.count
         default:
@@ -762,43 +741,36 @@ extension DashboardIPadTableViewController: UICollectionViewDataSource {
             
         case 3:
             if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HomeAlertCollectionCell", for: indexPath) as? HomeAlertCollectionCell {
-                if let alertTitle = Constant.MyClassConstants.getawayAlertsArray[indexPath.row].name {
+                
+                let (alert, searchDatesResponse) = Constant.MyClassConstants.searchDateResponse[indexPath.row]
+                if let alertTitle = alert.name {
                     cell.alertTitle.text = alertTitle
                 }
                 
                 var fromDate = ""
                 var toDate = ""
-                if let earchInDate = Constant.MyClassConstants.getawayAlertsArray[indexPath.row].earliestCheckInDate {
+                if let earliestCheckInDate = alert.earliestCheckInDate {
                     
-                    let alertFromDate = Helper.convertStringToDate(dateString:earchInDate, format: Constant.MyClassConstants.dateFormat)
+                    let alertFromDate = Helper.convertStringToDate(dateString:earliestCheckInDate, format: Constant.MyClassConstants.dateFormat)
                     
                     fromDate = (Helper.getWeekDay(dateString: alertFromDate, getValue: Constant.MyClassConstants.month)).appendingFormat(". ").appending(Helper.getWeekDay(dateString: alertFromDate, getValue: Constant.MyClassConstants.date)).appending(", ").appending(Helper.getWeekDay(dateString: alertFromDate, getValue: Constant.MyClassConstants.year))
                 }
                 
-                if let latchInDate = Constant.MyClassConstants.getawayAlertsArray[indexPath.row].latestCheckInDate {
+                if let latestCheckInDate = alert.latestCheckInDate {
                     
-                    let alertToDate = Helper.convertStringToDate(dateString: latchInDate, format: Constant.MyClassConstants.dateFormat)
+                    let alertToDate = Helper.convertStringToDate(dateString: latestCheckInDate, format: Constant.MyClassConstants.dateFormat)
                     
-                    toDate = Helper.getWeekDay(dateString: alertToDate, getValue: Constant.MyClassConstants.month).appending(". ").appending(Helper.getWeekDay(dateString: alertToDate, getValue: Constant.MyClassConstants.date)).appending(", ").appending(Helper.getWeekDay(dateString: alertToDate, getValue: Constant.MyClassConstants.year))
+                    toDate = Helper.getWeekDay(dateString: alertToDate, getValue: "Month").appending(". ").appending(Helper.getWeekDay(dateString: alertToDate, getValue: "Date")).appending(", ").appending(Helper.getWeekDay(dateString: alertToDate, getValue: "Year"))
                 }
                 
                 let dateRange = fromDate.appending(" - " + toDate)
                 cell.alertDate.text = dateRange
-                
-                if let alertID = Constant.MyClassConstants.getawayAlertsArray[indexPath.row].alertId {
-                    if let value = Constant.MyClassConstants.alertsSearchDatesDictionary.value(forKey: String(alertID)) as? NSArray {
-                        //unable to check isEmpty with value
-                        if value.count > 0 {
-                            cell.alertStatus.text = Constant.buttonTitles.viewResults
-                            cell.alertStatus.textColor = UIColor.white
-                            cell.layer.borderColor = UIColor(red: 224.0 / 255.0, green: 118.0 / 255.0, blue: 69.0 / 255.0, alpha: 1.0).cgColor
-                            cell.backgroundColor = UIColor(red: 224.0 / 255.0, green: 118.0 / 255.0, blue: 69.0 / 255.0, alpha: 1.0)
-                        } else {
-                            cell.alertStatus.text = Constant.buttonTitles.nothingYet
-                            cell.alertStatus.textColor = UIColor.white
-                            cell.layer.borderColor = UIColor(red: 167.0 / 255.0, green: 167.0 / 255.0, blue: 170.0 / 255.0, alpha: 1.0).cgColor
-                            cell.backgroundColor = UIColor(red: 167.0 / 255.0, green: 167.0 / 255.0, blue: 170.0 / 255.0, alpha: 1.0)
-                        }
+                if let alertID = alert.alertId {
+                    if !searchDatesResponse.checkInDates.isEmpty {
+                        cell.alertStatus.text = Constant.buttonTitles.viewResults
+                        cell.alertStatus.textColor = .white
+                        cell.layer.borderColor = UIColor(red: 224.0 / 255.0, green: 118.0 / 255.0, blue: 69.0 / 255.0, alpha: 1.0).cgColor
+                        cell.backgroundColor = UIColor(red: 224.0 / 255.0, green: 118.0 / 255.0, blue: 69.0 / 255.0, alpha: 1.0)
                     } else {
                         cell.alertStatus.text = Constant.buttonTitles.nothingYet
                         cell.alertStatus.textColor = UIColor.white
