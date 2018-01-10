@@ -997,6 +997,7 @@ extension SearchResultViewController: UICollectionViewDelegate {
                                 
                                 Constant.MyClassConstants.selectedResort = (combinedExactSearchItems[collectionView.tag].exchangeAvailability!.resort)!
                                 if let bucket = combinedExactSearchItems[collectionView.tag].exchangeAvailability?.inventory?.buckets[indexPath.row] {
+                                     Constant.MyClassConstants.selectedExchangeCigPoints = bucket.pointsCost
                                     if bucket.pointsCost != bucket.memberPointsRequired {
                                         showInfoIcon = true
                                     }
@@ -1009,6 +1010,7 @@ extension SearchResultViewController: UICollectionViewDelegate {
                             if combinedSurroundingSearchItems[collectionView.tag].exchangeAvailability != nil {
                                 Constant.MyClassConstants.selectedResort = (combinedSurroundingSearchItems[collectionView.tag].exchangeAvailability!.resort)!
                                 if let bucket = combinedSurroundingSearchItems[collectionView.tag].exchangeAvailability?.inventory?.buckets[indexPath.row] {
+                                    Constant.MyClassConstants.selectedExchangeCigPoints = bucket.pointsCost
                                     if bucket.pointsCost != bucket.memberPointsRequired {
                                         showInfoIcon = true
                                     }
