@@ -919,6 +919,7 @@ extension ResortDetailsViewController: UITableViewDataSource {
     }
     
     func favoritesButtonClicked(_ sender: IUIKButton) {
+        Constant.MyClassConstants.btnTag = -1
         guard let resortCode = Constant.MyClassConstants.resortsDescriptionArray.resortCode else { return }
         if Session.sharedSession.userAccessToken != nil {
             if sender.isSelected == false {

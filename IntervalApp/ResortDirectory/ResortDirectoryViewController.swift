@@ -177,10 +177,14 @@ class ResortDirectoryViewController: UIViewController {
     }
     func reloadView() {
         if self.resortTableView != nil {
+            if Constant.MyClassConstants.btnTag != -1 {
+                addRemoveFavorite()
+            }
             resortTableView.reloadData()
             setNavigationBar()
         }
     }
+    
     func reloadTable() {
         
         self.view.tag = 3
@@ -188,6 +192,17 @@ class ResortDirectoryViewController: UIViewController {
         self.viewDidLoad()
         
     }
+    
+    // MARK: - Fuction to add remove favorite after Pre-Login
+    func addRemoveFavorite() {
+            guard let resortCode = Constant.MyClassConstants.resortDirectoryResortArray[Constant.MyClassConstants.btnTag].resortCode else { return }
+            Constant.MyClassConstants.btnTag = -1
+            let isFavorite = Helper.isResrotFavorite(resortCode: resortCode)
+            let favoriteTempButton = UIButton()
+            favoriteTempButton.isSelected = isFavorite
+            favoriteButtonClicked(favoriteTempButton)
+    }
+    
     //***** method called when login help button pressed and redirect to webview *****//
     func helpClicked() {
         
@@ -275,17 +290,16 @@ class ResortDirectoryViewController: UIViewController {
     }
     
     func favoriteButtonClicked(_ sender: UIButton) {
-        
+        guard let resortCode = Constant.MyClassConstants.resortDirectoryResortArray[sender.tag].resortCode else { return }
         if Session.sharedSession.userAccessToken != nil {
             
             if !sender.isSelected {
-                
                 showHudAsync()
-                UserClient.addFavoriteResort(Session.sharedSession.userAccessToken, resortCode: Constant.MyClassConstants.resortDirectoryResortArray[sender.tag].resortCode!, onSuccess: {(response) in
+                UserClient.addFavoriteResort(Session.sharedSession.userAccessToken, resortCode:resortCode, onSuccess: { response in
                     intervalPrint(response)
                     self.hideHudAsync()
                     sender.isSelected = true
-                    Constant.MyClassConstants.favoritesResortCodeArray.add(Constant.MyClassConstants.resortDirectoryResortArray[sender.tag].resortCode!)
+                    Constant.MyClassConstants.favoritesResortCodeArray.add(resortCode)
                     self.resortTableView.reloadData()
                     
                 }, onError: { [weak self] error in
@@ -295,15 +309,15 @@ class ResortDirectoryViewController: UIViewController {
             } else {
                 
                 showHudAsync()
-                UserClient.removeFavoriteResort(Session.sharedSession.userAccessToken, resortCode: Constant.MyClassConstants.resortDirectoryResortArray[sender.tag].resortCode!, onSuccess: {(response) in
+                UserClient.removeFavoriteResort(Session.sharedSession.userAccessToken, resortCode: resortCode, onSuccess: { response in
                     intervalPrint(response)
                     sender.isSelected = false
                     self.hideHudAsync()
-                    Constant.MyClassConstants.favoritesResortCodeArray.remove(Constant.MyClassConstants.resortDirectoryResortArray[sender.tag].resortCode!)
+                    Constant.MyClassConstants.favoritesResortCodeArray.remove(resortCode)
                     self.resortTableView.reloadData()
                     
-                }, onError: {(error) in
-                    self.hideHudAsync()
+                }, onError: { [weak self] error in
+                    self?.hideHudAsync()
                     intervalPrint(error)
                 })
                 
@@ -668,7 +682,6 @@ extension ResortDirectoryViewController: ResortFavoritesTableViewCellDelegate {
             guard let resortCode = Constant.MyClassConstants.resortDirectoryResortArray[index].resortCode else { return }
              showHudAsync()
             if !isFavorite {
-                
                 UserClient.addFavoriteResort(Session.sharedSession.userAccessToken, resortCode:resortCode, onSuccess: { [weak self]  in
                     guard let strongSelf = self else { return }
                     strongSelf.hideHudAsync()

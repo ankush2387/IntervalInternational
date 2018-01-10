@@ -1915,7 +1915,7 @@
                                                         <constraint firstAttribute="height" constant="60" id="ksm-J6-vD9"/>
                                                         <constraint firstAttribute="width" constant="60" id="w6S-dg-Hg4"/>
                                                     </constraints>
-                                                    <state key="normal" image="FavoriteIcon-On"/>
+                                                    <state key="normal" image="FavoriteIcon-Off"/>
                                                     <state key="selected" image="FavoriteIcon-On"/>
                                                 </button>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qbg-IU-VZv">

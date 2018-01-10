@@ -110,13 +110,13 @@ class FevoritesResortController: UIViewController {
             if UIDevice().userInterfaceIdiom == .pad {
                 createMapWithMarkers()
             }
+            
+            resortTableView.reloadData()
             if !Constant.MyClassConstants.favoritesResortArray.isEmpty {
                 
-                self.resortTableView.reloadData()
                 if self.emptyFavoritesMessageView != nil {
                     self.emptyFavoritesMessageView.removeFromSuperview()
                 }
-                
             } else {
                 
                 if UIDevice().userInterfaceIdiom == .pad {
