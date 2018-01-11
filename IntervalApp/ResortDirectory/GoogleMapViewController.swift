@@ -1032,10 +1032,10 @@ class GoogleMapViewController: UIViewController {
         try! realm.write {
             realm.deleteAll()
         }
-        let allavailabledest = AllAvailableDestination()
-        allavailabledest.destination = Constant.MyClassConstants.allDestinations
+        let allAvailableDest = AllAvailableDestination()
+        allAvailableDest.destination = Constant.MyClassConstants.allDestinations
         try! realm.write {
-            realm.add(allavailabledest)
+            realm.add(allAvailableDest)
         }
         Constant.MyClassConstants.destinationOrResortSelectedBy = Constant.omnitureCommonString.allDestination
         Constant.MyClassConstants.whereTogoContentArray.removeAllObjects()
