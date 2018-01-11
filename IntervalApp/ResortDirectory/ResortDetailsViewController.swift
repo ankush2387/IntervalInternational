@@ -278,7 +278,8 @@ class ResortDetailsViewController: UIViewController {
     }
     
     @IBAction func closeButtonClicked(_ sender: AnyObject) {
-        self.dismiss(animated: true, completion: nil)
+        navigationController?.view.layer.add(Helper.topToBottomTransition(), forKey: nil)
+        navigationController?.popViewController(animated: false)
     }
     
     //***** Function call for search button pressed. *****//
