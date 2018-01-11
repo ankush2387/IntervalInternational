@@ -295,7 +295,7 @@ class ResortDetailsViewController: UIViewController {
                         realm.deleteAll()
                     }
                 }
-                let allAvailableDest = allAvailableDestination()
+                let allAvailableDest = AllAvailableDestination()
                 allAvailableDest.destination = Constant.MyClassConstants.allDestinations
                 let dict = Constant.MyClassConstants.resortsDescriptionArray
                 let address = dict.address
