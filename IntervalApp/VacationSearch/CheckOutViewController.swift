@@ -184,6 +184,7 @@ class CheckOutViewController: UIViewController {
                 
                 showHudAsync()
                 imageSlider.isHidden = true
+                showLoader = true
                 
                 if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
                     self.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
@@ -221,7 +222,6 @@ class CheckOutViewController: UIViewController {
                     })
                     
                 } else {
-                    showLoader = true
                     self.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
                     
                     let continueToPayRequest = RentalProcessRecapContinueToPayRequest()
