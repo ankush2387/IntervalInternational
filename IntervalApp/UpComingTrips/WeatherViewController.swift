@@ -40,9 +40,9 @@ class WeatherViewController: UIViewController {
         
     }
     override func viewDidDisappear(_ animated: Bool) {
-        if(Constant.RunningDevice.deviceIdiom == .phone) {
-            self.navigationController?.isNavigationBarHidden = false
-            self.tabBarController?.tabBar.isHidden = false
+        if Constant.RunningDevice.deviceIdiom == .phone && !presentedModally {
+            navigationController?.navigationBar.isHidden = false
+            tabBarController?.tabBar.isHidden = false
         }
     }
     
@@ -64,30 +64,20 @@ class WeatherViewController: UIViewController {
         self.navigationController?.popViewController(animated: true)
     }
     override func viewDidAppear(_ animated: Bool) {
-        self.tabBarController?.tabBar.isHidden = true
-        self.navigationController?.isNavigationBarHidden = true
+         if Constant.RunningDevice.deviceIdiom == .phone && !presentedModally {
+            tabBarController?.tabBar.isHidden = true
+            navigationController?.navigationBar.isHidden = true
+        }
+        
     }
     
     func setupNavBarForModalPresentation() {
-        // change Nav-bar tint color.
-       
-        self.navigationController?.navigationBar.barTintColor = UIColor(red: 229.0 / 255.0, green: 231.0 / 255.0, blue: 228.0 / 255.0, alpha: 1.0)
+        
         
         //Nav-bar button
-        
-        let doneButtonView = UIView(frame: CGRect(x: self.view.frame.size.width - 100, y: 0, width: 100, height: 45))
-        doneButtonView.backgroundColor = UIColor(red: 229.0 / 255.0, green: 231.0 / 255.0, blue: 228.0 / 255.0, alpha: 1.0)
-        let doneButton = UIButton(frame: CGRect(x: doneButtonView.frame.size.width - 75, y: 5, width: 50, height: 45))
-        doneButton.setTitleColor(IUIKColorPalette.primary1.color, for: .normal)
-        doneButton.setTitle("Done", for: .normal)
-        doneButton.addTarget(self, action: #selector(WeatherViewController.menuBackButtonPressed(_:)), for: .touchUpInside)
-        doneButtonView.addSubview(doneButton)
-        
-        self.navigationController?.navigationBar.addSubview(doneButtonView)
-        
-//        let doneButton = UIBarButtonItem(barButtonSystemItem: ., target: self, action: #selector(WeatherViewController.menuBackButtonPressed(_:)))
-//        doneButton.tintColor = UIColor(red: 0/255.0, green: 128.0/255.0, blue: 255.0/255.0, alpha: 1.0)
-//        self.navigationItem.rightBarButtonItem = doneButton
+        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(WeatherViewController.menuBackButtonPressed(_:)))
+        doneButton.tintColor = .white
+        self.navigationItem.rightBarButtonItem = doneButton
     }
     
     func setup() {
@@ -102,11 +92,11 @@ class WeatherViewController: UIViewController {
         self.navigationController?.navigationBar.isHidden = false
         weatherConditionLabel.text = resortWeather?.condition
         
-        let doneButton = UIBarButtonItem(image: UIImage(named: Constant.AlertPromtMessages.done), style: .plain, target: self, action: #selector(WeatherViewController.menuBackButtonPressed))
-        doneButton.tintColor = UIColor.blue
-        
-        //doneButton.tintColor = UIColor(red: 0/255.0, green: 128.0/255.0, blue: 255.0/255.0, alpha: 1.0)
-        self.navigationItem.rightBarButtonItem = doneButton
+//        let doneButton = UIBarButtonItem(image: UIImage(named: Constant.AlertPromtMessages.done), style: .plain, target: self, action: #selector(WeatherViewController.menuBackButtonPressed))
+//        doneButton.tintColor = UIColor.blue
+//
+//        //doneButton.tintColor = UIColor(red: 0/255.0, green: 128.0/255.0, blue: 255.0/255.0, alpha: 1.0)
+//        self.navigationItem.rightBarButtonItem = doneButton
         
         self.displayFarenheit()
     
@@ -182,6 +172,7 @@ class WeatherViewController: UIViewController {
     }
     
     func menuBackButtonPressed(_ sender: UIBarButtonItem) {
+        view.layer.add(Helper.topToBottomTransition(), forKey: nil)
         self.dismiss(animated: true, completion: nil)
     }
 

@@ -48,8 +48,9 @@ class ResortDetailsViewController: UIViewController {
     var senderViewController: String? = ""
     
     override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
+        super.viewWillAppear(animated)
         
+        navigationController?.navigationBar.isHidden = true
         if !Constant.MyClassConstants.isFromSearchResult {
              self.cancelButton?.setTitle("Done", for: .normal)
             if Constant.MyClassConstants.isFromExchange && Constant.RunningDevice.deviceIdiom == .phone {
@@ -132,8 +133,8 @@ class ResortDetailsViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         if Constant.RunningDevice.deviceIdiom == .phone {
-            self.navigationController?.isNavigationBarHidden = false
-            self.tabBarController?.tabBar.isHidden = false
+            navigationController?.navigationBar.isHidden = false
+            tabBarController?.tabBar.isHidden = false
         }
     }
     
@@ -271,6 +272,7 @@ class ResortDetailsViewController: UIViewController {
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.notificationNames.closeButtonClickedNotification), object: nil)
             
         } else {
+             navigationController?.view.layer.add(Helper.topToBottomTransition(), forKey: nil)
                 _ = navigationController?.popViewController(animated: false)
         }
     }

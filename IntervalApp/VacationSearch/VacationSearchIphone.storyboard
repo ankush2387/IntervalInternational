@@ -769,7 +769,7 @@ transaction.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="E8e-zl-HFT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4273" y="2473"/>
+            <point key="canvasLocation" x="3986" y="2767"/>
         </scene>
         <!--Detail Map View Controller-->
         <scene sceneID="LGu-lZ-lW1">
@@ -1028,7 +1028,7 @@ transaction.</string>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bZD-Zt-ySs" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="c0C-KJ-2gm" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="3912" y="3265"/>
+            <point key="canvasLocation" x="3975" y="3447"/>
         </scene>
         <!--Certificate Who Is Traveling Controller-->
         <scene sceneID="ekm-9o-XvY">
@@ -2238,7 +2238,7 @@ transaction.</string>
                         <outlet property="searchResultColelctionView" destination="1aP-fE-BC0" id="fel-Q4-lef"/>
                         <outlet property="searchResultTableView" destination="l8b-fw-PuL" id="Fu1-G5-45A"/>
                         <segue destination="Wnj-OU-Bqx" kind="show" identifier="BookYourSelectionSegue" action="showDetailViewController:sender:" id="RZD-sH-6h9"/>
-                        <segue destination="wRm-6P-Lhz" kind="presentation" identifier="vacationSearchDetailSegue" id="4gU-cx-AAf"/>
+                        <segue destination="wRm-6P-Lhz" kind="show" identifier="vacationSearchDetailSegue" id="4gU-cx-AAf"/>
                         <segue destination="bmL-3i-9ap" kind="show" identifier="whoWillBeCheckingInSegue" id="EmP-an-7MN"/>
                         <segue destination="ngh-TZ-XZu" kind="show" identifier="searchResultMapSegue" id="0zV-03-nGi"/>
                         <segue destination="7wx-gU-8rb" kind="presentation" identifier="sortingSegue" id="CF2-li-kLd"/>
@@ -4386,8 +4386,8 @@ transaction.</string>
                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2 Bedroom, Full Kitchen" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IMK-Y4-xhM">
-                                                                    <rect key="frame" x="4" y="18" width="213" height="17.5"/>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sleeps 6 total, 4 Private" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uyx-VY-sZB">
+                                                                    <rect key="frame" x="4" y="35" width="213" height="17.5"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="17.5" id="B9c-He-eL8"/>
                                                                     </constraints>
@@ -4395,27 +4395,16 @@ transaction.</string>
                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sleeps 6 total, 4 Private" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uyx-VY-sZB">
-                                                                    <rect key="frame" x="4" y="35" width="213" height="17.5"/>
-                                                                    <constraints>
-                                                                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="17.5" id="AQi-Pq-HjU"/>
-                                                                    </constraints>
-                                                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
-                                                                    <color key="textColor" red="0.66666666669999997" green="0.66666666669999997" blue="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                    <nil key="highlightedColor"/>
-                                                                </label>
                                                             </subviews>
                                                             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="60" id="6VT-Ce-DTO"/>
-                                                                <constraint firstAttribute="trailing" secondItem="IMK-Y4-xhM" secondAttribute="trailing" id="8ut-Vo-csE"/>
-                                                                <constraint firstItem="IMK-Y4-xhM" firstAttribute="leading" secondItem="iPA-Hd-jAQ" secondAttribute="leading" constant="4" id="GLu-vi-W6Z"/>
+                                                                <constraint firstAttribute="leading" secondItem="iPA-Hd-jAQ" secondAttribute="leading" constant="4" id="GLu-vi-W6Z"/>
                                                                 <constraint firstItem="uyx-VY-sZB" firstAttribute="leading" secondItem="iPA-Hd-jAQ" secondAttribute="leading" constant="4" id="Q9W-Tc-BLl"/>
-                                                                <constraint firstItem="uyx-VY-sZB" firstAttribute="top" secondItem="IMK-Y4-xhM" secondAttribute="bottom" constant="-0.5" id="QLK-ga-oPe"/>
                                                                 <constraint firstItem="f7l-gd-6dG" firstAttribute="leading" secondItem="iPA-Hd-jAQ" secondAttribute="leading" constant="4" id="afz-O3-4IK"/>
                                                                 <constraint firstAttribute="bottom" secondItem="uyx-VY-sZB" secondAttribute="bottom" constant="7.5" id="f8k-XK-1y7"/>
                                                                 <constraint firstItem="f7l-gd-6dG" firstAttribute="top" secondItem="iPA-Hd-jAQ" secondAttribute="top" id="hxZ-QZ-T3s"/>
-                                                                <constraint firstItem="IMK-Y4-xhM" firstAttribute="top" secondItem="f7l-gd-6dG" secondAttribute="bottom" constant="-3" id="iEC-kA-kP9"/>
+                                                                <constraint firstAttribute="top" secondItem="f7l-gd-6dG" secondAttribute="bottom" constant="-3" id="iEC-kA-kP9"/>
                                                                 <constraint firstAttribute="trailing" secondItem="uyx-VY-sZB" secondAttribute="trailing" id="kxI-Ql-1JF"/>
                                                                 <constraint firstAttribute="trailing" secondItem="f7l-gd-6dG" secondAttribute="trailing" id="vXW-qY-YCo"/>
                                                             </constraints>
@@ -4509,7 +4498,6 @@ to confirm a larger unit.</string>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="bedroomSizeAndKitchenClient" destination="IMK-Y4-xhM" id="2QA-Eb-u0z"/>
                                             <outlet property="checkBox" destination="LgW-bV-buN" id="MHV-fN-mZf"/>
                                             <outlet property="dayAndDateLabel" destination="lDN-F4-8vy" id="DIJ-cs-Urp"/>
                                             <outlet property="lblDescription" destination="tMK-OB-d1c" id="oRx-En-sDb"/>

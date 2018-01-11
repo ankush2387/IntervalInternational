@@ -891,6 +891,7 @@ extension SearchResultViewController: UICollectionViewDelegate {
                     }
                     Constant.MyClassConstants.vacationSearchContentPagerRunningIndex = collectionView.tag + 1
                     self.hideHudAsync()
+                self.navigationController?.view.layer.add(Helper.bottomToTopTransition(), forKey: nil)
                     self.performSegue(withIdentifier: Constant.segueIdentifiers.vacationSearchDetailSegue, sender: nil)
                 }) { (_) in
                     self.hideHudAsync()
