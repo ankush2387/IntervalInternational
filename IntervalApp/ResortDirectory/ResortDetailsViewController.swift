@@ -46,6 +46,7 @@ class ResortDetailsViewController: UIViewController {
     fileprivate let moreNavArray = ["Share via email", "Share via text", "Tweet", "Facebook", "Pinterest"]
     
     var senderViewController: String? = ""
+    var showSearchResults = false
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
@@ -62,12 +63,14 @@ class ResortDetailsViewController: UIViewController {
             self.headerTextForShowingResortCounter?.isHidden = true
             
             if Constant.RunningDevice.deviceIdiom == .phone {
-                self.navigationController?.isNavigationBarHidden = true
+                self.navigationController?.navigationBar.isHidden = true
                 self.tabBarController?.tabBar.isHidden = true
             }
 
         }
-        
+
+        // Notification to perform vacation search after user pre-login
+        NotificationCenter.default.addObserver(self, selector: #selector(showVacationSearch), name: NSNotification.Name(rawValue: Constant.MyClassConstants.showVacationSearchNotification), object: nil)
         if self.headerTextForShowingResortCounter != nil {
             
             self.headerTextForShowingResortCounter?.text = "Resort \(Constant.MyClassConstants.vacationSearchContentPagerRunningIndex) of  \(Constant.MyClassConstants.resortsArray.count)"
@@ -101,9 +104,12 @@ class ResortDetailsViewController: UIViewController {
         }
     }
     
+    override func viewDidDisappear(_ animated: Bool) {
+        navigationController?.navigationBar.isHidden = true
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         // omniture tracking with event 35
         if let resortCode = Constant.MyClassConstants.resortsDescriptionArray.resortCode {
             let userInfo: [String: String] = [
@@ -132,11 +138,12 @@ class ResortDetailsViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         if Constant.RunningDevice.deviceIdiom == .phone {
-            self.navigationController?.isNavigationBarHidden = false
+            showSearchResults ? (navigationController?.navigationBar.isHidden = true) : (navigationController?.navigationBar.isHidden = false)
+                
             self.tabBarController?.tabBar.isHidden = false
         }
     }
-    
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -216,13 +223,12 @@ class ResortDetailsViewController: UIViewController {
                     Constant.MyClassConstants.resortsDescriptionArray = response
                     Constant.MyClassConstants.imagesArray.removeAll()
                     let imagesArray = Constant.MyClassConstants.resortsDescriptionArray.images
-                    for imgStr in imagesArray {
-                        if imgStr.size == Constant.MyClassConstants.imageSize {
-                            if let imgURL = imgStr.url {
-                            Constant.MyClassConstants.imagesArray.append(imgURL)
-                            }
+                    for imgStr in imagesArray where imgStr.size == Constant.MyClassConstants.imageSize {
+                        if let url = imgStr.url {
+                            Constant.MyClassConstants.imagesArray.append(url)
                         }
                     }
+                    
                     Constant.MyClassConstants.vacationSearchContentPagerRunningIndex = Constant.MyClassConstants.vacationSearchContentPagerRunningIndex + 1
                     self.headerTextForShowingResortCounter?.text = "Resort \(Constant.MyClassConstants.vacationSearchContentPagerRunningIndex) of  \(Constant.MyClassConstants.resortsArray.count)"
                     self.hideHudAsync()
@@ -329,7 +335,10 @@ class ResortDetailsViewController: UIViewController {
                 } else {
                     storyboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
                 }
+
+                
                 if let initialViewController = storyboard.instantiateInitialViewController() {
+                   showSearchResults = true
                     navigationController?.pushViewController(initialViewController, animated: true)
                 }
             } catch {
@@ -343,10 +352,11 @@ class ResortDetailsViewController: UIViewController {
                 storyboard = UIStoryboard(name: Constant.storyboardNames.resortDirectoryIpad, bundle: nil)
                 viewController = storyboard.instantiateViewController(withIdentifier: Constant.storyboardNames.signInPreLoginViewControlleriPad)
             } else {
-                storyboard = UIStoryboard(name: Constant.storyboardNames.signInPreLoginController, bundle: nil)
+                storyboard = UIStoryboard(name: Constant.storyboardNames.iphone, bundle: nil)
                 viewController = storyboard.instantiateViewController(withIdentifier: Constant.storyboardNames.signInPreLoginController)
             }
-            self.present(viewController, animated: true, completion: nil)
+         navigationController?.view.layer.add(Helper.bottomToTopTransition(), forKey: nil)
+         navigationController?.pushViewController(viewController, animated: true)
         }
     }
     //***** Function call for More button *****//
@@ -640,7 +650,7 @@ extension ResortDetailsViewController: UITableViewDataSource {
         if tableView.tag == 1 {
             return 1
         } else {
-            if senderViewController == Constant.MyClassConstants.searchResult {
+            if senderViewController == Constant.MyClassConstants.showSearchResultButton {
                 return 8
             } else {
                 return 7

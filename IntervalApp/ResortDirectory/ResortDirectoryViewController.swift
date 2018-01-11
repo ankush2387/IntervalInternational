@@ -102,6 +102,8 @@ class ResortDirectoryViewController: UIViewController {
         
     }
     
+  
+    
     override func viewDidLayoutSubviews() {
         
         self.view.subviews.last?.frame = CGRect(x: -(self.view.subviews.last?.frame.width)!, y: 64, width: (self.view.subviews.last?.frame.width)!, height: (self.view.subviews.last?.frame.height)!)
@@ -124,6 +126,7 @@ class ResortDirectoryViewController: UIViewController {
     }
     
     func setNavigationBar() {
+        self.navigationController?.navigationBar.isHidden = false
         //***** handle hamberger menu button for prelogin and post login case *****//
         self.navigationController?.navigationBar.barTintColor = UIColor(red: 0 / 255, green: 119.0 / 255, blue: 190.0 / 255, alpha: 1.0)
       
@@ -273,7 +276,7 @@ class ResortDirectoryViewController: UIViewController {
         }
         if childViewControllers.count > 0 {
             let containerVC = self.childViewControllers[0] as! ResortDetailsViewController
-            containerVC.senderViewController = Constant.MyClassConstants.searchResult
+            containerVC.senderViewController = Constant.MyClassConstants.showSearchResultButton
             containerVC.viewWillAppear(true)
         }
     }
@@ -283,7 +286,7 @@ class ResortDirectoryViewController: UIViewController {
         
         if segue.identifier == Constant.segueIdentifiers.resortDetailsSegue {
             let setVC = ResortDetailsViewController()
-            setVC.senderViewController = Constant.MyClassConstants.searchResult
+            setVC.senderViewController = Constant.MyClassConstants.showSearchResultButton
         } else if segue.identifier == Constant.segueIdentifiers.resortByAreaSegue {
             
         }
@@ -421,6 +424,7 @@ extension ResortDirectoryViewController: UITableViewDelegate {
                 }
             }
         case 5 :
+
             let containerView = UIView()
             containerView.frame = CGRect(x: 0, y: 0, width: 200, height: 568)
             self.view.addSubview(containerView)
@@ -464,17 +468,12 @@ extension ResortDirectoryViewController: UITableViewDelegate {
         if tableView.tag == 3 {
             
             if (UIDevice.current.userInterfaceIdiom == .pad) {
-                
                 return 450
-                
             } else {
-                
                 return 256
             }
         } else if tableView.tag == 4 {
-            
             if indexPath.row == 0 {
-                
                 return 450
             } else {
                 var count: CGFloat = 0
@@ -704,5 +703,6 @@ extension ResortDirectoryViewController: ResortFavoritesTableViewCellDelegate {
                 
             }
         }
+
     }
 }

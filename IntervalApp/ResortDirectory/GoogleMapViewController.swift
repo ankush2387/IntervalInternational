@@ -1133,7 +1133,7 @@ class GoogleMapViewController: UIViewController {
                 }
                 
                 let containerVC = self.childViewControllers[0] as! ResortDetailsViewController
-                containerVC.senderViewController = Constant.MyClassConstants.searchResult
+                containerVC.senderViewController = Constant.MyClassConstants.showSearchResultButton
                 containerVC.viewWillAppear(true)
             }
         }
