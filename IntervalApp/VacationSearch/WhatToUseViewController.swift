@@ -192,7 +192,12 @@ class WhatToUseViewController: UIViewController {
                         if Constant.RunningDevice.deviceIdiom == .phone {
                             let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
                             guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: "WhoWillBeCheckingInViewController") as? WhoWillBeCheckingInViewController else { return }
-                            viewController.filterRelinquishments = Constant.MyClassConstants.filterRelinquishments[self.selectedRow]
+                            if count > 1 {
+                                  viewController.filterRelinquishments = Constant.MyClassConstants.filterRelinquishments[self.selectedRow - 1]
+                            } else {
+                                viewController.filterRelinquishments = Constant.MyClassConstants.filterRelinquishments[self.selectedRow]
+                            }
+                           
                             self.isCheckedBox = false
                             self.navigationController?.pushViewController(viewController, animated: true)
                             

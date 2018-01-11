@@ -3885,7 +3885,9 @@
                                                         </userDefinedRuntimeAttribute>
                                                     </userDefinedRuntimeAttributes>
                                                 </label>
+
                                                 <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="0rw-TF-B71">
+
                                                     <rect key="frame" x="37" y="87" width="20" height="20"/>
                                                 </activityIndicatorView>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="all_inclusive_checked" translatesAutoresizingMaskIntoConstraints="NO" id="5tD-YT-0cG">
@@ -10157,7 +10159,9 @@ Units Upgrade with this selection.</string>
                                                     <rect key="frame" x="15" y="13" width="678" height="63"/>
                                                     <subviews>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xky-ab-RUb">
+
                                                             <rect key="frame" x="0.0" y="1.5" width="80" height="60"/>
+
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="APR 07" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9x1-R3-Lah">
                                                                     <rect key="frame" x="5" y="0.0" width="70" height="21"/>
@@ -10198,7 +10202,9 @@ Units Upgrade with this selection.</string>
                                                             </constraints>
                                                         </view>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yQb-HJ-GkE">
+
                                                             <rect key="frame" x="80" y="-3.5" width="598" height="70"/>
+
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Westwood at Split Rock" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bWp-UI-AXx">
                                                                     <rect key="frame" x="4" y="5" width="584" height="18"/>

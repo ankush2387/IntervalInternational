@@ -39,22 +39,20 @@ class UpComingTripMapViewController: UIViewController, GMSMapViewDelegate {
             doneButton.setTitle("Done", for: .normal)
             doneButton.addTarget(self, action: #selector(UpComingTripMapViewController.doneButtonPressed(_:)), for: .touchUpInside)
         doneButtonView.addSubview(doneButton)
-        
         self.view.addSubview(doneButtonView)
     }
     func setupNavigationForModalPresentation() {
-        // change Nav-bar tint color.
-        self.navigationController?.navigationBar.barTintColor = UIColor(red: 229.0 / 255.0, green: 231.0 / 255.0, blue: 228.0 / 255.0, alpha: 1.0)
         
         //Nav-bar button
         let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(UpComingTripMapViewController.menuBackButtonPressed(_:)))
-        doneButton.tintColor = IUIKColorPalette.primary1.color
+        doneButton.tintColor = .white
         self.navigationItem.rightBarButtonItem = doneButton
 
     }
     
     func menuBackButtonPressed(_ sender: UIBarButtonItem) {
-        self.dismiss(animated: false, completion: nil)
+        view.layer.add(Helper.topToBottomTransition(), forKey: nil)
+        dismiss(animated: false, completion: nil)
         
     }
     func doneButtonPressed(_ sender: UIButton) {
@@ -63,13 +61,19 @@ class UpComingTripMapViewController: UIViewController, GMSMapViewDelegate {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        self.tabBarController?.tabBar.isHidden = true
-        self.navigationController?.isNavigationBarHidden = true
+        super.viewDidAppear(animated)
+        if !presentedModally {
+            tabBarController?.tabBar.isHidden = true
+            navigationController?.navigationBar.isHidden = true
+        }
     }
     
     override func viewDidDisappear(_ animated: Bool) {
-        self.navigationController?.isNavigationBarHidden = false
-        self.tabBarController?.tabBar.isHidden = false
+        super.viewDidDisappear(animated)
+         if !presentedModally {
+            navigationController?.navigationBar.isHidden = false
+            tabBarController?.tabBar.isHidden = false
+        }
     }
     
     func setupMap() {
