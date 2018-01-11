@@ -20,8 +20,8 @@ class DashboardIPadTableViewController: UITableViewController {
     
     // class variables
     var dashboardArray = [String]()
-    var showGetaways = true
-    var showExchange = true
+    var showGetaways = false
+    var showExchange = false
     var childCounter = 0
     var adultCounter = 2
     var showAlertActivityIndicatorView = true
@@ -58,28 +58,20 @@ class DashboardIPadTableViewController: UITableViewController {
             //Get all alerts
             readAllRentalAlerts(accessToken: accessToken)
             showHudAsync()
+            
+            //Read top10Deals
             ClientAPI.sharedInstance.readTopTenDeals(for: accessToken)
-                .then { topTenDeals in
+                .then { [weak self] topTenDeals in
+                    guard let strongSelf = self else { return }
                     Constant.MyClassConstants.topDeals = topTenDeals
-                    ClientAPI.sharedInstance.readFlexchangeDeals(for: accessToken)
-                        .then { [weak self] flexExchangeDeal in
-                            guard let strongSelf = self else { return }
-                            Constant.MyClassConstants.flexExchangeDeals = flexExchangeDeal
-                            strongSelf.showGetaways = true
-                            strongSelf.getNumberOfSections()
-                            strongSelf.homeTableView.reloadData()
-                            strongSelf.hideHudAsync()
-                        }
-                        .onError { [weak self] error in
-                           guard let strongSelf = self else { return }
-                            strongSelf.presentErrorAlert(UserFacingCommonError.handleError(error))
-                            strongSelf.hideHudAsync()
-                    }
+                    strongSelf.showGetaways = true
+                    self?.readFlexExchangeDeals(accessToken:accessToken)
                 }
                 .onError { [weak self] error in self?.presentErrorAlert(UserFacingCommonError.handleError(error))
-                    self?.hideHudAsync()
+                    self?.showGetaways = false
+                    self?.readFlexExchangeDeals(accessToken:accessToken)
             }
-
+            
         }
         
         //***** Setup the hamburger menu.  This will reveal the side menu. *****//
@@ -95,6 +87,26 @@ class DashboardIPadTableViewController: UITableViewController {
             
             //***** This line allows the user to swipe left-to-right to reveal the menu. We might want to comment this out if it becomes confusing. *****//
             self.view.addGestureRecognizer( rvc.panGestureRecognizer() )
+        }
+    }
+    
+    // MARK: - FlexExchangeDeals
+    func readFlexExchangeDeals(accessToken: DarwinAccessToken) {
+        //Read FlexExchangeDeals
+        ClientAPI.sharedInstance.readFlexchangeDeals(for: accessToken)
+            .then { [weak self] flexExchangeDeal in
+                guard let strongSelf = self else { return }
+                Constant.MyClassConstants.flexExchangeDeals = flexExchangeDeal
+                strongSelf.getNumberOfSections()
+                strongSelf.showExchange = true
+                strongSelf.homeTableView.reloadData()
+                strongSelf.hideHudAsync()
+            }
+            .onError { [weak self] error in
+                guard let strongSelf = self else { return }
+                strongSelf.presentErrorAlert(UserFacingCommonError.handleError(error))
+                strongSelf.showExchange = false
+                strongSelf.hideHudAsync()
         }
     }
     
@@ -114,7 +126,7 @@ class DashboardIPadTableViewController: UITableViewController {
                 }
             }
             .onError { [weak self] error in
-            self?.presentErrorAlert(UserFacingCommonError.handleError(error as NSError))
+            self?.presentErrorAlert(UserFacingCommonError.handleError(error))
         }
     }
     
@@ -137,7 +149,7 @@ class DashboardIPadTableViewController: UITableViewController {
                 self.readDates(accessToken: accessToken, request: rentalSearchDatesRequest, rentalAlert: rentalAlert)
             }
             .onError { [weak self] error in
-        self?.presentErrorAlert(UserFacingCommonError.handleError(error as NSError))
+                self?.presentErrorAlert(UserFacingCommonError.handleError(error))
         }
     }
     
@@ -150,7 +162,7 @@ class DashboardIPadTableViewController: UITableViewController {
                 
             }
             .onError { [weak self] error in
-                self?.presentErrorAlert(UserFacingCommonError.handleError(error as NSError))
+                self?.presentErrorAlert(UserFacingCommonError.handleError(error))
         }
     }
     
@@ -161,15 +173,13 @@ class DashboardIPadTableViewController: UITableViewController {
             dashboardArray.append(Constant.dashboardTableScreenReusableIdentifiers.alert)
         }
         dashboardArray.append(Constant.dashboardTableScreenReusableIdentifiers.upcoming)
-        if showExchange && showGetaways {
-            
-            if !Constant.MyClassConstants.flexExchangeDeals.isEmpty {
-                dashboardArray.append(Constant.dashboardTableScreenReusableIdentifiers.exchange)
-            }
-            if !Constant.MyClassConstants.topDeals.isEmpty {
-                dashboardArray.append(Constant.dashboardTableScreenReusableIdentifiers.getaway)
-            }
+        if !Constant.MyClassConstants.topDeals.isEmpty {
+            dashboardArray.append(Constant.dashboardTableScreenReusableIdentifiers.getaway)
         }
+        if !Constant.MyClassConstants.flexExchangeDeals.isEmpty {
+            dashboardArray.append(Constant.dashboardTableScreenReusableIdentifiers.exchange)
+        }
+        
     }
     
     //***** Function called when notification for top 10 deals is fired. *****//
@@ -379,6 +389,10 @@ class DashboardIPadTableViewController: UITableViewController {
             
         case Constant.dashboardTableScreenReusableIdentifiers.alert:
             return Constant.MyClassConstants.getawayAlertsArray.isEmpty ? 0 : 1
+        case Constant.dashboardTableScreenReusableIdentifiers.exchange:
+           return Constant.MyClassConstants.flexExchangeDeals.isEmpty ? 0 : 1
+        case Constant.dashboardTableScreenReusableIdentifiers.getaway:
+            return Constant.MyClassConstants.topDeals.isEmpty ? 0 : 1
         default:
             return 1
         }
@@ -532,29 +546,15 @@ class DashboardIPadTableViewController: UITableViewController {
                 subview.removeFromSuperview()
             }
             
+            let resortImageNameLabel = UILabel(frame: CGRect(x: 10, y: 10, width: cell.contentView.frame.width - 20, height: 20))
+            resortImageNameLabel.textColor = UIColor.black
+            resortImageNameLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: 15)
+            cell.addSubview(resortImageNameLabel)
+            
             if dashboardArray[indexPath.section] == Constant.dashboardTableScreenReusableIdentifiers.exchange {
-                if !showExchange {
-                    let resortImageNameLabel = UILabel(frame: CGRect(x: 10, y: 10, width: cell.contentView.frame.width - 20, height: 20))
-                    resortImageNameLabel.text = Constant.segmentControlItems.flexchangeLabelText
-                    resortImageNameLabel.textColor = UIColor.black
-                    resortImageNameLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: 15)
-                    cell.addSubview(resortImageNameLabel)
-                } else {
-                    let resortImageNameLabel = UILabel(frame: CGRect(x: 10, y: 10, width: cell.contentView.frame.width - 20, height: 20))
-                    resortImageNameLabel.text = Constant.segmentControlItems.getawaysLabelText
-                    resortImageNameLabel.textColor = UIColor.black
-                    resortImageNameLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: 15)
-                    cell.addSubview(resortImageNameLabel)
-                    
-                }
-            } else {
-                
-                let resortImageNameLabel = UILabel(frame: CGRect(x: 10, y: 10, width: cell.contentView.frame.width - 20, height: 20))
                 resortImageNameLabel.text = Constant.segmentControlItems.flexchangeLabelText
-                
-                resortImageNameLabel.textColor = UIColor.black
-                resortImageNameLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: 15)
-                cell.addSubview(resortImageNameLabel)
+            } else {
+                resortImageNameLabel.text = Constant.segmentControlItems.getawaysLabelText
             }
             
             //***** Creating collectionview and  layout for collectionView to show getaways and flexchange images on it *****//
@@ -570,10 +570,11 @@ class DashboardIPadTableViewController: UITableViewController {
             homeTableCollectionView.backgroundColor = UIColor.clear
             homeTableCollectionView.delegate = self
             homeTableCollectionView.dataSource = self
+            
             if dashboardArray[indexPath.section] == Constant.dashboardTableScreenReusableIdentifiers.exchange {
-                homeTableCollectionView.tag = 2
-            } else {
                 homeTableCollectionView.tag = 1
+            } else {
+                homeTableCollectionView.tag = 2
             }
             
             homeTableCollectionView.isScrollEnabled = true
@@ -627,7 +628,7 @@ extension DashboardIPadTableViewController: UICollectionViewDataSource {
         case 1:
             return Constant.MyClassConstants.flexExchangeDeals.count
         case 2:
-            return (Constant.MyClassConstants.topDeals.count)
+            return Constant.MyClassConstants.topDeals.count
         case 3:
             return Constant.MyClassConstants.searchDateResponse.count
         case 4:

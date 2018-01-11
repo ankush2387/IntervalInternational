@@ -338,7 +338,8 @@ class AddDebitOrCreditCardViewController: UIViewController {
 
     //function to dismiss current controller on cancel button pressed.
     @IBAction func cancelButtonPressed(_ sender: AnyObject) {
-         self.dismiss(animated: true, completion: nil)
+         resetCreditCardDetails()
+         dismiss(animated: true, completion: nil)
     }
     
     func addDoneButtonOnNumpad(textField: UITextField) {

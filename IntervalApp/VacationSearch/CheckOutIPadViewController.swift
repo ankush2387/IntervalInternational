@@ -267,7 +267,7 @@ class CheckOutIPadViewController: UIViewController {
             let strAccept = self.cellWebView.stringByEvaluatingJavaScript(from: jsStringAccept)
             let strReject = self.cellWebView.stringByEvaluatingJavaScript(from: jsStringReject)
             
-            if (isAgreedToFees || !Constant.MyClassConstants.hasAdditionalCharges) && (strAccept == Constant.MyClassConstants.status || strReject == Constant.MyClassConstants.status) && !Constant.MyClassConstants.selectedCreditCard.isEmpty && (isPromotionApplied || Constant.MyClassConstants.recapViewPromotionCodeArray.isEmpty) {
+            if (isAgreedToFees || !Constant.MyClassConstants.hasAdditionalCharges) && (strAccept == Constant.MyClassConstants.status || strReject == Constant.MyClassConstants.status || !showInsurance) && !Constant.MyClassConstants.selectedCreditCard.isEmpty && (isPromotionApplied || Constant.MyClassConstants.recapViewPromotionCodeArray.isEmpty) {
                 
                 let continueToPayRequest = RentalProcessRecapContinueToPayRequest()
                 continueToPayRequest.creditCard = Constant.MyClassConstants.selectedCreditCard.last!
@@ -361,7 +361,7 @@ class CheckOutIPadViewController: UIViewController {
         } else {
             isAgreedToFees = true
             imageSlider.isHidden = true
-            self.checkoutTableView.reloadSections(IndexSet(integer: 8), with: .automatic)
+            checkoutTableView.reloadSections([7, 8], with:.automatic)
         }
         
     }
@@ -384,18 +384,20 @@ class CheckOutIPadViewController: UIViewController {
         
         let dispatchTime = DispatchTime.now() + 0.5
         DispatchQueue.main.asyncAfter(deadline: dispatchTime) {
-            let jsString = Constant.MyClassConstants.webViewGetElementById
+             let yesRadioValue = "document.getElementById('WASCInsuranceOfferOption0').checked == true;"
+             let noRadioValue = "document.getElementById('WASCInsuranceOfferOption1').checked == true;"
             
-            let str: String = self.cellWebView.stringByEvaluatingJavaScript(from: jsString)!
+            let strYesRadioValue = self.cellWebView.stringByEvaluatingJavaScript(from: yesRadioValue)
+            let strNoRadioValue = self.cellWebView.stringByEvaluatingJavaScript(from: noRadioValue)
             
-            if str == Constant.MyClassConstants.isTrue && !self.tripRequestInProcess {
+            if strYesRadioValue == "true" && !self.tripRequestInProcess && !self.isTripProtectionEnabled {
                 
                 self.tripRequestInProcess = true
                 self.isTripProtectionEnabled = true
                 Constant.MyClassConstants.checkoutInsurencePurchased = Constant.AlertPromtMessages.yes
                 self.addTripProtection(shouldAddTripProtection: true)
                 
-            } else if str == Constant.MyClassConstants.isFalse && !self.tripRequestInProcess {
+            } else if strNoRadioValue == "true" && !self.tripRequestInProcess && self.isTripProtectionEnabled {
                 
                 self.tripRequestInProcess = true
                 self.isTripProtectionEnabled = false
@@ -403,7 +405,6 @@ class CheckOutIPadViewController: UIViewController {
                 self.addTripProtection(shouldAddTripProtection: false)
             }
             self.bookingTableView.reloadData()
-            self.bookingTableView.reloadSections(IndexSet(integer: 4), with:.automatic)
         }
         
     }
@@ -1308,23 +1309,34 @@ extension CheckOutIPadViewController: UITableViewDataSource {
                 
             case 7:
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.CheckOutIPadViewControllerCellIdentifiersAndHardCodedStrings.agreeToFeesCell, for: indexPath) as? SlideTableViewCell else { return UITableViewCell() }
-                cell.agreeButton?.imageName = #imageLiteral(resourceName: "SwipeArrow_ORG")
+                //cell.agreeButton?.imageName = #imageLiteral(resourceName: "SwipeArrow_ORG")
                 cell.agreeButton?.tag = indexPath.section
                 cell.feesTitleLabel.text = Constant.CheckOutIPadViewControllerCellIdentifiersAndHardCodedStrings.acknowledgeAndAgreeString
                 if isAgreedToFees {
                     cell.agreeLabel.backgroundColor = #colorLiteral(red: 0.6666666667, green: 0.7921568627, blue: 0.3607843137, alpha: 1)
                     cell.agreeLabel.layer.borderColor = #colorLiteral(red: 0.6666666667, green: 0.7921568627, blue: 0.3607843137, alpha: 1).cgColor
-                    cell.agreeLabel.text = Constant.CheckOutIPadViewControllerCellIdentifiersAndHardCodedStrings.agreedToFeesString
+                    cell.agreeLabel.text = Constant.AlertMessages.agreeToFeesMessage
                     cell.agreeLabel.textColor = UIColor.white
+                    cell.allInclusiveSelectedCheckBox.isHidden = false
                 } else {
-                    cell.agreeLabel.text = Constant.CheckOutIPadViewControllerCellIdentifiersAndHardCodedStrings.slideToAgreeToFeesString
+                    if let image = UIImage(named: Constant.assetImageNames.swipeArrowOrgImage) {
+                        cell.agreeButton?.imageName = image
+                    }
+                    cell.allInclusiveSelectedCheckBox.isHidden = true
+                    cell.agreeLabel.backgroundColor = UIColor.white
+                    cell.agreeLabel.textColor = #colorLiteral(red: 0.9725490196, green: 0.4196078431, blue: 0.2470588235, alpha: 1)
+                    cell.agreeLabel.layer.borderColor = #colorLiteral(red: 0.9725490196, green: 0.4196078431, blue: 0.2470588235, alpha: 1).cgColor
+                    cell.agreeLabel.text = Constant.AlertMessages.feesAlertMessage
                 }
+                cell.selectionStyle = .none
                 return cell
                 
             case 8:
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.CheckOutIPadViewControllerCellIdentifiersAndHardCodedStrings.agreeToFeesCell, for: indexPath) as? SlideTableViewCell else { return UITableViewCell() }
                 cell.agreeButton?.tag = indexPath.section
                 cell.feesTitleLabel.text = Constant.CheckOutIPadViewControllerCellIdentifiersAndHardCodedStrings.acceptedTermAndConditionString
+                cell.isUserInteractionEnabled = true
+                cell.allInclusiveSelectedCheckBox.isHidden = true
                 
                 if isAgreed {
                     cell.agreeLabel.backgroundColor = #colorLiteral(red: 0.6666666667, green: 0.7921568627, blue: 0.3607843137, alpha: 1)
@@ -1349,7 +1361,9 @@ extension CheckOutIPadViewController: UITableViewDataSource {
                     cell.agreeLabel.backgroundColor = UIColor.white
                     cell.agreeLabel.layer.borderColor = UIColor.lightGray.cgColor
                     cell.agreeLabel.textColor = UIColor.lightGray
+                    cell.isUserInteractionEnabled = false
                 }
+                cell.selectionStyle = .none
                 return cell
                 
             default:

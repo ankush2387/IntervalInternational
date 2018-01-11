@@ -88,6 +88,8 @@ final class SettingsViewController: UIViewController {
         Constant.MyClassConstants.getawayAlertsArray.removeAll()
         Constant.MyClassConstants.isLoginSuccessfull = false
         Constant.MyClassConstants.sideMenuOptionSelected = Constant.MyClassConstants.resortFunctionalityCheck
+        Constant.MyClassConstants.topDeals.removeAll()
+        Constant.MyClassConstants.flexExchangeDeals.removeAll()
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.MyClassConstants.popToLoginView), object: nil)
     }
 
