@@ -383,9 +383,9 @@ class SearchResultViewController: UIViewController {
                 // Run Exchange Search Dates
                 Helper.executeExchangeSearchAvailabilityAfterSelectCheckInDate(activeInterval: activeInterval, checkInDate: selectedDate, senderVC: self)
             },
-               onError: { (_) in
-                self.hideHudAsync()
-                
+               onError: { [weak self] error in
+                self?.hideHudAsync()
+                self?.presentErrorAlert(UserFacingCommonError.handleError(error))
             })
         default:
             break
