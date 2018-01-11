@@ -130,7 +130,7 @@ class MemberShipDetailTableViewCell: UITableViewCell {
                 prodView.triangleView.isHidden = true
             }
             
-            if prod.billingEntity.contains("CORP") {
+            if prod.billingEntity.unwrappedString.contains("CORP") {
                 prodView.expirationDateLabel.text = nil
                 prodView.expireLabel.isHidden = true
             } else {
