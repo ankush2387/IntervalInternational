@@ -186,7 +186,6 @@ class CheckOutViewController: UIViewController {
                 imageSlider.isHidden = true
                 
                 if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
-                    showLoader = true
                     self.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
                     
                     let continueToPayRequest = ExchangeProcessContinueToPayRequest()

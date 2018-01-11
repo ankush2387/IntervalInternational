@@ -1357,6 +1357,9 @@ extension CheckOutIPadViewController: UITableViewDataSource {
                     cell.agreeLabel.textColor = #colorLiteral(red: 1, green: 0.4588235294, blue: 0.2274509804, alpha: 1)
                     cell.agreeButton?.imageName = #imageLiteral(resourceName: "SwipeArrow_ORG")
                 } else {
+                    if let image = UIImage(named: Constant.assetImageNames.swipeArrowGryImage) {
+                        cell.agreeButton?.imageName = image
+                    }
                     cell.agreeLabel.text = Constant.CheckOutIPadViewControllerCellIdentifiersAndHardCodedStrings.slideToAgreeAndPayString
                     cell.agreeLabel.backgroundColor = UIColor.white
                     cell.agreeLabel.layer.borderColor = UIColor.lightGray.cgColor
