@@ -73,9 +73,16 @@ class ExchangeInventoryCVCell: UICollectionViewCell {
             let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapBlurButton))
             self.addGestureRecognizer(tapGesture)
         } else {
-            if invetoryItem.buckets[indexPath.row].pointsCost != 0 {
+            if  invetoryItem.buckets[indexPath.row].pointsCost != 0 {
+                let availablePoints = invetoryItem.buckets[indexPath.row].pointsCost as NSNumber
                 exchangeStackView.isHidden = true
-                pointsCountLabel.text = "\(invetoryItem.buckets[indexPath.row].pointsCost)"
+                let numberFormatter = NumberFormatter()
+                numberFormatter.numberStyle = .decimal
+                
+                if let availablePoints = numberFormatter.string(from: availablePoints) {
+                    pointsCountLabel.text = "\(availablePoints)".localized()
+                } else { pointsCountLabel.text = "\(0)".localized() }
+                
                 if Constant.MyClassConstants.isCIGAvailable {
                     pointsTitleLabel.text = "CIG Points"
                 } else if Constant.MyClassConstants.isClubPointsAvailable {
@@ -92,8 +99,7 @@ class ExchangeInventoryCVCell: UICollectionViewCell {
                 view.removeFromSuperview()
             }
             
-            //cellHeight = 55 + (14*(promotions.count))
-            var yPosition: CGFloat = 0
+            var yPosition: CGFloat = 5
             for promotion in promotions {
                 let imgV = UIImageView(frame: CGRect(x: 10, y: yPosition, width: 15, height: 15))
                 imgV.image = UIImage(named: Constant.assetImageNames.promoImage)
