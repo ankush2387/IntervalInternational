@@ -5,14 +5,14 @@
   },
   "summary": "User Interface classes for Interval applications",
   "requires_arc": true,
-  "version": "3.5.0",
+  "version": "3.6.0",
   "authors": {
     "Interval International": "support@intervalintl.com"
   },
   "homepage": "https://bitbucket.org/intervalintl/intervaluikit-ios",
   "source": {
     "git": "https://bitbucket.org/intervalintl/intervaluikit-ios.git",
-    "tag": "3.5.0"
+    "tag": "3.6.0"
   },
   "frameworks": "UIKit",
   "source_files": "IntervalUIKit/**/*.{swift}",
