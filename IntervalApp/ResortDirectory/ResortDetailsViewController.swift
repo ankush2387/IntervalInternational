@@ -37,6 +37,8 @@ class ResortDetailsViewController: UIViewController {
     var amenityNearbyString = "On-Site" + "\n"
     var presentViewModally = false
     var mapcell : UITableViewCell?
+    var resortInfoHeight:CGFloat = 60.0
+    
     //***** Class private Variables *****//
     fileprivate var startIndex = 0
     fileprivate var arrayRunningIndex = 0
@@ -84,13 +86,14 @@ class ResortDetailsViewController: UIViewController {
                 if let amenityName = amenity.amenityName {
                     if amenity.nearby == true {
                         
+                        // use unicode character to add bullets
                         nearbyArray.add(amenityName)
-                        amenityOnsiteString = amenityOnsiteString + "\n" + "  " + amenityName
+                        amenityOnsiteString = amenityOnsiteString + "\n" + "  " + "\u{2022}" + " " + amenityName
                         
                     } else {
                         
                         onsiteArray.add(amenityName)
-                        amenityNearbyString = amenityNearbyString + "\n" + "  " + amenityName
+                        amenityNearbyString = amenityNearbyString + "\n" + "  " + "\u{2022}" + " " + amenityName
                         
                     }
                 }
@@ -469,21 +472,20 @@ extension ResortDetailsViewController: UITableViewDelegate {
             case 1:
                 
                 if let description = Constant.MyClassConstants.resortsDescriptionArray.description {
-                    if description.isEmpty {
+                    if !description.isEmpty {
                         
                         var height: CGFloat = 0.0
                         if Constant.RunningDevice.deviceIdiom == .pad {
-                            guard let font = UIFont(name: Constant.fontName.helveticaNeue, size: 16.0) else { return 0 }
-                            if let description = Constant.MyClassConstants.resortsDescriptionArray.description {
-                                height = heightForView(description, font: font, width: (view.frame.size.width / 2) - 40)
-                            }
-                            return height + 60
+                            guard let font = UIFont(name: Constant.fontName.helveticaNeue, size: 15.0) else { return 0 }
+                                height = heightForView(description, font: font, width: (view.frame.size.width) - 40)
+                            return height + 30
                         } else {
                             guard let font = UIFont(name: Constant.fontName.helveticaNeue, size: 14.0) else { return 0 }
                             if let description = Constant.MyClassConstants.resortsDescriptionArray.description {
                                 height = heightForView(description, font: font, width: view.frame.size.width - 40)
                             }
-                            return height + 40
+                            //here 60 is header label
+                            return height + 60
                         }
                     } else {
                         return 60
@@ -503,18 +505,26 @@ extension ResortDetailsViewController: UITableViewDelegate {
                     if isOpen && indexPath.row > 0 {
                         switch indexPath.section {
                         case 3 :
-                            return 50
+                            return resortInfoHeight
                         case 4 :
                             let count = nearbyArray.count + onsiteArray.count
                             if count > 0 {
-                                if count == 1 {
+                            if count == 1 {
+                                if Constant.RunningDevice.deviceIdiom == .pad {
                                     return CGFloat (count * 20 + 60)
                                 } else {
-                                    return CGFloat (count * 20 + 120)
+                                    return CGFloat (count * 20 + 30)
                                 }
+                                
                             } else {
-                                return 60
+                                if Constant.RunningDevice.deviceIdiom == .pad {
+                                    return CGFloat (count * 20 + 120)
+                                } else {
+                                    return CGFloat (count * 20 + 60)
+                                }
                             }
+                                
+                            } else { return 60 }
                         case 5 :
                             return 80
                         case 6 :
