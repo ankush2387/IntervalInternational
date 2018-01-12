@@ -291,7 +291,7 @@ transaction.</string>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dPC-06-hhy">
-                                <rect key="frame" x="-4" y="17" width="383" height="49"/>
+                                <rect key="frame" x="-4" y="61" width="383" height="49"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Resort 1 of 7" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IdW-Ty-pEh">
                                         <rect key="frame" x="87" y="5" width="233" height="42"/>
@@ -354,7 +354,7 @@ transaction.</string>
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Z7H-la-zBu">
-                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <rect key="frame" x="0.0" y="108" width="375" height="559"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="536" id="xAh-Ay-Djq"/>
@@ -672,7 +672,7 @@ transaction.</string>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="qVN-Ng-HPx">
-                                                    <rect key="frame" x="0.0" y="3" width="375" height="36"/>
+                                                    <rect key="frame" x="7" y="3" width="361" height="36"/>
                                                 </imageView>
                                             </subviews>
                                             <constraints>
@@ -694,13 +694,13 @@ transaction.</string>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Med-zL-4Xu">
-                                                    <rect key="frame" x="20" y="0.0" width="335" height="17"/>
+                                                    <rect key="frame" x="27" y="0.0" width="321" height="17"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="JaT-hK-rPW">
-                                                    <rect key="frame" x="20" y="17" width="20" height="20"/>
+                                                    <rect key="frame" x="27" y="17" width="20" height="20"/>
                                                     <color key="backgroundColor" red="0.96862745100000003" green="0.41176470590000003" blue="0.19215686269999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="20" id="1GX-ac-ae0"/>
@@ -1028,7 +1028,7 @@ transaction.</string>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bZD-Zt-ySs" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="c0C-KJ-2gm" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="3912" y="3265"/>
+            <point key="canvasLocation" x="3975" y="3447"/>
         </scene>
         <!--Certificate Who Is Traveling Controller-->
         <scene sceneID="ekm-9o-XvY">
@@ -2241,7 +2241,7 @@ transaction.</string>
                         <outlet property="searchResultColelctionView" destination="1aP-fE-BC0" id="fel-Q4-lef"/>
                         <outlet property="searchResultTableView" destination="l8b-fw-PuL" id="Fu1-G5-45A"/>
                         <segue destination="Wnj-OU-Bqx" kind="show" identifier="BookYourSelectionSegue" action="showDetailViewController:sender:" id="RZD-sH-6h9"/>
-                        <segue destination="wRm-6P-Lhz" kind="presentation" identifier="vacationSearchDetailSegue" id="4gU-cx-AAf"/>
+                        <segue destination="wRm-6P-Lhz" kind="show" identifier="vacationSearchDetailSegue" id="4gU-cx-AAf"/>
                         <segue destination="bmL-3i-9ap" kind="show" identifier="whoWillBeCheckingInSegue" id="EmP-an-7MN"/>
                         <segue destination="ngh-TZ-XZu" kind="show" identifier="searchResultMapSegue" id="0zV-03-nGi"/>
                         <segue destination="7wx-gU-8rb" kind="presentation" identifier="sortingSegue" id="CF2-li-kLd"/>
@@ -8432,9 +8432,9 @@ transaction.</string>
     <inferredMetricsTieBreakers>
         <segue reference="4Eo-F1-CbC"/>
         <segue reference="kmp-5Q-mdc"/>
-        <segue reference="Lp2-ch-oU8"/>
-        <segue reference="KRw-si-7MT"/>
-        <segue reference="Rpo-cQ-qF4"/>
+        <segue reference="0uV-Eo-2bn"/>
+        <segue reference="jTg-f9-AVL"/>
+        <segue reference="ryk-nj-17Y"/>
         <segue reference="4gU-cx-AAf"/>
         <segue reference="Uce-OZ-bfJ"/>
     </inferredMetricsTieBreakers>
