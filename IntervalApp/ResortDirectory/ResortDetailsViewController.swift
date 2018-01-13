@@ -54,26 +54,26 @@ class ResortDetailsViewController: UIViewController {
         
         navigationController?.navigationBar.isHidden = true
         if !Constant.MyClassConstants.isFromSearchResult {
-            self.cancelButton?.setTitle("Done".localized(), for: .normal)
+            cancelButton?.setTitle("Done".localized(), for: .normal)
             if Constant.MyClassConstants.isFromExchange && Constant.RunningDevice.deviceIdiom == .phone {
-                self.previousButton?.isHidden = true
-                self.forwordButton?.isHidden = true
-                self.headerTextForShowingResortCounter?.isHidden = true
+                previousButton?.isHidden = true
+                forwordButton?.isHidden = true
+                headerTextForShowingResortCounter?.isHidden = true
             }
-            self.previousButton?.isHidden = true
-            self.forwordButton?.isHidden = true
-            self.headerTextForShowingResortCounter?.isHidden = true
+            previousButton?.isHidden = true
+            forwordButton?.isHidden = true
+            headerTextForShowingResortCounter?.isHidden = true
             
             if Constant.RunningDevice.deviceIdiom == .phone {
-                self.navigationController?.isNavigationBarHidden = true
-                self.tabBarController?.tabBar.isHidden = true
+                navigationController?.isNavigationBarHidden = true
+                tabBarController?.tabBar.isHidden = true
             }
             
         }
         
-        if self.headerTextForShowingResortCounter != nil {
+        if headerTextForShowingResortCounter != nil {
             
-            self.headerTextForShowingResortCounter?.text = "Resort \(Constant.MyClassConstants.vacationSearchContentPagerRunningIndex) of  \(Constant.MyClassConstants.resortsArray.count)"
+            headerTextForShowingResortCounter?.text = "Resort \(Constant.MyClassConstants.vacationSearchContentPagerRunningIndex) of  \(Constant.MyClassConstants.resortsArray.count)".localized()
         }
         if !Constant.MyClassConstants.resortsDescriptionArray.amenities.isEmpty {
             
@@ -101,7 +101,7 @@ class ResortDetailsViewController: UIViewController {
                 Constant.MyClassConstants.amenitiesDictionary.setValue(onsiteArray, forKey: Constant.MyClassConstants.onsiteDictKey)
             }
             
-            self.tableViewResorts.reloadData()
+           tableViewResorts.reloadData()
         }
     }
     
@@ -117,8 +117,8 @@ class ResortDetailsViewController: UIViewController {
             
             ADBMobile.trackAction(Constant.omnitureEvents.event35, data: userInfo)
         }
-        self.startIndex = Constant.MyClassConstants.vacationSearchContentPagerRunningIndex
-        self.resortDescriptionArrayContainer.append(Constant.MyClassConstants.resortsDescriptionArray)
+        startIndex = Constant.MyClassConstants.vacationSearchContentPagerRunningIndex
+        resortDescriptionArrayContainer.append(Constant.MyClassConstants.resortsDescriptionArray)
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -127,7 +127,7 @@ class ResortDetailsViewController: UIViewController {
     
     override func willRotate(to toInterfaceOrientation: UIInterfaceOrientation, duration: TimeInterval) {
         tableViewResorts.reloadData()
-        for collView in self.tableViewResorts.subviews {
+        for collView in tableViewResorts.subviews {
             if collView .isKind(of: UICollectionView.self) {
                 
             }
@@ -148,11 +148,11 @@ class ResortDetailsViewController: UIViewController {
     
     //***** Function call for previous resort button *****//
     @IBAction func previousResortButtonPressed(_ sender: UIButton) {
-        if self.startIndex < Constant.MyClassConstants.vacationSearchContentPagerRunningIndex && arrayRunningIndex > 0 {
+        if startIndex < Constant.MyClassConstants.vacationSearchContentPagerRunningIndex && arrayRunningIndex > 0 {
             
             Constant.MyClassConstants.vacationSearchContentPagerRunningIndex = Constant.MyClassConstants.vacationSearchContentPagerRunningIndex - 1
-            self.arrayRunningIndex = arrayRunningIndex - 1
-            Constant.MyClassConstants.resortsDescriptionArray = self.resortDescriptionArrayContainer[ self.arrayRunningIndex]
+            arrayRunningIndex = arrayRunningIndex - 1
+            Constant.MyClassConstants.resortsDescriptionArray = resortDescriptionArrayContainer[arrayRunningIndex]
             Constant.MyClassConstants.imagesArray.removeAll()
             let imagesArray = Constant.MyClassConstants.resortsDescriptionArray.images
             for imgStr in imagesArray where imgStr.size == Constant.MyClassConstants.imageSize {
@@ -160,9 +160,9 @@ class ResortDetailsViewController: UIViewController {
                     Constant.MyClassConstants.imagesArray.append(imgUrl)
                 }
             }
-            self.headerTextForShowingResortCounter?.text = "Resort \(Constant.MyClassConstants.vacationSearchContentPagerRunningIndex) of  \(Constant.MyClassConstants.resortsArray.count)"
+            headerTextForShowingResortCounter?.text = "Resort \(Constant.MyClassConstants.vacationSearchContentPagerRunningIndex) of  \(Constant.MyClassConstants.resortsArray.count)".localized()
             
-            self.tableViewResorts.reloadData()
+            tableViewResorts.reloadData()
             // omniture tracking with event 35
             if let resortCode = Constant.MyClassConstants.resortsDescriptionArray.resortCode {
                 let userInfo: [String: String] = [
@@ -175,8 +175,7 @@ class ResortDetailsViewController: UIViewController {
         } else {
             if startIndex > 1 {
                 Constant.MyClassConstants.vacationSearchContentPagerRunningIndex = Constant.MyClassConstants.vacationSearchContentPagerRunningIndex - 1
-                self.startIndex = startIndex - 1
-                
+                startIndex = startIndex - 1
                 showHudAsync()
                 
                 guard let resortCode = Constant.MyClassConstants.resortsArray[Constant.MyClassConstants.vacationSearchContentPagerRunningIndex - 1].resortCode else { return }
@@ -192,7 +191,7 @@ class ResortDetailsViewController: UIViewController {
                             Constant.MyClassConstants.imagesArray.append(imgUrl)
                         }
                     }
-                    self.headerTextForShowingResortCounter?.text = "Resort \(Constant.MyClassConstants.vacationSearchContentPagerRunningIndex) of  \(Constant.MyClassConstants.resortsArray.count)"
+                    self.headerTextForShowingResortCounter?.text = "Resort \(Constant.MyClassConstants.vacationSearchContentPagerRunningIndex) of  \(Constant.MyClassConstants.resortsArray.count)".localized()
                     self.hideHudAsync()
                     self.tableViewResorts.reloadData()
                 }) { [weak self] error in
@@ -208,14 +207,13 @@ class ResortDetailsViewController: UIViewController {
         
         if Constant.MyClassConstants.vacationSearchContentPagerRunningIndex < Constant.MyClassConstants.resortsArray.count {
             
-            if self.resortDescriptionArrayContainer.count - 1 < Constant.MyClassConstants.vacationSearchContentPagerRunningIndex {
-                self.arrayRunningIndex = arrayRunningIndex + 1
+            if resortDescriptionArrayContainer.count - 1 < Constant.MyClassConstants.vacationSearchContentPagerRunningIndex {
+                arrayRunningIndex = arrayRunningIndex + 1
                 guard let resortCode = Constant.MyClassConstants.resortsArray[Constant.MyClassConstants.vacationSearchContentPagerRunningIndex].resortCode else { return }
                 
                 showHudAsync()
                 
                 DirectoryClient.getResortDetails(Constant.MyClassConstants.systemAccessToken, resortCode: resortCode, onSuccess: { response in
-                    
                     self.resortDescriptionArrayContainer.append(response)
                     Constant.MyClassConstants.resortsDescriptionArray = response
                     Constant.MyClassConstants.imagesArray.removeAll()
@@ -228,7 +226,7 @@ class ResortDetailsViewController: UIViewController {
                         }
                     }
                     Constant.MyClassConstants.vacationSearchContentPagerRunningIndex = Constant.MyClassConstants.vacationSearchContentPagerRunningIndex + 1
-                    self.headerTextForShowingResortCounter?.text = "Resort \(Constant.MyClassConstants.vacationSearchContentPagerRunningIndex) of  \(Constant.MyClassConstants.resortsArray.count)"
+                    self.headerTextForShowingResortCounter?.text = "Resort \(Constant.MyClassConstants.vacationSearchContentPagerRunningIndex) of  \(Constant.MyClassConstants.resortsArray.count)".localized()
                     self.hideHudAsync()
                     self.tableViewResorts.reloadData()
                     
@@ -248,9 +246,9 @@ class ResortDetailsViewController: UIViewController {
                 
             } else {
                 Constant.MyClassConstants.vacationSearchContentPagerRunningIndex = Constant.MyClassConstants.vacationSearchContentPagerRunningIndex + 1
-                self.arrayRunningIndex = arrayRunningIndex + 1
+                arrayRunningIndex = arrayRunningIndex + 1
                 
-                Constant.MyClassConstants.resortsDescriptionArray = self.resortDescriptionArrayContainer[ self.arrayRunningIndex]
+                Constant.MyClassConstants.resortsDescriptionArray = resortDescriptionArrayContainer[arrayRunningIndex]
                 Constant.MyClassConstants.imagesArray.removeAll()
                 let imagesArray = Constant.MyClassConstants.resortsDescriptionArray.images
                 for imgStr in imagesArray {
@@ -260,10 +258,8 @@ class ResortDetailsViewController: UIViewController {
                         }
                     }
                 }
-                self.headerTextForShowingResortCounter?.text = "Resort \(Constant.MyClassConstants.vacationSearchContentPagerRunningIndex) of  \(Constant.MyClassConstants.resortsArray.count)"
-                
-                self.tableViewResorts.reloadData()
-                
+                headerTextForShowingResortCounter?.text = "Resort \(Constant.MyClassConstants.vacationSearchContentPagerRunningIndex) of  \(Constant.MyClassConstants.resortsArray.count)".localized()
+                tableViewResorts.reloadData()
             }
         }
     }
@@ -352,7 +348,7 @@ class ResortDetailsViewController: UIViewController {
                 storyboard = UIStoryboard(name: Constant.storyboardNames.signInPreLoginController, bundle: nil)
                 viewController = storyboard.instantiateViewController(withIdentifier: Constant.storyboardNames.signInPreLoginController)
             }
-            self.present(viewController, animated: true, completion: nil)
+            present(viewController, animated: true, completion: nil)
         }
     }
     //***** Function call for More button *****//
@@ -383,7 +379,7 @@ class ResortDetailsViewController: UIViewController {
             }
         }
         
-        self.present(shareActivityViewController, animated: false, completion: nil)
+        present(shareActivityViewController, animated: false, completion: nil)
     }
     
     //Used to expand and contract sections
@@ -398,7 +394,7 @@ class ResortDetailsViewController: UIViewController {
     }
     //Function for forward button
     @IBAction func forwardButtonClicked(_ sender: AnyObject) {
-        imageIndexLabel.text = "Resort of "
+        imageIndexLabel.text = "Resort of ".localized()
     }
     //Function for backward button
     @IBAction func backButtonClicked(_ sender: AnyObject) {
@@ -434,7 +430,7 @@ class ResortDetailsViewController: UIViewController {
         guard let resortName = Constant.MyClassConstants.resortsDescriptionArray.address?.cityName else { return }
         
         guard let countryCode = Constant.MyClassConstants.resortsDescriptionArray.address?.countryCode else { return }
-        self.showHudAsync()
+        showHudAsync()
         displayWeatherView(resortCode: resortCode, resortName: resortName, countryCode: countryCode, presentModal: presentViewModally, completionHandler: { (_) in
             self.hideHudAsync()
         })
@@ -445,7 +441,7 @@ class ResortDetailsViewController: UIViewController {
         guard let coordinates = Constant.MyClassConstants.resortsDescriptionArray.coordinates else { return }
         guard let resortName = Constant.MyClassConstants.resortsDescriptionArray.resortName else { return }
         guard let cityName = Constant.MyClassConstants.resortsDescriptionArray.address?.cityName else { return }
-        self.showHudAsync()
+        showHudAsync()
         displayMapView(coordinates: coordinates, resortName: resortName, cityName: cityName, presentModal: presentViewModally) { (_) in
             self.hideHudAsync()
         }
@@ -525,7 +521,7 @@ extension ResortDetailsViewController: UITableViewDelegate {
                                 if Constant.RunningDevice.deviceIdiom == .pad {
                                     return CGFloat (count * 20 + 160)
                                 } else {
-                                    return CGFloat (count * 20 + 80)
+                                    return CGFloat (count * 20 + 60)
                                 }
                             }
                                 
@@ -568,7 +564,7 @@ extension ResortDetailsViewController: UITableViewDelegate {
                         self.present(mailComposeViewController, animated: true, completion: nil)
                     })
                 } else {
-                    self.showSendMailErrorAlert()
+                    showSendMailErrorAlert()
                 }
             case 1:
                 let txtComposeViewController = configuredMessageComposeViewController()
@@ -588,7 +584,7 @@ extension ResortDetailsViewController: UITableViewDelegate {
             case 2 :
                 let detailMapViewController = DetailMapViewController()
                 detailMapViewController.hidesBottomBarWhenPushed = true
-                self.navigationController?.pushViewController(detailMapViewController, animated: true)
+                navigationController?.pushViewController(detailMapViewController, animated: true)
             case let indexedSection where indexedSection >= 3 :
                 let button = UIButton()
                 button.tag = indexPath.section
@@ -788,8 +784,8 @@ extension ResortDetailsViewController: UITableViewDataSource {
                 }
                 cell.favoriteButton.addTarget(self, action: #selector(favoritesButtonClicked(_:)), for: .touchUpInside)
                 cell.backgroundColor = UIColor.clear
-                cell.showResortWeatherbutton?.addTarget(self, action: #selector(self.showWeatherButtonPressed), for: .touchUpInside)
-                cell.showResortLocationButton?.addTarget(self, action: #selector(self.showLocationButtonPressed), for: .touchUpInside)
+                cell.showResortWeatherbutton?.addTarget(self, action: #selector(showWeatherButtonPressed), for: .touchUpInside)
+                cell.showResortLocationButton?.addTarget(self, action: #selector(showLocationButtonPressed), for: .touchUpInside)
                 return cell
             case 2 :
                 guard let cell =  mapcell else { mapcell = tableView.dequeueReusableCell(withIdentifier: Constant.loginScreenReusableIdentifiers.mapTableViewCell, for: indexPath)
@@ -873,7 +869,7 @@ extension ResortDetailsViewController: UITableViewDataSource {
                             var completeAddress = ""
                             if let address = Constant.MyClassConstants.resortsDescriptionArray.address {
                                 let addressLine = address.addressLines[0]
-                                completeAddress = "\n\n Contact Information\n\n \(addressLine)\n \(address.cityName ?? ""),  \(address.territoryCode ?? "") \(address.postalCode ?? "")\n\n \(Constant.MyClassConstants.resortsDescriptionArray.phone ?? "")\n \(Constant.MyClassConstants.resortsDescriptionArray.webUrl ?? "")"
+                                completeAddress = "\n\n Contact Information\n\n \(addressLine)\n \(address.cityName ?? ""),  \(address.territoryCode ?? "") \(address.postalCode ?? "")\n\n \(Constant.MyClassConstants.resortsDescriptionArray.phone ?? "")\n \(Constant.MyClassConstants.resortsDescriptionArray.webUrl ?? "")".localized()
                                 airportArray.append(completeAddress)
                             }
                             
@@ -895,13 +891,13 @@ extension ResortDetailsViewController: UITableViewDataSource {
                             availableCountryCell?.infoLabel.isHidden = false
                             availableCountryCell?.infoLabel.numberOfLines = 0
                             if nearbyArray.count > 0 {
-                                availableCountryCell?.infoLabel.text = amenityNearbyString  + "\n" + "\n" + " " +    amenityOnsiteString
+                                availableCountryCell?.infoLabel.text = amenityNearbyString  + "\n" + "\n" + " " +    amenityOnsiteString.localized()
                             } else {
-                                availableCountryCell?.infoLabel.text = amenityNearbyString
+                                availableCountryCell?.infoLabel.text = amenityNearbyString.localized()
                             }
                         case 5 :
                             if let resortCategory = Constant.MyClassConstants.resortsDescriptionArray.rating?.categories, let categoryCode = resortCategory[indexPath.row - 1].categoryCode {
-                                availableCountryCell?.infoLabel.text = Helper.getRatingCategory(category: categoryCode ?? "") + "\n" + " \(resortCategory[indexPath.row - 1].rating)"
+                                availableCountryCell?.infoLabel.text = Helper.getRatingCategory(category: categoryCode ?? "") + "\n" + " \(resortCategory[indexPath.row - 1].rating)".localized()
                                 
                                 let resortRating = "\(resortCategory[indexPath.row - 1].rating)"
                                 let ratingArray = resortRating.components(separatedBy: "")
@@ -950,7 +946,7 @@ extension ResortDetailsViewController: UITableViewDataSource {
                             
                             if let resortCategory = Constant.MyClassConstants.resortsDescriptionArray.rating?.categories {
                                 if let categoryCode = resortCategory[indexPath.row - 1].categoryCode {
-                                    availableCountryCell?.infoLabel.text = Helper.getRatingCategory(category: categoryCode ?? "") + "\n" + " \(resortCategory[indexPath.row - 1].rating)"
+                                    availableCountryCell?.infoLabel.text = Helper.getRatingCategory(category: categoryCode ?? "") + "\n" + " \(resortCategory[indexPath.row - 1].rating)".localized()
                                 }
                                 var image_X: CGFloat = 0.0
                                 for _ in 0..<resortCategory[indexPath.row - 1].rating {
@@ -1025,11 +1021,11 @@ extension ResortDetailsViewController: UITableViewDataSource {
             if Constant.RunningDevice.deviceIdiom == .pad {
                 let storyboard = UIStoryboard(name: Constant.storyboardNames.resortDirectoryIpad, bundle: nil)
                 let viewController = storyboard.instantiateViewController(withIdentifier: Constant.storyboardNames.signInPreLoginViewControlleriPad)
-                self.navigationController?.pushViewController(viewController, animated: true)
+                navigationController?.pushViewController(viewController, animated: true)
             } else {
                 let storyboard = UIStoryboard(name: Constant.storyboardNames.iphone, bundle: nil)
                 let viewController = storyboard.instantiateViewController(withIdentifier: Constant.storyboardNames.signInPreLoginController)
-                self.navigationController?.pushViewController(viewController, animated: true)
+                navigationController?.pushViewController(viewController, animated: true)
             }
         }
         
@@ -1039,8 +1035,8 @@ extension ResortDetailsViewController: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         if status == CLAuthorizationStatus.authorizedWhenInUse {
-            self.mapView.isMyLocationEnabled = true
-            self.mapView.settings.myLocationButton = false
+            mapView.isMyLocationEnabled = true
+            mapView.settings.myLocationButton = false
             locationManager.startUpdatingLocation()
         }
     }
@@ -1066,15 +1062,15 @@ extension ResortDetailsViewController: MFMailComposeViewControllerDelegate {
         switch result.rawValue {
             
         case MFMailComposeResult.cancelled.rawValue:
-            self.dismiss(animated: true, completion: nil)
+            dismiss(animated: true)
             break
         case MFMailComposeResult.saved.rawValue:
             intervalPrint("Email saved")
             break
         case MFMailComposeResult.sent.rawValue:
             intervalPrint("Email sent")
-            let alertController = UIAlertController(title: "test", message: "test", preferredStyle: .alert)
-            let okButton = UIAlertAction(title: "Okay", style: .default, handler: nil)
+            let alertController = UIAlertController(title: "test".localized(), message: "test".localized(), preferredStyle: .alert)
+            let okButton = UIAlertAction(title: "Okay".localized(), style: .default, handler: nil)
             alertController.addAction(okButton)
             present(alertController, animated: true, completion: nil)
             
@@ -1090,7 +1086,7 @@ extension ResortDetailsViewController: MFMailComposeViewControllerDelegate {
 
 extension ResortDetailsViewController: MFMessageComposeViewControllerDelegate {
     func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult) {
-        self.dismiss(animated: true, completion: nil)
+        dismiss(animated: true)
     }
 }
 
