@@ -33,12 +33,12 @@ class ResortDetailsViewController: UIViewController {
     var locationManager = CLLocationManager()
     var nearbyArray: NSMutableArray = []
     var onsiteArray: NSMutableArray = []
-    var amenityOnsiteString = "Nearby" + "\n"
-    var amenityNearbyString = "On-Site" + "\n"
+    var amenityOnsiteString = ""
+    var amenityNearbyString = ""
     var presentViewModally = false
     var mapcell : UITableViewCell?
     var resortInfoHeight:CGFloat = 60.0
-    
+
     //***** Class private Variables *****//
     fileprivate var startIndex = 0
     fileprivate var arrayRunningIndex = 0
@@ -81,17 +81,17 @@ class ResortDetailsViewController: UIViewController {
             
             nearbyArray.removeAllObjects()
             onsiteArray.removeAllObjects()
+            amenityOnsiteString = "Nearby" + "\n"
+            amenityNearbyString = "On-Site" + "\n"
             intervalPrint(Constant.MyClassConstants.resortsDescriptionArray.amenities.count)
             for amenity in Constant.MyClassConstants.resortsDescriptionArray.amenities {
                 if let amenityName = amenity.amenityName {
                     if amenity.nearby == true {
-                        
                         // use unicode character to add bullets
                         nearbyArray.add(amenityName)
                         amenityOnsiteString = amenityOnsiteString + "\n" + "  " + "\u{2022}" + " " + amenityName
                         
                     } else {
-                        
                         onsiteArray.add(amenityName)
                         amenityNearbyString = amenityNearbyString + "\n" + "  " + "\u{2022}" + " " + amenityName
                         
@@ -505,7 +505,12 @@ extension ResortDetailsViewController: UITableViewDelegate {
                     if isOpen && indexPath.row > 0 {
                         switch indexPath.section {
                         case 3 :
-                            return resortInfoHeight
+                            if Constant.RunningDevice.deviceIdiom == .pad {
+                                return resortInfoHeight + 40
+                            } else {
+                                return resortInfoHeight
+                            }
+                            
                         case 4 :
                             let count = nearbyArray.count + onsiteArray.count
                             if count > 0 {
@@ -518,13 +523,14 @@ extension ResortDetailsViewController: UITableViewDelegate {
                                 
                             } else {
                                 if Constant.RunningDevice.deviceIdiom == .pad {
-                                    return CGFloat (count * 20 + 120)
+                                    return CGFloat (count * 20 + 160)
                                 } else {
-                                    return CGFloat (count * 20 + 60)
+                                    return CGFloat (count * 20 + 80)
                                 }
                             }
                                 
                             } else { return 60 }
+
                         case 5 :
                             return 80
                         case 6 :
@@ -848,8 +854,9 @@ extension ResortDetailsViewController: UITableViewDataSource {
                         switch indexPath.section {
                         case 3 :
                             availableCountryCell?.infoLabel.isHidden = false
+                            var airportArray = [String]()
                             if let airportName = Constant.MyClassConstants.resortsDescriptionArray.nearestAiport?.name {
-                                var airportArray = [String]()
+                               
                                 let airportAdress = "Nearest Airport" + "\n" + airportName + "/"
                                 airportArray.append(airportAdress)
                                 if let airportCode = Constant.MyClassConstants.resortsDescriptionArray.nearestAiport?.code {
@@ -861,15 +868,34 @@ extension ResortDetailsViewController: UITableViewDataSource {
                                 if let kms = Constant.MyClassConstants.resortsDescriptionArray.nearestAiport?.distanceInKilometers {
                                     airportArray.append("\(kms) KM")
                                 }
-                                availableCountryCell?.infoLabel.text = airportArray.joined(separator: "").localized()
-                            } else {
-                                availableCountryCell?.infoLabel.text = ""
+                               
                             }
+                            var completeAddress = ""
+                            if let address = Constant.MyClassConstants.resortsDescriptionArray.address {
+                                let addressLine = address.addressLines[0]
+                                completeAddress = "\n\n Contact Information\n\n \(addressLine)\n \(address.cityName ?? ""),  \(address.territoryCode ?? "") \(address.postalCode ?? "")\n\n \(Constant.MyClassConstants.resortsDescriptionArray.phone ?? "")\n \(Constant.MyClassConstants.resortsDescriptionArray.webUrl ?? "")"
+                                airportArray.append(completeAddress)
+                            }
+                            
+                            availableCountryCell?.infoLabel.text = airportArray.count > 0 ? airportArray.joined(separator: "").localized() : "".localized()
+                            
+                            // calculate cell height here
+                            var height: CGFloat = 0.0
+                            if let strHeight = availableCountryCell?.infoLabel.text {
+                                if let font = UIFont(name: Constant.fontName.helveticaNeue, size: 15.0) {
+                                    height = heightForView(strHeight, font: font, width: (view.frame.size.width) - 40)
+                                    
+                                }
+                            }
+                            resortInfoHeight = height + 30
+                            let indexPath = NSIndexPath(item: indexPath.row, section: indexPath.section)
+                            tableViewResorts.reloadRows(at: [indexPath as IndexPath], with: .automatic)
+                            
                         case 4 :
                             availableCountryCell?.infoLabel.isHidden = false
                             availableCountryCell?.infoLabel.numberOfLines = 0
                             if nearbyArray.count > 0 {
-                                availableCountryCell?.infoLabel.text = amenityOnsiteString + "\n" + "\n" + " " + amenityNearbyString
+                                availableCountryCell?.infoLabel.text = amenityNearbyString  + "\n" + "\n" + " " +    amenityOnsiteString
                             } else {
                                 availableCountryCell?.infoLabel.text = amenityNearbyString
                             }
@@ -878,26 +904,40 @@ extension ResortDetailsViewController: UITableViewDataSource {
                                 availableCountryCell?.infoLabel.text = Helper.getRatingCategory(category: categoryCode ?? "") + "\n" + " \(resortCategory[indexPath.row - 1].rating)"
                                 
                                 let resortRating = "\(resortCategory[indexPath.row - 1].rating)"
-                                let ratingArray = resortRating.components(separatedBy: ".")
+                                let ratingArray = resortRating.components(separatedBy: "")
                                 var image_X: CGFloat = 35.0
-                                for _ in 0..<resortCategory[indexPath.row - 1].rating {
+                                var image_X1: CGFloat = 35.0
+                                
+                                // to show empty circle image
+                                for _ in 0..<5 {
                                     let imgVwRating = UIImageView()
-                                    imgVwRating.backgroundColor = UIColor.orange
-                                    imgVwRating.frame = CGRect(x: image_X, y: 50, width: 10, height: 10)
-                                    imgVwRating.layer.cornerRadius = 5
+                                    imgVwRating.frame = CGRect(x: image_X1, y: 50, width: 20, height: 20)
+                                    imgVwRating.image = UIImage(named: "empty_circle")
                                     availableCountryCell?.contentView.addSubview(imgVwRating)
-                                    image_X = image_X + 15
+                                    image_X1 = image_X1 + 25
                                     
                                 }
+                                
+                                //to show full filled circle
+                                for _ in 0..<resortCategory[indexPath.row - 1].rating {
+                                    let imgVwRating = UIImageView()
+                                    imgVwRating.frame = CGRect(x: image_X, y: 50, width: 20, height: 20)
+                                    imgVwRating.image = UIImage(named: "full_filled_circle")
+                                    availableCountryCell?.contentView.addSubview(imgVwRating)
+                                    image_X = image_X + 25
+                                    
+                                }
+                                
+                                // to show half filled circle
                                 if let rating = ratingArray.last?.characters.count, rating > 1 {
                                     let imgVwRating = UIImageView()
-                                    imgVwRating.backgroundColor = UIColor.orange
                                     imgVwRating.frame = CGRect(x: image_X, y: 50, width: 20, height: 20)
-                                    imgVwRating.layer.cornerRadius = 10
+                                    imgVwRating.image = UIImage(named: "half_filled_circle")
                                     availableCountryCell?.contentView.addSubview(imgVwRating)
                                     image_X = image_X + 25
                                 }
                             }
+                        
                         case 6 :
                             availableCountryCell?.tdiImageView.backgroundColor = UIColor.lightGray
                             if let urlString = Constant.MyClassConstants.resortsDescriptionArray.tdiUrl {
