@@ -266,21 +266,17 @@ class GoogleMapViewController: UIViewController {
         let senderButton = sender
         
         if senderButton.superview!.superview!.tag == 1 {
-            
             let selectedResort = Constant.MyClassConstants.resorts![sender.tag]
-            
             googleMapSearchBar.resignFirstResponder()
             googleMapSearchBar.showsCancelButton = false
             Helper.getResortWithResortCode(code: selectedResort.resortCode!, viewcontroller: self)
             googleMapSearchBar.text = nil
         } else {
-            
             googleMapSearchBar.resignFirstResponder()
             googleMapSearchBar.showsCancelButton = false
-            
             showHudAsync()
-            DirectoryClient.getResortsWithinGeoArea(Session.sharedSession.userAccessToken, geoArea: Constant.MyClassConstants.destinations![sender.tag].geoArea, onSuccess: { [weak self] (response) in
-                self?.needCameraChange = true
+            DirectoryClient.getResortsWithinGeoArea(Session.sharedSession.userAccessToken, geoArea: Constant.MyClassConstants.destinations![sender.tag].geoArea, onSuccess: { response in
+                self.needCameraChange = true
                 Constant.MyClassConstants.resortsArray.removeAll()
                 Constant.MyClassConstants.resortsArray = response
                 Constant.MyClassConstants.googleMarkerArray.removeAll()
@@ -290,25 +286,25 @@ class GoogleMapViewController: UIViewController {
                     Constant.MyClassConstants.addResortSelectedIndex.append(i)
                     i = i + 1
                 }
-                self?.navigationItem.rightBarButtonItem!.isEnabled = true
+                self.navigationItem.rightBarButtonItem?.isEnabled = true
                 Constant.MyClassConstants.googleMarkerArray.removeAll()
                 if !Constant.MyClassConstants.resortsArray.isEmpty {
                     
-                    self?.mapView.clear()
-                    self?.displaySearchedResort()
-                    if self?.mapTableView != nil {
-                        self?.mapTableView.reloadData()
+                    self.mapView.clear()
+                    self.displaySearchedResort()
+                    if self.mapTableView != nil {
+                        self.mapTableView.reloadData()
                     }
                 } else {
                     
                     if let destination = Constant.MyClassConstants.destinations?[sender.tag] {
-                        self?.selectedDestination = destination
+                        self.selectedDestination = destination
                     }
-                    self?.mapView.clear()
-                    self?.showDestinationWithoutResorts()
+                    self.mapView.clear()
+                    self.showDestinationWithoutResorts()
                 }
                 
-                self?.hideHudAsync()
+                self.hideHudAsync()
             }) {[unowned self] error in
                 self.hideHudAsync()
                 self.presentAlert(with: "Error".localized(), message: error.localizedDescription)

@@ -234,7 +234,7 @@ class RelinquishmentSelectionViewController: UIViewController {
     func availablePointToolButtonPressed(_ sender: IUIKButton) {
         
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.ownershipIphone, bundle: nil)
-        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.availablePointToolViewController) as! AvailablePointToolViewController
+        guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.availablePointToolViewController) as? AvailablePointToolViewController else {return}
         
         let transitionManager = TransitionManager()
         self.navigationController?.transitioningDelegate = transitionManager
@@ -263,9 +263,11 @@ class RelinquishmentSelectionViewController: UIViewController {
                 Constant.MyClassConstants.userSelectedUnitsArray.removeAllObjects()
                 for selectedUnits in Constant.MyClassConstants.relinquishmentUnitsArray {
                     
-                    let selectedDict = selectedUnits as! NSMutableDictionary
-                    if intervalOpenWeeksArray[sender.tag].relinquishmentId! == selectedDict.allKeys.first as! String {
-                        Constant.MyClassConstants.userSelectedUnitsArray.add(selectedDict.object(forKey: intervalOpenWeeksArray[sender.tag].relinquishmentId!)!)
+                    let selectedDict = selectedUnits as? NSMutableDictionary
+                    
+                    if intervalOpenWeeksArray[sender.tag].relinquishmentId ?? "" == selectedDict?.allKeys.first as? String {
+                        Constant.MyClassConstants.userSelectedUnitsArray.add(selectedDict?.object(forKey: intervalOpenWeeksArray[sender.tag].relinquishmentId ?? "") ?? "")
+                     
                     }
                     intervalPrint(Constant.MyClassConstants.userSelectedUnitsArray)
                 }
@@ -283,7 +285,8 @@ class RelinquishmentSelectionViewController: UIViewController {
             } else {
                 mainStoryboard = UIStoryboard(name: Constant.storyboardNames.ownershipIphone, bundle: nil)
             }
-            let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.bedroomSizeViewController) as! BedroomSizeViewController
+            guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.bedroomSizeViewController) as? BedroomSizeViewController  else {return}
+            
             viewController.delegate = self
             Constant.ControllerTitles.selectedControllerTitle = Constant.storyboardControllerID.relinquishmentSelectionViewController
             let transitionManager = TransitionManager()
@@ -419,7 +422,7 @@ class RelinquishmentSelectionViewController: UIViewController {
                 }
                 
                 let storyboard = UIStoryboard(name: Constant.storyboardNames.ownershipIphone, bundle: nil)
-                let clubPointselectionViewController = storyboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.clubPointSelectionViewController) as! ClubPointSelectionViewController
+                guard let clubPointselectionViewController = storyboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.clubPointSelectionViewController) as? ClubPointSelectionViewController else {return}
                 self.navigationController?.pushViewController(clubPointselectionViewController, animated: true)
                 
             }, onError: { error in
@@ -518,7 +521,8 @@ class RelinquishmentSelectionViewController: UIViewController {
                 } else {
                     mainStoryboard = UIStoryboard(name: Constant.storyboardNames.ownershipIphone, bundle: nil)
                 }
-                let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.bedroomSizeViewController) as! BedroomSizeViewController
+                guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.bedroomSizeViewController) as? BedroomSizeViewController else {return}
+                
                 viewController.delegate = self
                 let transitionManager = TransitionManager()
                 navigationController?.transitioningDelegate = transitionManager
@@ -624,7 +628,7 @@ class RelinquishmentSelectionViewController: UIViewController {
                 } else {
                     mainStoryboard = UIStoryboard(name: Constant.storyboardNames.ownershipIphone, bundle: nil)
                 }
-                let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.bedroomSizeViewController) as! BedroomSizeViewController
+                guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.bedroomSizeViewController) as? BedroomSizeViewController  else {return}
                 viewController.delegate = self
                 Constant.ControllerTitles.selectedControllerTitle = Constant.storyboardControllerID.floatViewController
                 let transitionManager = TransitionManager()
@@ -1237,7 +1241,6 @@ extension RelinquishmentSelectionViewController: BedroomSizeViewControllerDelega
                 let openWeeks = obj.openWeeks
                 for openWk in openWeeks {
                     if !openWk.openWeeks.isEmpty {
-                        
                         for object in openWk.openWeeks {
                             if object.relinquishmentID == Constant.MyClassConstants.senderRelinquishmentID {
                                 let unitInOpenWeek = "\(object.unitDetails[0].unitSize),\(object.unitDetails[0].kitchenType)"
@@ -1255,31 +1258,30 @@ extension RelinquishmentSelectionViewController: BedroomSizeViewControllerDelega
         }
         
         // Open vacation search view controller
-        var viewcontroller: UIViewController
+        var viewcontroller: UIViewController?
         if (Constant.RunningDevice.deviceIdiom == .phone) {
             if Constant.MyClassConstants.viewController.isKind(of: FlexchangeSearchViewController.self) {
                 let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
-                viewcontroller = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.flexchangeViewController) as! FlexchangeSearchViewController
+                viewcontroller = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.flexchangeViewController) as? FlexchangeSearchViewController
                 
                 self.dismiss(animated: true, completion: nil)
                 self.navigationController?.popViewController(animated: true)
                 return
             } else {
                 let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
-                viewcontroller = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.revialViewController) as! SWRevealViewController
+                viewcontroller = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.revialViewController) as? SWRevealViewController
             }
         } else {
-            
             if Constant.MyClassConstants.viewController.isKind(of: FlexChangeSearchIpadViewController.self) || Constant.MyClassConstants.viewController.isKind(of: FlexchangeSearchViewController.self) {
                 let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
-                viewcontroller = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.flexChangeSearchIpadViewController) as! FlexChangeSearchIpadViewController
+                viewcontroller = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.flexChangeSearchIpadViewController) as? FlexChangeSearchIpadViewController
                 
                 self.dismiss(animated: true, completion: nil)
                 self.navigationController?.popViewController(animated: true)
                 return
             } else {
                 let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
-                viewcontroller = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.revialViewController) as! SWRevealViewController
+                viewcontroller = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.revialViewController) as? SWRevealViewController
                 
             }
             
@@ -1290,7 +1292,7 @@ extension RelinquishmentSelectionViewController: BedroomSizeViewControllerDelega
         let timeFunc: CAMediaTimingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
         transition.duration = 0.0
         transition.timingFunction = timeFunc
-        viewcontroller.view.layer.add(transition, forKey: Constant.MyClassConstants.switchToView)
+        viewcontroller?.view.layer.add(transition, forKey: Constant.MyClassConstants.switchToView)
         UIApplication.shared.keyWindow?.rootViewController = viewcontroller
     }
     

@@ -140,9 +140,8 @@ class ResortDetailsViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         if Constant.RunningDevice.deviceIdiom == .phone {
-            showSearchResults ? (navigationController?.navigationBar.isHidden = true) : (navigationController?.navigationBar.isHidden = false)
-                
-
+            navigationController?.navigationBar.isHidden = showSearchResults
+            //showSearchResults ? (navigationController?.navigationBar.isHidden = true) : (navigationController?.navigationBar.isHidden = false)
             tabBarController?.tabBar.isHidden = false
         }
     }
