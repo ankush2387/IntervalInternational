@@ -32,6 +32,7 @@ class MyUpcommingTripIpadViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         checkOrientation()
         upcommingTripTblView.reloadData()
     }
@@ -64,32 +65,42 @@ class MyUpcommingTripIpadViewController: UIViewController {
     //***** Function to check if device is in portrait or landscape. *****//
     
     func checkOrientation() {
-        if UIDevice.current.orientation.isPortrait {
-            orientationIsPortrait = true
-            leadingTableVwConstraint.constant = 20
-            trailingTableVwConstraint.constant = 20
-        } else {
+        if UIDevice.current.orientation.isLandscape {
             orientationIsPortrait = false
             leadingTableVwConstraint.constant = 0
             trailingTableVwConstraint.constant = 0
+        } else {
+            orientationIsPortrait = true
+            leadingTableVwConstraint.constant = 20
+            trailingTableVwConstraint.constant = 20
+        }
+    }
+    
+    //MARK :- Navigate to Vacation Search
+    func vacationSearchButtonPressed(_ sender: UIButton) {
+        if let initialViewController = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad
+            , bundle: nil).instantiateInitialViewController() {
+            navigationController?.pushViewController(initialViewController, animated: true)
         }
     }
 
     //***** Function called when view trip details button is pressed for upcoming trip. *****//
     
     func viewTripDetailsPressed(_ sender: IUIKButton) {
-        Constant.MyClassConstants.transactionNumber = "\(Constant.MyClassConstants.upcomingTripsArray[sender.tag - 1].exchangeNumber!)"
+        
+        if let exchangeNumber = Constant.MyClassConstants.upcomingTripsArray[sender.tag - 1].exchangeNumber {
+            Constant.MyClassConstants.transactionNumber = "\(exchangeNumber)"
+        }
         
         showHudAsync()
-        ExchangeClient.getExchangeTripDetails(Session.sharedSession.userAccessToken, confirmationNumber: Constant.MyClassConstants.transactionNumber, onSuccess: { (exchangeResponse) in
-            
+        ExchangeClient.getExchangeTripDetails(Session.sharedSession.userAccessToken, confirmationNumber: Constant.MyClassConstants.transactionNumber, onSuccess: { exchangeResponse in
             Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails = exchangeResponse
             self.hideHudAsync()
             self.performSegue(withIdentifier: Constant.segueIdentifiers.detailSegue, sender: nil)
-        }) { (_) in
-            self.hideHudAsync()
-            self.presentErrorAlert(UserFacingCommonError.generic)
-        }
+        }, onError: { [weak self] error in
+            self?.hideHudAsync()
+            self?.presentErrorAlert(UserFacingCommonError.handleError(error))
+        })
     }
 }
 
@@ -135,7 +146,7 @@ extension MyUpcommingTripIpadViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: Constant.upComingTripDetailControllerReusableIdentifiers.upComingTripCell, for: indexPath) as! UpComingTripCell
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.upComingTripDetailControllerReusableIdentifiers.upComingTripCell, for: indexPath) as? UpComingTripCell else { return UITableViewCell() }
         for subviews in cell.subviews {
             subviews.removeFromSuperview()
         }
@@ -243,7 +254,7 @@ extension MyUpcommingTripIpadViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         if indexPath.item == 0 {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.dashboardTableScreenReusableIdentifiers.cell, for: indexPath) as! CustomCollectionCell
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.dashboardTableScreenReusableIdentifiers.cell, for: indexPath) as? CustomCollectionCell else { return UICollectionViewCell() }
             if Constant.MyClassConstants.upcomingTripsArray.isEmpty {
                 let headerLabel = UILabel()
                 let noTripsImage = UIImageView()
@@ -258,6 +269,7 @@ extension MyUpcommingTripIpadViewController: UICollectionViewDataSource {
                     searchVacationButton.frame = CGRect(x: 300, y: 400, width: cell.frame.size.width, height: 60)
                     
                 }
+                searchVacationButton.addTarget(self, action: #selector(MyUpcomingTripViewController.vacationSearchButtonPressed(_:)), for: .touchUpInside)
                 headerLabel.numberOfLines = 0
                 headerLabel.text = Constant.AlertPromtMessages.upcomingTripMessage
                 headerLabel.textColor = UIColor.lightGray
@@ -279,50 +291,71 @@ extension MyUpcommingTripIpadViewController: UICollectionViewDataSource {
                 return UICollectionViewCell()
             }
             let upcomingTrip = Constant.MyClassConstants.upcomingTripsArray[indexPath.row - 1]
-            let imageUrls = upcomingTrip.resort!.images
-            let imageUrl = (imageUrls[(imageUrls.count) - 1].url)! as String
             
-            cell.resortImageView.setImageWith(URL(string: imageUrl), completed: { (image:UIImage?, error:Error?, _:SDImageCacheType, _:URL?) in
-                if error != nil {
-                    cell.resortImageView.image = UIImage(named: Constant.MyClassConstants.noImage)
-                }
-            }, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
+            let image = upcomingTrip.resort?.images.filter { $0.size?.caseInsensitiveCompare("XLARGE") == ComparisonResult.orderedSame }.first
+            if let imageUrl = image?.url {
+                
+                cell.resortImageView.setImageWith(URL(string: imageUrl), completed: { (image:UIImage?, error:Error?, _:SDImageCacheType, _:URL?) in
+                    if case .some = error {
+                        cell.resortImageView.image = #imageLiteral(resourceName: "NoImageIcon")
+                    }
+                }, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
+            } else {
+                cell.resortImageView.image = #imageLiteral(resourceName: "NoImageIcon")
+            }
  
-            var type = ExchangeTransactionType.fromName(name: upcomingTrip.type!).rawValue
-            if upcomingTrip.type == Constant.myUpcomingTripCommonString.rental {
-                
-                 type = Constant.myUpcomingTripCommonString.getaway
-                
+            if let upcomingTripType = upcomingTrip.type {
+                var type = ExchangeTransactionType.fromName(name: upcomingTripType).rawValue
+                if upcomingTrip.type == Constant.myUpcomingTripCommonString.rental {
+                    
+                    type = Constant.myUpcomingTripCommonString.getaway
+                    
+                } else if upcomingTrip.type == Constant.myUpcomingTripCommonString.shop {
+                    
+                    type = Constant.myUpcomingTripCommonString.exchange
+                    
+                }
+                cell.resortType.text = type.uppercased()
             }
-            if upcomingTrip.type == Constant.myUpcomingTripCommonString.shop {
-                
-                 type = Constant.myUpcomingTripCommonString.exchange
-               
+            if let exchangeNumber = upcomingTrip.exchangeNumber, let exchangeStatus = upcomingTrip.exchangeStatus {
+                cell.headerLabel.text = "Confirmation #\(exchangeNumber)"
+                cell.headerStatusLabel.text = exchangeStatus
             }
-            cell.resortType.text = type
-            cell.headerLabel.text = "Confirmation #\(upcomingTrip.exchangeNumber!)"
-            cell.headerStatusLabel.text = upcomingTrip.exchangeStatus!
-            cell.resortNameLabel.text = upcomingTrip.resort!.resortName
-            cell.resortCodeLabel.text = upcomingTrip.resort!.address!.countryCode!
-            let checkInDate = Helper.convertStringToDate(dateString: upcomingTrip.unit!.checkInDate!, format: Constant.MyClassConstants.dateFormat)
+            
+            if let resortName = upcomingTrip.resort?.resortName {
+                cell.resortNameLabel.text = resortName
+            }
+            
+            if let countryCode = upcomingTrip.resort?.address?.countryCode {
+                cell.resortCodeLabel.text = countryCode
+            }
+            
+            if let checkInDateForUpcomingTrips = upcomingTrip.unit?.checkInDate {
+                
+            let checkInDate = Helper.convertStringToDate(dateString: checkInDateForUpcomingTrips, format: Constant.MyClassConstants.dateFormat)
             
             let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
             let myComponents = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: checkInDate)
             
             if let weekday = myComponents.weekday, let month = myComponents.month, let day = myComponents.day, let year = myComponents.year {
                 let formatedCheckInDate = "\(Helper.getWeekdayFromInt(weekDayNumber: weekday)) \(Helper.getMonthnameFromInt(monthNumber: month)). \(day), \(year)"
-                let checkOutDate = Helper.convertStringToDate(dateString: upcomingTrip.unit!.checkOutDate!, format: Constant.MyClassConstants.dateFormat)
-                
-                let myComponents1 = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: checkOutDate)
-                if let weekday = myComponents1.weekday, let month = myComponents1.month, let day = myComponents1.day, let year = myComponents1.year {
-                    let formatedCheckOutDate = "\(Helper.getWeekdayFromInt(weekDayNumber: weekday)) \(Helper.getMonthnameFromInt(monthNumber: month)). \(day), \(year)"
+                if let checkOutDateUpcomingTrips = upcomingTrip.unit?.checkOutDate {
+                    let checkOutDate = Helper.convertStringToDate(dateString: checkOutDateUpcomingTrips, format: Constant.MyClassConstants.dateFormat)
                     
-                    cell.tripDateLabel.text = "\(formatedCheckInDate) - \(formatedCheckOutDate)"
+                    let myComponents1 = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: checkOutDate)
+                    if let weekday = myComponents1.weekday, let month = myComponents1.month, let day = myComponents1.day, let year = myComponents1.year {
+                        let formatedCheckOutDate = "\(Helper.getWeekdayFromInt(weekDayNumber: weekday)) \(Helper.getMonthnameFromInt(monthNumber: month)). \(day), \(year)"
+                        
+                        cell.tripDateLabel.text = "\(formatedCheckInDate) - \(formatedCheckOutDate)"
+                    }
                 }
             }
-            for layer in cell.resortNameBaseView.layer.sublayers! {
-                if layer.isKind(of: CAGradientLayer.self) {
-                    layer.removeFromSuperlayer()
+        }
+            if let sublayers = cell.resortNameBaseView.layer.sublayers {
+                for layer in sublayers {
+                    if layer.isKind(of: CAGradientLayer.self) {
+                        layer.removeFromSuperlayer()
+                    }
                 }
             }
             Helper.addLinearGradientToView(view: cell.resortNameBaseView, colour: UIColor.white, transparntToOpaque: true, vertical: false)

@@ -280,6 +280,12 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
     func dropDownButtonPressed(_ sender: IUIKButton) {
         self.dropDownSelectionRow = sender.tag
         self.dropDownSelectionSection = Int(sender.accessibilityValue!)!
+        if dropDownSelectionRow == 4 && Constant.GetawaySearchResultGuestFormDetailData.stateListArray.isEmpty {
+            let state = State()
+            state.name = "N/A"
+            state.code = nil
+            Constant.GetawaySearchResultGuestFormDetailData.stateListArray.append(state)
+        }
         if self.hideStatus == false {
             self.hideStatus = true
             showPickerView()

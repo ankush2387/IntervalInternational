@@ -285,9 +285,17 @@ class AddDebitOrCreditCardViewController: UIViewController {
         } else {
             
             if hideStatus == false {
-                hideStatus = true
-                showPickerView()
-                self.pickerView.reloadAllComponents()
+                if dropDownSelectionRow == 4 && Constant.GetawaySearchResultGuestFormDetailData.stateListArray.isEmpty {
+                    let state = State()
+                    state.name = "N/A"
+                    state.code = nil
+                    
+                    Constant.GetawaySearchResultGuestFormDetailData.stateListArray.append(state)
+                }
+                
+                    hideStatus = true
+                    showPickerView()
+                    self.pickerView.reloadAllComponents()
             } else {
                 hideStatus = false
                 hidePickerView()
@@ -329,11 +337,10 @@ class AddDebitOrCreditCardViewController: UIViewController {
     
     //function called when picker view done button pressed.
     func pickerDoneButtonPressed(_ sender: UIButton) {
-        
         hideStatus = false
         pickerBaseView.isHidden = true
-        let indexPath = NSIndexPath(row: dropDownSelectionRow, section: dropDownSelectionSection)
-        cardDetailTBLview.reloadRows(at: [indexPath as IndexPath], with: UITableViewRowAnimation.automatic)
+        let indexPath = IndexPath(row: dropDownSelectionRow, section: dropDownSelectionSection)
+        cardDetailTBLview.reloadRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
     }
 
     //function to dismiss current controller on cancel button pressed.
@@ -717,12 +724,12 @@ extension AddDebitOrCreditCardViewController: UIPickerViewDelegate {
                 Helper.getStates(country: Constant.GetawaySearchResultCardFormDetailData.countryCode, viewController: self)
              } else {
                 if !Constant.GetawaySearchResultGuestFormDetailData.stateListArray.isEmpty {
-                    if let stateName = Constant.GetawaySearchResultGuestFormDetailData.stateListArray[row].name {
+                    if let stateName = Constant.GetawaySearchResultGuestFormDetailData.stateListArray[row].name,
+                        let stateCode =  Constant.GetawaySearchResultGuestFormDetailData.stateListArray[row].name {
                         Constant.GetawaySearchResultCardFormDetailData.state = stateName
-                        Constant.GetawaySearchResultCardFormDetailData.stateCode = Constant.GetawaySearchResultGuestFormDetailData.stateCodeArray[row]
+                        Constant.GetawaySearchResultCardFormDetailData.stateCode = stateCode
                     }
                 }
-
             }
         }
     }
