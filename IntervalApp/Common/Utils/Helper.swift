@@ -905,36 +905,6 @@ public class Helper {
         return returnDate.day!
     }
     
-    //***** common function that contains API call for top 10 deals *****//
-    static func getTopDeals(senderVC: UIViewController) {
-        
-        senderVC.showHudAsync()
-        
-        RentalClient.getTop10Deals(Session.sharedSession.userAccessToken, onSuccess: {(response) in
-            Constant.MyClassConstants.topDeals = response
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.notificationNames.refreshTableNotification), object: nil)
-            
-            senderVC.hideHudAsync()
-        },
-                                   onError: {_ in
-                                    senderVC.hideHudAsync()
-                                    senderVC.presentErrorAlert(UserFacingCommonError.generic)
-                                    
-        })
-    }
-    
-    //***** common function that contains API call for flex exchange deals *****/
-    static func getFlexExchangeDeals(senderVC: UIViewController, success: @escaping((Bool) -> Void)) {
-        ExchangeClient.getFlexExchangeDeals(Session.sharedSession.userAccessToken, onSuccess: { (response) in
-            Constant.MyClassConstants.flexExchangeDeals = response
-            success(true)
-        }) { _ in
-            success(false)
-            senderVC.presentErrorAlert(UserFacingCommonError.generic)
-            
-        }
-    }
-    
     //***** common function that contains API call to get areas with access token *****//
     static func getResortDirectoryRegionList(viewController: UIViewController) {
         
