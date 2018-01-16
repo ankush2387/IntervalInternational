@@ -36,7 +36,7 @@ final class SettingsViewController: UIViewController {
     // MARK: - Private functions
     private func setUI() {
         title = "Settings".localized()
-        versionLabel.textColor = IntervalThemeFactory.deviceTheme.secondaryTextColor
+        versionLabel.textColor = IntervalThemeFactory.deviceTheme.textColorGray
         setMenuButton()
         registerSimpleCellViews(withTableView: tableView)
         tableView.tableFooterView = UIView()

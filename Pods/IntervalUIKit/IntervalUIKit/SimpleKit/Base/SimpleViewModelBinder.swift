@@ -54,6 +54,12 @@ public extension SimpleViewModelBinder {
             view.viewModel = viewModel
         case (let viewModel as SimpleTextFieldCellViewModel, let view as SimpleTextFieldCell):
             view.viewModel = viewModel
+        case (let viewModel as SimpleSeperatorCellViewModel, let view as SimpleSeperatorCell):
+            view.viewModel = viewModel
+        case (let viewModel as AvailableRelinquishmentPointsCellViewModel, let view as AvailableRelinquishmentPointsCell):
+            view.viewModel = viewModel
+        case (let viewModel as OwnershipTableViewCellViewModel, let view as OwnershipTableViewCell):
+            view.viewModel = viewModel
         case (let viewModel as SimpleLabelTextFieldLabelTextFieldButtonButtonCellViewModel, let view as SimpleLabelTextFieldLabelTextFieldButtonButtonCell):
             view.viewModel = viewModel
             
