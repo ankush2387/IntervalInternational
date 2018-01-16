@@ -206,13 +206,12 @@ class SearchResultViewController: UIViewController {
                         Constant.MyClassConstants.favoritesResortArray.append(resort)
                         }
                     }
-                    
                 }
 
                 self.hideHudAsync()
-            }) { (_) in
-                self.presentErrorAlert(UserFacingCommonError.generic)
-                self.hideHudAsync()
+            }) { [weak self] error in
+                self?.hideHudAsync()
+                self?.presentErrorAlert(UserFacingCommonError.handleError(error))
             }
         }
         var index = 0
@@ -283,9 +282,9 @@ class SearchResultViewController: UIViewController {
                     self.searchResultColelctionView.reloadData()
                     self.hideHudAsync()
             },
-             onError: { (_) in
-                self.hideHudAsync()
-                self.presentErrorAlert(UserFacingCommonError.generic)
+             onError: { [weak self] error in
+                self?.hideHudAsync()
+                self?.presentErrorAlert(UserFacingCommonError.handleError(error))
             })
                 
             case VacationSearchType.Exchange:
@@ -303,9 +302,9 @@ class SearchResultViewController: UIViewController {
                         self.searchResultColelctionView.reloadData()
                 },
                                            
-                   onError: { (_) in
-                    self.hideHudAsync()
-                    self.presentErrorAlert(UserFacingCommonError.generic)
+                   onError: { [weak self] error in
+                    self?.hideHudAsync()
+                    self?.presentErrorAlert(UserFacingCommonError.handleError(error))
             })
                 
             case VacationSearchType.Combined:
@@ -384,9 +383,9 @@ class SearchResultViewController: UIViewController {
                 // Run Exchange Search Dates
                 Helper.executeExchangeSearchAvailabilityAfterSelectCheckInDate(activeInterval: activeInterval, checkInDate: selectedDate, senderVC: self)
             },
-               onError: { (_) in
-                self.hideHudAsync()
-                self.presentErrorAlert(UserFacingCommonError.generic)
+               onError: { [weak self] error in
+                self?.hideHudAsync()
+                self?.presentErrorAlert(UserFacingCommonError.handleError(error))
             })
         default:
             break
@@ -459,9 +458,9 @@ class SearchResultViewController: UIViewController {
                 }
             }
             
-        }, onError: { (_) in
-            self.hideHudAsync()
-            self.presentErrorAlert(UserFacingCommonError.generic)
+        }, onError: { [weak self] error in
+            self?.hideHudAsync()
+            self?.presentErrorAlert(UserFacingCommonError.handleError(error))
         })
     }
     
@@ -567,9 +566,9 @@ class SearchResultViewController: UIViewController {
                 
             })
             
-        }, onError: {(_) in
-            self.hideHudAsync()
-            self.presentErrorAlert(UserFacingCommonError.generic)
+        }, onError: {[weak self] error in
+            self?.hideHudAsync()
+            self?.presentErrorAlert(UserFacingCommonError.handleError(error))
         })
     }
 
@@ -783,8 +782,9 @@ class SearchResultViewController: UIViewController {
                     let indexpath = NSIndexPath(row: sender.tag, section: Int(section)!)
                     self.searchResultTableView.reloadRows(at: [indexpath as IndexPath], with: .automatic)
                     
-                }, onError: {(_) in
-                    self.hideHudAsync()
+                }, onError: { [weak self] error in
+                    self?.hideHudAsync()
+                    self?.presentErrorAlert(UserFacingCommonError.handleError(error))
                 })
                 
             }
@@ -890,12 +890,13 @@ extension SearchResultViewController: UICollectionViewDelegate {
                         }
                     }
                     Constant.MyClassConstants.vacationSearchContentPagerRunningIndex = collectionView.tag + 1
+
                     self?.hideHudAsync()
-                    self?.navigationController?.view.layer.add(Helper.bottomToTopTransition(), forKey: nil)
                     self?.performSegue(withIdentifier: Constant.segueIdentifiers.vacationSearchDetailSegue, sender: nil)
-                }) {[weak self] (_) in
+                }) { [weak self] error in
                     self?.hideHudAsync()
-                    self?.presentErrorAlert(UserFacingCommonError.generic)
+                    self?.presentErrorAlert(UserFacingCommonError.handleError(error))
+
                 }
             } else {
                 
@@ -983,9 +984,9 @@ extension SearchResultViewController: UICollectionViewDelegate {
                         
                         // MARK: - Check forced renewals before calling membership
                         self.checkUserMembership(response: response)
-                    }, onError: {(_) in
-                        self.hideHudAsync()
-                        self.presentErrorAlert(UserFacingCommonError.generic)
+                    }, onError: { [weak self] error in
+                        self?.hideHudAsync()
+                        self?.presentErrorAlert(UserFacingCommonError.handleError(error))
                     })
                 } else { // search both
                     selectedSection = (collectionView.superview?.superview?.tag)!

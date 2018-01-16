@@ -76,8 +76,6 @@ class VacationSearchIPadViewController: UIViewController, UITableViewDelegate, U
         
         ADBMobile.trackAction(Constant.omnitureEvents.event87, data: userInfo)
         
-        Helper.getTopDeals(senderVC: self)
-        
         NotificationCenter.default.addObserver(self, selector: #selector(refreshTableView), name: NSNotification.Name(rawValue: Constant.notificationNames.refreshTableNotification), object: nil)
         
         getVacationSearchDetails()
@@ -484,8 +482,6 @@ class VacationSearchIPadViewController: UIViewController, UITableViewDelegate, U
         if featuredDestinationsTopConstraint.constant == 20 {
             featuredDestinationsTopConstraint.constant = view.frame.size.height - 200
         } else {
-            
-            Helper.getTopDeals(senderVC: self)
             featuredDestinationsTopConstraint.constant = 20
         }
         UIView.animate(withDuration: 0.3, animations: {

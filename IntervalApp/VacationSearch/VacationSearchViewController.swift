@@ -132,8 +132,6 @@ class VacationSearchViewController: UIViewController {
         
         ADBMobile.trackAction(Constant.omnitureEvents.event87, data: userInfo)
         
-        Helper.getTopDeals(senderVC: self)
-        
         NotificationCenter.default.addObserver(self, selector: #selector(refreshTableView), name: NSNotification.Name(rawValue: Constant.notificationNames.refreshTableNotification), object: nil)
         
         if segmentIndex != 2 {
@@ -686,15 +684,28 @@ extension VacationSearchViewController: UITableViewDataSource {
     //***** UITableview dataSource methods definition here *****//
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        
-        if segmentTitle == Constant.segmentControlItems.getaways {
-            return 5
-        } else if segmentTitle == Constant.segmentControlItems.exchange {
-            return 6
-        } else {
-            return 7
+        switch segmentTitle {
+        case Constant.segmentControlItems.getaways :
+            if Constant.MyClassConstants.topDeals.isEmpty {
+                return 4
+            } else {
+                return 5
+            }
+        case Constant.segmentControlItems.exchange :
+            if Constant.MyClassConstants.flexExchangeDeals.isEmpty {
+                return 5
+            } else {
+                return 6
+            }
+        default :
+            if !Constant.MyClassConstants.flexExchangeDeals.isEmpty && !Constant.MyClassConstants.topDeals.isEmpty {
+                return 7
+            } else if !Constant.MyClassConstants.flexExchangeDeals.isEmpty || !Constant.MyClassConstants.topDeals.isEmpty {
+                return 6
+            } else {
+                return 5
+            }
         }
-        
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -708,12 +719,13 @@ extension VacationSearchViewController: UITableViewDataSource {
             if segmentTitle != Constant.segmentControlItems.getaways {
                 return Constant.MyClassConstants.whatToTradeArray.count + 1
             } else {
-                
                 return 1
             }
+            
         default:
             return 1
         }
+        
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

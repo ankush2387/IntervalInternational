@@ -3885,9 +3885,18 @@
                                                         </userDefinedRuntimeAttribute>
                                                     </userDefinedRuntimeAttributes>
                                                 </label>
-                                                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="0rw-TF-B71">
+
+                                                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="0rw-TF-B71">
+
                                                     <rect key="frame" x="37" y="87" width="20" height="20"/>
                                                 </activityIndicatorView>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="all_inclusive_checked" translatesAutoresizingMaskIntoConstraints="NO" id="5tD-YT-0cG">
+                                                    <rect key="frame" x="451" y="82" width="30" height="30"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="30" id="MlR-MP-KQh"/>
+                                                        <constraint firstAttribute="height" constant="30" id="wqk-oZ-opE"/>
+                                                    </constraints>
+                                                </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="I acknowledge and agree that the Mandatory Resort Fees will be payable to the resort." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HME-aa-RTY">
                                                     <rect key="frame" x="71" y="18" width="402" height="40"/>
                                                     <constraints>
@@ -3929,8 +3938,10 @@
                                                 </view>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstItem="5tD-YT-0cG" firstAttribute="centerY" secondItem="0rw-TF-B71" secondAttribute="centerY" id="7E7-Pr-KHR"/>
                                                 <constraint firstItem="0rw-TF-B71" firstAttribute="centerY" secondItem="jL1-UU-NoN" secondAttribute="centerY" id="Abc-e9-8dX"/>
                                                 <constraint firstItem="HME-aa-RTY" firstAttribute="top" secondItem="RZY-7u-pmg" secondAttribute="topMargin" constant="7" id="Abs-zd-nod"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="5tD-YT-0cG" secondAttribute="trailing" constant="15" id="S0a-iT-RFH"/>
                                                 <constraint firstItem="mj9-uB-M47" firstAttribute="top" secondItem="RZY-7u-pmg" secondAttribute="topMargin" constant="12" id="VOj-dV-YBT"/>
                                                 <constraint firstItem="BmC-3Y-5pR" firstAttribute="bottom" secondItem="RZY-7u-pmg" secondAttribute="bottomMargin" id="WrU-8h-hSE"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="HME-aa-RTY" secondAttribute="trailing" constant="23" id="YEi-ND-e06"/>
@@ -3950,6 +3961,7 @@
                                             <outlet property="activityIndicator" destination="0rw-TF-B71" id="H0B-Xa-BL8"/>
                                             <outlet property="agreeButton" destination="BmC-3Y-5pR" id="9xb-Js-KFp"/>
                                             <outlet property="agreeLabel" destination="jL1-UU-NoN" id="cY0-fy-jYu"/>
+                                            <outlet property="allInclusiveSelectedCheckBox" destination="5tD-YT-0cG" id="ACn-xu-Ozc"/>
                                             <outlet property="feesTitleLabel" destination="HME-aa-RTY" id="Yue-mU-jNR"/>
                                         </connections>
                                     </tableViewCell>
@@ -4498,7 +4510,7 @@
                         <outlet property="checkoutTableView" destination="o3u-FW-zKw" id="for-yc-ZSx"/>
                         <outlet property="remainingResortHoldingTimeLabel" destination="tpR-pK-iSB" id="mXH-V2-ckY"/>
                         <segue destination="vWj-V8-QCO" kind="presentation" identifier="selectPaymentSegue" id="IuN-SZ-Un7"/>
-                        <segue destination="5vQ-ut-G3U" kind="show" identifier="showResortDetails" id="5di-wX-yoy"/>
+                        <segue destination="5vQ-ut-G3U" kind="presentation" identifier="showResortDetails" id="5di-wX-yoy"/>
                         <segue destination="yEv-v7-OpQ" kind="push" identifier="confirmationSegue" id="kWp-Z6-fLd"/>
                         <segue destination="5BT-QX-6Zq" kind="presentation" identifier="showRelinguishmentsDetails" id="bm5-1w-IwW"/>
                     </connections>
@@ -5098,7 +5110,7 @@
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="170" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="UQr-UE-QNt">
-                                <rect key="frame" x="30" y="60" width="708" height="964"/>
+                                <rect key="frame" x="30" y="60" width="708" height="915"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="ViewDetailsTBLcell" rowHeight="130" id="nh8-hF-3hI" customClass="ViewDetailsTBLcell" customModule="IntervalApp" customModuleProvider="target">
@@ -6045,11 +6057,11 @@
                                             <outlet property="tierImageView" destination="jaO-6y-sm2" id="znU-3e-V2K"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="CustomCell" rowHeight="154" id="XIe-cY-dQe" customClass="ResortDirectoryResortCell" customModule="IntervalApp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="318" width="728" height="154"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="CustomCell" rowHeight="81" id="XIe-cY-dQe" customClass="ResortDirectoryResortCell" customModule="IntervalApp" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="318" width="728" height="81"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="XIe-cY-dQe" id="2am-Kh-tt5">
-                                            <rect key="frame" x="0.0" y="0.0" width="728" height="153.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="728" height="80.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Details" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HM8-Gp-Y0a">
@@ -6058,20 +6070,21 @@
                                                     <color key="textColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fYO-0g-kG2">
-                                                    <rect key="frame" x="20" y="42" width="688" height="143.5"/>
-                                                    <string key="text">Wyndham Vacation Resorts, Inc., is a leading provider of quality family vacations to exciting destinations such as Orlando, Fort Lauderdale, Daytona Beach,Wyndham Vacation Resorts, Inc., is a leading provider of quality family vacations to exciting destinations such as Orlando, Fort Lauderdale, Daytona Beach,Wyndham Vacation Resorts, Inc., is a leading provider of quality family vacations to exciting destinations such as Orlando, Fort Lauderdale, Daytona Beach,Wyndham Vacation Resorts, Inc., is a leading provider of quality family vacations to exciting destinations such as Orlando, Fort Lauderdale, Daytona Beach,Wyndham Vacation Resorts, Inc., is a leading provider of quality family vacations to exciting destinations such as Orlando, Fort Lauderdale, Daytona Beach,</string>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Wyndham Vacation Resorts, Inc., is a leading provider of quality family vacations to exciting destinations suc" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fYO-0g-kG2">
+                                                    <rect key="frame" x="20" y="42" width="688" height="36"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
+                                            <color key="backgroundColor" red="0.90196078430000004" green="0.46274509800000002" blue="0.25882352939999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <constraints>
                                                 <constraint firstItem="HM8-Gp-Y0a" firstAttribute="top" secondItem="2am-Kh-tt5" secondAttribute="top" constant="14" id="0uW-Y0-hSz"/>
                                                 <constraint firstItem="fYO-0g-kG2" firstAttribute="top" secondItem="HM8-Gp-Y0a" secondAttribute="bottom" constant="4" id="1Iu-Yz-6FI"/>
                                                 <constraint firstItem="HM8-Gp-Y0a" firstAttribute="leading" secondItem="2am-Kh-tt5" secondAttribute="leading" constant="20" id="3uT-Mq-T4Y"/>
                                                 <constraint firstAttribute="trailing" secondItem="fYO-0g-kG2" secondAttribute="trailing" constant="20" id="Or0-O4-4JD"/>
                                                 <constraint firstItem="fYO-0g-kG2" firstAttribute="leading" secondItem="2am-Kh-tt5" secondAttribute="leading" constant="20" id="QIR-V1-Ceu"/>
+                                                <constraint firstAttribute="bottom" secondItem="fYO-0g-kG2" secondAttribute="bottom" constant="2.5" id="saN-kT-djD"/>
                                             </constraints>
                                             <variation key="default">
                                                 <mask key="subviews">
@@ -6091,7 +6104,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="MapCell" id="QtM-HG-v0K">
-                                        <rect key="frame" x="0.0" y="472" width="728" height="44"/>
+                                        <rect key="frame" x="0.0" y="399" width="728" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="QtM-HG-v0K" id="dIv-bS-QPX">
                                             <rect key="frame" x="0.0" y="0.0" width="728" height="43.5"/>
@@ -6099,7 +6112,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="continentsorcountrycell" rowHeight="61" id="XPk-aC-Fro" customClass="AvailableDestinationCountryOrContinentsTableViewCell" customModule="IntervalApp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="516" width="728" height="61"/>
+                                        <rect key="frame" x="0.0" y="443" width="728" height="61"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="XPk-aC-Fro" id="Ba5-OC-9gD">
                                             <rect key="frame" x="0.0" y="0.0" width="728" height="60.5"/>
@@ -6177,7 +6190,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="placecell" id="qOz-fP-pAR" customClass="AvailableDestinationPlaceTableViewCell" customModule="IntervalApp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="577" width="728" height="44"/>
+                                        <rect key="frame" x="0.0" y="504" width="728" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="qOz-fP-pAR" id="Q0c-Ob-Pd0">
                                             <rect key="frame" x="0.0" y="0.0" width="728" height="43.5"/>
@@ -6207,7 +6220,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TDICell" rowHeight="50" id="C0v-0y-n0E" customClass="AvailableDestinationPlaceTableViewCell" customModule="IntervalApp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="621" width="728" height="50"/>
+                                        <rect key="frame" x="0.0" y="548" width="728" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="C0v-0y-n0E" id="Xam-Ee-zFI">
                                             <rect key="frame" x="0.0" y="0.0" width="728" height="49.5"/>
@@ -6255,7 +6268,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="RatingCell" rowHeight="60" id="uQS-2u-HQQ" customClass="AvailableDestinationPlaceTableViewCell" customModule="IntervalApp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="671" width="728" height="60"/>
+                                        <rect key="frame" x="0.0" y="598" width="728" height="60"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="uQS-2u-HQQ" id="4At-ZR-wXz">
                                             <rect key="frame" x="0.0" y="0.0" width="728" height="59.5"/>
@@ -10147,7 +10160,9 @@ Units Upgrade with this selection.</string>
                                                     <rect key="frame" x="15" y="13" width="678" height="63"/>
                                                     <subviews>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xky-ab-RUb">
-                                                            <rect key="frame" x="0.0" y="2.5" width="80" height="60"/>
+
+                                                            <rect key="frame" x="0.0" y="1.5" width="80" height="60"/>
+
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="APR 07" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9x1-R3-Lah">
                                                                     <rect key="frame" x="5" y="0.0" width="70" height="21"/>
@@ -10188,7 +10203,9 @@ Units Upgrade with this selection.</string>
                                                             </constraints>
                                                         </view>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yQb-HJ-GkE">
-                                                            <rect key="frame" x="80" y="-2.5" width="598" height="70"/>
+
+                                                            <rect key="frame" x="80" y="-3.5" width="598" height="70"/>
+
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Westwood at Split Rock" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bWp-UI-AXx">
                                                                     <rect key="frame" x="4" y="5" width="584" height="18"/>
@@ -10593,6 +10610,7 @@ Units Upgrade with this selection.</string>
         <image name="VS_Item-Remove" width="20" height="20"/>
         <image name="VS_List-Plus_ORNG" width="20" height="20"/>
         <image name="WeatherIcon" width="30" height="30"/>
+        <image name="all_inclusive_checked" width="24" height="24"/>
         <image name="input_clear" width="15" height="15"/>
     </resources>
     <inferredMetricsTieBreakers>

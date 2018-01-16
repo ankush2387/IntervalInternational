@@ -101,6 +101,7 @@ class GoogleMapViewController: UIViewController {
             navigationItem.leftBarButtonItem = menuButton
         }
     }
+    
     override func viewDidDisappear(_ animated: Bool) {
         if Constant.MyClassConstants.goingToMapOrWeatherView == false {
             Constant.MyClassConstants.btnTag = -1

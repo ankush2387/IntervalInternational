@@ -180,13 +180,13 @@ class CheckOutViewController: UIViewController {
             let strAccept = self.cellWebView.stringByEvaluatingJavaScript(from: jsStringAccept)
             let strReject = self.cellWebView.stringByEvaluatingJavaScript(from: jsStringReject)
             
-            if (isAgreedToFees || !Constant.MyClassConstants.hasAdditionalCharges) && !Constant.MyClassConstants.selectedCreditCard.isEmpty && (isPromotionApplied || Constant.MyClassConstants.recapViewPromotionCodeArray.isEmpty) {
+            if (isAgreedToFees || !Constant.MyClassConstants.hasAdditionalCharges) && !Constant.MyClassConstants.selectedCreditCard.isEmpty && (strAccept == Constant.MyClassConstants.status || strReject == Constant.MyClassConstants.status || !showInsurance) && (isPromotionApplied || Constant.MyClassConstants.recapViewPromotionCodeArray.isEmpty) {
                 
                 showHudAsync()
                 imageSlider.isHidden = true
+                showLoader = true
                 
                 if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
-                    showLoader = true
                     self.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
                     
                     let continueToPayRequest = ExchangeProcessContinueToPayRequest()
@@ -222,7 +222,6 @@ class CheckOutViewController: UIViewController {
                     })
                     
                 } else {
-                    showLoader = true
                     self.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
                     
                     let continueToPayRequest = RentalProcessRecapContinueToPayRequest()
@@ -612,19 +611,21 @@ class CheckOutViewController: UIViewController {
     //***** Function called when radio button is selected in Add Trip Protection. *****//
     func handleTap(_ sender: UITapGestureRecognizer) {
         
-        let dispatchTime = DispatchTime.now() + 0.5
-        DispatchQueue.main.asyncAfter(deadline: dispatchTime) {
-            let jsString = "document.getElementById('WASCInsuranceOfferOption0').checked == true;"
+        let delayInSeconds = 1.0
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + delayInSeconds) {
+            let yesRadioValue = "document.getElementById('WASCInsuranceOfferOption0').checked == true;"
+            let noRadioValue = "document.getElementById('WASCInsuranceOfferOption1').checked == true;"
             
-            let str = self.cellWebView.stringByEvaluatingJavaScript(from: jsString)
+            let strYesRadioValue = self.cellWebView.stringByEvaluatingJavaScript(from: yesRadioValue)
+            let strNoRadioValue = self.cellWebView.stringByEvaluatingJavaScript(from: noRadioValue)
             
-            if str == "true" && !self.tripRequestInProcess {
+            if strYesRadioValue == "true" && !self.tripRequestInProcess && !self.isTripProtectionEnabled {
                 self.tripRequestInProcess = true
                 self.isTripProtectionEnabled = true
                 Constant.MyClassConstants.checkoutInsurencePurchased = Constant.AlertPromtMessages.yes
                 self.addTripProtection(shouldAddTripProtection: true)
                 
-            } else if str == "false" && !self.tripRequestInProcess {
+            } else if strNoRadioValue == "true" && !self.tripRequestInProcess && self.isTripProtectionEnabled {
                 self.tripRequestInProcess = true
                 self.isTripProtectionEnabled = false
                 Constant.MyClassConstants.checkoutInsurencePurchased = Constant.AlertPromtMessages.no

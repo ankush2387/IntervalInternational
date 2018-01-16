@@ -65,27 +65,18 @@ class DashboardTableViewController: UITableViewController {
             //Get all alerts
             readAllRentalAlerts(accessToken: accessToken)
             showHudAsync()
+            
+            //Read top10Deals
             ClientAPI.sharedInstance.readTopTenDeals(for: accessToken)
-                .then { topTenDeals in
+                .then { [weak self] topTenDeals in
+                    guard let strongSelf = self else { return }
                     Constant.MyClassConstants.topDeals = topTenDeals
-                    ClientAPI.sharedInstance.readFlexchangeDeals(for: accessToken)
-                        .then { [weak self] flexExchangeDeal in
-                            guard let strongSelf = self else { return }
-                            Constant.MyClassConstants.flexExchangeDeals = flexExchangeDeal
-                            strongSelf.showGetaways = true
-                            strongSelf.getNumberOfSections()
-                            strongSelf.homeTableView.reloadData()
-                            strongSelf.hideHudAsync()
-                        }
-                        .onError { [weak self] error in
-                           guard let strongSelf = self else { return }
-                            strongSelf.presentErrorAlert(UserFacingCommonError.handleError(error))
-                            strongSelf.hideHudAsync()
-                    }
+                    strongSelf.readFlexExchangeDeals(accessToken: accessToken)
                 }
                 .onError { [weak self] error in
-                    self?.presentErrorAlert(UserFacingCommonError.handleError(error))
-                    self?.hideHudAsync()
+                    guard let strongSelf = self else { return }
+                    strongSelf.presentErrorAlert(UserFacingCommonError.handleError(error))
+                    strongSelf.readFlexExchangeDeals(accessToken: accessToken)
             }
         }
         // omniture tracking with event40
@@ -106,6 +97,25 @@ class DashboardTableViewController: UITableViewController {
             
             //***** This line allows the user to swipe left-to-right to reveal the menu. We might want to comment this out if it becomes confusing. *****//
             self.view.addGestureRecognizer( rvc.panGestureRecognizer() )
+        }
+    }
+    
+    // MARK: - FlexExchangeDeals
+    func readFlexExchangeDeals(accessToken: DarwinAccessToken) {
+        //Read FlexExchangeDeals
+        ClientAPI.sharedInstance.readFlexchangeDeals(for: accessToken)
+            .then { [weak self] flexExchangeDeal in
+                guard let strongSelf = self else { return }
+                Constant.MyClassConstants.flexExchangeDeals = flexExchangeDeal
+                strongSelf.showGetaways = true
+                strongSelf.getNumberOfSections()
+                strongSelf.homeTableView.reloadData()
+                strongSelf.hideHudAsync()
+            }
+            .onError { [weak self] error in
+                guard let strongSelf = self else { return }
+                strongSelf.presentErrorAlert(UserFacingCommonError.handleError(error))
+                strongSelf.hideHudAsync()
         }
     }
     

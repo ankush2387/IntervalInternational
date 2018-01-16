@@ -1003,38 +1003,38 @@
                                             <outlet property="tierImageView" destination="DPQ-bC-1df" id="F7t-1I-iXS"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="CustomCell" rowHeight="154" id="OQc-TL-2YK" customClass="ResortDirectoryResortCell" customModule="IntervalApp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="228" width="375" height="154"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="CustomCell" rowHeight="100" id="OQc-TL-2YK" customClass="ResortDirectoryResortCell" customModule="IntervalApp" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="228" width="375" height="100"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="OQc-TL-2YK" id="c7F-Ls-uXV">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="154"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="100"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Details" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eC5-41-1FR">
-                                                    <rect key="frame" x="27" y="11" width="82" height="21"/>
+                                                    <rect key="frame" x="20" y="13" width="340" height="21"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="82" id="9mp-na-Hlz"/>
-                                                        <constraint firstAttribute="height" constant="21" id="OA9-mz-FpZ"/>
+                                                        <constraint firstAttribute="height" constant="21" id="e4f-bB-yAY"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                     <color key="textColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Q1s-bp-oWB">
-                                                    <rect key="frame" x="27" y="33" width="321" height="114"/>
-                                                    <string key="text">Wyndham Vacation Resorts, Inc., is a leading provider of quality family vacations to exciting destinations such as Orlando, Fort Lauderdale, Daytona Beach,Wyndham Vacation Resorts, Inc., is a leading provider of quality family vacations to exciting destinations such as Orlando, Fort Lauderdale, Daytona Beach,Wyndham Vacation Resorts, Inc., is a leading provider of quality family vacations to exciting destinations such as Orlando, Fort Lauderdale, Daytona Beach,Wyndham Vacation Resorts, Inc., is a leading provider of quality family vacations to exciting destinations such as Orlando, Fort Lauderdale, Daytona Beach,Wyndham Vacation Resorts, Inc., is a leading provider of quality family vacations to exciting destinations such as Orlando, Fort Lauderdale, Daytona Beach,</string>
-                                                    <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="15"/>
+                                                    <rect key="frame" x="20" y="35" width="340" height="63"/>
+                                                    <string key="text">Wyndham Vacation Resorts, Inc., is a leading pWyndham Vacation Resorts, Inc., is a leading pWyndham Vacation Resorts, Inc., is a leading pWyndham Vacation Resorts, Inc., is a leading p</string>
+                                                    <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="14"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="Q1s-bp-oWB" firstAttribute="centerX" secondItem="c7F-Ls-uXV" secondAttribute="centerX" id="Hul-TH-YxB"/>
-                                                <constraint firstItem="eC5-41-1FR" firstAttribute="leading" secondItem="c7F-Ls-uXV" secondAttribute="leadingMargin" constant="12" id="Hyn-WV-GCR"/>
-                                                <constraint firstItem="eC5-41-1FR" firstAttribute="leading" secondItem="Q1s-bp-oWB" secondAttribute="leading" id="Ms0-Qn-Qdt"/>
-                                                <constraint firstItem="eC5-41-1FR" firstAttribute="top" secondItem="c7F-Ls-uXV" secondAttribute="topMargin" id="Z9n-t4-H9x"/>
-                                                <constraint firstItem="Q1s-bp-oWB" firstAttribute="top" secondItem="eC5-41-1FR" secondAttribute="bottom" constant="1" id="gET-kk-n3n"/>
-                                                <constraint firstItem="Q1s-bp-oWB" firstAttribute="bottom" secondItem="c7F-Ls-uXV" secondAttribute="bottomMargin" constant="4" id="kvZ-99-5eF"/>
+                                                <constraint firstAttribute="bottom" secondItem="Q1s-bp-oWB" secondAttribute="bottom" constant="2" id="6Ud-v6-Op6"/>
+                                                <constraint firstAttribute="trailing" secondItem="Q1s-bp-oWB" secondAttribute="trailing" constant="15" id="KDG-kU-to7"/>
+                                                <constraint firstItem="Q1s-bp-oWB" firstAttribute="leading" secondItem="c7F-Ls-uXV" secondAttribute="leading" constant="20" id="Pfr-jw-HT4"/>
+                                                <constraint firstItem="Q1s-bp-oWB" firstAttribute="top" secondItem="eC5-41-1FR" secondAttribute="bottom" constant="1" id="Zgv-Rw-aYm"/>
+                                                <constraint firstAttribute="trailing" secondItem="eC5-41-1FR" secondAttribute="trailing" constant="15" id="h5x-p2-HM2"/>
+                                                <constraint firstItem="eC5-41-1FR" firstAttribute="leading" secondItem="c7F-Ls-uXV" secondAttribute="leading" constant="20" id="j9G-tc-n6P"/>
+                                                <constraint firstItem="eC5-41-1FR" firstAttribute="top" secondItem="c7F-Ls-uXV" secondAttribute="top" constant="13" id="pfR-nO-lhx"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
@@ -1042,7 +1042,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="MapCell" id="CzO-r7-n1Q">
-                                        <rect key="frame" x="0.0" y="382" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="328" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="CzO-r7-n1Q" id="56v-lP-QGL">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
@@ -1050,7 +1050,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="AvailableDestinationCountryOrContinentsTableViewCell" selectionStyle="none" indentationWidth="10" reuseIdentifier="continentsorcountrycell" rowHeight="61" id="7a2-Hk-xFV" customClass="AvailableDestinationCountryOrContinentsTableViewCell" customModule="IntervalApp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="426" width="375" height="61"/>
+                                        <rect key="frame" x="0.0" y="372" width="375" height="61"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="7a2-Hk-xFV" id="Mi0-Z2-SBf">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="61"/>
@@ -1087,25 +1087,28 @@
                                             <outlet property="tooglebutton" destination="39Y-5k-h5F" id="Jr1-vt-I0o"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="AvailableDestinationPlaceTableViewCell" selectionStyle="none" indentationWidth="10" reuseIdentifier="placecell" id="Xah-lP-OND" customClass="AvailableDestinationPlaceTableViewCell" customModule="IntervalApp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="487" width="375" height="44"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="AvailableDestinationPlaceTableViewCell" selectionStyle="none" indentationWidth="10" reuseIdentifier="placecell" rowHeight="44" id="Xah-lP-OND" customClass="AvailableDestinationPlaceTableViewCell" customModule="IntervalApp" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="433" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Xah-lP-OND" id="GfJ-gs-lAk">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Expandable Cell" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QWN-eD-qJB">
-                                                    <rect key="frame" x="30" y="3" width="321" height="38"/>
+                                                    <rect key="frame" x="20" y="10" width="335" height="24"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="24" id="5Y5-jU-49P"/>
+                                                    </constraints>
                                                     <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="15"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="QWN-eD-qJB" firstAttribute="leading" secondItem="GfJ-gs-lAk" secondAttribute="leadingMargin" constant="15" id="Bay-WB-TbE"/>
-                                                <constraint firstItem="QWN-eD-qJB" firstAttribute="top" secondItem="GfJ-gs-lAk" secondAttribute="topMargin" constant="-8" id="GCN-Vt-Yfr"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="QWN-eD-qJB" secondAttribute="trailing" constant="9" id="RA1-6Y-J5f"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="QWN-eD-qJB" secondAttribute="bottom" constant="-8" id="pz4-Yr-AjO"/>
+                                                <constraint firstItem="QWN-eD-qJB" firstAttribute="leading" secondItem="GfJ-gs-lAk" secondAttribute="leading" constant="20" id="Xyb-VE-ChT"/>
+                                                <constraint firstAttribute="bottom" secondItem="QWN-eD-qJB" secondAttribute="bottom" constant="10" id="ZkZ-D1-o5L"/>
+                                                <constraint firstItem="QWN-eD-qJB" firstAttribute="top" secondItem="GfJ-gs-lAk" secondAttribute="top" constant="10" id="cFN-5j-w7F"/>
+                                                <constraint firstAttribute="trailing" secondItem="QWN-eD-qJB" secondAttribute="trailing" constant="20" id="qAE-kF-o5w"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
@@ -1113,7 +1116,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="TDICell" id="TI5-Ld-YST" customClass="AvailableDestinationPlaceTableViewCell" customModule="IntervalApp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="531" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="477" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="TI5-Ld-YST" id="M7p-Yl-rTU">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
@@ -1135,20 +1138,20 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="RatingCell" id="2SC-7V-nvM" customClass="AvailableDestinationPlaceTableViewCell" customModule="IntervalApp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="575" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="521" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="2SC-7V-nvM" id="GSL-2x-fpn">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KaO-Q0-iZB">
-                                                    <rect key="frame" x="20" y="0.0" width="335" height="17"/>
+                                                    <rect key="frame" x="27" y="0.0" width="321" height="17"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="2MS-g8-WJ1">
-                                                    <rect key="frame" x="20" y="17" width="20" height="20"/>
+                                                    <rect key="frame" x="27" y="17" width="20" height="20"/>
                                                     <color key="backgroundColor" red="0.96862745100000003" green="0.41176470590000003" blue="0.19215686269999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="20" id="JEj-Hj-jOi"/>
@@ -1170,15 +1173,15 @@
                                             <outlet property="tdiImageView" destination="2MS-g8-WJ1" id="a3L-Xk-15N"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SearchCell" rowHeight="50" id="8v2-4b-zcm" customClass="ResortDirectoryResortCell" customModule="IntervalApp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="619" width="375" height="50"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SearchCell" id="8v2-4b-zcm" customClass="ResortDirectoryResortCell" customModule="IntervalApp" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="565" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="8v2-4b-zcm" id="z0e-69-gHl">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hp8-nG-TY6" customClass="IUIKButton" customModule="IntervalUIKit">
-                                                    <rect key="frame" x="40" y="10" width="295" height="30"/>
+                                                    <rect key="frame" x="40" y="7" width="295" height="30"/>
                                                     <color key="backgroundColor" red="0.94117647058823528" green="0.43529411764705883" blue="0.21176470588235294" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="30" id="D76-EQ-Vbg"/>
@@ -1572,7 +1575,7 @@
         <image name="close" width="32" height="32"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="v5y-Uh-olM"/>
+        <segue reference="LB4-mY-QYy"/>
         <segue reference="KTW-Os-bqS"/>
         <segue reference="1yd-In-YGU"/>
         <segue reference="SsD-cI-IVD"/>

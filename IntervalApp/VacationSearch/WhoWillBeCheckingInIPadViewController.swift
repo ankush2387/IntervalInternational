@@ -39,7 +39,8 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
     var filterRelinquishments = ExchangeRelinquishment()
     
     override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
+        super.viewWillAppear(animated)
+        navigationController?.navigationBar.isHidden = false
         NotificationCenter.default.addObserver(self, selector: #selector(showAlertForTimer), name: NSNotification.Name(rawValue: "showAlert"), object: nil)
     }
     
