@@ -49,10 +49,6 @@ class UpComingTripDetailIPadViewController: UIViewController {
         //***** register GuestCertificateCell xib  with table *****//
         let guestCertificateNib = UINib(nibName: Constant.customCellNibNames.guestCertificateCell, bundle: nil)
         upcomingTripDetailTbleview?.register(guestCertificateNib, forCellReuseIdentifier: Constant.upComingTripDetailControllerReusableIdentifiers.guestCertificateCell)
-        
-        //***** register PaymentCell xib  with table *****//
-        //let paymentNib = UINib(nibName: Constant.customCellNibNames.paymentCell, bundle: nil)
-        //upcomingTripDetailTbleview?.register(paymentNib, forCellReuseIdentifier: Constant.upComingTripDetailControllerReusableIdentifiers.paymentDetailCell)
     }
     
     //***** Function to get dynamic rows for additional products section. ******//
