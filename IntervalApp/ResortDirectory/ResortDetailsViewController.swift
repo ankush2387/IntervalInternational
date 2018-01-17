@@ -472,16 +472,21 @@ extension ResortDetailsViewController: UITableViewDelegate {
                         
                         var height: CGFloat = 0.0
                         if Constant.RunningDevice.deviceIdiom == .pad {
-                            guard let font = UIFont(name: Constant.fontName.helveticaNeue, size: 15.0) else { return 0 }
-                                height = heightForView(description, font: font, width: (view.frame.size.width) - 40)
-                            return height + 30
+
+                            guard let font = UIFont(name: Constant.fontName.helveticaNeue, size: 16.0) else { return 0 }
+                            if let description = Constant.MyClassConstants.resortsDescriptionArray.description {
+                                height = heightForView(description, font: font, width: (view.frame.size.width / 2) - 40)
+                            }
+                            return height + 90
+
                         } else {
                             guard let font = UIFont(name: Constant.fontName.helveticaNeue, size: 14.0) else { return 0 }
                             if let description = Constant.MyClassConstants.resortsDescriptionArray.description {
                                 height = heightForView(description, font: font, width: view.frame.size.width - 40)
                             }
-                            //here 60 is header label
-                            return height + 60
+
+                            return height + 90
+
                         }
                     } else {
                         return 60
