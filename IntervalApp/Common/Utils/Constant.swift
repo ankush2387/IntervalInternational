@@ -998,7 +998,7 @@ class Constant: NSObject {
         static var selectedSearchSegment = "Exchange".localized()
         static var getaways = "Getaways".localized()
         static var exchange = "Exchange".localized()
-        static var searchBoth = "Search Both".localized()
+        static var searchBoth = "Search ALL".localized()
         static var flexchangeLabelText = "FLEXCHANGE".localized()
         static var getawaysLabelText = "TOP 10 GETAWAYS".localized()
         static var getawaysIpadText = "Top 10 Getaway Destinations".localized()
