@@ -18,30 +18,24 @@ class UpComingTripDetailIPadViewController: UIViewController {
     var isOpen: Bool = false
     var detailsView: UIView?
     var unitDetialsCellHeight = 20
-    var requiredRowsArray = NSMutableArray()
-    var requiredRowsArrayRelinquishment = NSMutableArray()
+    var requiredRowsArray = [String]()
+    var requiredRowsArrayRelinquishment = [String]()
     //***** Outlets *****//
     @IBOutlet weak var upcomingTripDetailTbleview: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //***** register GuestCertificateCell xib  with table *****//
-        let cellNib1 = UINib(nibName: Constant.customCellNibNames.guestCertificateCell, bundle: nil)
-        self.upcomingTripDetailTbleview!.register(cellNib1, forCellReuseIdentifier: Constant.upComingTripDetailControllerReusableIdentifiers.guestCertificateCell)
-        
-        //***** register PaymentCell xib  with table *****//
-        let cellNib2 = UINib(nibName: Constant.customCellNibNames.paymentCell, bundle: nil)
-        self.upcomingTripDetailTbleview!.register(cellNib2, forCellReuseIdentifier: Constant.upComingTripDetailControllerReusableIdentifiers.paymentDetailCell)
+        registerNib()
         
         self.title = Constant.ControllerTitles.upComingTripDetailController
         
-        let menuButton = UIBarButtonItem(image: UIImage(named: Constant.assetImageNames.backArrowNav), style: .plain, target: self, action: #selector(UpComingTripDetailIPadViewController.menuBackButtonPressed(_:)))
+        let menuButton = UIBarButtonItem(image: #imageLiteral(resourceName: "BackArrowNav"), style: .plain, target: self, action: #selector(UpComingTripDetailIPadViewController.menuBackButtonPressed(_:)))
         menuButton.tintColor = UIColor.white
         
         self.navigationItem.leftBarButtonItem = menuButton
         
-        let moreButton = UIBarButtonItem(image: UIImage(named: Constant.assetImageNames.MoreNav), style: .plain, target: self, action: #selector(UpComingTripDetailIPadViewController.moreButtonPressed(_:)))
+        let moreButton = UIBarButtonItem(image: #imageLiteral(resourceName: "MoreNav"), style: .plain, target: self, action: #selector(UpComingTripDetailIPadViewController.moreButtonPressed(_:)))
         moreButton.tintColor = UIColor.white
         
         self.navigationItem.rightBarButtonItem = moreButton
@@ -49,73 +43,69 @@ class UpComingTripDetailIPadViewController: UIViewController {
         self.requiredRowsForAdditionalProducts()
         self.requiredRowsForRelinquishment()
         
-        // Omniture tracking with event 74
-        
-        let userInfo: [String: String] = [
-            Constant.omnitureEvars.eVar18: "",
-            //TODO (Jhon): error found in iPad with user bwilling
-            //            Constant.omnitureEvars.eVar18 : Constant.MyClassConstants.upcomingOriginationPoint,
-            Constant.omnitureEvars.eVar55: ""
-            
-        ]
-        ADBMobile.trackAction(Constant.omnitureEvents.event74, data: userInfo)
-        
+    }
+    
+    func registerNib() {
+        //***** register GuestCertificateCell xib  with table *****//
+        let guestCertificateNib = UINib(nibName: Constant.customCellNibNames.guestCertificateCell, bundle: nil)
+        upcomingTripDetailTbleview?.register(guestCertificateNib, forCellReuseIdentifier: Constant.upComingTripDetailControllerReusableIdentifiers.guestCertificateCell)
     }
     
     //***** Function to get dynamic rows for additional products section. ******//
     func requiredRowsForAdditionalProducts() {
         
-        self.requiredRowsArray.removeAllObjects()
+        requiredRowsArray.removeAll()
         
-        if(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.ancillaryProducts?.guestCertificate != nil && Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.ancillaryProducts?.guestCertificate?.guest != nil) {
-            
-            self.requiredRowsArray.add(Constant.upComingTripDetailControllerReusableIdentifiers.guestCertificateCell)
-        }
-        if(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.ancillaryProducts?.eplus != nil && Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.ancillaryProducts?.eplus?.purchased == true) {
-            
-            self.requiredRowsArray.add(Constant.upComingTripDetailControllerReusableIdentifiers.insuranceCell)
-        }
+        if let ancillaryProducts =  Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.ancillaryProducts {
+            if let guest = ancillaryProducts.guestCertificate?.guest {
+                requiredRowsArray.append(Constant.upComingTripDetailControllerReusableIdentifiers.guestCertificateCell)
+            }
+            if let purchased = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.ancillaryProducts?.eplus?.purchased {
+                requiredRowsArray.append(Constant.upComingTripDetailControllerReusableIdentifiers.insuranceCell)
+            }
         
-        if(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.ancillaryProducts?.insurance != nil && Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.ancillaryProducts?.insurance?.policyNumber != nil) {
+        if Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.ancillaryProducts?.insurance != nil && Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.ancillaryProducts?.insurance?.policyNumber != nil {
             
-            self.requiredRowsArray.add(Constant.upComingTripDetailControllerReusableIdentifiers.modifyInsuranceCell)
+            requiredRowsArray.append(Constant.upComingTripDetailControllerReusableIdentifiers.modifyInsuranceCell)
         } else if(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.ancillaryProducts?.insurance != nil && Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.ancillaryProducts?.insurance?.policyNumber == nil) {
             
-            self.requiredRowsArray.add(Constant.upComingTripDetailControllerReusableIdentifiers.purchasedInsuranceCell)
+            requiredRowsArray.append(Constant.upComingTripDetailControllerReusableIdentifiers.purchasedInsuranceCell)
         } else if(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.cruise != nil) {
-            self.requiredRowsArray.add(Constant.upComingTripDetailControllerReusableIdentifiers.transactionDetailsCell)
+            requiredRowsArray.append(Constant.upComingTripDetailControllerReusableIdentifiers.transactionDetailsCell)
+        }
         }
     }
     
     //***** Function to get dynamic rows for relinquishment. *****//
     func requiredRowsForRelinquishment() {
-        self.requiredRowsArrayRelinquishment.removeAllObjects()
-        if(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment?.deposit != nil) {
+        requiredRowsArrayRelinquishment.removeAll()
+        if Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment?.deposit != nil {
             if(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment?.deposit?.resort != nil) {
-                self.requiredRowsArrayRelinquishment.add(Constant.upComingTripDetailControllerReusableIdentifiers.resortCell)
+                requiredRowsArrayRelinquishment.append(Constant.upComingTripDetailControllerReusableIdentifiers.resortCell)
             }
             if(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment?.deposit?.unit != nil) {
-                self.requiredRowsArrayRelinquishment.add(Constant.upComingTripDetailControllerReusableIdentifiers.unitCell)
+                requiredRowsArrayRelinquishment.append(Constant.upComingTripDetailControllerReusableIdentifiers.unitCell)
             }
         }
-        if(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment?.clubPoints != nil) {
-            self.requiredRowsArrayRelinquishment.add(Constant.upComingTripDetailControllerReusableIdentifiers.clubCell)
+        if Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment?.clubPoints != nil {
+            requiredRowsArrayRelinquishment.append(Constant.upComingTripDetailControllerReusableIdentifiers.clubCell)
         }
-        if(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment?.pointsProgram != nil) {
-            self.requiredRowsArrayRelinquishment.add(Constant.upComingTripDetailControllerReusableIdentifiers.pointsProgramCell)
+        if Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment?.pointsProgram != nil {
+            requiredRowsArrayRelinquishment.append(Constant.upComingTripDetailControllerReusableIdentifiers.pointsProgramCell)
         }
-        if(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment?.accommodationCertificate != nil) {
-            self.requiredRowsArrayRelinquishment.add(Constant.upComingTripDetailControllerReusableIdentifiers.accomodationCell)
+        if Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment?.accommodationCertificate != nil {
+            requiredRowsArrayRelinquishment.append(Constant.upComingTripDetailControllerReusableIdentifiers.accomodationCell)
         }
     }
     
     //***** Action for left bar button item. *****//
     func menuBackButtonPressed(_ sender: UIBarButtonItem) {
-        if((self.navigationController?.viewControllers.count)! > 1) {
+        guard let controllersCount = navigationController?.viewControllers.count else { return }
+        if controllersCount > 1 {
             _ = self.navigationController?.popViewController(animated: true)
         } else {
-            let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.myUpcomingTripIpad, bundle: nil)
-            let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.revialViewController) as! SWRevealViewController
+            let mainStoryboard = UIStoryboard(name: Constant.storyboardNames.myUpcomingTripIpad, bundle: nil)
+            guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.revialViewController) as? SWRevealViewController else { return }
             
             //***** creating animation transition to show custom transition animation *****//
             let transition: CATransition = CATransition()
@@ -138,7 +128,7 @@ class UpComingTripDetailIPadViewController: UIViewController {
             Helper.resendConfirmationInfoForUpcomingTrip(viewcontroller: self)
         }
         actionSheetController.addAction(resendConfirmationAction)
-         //***** Present ActivityViewController for share options *****//
+        //***** Present ActivityViewController for share options *****//
         let shareAction: UIAlertAction = UIAlertAction(title: "Share", style: .default) { _ -> Void in
             Constant.MyClassConstants.whereTogoContentArray.removeAllObjects()
             Constant.MyClassConstants.realmStoredDestIdOrCodeArray.removeAllObjects()
@@ -165,8 +155,8 @@ class UpComingTripDetailIPadViewController: UIViewController {
             
             shareActivityViewController.popoverPresentationController?.sourceView = self.view
             shareActivityViewController.popoverPresentationController?.sourceRect = CGRect(x: self.view.bounds.size.width, y: 0, width: 100, height: 60)
-            shareActivityViewController.popoverPresentationController!.permittedArrowDirections = .up
-
+            shareActivityViewController.popoverPresentationController?.permittedArrowDirections = .up
+            
             self.present(shareActivityViewController, animated: false, completion: nil)
             
         }
@@ -184,20 +174,16 @@ class UpComingTripDetailIPadViewController: UIViewController {
         actionSheetController.addAction(cancelAction)
         actionSheetController.popoverPresentationController?.sourceView = self.view
         actionSheetController.popoverPresentationController?.sourceRect = CGRect(x: self.view.bounds.size.width, y: 0, width: 100, height: 60)
-        actionSheetController.popoverPresentationController!.permittedArrowDirections = .up
+        actionSheetController.popoverPresentationController?.permittedArrowDirections = .up
         
         //Present the AlertController
-        self.present(actionSheetController, animated: true, completion: nil)
+        present(actionSheetController, animated: true, completion: nil)
     }
     
     //***** Action for unit details toggle button *****//
     func toggleButtonPressed(_ sender: UIButton) {
-        if(isOpen == true) {
-            isOpen = false
-        } else {
-            isOpen = true
-        }
-        self.upcomingTripDetailTbleview.reloadSections(IndexSet(integer: 3), with: .automatic)
+        isOpen = !isOpen
+        upcomingTripDetailTbleview.reloadSections(IndexSet(integer: 3), with: .automatic)
     }
     
     override func didReceiveMemoryWarning() {
@@ -207,8 +193,8 @@ class UpComingTripDetailIPadViewController: UIViewController {
     
     func didPressMapDetailsButton() {
         guard let coordinates = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.resort?.coordinates else { return }
-        guard let resortName = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.resort!.resortName else { return }
-        guard let cityName = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.resort!.address?.cityName else { return }
+        guard let resortName = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.resort?.resortName else { return }
+        guard let cityName = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.resort?.address?.cityName else { return }
         showHudAsync()
         displayMapView(coordinates: coordinates, resortName: resortName, cityName: cityName, presentModal: true) { (_) in
             self.hideHudAsync()
@@ -217,13 +203,27 @@ class UpComingTripDetailIPadViewController: UIViewController {
     
     func didPressWeatherDetailsButton() {
         guard let resortCode = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.resort?.resortCode else { return }
-        guard let resortName = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.resort!.resortName else { return }
-        guard let countryCode = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.resort!.address?.countryCode else { return }
+        guard let resortName = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.resort?.resortName else { return }
+        guard let countryCode = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.resort?.address?.countryCode else { return }
         showHudAsync()
-        displayWeatherView(resortCode: resortCode, resortName: resortName, countryCode: countryCode, presentModal: true, completionHandler: { (_) in
-            self.hideHudAsync()
+        displayWeatherView(resortCode: resortCode, resortName: resortName, countryCode: countryCode, presentModal: true, completionHandler: { [weak self] _ in
+            guard let strongSelf = self else { return }
+            strongSelf.hideHudAsync()
         })
         
+    }
+    
+    // MARK: - Omniture Tracking
+    
+    func omnitureTrackingEvent74() {
+        let userInfo: [String: String] = [
+            Constant.omnitureEvars.eVar18: "",
+            //TODO (Jhon): error found in iPad with user bwilling
+            //            Constant.omnitureEvars.eVar18 : Constant.MyClassConstants.upcomingOriginationPoint,
+            Constant.omnitureEvars.eVar55: ""
+            
+        ]
+        ADBMobile.trackAction(Constant.omnitureEvents.event74, data: userInfo)
     }
 }
 
@@ -234,7 +234,7 @@ extension UpComingTripDetailIPadViewController: UITableViewDelegate {
     //***** UITableview delegate methods definition here *****//
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        switch (indexPath as NSIndexPath).section {
+        switch indexPath.section {
         case 0 :
             return 400
         case 1 :
@@ -242,7 +242,7 @@ extension UpComingTripDetailIPadViewController: UITableViewDelegate {
         case 2 :
             return 150
         case 3 :
-            if((indexPath as NSIndexPath).row == 0) {
+            if indexPath.row == 0 {
                 return 50
             } else {
                 return CGFloat(unitDetialsCellHeight + 20)
@@ -251,16 +251,12 @@ extension UpComingTripDetailIPadViewController: UITableViewDelegate {
             return 120
         case 5:
             return 120
+        case 6:
+            return 176
         case 7 :
             return 200
         default :
             return 40
-        }
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if(indexPath.section == 3) {
-            
         }
     }
     
@@ -273,257 +269,202 @@ extension UpComingTripDetailIPadViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         //***** Configuring prototype cell for UpComingtrip resort details *****//
-        if(indexPath.section == 0) {
-            let cell = tableView.dequeueReusableCell(withIdentifier: Constant.upComingTripDetailControllerReusableIdentifiers.upComingTripCell, for: indexPath) as! UpComingTripCell
-            if (Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.confirmationNumber != nil) {
-                cell.headerLabel.text = "Confirmation # \(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.confirmationNumber!)"
-            }
-            
-            if(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.confirmationNumber != nil) {
+        
+        switch indexPath.section {
+        case 0 :
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.upComingTripDetailControllerReusableIdentifiers.upComingTripCell, for: indexPath) as? UpComingTripCell else { return UITableViewCell() }
+            if let confirmationNumber = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.confirmationNumber,
+                let type = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.exchangeTransactionType {
+                let transactionType = ExchangeTransactionType.fromName(name: type).friendlyNameForUpcomingTrip()
+                
+                cell.setConfirmationAndType(with: confirmationNumber, tripType: transactionType)
                 
                 var resortImage = Image()
-                if(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.cruise != nil) {
-                    let resortImages = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.cruise?.images
-                    for largeResortImage in resortImages! {
-                        if(largeResortImage.size == Constant.MyClassConstants.imageSizeXL) {
+                if let cruise = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.cruise {
+                    for largeResortImage in cruise.images where largeResortImage.size == Constant.MyClassConstants.imageSizeXL {
                             resortImage = largeResortImage
-                        } else {
-                            resortImage = (resortImages?[0])!
-                        }
                     }
-                    
-                    cell.resortNameLabel.text = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.cruise?.shipName!
-                    cell.resortLocationLabel.text = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.cruise?.tripName!
-                    
+                    cell.resortNameLabel.text = cruise.shipName
+                    cell.resortLocationLabel.text = cruise.tripName
                 } else {
-                    let resortImages = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.resort?.images
-                    for largeResortImage in resortImages! {
-                        if(largeResortImage.size == Constant.MyClassConstants.imageSizeXL) {
-                            resortImage = largeResortImage
-                        } else {
-                            resortImage = (resortImages?[0])!
+                    if let resortImages = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.resort?.images {
+                        for largeResortImage in resortImages where largeResortImage.size == Constant.MyClassConstants.imageSizeXL {
+                                resortImage = largeResortImage
                         }
                     }
-                    
-                    cell.resortNameLabel.text = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.resort!.resortName
-                    cell.resortLocationLabel.text = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.resort!.address?.cityName!
-                    cell.resortCodeLabel.text = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.resort!.address?.countryCode!
-                    //cell.bedRoomKitechenType.text =  "\(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.unit!.unitSize!) \(Helper.getKitchenEnums(kitchenType: (Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.unit?.kitchenType)!))"
-                    
-                    //cell.sleepsTotalOrPrivate.text = "Sleeps \(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.unit!.publicSleepCapacity) total, \(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.unit!.privateSleepCapacity) Private"
-                    
-                    /*let checkInDate = Helper.convertStringToDate(dateString:Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.unit!.checkInDate!, format: Constant.MyClassConstants.dateFormat)
-                     
-                     let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
-                     let myComponents = (myCalendar as NSCalendar).components([.day,.weekday,.month,.year], from: checkInDate)
-                     
-                     
-                     let formatedCheckInDate = "\(Helper.getWeekdayFromInt(weekDayNumber: myComponents.weekday!)) \(Helper.getMonthnameFromInt(monthNumber: myComponents.month!)). \(myComponents.year!)"
-                     
-                     cell.checkInDateLabel.text = "\(myComponents.day!)"
-                     if(cell.checkInDateLabel.text?.characters.count == 1){
-                     cell.checkInDateLabel.text = "0\(myComponents.day!)"
-                     }
-                     cell.checkInMonthYearLabel.text = formatedCheckInDate
-                     
-                     let checkOutDate = Helper.convertStringToDate(dateString: Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.unit!.checkOutDate!, format: Constant.MyClassConstants.dateFormat1)
-                     
-                     let myComponents1 = (myCalendar as NSCalendar).components([.day,.weekday,.month,.year], from: checkOutDate)
-                     
-                     let formatedCheckOutDate = "\(Helper.getWeekdayFromInt(weekDayNumber: myComponents1.weekday!)) \(Helper.getMonthnameFromInt(monthNumber: myComponents1.month!)). \(myComponents1.year!)"
-                     cell.checkOutDateLabel.text = "\(myComponents1.day!)"
-                     if(cell.checkOutDateLabel.text?.characters.count == 1){
-                     cell.checkOutDateLabel.text = "0\(myComponents1.day!)"
-                     }
-                     cell.checkOutMonthYearLabel.text = formatedCheckOutDate*/
+                    cell.resortNameLabel.text = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.resort?.resortName ?? ""
+                    cell.resortLocationLabel.text = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.resort?.address?.cityName ?? ""
+                    cell.resortCodeLabel.text = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.resort?.address?.countryCode ?? ""
+
                 }
-                cell.resortImageView.setImageWith(URL(string: resortImage.url!), completed: { (image:UIImage?, error:Error?, _:SDImageCacheType, _:URL?) in
-                    if (error != nil) {
-                        cell.resortImageView.image = UIImage(named: Constant.MyClassConstants.noImage)
-                    }
-                }, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
                 
-                //cell.transactionType.text = ExchangeTransactionType.fromName(name: Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.exchangeTransactionType!).friendlyNameForUpcomingTrip()
+                if let url = resortImage.url {
+                    cell.resortImageView.setImageWith(URL(string: url), completed: { (image:UIImage?, error:Error?, _:SDImageCacheType, _:URL?) in
+                        if case .some = error {
+                            cell.resortImageView.image = #imageLiteral(resourceName: "NoImageIcon")
+                        }
+                    }, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
+                } else {
+                    cell.resortImageView.image = #imageLiteral(resourceName: "NoImageIcon")
+                }
             }
             cell.selectionStyle = UITableViewCellSelectionStyle.none
             cell.backgroundColor = UIColor.clear
             cell.resortNameBaseView.backgroundColor = UIColor.clear
             cell.resortNameBaseView.frame = CGRect(x: 100, y: 0, width: cell.frame.width - 200, height: 100)
             
-            for layer in cell.resortNameBaseView.layer.sublayers! {
-                if(layer.isKind(of: CAGradientLayer.self)) {
-                    layer.removeFromSuperlayer()
+            if let subViewsResortNameBaseView = cell.resortNameBaseView.layer.sublayers {
+                for layer in subViewsResortNameBaseView {
+                    if layer.isKind(of: CAGradientLayer.self) {
+                        layer.removeFromSuperlayer()
+                    }
                 }
             }
+            
             Helper.addLinearGradientToView(view: cell.resortNameBaseView, colour: UIColor.white, transparntToOpaque: true, vertical: false)
             
             cell.showMapDetailButton.addTarget(self, action: #selector(UpComingTripDetailIPadViewController.didPressMapDetailsButton), for: .touchUpInside)
             cell.showWeatherDetailButton.addTarget(self, action: #selector(UpComingTripDetailIPadViewController.didPressWeatherDetailsButton), for: .touchUpInside)
             
             return cell
-        } else if((indexPath as NSIndexPath).section == 1) {
+        case 1 :
             
             //***** configuring prototype cell for unit details with dynamic button to shwo unit details *****//
             
             guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.dateCell, for: indexPath) as? UpComingTripCell else { return UITableViewCell() }
             
-            let checkInDate = Helper.convertStringToDate(dateString: Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.unit?.checkInDate  ?? "", format: Constant.MyClassConstants.dateFormat)
-            
-            let myCalendar = Calendar.current
-            let myComponents = myCalendar.dateComponents([.day, .weekday, .month, .year], from: checkInDate)
-            
-            let formatedCheckInDate = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month!)). \(myComponents.year!)"
-            
-            cell.checkInDateLabel.text = "\(myComponents.day ?? 0)".localized()
-            if(cell.checkInDateLabel.text?.characters.count == 1) {
-                cell.checkInDateLabel.text = "0\(myComponents.day ?? 0)"
-            }
-            cell.inDateHeading.text = "\(Helper.getWeekdayFromInt(weekDayNumber: myComponents.weekday ?? 0))"
-            cell.checkInMonthYearLabel.text = formatedCheckInDate
-            
-            let checkOutDate = Helper.convertStringToDate(dateString: Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.unit?.checkOutDate ?? "", format: Constant.MyClassConstants.dateFormat)
-            
-            let myComponents1 = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: checkOutDate)
-            
-            let formatedCheckOutDate = "\(Helper.getMonthnameFromInt(monthNumber: myComponents1.month!)). \(myComponents1.year!)"
-            cell.checkOutDateLabel.text = "\(myComponents1.day!)"
-            if(cell.checkOutDateLabel.text?.characters.count == 1) {
-                cell.checkOutDateLabel.text = "0\(myComponents1.day!)"
-            }
-            cell.outDateHeading.text = "\(Helper.getWeekdayFromInt(weekDayNumber: myComponents1.weekday!))"
-            cell.checkOutMonthYearLabel.text = formatedCheckOutDate
-            
-            return cell
-            
-        } else if((indexPath as NSIndexPath).section == 2) {
-            
-            let cell = tableView.dequeueReusableCell(withIdentifier: "UnitCell", for: indexPath) as! UpComingTripCell
-            
-            cell.backgroundColor = IUIKColorPalette.contentBackground.color
-            
-            if(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.cruise != nil) {
-            } else {
-                if let unitsize = UnitSize.fromFriendlyName(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.unit!.unitSize!) {    
-                    cell.bedRoomKitechenType.text =  "\(unitsize) \(Helper.getKitchenEnums(kitchenType: (Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.unit?.kitchenType)!))"
+            if let destination = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination {
+                
+                if let cruise = destination.cruise {
+                    cell.setDateDetails(with: cruise.cabin?.sailingDate ?? "", checkOutDate: cruise.cabin?.returnDate ?? "")
+                } else {
+                    cell.setDateDetails(with: destination.unit?.checkInDate ?? "", checkOutDate: destination.unit?.checkOutDate ?? "")
                 }
                 
-                cell.sleepsTotalOrPrivate.text = "Sleeps \(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.unit!.publicSleepCapacity) total, \(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.unit!.privateSleepCapacity) Private"
             }
             return cell
-        } else if((indexPath as NSIndexPath).section == 3) {
-            if(indexPath.row == 0) {
-                let cell = tableView.dequeueReusableCell(withIdentifier: Constant.upComingTripDetailControllerReusableIdentifiers.unitDetailCell, for: indexPath) as! UnitDetailCell
-                
+            
+        case 2 :
+            
+            if let cruise = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.cruise {
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.upComingTripDetailControllerReusableIdentifiers.transactionDetailsCell, for: indexPath) as? TransactionDetailsTableViewCell else { return UITableViewCell() }
+                if let transactionDetails = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.cruise?.cabin {
+                    cell.setTransactionDetails(with: transactionDetails)
+                }
+                return cell
+            } else {
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: "UnitCell", for: indexPath) as? UpComingTripCell else { return UITableViewCell() }
+                if let unitSize = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.unit?.unitSize,
+                let kitchenType = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.unit?.kitchenType,
+                let totalSleeps = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.unit?.publicSleepCapacity,
+                let privateSleeps = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.unit?.privateSleepCapacity {
+                let unit = (Helper.getBedroomNumbers(bedroomType: unitSize))
+                let kitchen = Helper.getKitchenEnums(kitchenType: kitchenType)
+                cell.bedRoomKitechenType.text =  "\(unit) \(kitchen)"
+                cell.sleepsTotalOrPrivate.text = "Sleeps \(totalSleeps) total, \(privateSleeps) Private"
+              
+            }
+                 return cell
+            }
+            
+            case 3 :
+            if indexPath.row == 0 {
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.upComingTripDetailControllerReusableIdentifiers.unitDetailCell, for: indexPath) as? UnitDetailCell else { return UITableViewCell() }
+
                 cell.backgroundColor = IUIKColorPalette.contentBackground.color
                 cell.toggleButton.addTarget(self, action: #selector(UpComingTripDetailIPadViewController.toggleButtonPressed(_:)), for: .touchUpInside)
                 return cell
             } else {
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.amenitiesCell, for: indexPath)
                 
-                if(self.detailsView == nil) {
+                if self.detailsView == nil {
                     cell.addSubview(self.getDetails())
                 }
                 return cell
             }
             
-        } else if ((indexPath as NSIndexPath).section == 4) {
+            case 4 :
             
-            if(self.requiredRowsArrayRelinquishment[indexPath.row] as! String == Constant.upComingTripDetailControllerReusableIdentifiers.resortCell) {
-                let cell = tableView.dequeueReusableCell(withIdentifier: Constant.upComingTripDetailControllerReusableIdentifiers.resortCell, for: indexPath) as! UpComingTripCell
-                cell.resortNameLabel.text = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment!.deposit!.resort!.resortName
-                cell.resortLocationLabel.text = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment!.deposit?.resort!.address!.cityName
-                cell.resortCodeLabel.text = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment!.deposit?.resort!.address!.territoryCode
-                
+            if requiredRowsArrayRelinquishment[indexPath.row] == Constant.upComingTripDetailControllerReusableIdentifiers.resortCell {
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.upComingTripDetailControllerReusableIdentifiers.resortCell, for: indexPath) as? UpComingTripCell else { return UITableViewCell() }
                 cell.backgroundColor = IUIKColorPalette.contentBackground.color
-                return cell
-            } else if(self.requiredRowsArrayRelinquishment[indexPath.row] as! String == Constant.upComingTripDetailControllerReusableIdentifiers.unitCell) {
                 
-                let cell = tableView.dequeueReusableCell(withIdentifier: Constant.upComingTripDetailControllerReusableIdentifiers.unitCell, for: indexPath) as! UpComingTripCell
-                let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
-                let checkInDate = Helper.convertStringToDate(dateString: Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment!.deposit!.checkInDate!, format: Constant.MyClassConstants.dateFormat)
-                
-                let myComponents1 = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: checkInDate)
-                cell.checkInDateLabel.text = "\(myComponents1.day!)"
-                if(cell.checkInDateLabel.text?.characters.count == 1) {
-                    cell.checkInDateLabel.text = "0\(myComponents1.day!)"
+                if let resortName = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment?.deposit?.resort?.resortName {
+                    cell.resortNameLabel.text = resortName
                 }
-                cell.checkInDateLabel.text = "\(Helper.getMonthnameFromInt(monthNumber: myComponents1.month!)) \(cell.checkInDateLabel.text!)"
                 
-                cell.checkInMonthYearLabel.text = String(describing: Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment!.deposit!.relinquishmentYear!)
+                guard let address = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment?.deposit?.resort?.address else { return cell }
+                cell.resortLocationLabel.text = address.cityName
+                cell.resortCodeLabel.text = address.territoryCode
                 
-                cell.resortFixedWeekLabel.text = Constant.getWeekNumber(weekType: Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment!.deposit!.weekNumber!)
-                
-                cell.bedRoomKitechenType.text =  "\(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment!.deposit!.unit!.unitSize!) \(Helper.getKitchenEnums(kitchenType: (Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment!.deposit!.unit!.kitchenType)!))"
-                
-                cell.sleepsTotalOrPrivate.text = "Sleeps \(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment!.deposit!.unit!.publicSleepCapacity) total, \(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment!.deposit!.unit!.privateSleepCapacity) Private"
                 return cell
-            } else if(self.requiredRowsArrayRelinquishment[indexPath.row] as! String == Constant.upComingTripDetailControllerReusableIdentifiers.pointsProgramCell) {
+            } else if requiredRowsArrayRelinquishment[indexPath.row] == Constant.upComingTripDetailControllerReusableIdentifiers.unitCell {
                 
-                let cell = tableView.dequeueReusableCell(withIdentifier: Constant.availablePointToolViewController.availablePointCell, for: indexPath) as! AvailablePointCell
-                cell.availablePointValueLabel.text = "\(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment!.pointsProgram!.pointsSpent!)"
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.upComingTripDetailControllerReusableIdentifiers.unitCell, for: indexPath) as? UpComingTripCell else { return UITableViewCell() }
+                if let deposits = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment?.deposit {
+                    cell.setDepositInformation(with: deposits)
+                }
+                return cell
+            } else if requiredRowsArrayRelinquishment[indexPath.row] == Constant.upComingTripDetailControllerReusableIdentifiers.pointsProgramCell {
+                
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.availablePointToolViewController.availablePointCell, for: indexPath) as? AvailablePointCell else { return UITableViewCell() }
+                
+                cell.availablePointValueLabel.text = "\(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment?.pointsProgram?.pointsSpent ?? 0)"
                 return cell
             } else {
                 
-                let cell = tableView.dequeueReusableCell(withIdentifier: Constant.upComingTripDetailControllerReusableIdentifiers.customTableViewCell, for: indexPath) as! CustomTableViewCell
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.upComingTripDetailControllerReusableIdentifiers.customTableViewCell, for: indexPath) as? CustomTableViewCell else { return UITableViewCell() }
                 
                 return cell
                 
             }
-        } else if ((indexPath as NSIndexPath).section == 5) {
-            if(self.requiredRowsArray[indexPath.row] as! String == Constant.upComingTripDetailControllerReusableIdentifiers.guestCertificateCell) {
-                let cell = tableView.dequeueReusableCell(withIdentifier: "GuestCertificate", for: indexPath) as! UpComingTripCell
-                cell.resortNameLabel.text = "\(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.ancillaryProducts!.guestCertificate!.guest!.firstName!) \(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.ancillaryProducts!.guestCertificate!.guest!.lastName!)"
-                return cell
-            } else if(self.requiredRowsArray[indexPath.row] as! String == Constant.upComingTripDetailControllerReusableIdentifiers.insuranceCell) {
-                
-                let cell = tableView.dequeueReusableCell(withIdentifier: Constant.upComingTripDetailControllerReusableIdentifiers.insuranceCell, for: indexPath) as! EPlusTableViewCell
-                
-                return cell
-            } else if(self.requiredRowsArray[indexPath.row] as! String == Constant.upComingTripDetailControllerReusableIdentifiers.modifyInsuranceCell) {
-                
-                let cell = tableView.dequeueReusableCell(withIdentifier: Constant.upComingTripDetailControllerReusableIdentifiers.modifyInsuranceCell, for: indexPath) as! CustomTableViewCell
-                
-                return cell
-            } else if(self.requiredRowsArray[indexPath.row] as! String == Constant.upComingTripDetailControllerReusableIdentifiers.transactionDetailsCell) {
-                let cell = tableView.dequeueReusableCell(withIdentifier: Constant.upComingTripDetailControllerReusableIdentifiers.transactionDetailsCell, for: indexPath) as! TransactionDetailsTableViewCell
-                cell.travellingWithLabel.text = "\(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.cruise!.cabin!.travelParty!.adults) Adults"
-                if((Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.cruise!.cabin!.travelParty!.children) > 0) {
-                    cell.travellingWithLabel.text = "\(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.cruise!.cabin!.travelParty!.adults) Adults, \(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.cruise!.cabin!.travelParty!.children) Children "
+            case 5 :
+            if requiredRowsArray[indexPath.row] == Constant.upComingTripDetailControllerReusableIdentifiers.guestCertificateCell {
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: "GuestCertificate", for: indexPath) as? UpComingTripCell else { return UITableViewCell() }
+                if let guestInfo = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.ancillaryProducts?.guestCertificate?.guest {
+                    cell.setGuestDetails(with: guestInfo)
                 }
-                cell.cabinNumber.text = "\(String(describing: Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.cruise!.cabin!.number))!"
-                cell.cabinDetails.text = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.cruise!.cabin!.details!
-                cell.transactionDate.text = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.transactionDate!
+                return cell
+            } else if requiredRowsArray[indexPath.row] == Constant.upComingTripDetailControllerReusableIdentifiers.insuranceCell {
                 
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.upComingTripDetailControllerReusableIdentifiers.insuranceCell, for: indexPath) as? EPlusTableViewCell else { return UITableViewCell() }
+                
+                return cell
+            } else if requiredRowsArray[indexPath.row] == Constant.upComingTripDetailControllerReusableIdentifiers.modifyInsuranceCell {
+                
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.upComingTripDetailControllerReusableIdentifiers.modifyInsuranceCell, for: indexPath) as? CustomTableViewCell else { return UITableViewCell() }
+                
+                return cell
+            } else if requiredRowsArray[indexPath.row] == Constant.upComingTripDetailControllerReusableIdentifiers.transactionDetailsCell {
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.upComingTripDetailControllerReusableIdentifiers.transactionDetailsCell, for: indexPath) as? TransactionDetailsTableViewCell else { return UITableViewCell() }
+                if let transactionDetails = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.cruise?.cabin {
+                    cell.setTransactionDetails(with: transactionDetails)
+                }
                 return cell
                 
             } else {
                 
-                let cell = tableView.dequeueReusableCell(withIdentifier: Constant.upComingTripDetailControllerReusableIdentifiers.customTableViewCell, for: indexPath) as! CustomTableViewCell
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.upComingTripDetailControllerReusableIdentifiers.customTableViewCell, for: indexPath) as? CustomTableViewCell else { return UITableViewCell() }
                 
                 return cell
                 
             }
-        } else if(indexPath.section == 6) {
-            let cell = tableView.dequeueReusableCell(withIdentifier: Constant.upComingTripDetailControllerReusableIdentifiers.paymentDetailCell, for: indexPath) as! PaymentCell
-            cell.depositLabel.text = "$\(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.payment!.depositAmount!.amount)"
-            cell.balanceDueLabel.text = "$\(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.payment!.balanceDueAmount!.amount)"
-            cell.balanceDueDateLabel.text = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.payment!.balanceDueDate!
+            case 6 :
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.upComingTripDetailControllerReusableIdentifiers.paymentDetailCell, for: indexPath) as? PaymentCell else { return UITableViewCell() }
+            if let paymentInfo = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.payment {
+                cell.setPayment(with: paymentInfo)
+            }
             return cell
-        } else if(indexPath.section == 7) {
-            let cell = tableView.dequeueReusableCell(withIdentifier: Constant.upComingTripDetailControllerReusableIdentifiers.policyCell, for: indexPath) as! PolicyCell
-            let showPolicyButton: Bool? = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.ancillaryProducts?.eplus?.purchased
-            if let showPolicyButton = showPolicyButton, showPolicyButton {
-                // Executes when booleanValue is true
-                cell.purchasePolicyButton.isHidden = false
-            } else {
-                cell.purchasePolicyButton.isHidden = true
-            }
+            case 7 :
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.upComingTripDetailControllerReusableIdentifiers.policyCell, for: indexPath) as? PolicyCell else { return UITableViewCell() }
+                if let showPolicyButton = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.ancillaryProducts?.eplus?.purchased {
+                    cell.purchasePolicyButton.isHidden = !showPolicyButton
+                }
             cell.backgroundColor = IUIKColorPalette.contentBackground.color
             return cell
-        } else {
+        default :
             let cell = tableView.dequeueReusableCell(withIdentifier: Constant.upComingTripDetailControllerReusableIdentifiers.bottomCell, for: indexPath)
             return cell
-            
         }
     }
     
@@ -540,7 +481,7 @@ extension UpComingTripDetailIPadViewController: UITableViewDataSource {
         headerView.addSubview(leftView)
         headerView.addSubview(rightView)
         
-        if(section == 4) {
+        if section == 4 {
             
             headerView.backgroundColor = IUIKColorPalette.tertiary1.color
             headerTextLabel.text = Constant.MyClassConstants.relinquishment
@@ -558,37 +499,31 @@ extension UpComingTripDetailIPadViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        
-        if(section == 5) {
-            
-            if( self.requiredRowsArray.count > 0) {
-                
+        switch section {
+        case 4 :
+            if !requiredRowsArrayRelinquishment.isEmpty {
                 return 50
             } else {
-                
                 return 0
             }
-        } else if(section == 4) {
-            
-            if(requiredRowsArrayRelinquishment.count > 0) {
-                
+        case 5 :
+            if !requiredRowsArray.isEmpty {
                 return 50
             } else {
-                
                 return 0
             }
-        } else {
+        default :
             return 0
         }
     }
     
     func getDetails() -> UIView {
-        let unitDetils = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.unit
-        self.unitDetialsCellHeight = 20
+        guard let unitDetails = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.unit else { return UIView() }
+        unitDetialsCellHeight = 20
         
         //sort array to show in this order: Sleeping, Bathroom, Kitchen and Other
         var sortedArrayAmenities = [InventoryUnitAmenity]()
-        for am in unitDetils!.amenities {
+        for am in unitDetails.amenities {
             if am.category == "OTHER_FACILITIES" {
                 sortedArrayAmenities.insert(am, at: 0)
             } else if am.category == "BATHROOM_FACILITIES" {
@@ -601,11 +536,12 @@ extension UpComingTripDetailIPadViewController: UITableViewDataSource {
         }
         
         self.detailsView = UIView()
-        for amunities in sortedArrayAmenities {
+        for aminities in sortedArrayAmenities {
             
             let sectionLabel = UILabel(frame: CGRect(x: 120, y: Int(unitDetialsCellHeight), width: Int(self.view.frame.width - 20), height: 20))
-            
-            sectionLabel.text = Helper.getMappedStringForDetailedHeaderSection(sectonHeader: amunities.category!)
+            if let amenityCategory = aminities.category {
+                sectionLabel.text = Helper.getMappedStringForDetailedHeaderSection(sectonHeader: amenityCategory)
+            }
             sectionLabel.font = UIFont(name: Constant.fontName.helveticaNeue, size: 14.0)
             sectionLabel.textColor = UIColor.lightGray
             
@@ -613,16 +549,18 @@ extension UpComingTripDetailIPadViewController: UITableViewDataSource {
             
             self.unitDetialsCellHeight = unitDetialsCellHeight + 25
             
-            for details in amunities.details {
+            for details in aminities.details {
                 
                 let detailSectionLabel = UILabel(frame: CGRect(x: 120, y: Int(unitDetialsCellHeight), width: Int(self.view.frame.width - 20), height: 20))
-                detailSectionLabel.text = details.section!.capitalized
+                detailSectionLabel.text = details.section?.capitalized
                 detailSectionLabel.font = UIFont(name: Constant.fontName.helveticaNeueBold, size: 16.0)
                 detailSectionLabel.sizeToFit()
                 
                 self.detailsView?.addSubview(detailSectionLabel)
-                if((detailSectionLabel.text?.characters.count)! > 0) {
-                    self.unitDetialsCellHeight = self.unitDetialsCellHeight + 20
+                if let detailText = detailSectionLabel.text {
+                    if !detailText.isEmpty {
+                        self.unitDetialsCellHeight = self.unitDetialsCellHeight + 20
+                    }
                 }
                 
                 for desc in details.descriptions {
@@ -646,7 +584,7 @@ extension UpComingTripDetailIPadViewController: UITableViewDataSource {
         }
         detailsView?.frame = CGRect(x: 0, y: 20, width: Int(self.view.frame.size.width), height: self.unitDetialsCellHeight)
         
-        return self.detailsView!
+        return self.detailsView ?? UIView()
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -658,49 +596,38 @@ extension UpComingTripDetailIPadViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         //***** Return number of rows in section required in tableview *****//
+        
+        guard Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.confirmationNumber != nil else { return 0 }
         switch section {
             
         case 0:
-            if(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.confirmationNumber != nil) {
-                return 1
-            } else {
-                return 0
-            }
+            return 1
             
         case 1:
-            if(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.confirmationNumber != nil) {
-                return 1
-            } else {
-                return 0
-            }
-        case 2:
-            if(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.confirmationNumber != nil) {
-                return 1
-            } else {
-                return 0
-            }
-        case 3:
-            /*let cruiseInfo: String? = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.cruise?.shipName
-             guard let cruiseDetail = cruiseInfo, !cruiseDetail.isEmpty else {
-             return 0
-             }*/
+            return 1
             
-            if(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.cruise != nil) {
-                let cruiseInfo: String? = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.cruise?.shipName
-                guard let cruiseDetail = cruiseInfo, !cruiseDetail.isEmpty else {
+        case 2:
+            return 1
+            
+        case 3:
+         if let cruiseInfo = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.cruise {
+                guard let cruiseDetail = cruiseInfo.shipName, !cruiseDetail.isEmpty else {
                     return 0
                 }
                 
-                let unitDetils = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.unit?.amenities
-                if((unitDetils?.count)! > 0) {
-                    return 1
+                if let unitDetails = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.unit?.amenities {
+                    if !unitDetails.isEmpty {
+                        return 1
+                    } else {
+                        return 0
+                    }
                 } else {
                     return 0
                 }
                 
             } else {
-                if let unitDetils = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.unit?.amenities {
-                    if(isOpen) {
+            if Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.unit?.amenities != nil {
+                    if isOpen {
                         return 2
                     } else {
                         return 1
@@ -710,11 +637,11 @@ extension UpComingTripDetailIPadViewController: UITableViewDataSource {
                 }
             }
         case 4:
-            return self.requiredRowsArrayRelinquishment.count
+            return requiredRowsArrayRelinquishment.count
         case 5:
-            return self.requiredRowsArray.count
+            return requiredRowsArray.count
         case 6:
-            if(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.payment != nil) {
+            if Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.payment != nil {
                 return 1
             } else {
                 return 0
@@ -726,54 +653,10 @@ extension UpComingTripDetailIPadViewController: UITableViewDataSource {
         default:
             return 0
         }
-        
-        //return 1
     }
 }
 
 extension UpComingTripDetailIPadViewController: MFMessageComposeViewControllerDelegate {
-    
-    func formatMessageforComposer() -> String {
-        //format message to be sent for text and Email
-        var message = ""
-        var location = ""
-        //confirmation Number
-        if let confirmationNum = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.confirmationNumber {
-            message.append("Confirmation #: \(confirmationNum)\n")
-        }
-        //transaction Type
-        let transactionType = ExchangeTransactionType.fromName(name: Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.exchangeTransactionType!).friendlyNameForUpcomingTrip()
-        message.append("TransactionType: \(transactionType)\n")
-        //Resort Name
-        if let name = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.resort!.resortName {
-            message.append("Resort: \(name)\n")
-        }
-        //city Name
-        if let cityName = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.resort!.address!.cityName {
-            location = "\(cityName), "
-        }
-        //Country Code
-        if let countryCode = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.resort!.address!.countryCode {
-            location.append("\(countryCode)")
-        }
-        message.append("Location: \(location)\n")
-        
-        //format checkIn Date
-        let checkInDate = Helper.convertStringToDate(dateString: Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.unit!.checkInDate!, format: Constant.MyClassConstants.dateFormat)
-        let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
-        let myComponents = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: checkInDate)
-        let formatedCheckInDate = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month!))/\(myComponents.day!)/\(myComponents.year!)"
-        
-        message.append("CheckIn: \(formatedCheckInDate)\n")
-        
-        //format CheckOut Date
-        let checkOutDate = Helper.convertStringToDate(dateString: Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.unit!.checkOutDate!, format: Constant.MyClassConstants.dateFormat)
-        let myComponents1 = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: checkOutDate)
-        let formatedCheckOutDate = "\(Helper.getMonthnameFromInt(monthNumber: myComponents1.month!))/\(myComponents1.day!)/\(myComponents1.year!)"
-        message.append("CheckOut: \(formatedCheckOutDate)\n")
-        
-        return message
-    }
     
     func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult) {
         //display alert message if message fails to be sent.

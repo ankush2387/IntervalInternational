@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import DarwinSDK
 
 class PaymentCell: UITableViewCell {
     
@@ -14,15 +15,15 @@ class PaymentCell: UITableViewCell {
     @IBOutlet weak var balanceDueLabel: UILabel!
     @IBOutlet weak var balanceDueDateLabel: UILabel!
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
-    
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-        
-        // Configure the view for the selected state
+    func setPayment(with paymentInfo: CruiseSupplementalPayment) {
+        if let depositAmount = paymentInfo.depositAmount,
+            let balanceDueAmount = paymentInfo.balanceDueAmount,
+            let balanceDueDate = paymentInfo.balanceDueDate,
+            let currencyCode = depositAmount.currencyCode {
+            depositLabel.text = "\(currencyCode) \(depositAmount.amount)"
+            balanceDueLabel.text = "\(currencyCode) \(balanceDueAmount.amount)"
+            balanceDueDateLabel.text = balanceDueDate
+        }
     }
     
 }
