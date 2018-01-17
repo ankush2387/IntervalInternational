@@ -8,17 +8,18 @@
 import Bond
 
 open class SimpleLabelTextLabelTextCellViewModel {
-
+    
     // From SimpleViewModelProtocol
     open var isEditing = Observable(false)
-
+    
     open var label1:Observable<String?>
     open var value1:Observable<String?>
     open var label2:Observable<String?>
     open var value2:Observable<String?>
     open var value1LengthValidator: TextValidator?
     open var value2LengthValidator: TextValidator?
-
+    open var cellHeight: Observable<CGFloat> = Observable(60)
+    
     public init(label1: String?, value1: String?, label2: String?, value2: String?) {
         self.label1 = Observable(label1)
         self.value1 = Observable(value1)
@@ -32,4 +33,3 @@ extension SimpleLabelTextLabelTextCellViewModel : SimpleCellViewModel {
         return .labelTextLabelText
     }
 }
-

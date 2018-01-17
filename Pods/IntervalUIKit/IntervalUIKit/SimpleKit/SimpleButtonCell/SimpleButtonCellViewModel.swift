@@ -10,11 +10,12 @@ import Foundation
 import Bond
 
 open class SimpleButtonCellViewModel {
-
+    
     // From SimpleViewModelProtocol
     open var isEditing: Observable<Bool>
     open var buttonCellTitle: Observable<String?>
-
+    open var cellHeight: Observable<CGFloat> = Observable(60)
+    
     public init(buttonCellTitle: String?, isEditing: Bool = true) {
         self.buttonCellTitle = Observable(buttonCellTitle)
         self.isEditing = Observable(isEditing)

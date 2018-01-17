@@ -9,28 +9,30 @@ import Bond
 import Foundation
 
 open class SimpleLabelTextFieldLabelTextFieldButtonButtonCellViewModel {
-
+    
     open var isEditing = Observable(true)
-
+    
     open var label1:Observable<String?>
     open var label2:Observable<String?>
-
+    
     open var button1Title: Observable<String?>
     open var button2Title: Observable<String?>
-
+    
     open var textFieldValue1: Observable<String?>
     open var textFieldValue2: Observable<String?>
-
+    
     // The placeholder text assigned to the textfield
-
+    
     open var placeholderText1: String?
     open var placeholderText2: String?
-
+    
+    open var cellHeight: Observable<CGFloat> = Observable(180)
+    
     // To allow optional configuration of keyboard types.
-
+    
     open var keyboardType1: UIKeyboardType?
     open var keyboardType2: UIKeyboardType?
-
+    
     public init(label1: String? = nil,
                 textFieldValue1: String? = nil,
                 placeholderText1: String? = nil,
@@ -41,7 +43,7 @@ open class SimpleLabelTextFieldLabelTextFieldButtonButtonCellViewModel {
                 button2Title: String? = nil,
                 keyboardType1: UIKeyboardType? = nil,
                 keyboardType2: UIKeyboardType? = nil) {
-
+        
         self.button1Title = Observable(button1Title)
         self.button2Title = Observable(button2Title)
         self.label1 = Observable(label1)
@@ -56,7 +58,7 @@ open class SimpleLabelTextFieldLabelTextFieldButtonButtonCellViewModel {
 }
 
 extension SimpleLabelTextFieldLabelTextFieldButtonButtonCellViewModel : SimpleCellViewModel {
-
+    
     public func modelType() -> SimpleViewModelType {
         return .labelTextFieldLabelTextFieldButtonButton
     }

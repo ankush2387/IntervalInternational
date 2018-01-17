@@ -13,6 +13,9 @@ public protocol SimpleCellViewModel {
     /// Indicates that this should be in an "editable" state whatever that is
     var isEditing: Observable<Bool> { get set }
     
+    /// Indicates that this is the viewModel of a cell who's height can vary
+    var cellHeight: Observable<CGFloat> { get set }
+    
     /// Can be used by clients to bind a concrete instance to something like a tableview cell
     func modelType() -> SimpleViewModelType
 }
@@ -24,10 +27,16 @@ public enum SimpleViewModelType {
     case buttonCell
     case labelTextLabelText
     case textField
+    case simpleSeperatorCellViewModel
+    case ownershipTableViewCellViewModel
+    case availableRelinquishmentPointsCellViewModel
     case labelTextFieldLabelTextFieldButtonButton
     
     // Careful all future additions must be kept in sync with the enumeration!
-    static let allValues = [labelSwitch, labelLabel, buttonCell, labelTextLabelText, textField, labelTextFieldLabelTextFieldButtonButton]
+    static let allValues = [labelSwitch, labelLabel, buttonCell, labelTextLabelText,
+                            textField, simpleSeperatorCellViewModel, ownershipTableViewCellViewModel, availableRelinquishmentPointsCellViewModel,
+                            labelTextFieldLabelTextFieldButtonButton]
+    
     
     func defaultReuseIdentifier() -> String {
         switch self {
@@ -47,6 +56,15 @@ public enum SimpleViewModelType {
         case .textField:
             return String(describing: SimpleTextFieldCell.self)
             
+        case .simpleSeperatorCellViewModel:
+            return String(describing: SimpleSeperatorCell.self)
+            
+        case .ownershipTableViewCellViewModel:
+            return String(describing: OwnershipTableViewCell.self)
+            
+        case .availableRelinquishmentPointsCellViewModel:
+            return String(describing: AvailableRelinquishmentPointsCell.self)
+            
         case .labelTextFieldLabelTextFieldButtonButton:
             return String(describing: SimpleLabelTextFieldLabelTextFieldButtonButtonCell.self)
         }
@@ -56,4 +74,3 @@ public enum SimpleViewModelType {
         return defaultReuseIdentifier()
     }
 }
-

@@ -61,10 +61,10 @@ open class SimpleLabelTextFieldLabelTextFieldButtonButtonCell: SimpleTableViewCe
                 viewModel.isEditing
                     .observeNext { [weak self] editing in
                         self?.textField1.isEnabled = editing
-                        self?.textField1.textColor = !editing ? UIColor(red: 146.0/255.0, green: 146.0/255.0, blue: 146.0/255.0, alpha: 1) : IntervalThemeFactory.deviceTheme.secondaryTextColor
+                        self?.textField1.textColor = !editing ? UIColor(red: 146.0/255.0, green: 146.0/255.0, blue: 146.0/255.0, alpha: 1) : IntervalThemeFactory.deviceTheme.textColorGray
 
                         self?.textField2.isEnabled = editing
-                        self?.textField2.textColor = !editing ? UIColor(red: 146.0/255.0, green: 146.0/255.0, blue: 146.0/255.0, alpha: 1) : IntervalThemeFactory.deviceTheme.secondaryTextColor
+                        self?.textField2.textColor = !editing ? UIColor(red: 146.0/255.0, green: 146.0/255.0, blue: 146.0/255.0, alpha: 1) : IntervalThemeFactory.deviceTheme.textColorGray
                     }
                     .dispose(in: onReuseBag)
             }
