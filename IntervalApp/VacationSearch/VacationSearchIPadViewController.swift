@@ -321,7 +321,6 @@ class VacationSearchIPadViewController: UIViewController, UITableViewDelegate, U
                 cell.whoIsTravellingHeaderLabel.backgroundColor = IUIKColorPalette.titleBackdrop.color
                 cell.selectionStyle = .none
 
-               
                 let myComponents = Calendar.current.dateComponents([.day, .weekday, .month, .year], from: Constant.MyClassConstants.vacationSearchShowDate)
                 cell.dayName.text = "\(Helper.getWeekdayFromInt(weekDayNumber: myComponents.weekday ?? 0))".localized()
                 cell.dayDate.text = "\(myComponents.day ?? 0)".localized()
@@ -343,7 +342,7 @@ class VacationSearchIPadViewController: UIViewController, UITableViewDelegate, U
             case 0:
                 return 170
             case 1:
-                if segmentTitle == "Search Both" || segmentTitle == "Exchange" {
+                if segmentTitle == "Search ALL" || segmentTitle == "Exchange" {
                     return 170
                 } else {
                     return 0
@@ -869,16 +868,7 @@ extension VacationSearchIPadViewController: SearchTableViewCellDelegate {
                             Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                             
                             // Check not available checkIn dates for the active interval
-                            if activeInterval.fetchedBefore && !activeInterval.hasCheckInDates() {
-                                self.hideHudAsync()
-                                Helper.showNotAvailabilityResults()
-                            } else {
-                                Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
-                                let initialSearchCheckInDate = Helper.convertStringToDate(dateString: Constant.MyClassConstants.initialVacationSearch.searchCheckInDate ?? "", format: Constant.MyClassConstants.dateFormat)
-                                
-                                Helper.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: initialSearchCheckInDate, senderViewController: self)
-                                
-                            }
+                            activeInterval.hasCheckInDates() ? self.exchangeSearchAvailability(activeInterval: activeInterval) : self.noAvailabilityResults(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                         }, onError: { [weak self] error in
                             sender.isEnabled = true
                             self?.hideHudAsync()
@@ -939,6 +929,16 @@ extension VacationSearchIPadViewController: SearchTableViewCellDelegate {
                 break
             }
         }
+    }
+    
+    func exchangeSearchAvailability(activeInterval: BookingWindowInterval) {
+        
+        Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
+        if let searchDate = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate {
+            let checkInDate = Helper.convertStringToDate(dateString: searchDate, format: Constant.MyClassConstants.dateFormat)
+            Helper.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: checkInDate, senderViewController: self)
+        }
+        
     }
 }
 
