@@ -60,10 +60,10 @@ public enum SimpleViewModelType {
             return String(describing: SimpleSeperatorCell.self)
             
         case .ownershipTableViewCellViewModel:
-            return String(describing: OwnershipTableViewCell.self)
+            return String(describing: SimpleOwnershipCell.self)
             
         case .availableRelinquishmentPointsCellViewModel:
-            return String(describing: AvailableRelinquishmentPointsCell.self)
+            return String(describing: SimpleAvailableRelinquishmentPointsCell.self)
             
         case .labelTextFieldLabelTextFieldButtonButton:
             return String(describing: SimpleLabelTextFieldLabelTextFieldButtonButtonCell.self)
