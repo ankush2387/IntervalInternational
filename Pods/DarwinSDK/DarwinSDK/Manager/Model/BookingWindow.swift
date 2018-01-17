@@ -167,7 +167,7 @@ open class BookingWindow {
             // Create a new Interval
             let newStartDate = cursorInterval.startDate?.minusMonths(3)
             var newEndDate = newStartDate?.plusMonths(2)
-            newEndDate = newEndDate?.withDayOfMonth(newEndDate?.lengthOfMonth())
+            newEndDate = newEndDate?.withDayOfMonth((newEndDate?.lengthOfMonth())!)
     
             let newInterval = BookingWindowInterval(fromDate: newStartDate, toDate: newEndDate)
             newInterval.clipTo(fromDate: self.startDate, toDate: self.endDate)

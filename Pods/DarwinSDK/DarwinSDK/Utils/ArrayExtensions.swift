@@ -38,12 +38,13 @@ extension Array  {
         for element in self {
             let value: Int = element as! Int
             let diff = value - to
-            if (diff <= min) {
+
+            if diff <= min {
                 min = diff
                 closet = value
             }
         }
-        return closet
+        return abs(closet)
     }
     
 }

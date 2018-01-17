@@ -10,6 +10,10 @@ import Foundation
 
 extension String {
     
+    func dateFromFormat(_ format:String) -> Date! {
+        return createDateFormatter(format).date(from: self)
+    }
+    
 	func dateFromLongFormat() -> Date! {
 		return self.dateFromFormat("yyyy-MM-dd'T'HH:mm:ssXXX")
 	}
@@ -18,19 +22,20 @@ extension String {
         return self.dateFromFormat("yyyy-MM-dd")
     }
 
-    func dateFromFormat(_ format:String) -> Date! {
-		let dateFormatter = DateFormatter()
-		dateFormatter.dateFormat = format
-		
-		return dateFormatter.date(from: self)
-	}
-    
     func indexOf(_ innerStr: String) -> String.Index? {
         return self.range(of: innerStr, options: .literal, range: nil, locale: nil)?.lowerBound
     }
     
     func trim() -> String? {
         return self.trimmingCharacters(in: CharacterSet.whitespaces)
+    }
+    
+    fileprivate func createDateFormatter(_ format:String) -> DateFormatter {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = format
+        dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+        return dateFormatter
     }
     
 }

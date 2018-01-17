@@ -45,7 +45,7 @@ open class BookingWindowInterval : Comparable {
     open func calculateInitialInterval(checkInDate:Date!) {
         self.startDate = checkInDate.minusMonths(2).withDayOfMonth(1)
         self.endDate = checkInDate.plusMonths(1)
-        self.endDate = self.endDate?.withDayOfMonth(self.endDate?.lengthOfMonth())
+        self.endDate = self.endDate?.withDayOfMonth((self.endDate?.lengthOfMonth())!)
     }
     
     open func clipTo(fromDate:Date!, toDate:Date!) {
