@@ -46,7 +46,8 @@ class VacationSearchViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        navigationController?.isNavigationBarHidden = false
+        //navigationController?.isNavigationBarHidden = false
+        navigationController?.navigationBar.isHidden = false
         searchVacationTableView.reloadData()
     }
     
@@ -98,7 +99,11 @@ class VacationSearchViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
+        // set font of sement control
+        let font = UIFont(name: Constant.fontName.helveticaNeue, size: 18)
+        searchVacationSegementControl.setTitleTextAttributes([NSFontAttributeName: font ?? 18],
+                                                             for: .normal)
         searchVacationSegementControl.removeAllSegments()
         
         // updating segment control number of segment according to app settings response

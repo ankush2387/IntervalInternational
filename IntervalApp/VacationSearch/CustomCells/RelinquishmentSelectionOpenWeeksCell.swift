@@ -33,6 +33,8 @@ class RelinquishmentSelectionOpenWeeksCell: UITableViewCell {
     @IBOutlet weak var mainView: UIView!
     @IBOutlet weak var checkBox: IUIKCheckbox!
     
+    @IBOutlet weak var requestTypeLbl: UILabel!
+    
     static let identifier = "FloatSavedCell"
     
     override func awakeFromNib() {
@@ -54,6 +56,15 @@ class RelinquishmentSelectionOpenWeeksCell: UITableViewCell {
         
         if let resortCode = deposit.resort?.resortCode {
             resortName.text?.append("-\(resortCode)".localized())
+        }
+        
+        if let type = deposit.requestType {
+            if type == Constant.MyClassConstants.depositType {
+                requestTypeLbl.text = Constant.MyClassConstants.lateDeposit
+            } else {
+                requestTypeLbl.text = ""
+            }
+            
         }
         
         if let relinquishmentYear = deposit.relinquishmentYear {
@@ -78,8 +89,6 @@ class RelinquishmentSelectionOpenWeeksCell: UITableViewCell {
         }
         
         if deposit.checkInDate != nil {
-            
-
             var dateString = ""
             if let dateStr = deposit.checkInDate {
                 dateString = dateStr
@@ -119,7 +128,6 @@ class RelinquishmentSelectionOpenWeeksCell: UITableViewCell {
                 addButton?.isHidden = true
             }
         }
-        
         //hide promotions
         promLabel.isHidden = true
         promImgView.isHidden = true

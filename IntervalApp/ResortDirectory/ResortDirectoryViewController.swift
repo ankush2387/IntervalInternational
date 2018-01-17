@@ -47,8 +47,11 @@ class ResortDirectoryViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         
-        if self.containerView != nil {
-            self.containerView.isHidden = true
+
+        if containerView != nil {
+            containerView.isHidden = true
+            Constant.MyClassConstants.btnTag = -1
+
         }
         setNavigationBar()
         
@@ -62,7 +65,7 @@ class ResortDirectoryViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if self.view.tag == 3 {
+        if view.tag == 3 {
             
             //***** register custom cell nib files to show data on tablevew with custom cell *****//
             resortTableView.register(UINib(nibName: Constant.customCellNibNames.searchResultContentTableCell, bundle: nil), forCellReuseIdentifier: Constant.customCellNibNames.searchResultContentTableCell)
@@ -71,8 +74,8 @@ class ResortDirectoryViewController: UIViewController {
         if backgroundImageView != nil && Constant.MyClassConstants.resortDirectoryAreaListArray.count > 0 {
             
             if Constant.MyClassConstants.resortDirectoryAreaListArray[0].images.count > 0 {
-                self.backgroundImageView.setImageWith(URL(string: Constant.MyClassConstants.resortDirectoryAreaListArray[0].images[1].url!), completed: { (image:UIImage?, error:Swift.Error?, _:SDImageCacheType, _:URL?) in
-                    if (error != nil) {
+                backgroundImageView.setImageWith(URL(string: Constant.MyClassConstants.resortDirectoryAreaListArray[0].images[1].url!), completed: { (image:UIImage?, error:Swift.Error?, _:SDImageCacheType, _:URL?) in
+                    if error != nil {
                         self.backgroundImageView.image = UIImage(named: Constant.MyClassConstants.noImage)
                     }
                 }, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
@@ -81,19 +84,19 @@ class ResortDirectoryViewController: UIViewController {
             }
         }
         
-        if self.containerView != nil {
+        if containerView != nil {
             
-            self.containerView.isHidden = true
+            containerView.isHidden = true
             UIView.animate (withDuration: 0.5, delay: 0.1, options: UIViewAnimationOptions.curveEaseIn, animations: {
                 
                 self.containerView.frame = CGRect(x: -self.containerView.frame.size.width, y: 64, width: self.containerView.frame.size.width, height: self.containerView.frame.size.height)
                 
             }, completion: { _ in
             })
-            self.view.bringSubview(toFront: self.containerView)
+            view.bringSubview(toFront: containerView)
         }
         Constant.MyClassConstants.resortDirectoryTitle = Constant.MyClassConstants.resortDirectoryTitle
-        self.navigationItem.title = Constant.MyClassConstants.resortDirectoryTitle
+        navigationItem.title = Constant.MyClassConstants.resortDirectoryTitle
         
         let appearance = UITabBarItem.appearance()
         let attributes: [String: AnyObject] = [NSFontAttributeName: UIFont(name: Constant.fontName.helveticaNeue, size: 15)!, NSForegroundColorAttributeName: IUIKColorPalette.primary1.color]
@@ -102,14 +105,16 @@ class ResortDirectoryViewController: UIViewController {
         
     }
     
+  
+    
     override func viewDidLayoutSubviews() {
         
         self.view.subviews.last?.frame = CGRect(x: -(self.view.subviews.last?.frame.width)!, y: 64, width: (self.view.subviews.last?.frame.width)!, height: (self.view.subviews.last?.frame.height)!)
     }
     override func viewWillAppear(_ animated: Bool) {
         
-        self.tabBarController?.tabBar.isHidden = false
-        self.navigationController?.navigationBar.isHidden = false
+        tabBarController?.tabBar.isHidden = false
+        navigationController?.navigationBar.isHidden = false
         //***** adding notifications so that it invock the specific method when the notification is fired *****//
         NotificationCenter.default.addObserver(self, selector: #selector(helpClicked), name: NSNotification.Name(rawValue: Constant.notificationNames.showHelp), object: nil)
         
@@ -124,29 +129,31 @@ class ResortDirectoryViewController: UIViewController {
     }
     
     func setNavigationBar() {
+        navigationController?.navigationBar.isHidden = false
         //***** handle hamberger menu button for prelogin and post login case *****//
-        self.navigationController?.navigationBar.barTintColor = UIColor(red: 0 / 255, green: 119.0 / 255, blue: 190.0 / 255, alpha: 1.0)
+        navigationController?.navigationBar.barTintColor = UIColor(red: 0 / 255, green: 119.0 / 255, blue: 190.0 / 255, alpha: 1.0)
       
         if Session.sharedSession.userAccessToken != nil && Constant.MyClassConstants.isLoginSuccessfull {
-            if self.navigationController?.viewControllers.count > 1 {
+
+            if navigationController?.viewControllers.count > 1 {
                 
                 let menuButton = UIBarButtonItem(image: #imageLiteral(resourceName: "BackArrowNav"), style: .plain, target: self, action: #selector(ResortDirectoryViewController.menuBackButtonPressed(_:)))
                 menuButton.tintColor = UIColor.white
-                self.navigationItem.leftBarButtonItem = menuButton
+                navigationItem.leftBarButtonItem = menuButton
                 
             } else {
                 
-                if let rvc = self.revealViewController() {
+                if let rvc = revealViewController() {
                     
                     //***** Add the hamburger menu *****//
                     let menuButton = UIBarButtonItem(image: UIImage(named: Constant.assetImageNames.ic_menu), style: .plain, target: rvc, action: #selector(SWRevealViewController.revealToggle(_:)))
                     menuButton.tintColor = UIColor.white
-                    self.navigationItem.leftBarButtonItem = menuButton
+                    navigationItem.leftBarButtonItem = menuButton
                     
                     //***** This line allows the user to swipe left-to-right to reveal the menu. We might want to comment this out if it becomes confusing. *****//
-                    self.view.addGestureRecognizer( rvc.panGestureRecognizer())
+                    view.addGestureRecognizer( rvc.panGestureRecognizer())
                     //Allow user to tap anywhere to dismiss reveal menu
-                    self.view.addGestureRecognizer(rvc.tapGestureRecognizer())
+                    view.addGestureRecognizer(rvc.tapGestureRecognizer())
                 }
                 
             }
@@ -155,7 +162,7 @@ class ResortDirectoryViewController: UIViewController {
             
             let menuButton = UIBarButtonItem(image: UIImage(named: Constant.assetImageNames.backArrowNav), style: .plain, target: self, action: #selector(ResortDirectoryViewController.menuBackButtonPressed(_:)))
             menuButton.tintColor = UIColor.white
-            self.navigationItem.leftBarButtonItem = menuButton
+            navigationItem.leftBarButtonItem = menuButton
         }
         
         if resortTableView != nil {
@@ -168,9 +175,9 @@ class ResortDirectoryViewController: UIViewController {
     //*****Function for back button press.*****//
     func menuBackButtonPressed(_ sender: UIBarButtonItem) {
 
-        if self.navigationController?.viewControllers.count > 1 {
+        if navigationController?.viewControllers.count > 1 {
             
-            self.navigationController?.popViewController(animated: true)
+            navigationController?.popViewController(animated: true)
         } else {
            NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.MyClassConstants.popToLoginView), object: nil)
         }
@@ -180,6 +187,7 @@ class ResortDirectoryViewController: UIViewController {
             if Constant.MyClassConstants.btnTag != -1 {
                 addRemoveFavorite()
             }
+
             resortTableView.reloadData()
             setNavigationBar()
         }
@@ -187,7 +195,7 @@ class ResortDirectoryViewController: UIViewController {
     
     func reloadTable() {
         
-        self.view.tag = 3
+        view.tag = 3
         self.viewWillAppear(true)
         self.viewDidLoad()
         
@@ -223,7 +231,7 @@ class ResortDirectoryViewController: UIViewController {
         transition.type = kCATransitionPush
         transition.subtype = kCATransitionFromRight
         viewController.view.layer.add(transition, forKey: Constant.MyClassConstants.switchToView)
-        self.navigationController?.setViewControllers([viewController], animated: false)
+        navigationController?.setViewControllers([viewController], animated: false)
     }
     
     //***** Function is called when done button is clicked in details side menu *****/
@@ -240,7 +248,7 @@ class ResortDirectoryViewController: UIViewController {
     //***** Notification to load list of available regions *****//
     func reloadRegionTable() {
         
-        for tblVw in self.view.subviews {
+        for tblVw in view.subviews {
             if tblVw.isKind(of: UITableView.self) {
                 let regionTable: UITableView = tblVw as! UITableView
                 regionTable.isHidden = false
@@ -253,7 +261,7 @@ class ResortDirectoryViewController: UIViewController {
     //***** Notification to show region details. *****//
     func showAreaDetails() {
         
-        self.performSegue(withIdentifier: Constant.segueIdentifiers.areaSegue, sender: nil)
+        performSegue(withIdentifier: Constant.segueIdentifiers.areaSegue, sender: nil)
         
     }
     
@@ -266,14 +274,14 @@ class ResortDirectoryViewController: UIViewController {
             
             Constant.RunningDevice.deviceOrientation = UIDeviceOrientation.portrait
         }
-        if resortTableView != nil && self.containerView != nil {
+        if resortTableView != nil && containerView != nil {
             
-            self.containerView.isHidden = true
+            containerView.isHidden = true
             resortTableView.reloadData()
         }
-        if childViewControllers.count > 0 {
-            let containerVC = self.childViewControllers[0] as! ResortDetailsViewController
-            containerVC.senderViewController = Constant.MyClassConstants.searchResult
+        if !childViewControllers.isEmpty{
+            let containerVC = childViewControllers[0] as! ResortDetailsViewController
+            containerVC.senderViewController = Constant.MyClassConstants.showSearchResultButton
             containerVC.viewWillAppear(true)
         }
     }
@@ -283,7 +291,7 @@ class ResortDirectoryViewController: UIViewController {
         
         if segue.identifier == Constant.segueIdentifiers.resortDetailsSegue {
             let setVC = ResortDetailsViewController()
-            setVC.senderViewController = Constant.MyClassConstants.searchResult
+            setVC.senderViewController = Constant.MyClassConstants.showSearchResultButton
         } else if segue.identifier == Constant.segueIdentifiers.resortByAreaSegue {
             
         }
@@ -324,7 +332,7 @@ class ResortDirectoryViewController: UIViewController {
             }
         } else {
             Constant.MyClassConstants.btnTag = sender.tag
-            self.performSegue(withIdentifier: Constant.segueIdentifiers.preLoginSegue, sender: nil)
+            performSegue(withIdentifier: Constant.segueIdentifiers.preLoginSegue, sender: nil)
         }
     }
     
@@ -341,10 +349,10 @@ extension ResortDirectoryViewController: UITableViewDelegate {
             let region = Constant.MyClassConstants.resortDirectoryRegionArray[indexPath.row]
             Constant.MyClassConstants.resortDirectoryCommonHearderText = region.regionName!
             
-            if region.regions.count > 0 {
+            if !region.regions.isEmpty {
                 Constant.MyClassConstants.resortDirectorySubRegionArray = region.regions
                 
-                self.performSegue(withIdentifier: Constant.segueIdentifiers.subRegionSegue, sender: nil)
+                performSegue(withIdentifier: Constant.segueIdentifiers.subRegionSegue, sender: nil)
             } else {
                 
                 showHudAsync()
@@ -379,10 +387,10 @@ extension ResortDirectoryViewController: UITableViewDelegate {
             
             let area = Constant.MyClassConstants.resortDirectoryAreaListArray[indexPath.row]
             Constant.MyClassConstants.resortDirectoryCommonHearderText = area.areaName!
-            if area.images.count > 0 && backgroundImageView != nil {
+            if !area.images.isEmpty && backgroundImageView != nil {
                 
                 Constant.MyClassConstants.backgroundImageUrl = area.images[1].url!
-                self.backgroundImageView.setImageWith(URL(string: area.images[1].url!), completed: { (image:UIImage?, error:Swift.Error?, _:SDImageCacheType, _:URL?) in
+                backgroundImageView.setImageWith(URL(string: area.images[1].url!), completed: { (image:UIImage?, error:Swift.Error?, _:SDImageCacheType, _:URL?) in
                     if error != nil {
                         self.backgroundImageView.image = UIImage(named: Constant.MyClassConstants.noImage)
                     }
@@ -421,16 +429,18 @@ extension ResortDirectoryViewController: UITableViewDelegate {
                 }
             }
         case 5 :
+
             let containerView = UIView()
             containerView.frame = CGRect(x: 0, y: 0, width: 200, height: 568)
-            self.view.addSubview(containerView)
+            view.addSubview(containerView)
             
             let storyboard = UIStoryboard(name: Constant.storyboardNames.resortDirectoryIpad, bundle: nil)
             let controller: UIViewController = storyboard.instantiateViewController(withIdentifier: Constant.MyClassConstants.resortDirectoryVCTitle) as UIViewController
             containerView.addSubview(controller.view)
-            self.addChildViewController(controller)
+            addChildViewController(controller)
         default :
             return
+
         }
     }
     
@@ -463,18 +473,13 @@ extension ResortDirectoryViewController: UITableViewDelegate {
         
         if tableView.tag == 3 {
             
-            if (UIDevice.current.userInterfaceIdiom == .pad) {
-                
+            if UIDevice.current.userInterfaceIdiom == .pad {
                 return 450
-                
             } else {
-                
                 return 256
             }
         } else if tableView.tag == 4 {
-            
             if indexPath.row == 0 {
-                
                 return 450
             } else {
                 var count: CGFloat = 0
@@ -638,7 +643,7 @@ extension ResortDirectoryViewController: ResortDirectoryResortCellDelegate {
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.iphone, bundle: nil)
         let resultController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardNames.signInPreLoginController) as? SignInPreLoginViewController
         let navController = UINavigationController(rootViewController: resultController!)
-        self.present(navController, animated: true, completion: nil)
+        present(navController, animated: true, completion: nil)
         
     }
 }
@@ -652,10 +657,10 @@ extension ResortDirectoryViewController: ResortFavoritesTableViewCellDelegate {
         
         Constant.MyClassConstants.resortDescriptionString = Constant.MyClassConstants.resortDirectoryResortArray[index].description ?? ""
         
-        if self.containerView != nil {
+        if containerView != nil {
             
-            self.containerView.isHidden = false
-            self.containerView.bringSubview(toFront: self.containerView)
+            containerView.isHidden = false
+            containerView.bringSubview(toFront: containerView)
             let selectedResort = Constant.MyClassConstants.resortDirectoryResortArray[index]
             
             UIView.animate (withDuration: 0.5, delay: 0.1, options: UIViewAnimationOptions.curveEaseOut, animations: {
@@ -664,7 +669,6 @@ extension ResortDirectoryViewController: ResortFavoritesTableViewCellDelegate {
                 
             }, completion: { _ in
                 if let resortCode = selectedResort.resortCode {
-                    //self.callAPI(selectedResort.resortCode!)
                     Helper.getResortWithResortCode(code: resortCode, viewcontroller: self)
                 }
                 
@@ -672,6 +676,7 @@ extension ResortDirectoryViewController: ResortFavoritesTableViewCellDelegate {
             
         }
     }
+
     func favoritesResortSelectedAtIndex(_ index: Int, signInRequired: Bool, isFavorite: Bool) {
         Constant.MyClassConstants.btnTag = index
         if signInRequired {
@@ -704,5 +709,7 @@ extension ResortDirectoryViewController: ResortFavoritesTableViewCellDelegate {
                 
             }
         }
+
+
     }
 }

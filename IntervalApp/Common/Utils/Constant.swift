@@ -112,6 +112,7 @@ class Constant: NSObject {
         static var searchForSegmentIndex = 0
         static var checkoutInsurencePurchased = "No"
         static var checkoutPromotionPurchased = ""
+        static var showVacationSearchNotification = "showVacationSearchNotification"
         
         //upcoming trip type counter value
         static var exchangeCounter = 0
@@ -219,7 +220,8 @@ class Constant: NSObject {
         static var sectionHeaderArray = ["Destinations".localized(), "Resorts".localized()]
         static var relinquishmentHeaderArray = ["Club Interval Gold Weeks".localized(), "", "Club Points".localized(), "Interval Weeks".localized(), "Deposited".localized()]
         static var lockOffCapable = "Lock Off Capable".localized()
-        
+        static var depositType = "LATE_DEPOSIT"
+        static var lateDeposit = "Late Deposit".localized()
         static var membershipContactArray = [Contact]()
         static var vacationSearchDestinationArray: NSMutableArray = []
         static var calendarDatesArray = [CalendarItem]()
@@ -359,7 +361,7 @@ class Constant: NSObject {
         static var resortDirectoryVC = "ResortDirectoryViewController"
         static var currentIssue = "Current Issue!".localized()
         static var vacationSearch = "VacationSearch"
-        static var searchResult = "SearchResult"
+        static var showSearchResultButton = "SearchResult"
         
         static var right = "Right"
         static var left = "Left"

@@ -203,7 +203,7 @@ public class Helper {
         Constant.MyClassConstants.signInRequestedController = sender
         if Reachability.isConnectedToNetwork() == true {
             Logger.sharedInstance.debug("Attempting oauth with \(userName) and \(password)")
-            
+            sender.showHudAsync()
             // Try to do the OAuth Request to obtain an access token
             AuthProviderClient.getAccessToken( userName, password: password, onSuccess: {
                 (accessToken) in
@@ -1223,7 +1223,7 @@ public class Helper {
                 } else {
                     
                     let containerVC = viewcontroller.childViewControllers[0] as! ResortDetailsViewController
-                    containerVC.senderViewController = Constant.MyClassConstants.searchResult
+                    containerVC.senderViewController = Constant.MyClassConstants.showSearchResultButton
                     containerVC.viewWillAppear(true)
                     
                     UIView.animate (withDuration: 0.5, delay: 0.1, options: UIViewAnimationOptions.curveEaseIn, animations: {
@@ -1239,6 +1239,7 @@ public class Helper {
                 
                 let storyBoard = UIStoryboard(name: Constant.storyboardNames.iphone, bundle: nil)
                 let viewController = storyBoard.instantiateViewController(withIdentifier: Constant.MyClassConstants.resortVC) as! ResortDetailsViewController
+                viewController.senderViewController = Constant.MyClassConstants.showSearchResultButton
                 viewcontroller.navigationController!.view.layer.add(self.bottomToTopTransition(), forKey: kCATransition)
                 viewcontroller.navigationController?.pushViewController(viewController, animated: false)
                 
