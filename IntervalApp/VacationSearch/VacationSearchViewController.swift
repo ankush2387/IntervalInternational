@@ -1370,15 +1370,15 @@ extension VacationSearchViewController: SearchTableViewCellDelegate {
             switch segmentTitle {
                 case Constant.segmentControlItems.exchange:
                     requestExchange.setCheckInToDate(checkInToDate)
-                    searchType = VacationSearchType.Exchange
+                    searchType = VacationSearchType.EXCHANGE
                 
                 case Constant.segmentControlItems.getaways:
                     requestRental.setCheckInToDate(checkInToDate)
-                    searchType = VacationSearchType.Rental
+                    searchType = VacationSearchType.RENTAL
 
                 default:
                     requestRental.setCheckInToDate(checkInToDate)
-                    searchType = VacationSearchType.Combined
+                    searchType = VacationSearchType.COMBINED
             }
             
             showHudAsync()
@@ -1471,11 +1471,15 @@ extension VacationSearchViewController: SearchTableViewCellDelegate {
                 if !storedData.isEmpty {
                  showHudAsync()
                 // MARK: Rental Vacation Search
-                let rentalSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Rental)
+                let rentalSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.RENTAL)
                 getSavedDestinationsResorts(storedData: storedData, searchCriteria: rentalSearchCriteria)
                 rentalSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
                 rentalSearchCriteria.travelParty = Constant.MyClassConstants.travelPartyInfo
-                Constant.MyClassConstants.initialVacationSearch = VacationSearch(Session.sharedSession.appSettings, rentalSearchCriteria)
+
+                if let settings = Session.sharedSession.appSettings {
+                    Constant.MyClassConstants.initialVacationSearch = VacationSearch(settings, rentalSearchCriteria)
+                }
+
                 RentalClient.searchDates(Session.sharedSession.userAccessToken, request: Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request, onSuccess: { (response) in
                    
                     sender.isEnabled = true
@@ -1508,7 +1512,7 @@ extension VacationSearchViewController: SearchTableViewCellDelegate {
                 } else {
                     sender.isEnabled = false
                     showHudAsync()
-                    let exchangeSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Exchange)
+                    let exchangeSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.EXCHANGE)
                         exchangeSearchCriteria.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray
                         exchangeSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
                         exchangeSearchCriteria.travelParty = Constant.MyClassConstants.travelPartyInfo
@@ -1518,7 +1522,11 @@ extension VacationSearchViewController: SearchTableViewCellDelegate {
                         
                         //Get data for saved destinations and resorts
                         getSavedDestinationsResorts(storedData: storedData, searchCriteria: exchangeSearchCriteria)
-                        Constant.MyClassConstants.initialVacationSearch = VacationSearch(Session.sharedSession.appSettings, exchangeSearchCriteria)
+                        
+                        if let settings = Session.sharedSession.appSettings {
+                            Constant.MyClassConstants.initialVacationSearch = VacationSearch(settings, exchangeSearchCriteria)
+                        }
+                        
                         ExchangeClient.searchDates(Session.sharedSession.userAccessToken, request:Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request, onSuccess: { response in
                             
                             sender.isEnabled = true
@@ -1549,7 +1557,7 @@ extension VacationSearchViewController: SearchTableViewCellDelegate {
                      presentAlert(with: Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.tradeItemMessage)
                 } else {
                     showHudAsync()
-                    let rentalSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Combined)
+                    let rentalSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.COMBINED)
                     let storedData = Helper.getLocalStorageWherewanttoGo()
                     
                     if storedData.count > 0 {
@@ -1557,8 +1565,11 @@ extension VacationSearchViewController: SearchTableViewCellDelegate {
                         rentalSearchCriteria.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray
                         rentalSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
                         rentalSearchCriteria.travelParty = Constant.MyClassConstants.travelPartyInfo
-                        Constant.MyClassConstants.initialVacationSearch = VacationSearch(Session.sharedSession.appSettings, rentalSearchCriteria)
                         
+                        if let settings = Session.sharedSession.appSettings {
+                            Constant.MyClassConstants.initialVacationSearch = VacationSearch(settings, rentalSearchCriteria)
+                        }
+                         
                         ADBMobile.trackAction(Constant.omnitureEvents.event9, data: nil)
                         RentalClient.searchDates(Session.sharedSession.userAccessToken, request: Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request, onSuccess: { response in
                             

@@ -228,20 +228,24 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
             showHudAsync()
             //use later
             let checkInDate = Constant.MyClassConstants.vacationSearchShowDate
-            let exchangeSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Exchange)
+            let exchangeSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.EXCHANGE)
             exchangeSearchCriteria.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray
             //set check in date
             exchangeSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
             exchangeSearchCriteria.travelParty = Constant.MyClassConstants.travelPartyInfo
-            exchangeSearchCriteria.searchType = VacationSearchType.Exchange
+            exchangeSearchCriteria.searchType = VacationSearchType.EXCHANGE
             
             //let storedData = Helper.getLocalStorageWherewanttoGo()
-            exchangeSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
-            Constant.MyClassConstants.initialVacationSearch = VacationSearch(Session.sharedSession.appSettings, exchangeSearchCriteria)
             let area = Area()
             area.areaCode = Int(Constant.MyClassConstants.selectedAreaCodeArray[0] as! String)!
             area.areaName = Constant.MyClassConstants.selectedAreaCodeDictionary.value(forKey: Constant.MyClassConstants.selectedAreaCodeArray[0] as! String) as? String
-            Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request.areas = [area]
+            
+            exchangeSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
+            
+            if let settings = Session.sharedSession.appSettings {
+                Constant.MyClassConstants.initialVacationSearch = VacationSearch(settings, exchangeSearchCriteria)
+                Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request.areas = [area]
+            }
             
             ExchangeClient.searchDates(Session.sharedSession.userAccessToken, request:Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request, onSuccess: { (response) in
                 
@@ -271,8 +275,8 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
             
         } else {
             
-            let rentalSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Rental)
-            let combinedSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Combined)
+            let rentalSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.RENTAL)
+            let combinedSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.COMBINED)
             var vacationSearch = VacationSearch()
             
             let area = Area()
@@ -284,10 +288,13 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
                 combinedSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
                 combinedSearchCriteria.travelParty = Constant.MyClassConstants.travelPartyInfo
                 combinedSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
-                vacationSearch = VacationSearch(Session.sharedSession.appSettings, combinedSearchCriteria)
-                vacationSearch.rentalSearch?.searchContext.request.areas = [area]
-                Constant.MyClassConstants.initialVacationSearch = vacationSearch
-                
+
+                if let settings = Session.sharedSession.appSettings {
+                    vacationSearch = VacationSearch(settings, combinedSearchCriteria)
+                    vacationSearch.rentalSearch?.searchContext.request.areas = [area]
+                    Constant.MyClassConstants.initialVacationSearch = vacationSearch
+                }
+
                 RentalClient.searchDates(Session.sharedSession.userAccessToken, request: Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request, onSuccess: { (response) in
                     self.hideHudAsync()
                     
@@ -317,8 +324,11 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
                 
             } else {
                 rentalSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
-                Constant.MyClassConstants.initialVacationSearch = VacationSearch(Session.sharedSession.appSettings, rentalSearchCriteria)
-                Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request.areas = [area]
+                
+                if let settings = Session.sharedSession.appSettings {
+                    Constant.MyClassConstants.initialVacationSearch = VacationSearch(settings, rentalSearchCriteria)
+                    Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request.areas = [area]
+                }
                 
                 RentalClient.searchDates(Session.sharedSession.userAccessToken, request:Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request,
                  onSuccess: { (response) in

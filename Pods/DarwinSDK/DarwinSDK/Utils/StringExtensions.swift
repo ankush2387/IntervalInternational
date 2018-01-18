@@ -13,11 +13,11 @@ extension String {
     func dateFromFormat(_ format:String) -> Date! {
         return createDateFormatter(format).date(from: self)
     }
-    
+
 	func dateFromLongFormat() -> Date! {
 		return self.dateFromFormat("yyyy-MM-dd'T'HH:mm:ssXXX")
 	}
-	
+
     func dateFromShortFormat() -> Date! {
         return self.dateFromFormat("yyyy-MM-dd")
     }
@@ -29,12 +29,13 @@ extension String {
     func trim() -> String? {
         return self.trimmingCharacters(in: CharacterSet.whitespaces)
     }
-    
+
     fileprivate func createDateFormatter(_ format:String) -> DateFormatter {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = format
-        dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
-        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+        dateFormatter.timeZone = NSTimeZone.local
+        //dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
+        //dateFormatter.locale = Locale(identifier: "en_US_POSIX")
         return dateFormatter
     }
     

@@ -50,7 +50,7 @@ open class RentalAlert {
         
         if json["unitSizes"].exists() {
             let unitSizesJsonArray:[JSON] = json["unitSizes"].arrayValue
-            self.unitSizes = unitSizesJsonArray.map { UnitSize(rawValue: $0.stringValue) ?? UnitSize.Unknown }
+            self.unitSizes = unitSizesJsonArray.map { UnitSize(rawValue: $0.stringValue)! }
         }
     }
     

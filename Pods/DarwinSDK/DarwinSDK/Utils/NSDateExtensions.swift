@@ -107,8 +107,9 @@ extension Date {
     fileprivate func createDateFormatter(_ format:String) -> DateFormatter {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = format
-        dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
-        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+        dateFormatter.timeZone = NSTimeZone.local
+        //dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
+        //dateFormatter.locale = Locale(identifier: "en_US_POSIX")
         return dateFormatter
     }
     
@@ -116,5 +117,5 @@ extension Date {
         let calendar = Calendar(identifier: .gregorian) // Calendar.current
         return calendar
     }
-    
+
 }

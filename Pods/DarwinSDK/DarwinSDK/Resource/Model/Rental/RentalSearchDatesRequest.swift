@@ -66,11 +66,11 @@ open class RentalSearchDatesRequest {
         }
         
         unitSizes.append(contentsOf: [
-            UnitSize.Studio.rawValue,
-            UnitSize.OneBedroom.rawValue,
-            UnitSize.TwoBedroom.rawValue,
-            UnitSize.ThreeBedroom.rawValue,
-            UnitSize.FourBedroom.rawValue])
+            UnitSize.STUDIO.rawValue,
+            UnitSize.ONE_BEDROOM.rawValue,
+            UnitSize.TWO_BEDROOM.rawValue,
+            UnitSize.THREE_BEDROOM.rawValue,
+            UnitSize.FOUR_BEDROOM.rawValue])
         
         dictionary["unitSizes"] = unitSizes as AnyObject?
         
