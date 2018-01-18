@@ -463,7 +463,7 @@ class VacationSearchIPadViewController: UIViewController, UITableViewDelegate, U
             
             self.hideHudAsync()
             let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
-            if let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.relinquishmentSelectionViewController) as? RelinquishmentSelectionViewController {
+            if let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.relinquishmentSelectionViewController) as? RelinquishmentViewController {
                 let transitionManager = TransitionManager()
                 self.navigationController?.transitioningDelegate = transitionManager
                 let navController = UINavigationController(rootViewController: viewController)

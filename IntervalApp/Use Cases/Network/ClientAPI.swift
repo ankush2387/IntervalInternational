@@ -83,4 +83,10 @@ final class ClientAPI: ClientAPIStore {
             ExchangeClient.getFlexExchangeDeals(accessToken, onSuccess: resolve, onError: reject)
         }
     }
+    
+    func readMyUnits(for accessToken: DarwinAccessToken) -> Promise<MyUnits> {
+        return Promise { resolve, reject in
+            ExchangeClient.getMyUnits(accessToken, onSuccess: resolve, onError: reject)
+        }
+    }
 }

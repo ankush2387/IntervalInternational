@@ -112,13 +112,10 @@ extension SettingsViewController: UITableViewDataSource, SimpleViewModelBinder {
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
 
-        if viewModel.cellViewModels[indexPath.row] is SimpleLabelTextFieldLabelTextFieldButtonButtonCellViewModel {
+        if let omnitureViewModel = viewModel.cellViewModels[indexPath.row] as? SimpleLabelTextFieldLabelTextFieldButtonButtonCellViewModel {
             omnitureFieldIndexPath = indexPath
-            if viewModel.simpleLabelSwitchCellViewModel.switchOn.value {
-                return 180
-            } else {
-                return 0
-            }
+            let switchIsOn = viewModel.simpleLabelSwitchCellViewModel.switchOn.value
+            return switchIsOn ? omnitureViewModel.cellHeight.value : 0
         }
 
         return 60

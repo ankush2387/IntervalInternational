@@ -9,10 +9,11 @@ import Bond
 import UIKit
 
 final public class SimpleOwnershipCellViewModel {
-    
+
     public var isEditing = Observable(true)
-    public var cellHeight: Observable<CGFloat> = Observable(60)
+    public var cellHeight: Observable<CGFloat> = Observable(130)
     public var ownershipStateLabelText: Observable<String?>
+    public var exchangeNumberLabelText: Observable<String?>
     public var extraInformationLabelText: Observable<String?>
     public var monthLabelText: Observable<String?>
     public var yearLabelText: Observable<String?>
@@ -28,6 +29,7 @@ final public class SimpleOwnershipCellViewModel {
     public var actionButton: Observable<UIImage?>
     
     public init(ownershipStateLabelText: String? = nil,
+                exchangeNumberLabelText: String? = nil,
                 extraInformationLabelText: String? = nil,
                 monthLabelText: String? = nil,
                 yearLabelText: String? = nil,
@@ -41,8 +43,9 @@ final public class SimpleOwnershipCellViewModel {
                 relinquishmentPromotionImage: UIImage? = nil,
                 relinquishmentPromotionLabelText: String? = nil,
                 actionButton: UIImage? = nil) {
-        
+
         self.ownershipStateLabelText = Observable(ownershipStateLabelText)
+        self.exchangeNumberLabelText = Observable(exchangeNumberLabelText)
         self.extraInformationLabelText = Observable(extraInformationLabelText)
         self.monthLabelText = Observable(monthLabelText)
         self.yearLabelText = Observable(yearLabelText)
@@ -56,6 +59,10 @@ final public class SimpleOwnershipCellViewModel {
         self.relinquishmentPromotionImage = Observable(relinquishmentPromotionImage)
         self.relinquishmentPromotionLabelText = Observable(relinquishmentPromotionLabelText)
         self.actionButton = Observable(actionButton)
+
+        if case .some = ownershipStateLabelText {
+            cellHeight.next(170)
+        }
     }
 }
 

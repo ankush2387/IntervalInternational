@@ -38,6 +38,12 @@ class CertificateViewController: UIViewController {
         // Left blank intentionally
     }
     
+    @IBAction func redeemMyCertificateButtonTapped(_ sender: Any) {
+        if let url = URL(string: "https://www.intervalworld.com/web/my/home") {
+            NetworkHelper.open(url)
+        }
+    }
+    
     func getAccommodationCertificateSummary(sendertag: Int) {
        
         // show hud
