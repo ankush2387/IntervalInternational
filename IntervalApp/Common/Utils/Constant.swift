@@ -266,7 +266,7 @@ class Constant: NSObject {
         static var googleMarkerArray = [GMSMarker]()
         
         static let sidemenuIntervalInternationalCorporationLabel = "2015 Interval International. Privacy/Legal".localized()
-        static let noRelinquishmentavailable = "No Relinquishment available".localized()
+        
         static let relinquishmentTitle = "Select all or any lock-off portion".localized()
         static let floatTitle = "Select one lock-off portion at a time".localized()
         static let bedroomTitle = "Choose Bedrooms".localized()
@@ -942,7 +942,7 @@ class Constant: NSObject {
         static var magazinesControllerTitle = "Magazines".localized()
         static var whoWillBeCheckingInControllerTitle = "Who will be checking-in?".localized()
         static var checkOutControllerTitle = "Check Out".localized()
-        static var relinquishmentSelectiongControllerTitle = "Relinquishment Selection".localized()
+        
         static var confirmationControllerTitle = "Confirmation".localized()
         static var intervalHDiPadControllerTitle =  "IntervalHDIpadPlayerViewController".localized()
         static var clubpointselection = "Club Point Selection".localized()
@@ -1029,7 +1029,7 @@ class Constant: NSObject {
         static var whoWillBeCheckingInIpadViewController = "WhoWillBeCheckingInIPadViewController"
         static var checkOutViewController = "CheckOutViewController"
         static var addDebitOrCreditCardViewController = "AddDebitOrCreditCardViewController"
-        static var relinquishmentSelectionViewController = "RelinquishmentSelectionViewController"
+        static var relinquishmentSelectionViewController = "RelinquishmentViewController"
         static var availablePointToolViewController = "AvailablePointToolViewController"
         static var clubPointViewController = "ClubPointPageItemViewController"
         static var clubPointsSelectionViewController = "clubpointselectionPageviewcontroller"

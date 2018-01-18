@@ -18,7 +18,7 @@ public class SimpleAvailableRelinquishmentPointsCellViewModel {
     open var availablePointsButtonText: Observable<String?>
     open var goldPointsHeadingLabelText: Observable<String?>
     open var goldPointsSubHeadingLabel: Observable<String?>
-    open var cellHeight: Observable<CGFloat> = Observable(130)
+    open var cellHeight: Observable<CGFloat> = Observable(140)
 
     // MARK: - Lifecycle
     public init(cigImage: UIImage,

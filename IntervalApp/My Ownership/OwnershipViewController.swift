@@ -167,7 +167,8 @@ class OwnershipViewController: UIViewController {
         }
         if self.requiredNumberOfSection() == 0 {
             
-            presentAlert(with: Constant.ControllerTitles.relinquishmentSelectiongControllerTitle, message: Constant.MyClassConstants.noRelinquishmentavailable)
+            presentAlert(with: "Relinquishment Selection".localized(),
+                         message: "No Relinquishment Available".localized())
         }
         
         if self.ownerShiptableView != nil {

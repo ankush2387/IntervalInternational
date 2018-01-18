@@ -251,7 +251,7 @@ class VacationSearchViewController: UIViewController {
             
             self.hideHudAsync()
             let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
-            if let viewController = mainStoryboard.instantiateViewController(withIdentifier: "RelinquishmentSelectionViewController") as? RelinquishmentSelectionViewController {
+            if let viewController = mainStoryboard.instantiateViewController(withIdentifier: "RelinquishmentSelectionViewController") as? RelinquishmentViewController {
                 self.navigationController?.pushViewController(viewController, animated: true)
             }
                    
