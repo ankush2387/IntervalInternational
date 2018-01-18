@@ -645,8 +645,8 @@ extension WhatToUseViewController: UITableViewDataSource {
                     }
                     let dateString = exchange.openWeek?.checkInDate
                     let date = Helper.convertStringToDate(dateString: dateString!, format: Constant.MyClassConstants.dateFormat)
-                    let myCalendar = Calendar.current
-                    let myComponents = myCalendar.dateComponents([.day, .weekday, .month, .year], from: date)
+                    let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
+                    let myComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: date)
                     let day = myComponents.day ?? 0
                     var month = ""
                     if day < 10 {
@@ -690,8 +690,8 @@ extension WhatToUseViewController: UITableViewDataSource {
                     
                     let dateString = exchange.openWeek?.checkInDate
                     let date = Helper.convertStringToDate(dateString: dateString ?? "", format: Constant.MyClassConstants.dateFormat)
-                    let myCalendar = Calendar.current
-                    let myComponents = myCalendar.dateComponents([.day, .weekday, .month, .year], from: date)
+                    let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
+                    let myComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: date)
                     let day = myComponents.day ?? 0
                     var month = ""
                     if day < 10 {

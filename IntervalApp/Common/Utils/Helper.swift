@@ -852,23 +852,24 @@ public class Helper {
     }
     
     static func getSearchDates() -> (Date, Date) {
+        let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
         
-        var fromDate = (Calendar.current as NSCalendar).date(byAdding: .day, value: -(Constant.MyClassConstants.totalWindow / 2), to: Constant.MyClassConstants.vacationSearchShowDate, options: [])!
+        var fromDate = (calendar as NSCalendar).date(byAdding: .day, value: -(Constant.MyClassConstants.totalWindow / 2), to: Constant.MyClassConstants.vacationSearchShowDate, options: [])!
         
         var toDate: Date!
         if (fromDate.isGreaterThanDate(Constant.MyClassConstants.todaysDate)) {
             
-            toDate = (Calendar.current as NSCalendar).date(byAdding: .day, value: (Constant.MyClassConstants.totalWindow / 2), to: Constant.MyClassConstants.vacationSearchShowDate, options: [])!
+            toDate = (calendar as NSCalendar).date(byAdding: .day, value: (Constant.MyClassConstants.totalWindow / 2), to: Constant.MyClassConstants.vacationSearchShowDate, options: [])!
         } else {
             _ = Helper.getDifferenceOfDates()
             fromDate = Constant.MyClassConstants.todaysDate
-            toDate = (Calendar.current as NSCalendar).date(byAdding: .day, value: (Constant.MyClassConstants.totalWindow) + Helper.getDifferenceOfDates(), to: Constant.MyClassConstants.vacationSearchShowDate as Date, options: [])!
+            toDate = (calendar as NSCalendar).date(byAdding: .day, value: (Constant.MyClassConstants.totalWindow) + Helper.getDifferenceOfDates(), to: Constant.MyClassConstants.vacationSearchShowDate as Date, options: [])!
         }
         
         if (toDate.isGreaterThanDate(Constant.MyClassConstants.dateAfterTwoYear!)) {
             
             toDate = Constant.MyClassConstants.dateAfterTwoYear
-            fromDate = (Calendar.current as NSCalendar).date(byAdding: .day, value: -(Constant.MyClassConstants.totalWindow) + Helper.getDifferenceOfDatesAhead(), to: Constant.MyClassConstants.vacationSearchShowDate as Date, options: [])!
+            fromDate = (calendar as NSCalendar).date(byAdding: .day, value: -(Constant.MyClassConstants.totalWindow) + Helper.getDifferenceOfDatesAhead(), to: Constant.MyClassConstants.vacationSearchShowDate as Date, options: [])!
         }
         Constant.MyClassConstants.currentFromDate = fromDate
         Constant.MyClassConstants.currentToDate = toDate
@@ -878,31 +879,20 @@ public class Helper {
     
     //***** common function that returns date difference between todate and fromdate *****//
     static func getDifferenceOfDates() -> Int {
-        
-        let cal = NSCalendar.current
-        
-        let returnDate = cal.dateComponents(Set<Calendar.Component>([.day]), from: Constant.MyClassConstants.vacationSearchShowDate as Date, to: Constant.MyClassConstants.todaysDate as Date)
-        // let returnDate = Calendar.current.components(.Day, fromDate: Constant.MyClassConstants.vacationSearchShowDate, toDate: Constant.MyClassConstants.todaysDate, options: [])
-        
-        //let returnDate1 = (Calendar.current as NSCalendar).date
-        
+        let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
+        let returnDate = calendar.dateComponents(Set<Calendar.Component>([.day]), from: Constant.MyClassConstants.vacationSearchShowDate as Date, to: Constant.MyClassConstants.todaysDate as Date)
         return returnDate.day!
     }
     
     static func getUpcommingcheckinDatesDiffrence(date: Date) -> Int {
-        
-        let cal = NSCalendar.current
-        
-        let returnDate = cal.dateComponents(Set<Calendar.Component>([.day]), from: Constant.MyClassConstants.todaysDate, to: date)
-        
+        let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
+        let returnDate = calendar.dateComponents(Set<Calendar.Component>([.day]), from: Constant.MyClassConstants.todaysDate, to: date)
         return returnDate.day!
     }
     //***** common function that returns date difference for two years between todate and fromdate *****//
     static func getDifferenceOfDatesAhead() -> Int {
-        let cal = NSCalendar.current
-        
-        let returnDate = cal.dateComponents(Set<Calendar.Component>([.day]), from: Constant.MyClassConstants.vacationSearchShowDate as Date, to: Constant.MyClassConstants.dateAfterTwoYear!)
-        
+        let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
+        let returnDate = calendar.dateComponents(Set<Calendar.Component>([.day]), from: Constant.MyClassConstants.vacationSearchShowDate as Date, to: Constant.MyClassConstants.dateAfterTwoYear!)
         return returnDate.day!
     }
     

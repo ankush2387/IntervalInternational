@@ -78,7 +78,7 @@ class PaymentSelectionViewController: UIViewController {
                let myComponents = (myCalendar as NSCalendar).components([.month, .year], from: expireDate)
                 if let month = myComponents.month, let year = myComponents.year {
                     let CurrDate = Date()
-                    let calendar = Calendar.current
+                    let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
                     let CurrYear = calendar.component(.year, from: CurrDate)
                     let CurrMonth = calendar.component(.month, from: CurrDate)
                     if year < CurrYear {
@@ -325,7 +325,7 @@ extension PaymentSelectionViewController: UITableViewDataSource {
                    let myComponents = (myCalendar as NSCalendar).components([.month, .year], from:expireDate)
                     if let month = myComponents.month, let year = myComponents.year {
                         let CurrDate = Date()
-                        let calendar = Calendar.current
+                        let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
                         let CurrYear = calendar.component(.year, from: CurrDate)
                         let CurrMonth = calendar.component(.month, from: CurrDate)
                         if year < CurrYear {

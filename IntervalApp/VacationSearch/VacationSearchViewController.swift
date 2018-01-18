@@ -935,10 +935,13 @@ extension VacationSearchViewController: UITableViewDataSource {
                 
                 //***** Configure and return calendar cell  *****//
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.caledarDateCell, for: indexPath) as? CaledarDateCell else { return UITableViewCell() }
-                let myCalendar = Calendar.current
+                
                 debugPrint(Constant.MyClassConstants.vacationSearchShowDate)
-                let myComponents = myCalendar.dateComponents([.day, .weekday, .month, .year], from: Constant.MyClassConstants.vacationSearchShowDate)
+
+                let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
+                let myComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: Constant.MyClassConstants.vacationSearchShowDate)
                 debugPrint(myComponents.year, myComponents.month, myComponents.day)
+                
                 if let day = myComponents.day {
                     if day < 10 {
                         cell.dayDateLabel.text = "0\(String(describing: day))".localized()
@@ -1119,8 +1122,8 @@ extension VacationSearchViewController: UITableViewDataSource {
                 //***** Return calendar cell *****//
                guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.caledarDateCell, for: indexPath) as? CaledarDateCell else { return UITableViewCell() }
                 
-                let myCalendar = Calendar.current
-                let myComponents = myCalendar.dateComponents([.day, .weekday, .month, .year], from: Constant.MyClassConstants.vacationSearchShowDate)
+                let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
+                let myComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: Constant.MyClassConstants.vacationSearchShowDate)
                 
                 if let day = myComponents.day {
                     if String(describing: day).count == 1 {
@@ -1359,8 +1362,8 @@ extension VacationSearchViewController: SearchTableViewCellDelegate {
         // MARK: All Available Destinations Vacation Search
         if Constant.MyClassConstants.whereTogoContentArray.contains(Constant.MyClassConstants.allDestinations) {
             
-            
-            let dateComp = Calendar.current.dateComponents([.day], from: Constant.MyClassConstants.vacationSearchShowDate)
+            let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
+            let dateComp = calendar.dateComponents([.day], from: Constant.MyClassConstants.vacationSearchShowDate)
             let checkInToDate = dateComp.day ?? 0
             var searchType: VacationSearchType
             let requestRental = RentalSearchRegionsRequest()

@@ -8,14 +8,14 @@
 
 import Foundation
 
-struct CurrencyHelper {
+public struct CurrencyHelper {
 
     //
     // Map of registered currencies by code.
     //
     private var currenciesByCode = [String:Currency]()
     
-    init() {
+    public init() {
         // Init the Map of currenciesByCode
         registerCurrencies()
     }
@@ -28,7 +28,7 @@ struct CurrencyHelper {
     // param currencyCode the three-letter currency code, not null
     // return the singleton instance, never null
     //
-    func getCurrency(currencyCode: String) -> Currency {
+    public func getCurrency(currencyCode: String) -> Currency {
         if let currency = currenciesByCode[currencyCode] {
             return currency
         } else {
@@ -44,7 +44,7 @@ struct CurrencyHelper {
     // param countryCode
     // return the currency friendly symbol
     //
-    func getCurrencyFriendlySymbol(currencyCode: String, countryCode: String) -> String {
+    public func getCurrencyFriendlySymbol(currencyCode: String, countryCode: String) -> String {
         let currency = getCurrency(currencyCode: currencyCode)
         
         switch(currency.code) {
@@ -66,7 +66,7 @@ struct CurrencyHelper {
     // param currencyCode
     // return the currency friendly symbol
     //
-    func getCurrencyFriendlySymbol(currencyCode: String) -> String {
+    public func getCurrencyFriendlySymbol(currencyCode: String) -> String {
         return getCurrencyFriendlySymbol(currencyCode: currencyCode, countryCode: "")
     }
     
@@ -80,7 +80,7 @@ struct CurrencyHelper {
     // param currencyDescription the currency description
     // return the singleton instance, never null
     //
-    mutating func registerCurrency(_ currencyCode: String, _ currencySymbol: String, _ currencyDescription: String) -> Currency {
+    public mutating func registerCurrency(_ currencyCode: String, _ currencySymbol: String, _ currencyDescription: String) -> Currency {
         let currency = Currency(currencyCode, currencySymbol, currencyDescription)
         currenciesByCode[currencyCode] = currency
         return currency
@@ -115,16 +115,16 @@ struct CurrencyHelper {
 }
 
 // Protocol to hide our implementation of our Singleton.
-protocol CurrencyHelperLocatorProtocol {
+public protocol CurrencyHelperLocatorProtocol {
     func provideHelper() -> CurrencyHelper
 }
 
 // Singleton implementation for the CurrencyHelperLocatorProtocol.
 // Use an enum with a single case that implement our protocol.
-enum CurrencyHelperLocator: CurrencyHelperLocatorProtocol {
+public enum CurrencyHelperLocator: CurrencyHelperLocatorProtocol {
     case sharedInstance
     
-    func provideHelper() -> CurrencyHelper {
+    public func provideHelper() -> CurrencyHelper {
         return CurrencyHelper()
     }
 }

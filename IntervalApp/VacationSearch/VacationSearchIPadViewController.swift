@@ -321,7 +321,8 @@ class VacationSearchIPadViewController: UIViewController, UITableViewDelegate, U
                 cell.whoIsTravellingHeaderLabel.backgroundColor = IUIKColorPalette.titleBackdrop.color
                 cell.selectionStyle = .none
 
-                let myComponents = Calendar.current.dateComponents([.day, .weekday, .month, .year], from: Constant.MyClassConstants.vacationSearchShowDate)
+                let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
+                let myComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: Constant.MyClassConstants.vacationSearchShowDate)
                 cell.dayName.text = "\(Helper.getWeekdayFromInt(weekDayNumber: myComponents.weekday ?? 0))".localized()
                 cell.dayDate.text = "\(myComponents.day ?? 0)".localized()
                 
@@ -700,8 +701,8 @@ extension VacationSearchIPadViewController: SearchTableViewCellDelegate {
         
         if Constant.MyClassConstants.whereTogoContentArray.contains(Constant.MyClassConstants.allDestinations) {
             
-           
-            let dateComp = Calendar.current.dateComponents([.day], from: Constant.MyClassConstants.vacationSearchShowDate)
+            let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
+            let dateComp = calendar.dateComponents([.day], from: Constant.MyClassConstants.vacationSearchShowDate)
             let checkInToDate = dateComp.day ?? 0
             var searchType: VacationSearchType
             let requestRental = RentalSearchRegionsRequest()

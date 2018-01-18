@@ -33,9 +33,11 @@ extension String {
     fileprivate func createDateFormatter(_ format:String) -> DateFormatter {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = format
-        dateFormatter.timeZone = NSTimeZone.local
-        //dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
-        //dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+        if let timeZone = TimeZone(identifier: "UTC") {
+            dateFormatter.timeZone = timeZone
+        } else {
+            dateFormatter.timeZone = NSTimeZone.local
+        }
         return dateFormatter
     }
     

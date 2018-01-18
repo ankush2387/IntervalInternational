@@ -198,7 +198,8 @@ class AddDebitOrCreditCardViewController: UIViewController {
                 dateComponents.year = Int(year)
                 dateComponents.month = Int(month)
                 dateComponents.day = 01
-                let date = Calendar.current.date(from: dateComponents)
+                let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
+                let date = calendar.date(from: dateComponents)
                 let dateFor = DateFormatter()
                 dateFor.dateFormat = Constant.MyClassConstants.dateTimeFormat
                 let expString: String = dateFor.string(from: date ?? Date())

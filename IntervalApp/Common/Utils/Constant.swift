@@ -11,13 +11,14 @@ import DarwinSDK
 import GoogleMaps
 
 class Constant: NSObject {
-    
+
     static var holdingTimer: Timer?
     static var holdingTime = 18
     static var decreaseValue = 1
     static var activeAlertCount = 0
     static var needToReloadAlert = false
     static var selectedAlertToEdit: RentalAlert?
+    static var calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
   
       //***** common function to get device orientation *****//
     struct RunningDevice {
@@ -276,7 +277,7 @@ class Constant: NSObject {
         static var alertWindowStartDate: Date?
         static var alertWindowEndDate: Date?
         static var todaysDate = Date()
-        static var dateAfterTwoYear = NSCalendar.current.date(byAdding: .month, value: 24, to: NSDate() as Date)
+        static var dateAfterTwoYear = calendar.date(byAdding: .month, value: 24, to: NSDate() as Date)
         
         static var bundelVersionUsedString = "CFBundleShortVersionString".localized()
         static var member = "Member #  ".localized()
