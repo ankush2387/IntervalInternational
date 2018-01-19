@@ -17,9 +17,9 @@ final class RelinquishmentViewModel {
     private let sessionStore: SessionStore
     private let entityDataStore: EntityDataStore
     private let relinquishmentManager: RelinquishmentManager
-    private let sectionTitle = ["Club Interval Gold Weeks".localized(), "Points".localized(), "Interval Weeks".localized()]
+    private let sectionTitle = ["Club Interval Gold Weeks".localized(), nil, "Points".localized(), "Interval Weeks".localized()]
     
-    private enum Section: Int { case cigProgram, points, intervalWeeks }
+    private enum Section: Int { case cigProgram, cigWeeks, points, intervalWeeks }
     private var relinquishments: [Section: [Relinquishment]] = [:]
     private var simpleCellViewModels: [Section: [SimpleCellViewModel]] = [:]
     
@@ -120,37 +120,26 @@ final class RelinquishmentViewModel {
     // MARK: - Private functions
     private func processRelinquishmentGroups(myUnits: MyUnits) -> Promise<Void> {
         let relinquishmentGroups = relinquishmentManager.getRelinquishmentGroups(myUnits: myUnits)
-        relinquishments[.cigProgram] = relinquishmentGroups.cigPointsWeeks
+        relinquishments[.cigWeeks] = relinquishmentGroups.cigPointsWeeks
         relinquishments[.points] = relinquishmentGroups.pointsWeeks
         relinquishments[.intervalWeeks] = relinquishmentGroups.intervalWeeks
         simpleCellViewModels[.cigProgram] = processCIGProgram(for: relinquishmentGroups)
+        simpleCellViewModels[.cigWeeks] = relinquishmentGroups.cigPointsWeeks.map(process)
         simpleCellViewModels[.points] = relinquishmentGroups.pointsWeeks.map(process)
         simpleCellViewModels[.intervalWeeks] = relinquishmentGroups.intervalWeeks.map(process)
         return Promise.resolve()
     }
     
     private func processCIGProgram(for relinquishmentGroups: RelinquishmentGroups) -> [SimpleCellViewModel] {
-
-        var clubIntervalGoldWeeks: [SimpleCellViewModel] = []
-
-        if let availablePoints = relinquishmentGroups.cigPointsProgram?.availablePoints {
-            
-            let numberFormatter = NumberFormatter()
-            numberFormatter.numberStyle = .decimal
-            clubIntervalGoldWeeks.append(SimpleAvailableRelinquishmentPointsCellViewModel(cigImage: #imageLiteral(resourceName: "CIG"),
-                                                                                          actionButtonImage: #imageLiteral(resourceName: "VS_List-Plus_ORNG"),
-                                                                                          numberOfPoints: numberFormatter.string(from: availablePoints as NSNumber),
-                                                                                          availablePointsButtonText: "Available Points Tool".localized(),
-                                                                                          goldPointsHeadingLabelText: "Club Interval Gold Points".localized(),
-                                                                                          goldPointsSubHeadingLabel: "Available Points as of Today".localized()))
-        }
-        
-        if relinquishmentGroups.hasCIGPointsWeeks() {
-            clubIntervalGoldWeeks.append(SimpleSeperatorCellViewModel())
-            clubIntervalGoldWeeks += relinquishmentGroups.cigPointsWeeks.map(process)
-        }
-
-        return clubIntervalGoldWeeks
+        guard let availablePoints = relinquishmentGroups.cigPointsProgram?.availablePoints else { return [] }
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .decimal
+        return [SimpleAvailableRelinquishmentPointsCellViewModel(cigImage: #imageLiteral(resourceName: "CIG"),
+                                                                 actionButtonImage: #imageLiteral(resourceName: "VS_List-Plus_ORNG"),
+                                                                 numberOfPoints: numberFormatter.string(from: availablePoints as NSNumber),
+                                                                 availablePointsButtonText: "Available Points Tool".localized(),
+                                                                 goldPointsHeadingLabelText: "Club Interval Gold Points".localized(),
+                                                                 goldPointsSubHeadingLabel: "Available Points as of Today".localized())]
     }
 
     private func process(relinquishment: Relinquishment) -> SimpleCellViewModel {
@@ -218,16 +207,8 @@ final class RelinquishmentViewModel {
     }
     
     private func fetchRelinquishment(for indexPath: IndexPath) -> Relinquishment? {
-        
         guard let section = Section(rawValue: indexPath.section) else { return nil }
-        var index = indexPath.row
-        
-        // IndexOffset to account for AvailablePoints section and seperator
-        if case .cigProgram = section {
-            index -= 2
-        }
-        
-        return relinquishments[section]?[index]
+        return relinquishments[section]?[indexPath.row]
     }
 
     private func processCheckInDate(_ checkInDate: String?) -> String? {

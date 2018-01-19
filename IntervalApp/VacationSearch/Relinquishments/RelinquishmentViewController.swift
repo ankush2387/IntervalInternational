@@ -51,6 +51,12 @@ final class RelinquishmentViewController: UIViewController {
                                                 data: [OmnitureEvar.eVar41.value: OmnitureIdentifier.vacationSearch.value])
     }
     
+    fileprivate func seperatorSection() -> UIView {
+        let view = UIView()
+        view.backgroundColor = IntervalThemeFactory.deviceTheme.backgroundColorGray
+        return view
+    }
+    
     fileprivate func pushAvailablePointToolViewController() {
         
         // Ugh... Why was this not made into a Xib?
@@ -93,13 +99,15 @@ extension RelinquishmentViewController: UITableViewDataSource, SimpleViewModelBi
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         guard viewModel.hasCellViewModels(for: section) else { return 0 }
+        guard viewModel.title(for: section) != nil else { return 4 }
         return SimpleLabelHeaderView.estimatedHeight()
     }
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard let headerView = SimpleLabelHeaderView.headerView() as? SimpleLabelHeaderView else { return nil }
+        guard let headerTitle = viewModel.title(for: section) else { return seperatorSection() }
         headerView.headerType = .sectionHeaderGray
-        headerView.viewModel = SimpleLabelHeaderViewModel(headerTitle: viewModel.title(for: section))
+        headerView.viewModel = SimpleLabelHeaderViewModel(headerTitle: headerTitle)
         return headerView
     }
 
