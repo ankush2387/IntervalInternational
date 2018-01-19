@@ -694,13 +694,13 @@ transaction.</string>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Med-zL-4Xu">
-                                                    <rect key="frame" x="27" y="0.0" width="321" height="17"/>
+                                                    <rect key="frame" x="20" y="0.0" width="335" height="17"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="JaT-hK-rPW">
-                                                    <rect key="frame" x="27" y="17" width="20" height="20"/>
+                                                    <rect key="frame" x="20" y="17" width="20" height="20"/>
                                                     <color key="backgroundColor" red="0.96862745100000003" green="0.41176470590000003" blue="0.19215686269999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="20" id="1GX-ac-ae0"/>
@@ -957,7 +957,7 @@ transaction.</string>
                                         <rect key="frame" x="0.0" y="28" width="383" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="exy-kN-uRJ" id="HZD-c2-Kxy">
-                                            <rect key="frame" x="0.0" y="0.0" width="383" height="50"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="383" height="49.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Arizona, Lake Havasu" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YYE-QS-Kqe">
@@ -2829,14 +2829,14 @@ transaction.</string>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="JW2-EC-nuz">
-                                                    <rect key="frame" x="15" y="20" width="33" height="21"/>
+                                                    <rect key="frame" x="15" y="20" width="33.5" height="20.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="sWs-C4-RfV">
-                                                    <rect key="frame" x="15" y="44" width="44" height="14"/>
+                                                    <rect key="frame" x="15" y="43.5" width="44" height="14.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                     <nil key="textColor"/>
@@ -2911,7 +2911,7 @@ transaction.</string>
                                         <rect key="frame" x="0.0" y="28" width="375" height="90"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="oSN-ih-PeL" id="zZb-fK-UIm">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="90"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="89.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -2919,7 +2919,7 @@ transaction.</string>
                                         <rect key="frame" x="0.0" y="118" width="375" height="60"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="qNT-SI-vkM" id="r3x-cO-4hS">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="59.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -2987,7 +2987,7 @@ transaction.</string>
                                         <rect key="frame" x="0.0" y="28" width="375" height="77"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Zvv-BQ-JV5" id="gMM-qr-jvh">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="77"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="76.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Qdq-ev-xcy">
@@ -4192,7 +4192,7 @@ transaction.</string>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y39-oo-O1h">
-                                                    <rect key="frame" x="10" y="5" width="355" height="100"/>
+                                                    <rect key="frame" x="10" y="5" width="355" height="112"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="APR 07" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vtl-gi-9sc">
                                                             <rect key="frame" x="10" y="10" width="60" height="17.5"/>
@@ -4251,8 +4251,15 @@ transaction.</string>
                                                             <color key="textColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Let Deposit" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2eA-zu-tng">
+                                                            <rect key="frame" x="81" y="60" width="205" height="15.5"/>
+                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="13"/>
+                                                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Expires in 26 days." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1jQ-Xf-ucM">
-                                                            <rect key="frame" x="80" y="63" width="179" height="14"/>
+                                                            <rect key="frame" x="80" y="72" width="179" height="14"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="14" id="Ke8-yM-wvs"/>
                                                                 <constraint firstAttribute="width" constant="179" id="nR8-q7-hGl"/>
@@ -4282,14 +4289,14 @@ transaction.</string>
                                                             </userDefinedRuntimeAttributes>
                                                         </view>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="OfferIcon" translatesAutoresizingMaskIntoConstraints="NO" id="MoF-c4-Fhl">
-                                                            <rect key="frame" x="12" y="70" width="25" height="25"/>
+                                                            <rect key="frame" x="12" y="84" width="25" height="25"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" relation="lessThanOrEqual" constant="25" id="3G4-Vu-Ywu"/>
                                                                 <constraint firstAttribute="width" constant="25" id="TiB-9u-C2Z"/>
                                                             </constraints>
                                                         </imageView>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Some Offer Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="7" translatesAutoresizingMaskIntoConstraints="NO" id="zyO-AD-oBa">
-                                                            <rect key="frame" x="45" y="72" width="300" height="20"/>
+                                                            <rect key="frame" x="45" y="84" width="300" height="20"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" relation="lessThanOrEqual" constant="20" id="7Qc-hA-NvF"/>
                                                             </constraints>
@@ -4304,27 +4311,27 @@ transaction.</string>
                                                         <constraint firstItem="uPM-XS-vql" firstAttribute="leading" secondItem="Y39-oo-O1h" secondAttribute="leading" constant="10" id="7ft-w1-H9j"/>
                                                         <constraint firstAttribute="trailing" secondItem="1jQ-Xf-ucM" secondAttribute="trailing" constant="96" id="87e-E4-ljt"/>
                                                         <constraint firstItem="LFV-5h-tuB" firstAttribute="top" secondItem="Y39-oo-O1h" secondAttribute="top" constant="5" id="B9u-HT-mMJ"/>
-                                                        <constraint firstAttribute="height" constant="100" id="BFN-CZ-JgB"/>
+                                                        <constraint firstAttribute="height" constant="112" id="BFN-CZ-JgB"/>
                                                         <constraint firstItem="GjR-Nr-Xy8" firstAttribute="top" secondItem="9SB-YE-Ejr" secondAttribute="bottom" constant="-2" id="DfV-nv-LVk"/>
                                                         <constraint firstItem="5J4-54-kml" firstAttribute="leading" secondItem="9SB-YE-Ejr" secondAttribute="trailing" constant="8" id="E88-6B-8TA"/>
                                                         <constraint firstAttribute="trailing" secondItem="zyO-AD-oBa" secondAttribute="trailing" constant="10" id="JGf-Q8-bqS"/>
                                                         <constraint firstItem="3nd-Ka-44I" firstAttribute="leading" secondItem="Y39-oo-O1h" secondAttribute="leading" constant="10" id="LDX-vk-apA"/>
-                                                        <constraint firstItem="1jQ-Xf-ucM" firstAttribute="top" secondItem="GjR-Nr-Xy8" secondAttribute="bottom" constant="-3" id="OgX-6W-Rwh"/>
+                                                        <constraint firstItem="1jQ-Xf-ucM" firstAttribute="top" secondItem="GjR-Nr-Xy8" secondAttribute="bottom" constant="6" id="OgX-6W-Rwh"/>
                                                         <constraint firstItem="MoF-c4-Fhl" firstAttribute="leading" secondItem="Y39-oo-O1h" secondAttribute="leading" constant="12" id="OsM-9R-8vb"/>
                                                         <constraint firstItem="9SB-YE-Ejr" firstAttribute="leading" secondItem="uPM-XS-vql" secondAttribute="trailing" constant="10" id="UZM-3P-RjN"/>
                                                         <constraint firstAttribute="trailing" secondItem="5J4-54-kml" secondAttribute="trailing" constant="10" id="VHU-ln-4qm"/>
-                                                        <constraint firstAttribute="bottom" secondItem="MoF-c4-Fhl" secondAttribute="bottom" constant="5" id="XfP-0R-n0K"/>
+                                                        <constraint firstAttribute="bottom" secondItem="MoF-c4-Fhl" secondAttribute="bottom" constant="3" id="XfP-0R-n0K"/>
                                                         <constraint firstItem="3nd-Ka-44I" firstAttribute="top" secondItem="uPM-XS-vql" secondAttribute="bottom" constant="-5" id="Xje-db-8HV"/>
                                                         <constraint firstItem="Vtl-gi-9sc" firstAttribute="leading" secondItem="Y39-oo-O1h" secondAttribute="leading" constant="10" id="a6D-D3-y8l"/>
                                                         <constraint firstItem="5J4-54-kml" firstAttribute="top" secondItem="Y39-oo-O1h" secondAttribute="top" constant="19" id="aP6-Jz-aTd"/>
-                                                        <constraint firstItem="MoF-c4-Fhl" firstAttribute="top" secondItem="GjR-Nr-Xy8" secondAttribute="bottom" constant="4" id="btb-2N-Ops"/>
+                                                        <constraint firstItem="MoF-c4-Fhl" firstAttribute="top" secondItem="GjR-Nr-Xy8" secondAttribute="bottom" constant="18" id="btb-2N-Ops"/>
                                                         <constraint firstItem="zyO-AD-oBa" firstAttribute="leading" secondItem="MoF-c4-Fhl" secondAttribute="trailing" constant="8" id="bvK-GN-kEP"/>
                                                         <constraint firstItem="1jQ-Xf-ucM" firstAttribute="leading" secondItem="Y39-oo-O1h" secondAttribute="leading" constant="80" id="het-0G-ghU"/>
                                                         <constraint firstAttribute="bottom" secondItem="zyO-AD-oBa" secondAttribute="bottom" constant="8" id="ixz-7l-2SB"/>
                                                         <constraint firstItem="5J4-54-kml" firstAttribute="leading" secondItem="GjR-Nr-Xy8" secondAttribute="trailing" constant="8" id="kDB-3Y-RT8"/>
                                                         <constraint firstItem="LFV-5h-tuB" firstAttribute="leading" secondItem="Vtl-gi-9sc" secondAttribute="trailing" constant="10" id="nLg-TP-dYS"/>
                                                         <constraint firstItem="Vtl-gi-9sc" firstAttribute="top" secondItem="Y39-oo-O1h" secondAttribute="top" constant="10" id="pS2-iU-LT4"/>
-                                                        <constraint firstItem="zyO-AD-oBa" firstAttribute="top" secondItem="GjR-Nr-Xy8" secondAttribute="bottom" constant="6" id="qnE-ZN-yXF"/>
+                                                        <constraint firstItem="zyO-AD-oBa" firstAttribute="top" secondItem="GjR-Nr-Xy8" secondAttribute="bottom" constant="18" id="qnE-ZN-yXF"/>
                                                         <constraint firstItem="uPM-XS-vql" firstAttribute="top" secondItem="Vtl-gi-9sc" secondAttribute="bottom" constant="-3.5" id="u2x-8S-ZqO"/>
                                                         <constraint firstItem="GjR-Nr-Xy8" firstAttribute="leading" secondItem="3nd-Ka-44I" secondAttribute="trailing" constant="10" id="vUl-cZ-XO0"/>
                                                         <constraint firstItem="9SB-YE-Ejr" firstAttribute="top" secondItem="LFV-5h-tuB" secondAttribute="bottom" constant="-2" id="xr1-nU-6Zd"/>
@@ -4333,7 +4340,7 @@ transaction.</string>
                                             </subviews>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <constraints>
-                                                <constraint firstAttribute="bottom" secondItem="Y39-oo-O1h" secondAttribute="bottom" constant="5" id="B8D-MV-pEg"/>
+                                                <constraint firstAttribute="bottom" secondItem="Y39-oo-O1h" secondAttribute="bottom" constant="-7" id="B8D-MV-pEg"/>
                                                 <constraint firstItem="Y39-oo-O1h" firstAttribute="top" secondItem="UBF-I3-nY0" secondAttribute="top" constant="5" id="kqN-Co-dIN"/>
                                                 <constraint firstItem="Y39-oo-O1h" firstAttribute="leading" secondItem="UBF-I3-nY0" secondAttribute="leading" constant="10" id="o5V-8N-JXi"/>
                                                 <constraint firstAttribute="trailing" secondItem="Y39-oo-O1h" secondAttribute="trailing" constant="10" id="qXf-rs-u8g"/>
@@ -4347,6 +4354,7 @@ transaction.</string>
                                             <outlet property="mainView" destination="Y39-oo-O1h" id="Yb5-o4-7oV"/>
                                             <outlet property="promImgView" destination="MoF-c4-Fhl" id="yEo-Cr-iJh"/>
                                             <outlet property="promLabel" destination="zyO-AD-oBa" id="csB-3u-MYd"/>
+                                            <outlet property="requestTypeLbl" destination="2eA-zu-tng" id="NSb-Wl-Le7"/>
                                             <outlet property="resortName" destination="LFV-5h-tuB" id="Hgz-Km-w5c"/>
                                             <outlet property="totalSleepAndPrivate" destination="GjR-Nr-Xy8" id="YRW-5o-n4C"/>
                                             <outlet property="totalWeekLabel" destination="3nd-Ka-44I" id="lUc-c0-vPa"/>
@@ -5437,7 +5445,7 @@ to confirm a larger unit.</string>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="FlexchangeDestinationCell" rowHeight="83" id="HmQ-6r-2W8" customClass="FlexchangeDestinationCell" customModule="IntervalApp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="56" width="375" height="83"/>
+                                        <rect key="frame" x="0.0" y="55.5" width="375" height="83"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="HmQ-6r-2W8" id="LLx-dJ-vJ0">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="83"/>
@@ -5472,7 +5480,7 @@ to confirm a larger unit.</string>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="WhereToGoContentCell" rowHeight="84" id="DgA-Vh-YsC" customClass="WhereToGoContentCell" customModule="IntervalApp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="139" width="375" height="84"/>
+                                        <rect key="frame" x="0.0" y="138.5" width="375" height="84"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="DgA-Vh-YsC" id="dD8-5k-Dw3">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="84"/>
@@ -5524,7 +5532,7 @@ to confirm a larger unit.</string>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="CellIdentifier" rowHeight="75" id="xRl-P4-P79">
-                                        <rect key="frame" x="0.0" y="223" width="375" height="75"/>
+                                        <rect key="frame" x="0.0" y="222.5" width="375" height="75"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="xRl-P4-P79" id="1ER-aA-0iA">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="75"/>
@@ -5533,7 +5541,7 @@ to confirm a larger unit.</string>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="FlexchangeSearchButtonCell" rowHeight="75" id="1z4-Fp-mRT" customClass="SearchFlexchangeButtonCell" customModule="IntervalApp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="298" width="375" height="75"/>
+                                        <rect key="frame" x="0.0" y="297.5" width="375" height="75"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="1z4-Fp-mRT" id="e3t-cP-xIx">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="75"/>
@@ -6134,7 +6142,7 @@ to confirm a larger unit.</string>
                                         <rect key="frame" x="0.0" y="28" width="345" height="63"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="6sC-ch-ZrS" id="NpD-Jw-A7q">
-                                            <rect key="frame" x="0.0" y="0.0" width="345" height="63"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="345" height="62.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$10.00 Off" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="V7p-gc-VAj">
@@ -6835,7 +6843,7 @@ to confirm a larger unit.</string>
                                         <rect key="frame" x="0.0" y="28" width="355" height="278"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="YUH-P1-7Hm" id="EpQ-hL-E8x">
-                                            <rect key="frame" x="0.0" y="0.0" width="355" height="278"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="355" height="277.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9ha-mg-rWb">
@@ -6916,7 +6924,7 @@ to confirm a larger unit.</string>
                                         <rect key="frame" x="0.0" y="306" width="355" height="89"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="XbP-Go-j8O" id="GOP-TW-hhE">
-                                            <rect key="frame" x="0.0" y="0.0" width="355" height="89"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="355" height="88.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8or-JA-AwY">
@@ -7656,10 +7664,10 @@ to confirm a larger unit.</string>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="AvailableDestinationCountryOrContinentsTableViewCell" selectionStyle="none" indentationWidth="10" reuseIdentifier="regionCell" rowHeight="60" id="6eA-Rl-6eq" customClass="AvailableDestinationCountryOrContinentsTableViewCell" customModule="IntervalApp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="56" width="375" height="60"/>
+                                        <rect key="frame" x="0.0" y="55.5" width="375" height="60"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="6eA-Rl-6eq" id="YRp-8q-xAS">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="59"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="59.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="DropArrowIcon" translatesAutoresizingMaskIntoConstraints="NO" id="eNh-LA-WMH">
@@ -7719,10 +7727,10 @@ to confirm a larger unit.</string>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="AvailableDestinationPlaceTableViewCell" selectionStyle="default" indentationWidth="10" reuseIdentifier="areaCell" id="hcO-sA-0oH" customClass="AvailableDestinationPlaceTableViewCell" customModule="IntervalApp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="116" width="375" height="61"/>
+                                        <rect key="frame" x="0.0" y="115.5" width="375" height="61"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hcO-sA-0oH" id="Iya-ZR-M1b">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="60.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ecw-Jm-YKA">
@@ -7975,7 +7983,7 @@ to confirm a larger unit.</string>
                                         <rect key="frame" x="0.0" y="28" width="375" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Eed-Yk-H6H" id="BFp-hE-tPg">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="49.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2md-Fl-Vtn">
@@ -8046,7 +8054,7 @@ to confirm a larger unit.</string>
                                         <rect key="frame" x="0.0" y="78" width="375" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="QtS-am-83Y" id="bAy-tY-bam">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="49.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qAr-ZX-Hd8">
