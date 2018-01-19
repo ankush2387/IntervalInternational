@@ -53,7 +53,7 @@ final class RelinquishmentViewController: UIViewController {
     
     fileprivate func pushAvailablePointToolViewController() {
         
-        // Why was this not made into a xib?
+        // Ugh... Why was this not made into a Xib?
         if let viewController = UIStoryboard(name: Constant.storyboardNames.ownershipIphone, bundle: nil)
             .instantiateViewController(withIdentifier: Constant.storyboardControllerID.availablePointToolViewController)
             as? AvailablePointToolViewController {
@@ -79,7 +79,8 @@ final class RelinquishmentViewController: UIViewController {
     fileprivate func processNavigationAction(for relinquishment: Relinquishment) {
         
         if relinquishment.requireAdditionalInfo() {
-            
+            // Must push ...
+            //
         }
     }
 }
@@ -91,6 +92,7 @@ extension RelinquishmentViewController: UITableViewDelegate {
 extension RelinquishmentViewController: UITableViewDataSource, SimpleViewModelBinder {
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        guard viewModel.hasCellViewModels(for: section) else { return 0 }
         return SimpleLabelHeaderView.estimatedHeight()
     }
 

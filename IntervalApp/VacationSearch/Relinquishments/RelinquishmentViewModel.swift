@@ -57,6 +57,12 @@ final class RelinquishmentViewModel {
         return simpleCellViewModels.count
     }
 
+    func hasCellViewModels(for section: Int) -> Bool {
+        guard let sectionIdentifier = Section(rawValue: section),
+            let count = simpleCellViewModels[sectionIdentifier]?.count else { return false }
+        return count > 0
+    }
+
     func numberOfRows(for section: Int) -> Int {
         guard let sectionIdentifier = Section(rawValue: section) else { return 0 }
         return simpleCellViewModels[sectionIdentifier]?.count ?? 0
@@ -212,8 +218,16 @@ final class RelinquishmentViewModel {
     }
     
     private func fetchRelinquishment(for indexPath: IndexPath) -> Relinquishment? {
+        
         guard let section = Section(rawValue: indexPath.section) else { return nil }
-        return relinquishments[section]?[indexPath.row]
+        var index = indexPath.row
+        
+        // IndexOffset to account for AvailablePoints section and seperator
+        if case .cigProgram = section {
+            index -= 2
+        }
+        
+        return relinquishments[section]?[index]
     }
 
     private func processCheckInDate(_ checkInDate: String?) -> String? {
