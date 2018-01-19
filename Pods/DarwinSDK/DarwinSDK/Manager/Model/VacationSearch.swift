@@ -174,9 +174,14 @@ open class VacationSearch {
                     for checkInDate in checkInDates {
                         diffInDaysList.append(fromCheckInDate.daysBetween(to: checkInDate.dateFromShortFormat()))
                     }
-                    let closetIndex = diffInDaysList.closetIndexTo(0)
-                    let nearestCheckInDate = checkInDates[closetIndex]
-                    return nearestCheckInDate
+                    let closetDiff = diffInDaysList.closetDiffTo(0)
+                    if let index = diffInDaysList.index(of: closetDiff) {
+                        let nearestCheckInDate = checkInDates[index]
+                        return nearestCheckInDate
+                    } else {
+                        // Fallback
+                        return fromCheckInDate.stringWithShortFormatForJSON()
+                    }
                 }
             }
         }

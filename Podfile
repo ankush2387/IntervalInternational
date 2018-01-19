@@ -39,7 +39,7 @@ target 'IntervalApp' do
     pod 'XCGLogger', :git=>'https://github.com/DaveWoodCom/XCGLogger.git', branch: 'swift_3.0'
     pod 'ReactiveKit', :git=>'https://github.com/ReactiveKit/ReactiveKit.git', :tag => 'v3.6.2'
     pod 'IntervalUIKit', :git => 'https://bitbucket.iilg.com/scm/iimob/interval-uikit-ios.git', :commit => 'b831e371'
-    pod 'DarwinSDK', :git => 'https://bitbucket.iilg.com/scm/iimob/darwin-sdk-ios.git', branch: 'develop', :commit => '7ba2c85ec50'
+    pod 'DarwinSDK', :git => 'https://bitbucket.iilg.com/scm/iimob/darwin-sdk-ios.git', branch: 'develop', :commit => '56dfb49d4f2'
 end
 
 target 'IntervalAppTests' do
