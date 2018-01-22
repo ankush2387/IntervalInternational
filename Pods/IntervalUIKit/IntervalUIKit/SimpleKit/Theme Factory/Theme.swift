@@ -62,6 +62,11 @@ public enum Theme {
     public var backgroundColorGray: UIColor {
         return UIColor(red: 0.91, green: 0.91, blue: 0.92, alpha: 1.0)
     }
+
+    /// #FFFFFF
+    public var backgroundColorWhite: UIColor {
+        return .white
+    }
     
     /// #70B909
     public var activeGreen: UIColor {
