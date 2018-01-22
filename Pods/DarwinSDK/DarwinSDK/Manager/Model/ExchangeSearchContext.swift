@@ -57,7 +57,7 @@ open class ExchangeSearchContext {
      * Check if the response of Exchange Search Dates has resortCodes
      */
     open func hasOutResortCodes() -> Bool {
-        return self.response.resortCodes.isEmpty
+        return !self.response.resortCodes.isEmpty
     }
     
     /*

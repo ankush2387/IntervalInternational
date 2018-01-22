@@ -11,7 +11,7 @@ import DarwinSDK
 import GoogleMaps
 
 class Constant: NSObject {
-
+    
     static var holdingTimer: Timer?
     static var holdingTime = 18
     static var decreaseValue = 1
@@ -19,8 +19,8 @@ class Constant: NSObject {
     static var needToReloadAlert = false
     static var selectedAlertToEdit: RentalAlert?
     static var calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
-  
-      //***** common function to get device orientation *****//
+    
+    //***** common function to get device orientation *****//
     struct RunningDevice {
         static var deviceOrientation: UIDeviceOrientation?
         static var deviceIdiom = UIDevice().userInterfaceIdiom
@@ -28,7 +28,7 @@ class Constant: NSObject {
     
     //Getaways SearchResult CardFormDetail Data
     struct GetawaySearchResultGuestFormDetailData {
-    
+        
         static var countryCodeArray = [String]()
         static var stateCodeArray = [String]()
         static var countryListArray = [Country]()
@@ -55,7 +55,7 @@ class Constant: NSObject {
         static var unitNumber = ""
         static var bedroomUnit = ""
         static var checkInDate = ""
-    
+        
     }
     
     //Float additional info textfield variabls
@@ -137,7 +137,7 @@ class Constant: NSObject {
         
         //Relinquishment available points program
         static var relinquishmentAvailablePointsProgram = 0
-      
+        
         //global variable to hold stepper Adult current value
         static var stepperAdultCurrentValue = 2
         
@@ -216,7 +216,7 @@ class Constant: NSObject {
         
         static var fourSegmentHeaderTextArray = ["Where do you want to go".localized(), "What do you want to trade".localized(), "Check in closest to".localized(), "Who is travelling".localized()]
         
-         static var headerTextFlexchangeDestination = "Your selected Flexchange Destination".localized()
+        static var headerTextFlexchangeDestination = "Your selected Flexchange Destination".localized()
         
         static var sectionHeaderArray = ["Destinations".localized(), "Resorts".localized()]
         static var relinquishmentHeaderArray = ["Club Interval Gold Weeks".localized(), "", "Club Points".localized(), "Interval Weeks".localized(), "Deposited".localized()]
@@ -270,7 +270,7 @@ class Constant: NSObject {
         static let relinquishmentTitle = "Select all or any lock-off portion".localized()
         static let floatTitle = "Select one lock-off portion at a time".localized()
         static let bedroomTitle = "Choose Bedrooms".localized()
-    
+        
         static var selectedIndex = 0
         static var vacationSearchContentPagerRunningIndex = 0
         static var vacationSearchShowDate = Date()
@@ -539,10 +539,10 @@ class Constant: NSObject {
         static var promotionsArray = [Promotion]()
         static var htmlHeader = "<html><body>"
         static var htmlFooter = "</html></body>"
-    
+        
         // Choose relinquishments
         static var filterRelinquishments = [ExchangeRelinquishment]()
-
+        
         //UserDefaults
         static var userName = "userName"
         static var firstTimeRunning = "firstTimeRunnig"
@@ -554,9 +554,9 @@ class Constant: NSObject {
         
         //Keypath for picker
         static var keyTextColor = "textColor"
-
+        
         static var initialVacationSearch = VacationSearch()
-
+        
         //used to not remove observers on ipad googleMapViewController when going to map or weather view
         static var goingToMapOrWeatherView = false
         //Global App Settings
@@ -578,12 +578,12 @@ class Constant: NSObject {
         
         // All available destinations
         static var allDestinationsOption = "All Destinations Options".localized()
-         static var viewSelectedDestination = "View Selected Destinations".localized()
+        static var viewSelectedDestination = "View Selected Destinations".localized()
         
         // Renewals
         static var renewalsHeaderTitle = ""
         static var comboHeaderTitle = "Keep your Interval Benefits".localized()
-        static var coreHeaderTitle = "Renew your Membership".localized()
+        static var coreHeaderTitle = "Renew Your Membership".localized()
         static var freeGuestCertificateTitle = "FREE GUEST CERTIFICATES".localized()
         static var isNoThanksFromRenewalAgain = false
         
@@ -597,7 +597,7 @@ class Constant: NSObject {
         static var isChangeNoThanksButtonTitle = false
         
         static var isDismissWhoWillBeCheckin = false
-                
+        
         static var guestCertificateString = "Get a FREE Guest Certificate now and every time with Interval Platinum. Your Interval Platinum must be active through your travel dates to receive FREE Guest Certificates. To upgrade or renew, a".localized()
         
         static var popToLoginView =  "PopToLoginView"
@@ -611,7 +611,7 @@ class Constant: NSObject {
     }
     
     // Enum to store openWeek types
-     enum RelinquishmentTypes {
+    enum RelinquishmentTypes {
         case Deposit(Deposits)
         case ClubPoints(ClubPoints)
         case CIGPoints(rlmPointsProgram)
@@ -633,8 +633,8 @@ class Constant: NSObject {
     
     //Enum for not saved resort destinations
     enum AlertResortDestination {
-       case Resort(Resort)
-       case Destination(AreaOfInfluenceDestination)
+        case Resort(Resort)
+        case Destination(AreaOfInfluenceDestination)
     }
     
     // Enum to store area and area code
@@ -666,7 +666,7 @@ class Constant: NSObject {
         static var privateString = " Private".localized()
         static var exactString = "Resorts in ".localized()
         static var surroundingString = "Resorts near ".localized()
-
+        
         static var contactName = "contactname"
         static var cardName = "cardname"
         static var loginID = "loginid"
@@ -950,7 +950,7 @@ class Constant: NSObject {
         static var sorting = "Sorting".localized()
         static var choosewhattouse = "Choose what to use".localized()
         static var flexChangeSearch = "Flexchange Search".localized()
-         static var availableDestinations = "Available Destinations".localized()
+        static var availableDestinations = "Available Destinations".localized()
     }
     
     //***** Common structure for custom cell identifiers ******//
@@ -1121,7 +1121,7 @@ class Constant: NSObject {
         static var unitDetailsCell1 = "UnitDetails"
         static var dateCell = "DateCell"
         static var additionalAdvisementCell = "AdditionalAdvisementCell"
-      
+        
     }
     
     //***** common  structure to provide all Payment Selection View Controller CellIdentifiers And HardCoded Strings *****//
@@ -1218,7 +1218,7 @@ class Constant: NSObject {
         static var search = "Search"
         static var exchange = "Exchange"
         static var getaway = "Getaways"
-
+        
     }
     
     //***** common  structure to provide all IntervalHDReusableIdentifiers *****//
@@ -1329,8 +1329,8 @@ class Constant: NSObject {
     //***** Common structure for dynamic strings combinining strings *****//
     
     struct getDynamicString {
-         static var clubInterValPointsUpTo = "Club Interval Gold Points up to".localized()
-         static var andString = "and".localized()
+        static var clubInterValPointsUpTo = "Club Interval Gold Points up to".localized()
+        static var andString = "and".localized()
         static var moreString = "more".localized()
         static var fromString = "From ".localized()
         static var weekString = " Wk.".localized()
@@ -1392,7 +1392,7 @@ class Constant: NSObject {
         static var showResortDetailsSegue = "showResortDetails"
         static var showRelinguishmentsDetailsSegue = "showRelinguishmentsDetails"
         static var showRenewelSegue = "RenewelSegue"
-
+        
         static var confirmationUpcomingTripSegue = "confirmationUpcomingTripSegue"
         static var newCreditCardSegue = "newCreditCardSegue"
         static var PolicyWebviewSegue = "privacyPolicyWebviewSegue"
@@ -1550,7 +1550,7 @@ class Constant: NSObject {
             static let clubInfoLabeltext = "Club"
             static let pointInfoLabelText = "Points"
         }
-    
+        
         //OwnershipDetailWithFreeDepositTableViewCell
         struct ownershipDetailWithFreeDepositTableViewCell {
             static let depositForFreeButtonTitle = "Deposit for a free \n Exchange"
@@ -1873,7 +1873,7 @@ class Constant: NSObject {
         static var sideMenuAppeared = "Side Menu Appeared"
         static var floatDetails = "Float Details 1"
         static var lockOffFloatUnitOptions = "Lock Off and Float Unit Options"
-      
+        
     }
     
     //Omniture Evars
@@ -2100,5 +2100,6 @@ class Constant: NSObject {
         static var bedroomselection = "Bedroomtapped"
         static var resortSelection  = "ResortSelect"
     }
-
+    
 }
+
