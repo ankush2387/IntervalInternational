@@ -81,6 +81,10 @@ class VacationSearchResultIPadController: UIViewController {
         
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        navigationController?.navigationBar.isHidden = false
+    }
+    
     func createSections() {
         
         let sections = Constant.MyClassConstants.initialVacationSearch.createSections()
@@ -376,7 +380,7 @@ class VacationSearchResultIPadController: UIViewController {
     
     // function called when search result page map view button pressed
     @IBAction func mapViewButtonPressed(_ sender: Any) {
-        
+        Constant.MyClassConstants.isFromSearchResult = false
         self.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultMapSegue, sender: nil)
     }
     
@@ -558,9 +562,9 @@ func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPat
                         }
                     }
                 }
-                
                 Constant.MyClassConstants.vacationSearchContentPagerRunningIndex = indexPath.section + 1
                 self.hideHudAsync()
+                self.navigationController!.view.layer.add(Helper.bottomToTopTransition(), forKey: kCATransition)
                 self.performSegue(withIdentifier: Constant.segueIdentifiers.vacationSearchDetailSegue, sender: nil)
             }) { (_) in
                 self.hideHudAsync()

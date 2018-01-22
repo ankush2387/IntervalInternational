@@ -41,10 +41,6 @@ class GoogleMapViewController: UIViewController {
     let bottomResortHeight: CGFloat = 206 + 49//added default tab bar height
     var sourceController = ""
     var selectedResortsArray: NSMutableArray = []
-    var drawButton: IUIKButton!
-    var clearButton: IUIKButton!
-    var listButton: IUIKButton!
-    var listView = UIView()
     var zoomIn = false
     var listTableView: UITableView!
     var drawButtonView: UIView!
@@ -55,31 +51,29 @@ class GoogleMapViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        //used to not remove observers if going to map or weather view
+        //navigationController?.navigationBar.isHidden = false
+//        //used to not remove observers if going to map or weather view
         Constant.MyClassConstants.goingToMapOrWeatherView = false
-        
+
         //***** Adding notifications so that it invoke the specific method when the notification is fired *****//
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
         NotificationCenter.default.addObserver(self, selector: #selector(closeButtonClicked), name: NSNotification.Name(rawValue: Constant.notificationNames.closeButtonClickedNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(reloadView), name: NSNotification.Name(rawValue: Constant.notificationNames.reloadFavoritesTabNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(resortSelectedFromsearchResultWithlatlong), name: NSNotification.Name(rawValue: Constant.notificationNames.reloadMapNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(displaySearchedResort), name: NSNotification.Name(rawValue: Constant.notificationNames.addMarkerWithRactangleRequestNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(updateMapMarkers), name: NSNotification.Name(rawValue: Constant.notificationNames.reloadMapForApply), object: nil)
-        self.googleMapSearchBar.placeholder = Constant.buttonTitles.searchVacation
-        
+        googleMapSearchBar.placeholder = Constant.buttonTitles.searchVacation
+
         if Constant.MyClassConstants.runningFunctionality != Constant.MyClassConstants.resortFunctionalityCheck {
-            
+
             //***** Creating and adding left  bar button for back button *****//
             let menuButton = UIBarButtonItem(image: UIImage(named: Constant.assetImageNames.backArrowNav), style: .plain, target: self, action: #selector(GoogleMapViewController.menuBackButtonPressed(_:)))
             menuButton.tintColor = UIColor.white
-            self.navigationItem.leftBarButtonItem = menuButton
-            
-            self.navigationItem.title = Constant.ControllerTitles.vacationSearchDestinationController
-            self.bottomViewWithButtons()
+            navigationItem.leftBarButtonItem = menuButton
+            navigationItem.title = Constant.ControllerTitles.vacationSearchDestinationController
         } else {
-            self.navigationItem.title = Constant.MyClassConstants.resortDirectoryTitle
+            navigationItem.title = Constant.MyClassConstants.resortDirectoryTitle
         }
-        
+
         //***** Condition for maintaining the back button and hamberger menu according to logged in or pre login *****//
         if Constant.MyClassConstants.runningFunctionality == Constant.MyClassConstants.resortFunctionalityCheck && Constant.MyClassConstants.isLoginSuccessfull {
             if let rvc = self.revealViewController() {
@@ -88,15 +82,15 @@ class GoogleMapViewController: UIViewController {
                 let menuButton = UIBarButtonItem(image: UIImage(named: Constant.assetImageNames.ic_menu), style: .plain, target: rvc, action: #selector(SWRevealViewController.revealToggle(_:)))
                 menuButton.tintColor = UIColor.white
                 self.navigationItem.leftBarButtonItem = menuButton
-                
+
                 //***** This line allows the user to swipe left-to-right to reveal the menu. We might want to comment this out if it becomes confusing. *****//
                 self.view.addGestureRecognizer( rvc.panGestureRecognizer())
             }
-            
+
         } else {
-            
+
             let menuButton = UIBarButtonItem(image: UIImage(named: Constant.assetImageNames.backArrowNav), style: .plain, target: self, action: #selector(menuBackButtonPressed(_:)))
-            
+
             menuButton.tintColor = UIColor.white
             self.navigationItem.leftBarButtonItem = menuButton
         }
@@ -105,16 +99,16 @@ class GoogleMapViewController: UIViewController {
     override func viewDidDisappear(_ animated: Bool) {
         if Constant.MyClassConstants.goingToMapOrWeatherView == false {
             Constant.MyClassConstants.btnTag = -1
-            
+
             //**** Remove added observers ****//
             NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.closeButtonClickedNotification), object: nil)
-            
+
             NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.reloadFavoritesTabNotification), object: nil)
-            
+
             NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.reloadMapNotification), object: nil)
-            
+
             NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.addMarkerWithRactangleRequestNotification), object: nil)
-            
+
             NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.reloadMapForApply), object: nil)
         }
         
@@ -124,9 +118,9 @@ class GoogleMapViewController: UIViewController {
         if self.searchDisplayTableView.frame.origin.y == UIScreen.main.bounds.height {
             self.searchDisplayTableView.frame = CGRect(x: 0, y: UIScreen.main.bounds.height, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - 152)
         } else {
-            self.searchDisplayTableView.frame = CGRect(x: 0, y: 108, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - 152)
+            self.searchDisplayTableView.frame = CGRect(x: 0, y: 120, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - 152)
         }
-        
+
         if Constant.MyClassConstants.addResortSelectedIndex.count == 0 && self.navigationItem.rightBarButtonItem != nil {
             self.navigationItem.rightBarButtonItem!.isEnabled = false
         } else {
@@ -138,7 +132,7 @@ class GoogleMapViewController: UIViewController {
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        getScreenFrameForOrientation()
+        //getScreenFrameForOrientation()
     }
     
     func updateMapMarkers() {
@@ -166,61 +160,19 @@ class GoogleMapViewController: UIViewController {
             resortCollectionView.reloadData()
         }
     }
-    func bottomViewWithButtons() {
-        
-        if drawButton == nil {
-            
-            drawButtonView = UIView(frame: CGRect(x: 0, y: self.view.frame.height - 44, width: self.view.frame.width, height: 44))
-            drawButtonView.backgroundColor = UIColor.white
-            
-            self.drawButton = IUIKButton(frame: CGRect(x: 0, y: 0, width: self.view.frame.width / 2, height: 44))
-            self.drawButton.isEnabled = false
-            self.drawButton.setTitle(Constant.MyClassConstants.draw, for: UIControlState.normal)
-            self.drawButton.setTitleColor(IUIKColorPalette.primary1.color, for: UIControlState.normal)
-            self.drawButton.setTitleColor(IUIKColorPalette.altState.color, for: UIControlState.disabled)
-            self.drawButton.addTarget(self, action: #selector(drawButtonPressed(sender:)), for: .touchUpInside)
-            drawButtonView.addSubview(drawButton)
-            
-            self.clearButton = IUIKButton(frame: CGRect(x: self.view.frame.width / 2, y: 0, width: self.view.frame.width / 2, height: 44))
-            self.clearButton.isEnabled = false
-            self.clearButton.setTitle(Constant.MyClassConstants.clear, for: UIControlState.normal)
-            self.clearButton.setTitleColor(IUIKColorPalette.primary1.color, for: UIControlState.normal)
-            self.clearButton.setTitleColor(IUIKColorPalette.altState.color, for: UIControlState.disabled)
-            drawButtonView.addSubview(clearButton)
-            
-            if Constant.RunningDevice.deviceIdiom == .phone {
-                
-                self.drawButton.frame = CGRect(x: 0, y: 0, width: self.view.frame.width / 3, height: 44)
-                self.clearButton.frame = CGRect(x: self.view.frame.width / 3, y: 0, width: self.view.frame.width / 3, height: 44)
-                self.listButton = IUIKButton(frame: CGRect(x: 2 * (self.view.frame.width / 3), y: 0, width: self.view.frame.width / 3, height: 44))
-                self.listButton.isEnabled = false
-                self.listButton.setTitle(Constant.MyClassConstants.list, for: UIControlState.normal)
-                self.listButton.setTitleColor(IUIKColorPalette.primary1.color, for: UIControlState.normal)
-                self.listButton.setTitleColor(IUIKColorPalette.altState.color, for: UIControlState.disabled)
-                self.listButton.setTitleColor(IUIKColorPalette.altState.color, for: UIControlState.disabled)
-                self.listButton.addTarget(self, action: #selector(listButtonPressed(sender:)), for: .touchUpInside)
-                drawButtonView.addSubview(listButton)
-                
-            }
-            
-            self.view.addSubview(drawButtonView)
-            self.view.bringSubview(toFront: drawButtonView)
-        }
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //hide map current location button
+       //hide map current location button
         self.mapView.settings.myLocationButton = false
         self.mapView.isMyLocationEnabled = false
-        
+
         // condition check to send resort directory
         if Constant.MyClassConstants.runningFunctionality == Constant.MyClassConstants.resortFunctionalityCheck {
-            
+
             // omniture tracking with event 40
             Helper.trackOmnitureCallForPageView(name: Constant.omnitureCommonString.resortDirectoryHome)
-            
+
         }
         //Location Manager code to fetch current location
         self.locationManager.delegate = self
@@ -228,19 +180,19 @@ class GoogleMapViewController: UIViewController {
         mapView.delegate = self
         locationManager.requestWhenInUseAuthorization()
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        
+
         self.searchDisplayTableView.isHidden = true
-        
+
         //***** Register custom cell with map tale view with some validation check *****//
         if mapTableView != nil {
-            
+
             self.mapTableView.isHidden = true
             if mapTableView.tag != 1 {
-                
+
                 mapTableView.register(UINib(nibName: Constant.customCellNibNames.searchResultContentTableCell, bundle: nil), forCellReuseIdentifier: Constant.customCellNibNames.searchResultContentTableCell)
             }
         }
-        
+
         //***** Creating and adding right bar button for Apply selected resort button *****//
         if Constant.MyClassConstants.runningFunctionality != Constant.MyClassConstants.resortFunctionalityCheck {
             applyButton = UIBarButtonItem(title: Constant.AlertPromtMessages.applyButtonTitle, style: .plain, target: self, action: #selector(applyButtonPressed(_:)))
@@ -248,7 +200,7 @@ class GoogleMapViewController: UIViewController {
             applyButton.tintColor = UIColor.white
             self.navigationItem.rightBarButtonItem = applyButton
         }
-        
+
         if mapSideView != nil && self.containerView != nil {
             self.containerView.tag = 100
             containerView.isHidden = true
@@ -511,7 +463,6 @@ class GoogleMapViewController: UIViewController {
             
             let storyboard = UIStoryboard(name: Constant.storyboardNames.iphone, bundle: nil)
             let viewController = storyboard.instantiateViewController(withIdentifier: Constant.storyboardNames.signInPreLoginController)
-            //self.navigationController?.pushViewController(viewController, animated: true)
             
             //***** creating animation transition to show custom transition animation *****//
             let transition: CATransition = CATransition()
@@ -706,61 +657,6 @@ class GoogleMapViewController: UIViewController {
                 
                 self.dragButton.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi))
             })
-        }
-    }
-    
-    //***** List Button Pressed. *****//
-    func listButtonPressed(sender: UIButton) {
-        
-        if Constant.MyClassConstants.addResortSelectedIndex.count > 0 {
-            self.navigationItem.rightBarButtonItem!.isEnabled = true
-        }
-        
-        if listTableView == nil {
-            listView.frame = CGRect(x: 0, y: UIScreen.main.bounds.height, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - (64 + 50))
-            listTableView = UITableView()
-            listTableView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: listView.bounds.size.height)
-            listTableView.register(UINib(nibName: Constant.customCellNibNames.searchResultContentTableCell, bundle: nil), forCellReuseIdentifier: Constant.customCellNibNames.searchResultContentTableCell)
-            listTableView.dataSource = self
-            listTableView.delegate = self
-            listView.addSubview(listTableView)
-            self.view.addSubview(listView)
-        } else {
-            listTableView.reloadData()
-        }
-        
-        self.view.bringSubview(toFront: drawButtonView)
-        self.view.bringSubview(toFront: listView)
-        animateListView(sender: sender)
-    }
-    
-    // ***** Animate list view method *****//
-    func animateListView(sender: UIButton) {
-        self.view.bringSubview(toFront: self.drawButtonView)
-        UIView.animate (withDuration: 0.5, delay: 0.1, options: UIViewAnimationOptions.curveEaseIn, animations: {
-            if self.listView.frame.origin.y == UIScreen.main.bounds.height && sender.currentTitle == Constant.MyClassConstants.list {
-                
-                self.listButton.setTitleColor(UIColor.lightGray, for: UIControlState.normal)
-                self.drawButton.setTitleColor(IUIKColorPalette.primary1.color, for: UIControlState.normal)
-                self.clearButton.setTitleColor(IUIKColorPalette.primary1.color, for: UIControlState.normal)
-                self.listView.frame = CGRect(x: 0, y: 64, width: self.listView.frame.size.width, height: self.listView.frame.size.height)
-                
-            } else {
-                
-                self.listButton.setTitleColor(IUIKColorPalette.primary1.color, for: UIControlState.normal)
-                self.clearButton.setTitleColor(IUIKColorPalette.primary1.color, for: UIControlState.normal)
-                sender.setTitleColor(UIColor.lightGray, for: UIControlState.normal)
-                self.listView.frame = CGRect(x: 0, y: UIScreen.main.bounds.height, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - (64 + 50))
-                
-            }
-        }, completion: { _ in
-        })
-    }
-    
-    // ***** Draw button pressed *****//
-    func drawButtonPressed(sender: UIButton) {
-        if Constant.RunningDevice.deviceIdiom == .phone {
-            animateListView(sender: sender)
         }
     }
     

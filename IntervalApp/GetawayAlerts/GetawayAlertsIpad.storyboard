@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="HGP-Ch-Scu">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="HGP-Ch-Scu">
     <device id="ipad9_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
@@ -180,13 +180,13 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LDc-RF-B2b">
-                                                    <rect key="frame" x="20" y="4" width="490" height="26"/>
+                                                    <rect key="frame" x="27" y="7" width="476" height="20"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nuf-ZG-R93">
-                                                    <rect key="frame" x="20" y="25" width="490" height="25"/>
+                                                    <rect key="frame" x="27" y="22" width="476" height="25"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="25" id="EoK-k0-IEj"/>
                                                     </constraints>
@@ -205,10 +205,10 @@
                                                     </variation>
                                                 </label>
                                                 <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="d9n-Sh-xoa">
-                                                    <rect key="frame" x="573" y="21" width="20" height="20"/>
+                                                    <rect key="frame" x="566" y="21" width="20" height="20"/>
                                                 </activityIndicatorView>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d1r-VS-yDI" customClass="IUIKButton" customModule="IntervalUIKit">
-                                                    <rect key="frame" x="528" y="10" width="120" height="40"/>
+                                                    <rect key="frame" x="521" y="13" width="120" height="34"/>
                                                     <color key="backgroundColor" red="0.78823529410000004" green="0.78823529410000004" blue="0.80784313730000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="130" id="bN3-l0-Nht">
@@ -232,7 +232,7 @@
                                                     </variation>
                                                 </button>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2tV-Ex-jKK">
-                                                    <rect key="frame" x="0.0" y="59" width="668" height="1"/>
+                                                    <rect key="frame" x="7" y="56" width="654" height="1"/>
                                                     <color key="backgroundColor" red="0.78823529410000004" green="0.78823529410000004" blue="0.80784313730000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="1" id="r3F-vn-6mr"/>
@@ -1345,10 +1345,10 @@
                                                             <rect key="frame" x="0.0" y="0.0" width="190" height="100"/>
                                                             <subviews>
                                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="wrT-en-66M">
-                                                                    <rect key="frame" x="-8" y="-8" width="206" height="116"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="190" height="100"/>
                                                                 </imageView>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Key West FL" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TX1-Od-hbB">
-                                                                    <rect key="frame" x="-8" y="25" width="206" height="51"/>
+                                                                    <rect key="frame" x="0.0" y="25" width="190" height="51"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="height" constant="51" id="RB2-p7-Ead"/>
                                                                     </constraints>
@@ -1391,7 +1391,7 @@
                                                             </variation>
                                                         </view>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gev-nW-HEe" customClass="IUIKButton" customModule="IntervalUIKit">
-                                                            <rect key="frame" x="-8" y="-8" width="30" height="30"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="30" height="30"/>
                                                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="30" id="I6u-Nk-qw0"/>
@@ -1425,7 +1425,7 @@
                                                             </connections>
                                                         </button>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F1C-DP-G53" customClass="IUIKButton" customModule="IntervalUIKit">
-                                                            <rect key="frame" x="168" y="-8" width="30" height="30"/>
+                                                            <rect key="frame" x="160" y="0.0" width="30" height="30"/>
                                                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="30" id="5dd-Qu-Td8"/>
@@ -2593,13 +2593,13 @@
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qEa-NG-pxi">
-                                                            <rect key="frame" x="-8" y="-8" width="206" height="116"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="190" height="100"/>
                                                             <subviews>
                                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="CSN-fw-pmT">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="206" height="116"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="190" height="100"/>
                                                                 </imageView>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Key West FL" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oaU-L8-cwO">
-                                                                    <rect key="frame" x="0.0" y="33" width="206" height="51"/>
+                                                                    <rect key="frame" x="0.0" y="25" width="190" height="51"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="height" constant="51" id="dOE-PC-gna"/>
                                                                     </constraints>
@@ -2642,7 +2642,7 @@
                                                             </variation>
                                                         </view>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pmp-3D-8YK" customClass="IUIKButton" customModule="IntervalUIKit">
-                                                            <rect key="frame" x="-8" y="-8" width="30" height="30"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="30" height="30"/>
                                                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="30" id="hmW-pa-0Ge"/>
@@ -2676,7 +2676,7 @@
                                                             </connections>
                                                         </button>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Epi-Ei-RFH" customClass="IUIKButton" customModule="IntervalUIKit">
-                                                            <rect key="frame" x="168" y="-8" width="30" height="30"/>
+                                                            <rect key="frame" x="160" y="0.0" width="30" height="30"/>
                                                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="30" id="liR-ij-Sd0"/>

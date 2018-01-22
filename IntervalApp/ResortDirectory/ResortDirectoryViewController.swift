@@ -58,6 +58,9 @@ class ResortDirectoryViewController: UIViewController {
         
         getScreenFrameForOrientation()
     }
+    override func viewDidAppear(_ animated: Bool) {
+        navigationController?.navigationBar.isHidden = false
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -66,6 +69,10 @@ class ResortDirectoryViewController: UIViewController {
             
             //***** register custom cell nib files to show data on tablevew with custom cell *****//
             resortTableView.register(UINib(nibName: Constant.customCellNibNames.searchResultContentTableCell, bundle: nil), forCellReuseIdentifier: Constant.customCellNibNames.searchResultContentTableCell)
+        }
+        
+        func viewWillAppear(_ animated: Bool) {
+            navigationController?.navigationBar.isHidden = false
         }
         
         if backgroundImageView != nil && Constant.MyClassConstants.resortDirectoryAreaListArray.count > 0 {
@@ -410,6 +417,7 @@ extension ResortDirectoryViewController: UITableViewDelegate {
                 let selectedResort = Constant.MyClassConstants.resortDirectoryResortArray[indexPath.row]
                 showHudAsync()
                 //***** Favorites resort API call after successfull call *****//
+                Constant.MyClassConstants.isFromSearchResult = false
                 Helper.getUserFavorites {[unowned self] error in
                     if case .some = error {
                         self.presentAlert(with: "Error".localized(), message: error?.localizedDescription ?? "")

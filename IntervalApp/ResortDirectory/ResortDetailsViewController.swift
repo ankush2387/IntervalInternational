@@ -51,8 +51,11 @@ class ResortDetailsViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        navigationController?.navigationBar.isHidden = true
+        if Constant.RunningDevice.deviceIdiom == .phone {
+            navigationController?.navigationBar.isHidden = true
+        } else {
+            navigationController?.navigationBar.isHidden = false
+        }
         if !Constant.MyClassConstants.isFromSearchResult {
             cancelButton?.setTitle("Done".localized(), for: .normal)
             if Constant.MyClassConstants.isFromExchange && Constant.RunningDevice.deviceIdiom == .phone {
@@ -65,10 +68,12 @@ class ResortDetailsViewController: UIViewController {
             headerTextForShowingResortCounter?.isHidden = true
             
             if Constant.RunningDevice.deviceIdiom == .phone {
-                navigationController?.isNavigationBarHidden = true
+               // navigationController?.navigationBar.isHidden = true
                 tabBarController?.tabBar.isHidden = true
             }
             
+        } else {
+            navigationController?.navigationBar.isHidden = true
         }
         
         if headerTextForShowingResortCounter != nil {
@@ -105,6 +110,7 @@ class ResortDetailsViewController: UIViewController {
         }
     }
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -139,6 +145,7 @@ class ResortDetailsViewController: UIViewController {
             navigationController?.navigationBar.isHidden = false
             tabBarController?.tabBar.isHidden = false
         }
+        navigationController?.navigationBar.isHidden = false
     }
     
     override func didReceiveMemoryWarning() {
@@ -267,9 +274,11 @@ class ResortDetailsViewController: UIViewController {
     
     @IBAction func doneButtonClicked(_ sender: AnyObject) {
         if UIDevice.current.userInterfaceIdiom == .pad {
-            navigationController?.popViewController(animated: false)
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.notificationNames.closeButtonClickedNotification), object: nil)
-            
+            if Constant.MyClassConstants.isFromSearchResult {
+                navigationController?.popViewController(animated: false)
+            } else {
+                  NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.notificationNames.closeButtonClickedNotification), object: nil)
+            }
         } else {
             navigationController?.view.layer.add(Helper.topToBottomTransition(), forKey: nil)
             navigationController?.popViewController(animated: false)
@@ -279,6 +288,7 @@ class ResortDetailsViewController: UIViewController {
     @IBAction func closeButtonClicked(_ sender: AnyObject) {
         navigationController?.view.layer.add(Helper.topToBottomTransition(), forKey: nil)
         navigationController?.popViewController(animated: false)
+        //navigationController?.dismiss(animated: true)
     }
     
     //***** Function call for search button pressed. *****//
@@ -474,7 +484,7 @@ extension ResortDetailsViewController: UITableViewDelegate {
                         if Constant.RunningDevice.deviceIdiom == .pad {
                             guard let font = UIFont(name: Constant.fontName.helveticaNeue, size: 15.0) else { return 0 }
                                 height = heightForView(description, font: font, width: (view.frame.size.width) - 40)
-                            return height + 30
+                            return height + 40
                         } else {
                             guard let font = UIFont(name: Constant.fontName.helveticaNeue, size: 14.0) else { return 0 }
                             if let description = Constant.MyClassConstants.resortsDescriptionArray.description {
@@ -774,7 +784,20 @@ extension ResortDetailsViewController: UITableViewDataSource {
                 cell.resortNameGradientView.frame = frame
                 Helper.addLinearGradientToView(view: cell.resortNameGradientView, colour: UIColor.white, transparntToOpaque: true, vertical: false)
                 cell.resortCollectionView.collectionViewLayout.invalidateLayout()
+                
+                
+                cell.detailsPageControl.transform = CGAffineTransform(scaleX: 1.5, y: 1.5)
+                cell.detailsPageControl.activeImage = UIImage(named: "selected")
+                
+                cell.detailsPageControl.inactiveImage = UIImage(named: "unselected")
+                
                 cell.resortCollectionView.reloadData()
+                if Constant.MyClassConstants.imagesArray.isEmpty {
+                    cell.detailsPageControl.isHidden = true
+                } else {
+                    cell.detailsPageControl.isHidden = false
+                }
+                cell.detailsPageControl.numberOfPages = Constant.MyClassConstants.imagesArray.count
                 cell.resortName.text = Constant.MyClassConstants.resortsDescriptionArray.resortName
                 cell.resortAddress.text = Constant.MyClassConstants.resortsDescriptionArray.address?.cityName
                 cell.resortCode.text = Constant.MyClassConstants.resortsDescriptionArray.resortCode
@@ -885,6 +908,7 @@ extension ResortDetailsViewController: UITableViewDataSource {
                             }
                             resortInfoHeight = height + 30
                             let indexPath = NSIndexPath(item: indexPath.row, section: indexPath.section)
+                            //tableViewResorts.reloadData()
                             tableViewResorts.reloadRows(at: [indexPath as IndexPath], with: .automatic)
                             
                         case 4 :
