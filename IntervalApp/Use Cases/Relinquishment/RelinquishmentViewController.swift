@@ -6,7 +6,6 @@
 //  Copyright © 2017 Interval International. All rights reserved.
 //
 
-import UIKit
 import DarwinSDK
 import IntervalUIKit
 
@@ -85,8 +84,11 @@ final class RelinquishmentViewController: UIViewController {
     fileprivate func processNavigationAction(for relinquishment: Relinquishment) {
         
         if relinquishment.requireAdditionalInfo() {
-            // Must push ...
-            //
+            // This viewController must delegate back when the relinquishment has been saved
+            // Must find out how this data must be stored... to make changes in viewModel
+            let viewModel = AdditionalInformationViewModel(relinquishment: relinquishment)
+            let additionalInformationViewController = AdditionalInformationViewController(viewModel: viewModel)
+            navigationController?.pushViewController(additionalInformationViewController, animated: true)
         }
     }
 }

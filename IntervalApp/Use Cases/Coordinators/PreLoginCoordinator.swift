@@ -20,7 +20,8 @@ final class PreLoginCoordinator {
     weak var delegate: PreLoginCoordinatorDelegate?
 
     // MARK: - Private properties
-    private let clientAPIStore: ClientAPIStore
+    private let supportClientAPIStore: SupportClientAPIStore
+    private let authProviderClientAPIStore: AuthProviderClientAPIStore
     
     // MARK: - Private properties
     private var vacationSearchTypes: [String] {
@@ -33,13 +34,18 @@ final class PreLoginCoordinator {
     }
 
     // MARK: - Lifecycle
-    init(clientAPIStore: ClientAPIStore) {
-        self.clientAPIStore = clientAPIStore
+    init(authProviderClientAPIStore: AuthProviderClientAPIStore, supportClientAPIStore: SupportClientAPIStore) {
+        self.authProviderClientAPIStore = authProviderClientAPIStore
+        self.supportClientAPIStore = supportClientAPIStore
+    }
+
+    convenience init() {
+        self.init(authProviderClientAPIStore: ClientAPI.sharedInstance, supportClientAPIStore: ClientAPI.sharedInstance)
     }
     
     // MARK: - Private functions
     private func readClientAccessToken() {
-        clientAPIStore.readClientAccessToken()
+        authProviderClientAPIStore.readClientAccessToken()
             .then(onSuccess)
             .onError(onError)
     }
@@ -71,7 +77,7 @@ final class PreLoginCoordinator {
             self.delegate?.didLoad(token: darwinAccess, settings: settings)
         }
 
-        clientAPIStore.readAppSettings(for: darwinAccess)
+        supportClientAPIStore.readAppSettings(for: darwinAccess)
             .then(onSuccess)
             .onError(onError)
     }

@@ -13,7 +13,7 @@ import IntervalUIKit
 final class RelinquishmentViewModel {
     
     // MARK: - Private properties
-    private let clientAPI: ClientAPIStore
+    private let clientAPI: ExchangeClientAPIStore
     private let sessionStore: SessionStore
     private let entityDataStore: EntityDataStore
     private let relinquishmentManager: RelinquishmentManager
@@ -24,7 +24,7 @@ final class RelinquishmentViewModel {
     private var simpleCellViewModels: [Section: [SimpleCellViewModel]] = [:]
     
     // MARK: - Lifecycle
-    init(clientAPI: ClientAPIStore, sessionStore: SessionStore, entityDataStore: EntityDataStore, relinquishmentManager: RelinquishmentManager) {
+    init(clientAPI: ExchangeClientAPIStore, sessionStore: SessionStore, entityDataStore: EntityDataStore, relinquishmentManager: RelinquishmentManager) {
         self.clientAPI = clientAPI
         self.sessionStore = sessionStore
         self.entityDataStore = entityDataStore

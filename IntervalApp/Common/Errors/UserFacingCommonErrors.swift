@@ -12,6 +12,7 @@ enum UserFacingCommonError: ViewError {
 
     case noData
     case generic
+    case invalidSession
     case noNetConnection
     case noServerResponse
     case handleError(Any?)
@@ -27,6 +28,10 @@ enum UserFacingCommonError: ViewError {
         case .noData:
             return ("Data Error".localized(),
                     "Couldn't load data. If the problem persists, please contact Interval International.".localized())
+
+        case .invalidSession:
+            return ("Session Error".localized(),
+                    "It appears your session has become invalidated, please sign in again".localized())
 
         case .noServerResponse:
             return ("Server Error".localized(),

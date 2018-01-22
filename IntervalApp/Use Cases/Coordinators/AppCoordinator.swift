@@ -23,7 +23,7 @@ final class AppCoordinator {
     fileprivate let session = Session.sharedSession
     fileprivate let loginCoordinator: LoginCoordinator
     fileprivate let autoLogoutTimer = AutoLogoutTimer()
-    private let preLoginCoordinator = PreLoginCoordinator(clientAPIStore: ClientAPI.sharedInstance)
+    private let preLoginCoordinator = PreLoginCoordinator()
     
     fileprivate var userIsLoggedIn = false
     fileprivate var apnsCoordinator = APNSCoordinator()
