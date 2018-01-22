@@ -159,7 +159,7 @@ class CheckOutViewController: UIViewController {
     //**** Remove added observers ****//
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        navigationController?.navigationBar.isHidden = true
+        //navigationController?.navigationBar.isHidden = true
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.updateResortHoldingTime), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.changeSliderStatus), object: nil)
     }
@@ -289,13 +289,15 @@ class CheckOutViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         navigationController?.navigationBar.isHidden = false
+        remainingResortHoldingTimeLable.text = "We are holding this unit for \(Constant.holdingTime) minutes".localized()
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+
         remainingResortHoldingTimeLable.text = "We are holding this unit for \(Constant.holdingTime) minutes".localized()
-        
+        navigationController?.navigationBar.isHidden = false
         emailTextToEnter = Session.sharedSession.contact?.emailAddress ?? ""
         
         if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
@@ -337,10 +339,6 @@ class CheckOutViewController: UIViewController {
         checkoutOptionTBLview.reloadData()
         
     }
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        navigationController?.navigationBar.isHidden = true
-    }
     
     func updateResortHoldingTime() {
         
@@ -348,9 +346,18 @@ class CheckOutViewController: UIViewController {
             remainingResortHoldingTimeLable.text = "We are holding this unit for \(Constant.holdingTime) minutes".localized()
         } else {
             Constant.holdingTimer?.invalidate()
-            self.presentAlert(with: Constant.AlertMessages.holdingTimeLostTitle, message: Constant.AlertMessages.holdingTimeLostMessage, hideCancelButton: false, cancelButtonTitle: "Cancel".localized(), acceptButtonTitle: "Ok".localized(), acceptButtonStyle: .default, cancelHandler: nil, acceptHandler: {
-                self.navigationController?.popViewController(animated: true)
-            })
+            let alertController = UIAlertController(title: Constant.AlertMessages.holdingTimeLostTitle, message: Constant.AlertMessages.holdingTimeLostMessage, preferredStyle: .alert)
+            let Ok = UIAlertAction(title: Constant.AlertPromtMessages.ok, style: .default) { (_:UIAlertAction)  in
+                
+                let allViewControllers = self.navigationController?.viewControllers
+                for vc in allViewControllers.unsafelyUnwrapped {
+                    if vc.isKind(of: SearchResultViewController.self) {
+                        self.navigationController?.popToViewController(vc, animated: true)
+                    }
+                }
+            }
+            alertController.addAction(Ok)
+            present(alertController, animated: true, completion:nil)
         }
     }
     

@@ -18,14 +18,15 @@ class RentalInventoryCVCell: UICollectionViewCell {
     @IBOutlet weak var kitchenType: UILabel!
     @IBOutlet weak var promotionsView: UIView!
     @IBOutlet weak var currencySymbol: UILabel!
-    
     @IBOutlet weak var imgViewGetaway: UIImageView!
+    
     func setDataForRentalInventory(invetoryItem: Resort, indexPath: IndexPath) {
 
         // for unit in (invetoryItem.inventory?.units)! {
         let unit = (invetoryItem.inventory?.units[indexPath.item])!
         // price
         let price = Int(unit.prices[0].price)
+        
         self.getawayPrice.text = String(price)
         if Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.Combined {
             self.getawayPrice.isHidden = true

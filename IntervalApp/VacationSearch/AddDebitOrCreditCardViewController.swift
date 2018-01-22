@@ -13,15 +13,8 @@ import SVProgressHUD
 import TPKeyboardAvoiding
 import TPKeyboardAvoiding.UIScrollView_TPKeyboardAvoidingAdditions
 
-//***** Custom delegate method declaration *****//
-protocol AddDebitOrCreditCardViewControllerDelegate {
-    func newCreditCardAdded()
-}
 
 class AddDebitOrCreditCardViewController: UIViewController {
-    
-    //***** Custom cell delegate to access the delegate method *****//
-    var delegate: AddDebitOrCreditCardViewControllerDelegate?
     
     //Outlets
     @IBOutlet weak var cardDetailTBLview: UITableView!
@@ -91,17 +84,39 @@ class AddDebitOrCreditCardViewController: UIViewController {
         cardDetailTBLview.reloadData()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.navigationBar.isHidden = true
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.navigationBar.isHidden = false
+    }
     override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(true)
+        super.viewDidDisappear(animated)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.updateResortHoldingTime), object: nil)
     }
     
     // MARK: - Function to pop to search results if holding time is lost
     func updateResortHoldingTime() {
         
-        if Constant.holdingTime != 0 {
-        } else {
-            presentAlert(with: Constant.AlertMessages.holdingTimeLostTitle, message: Constant.AlertMessages.holdingTimeLostMessage)
+        func updateResortHoldingTime() {
+            
+            if Constant.holdingTime == 0 {
+                Constant.holdingTimer?.invalidate()
+                let alertController = UIAlertController(title: Constant.AlertMessages.holdingTimeLostTitle, message: Constant.AlertMessages.holdingTimeLostMessage, preferredStyle: .alert)
+                let Ok = UIAlertAction(title: Constant.AlertPromtMessages.ok, style: .default) { (_:UIAlertAction)  in
+                    
+                    let allViewControllers = self.navigationController?.viewControllers
+                    for vc in allViewControllers.unsafelyUnwrapped {
+                        if vc.isKind(of: SearchResultViewController.self) {
+                            self.navigationController?.popToViewController(vc, animated: true)
+                        }
+                    }
+                }
+                alertController.addAction(Ok)
+                present(alertController, animated: true, completion:nil)
+            }
         }
     }
     
@@ -240,9 +255,12 @@ class AddDebitOrCreditCardViewController: UIViewController {
                     }
                     Constant.MyClassConstants.selectedCreditCard.append(newCreditCard)
                     self.resetCreditCardDetails()
-                    self.dismiss(animated: false, completion: nil)
-                    self.delegate?.newCreditCardAdded()
-                    
+                    let allViewControllers = self.navigationController?.viewControllers
+                    for vc in allViewControllers.unsafelyUnwrapped {
+                        if vc.isKind(of: CheckOutViewController.self) {
+                            self.navigationController?.popToViewController(vc, animated: true)
+                        }
+                    }
                     }, onError: {(_) in
                         self.presentErrorAlert(UserFacingCommonError.generic)
                         self.hideHudAsync()
@@ -346,7 +364,7 @@ class AddDebitOrCreditCardViewController: UIViewController {
     //function to dismiss current controller on cancel button pressed.
     @IBAction func cancelButtonPressed(_ sender: AnyObject) {
          resetCreditCardDetails()
-         dismiss(animated: true)
+         navigationController?.popViewController(animated: true)
     }
     
     func addDoneButtonOnNumpad(textField: UITextField) {
@@ -450,7 +468,7 @@ extension AddDebitOrCreditCardViewController: UITableViewDataSource {
                 case 5:
                     return 80
                 case 0:
-                    return 70
+                    return 75
                 default :
                     return 50
                 }
@@ -475,15 +493,18 @@ extension AddDebitOrCreditCardViewController: UITableViewDataSource {
                     
                     return UITableViewCell()
                 }
+                cell.acceptedCardsMSG.text = ""
                 cell.nameTF.delegate = self
                 cell.nameTF.text = ""
                 if indexPath.row == 0 {
-                    
+                    cell.acceptedCardsMSG.text = "Interval accepts all major credit and debit cards.".localized()
                     if Constant.GetawaySearchResultCardFormDetailData.nameOnCard.isEmpty {
                         cell.nameTF.placeholder = Constant.textFieldTitles.nameOnCard
                     } else {
                         cell.nameTF.text = Constant.GetawaySearchResultCardFormDetailData.nameOnCard
                     }
+                    cell.nameTF.tag = indexPath.row
+                    cell.nameTF.accessibilityValue = "\(indexPath.section)"
                 } else if indexPath.row == 1 {
                     
                      if Constant.GetawaySearchResultCardFormDetailData.cardNumber.isEmpty {
@@ -491,6 +512,8 @@ extension AddDebitOrCreditCardViewController: UITableViewDataSource {
                      } else {
                         cell.nameTF.text = Constant.GetawaySearchResultCardFormDetailData.cardNumber
                     }
+                    cell.nameTF.tag = indexPath.row
+                    cell.nameTF.accessibilityValue = "\(indexPath.section)"
                     
                 } else {
                
@@ -499,9 +522,10 @@ extension AddDebitOrCreditCardViewController: UITableViewDataSource {
                     } else {
                         cell.nameTF.text = Constant.GetawaySearchResultCardFormDetailData.cvv
                     }
+                    cell.nameTF.tag = indexPath.row
+                    cell.nameTF.accessibilityValue = "\(indexPath.section)"
                 }
-                cell.nameTF.tag = indexPath.row
-                cell.nameTF.accessibilityValue = "\(indexPath.section)"
+               
                 cell.borderView.layer.borderColor = UIColor(red: 233.0 / 255.0, green: 233.0 / 255.0, blue: 235.0 / 255.0, alpha: 1.0).cgColor
                 cell.borderView.layer.borderWidth = 2
                 cell.borderView.layer.cornerRadius = 5
@@ -605,6 +629,7 @@ extension AddDebitOrCreditCardViewController: UITableViewDataSource {
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.guestTextFieldCell, for: indexPath) as? GuestTextFieldCell else {
                     return UITableViewCell()
                 }
+                cell.acceptedCardsMSG.text = ""
                 cell.nameTF.delegate = self
                 cell.nameTF.text = ""
                 if indexPath.row == 1 {

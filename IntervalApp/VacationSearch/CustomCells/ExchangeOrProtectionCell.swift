@@ -39,7 +39,7 @@ class ExchangeOrProtectionCell: UITableViewCell {
     }
     
     func setTotalPrice(with currencyDisplayes: String, and chargeAmount: Float) {
-        
+
         if let attributedAmount = chargeAmount.currencyFormatter(for:currencyDisplayes) {
             primaryPriceLabel.attributedText = attributedAmount
         }

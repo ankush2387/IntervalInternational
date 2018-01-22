@@ -120,7 +120,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
     }
     
     func addDoneButtonOnNumpad(textField: UITextField) {
-        
+
         let keypadToolbar: UIToolbar = UIToolbar()
         
         // add a done button to the numberpad
@@ -199,9 +199,18 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
             self.resortHoldingTimeLabel.text = "We are holding this unit for \(Constant.holdingTime) minutes".localized()
         } else {
             Constant.holdingTimer?.invalidate()
-            self.presentAlert(with: Constant.AlertMessages.holdingTimeLostTitle, message: Constant.AlertMessages.holdingTimeLostMessage, hideCancelButton: false, cancelButtonTitle: "Cancel".localized(), acceptButtonTitle: "Ok".localized(), acceptButtonStyle: .default, cancelHandler: nil, acceptHandler: {
-                self.navigationController?.popViewController(animated: true)
-            })
+            let alertController = UIAlertController(title: Constant.AlertMessages.holdingTimeLostTitle, message: Constant.AlertMessages.holdingTimeLostMessage, preferredStyle: .alert)
+            let Ok = UIAlertAction(title: Constant.AlertPromtMessages.ok, style: .default) { (_:UIAlertAction)  in
+                
+                let allViewControllers = self.navigationController?.viewControllers
+                for vc in allViewControllers.unsafelyUnwrapped {
+                    if vc.isKind(of: SearchResultViewController.self) {
+                        self.navigationController?.popToViewController(vc, animated: true)
+                    }
+                }
+            }
+            alertController.addAction(Ok)
+            present(alertController, animated: true, completion:nil)
         }
         
     }

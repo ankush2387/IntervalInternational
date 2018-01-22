@@ -3885,9 +3885,7 @@
                                                         </userDefinedRuntimeAttribute>
                                                     </userDefinedRuntimeAttributes>
                                                 </label>
-
                                                 <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="0rw-TF-B71">
-
                                                     <rect key="frame" x="37" y="87" width="20" height="20"/>
                                                 </activityIndicatorView>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="all_inclusive_checked" translatesAutoresizingMaskIntoConstraints="NO" id="5tD-YT-0cG">
@@ -4509,7 +4507,7 @@
                         <outlet property="bookingTableView" destination="xDm-wA-Sn0" id="NeH-yK-OMK"/>
                         <outlet property="checkoutTableView" destination="o3u-FW-zKw" id="for-yc-ZSx"/>
                         <outlet property="remainingResortHoldingTimeLabel" destination="tpR-pK-iSB" id="mXH-V2-ckY"/>
-                        <segue destination="vWj-V8-QCO" kind="presentation" identifier="selectPaymentSegue" id="IuN-SZ-Un7"/>
+                        <segue destination="vWj-V8-QCO" kind="show" identifier="selectPaymentSegue" id="IuN-SZ-Un7"/>
                         <segue destination="5vQ-ut-G3U" kind="presentation" identifier="showResortDetails" id="5di-wX-yoy"/>
                         <segue destination="yEv-v7-OpQ" kind="push" identifier="confirmationSegue" id="kWp-Z6-fLd"/>
                         <segue destination="5BT-QX-6Zq" kind="presentation" identifier="showRelinguishmentsDetails" id="bm5-1w-IwW"/>
@@ -4586,7 +4584,7 @@
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="143" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="DVg-Dn-QXS">
-                                <rect key="frame" x="40" y="100" width="688" height="884"/>
+                                <rect key="frame" x="40" y="100" width="688" height="835"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="SelectPaymentMethodCell" rowHeight="150" id="SaV-YX-E7F" customClass="SelectPaymentMethodCell" customModule="IntervalApp" customModuleProvider="target">
@@ -4884,6 +4882,7 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="acceptedCardsMSG" destination="D5Z-Ai-87y" id="PK7-5H-DXa"/>
                                             <outlet property="borderView" destination="q2K-7t-32d" id="U3Y-Wb-zl6"/>
                                             <outlet property="nameTF" destination="T8b-Un-0DO" id="aNc-n0-VU3"/>
                                         </connections>
@@ -5110,7 +5109,7 @@
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="170" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="UQr-UE-QNt">
-                                <rect key="frame" x="30" y="60" width="708" height="915"/>
+                                <rect key="frame" x="30" y="60" width="708" height="964"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="ViewDetailsTBLcell" rowHeight="130" id="nh8-hF-3hI" customClass="ViewDetailsTBLcell" customModule="IntervalApp" customModuleProvider="target">
@@ -10160,9 +10159,7 @@ Units Upgrade with this selection.</string>
                                                     <rect key="frame" x="15" y="13" width="678" height="63"/>
                                                     <subviews>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xky-ab-RUb">
-
                                                             <rect key="frame" x="0.0" y="1.5" width="80" height="60"/>
-
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="APR 07" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9x1-R3-Lah">
                                                                     <rect key="frame" x="5" y="0.0" width="70" height="21"/>
@@ -10203,9 +10200,7 @@ Units Upgrade with this selection.</string>
                                                             </constraints>
                                                         </view>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yQb-HJ-GkE">
-
                                                             <rect key="frame" x="80" y="-3.5" width="598" height="70"/>
-
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Westwood at Split Rock" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bWp-UI-AXx">
                                                                     <rect key="frame" x="4" y="5" width="584" height="18"/>

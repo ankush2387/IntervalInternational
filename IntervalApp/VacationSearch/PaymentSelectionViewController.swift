@@ -24,6 +24,8 @@ class PaymentSelectionViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+         NotificationCenter.default.addObserver(self, selector: #selector(updateResortHoldingTime), name: NSNotification.Name(rawValue: Constant.notificationNames.updateResortHoldingTime), object: nil)
+        
         showHudAsync()
         UserClient.getCreditCards(Session.sharedSession.userAccessToken!, onSuccess: { response in
             
@@ -40,10 +42,36 @@ class PaymentSelectionViewController: UIViewController {
         })
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.navigationBar.isHidden = true
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.navigationBar.isHidden = false
+    }
+    
+    func updateResortHoldingTime() {
+        
+        if Constant.holdingTime == 0 {
+            Constant.holdingTimer?.invalidate()
+            let alertController = UIAlertController(title: Constant.AlertMessages.holdingTimeLostTitle, message: Constant.AlertMessages.holdingTimeLostMessage, preferredStyle: .alert)
+            let Ok = UIAlertAction(title: Constant.AlertPromtMessages.ok, style: .default) { (_:UIAlertAction)  in
+                
+                let allViewControllers = self.navigationController?.viewControllers
+                for vc in allViewControllers.unsafelyUnwrapped {
+                    if vc.isKind(of: SearchResultViewController.self) {
+                        self.navigationController?.popToViewController(vc, animated: true)
+                    }
+                }
+            }
+            alertController.addAction(Ok)
+            present(alertController, animated: true, completion:nil)
+        }
+    }
     // function to dismis current controller on cancel button button pressed
     @IBAction func cancelButtonPressed(_ sender: AnyObject) {
-        
-     self.dismiss(animated: true, completion: nil)
+        navigationController?.popViewController(animated: true)
     }
     
     func doneButton_Clicked(_ sender: UIBarButtonItem) {
@@ -96,8 +124,8 @@ class PaymentSelectionViewController: UIViewController {
 
         if isCardExpired == true {
             
-            var cvv: UITextField?
-            var expiryDate: UITextField?
+            var cvv: UITextField
+            var expiryDate: UITextField
             
             let title = Constant.PaymentSelectionControllerCellIdentifiersAndHardCodedStrings.cvvandExpiryDateAlertTitle
             
@@ -109,46 +137,67 @@ class PaymentSelectionViewController: UIViewController {
             let inputView: UIView = UIView(frame: inputFrame)
             
             let codeFrame = CGRect(x: 7, y: 0, width: 120, height: 35)
-            let cvvTextField: UITextField = UITextField(frame: codeFrame)
-            cvvTextField.placeholder = Constant.textFieldTitles.cvv
-            cvvTextField.layer.borderWidth = 1.0
-            cvvTextField.borderStyle = UITextBorderStyle.line
-            cvvTextField.layer.borderColor = UIColor.lightGray.cgColor
-            cvvTextField.keyboardType = UIKeyboardType.numberPad
+            cvv = UITextField(frame: codeFrame)
+            cvv.placeholder = Constant.textFieldTitles.cvv
+            cvv.layer.borderWidth = 1.0
+            cvv.borderStyle = UITextBorderStyle.line
+            cvv.layer.borderColor = UIColor.lightGray.cgColor
+            cvv.keyboardType = UIKeyboardType.numberPad
             
             let numberFrame = CGRect(x: 142, y: 0, width: 120, height: 35)
-            let expirydateTextField: UITextField = UITextField(frame: numberFrame)
-            expirydateTextField.placeholder = Constant.textFieldTitles.expirationDatePlaceHolder
-            expirydateTextField.layer.borderWidth = 1.0
-            expirydateTextField.borderStyle = UITextBorderStyle.line
-            expirydateTextField.layer.borderColor = UIColor.lightGray.cgColor
-            expirydateTextField.keyboardType = UIKeyboardType.numbersAndPunctuation
-            
-            cvv = cvvTextField
-            expiryDate = expirydateTextField
-            if let cvv = cvv, let expiryDate = expiryDate {
-                inputView.addSubview(cvv)
-                inputView.addSubview(expiryDate)
-            }
+            expiryDate = UITextField(frame: numberFrame)
+            expiryDate.placeholder = Constant.textFieldTitles.expirationDatePlaceHolder
+            expiryDate.layer.borderWidth = 1.0
+            expiryDate.borderStyle = UITextBorderStyle.line
+            expiryDate.layer.borderColor = UIColor.lightGray.cgColor
+            expiryDate.keyboardType = UIKeyboardType.numbersAndPunctuation
+            //adding text fields on view
+            inputView.addSubview(cvv)
+            inputView.addSubview(expiryDate)
             alert.view.addSubview(inputView)
             
-            alert.addAction(UIAlertAction(title: Constant.AlertPromtMessages.cancel, style: .default, handler: nil))
+            alert.addAction(UIAlertAction(title: Constant.AlertPromtMessages.cancel, style: .default, handler: { (_) in
+                self.selectedCardIndex = -1
+                self.paymentSelectionTBLview.reloadData()
+                }))
             
-            alert.addAction(UIAlertAction(title: Constant.AlertPromtMessages.done, style: .default, handler: { [weak alert] (_) in
-
-                if cvv?.text?.count == 0 {
-                    cvv?.layer.borderColor = UIColor.red.cgColor
+            alert.addAction(UIAlertAction(title: Constant.AlertPromtMessages.done, style: .default, handler: { [unowned self] (_) in
+                guard let cvvNumber = cvv.text else { return }
+                guard let expDate = expiryDate.text else { return }
+                
+                if cvvNumber.isEmpty {
+                    self.selectedCardIndex = -1
+                    self.paymentSelectionTBLview.reloadData()
+                    let alertController = UIAlertController(title: "Alert".localized(), message: "CVV can not be empty!".localized(), preferredStyle: .alert)
+                    let Ok = UIAlertAction(title: Constant.AlertPromtMessages.ok, style: .default)
+                    alertController.addAction(Ok)
+                    self.present(alertController, animated: true, completion:nil)
                     return
                 }
-                if expiryDate?.text?.count == 0 {
-                    expiryDate?.layer.borderColor = UIColor.red.cgColor
+                if expDate.isEmpty {
+                    self.selectedCardIndex = -1
+                    self.paymentSelectionTBLview.reloadData()
+                    let alertController = UIAlertController(title: "Alert".localized(), message: "Exp Date can not be empty!".localized(), preferredStyle: .alert)
+                    let Ok = UIAlertAction(title: Constant.AlertPromtMessages.ok, style: .default)
+                    alertController.addAction(Ok)
+                    self.present(alertController, animated: true, completion:nil)
                     return
                 }
+               
+                Constant.MyClassConstants.memberCreditCardList[self.selectedCardIndex].cvv = cvvNumber
+                let expirydate = expDate
+                let dateArr: [String] = expirydate.components(separatedBy: "/")
                 
-                (Constant.MyClassConstants.memberCreditCardList[self.selectedCardIndex]).cvv = (cvv?.text)
-                let expirydate = expiryDate?.text
-                let dateArr: [String] = expirydate!.components(separatedBy: "/")
-                
+                if dateArr.count == 1 || dateArr[0].count > 2 || dateArr[1].count > 2 {
+                    
+                    self.selectedCardIndex = -1
+                    self.paymentSelectionTBLview.reloadData()
+                    let alertController = UIAlertController(title: "Wrong Exp Date Format".localized(), message: "Please enter exp Date with MM/YY format.".localized(), preferredStyle: .alert)
+                    let Ok = UIAlertAction(title: Constant.AlertPromtMessages.ok, style: .default)
+                    alertController.addAction(Ok)
+                    self.present(alertController, animated: true, completion:nil)
+                    return
+                }
                 // And then to access the individual words:
                 let month: String = dateArr[0]
                 let year: String = "20" + dateArr[1]
@@ -172,7 +221,7 @@ class PaymentSelectionViewController: UIViewController {
                         Constant.MyClassConstants.selectedCreditCard.removeAll()
                         let existingCard = Constant.MyClassConstants.memberCreditCardList[self.selectedCardIndex]
                         Constant.MyClassConstants.selectedCreditCard.append(existingCard)
-                        self.dismiss(animated: true, completion: nil)
+                        self.navigationController?.popViewController(animated: true)
                         
                     } else {
                         
@@ -180,7 +229,7 @@ class PaymentSelectionViewController: UIViewController {
                         let newCard = Constant.MyClassConstants.memberCreditCardList[self.selectedCardIndex]
                         newCard.creditcardId = 0
                         Constant.MyClassConstants.selectedCreditCard.append(newCard)
-                        self.dismiss(animated: true, completion: nil)
+                        self.navigationController?.popViewController(animated: true)
                         
                     }
                 }
@@ -200,7 +249,10 @@ class PaymentSelectionViewController: UIViewController {
             textField.keyboardType = UIKeyboardType.numberPad
         }
         
-        alert.addAction(UIAlertAction(title: Constant.AlertPromtMessages.cancel, style: .default, handler: nil))
+        alert.addAction(UIAlertAction(title: Constant.AlertPromtMessages.cancel, style: .default, handler: { (_) in
+            self.selectedCardIndex = -1
+            self.paymentSelectionTBLview.reloadData()
+        }))
 
         // 3. Grab the value from the text field, and print it when the user clicks OK.
         alert.addAction(UIAlertAction(title: Constant.AlertPromtMessages.done, style: .default, handler: { [weak alert] (_) in
@@ -214,13 +266,13 @@ class PaymentSelectionViewController: UIViewController {
                     Constant.MyClassConstants.selectedCreditCard.removeAll()
                     let existingCard = Constant.MyClassConstants.memberCreditCardList[self.selectedCardIndex]
                     Constant.MyClassConstants.selectedCreditCard.append(existingCard)
-                    self.dismiss(animated: true, completion: nil)
+                    self.navigationController?.popViewController(animated: true)
                 } else {
                     Constant.MyClassConstants.selectedCreditCard.removeAll()
                     let newCard = Constant.MyClassConstants.memberCreditCardList[self.selectedCardIndex]
                     newCard.creditcardId = 0
                     Constant.MyClassConstants.selectedCreditCard.append(newCard)
-                    self.dismiss(animated: true, completion: nil)
+                    self.navigationController?.popViewController(animated: true)
                 }
             }
             
@@ -249,9 +301,8 @@ extension PaymentSelectionViewController: UITableViewDelegate {
             let storyboardName = isRunningOnIphone ? Constant.storyboardNames.vacationSearchIphone : Constant.storyboardNames.vacationSearchIPad
             let storyboard = UIStoryboard(name: storyboardName, bundle: nil)
             if let addCardController = storyboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.addDebitOrCreditCardViewController) as? AddDebitOrCreditCardViewController {
-                modalTransitionStyle = .flipHorizontal
-                addCardController.delegate = self
-                self.present(addCardController, animated: true, completion: nil)
+                navigationController?.pushViewController(addCardController, animated: true)
+               
             }
         }
     }
@@ -379,13 +430,5 @@ extension PaymentSelectionViewController: UITableViewDataSource {
             
             return cell
         }
-    }
-}
-
-//custom delegate method
-extension PaymentSelectionViewController: AddDebitOrCreditCardViewControllerDelegate {
-    
-    func newCreditCardAdded() {
-        self.dismiss(animated: true, completion: nil)
     }
 }

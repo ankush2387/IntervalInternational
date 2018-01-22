@@ -15,7 +15,13 @@ extension Float {
     /// Returns nil in case of a failure.
     
     func currencyFormatter(for currency: String = "", baseLineOffSet: Int = 5) -> NSAttributedString? {
-        let amount = String(format: "%.2f", self)
+        
+        let numFor = NumberFormatter()
+            numFor.numberStyle = .decimal
+            numFor.maximumFractionDigits = 2
+            numFor.minimumFractionDigits = 2
+        let chargedAmount = numFor.string(from: self as NSNumber)
+        let amount = chargedAmount.unwrappedString
         let attributes: [String: Any] = [NSFontAttributeName: UIFont.systemFont(ofSize: 9), NSBaselineOffsetAttributeName: baseLineOffSet]
         let attributedTextWithAttributedCurrencySign = NSMutableAttributedString(string: currency, attributes: attributes)
         let attributedAmount = NSMutableAttributedString(string: amount)
