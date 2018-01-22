@@ -31,6 +31,7 @@ class WhatToUseViewController: UIViewController {
     var selectedRow = -1
     var selectedRowSection = -1
     var showInfoIcon = false
+    var hasbothSearchAvailability = true
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
@@ -447,7 +448,7 @@ extension WhatToUseViewController: UITableViewDelegate {
         if section != 0 {
             if section == 1 && Constant.MyClassConstants.filterRelinquishments.count == 0 {
                 return 0
-            } else if section == 2 && Constant.MyClassConstants.selectedResort.resortCode == "" {
+            } else if section == 2 && !hasbothSearchAvailability && Constant.MyClassConstants.filterRelinquishments.count > 0 {
                 return 0
             }
             return 30
@@ -481,7 +482,7 @@ extension WhatToUseViewController: UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         
-        if Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.Combined {
+        if Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == .Combined {
             return 3
         } else {
             return 2
@@ -490,16 +491,24 @@ extension WhatToUseViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+      
+        let count = Constant.MyClassConstants.filterRelinquishments.count
         
         switch section {
-            
         case 0:
             return 1
         case 1:
-            let count = Constant.MyClassConstants.filterRelinquishments.count
-            return count > 1 ? count + 1 : count
+            if (Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == .Combined && hasbothSearchAvailability) || count > 0 {
+                return count > 1 ? count + 1 : count
+            } else {
+                return 0
+            }
         case 2:
-            return 1
+            if !hasbothSearchAvailability && count > 0 {
+                return 0
+            } else {
+                return 1
+            }
         default:
             return 1
         }
@@ -507,11 +516,12 @@ extension WhatToUseViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        if indexPath.section == 0 {
+        switch indexPath.section {
+        case 0 :
             
             //***** Configure and return cell according to sections in tableview *****//
             
-            guard let cell: DestinationResortDetailCell = tableView.dequeueReusableCell(withIdentifier: "DestinationResortDetailCell", for: indexPath) as? DestinationResortDetailCell else { return UITableViewCell() }
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "DestinationResortDetailCell", for: indexPath) as? DestinationResortDetailCell else { return UITableViewCell() }
             
             cell.destinationImageView.image = #imageLiteral(resourceName: "RST_CO")
             
@@ -521,19 +531,19 @@ extension WhatToUseViewController: UITableViewDataSource {
             
             cell.selectionStyle = UITableViewCellSelectionStyle.none
             return cell
-        } else if indexPath.section == 1 {
+        case 1 :
             
             let count = Constant.MyClassConstants.filterRelinquishments.count
             if count > 1 && indexPath.row == 0 {
                 let cell = UITableViewCell()
-                    cell.textLabel?.text = "\(Constant.MyClassConstants.filterRelinquishments.count) of \(Constant.MyClassConstants.whatToTradeArray.count) relinquishments are available for Exchange".localized()
+                cell.textLabel?.text = "\(Constant.MyClassConstants.filterRelinquishments.count) of \(Constant.MyClassConstants.whatToTradeArray.count) relinquishments are available for Exchange".localized()
                 cell.textLabel?.font = UIFont(name: Constant.fontName.helveticaNeue, size: 15)
                 cell.textLabel?.textColor = UIColor(red: 159.0/255.0, green: 159.0/255.0, blue: 163.0/255.0, alpha: 1.0)
                 cell.textLabel?.textAlignment = .center
                 return cell
             }
             let exchange = count > 1 ?
-            Constant.MyClassConstants.filterRelinquishments[indexPath.row - 1] : Constant.MyClassConstants.filterRelinquishments[indexPath.row]
+                Constant.MyClassConstants.filterRelinquishments[indexPath.row - 1] : Constant.MyClassConstants.filterRelinquishments[indexPath.row]
             if exchange.pointsProgram != nil {
                 
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: "ExchangeCell0", for: indexPath) as? AvailablePointCell else { return UITableViewCell() }
@@ -544,7 +554,6 @@ extension WhatToUseViewController: UITableViewDataSource {
                 cell.checkBOx.isUserInteractionEnabled = false
                 cell.checkBOx.accessibilityElements = [indexPath.section]
                 
-               
                 if let points = exchange.pointsProgram?.availablePoints {
                     let availablePointsNumber = points as NSNumber
                     let numberFormatter = NumberFormatter()
@@ -714,9 +723,9 @@ extension WhatToUseViewController: UITableViewDataSource {
                 }
             } else if let deposits = exchange.deposit {
                 
-                    let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.exchangeCell1, for: indexPath) as! RelinquishmentSelectionOpenWeeksCell
-                    cell.tag = indexPath.row
-                    cell.setupDepositedCell(deposit: deposits)
+                let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.exchangeCell1, for: indexPath) as! RelinquishmentSelectionOpenWeeksCell
+                cell.tag = indexPath.row
+                cell.setupDepositedCell(deposit: deposits)
                 
                 if self.selectedRow == indexPath.row && self.selectedRowSection == indexPath.section {
                     cell.mainView.layer.cornerRadius = 7
@@ -730,8 +739,8 @@ extension WhatToUseViewController: UITableViewDataSource {
                     cell.checkBox.checked = false
                 }
                 
-                    return cell
-
+                return cell
+                
             } else {
                 
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.exchangeCell0, for: indexPath) as! AvailablePointCell
@@ -760,7 +769,7 @@ extension WhatToUseViewController: UITableViewDataSource {
                 cell.selectionStyle = UITableViewCellSelectionStyle.none
                 return cell
             }
-        } else {
+        default :
             
             //***** Configure and return search vacation cell *****//
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "GetawaysCell", for: indexPath) as? GetawayCell else { return UITableViewCell() }
@@ -805,7 +814,6 @@ extension WhatToUseViewController: UITableViewDataSource {
             return cell
             
         }
-        
     }
 }
 
