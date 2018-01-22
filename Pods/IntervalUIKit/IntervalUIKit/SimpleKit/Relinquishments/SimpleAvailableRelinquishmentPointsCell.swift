@@ -1,5 +1,5 @@
 //
-//  AvailableRelinquishmentPointsCell.swift
+//  SimpleAvailableRelinquishmentPointsCell.swift
 //  IntervalUIKit
 //
 //  Created by Aylwing Olivas on 1/13/18.
@@ -9,7 +9,7 @@ import Bond
 import UIKit
 import ReactiveKit
 
-final public class AvailableRelinquishmentPointsCell: SimpleTableViewCell {
+final public class SimpleAvailableRelinquishmentPointsCell: SimpleTableViewCell {
 
     // MARK: - IBOutlets
     @IBOutlet private weak var pointsLabel: UILabel!
@@ -32,7 +32,7 @@ final public class AvailableRelinquishmentPointsCell: SimpleTableViewCell {
     public var actionButtonTapped: (() -> Void)?
     public var availablePointsToolButtonTapped: (() -> Void)?
 
-    open weak var viewModel: AvailableRelinquishmentPointsCellViewModel? {
+    open weak var viewModel: SimpleAvailableRelinquishmentPointsCellViewModel? {
         didSet {
             if let viewModel = viewModel {
                 actionButton.isHidden = viewModel.actionButtonImage.value == nil
@@ -53,6 +53,7 @@ final public class AvailableRelinquishmentPointsCell: SimpleTableViewCell {
 
     // MARK: - Private functions
     private func setUI() {
+        selectionStyle = .none
         pointsLabel.textColor = IntervalThemeFactory.deviceTheme.textColorDarkOrange
         goldPointsSubHeadingLabel.textColor = IntervalThemeFactory.deviceTheme.textColorGray
         goldPointsHeadingLabel.textColor = IntervalThemeFactory.deviceTheme.textColorBlack

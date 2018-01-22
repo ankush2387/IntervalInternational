@@ -39,7 +39,6 @@ open class ExchangeProcessClient {
                     let exchangeProcessPrepareResponse = ExchangeProcessPrepareResponse(json:json)
                     // Update the ExchangeProcess ref
                     onSuccess(exchangeProcessPrepareResponse)
-                    
                 default:
                     onError(DarwinSDK.parseDarwinError(statusCode:statusCode, json:json))
                 }
@@ -76,7 +75,6 @@ open class ExchangeProcessClient {
                     let exchangeProcessRecapResponse = ExchangeProcessRecapResponse(json:json)
                     // Update the ExchangeProcess ref
                     onSuccess(exchangeProcessRecapResponse)
-                    
                 default:
                     onError(DarwinSDK.parseDarwinError(statusCode:statusCode, json:json))
                 }
@@ -119,7 +117,6 @@ open class ExchangeProcessClient {
 
                     // Update the ExchangeProcess ref
                     onSuccess(exchangeProcessEndResponse)
-                    
                 default:
                     onError(DarwinSDK.parseDarwinError(statusCode:statusCode, json:json))
                 }
@@ -156,7 +153,6 @@ open class ExchangeProcessClient {
                     let exchangeProcessRecapResponse = ExchangeProcessRecapResponse(json:json)
                     // Update the ExchangeProcess ref
                     onSuccess(exchangeProcessRecapResponse)
-                    
                 default:
                     onError(DarwinSDK.parseDarwinError(statusCode:statusCode, json:json))
                 }
@@ -193,7 +189,6 @@ open class ExchangeProcessClient {
                     let exchangeProcessRecapResponse = ExchangeProcessRecapResponse(json:json)
                     // Update the ExchangeProcess ref
                     onSuccess(exchangeProcessRecapResponse)
-                    
                 default:
                     onError(DarwinSDK.parseDarwinError(statusCode:statusCode, json:json))
                 }
@@ -230,7 +225,6 @@ open class ExchangeProcessClient {
                     let exchangeProcessEndResponse = ExchangeProcessEndResponse(json:json)
                     // Update the ExchangeProcess ref
                     onSuccess(exchangeProcessEndResponse)
-                    
                 default:
                     onError(DarwinSDK.parseDarwinError(statusCode:statusCode, json:json))
                 }
@@ -267,7 +261,6 @@ open class ExchangeProcessClient {
                     let exchangeProcessPrepareResponse = ExchangeProcessPrepareResponse(json:json)
                     // Update the ExchangeProcess ref
                     onSuccess(exchangeProcessPrepareResponse)
-                    
                 default:
                     onError(DarwinSDK.parseDarwinError(statusCode:statusCode, json:json))
                 }

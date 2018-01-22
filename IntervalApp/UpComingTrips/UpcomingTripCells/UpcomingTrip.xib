@@ -1,13 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12118" systemVersion="16B2657" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="ipad12_9" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="HelveticaNeue.ttc">
+            <string>HelveticaNeue</string>
+            <string>HelveticaNeue-Bold</string>
+        </array>
+        <array key="HelveticaNeueLights.ttc">
+            <string>HelveticaNeue-Light</string>
+        </array>
+    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -149,12 +158,8 @@
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Getaway" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aru-cA-Rat">
-                                <rect key="frame" x="639.5" y="259" width="126.5" height="37.5"/>
+                                <rect key="frame" x="659" y="355.5" width="99" height="29.5"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="37.5" id="ubh-fy-BSr"/>
-                                    <constraint firstAttribute="width" constant="126.5" id="yLr-4Q-gA4"/>
-                                </constraints>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="25"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
@@ -166,10 +171,9 @@
                             <constraint firstItem="je2-84-3ad" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="1pD-vz-oAH"/>
                             <constraint firstItem="CZe-t6-uRT" firstAttribute="top" secondItem="BUY-nP-qrO" secondAttribute="bottom" id="4MJ-KW-lsa"/>
                             <constraint firstAttribute="trailing" secondItem="BUY-nP-qrO" secondAttribute="trailing" id="5G4-Bp-c8k"/>
+                            <constraint firstItem="aru-cA-Rat" firstAttribute="bottom" secondItem="BUY-nP-qrO" secondAttribute="bottom" constant="-40" id="6TQ-Lb-zMI"/>
                             <constraint firstItem="n3f-qB-qQF" firstAttribute="top" secondItem="CZe-t6-uRT" secondAttribute="bottom" id="BTB-br-Kb9"/>
-                            <constraint firstAttribute="bottom" secondItem="aru-cA-Rat" secondAttribute="bottom" constant="254.5" id="FPV-MB-mJc"/>
                             <constraint firstAttribute="trailing" secondItem="zDC-1h-YLx" secondAttribute="trailing" id="KwI-50-GZR"/>
-                            <constraint firstItem="aru-cA-Rat" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="259" id="L5j-nw-0uZ"/>
                             <constraint firstAttribute="trailing" secondItem="je2-84-3ad" secondAttribute="trailing" id="NFH-yS-KTe"/>
                             <constraint firstAttribute="trailing" secondItem="mWF-Nq-b1H" secondAttribute="trailing" id="R2w-eO-QNB"/>
                             <constraint firstItem="dAC-GL-oi4" firstAttribute="top" secondItem="n3f-qB-qQF" secondAttribute="bottom" constant="5" id="TLn-cU-osy"/>
@@ -188,8 +192,8 @@
                             <constraint firstItem="BUY-nP-qrO" firstAttribute="top" secondItem="zDC-1h-YLx" secondAttribute="bottom" id="rWx-ZF-lI2"/>
                             <constraint firstAttribute="trailing" secondItem="CZe-t6-uRT" secondAttribute="trailing" constant="20" id="uhT-8u-t1b"/>
                             <constraint firstItem="n3f-qB-qQF" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="20" id="vEl-B0-5HU"/>
-                            <constraint firstAttribute="trailing" secondItem="aru-cA-Rat" secondAttribute="trailing" constant="2" id="wzs-xC-cEM"/>
                             <constraint firstAttribute="bottom" secondItem="kxp-Bl-rMk" secondAttribute="bottom" id="xBv-Cj-csD"/>
+                            <constraint firstAttribute="trailing" secondItem="aru-cA-Rat" secondAttribute="trailing" constant="10" id="yVJ-Xe-bjJ"/>
                         </constraints>
                     </view>
                 </subviews>

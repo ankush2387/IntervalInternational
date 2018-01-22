@@ -16,7 +16,7 @@ open class SupportClient {
     // Darwin API endpoint: GET /support/config/current
     // Get Business Configs. Requires an access token (system or user)
     //
-    open static func getSettingsTMP(_ accessToken: DarwinAccessToken, onSuccess: @escaping(_ settings: Settings) -> Void, onError: @escaping(_ error: NSError) -> Void) {
+    open static func getSettings(_ accessToken: DarwinAccessToken, onSuccess: @escaping(_ settings: Settings) -> Void, onError: @escaping(_ error: NSError) -> Void) {
         let endpoint = "\(DarwinSDK.sharedInstance.getApiUri())/support/config/current"
         
         let headers: [String: String] = [
@@ -45,13 +45,13 @@ open class SupportClient {
         }
     }
     
-    open static func getSettings(_ accessToken: DarwinAccessToken, onSuccess: @escaping(_ settings: Settings) -> Void, onError: @escaping(_ error: NSError) -> Void) {
+    open static func getStaticSettings(_ accessToken: DarwinAccessToken, onSuccess: @escaping(_ settings: Settings) -> Void, onError: @escaping(_ error: NSError) -> Void) {
         
         let vacationSearchSettings = VacationSearchSettings();
-        vacationSearchSettings.bookingIntervalDateStrategy = BookingIntervalDateStrategy.First.rawValue
+        vacationSearchSettings.bookingIntervalDateStrategy = BookingIntervalDateStrategy.FIRST.rawValue
         vacationSearchSettings.collapseBookingIntervalsOnChange = true
-        vacationSearchSettings.vacationSearchTypes = [VacationSearchType.Combined.rawValue,
-                                                      VacationSearchType.Rental.rawValue, VacationSearchType.Exchange.rawValue]
+        vacationSearchSettings.vacationSearchTypes = [VacationSearchType.COMBINED.rawValue,
+                                                      VacationSearchType.RENTAL.rawValue, VacationSearchType.EXCHANGE.rawValue]
         
         let iOS = AppSettings()
         iOS.currentVersion = "3.5.2"

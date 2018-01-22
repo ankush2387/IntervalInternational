@@ -13,21 +13,24 @@ open class Deposit {
 
     open var relinquishmentId : String?
     open lazy var actions = [String]() // AvailableWeekAction
-    open var exchangeNumber : Int64?
-    open var exchangeStatus : String? // ExchangeStatus
-    open var weekNumber : String?
-    open var requestType : String?
+    open var exchangeNumber : Int?
+    open var requestType : String? // RequestType
     open var relinquishmentYear : Int?
-    open var resort : Resort?
-    open var unit : InventoryUnit?
+    open var exchangeStatus : String? // ExchangeStatus
+    open var weekNumber : String? // WeekNumber
+    open var pointsProgramCode : String? // PointsProgramCode
+    open var programPoints : Int? = 0
     open var checkInDate : String?
     open var checkOutDate : String?
     open var expirationDate : String?
-    open var waitListNumber : String?
-    open var insurancePurchase : String?
-    open var blackedOut : Bool? = false
+    open var resort : Resort?
+    open var unit : InventoryUnit?
     open var supplementalWeek : Bool? = false
-
+    open var waitListNumber : Int = 0
+    open var insurancePurchase : String?
+    open lazy var virtualWeekActions = [String]() // VirtualWeekAction
+    open var promotion : Promotion?
+    
     public init() {
     }
 
@@ -42,13 +45,23 @@ open class Deposit {
         }
 
         if json["exchangeNumber"].exists() {
-            self.exchangeNumber = json["exchangeNumber"].int64Value
+            self.exchangeNumber = json["exchangeNumber"].intValue
         }
 
+        self.requestType = json["type"].string ?? ""
+        
+        if json["relinquishmentYear"].exists() {
+            self.relinquishmentYear = json["relinquishmentYear"].intValue
+        }
+        
         self.exchangeStatus = json["exchangeStatus"].string ?? ""
         self.weekNumber = json["weekNumber"].string ?? ""
-        self.relinquishmentYear = json["relinquishmentYear"].intValue
-
+        self.pointsProgramCode = json["pointsProgramCode"].string ?? ""
+        self.programPoints = json["programPoints"].intValue
+        self.checkInDate = json["checkInDate"].string ?? ""
+        self.checkOutDate = json["checkOutDate"].string ?? ""
+        self.expirationDate = json["expirationDate"].string ?? ""
+      
         if json["resort"].exists() {
             let resortJson:JSON = json["resort"]
             self.resort = Resort(detailJSON:resortJson)
@@ -59,14 +72,19 @@ open class Deposit {
             self.unit = InventoryUnit(json:unitJson)
         }
 
-        self.checkInDate = json["checkInDate"].string ?? ""
-        self.checkOutDate = json["checkOutDate"].string ?? ""
-        self.expirationDate = json["expirationDate"].string ?? ""
-        self.requestType = json["requestType"].string ?? ""
-        self.waitListNumber = json["waitListNumber"].string ?? ""
-        self.insurancePurchase = json["insurancePurchase"].string ?? ""
-        self.blackedOut = json["blackedOut"].boolValue
         self.supplementalWeek = json["supplementalWeek"].boolValue
+        self.waitListNumber = json["waitListNumber"].intValue
+        self.insurancePurchase = json["insurancePurchase"].string ?? ""
+       
+        if json["virtualWeekActions"].exists() {
+            let virtualWeekActionsJsonArray:[JSON] = json["virtualWeekActions"].arrayValue
+            self.virtualWeekActions = virtualWeekActionsJsonArray.map { $0.string! }
+        }
+        
+        if json["promotion"].exists() {
+            let promotionJson:JSON = json["promotion"]
+            self.promotion = Promotion(json:promotionJson)
+        }
     }
 
 }

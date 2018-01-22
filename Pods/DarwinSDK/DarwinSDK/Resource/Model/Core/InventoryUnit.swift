@@ -32,6 +32,7 @@ open class InventoryUnit {
     open lazy var lockOffUnits = [InventoryUnit]()
     open var lockOffIndicator : Bool = false
     open var trackCodeCategory : String?
+    open var relinquishmentId : String?
     open var vacationSearchType : VacationSearchType?
     
     public init() {
@@ -49,8 +50,8 @@ open class InventoryUnit {
     public convenience init(json:JSON) {
         self.init()
         
-        self.unitSize = json["unitSize"].string ?? UnitSize.Unknown.rawValue
-        self.kitchenType = json["kitchenType"].string ?? KitchenType.Unknown.rawValue
+        self.unitSize = json["unitSize"].string ?? ""
+        self.kitchenType = json["kitchenType"].string ?? ""
         self.matchedUnit = json["matchedUnit"].boolValue
         self.priorityViewing = json["priorityViewing"].boolValue
         
@@ -93,6 +94,7 @@ open class InventoryUnit {
         }
         
         self.lockOffIndicator = json["lockOffIndicator"].boolValue
+        self.relinquishmentId = json["relinquishmentId"].string ?? ""
         self.trackCodeCategory = json["trackCode"].string ?? ""
     }
   

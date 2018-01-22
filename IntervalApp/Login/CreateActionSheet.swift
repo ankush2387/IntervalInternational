@@ -133,6 +133,10 @@ class CreateActionSheet: UITableViewController {
                                             if  controller.isKind(of:SignInPreLoginViewController.self) {
                                                 controller.navigationController?.popViewController(animated: true)
                                                 NotificationCenter.default.post(name:NSNotification.Name(rawValue: Constant.notificationNames.reloadFavoritesTabNotification), object: nil)
+                                                
+                                                NotificationCenter.default.post(name:NSNotification.Name(rawValue: Constant.MyClassConstants.showVacationSearchNotification), object: nil)
+                                                
+                                                
                                             } else {
                                                 NotificationCenter.default.post(name:NSNotification.Name(rawValue: Constant.notificationNames.reloadFavoritesTabNotification), object: nil)
                                             }

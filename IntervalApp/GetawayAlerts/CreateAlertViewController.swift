@@ -107,7 +107,7 @@ class CreateAlertViewController: UIViewController {
         
         let endDate = Constant.MyClassConstants.alertWindowEndDate ?? Date()
         
-        let calendar = Calendar(identifier: Calendar.Identifier.gregorian)
+        let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
         
         let startDateComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: startDate)
         let endDateComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: endDate)

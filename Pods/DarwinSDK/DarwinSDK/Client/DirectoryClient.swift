@@ -384,6 +384,70 @@ open class DirectoryClient {
         }
     }
     
+    // STATUS: Unit Test PENDING
+    // Darwin API endpoint: GET /directory/resorts/{resortCode}/units
+    // Get resort units. Requires an access token (system or user)
+    //
+    open static func getResortUnits(_ accessToken: DarwinAccessToken!, resortCode: String, onSuccess: @escaping(_ response:[InventoryUnit]) -> Void, onError: @escaping(_ error: NSError) -> Void ) {
+        let endpoint = "\(DarwinSDK.sharedInstance.getApiUri())/directory/resorts/\(resortCode)/units"
+        
+        let headers: [String: String] = [
+            "Authorization": "Bearer \(accessToken.token!)"
+        ]
+        
+        DarwinSDK.logger.debug("About to try \(endpoint) with token=\(accessToken.token!)")
+        
+        IntervalAlamofireManager.sharedInstance.defaultManager.request(endpoint, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers)
+            .responseJSON { response in
+                let statusCode = response.response?.statusCode ?? 200
+                let json = JSON(response.result.value ?? "[]")
+                DarwinSDK.logger.debug("Response: \(statusCode) - \(json)")
+                
+                switch statusCode {
+                case 200...209:
+                    onSuccess(json.arrayValue.map { InventoryUnit(json: $0) })
+                    
+                default:
+                    onError(DarwinSDK.parseDarwinError(statusCode:statusCode, json:json))
+                }
+            }
+            .responseString { response in
+                DarwinSDK.logger.debug("Got \(response.response?.statusCode ?? 0) - \(response)")
+        }
+    }
+    
+    // STATUS: Unit Test PENDING
+    // Darwin API endpoint: GET /directory/resorts/{resortCode}/unitTypes
+    // Get resort units. Requires an access token (system or user)
+    //
+    open static func getResortUnitSizes(_ accessToken: DarwinAccessToken!, resortCode: String, onSuccess: @escaping(_ response:[InventoryUnit]) -> Void, onError: @escaping(_ error: NSError) -> Void ) {
+        let endpoint = "\(DarwinSDK.sharedInstance.getApiUri())/directory/resorts/\(resortCode)/unitTypes"
+        
+        let headers: [String: String] = [
+            "Authorization": "Bearer \(accessToken.token!)"
+        ]
+        
+        DarwinSDK.logger.debug("About to try \(endpoint) with token=\(accessToken.token!)")
+        
+        IntervalAlamofireManager.sharedInstance.defaultManager.request(endpoint, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers)
+            .responseJSON { response in
+                let statusCode = response.response?.statusCode ?? 200
+                let json = JSON(response.result.value ?? "[]")
+                DarwinSDK.logger.debug("Response: \(statusCode) - \(json)")
+                
+                switch statusCode {
+                case 200...209:
+                    onSuccess(json.arrayValue.map { InventoryUnit(json: $0) })
+                    
+                default:
+                    onError(DarwinSDK.parseDarwinError(statusCode:statusCode, json:json))
+                }
+            }
+            .responseString { response in
+                DarwinSDK.logger.debug("Got \(response.response?.statusCode ?? 0) - \(response)")
+        }
+    }
+    
     // STATUS: Unit Test passed
     // Darwin API endpoint: GET /directory/resorts/{resortCode}/matrices
     // Get resort club points chart. Requires an access token (system or user)

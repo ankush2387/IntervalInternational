@@ -24,7 +24,7 @@ final class PreLoginCoordinator {
     
     // MARK: - Private properties
     private var vacationSearchTypes: [String] {
-        return [VacationSearchType.Combined, VacationSearchType.Exchange, VacationSearchType.Rental].map { $0.rawValue }
+        return [VacationSearchType.COMBINED, VacationSearchType.EXCHANGE, VacationSearchType.RENTAL].map { $0.rawValue }
     }
     
     // MARK: - Public functions

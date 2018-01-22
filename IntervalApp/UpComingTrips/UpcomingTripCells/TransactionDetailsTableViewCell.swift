@@ -7,22 +7,32 @@
 //
 
 import UIKit
+import DarwinSDK
 
 class TransactionDetailsTableViewCell: UITableViewCell {
-
+    
     @IBOutlet weak var travellingWithLabel: UILabel!
     @IBOutlet weak var cabinNumber: UILabel!
     @IBOutlet weak var cabinDetails: UILabel!
     @IBOutlet weak var transactionDate: UILabel!
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
+    
+    func setTransactionDetails(with transactionDetails: Cabin) {
+        
+        if let adults = transactionDetails.travelParty?.adults, let children = transactionDetails.travelParty?.children {
+            travellingWithLabel.text = "\(adults) Adults"
+            if children > 0 {
+                travellingWithLabel.text = "\(adults) Adults, \(children) Children "
+            }
+            if let number = transactionDetails.number {
+                cabinNumber.text = "\(number)"
+            }
+            if let details = transactionDetails.details {
+                cabinDetails.text = details
+            }
+            if let date = transactionDetails.sailingDate {
+                transactionDate.text = date
+            }
+        }
+        
     }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
-
 }

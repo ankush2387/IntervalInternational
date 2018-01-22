@@ -58,8 +58,12 @@ class SortingViewController: UIViewController {
                     newSearchCriteria.destination = areaOfInfluenceDestination
                     newSearchCriteria.resorts = nil
                     newSearchCriteria.area = nil
-                    Constant.MyClassConstants.initialVacationSearch = VacationSearch.init(Session.sharedSession.appSettings, newSearchCriteria)
-                
+    
+                    if let settings = Session.sharedSession.appSettings {
+                        Constant.MyClassConstants.initialVacationSearch = VacationSearch(settings, newSearchCriteria)
+                    }
+                    
+                    // FIXME (Frank): Why ?
                     Constant.MyClassConstants.vacationSearchResultHeaderLabel = destination.destinationName
                     
                 case .Resort(let resort):
@@ -71,7 +75,12 @@ class SortingViewController: UIViewController {
                     newSearchCriteria.destination = nil
                     newSearchCriteria.resorts = [resort]
                     newSearchCriteria.area = nil
-                    Constant.MyClassConstants.initialVacationSearch = VacationSearch.init(Session.sharedSession.appSettings, newSearchCriteria)
+                    
+                    if let settings = Session.sharedSession.appSettings {
+                        Constant.MyClassConstants.initialVacationSearch = VacationSearch(settings, newSearchCriteria)
+                    }
+                    
+                    // FIXME (Frank): Why ?
                     Constant.MyClassConstants.vacationSearchResultHeaderLabel = resorts.resortName ?? ""
                 }
             } else {
@@ -89,8 +98,11 @@ class SortingViewController: UIViewController {
                     newSearchCriteria.resorts = nil
                     newSearchCriteria.area = nil
                     
-                    Constant.MyClassConstants.initialVacationSearch = VacationSearch.init(Session.sharedSession.appSettings, newSearchCriteria)
+                    if let settings = Session.sharedSession.appSettings {
+                        Constant.MyClassConstants.initialVacationSearch = VacationSearch(settings, newSearchCriteria)
+                    }
                     
+                    // FIXME (Frank): Why ?
                     Constant.MyClassConstants.vacationSearchResultHeaderLabel = destination.destinationName
                     
                 case .Resort(let resort):
@@ -102,8 +114,12 @@ class SortingViewController: UIViewController {
                     newSearchCriteria.destination = nil
                     newSearchCriteria.resorts = [resorts]
                     newSearchCriteria.area = nil
-                    Constant.MyClassConstants.initialVacationSearch = VacationSearch.init(Session.sharedSession.appSettings, newSearchCriteria)
                     
+                    if let settings = Session.sharedSession.appSettings {
+                        Constant.MyClassConstants.initialVacationSearch = VacationSearch(settings, newSearchCriteria)
+                    }
+                    
+                    // FIXME (Frank): Why ?
                     Constant.MyClassConstants.vacationSearchResultHeaderLabel = resort.resortName
                     
                 case .ResortList(let resortList):
@@ -120,8 +136,12 @@ class SortingViewController: UIViewController {
                     newSearchCriteria.destination = nil
                     newSearchCriteria.resorts = resortsArray
                     newSearchCriteria.area = nil
-                    Constant.MyClassConstants.initialVacationSearch = VacationSearch.init(Session.sharedSession.appSettings, newSearchCriteria)
                     
+                    if let settings = Session.sharedSession.appSettings {
+                        Constant.MyClassConstants.initialVacationSearch = VacationSearch(settings, newSearchCriteria)
+                    }
+                    
+                    // FIXME (Frank): Why ?
                     Constant.MyClassConstants.vacationSearchResultHeaderLabel = "\(resortList[0].resortName) + \(resortList.count - 1) more"
                     
                 case .Area(let areaList):
@@ -133,8 +153,12 @@ class SortingViewController: UIViewController {
                     newSearchCriteria.destination = nil
                     newSearchCriteria.resorts = nil
                     newSearchCriteria.area = area
-                    Constant.MyClassConstants.initialVacationSearch = VacationSearch.init(Session.sharedSession.appSettings, newSearchCriteria)
                     
+                    if let settings = Session.sharedSession.appSettings {
+                        Constant.MyClassConstants.initialVacationSearch = VacationSearch(settings, newSearchCriteria)
+                    }
+                    
+                    // FIXME (Frank): Why ?
                     Constant.MyClassConstants.vacationSearchResultHeaderLabel = area.areaName ?? ""
                 }
             }
@@ -143,7 +167,7 @@ class SortingViewController: UIViewController {
             showHudAsync()
             
             switch Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType {
-            case VacationSearchType.Rental:
+            case VacationSearchType.RENTAL:
                 
                 RentalClient.searchDates(Session.sharedSession.userAccessToken, request: Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request, onSuccess: { (response) in
                     
@@ -154,7 +178,7 @@ class SortingViewController: UIViewController {
                     Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                     
                     // Check not available checkIn dates for the active interval
-                    if activeInterval.fetchedBefore && !(activeInterval.hasCheckInDates()) {
+                    if activeInterval.fetchedBefore && !activeInterval.hasCheckInDates() {
                         self.hideHudAsync()
                         Helper.showNotAvailabilityResults()
                         self.dismiss(animated: true, completion: nil)
@@ -168,7 +192,7 @@ class SortingViewController: UIViewController {
                     self.presentErrorAlert(UserFacingCommonError.generic)
                 }
                 
-            case VacationSearchType.Exchange:
+            case VacationSearchType.EXCHANGE:
 
                 ExchangeClient.searchDates(Session.sharedSession.userAccessToken, request: Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request, onSuccess: { (response) in
                     
@@ -197,7 +221,7 @@ class SortingViewController: UIViewController {
                     self.presentErrorAlert(UserFacingCommonError.generic)
                 }
                 
-            case VacationSearchType.Combined:
+            case VacationSearchType.COMBINED:
                 
                 RentalClient.searchDates(Session.sharedSession.userAccessToken, request:Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request, onSuccess: { (response) in
                     

@@ -126,7 +126,7 @@ extension MyUpcomingTripViewController: UITableViewDataSource {
                 } else if tripType == Constant.myUpcomingTripCommonString.shop {
                     type = Constant.myUpcomingTripCommonString.exchange
                 }
-                cell.resortType.text = type.localized()
+                cell.resortType.text = type.localized().uppercased()
                 upComingTrip.type = type
             }
             cell.resortImageView.backgroundColor = UIColor.lightGray

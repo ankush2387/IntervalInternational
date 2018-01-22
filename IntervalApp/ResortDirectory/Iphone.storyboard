@@ -1011,7 +1011,9 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Details" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eC5-41-1FR">
+
                                                     <rect key="frame" x="20" y="13" width="340" height="21"/>
+
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="21" id="e4f-bB-yAY"/>
                                                     </constraints>
@@ -1019,10 +1021,12 @@
                                                     <color key="textColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Q1s-bp-oWB">
                                                     <rect key="frame" x="20" y="35" width="340" height="63"/>
                                                     <string key="text">Wyndham Vacation Resorts, Inc., is a leading pWyndham Vacation Resorts, Inc., is a leading pWyndham Vacation Resorts, Inc., is a leading pWyndham Vacation Resorts, Inc., is a leading p</string>
                                                     <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="14"/>
+
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -1095,10 +1099,9 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Expandable Cell" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QWN-eD-qJB">
-                                                    <rect key="frame" x="20" y="10" width="335" height="24"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="24" id="5Y5-jU-49P"/>
-                                                    </constraints>
+
+                                                    <rect key="frame" x="30" y="3" width="321" height="38"/>
+
                                                     <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="15"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -1145,13 +1148,17 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KaO-Q0-iZB">
+
                                                     <rect key="frame" x="27" y="0.0" width="321" height="17"/>
+
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="2MS-g8-WJ1">
+
                                                     <rect key="frame" x="27" y="17" width="20" height="20"/>
+
                                                     <color key="backgroundColor" red="0.96862745100000003" green="0.41176470590000003" blue="0.19215686269999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="20" id="JEj-Hj-jOi"/>
@@ -1183,6 +1190,9 @@
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hp8-nG-TY6" customClass="IUIKButton" customModule="IntervalUIKit">
                                                     <rect key="frame" x="40" y="7" width="295" height="30"/>
                                                     <color key="backgroundColor" red="0.94117647058823528" green="0.43529411764705883" blue="0.21176470588235294" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="30" id="D76-EQ-Vbg"/>
+                                                    </constraints>
                                                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="18"/>
                                                     <state key="normal" title="Search Vacation">
                                                         <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1201,7 +1211,6 @@
                                                 <constraint firstItem="hp8-nG-TY6" firstAttribute="centerX" secondItem="z0e-69-gHl" secondAttribute="centerX" id="HRd-kh-2GI"/>
                                                 <constraint firstItem="hp8-nG-TY6" firstAttribute="leading" secondItem="z0e-69-gHl" secondAttribute="leadingMargin" constant="32" id="g9d-x1-RU8"/>
                                                 <constraint firstItem="hp8-nG-TY6" firstAttribute="centerY" secondItem="z0e-69-gHl" secondAttribute="centerY" id="lU6-bK-fRW"/>
-                                                <constraint firstItem="hp8-nG-TY6" firstAttribute="top" secondItem="z0e-69-gHl" secondAttribute="topMargin" constant="-4" id="zmm-j5-C6J"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
@@ -1575,7 +1584,7 @@
     <inferredMetricsTieBreakers>
         <segue reference="LB4-mY-QYy"/>
         <segue reference="KTW-Os-bqS"/>
-        <segue reference="ff5-xu-9jj"/>
-        <segue reference="PVi-Ym-AGy"/>
+        <segue reference="1yd-In-YGU"/>
+        <segue reference="SsD-cI-IVD"/>
     </inferredMetricsTieBreakers>
 </document>

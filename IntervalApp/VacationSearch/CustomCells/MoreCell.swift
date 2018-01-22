@@ -8,6 +8,7 @@
 
 import UIKit
 import IntervalUIKit
+import DarwinSDK
 
 class MoreCell: UICollectionViewCell {
     
@@ -25,9 +26,9 @@ class MoreCell: UICollectionViewCell {
         
         intervalPrint(startDate, endDate)
         
-        let myCalendar = Calendar.current
-        let startComponents = myCalendar.dateComponents([.day, .weekday, .month, .year], from: startDate)
-        let endComponents = myCalendar.dateComponents([.day, .weekday, .month, .year], from: endDate)
+        let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
+        let startComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: startDate)
+        let endComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: endDate)
         let startYear =  "\(startComponents.year ?? 0)"
         let endYear = "\(endComponents.year ?? 0)"
         

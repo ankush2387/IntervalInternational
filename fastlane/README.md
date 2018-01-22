@@ -22,11 +22,21 @@ xcode-select --install
 fastlane certs
 ```
 Updates the provisioning profile on computer
+### incrementBuild
+```
+fastlane incrementBuild
+```
+
 ### development
 ```
 fastlane development
 ```
 Builds development target and uploads to HockeyApp
+### development_manual
+```
+fastlane development_manual
+```
+Uploads a quick build to hockey
 
 ----
 
@@ -36,18 +46,6 @@ Builds development target and uploads to HockeyApp
 fastlane ios test
 ```
 Runs all the tests
-### ios beta
-```
-fastlane ios beta
-```
-Submit a new Beta Build to Apple TestFlight
-
-This will also make sure the profile is up to date
-### ios release
-```
-fastlane ios release
-```
-Deploy a new version to the App Store
 
 ----
 

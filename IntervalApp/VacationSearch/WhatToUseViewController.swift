@@ -481,8 +481,7 @@ extension WhatToUseViewController: UITableViewDataSource {
     //***** UITableview dataSource methods definition here *****//
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        
-        if Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == .Combined {
+        if Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.COMBINED {
             return 3
         } else {
             return 2
@@ -498,7 +497,7 @@ extension WhatToUseViewController: UITableViewDataSource {
         case 0:
             return 1
         case 1:
-            if (Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == .Combined && hasbothSearchAvailability) || count > 0 {
+            if (Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == .COMBINED && hasbothSearchAvailability) || count > 0 {
                 return count > 1 ? count + 1 : count
             } else {
                 return 0
@@ -654,8 +653,8 @@ extension WhatToUseViewController: UITableViewDataSource {
                     }
                     let dateString = exchange.openWeek?.checkInDate
                     let date = Helper.convertStringToDate(dateString: dateString!, format: Constant.MyClassConstants.dateFormat)
-                    let myCalendar = Calendar.current
-                    let myComponents = myCalendar.dateComponents([.day, .weekday, .month, .year], from: date)
+                    let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
+                    let myComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: date)
                     let day = myComponents.day ?? 0
                     var month = ""
                     if day < 10 {
@@ -699,8 +698,8 @@ extension WhatToUseViewController: UITableViewDataSource {
                     
                     let dateString = exchange.openWeek?.checkInDate
                     let date = Helper.convertStringToDate(dateString: dateString ?? "", format: Constant.MyClassConstants.dateFormat)
-                    let myCalendar = Calendar.current
-                    let myComponents = myCalendar.dateComponents([.day, .weekday, .month, .year], from: date)
+                    let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
+                    let myComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: date)
                     let day = myComponents.day ?? 0
                     var month = ""
                     if day < 10 {
