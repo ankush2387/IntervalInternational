@@ -37,7 +37,6 @@ open class ExchangeClient {
                 switch statusCode {
                 case 200...209:
                     onSuccess(json.arrayValue.map { FlexExchangeDeal(json:$0) })
-                    
                 default:
                     onError(DarwinSDK.parseDarwinError(statusCode: statusCode, json: json))
                 }
@@ -68,23 +67,11 @@ open class ExchangeClient {
                 DarwinSDK.logger.debug("Response: \(statusCode) - \(json)")
 
                 switch statusCode {
-                    case 200...209:
-                        // FIXME (Frank) - Filter out bulkAssignment weeks
-                        let myUnits = MyUnits(json:json)
-                        var openWeeks = [OpenWeek]()
-
-                        for openWeek in myUnits.openWeeks {
-                            if openWeek.bulkAssignment == false {
-                                openWeeks.append(openWeek)
-                            }
-                        }
-
-                        myUnits.openWeeks = openWeeks
-
-                        onSuccess(myUnits)
-                    default:
-                        onError(DarwinSDK.parseDarwinError(statusCode:statusCode, json:json))
-                    }
+                case 200...209:
+                    onSuccess(MyUnits(json:json))
+                default:
+                    onError(DarwinSDK.parseDarwinError(statusCode:statusCode, json:json))
+                }
             }
             .responseString { response in
                 DarwinSDK.logger.debug("Got \(response.response?.statusCode ?? 0) - \(response)")
@@ -112,11 +99,10 @@ open class ExchangeClient {
                 DarwinSDK.logger.debug("Response: \(statusCode) - \(json)")
                 
                 switch statusCode {
-                    case 200...209:
-                        onSuccess(ExchangeDetails(json:json))
-                    
-                    default:
-                        onError(DarwinSDK.parseDarwinError(statusCode:statusCode, json:json))
+                case 200...209:
+                    onSuccess(ExchangeDetails(json:json))
+                default:
+                    onError(DarwinSDK.parseDarwinError(statusCode:statusCode, json:json))
                 }
             }
             .responseString { response in
@@ -149,7 +135,6 @@ open class ExchangeClient {
                 switch statusCode {
                 case 200...209:
                     onSuccess()
-                    
                 default:
                     onError(DarwinSDK.parseDarwinError(statusCode:statusCode, json:json))
                 }
@@ -184,7 +169,6 @@ open class ExchangeClient {
                 switch statusCode {
                 case 200...209:
                     onSuccess()
-                    
                 default:
                     onError(DarwinSDK.parseDarwinError(statusCode:statusCode, json:json))
                 }
@@ -207,7 +191,7 @@ open class ExchangeClient {
         
         let params = request.toDictionary()
         
-        //DarwinSDK.logger.debug("About to try \(endpoint) with token=\(accessToken.token!) and request payload=\(params)")
+        DarwinSDK.logger.debug("About to try \(endpoint) with token=\(accessToken.token!) and request payload=\(params)")
         
         IntervalAlamofireManager.sharedInstance.defaultManager.request(endpoint, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers)
             //.validate(statusCode: 200...201)
@@ -219,14 +203,13 @@ open class ExchangeClient {
                 switch statusCode {
                 case 200...209:
                     onSuccess(ExchangeSearchDatesResponse(json:json))
-                    
                 default:
                     onError(DarwinSDK.parseDarwinError(statusCode:statusCode, json:json))
                 }
             }
-            //.responseString { response in
-            //    DarwinSDK.logger.debug("Got \(response.response?.statusCode ?? 0) - \(response)")
-            //}
+            .responseString { response in
+                DarwinSDK.logger.debug("Got \(response.response?.statusCode ?? 0) - \(response)")
+            }
     }
     
     // STATUS: Unit Test passed
@@ -242,25 +225,18 @@ open class ExchangeClient {
         
         let params = request.toDictionary()
         
-        //DarwinSDK.logger.debug("About to try \(endpoint) with token=\(accessToken.token!) and request payload=\(params)")
+        DarwinSDK.logger.debug("About to try \(endpoint) with token=\(accessToken.token!) and request payload=\(params)")
         
         IntervalAlamofireManager.sharedInstance.defaultManager.request(endpoint, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers)
             //.validate(statusCode: 200...201)
             .responseJSON { response in
                 let statusCode = response.response?.statusCode ?? 200
                 let json = JSON(response.result.value ?? "{}")
-                //DarwinSDK.logger.debug("Response: \(statusCode) - \(json)")
+                DarwinSDK.logger.debug("Response: \(statusCode) - \(json)")
                 
                 switch statusCode {
                 case 200...209:
-                    //onSuccess(json.arrayValue.map { ExchangeAvailability(json: $0) })
-                    
-                    // FIXME(Frank): Only for test UnitSizeUpgrade
-                    let result = json.arrayValue.map { ExchangeAvailability(json: $0) }
-                    for item in result {
-                        item.inventory?.generalUnitSizeUpgradeMessage = true
-                    }
-                    onSuccess(result)
+                    onSuccess(json.arrayValue.map { ExchangeAvailability(json: $0) })
                 default:
                     onError(DarwinSDK.parseDarwinError(statusCode:statusCode, json:json))
                 }
@@ -295,7 +271,6 @@ open class ExchangeClient {
                 switch statusCode {
                 case 200...209:
                     onSuccess(json.arrayValue.map { ExchangeDetails(json: $0) })
-
                 default:
                     onError(DarwinSDK.parseDarwinError(statusCode:statusCode, json:json))
                 }
@@ -330,7 +305,6 @@ open class ExchangeClient {
                 switch statusCode {
                 case 200...209:
                     onSuccess(json.arrayValue.map { Region(json:$0) })
-                    
                 default:
                     onError(DarwinSDK.parseDarwinError(statusCode:statusCode, json:json))
                 }

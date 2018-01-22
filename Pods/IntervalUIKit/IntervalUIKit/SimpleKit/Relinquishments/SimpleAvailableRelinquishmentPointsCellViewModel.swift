@@ -1,5 +1,5 @@
 //
-//  AvailableRelinquishmentPointsCellViewModel.swift
+//  SimpleAvailableRelinquishmentPointsCellViewModel.swift
 //  IntervalUIKit
 //
 //  Created by Aylwing Olivas on 1/13/18.
@@ -8,7 +8,7 @@
 import Bond
 import UIKit
 
-public class AvailableRelinquishmentPointsCellViewModel {
+public class SimpleAvailableRelinquishmentPointsCellViewModel {
 
     // MARK: - Public properties
     open var isEditing = Observable(true)
@@ -18,7 +18,7 @@ public class AvailableRelinquishmentPointsCellViewModel {
     open var availablePointsButtonText: Observable<String?>
     open var goldPointsHeadingLabelText: Observable<String?>
     open var goldPointsSubHeadingLabel: Observable<String?>
-    open var cellHeight: Observable<CGFloat> = Observable(150)
+    open var cellHeight: Observable<CGFloat> = Observable(140)
 
     // MARK: - Lifecycle
     public init(cigImage: UIImage,
@@ -37,7 +37,7 @@ public class AvailableRelinquishmentPointsCellViewModel {
     }
 }
 
-extension AvailableRelinquishmentPointsCellViewModel: SimpleCellViewModel {
+extension SimpleAvailableRelinquishmentPointsCellViewModel: SimpleCellViewModel {
 
     public func modelType() -> SimpleViewModelType {
         return .availableRelinquishmentPointsCellViewModel

@@ -9,17 +9,17 @@
 import Foundation
 
 public enum ExchangeStatus : String {
-    case Confirmed = "CONFIRMED"            // UpcomingTrips-Display: Confirmed
-    case Reconfirmed = "RECONFIRMED"        // UpcomingTrips-Display: Confirmed
-    case Retrade = "RETRADE"                // UpcomingTrips-Display: Confirmed
-    case CancelAfter = "CANCEL_AFTER"       // UpcomingTrips-Display: Cancelled
-    case Pending = "PENDING"                // UpcomingTrips-Display: Pending Request?
-    case CancelBefore = "CANCEL_BEFORE"     // UpcomingTrips-Display: this would never show
-    case Open = "OPEN"                      // UpcomingTrips-Display: this would never show
-    case Unredeem = "UNREDEEM"              // UpcomingTrips-Display: this would never show
-    case Denied = "DENIED"                  // UpcomingTrips-Display: ?
-    case Invalid = "INVALID"                // UpcomingTrips-Display: ?
-    case Unknown = "UNKNOWN"
+    case CONFIRMED = "CONFIRMED"
+    case RECONFIRMED = "RECONFIRMED"
+    case RETRADE = "RETRADE"
+    case CANCEL_AFTER = "CANCEL_AFTER"
+    case PENDING = "PENDING"
+    case CANCEL_BEFORE = "CANCEL_BEFORE"
+    case OPEN = "OPEN"
+    case UNREDEEM = "UNREDEEM"
+    case DENIED = "DENIED"
+    case INVALID = "INVALID"
+    case UNKNOWN = "UNKNOWN"
     
     var name: String {
         return self.rawValue
@@ -29,34 +29,36 @@ public enum ExchangeStatus : String {
     public func isThis(name : String) -> Bool {
         return self.name == name
     }
-    
+
     public static func fromName(name : String) -> ExchangeStatus {
-        if ExchangeStatus.Confirmed.name == name {
-            return ExchangeStatus.Confirmed
-        } else if ExchangeStatus.Reconfirmed.name == name {
-            return ExchangeStatus.Reconfirmed
-        } else if ExchangeStatus.Retrade.name == name {
-            return ExchangeStatus.Retrade
-        } else if ExchangeStatus.CancelAfter.name == name {
-            return ExchangeStatus.CancelAfter
-        } else if ExchangeStatus.Pending.name == name {
-            return ExchangeStatus.Pending
-        } else if ExchangeStatus.CancelBefore.name == name {
-            return ExchangeStatus.CancelBefore
-        } else if ExchangeStatus.Unredeem.name == name {
-            return ExchangeStatus.Unredeem
-        } else if ExchangeStatus.Denied.name == name {
-            return ExchangeStatus.Denied
-        } else if ExchangeStatus.Invalid.name == name {
-            return ExchangeStatus.Invalid
+        if ExchangeStatus.CONFIRMED.name == name {
+            return ExchangeStatus.CONFIRMED
+        } else if ExchangeStatus.RECONFIRMED.name == name {
+            return ExchangeStatus.RECONFIRMED
+        } else if ExchangeStatus.RETRADE.name == name {
+            return ExchangeStatus.RETRADE
+        } else if ExchangeStatus.CANCEL_AFTER.name == name {
+            return ExchangeStatus.CANCEL_AFTER
+        } else if ExchangeStatus.PENDING.name == name {
+            return ExchangeStatus.PENDING
+        } else if ExchangeStatus.CANCEL_BEFORE.name == name {
+            return ExchangeStatus.CANCEL_BEFORE
+        } else if ExchangeStatus.UNREDEEM.name == name {
+            return ExchangeStatus.UNREDEEM
+        } else if ExchangeStatus.DENIED.name == name {
+            return ExchangeStatus.DENIED
+        } else if ExchangeStatus.INVALID.name == name {
+            return ExchangeStatus.INVALID
         } else {
-            return ExchangeStatus.Unknown
+            return ExchangeStatus.UNKNOWN
         }
     }
     
     public func friendlyNameForUpcomingTrip() -> String {
         if (isThis(name: "CONFIRMED") || isThis(name: "RECONFIRMED")  || isThis(name: "RETRADE") ) {
             return "Confirmed"
+        } else if (isThis(name: "UNREDEEM")) {
+            return "Unredeemed"
         } else if (isThis(name: "CANCEL_AFTER")) {
             return "Cancelled"
         } else {
@@ -64,4 +66,15 @@ public enum ExchangeStatus : String {
         }
     }
     
+    public func friendlyNameForRelinquishment(isDeposit:Bool) -> String {
+        if (isThis(name: "CONFIRMED") || isThis(name: "RECONFIRMED")  || isThis(name: "RETRADE") ) {
+            return "Confirmed"
+        } else if (isThis(name: "UNREDEEM")) {
+            return isDeposit ? "Unredeemed Deposit" : "Unredeemed"
+        } else if (isThis(name: "CANCEL_AFTER")) {
+            return "Cancelled"
+        } else {
+            return ""
+        }
+    }
 }

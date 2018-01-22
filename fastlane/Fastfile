@@ -20,6 +20,16 @@ cert
 sigh(force: true)
 end
 
+lane :incrementBuild do
+# Increment project build number
+increment_build_number(xcodeproj: "/Users/aolivas/interval-app-ios/IntervalApp.xcodeproj")
+buildNumber = get_build_number
+
+# Commit build number bump
+commit_version_bump(force: true, message: "Auto-increment build version: " + buildNumber)
+push_to_git_remote(remote: "origin", local_branch: "HEAD", remote_branch: "develop", force: true, tags: true)
+end
+
 desc "Builds development target and uploads to HockeyApp"
 lane :development do
 

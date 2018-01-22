@@ -514,8 +514,11 @@ class DashboardTableViewController: UITableViewController {
         if !searchDateResponse.checkInDates.isEmpty {
             showHudAsync()
             let searchCriteria = createSearchCriteriaFor(alert: getawayAlert)
-            let settings = Helper.createSettings()
-            Constant.MyClassConstants.initialVacationSearch = VacationSearch(settings, searchCriteria)
+
+            if let settings = Session.sharedSession.appSettings {
+                Constant.MyClassConstants.initialVacationSearch = VacationSearch(settings, searchCriteria)
+            }
+
             Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.response = searchDateResponse
             // Get activeInterval
             guard let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval() else { return }
@@ -573,7 +576,7 @@ class DashboardTableViewController: UITableViewController {
         // Split destinations and resorts to create multiples VacationSearchCriteria
         let checkInDate = alert.getCheckInDate()
         
-        let searchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Rental)
+        let searchCriteria = VacationSearchCriteria(searchType: VacationSearchType.RENTAL)
         searchCriteria.checkInDate = Helper.convertStringToDate(dateString: checkInDate, format: Constant.MyClassConstants.dateFormat)
         if let earliestCheckInDate = alert.earliestCheckInDate {
             searchCriteria.checkInFromDate = Helper.convertStringToDate(dateString: earliestCheckInDate, format: Constant.MyClassConstants.dateFormat)
@@ -589,6 +592,7 @@ class DashboardTableViewController: UITableViewController {
             if let destinationName = destination.destinationName {
                 dest.destinationName = destinationName
             } else {
+                // FIXME (Frank): Why hard coded ?
                 dest.destinationName = "Cancun"
             }
             dest.aoiId = destination.aoiId
@@ -886,9 +890,10 @@ extension UIViewController {
         }
         let searchCriteria = Helper.createSearchCriteriaForRentalDeal(deal: deal)
         
-        let settings = Helper.createSettings()
-        Constant.MyClassConstants.initialVacationSearch = VacationSearch(settings, searchCriteria)
-        
+        if let settings = Session.sharedSession.appSettings {
+            Constant.MyClassConstants.initialVacationSearch = VacationSearch(settings, searchCriteria)
+        }
+
         if Reachability.isConnectedToNetwork() == true {
             ADBMobile.trackAction(Constant.omnitureEvents.event9, data: nil)
             showHudAsync()

@@ -95,8 +95,8 @@ extension AvailablePointToolViewController: UITableViewDataSource {
                 guard let  cell = tableView.dequeueReusableCell(withIdentifier: Constant.availablePointToolViewController.pointToolDetailpointcellIdentifier) as? AvailablePointsAsOfTableViewCell else { return UITableViewCell() }
                     if let AblToolSelectedDate = Constant.MyClassConstants.relinquishmentAvalableToolSelectedDate {
                     
-                        let myCalendar = Calendar.current
-                        let myComponents = myCalendar.dateComponents([.day, .weekday, .month, .year], from: AblToolSelectedDate)
+                        let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
+                        let myComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: AblToolSelectedDate)
                         let year = "\(myComponents.year ?? 0)"
                         let weekDay = "\(Helper.getWeekdayFromInt(weekDayNumber: myComponents.weekday ?? 0))"
                         let month = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month ?? 0)) \( myComponents.day ?? 0)"
@@ -132,8 +132,8 @@ extension AvailablePointToolViewController: UITableViewDataSource {
                 let programPointsUsage = self.availablePoints.usage
                 let usage = programPointsUsage[indexPath.row - 1]
                 
-                let myCalendar = Calendar.current
-                let myComponents = myCalendar.dateComponents([.day, .weekday, .month, .year], from: Helper.convertStringToDate(dateString: usage.expirationDate ?? "", format: Constant.MyClassConstants.dateFormat))
+                let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
+                let myComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: Helper.convertStringToDate(dateString: usage.expirationDate ?? "", format: Constant.MyClassConstants.dateFormat))
                 let year = "\(myComponents.year ?? 0)"
                 let month = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month ?? 0)) \( myComponents.day ?? 0)"
                 

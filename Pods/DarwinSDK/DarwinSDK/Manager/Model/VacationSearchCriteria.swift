@@ -20,28 +20,21 @@ open class VacationSearchCriteria {
     open var travelParty : TravelParty?
     open var relinquishmentsIds : [String]?
     
-    public init(searchType:VacationSearchType!) {
+    public init(searchType:VacationSearchType) {
         self.searchType = searchType
     }
-    
+
     open func hasResorts() -> Bool {
-        return self.resorts != nil && (self.resorts?.count)! > 0;
+        guard let list = resorts else { return false }
+        return !list.isEmpty
     }
-    
+
     open func hasDestination() -> Bool {
-        return self.destination != nil;
+        return self.destination != nil
     }
-    
+
     open func hasArea() -> Bool {
-        return self.area != nil;
+        return self.area != nil
     }
-    
-    open func isForBookingWindowWithIntervals() -> Bool {
-        return self.checkInDate != nil && self.checkInFromDate == nil && self.checkInToDate == nil
-    }
-    
-    open func isForBookingWindowWithFixInterval() -> Bool {
-        return self.checkInFromDate != nil && self.checkInToDate != nil
-    }
-    
+
 }

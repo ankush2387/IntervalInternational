@@ -13,26 +13,26 @@ open class CalendarItem {
     open var intervalStartDate : String?
     open var intervalEndDate : String?
     open var checkInDate : String?
-    open var isInterval : Bool?
-    open var isIntervalAvailable : Bool?
+    open var isInterval : Bool = false
+    open var isIntervalAvailable : Bool = false
     
     // Create a Range of Dates
     public init(intervalStartDate:String, intervalEndDate:String) {
         self.intervalStartDate = intervalStartDate
         self.intervalEndDate = intervalEndDate
-        self.isInterval = self.intervalStartDate != nil && self.intervalEndDate != nil && self.checkInDate == nil;
-        self.isIntervalAvailable = self.isInterval;
+        self.isInterval = self.intervalStartDate != nil && self.intervalEndDate != nil && self.checkInDate == nil
+        self.isIntervalAvailable = self.isInterval
     }
     
     // Create a Single CheckIn Date
     public init(checkInDate:String) {
         self.checkInDate = checkInDate;
-        self.isInterval = self.intervalStartDate != nil && self.intervalEndDate != nil && self.checkInDate == nil;
-        self.isIntervalAvailable = self.isInterval;
+        self.isInterval = self.intervalStartDate != nil && self.intervalEndDate != nil && self.checkInDate == nil
+        self.isIntervalAvailable = self.isInterval
     }
     
     open func markIntervalAsNotAvailable() {
-        self.isIntervalAvailable = false;
+        self.isIntervalAvailable = false
     }
     
 }

@@ -387,7 +387,8 @@ extension FevoritesResortController: GMSMapViewDelegate {
                 }
                 
                 guard let containerVC = self.childViewControllers[0] as? ResortDetailsViewController else { return false }
-                containerVC.senderViewController = Constant.MyClassConstants.searchResult
+                containerVC.senderViewController = Constant.MyClassConstants.showSearchResultButton
+
                 containerVC.viewWillAppear(true)
                 
                 if self.containerView != nil {
@@ -417,7 +418,8 @@ extension FevoritesResortController: ResortDetailsDelegate {
             }
             
             guard let containerVC = self.childViewControllers[0] as? ResortDetailsViewController else { return }
-            containerVC.senderViewController = Constant.MyClassConstants.searchResult
+            containerVC.senderViewController = Constant.MyClassConstants.showSearchResultButton
+
             containerVC.viewWillAppear(true)
             
             UIView.animate (withDuration: 0.5, delay: 0.1, options: UIViewAnimationOptions.curveEaseIn, animations: {

@@ -63,6 +63,7 @@ public enum Theme {
         return UIColor(red: 0.91, green: 0.91, blue: 0.92, alpha: 1.0)
     }
     
+    /// #70B909
     public var activeGreen: UIColor {
         return UIColor(red: 0.44, green: 0.73, blue: 0.04, alpha: 1.0)
     }

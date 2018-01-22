@@ -51,18 +51,17 @@ class GoogleMapViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        //navigationController?.navigationBar.isHidden = false
-//        //used to not remove observers if going to map or weather view
+        
+        //used to not remove observers if going to map or weather view
         Constant.MyClassConstants.goingToMapOrWeatherView = false
 
-        //***** Adding notifications so that it invoke the specific method when the notification is fired *****//
+        // Adding notifications so that it invoke the specific method when the notification is fired
         NotificationCenter.default.addObserver(self, selector: #selector(closeButtonClicked), name: NSNotification.Name(rawValue: Constant.notificationNames.closeButtonClickedNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(reloadView), name: NSNotification.Name(rawValue: Constant.notificationNames.reloadFavoritesTabNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(resortSelectedFromsearchResultWithlatlong), name: NSNotification.Name(rawValue: Constant.notificationNames.reloadMapNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(displaySearchedResort), name: NSNotification.Name(rawValue: Constant.notificationNames.addMarkerWithRactangleRequestNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(updateMapMarkers), name: NSNotification.Name(rawValue: Constant.notificationNames.reloadMapForApply), object: nil)
         googleMapSearchBar.placeholder = Constant.buttonTitles.searchVacation
-
         if Constant.MyClassConstants.runningFunctionality != Constant.MyClassConstants.resortFunctionalityCheck {
 
             //***** Creating and adding left  bar button for back button *****//
@@ -76,15 +75,15 @@ class GoogleMapViewController: UIViewController {
 
         //***** Condition for maintaining the back button and hamberger menu according to logged in or pre login *****//
         if Constant.MyClassConstants.runningFunctionality == Constant.MyClassConstants.resortFunctionalityCheck && Constant.MyClassConstants.isLoginSuccessfull {
-            if let rvc = self.revealViewController() {
+            if let rvc = revealViewController() {
                 rvc.delegate = self
                 //***** Add the hamburger menu *****//
                 let menuButton = UIBarButtonItem(image: UIImage(named: Constant.assetImageNames.ic_menu), style: .plain, target: rvc, action: #selector(SWRevealViewController.revealToggle(_:)))
                 menuButton.tintColor = UIColor.white
-                self.navigationItem.leftBarButtonItem = menuButton
-
+                navigationItem.leftBarButtonItem = menuButton
+                
                 //***** This line allows the user to swipe left-to-right to reveal the menu. We might want to comment this out if it becomes confusing. *****//
-                self.view.addGestureRecognizer( rvc.panGestureRecognizer())
+                view.addGestureRecognizer( rvc.panGestureRecognizer())
             }
 
         } else {
@@ -92,7 +91,7 @@ class GoogleMapViewController: UIViewController {
             let menuButton = UIBarButtonItem(image: UIImage(named: Constant.assetImageNames.backArrowNav), style: .plain, target: self, action: #selector(menuBackButtonPressed(_:)))
 
             menuButton.tintColor = UIColor.white
-            self.navigationItem.leftBarButtonItem = menuButton
+            navigationItem.leftBarButtonItem = menuButton
         }
     }
     
@@ -115,17 +114,19 @@ class GoogleMapViewController: UIViewController {
     }
     
     override func viewDidLayoutSubviews() {
-        if self.searchDisplayTableView.frame.origin.y == UIScreen.main.bounds.height {
-            self.searchDisplayTableView.frame = CGRect(x: 0, y: UIScreen.main.bounds.height, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - 152)
+        if searchDisplayTableView.frame.origin.y == UIScreen.main.bounds.height {
+            searchDisplayTableView.frame = CGRect(x: 0, y: UIScreen.main.bounds.height, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - 152)
         } else {
-            self.searchDisplayTableView.frame = CGRect(x: 0, y: 120, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - 152)
+
+            searchDisplayTableView.frame = CGRect(x: 0, y: 120, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - 152)
         }
 
-        if Constant.MyClassConstants.addResortSelectedIndex.count == 0 && self.navigationItem.rightBarButtonItem != nil {
-            self.navigationItem.rightBarButtonItem!.isEnabled = false
+        if Constant.MyClassConstants.addResortSelectedIndex.count == 0 && navigationItem.rightBarButtonItem != nil {
+            navigationItem.rightBarButtonItem!.isEnabled = false
+
         } else {
-            if self.navigationItem.rightBarButtonItem != nil {
-                self.navigationItem.rightBarButtonItem!.isEnabled = true
+            if navigationItem.rightBarButtonItem != nil {
+                navigationItem.rightBarButtonItem!.isEnabled = true
             }
         }
         
@@ -137,7 +138,7 @@ class GoogleMapViewController: UIViewController {
     
     func updateMapMarkers() {
         
-        if Constant.MyClassConstants.googleMarkerArray.count > 0 && Constant.MyClassConstants.runningFunctionality != Constant.MyClassConstants.resortFunctionalityCheck {
+        if !Constant.MyClassConstants.googleMarkerArray.isEmpty && Constant.MyClassConstants.runningFunctionality != Constant.MyClassConstants.resortFunctionalityCheck {
             for selectedMarker in Constant.MyClassConstants.googleMarkerArray {
                 if selectedMarker.userData as! Int == Constant.MyClassConstants.collectionVwCurrentIndex {
                     
@@ -149,7 +150,7 @@ class GoogleMapViewController: UIViewController {
                     } else {
                         
                         selectedMarker.icon = UIImage(named: Constant.assetImageNames.pinFocusImage)
-                        self.mapView.selectedMarker = selectedMarker
+                        mapView.selectedMarker = selectedMarker
                         selectedMarker.isFlat = true
                         
                     }
@@ -160,13 +161,14 @@ class GoogleMapViewController: UIViewController {
             resortCollectionView.reloadData()
         }
     }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
        //hide map current location button
         self.mapView.settings.myLocationButton = false
         self.mapView.isMyLocationEnabled = false
-
+    
         // condition check to send resort directory
         if Constant.MyClassConstants.runningFunctionality == Constant.MyClassConstants.resortFunctionalityCheck {
 
@@ -175,18 +177,16 @@ class GoogleMapViewController: UIViewController {
 
         }
         //Location Manager code to fetch current location
-        self.locationManager.delegate = self
-        self.locationManager.startUpdatingLocation()
+        locationManager.delegate = self
+        locationManager.startUpdatingLocation()
         mapView.delegate = self
         locationManager.requestWhenInUseAuthorization()
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        searchDisplayTableView.isHidden = true
 
-        self.searchDisplayTableView.isHidden = true
-
-        //***** Register custom cell with map tale view with some validation check *****//
+        // Register custom cell with map tale view with some validation check
         if mapTableView != nil {
-
-            self.mapTableView.isHidden = true
+            mapTableView.isHidden = true
             if mapTableView.tag != 1 {
 
                 mapTableView.register(UINib(nibName: Constant.customCellNibNames.searchResultContentTableCell, bundle: nil), forCellReuseIdentifier: Constant.customCellNibNames.searchResultContentTableCell)
@@ -198,42 +198,37 @@ class GoogleMapViewController: UIViewController {
             applyButton = UIBarButtonItem(title: Constant.AlertPromtMessages.applyButtonTitle, style: .plain, target: self, action: #selector(applyButtonPressed(_:)))
             applyButton.isEnabled = false
             applyButton.tintColor = UIColor.white
-            self.navigationItem.rightBarButtonItem = applyButton
+            navigationItem.rightBarButtonItem = applyButton
         }
 
         if mapSideView != nil && self.containerView != nil {
-            self.containerView.tag = 100
+            containerView.tag = 100
             containerView.isHidden = true
-            self.view.bringSubview(toFront: mapSideView)
+            view.bringSubview(toFront: mapSideView)
         }
         NotificationCenter.default.addObserver(self, selector: #selector(loginNotification), name: NSNotification.Name(rawValue: Constant.notificationNames.reloadFavoritesTabNotification), object: nil)
-        self.googleMapSearchBar.delegate = self
+        googleMapSearchBar.delegate = self
     }
     // MARK: -***** Method called when search result map button pressed *****//
     
     func resortShowMapPressedAtIndex(sender: UIButton) {
         
         Constant.MyClassConstants.destinationOrResortSelectedBy = Constant.omnitureCommonString.mapSelection
-        self.hidePopUpView()
+        hidePopUpView()
         
         let senderButton = sender
         
         if senderButton.superview!.superview!.tag == 1 {
-            
             let selectedResort = Constant.MyClassConstants.resorts![sender.tag]
-            
-            self.googleMapSearchBar.resignFirstResponder()
-            self.googleMapSearchBar.showsCancelButton = false
+            googleMapSearchBar.resignFirstResponder()
+            googleMapSearchBar.showsCancelButton = false
             Helper.getResortWithResortCode(code: selectedResort.resortCode!, viewcontroller: self)
-            self.googleMapSearchBar.text = ""
-            
+            googleMapSearchBar.text = nil
         } else {
-            
-            self.googleMapSearchBar.resignFirstResponder()
-            self.googleMapSearchBar.showsCancelButton = false
-            
+            googleMapSearchBar.resignFirstResponder()
+            googleMapSearchBar.showsCancelButton = false
             showHudAsync()
-            DirectoryClient.getResortsWithinGeoArea(Session.sharedSession.userAccessToken, geoArea: Constant.MyClassConstants.destinations![sender.tag].geoArea, onSuccess: { (response) in
+            DirectoryClient.getResortsWithinGeoArea(Session.sharedSession.userAccessToken, geoArea: Constant.MyClassConstants.destinations![sender.tag].geoArea, onSuccess: { response in
                 self.needCameraChange = true
                 Constant.MyClassConstants.resortsArray.removeAll()
                 Constant.MyClassConstants.resortsArray = response
@@ -244,7 +239,7 @@ class GoogleMapViewController: UIViewController {
                     Constant.MyClassConstants.addResortSelectedIndex.append(i)
                     i = i + 1
                 }
-                self.navigationItem.rightBarButtonItem!.isEnabled = true
+                self.navigationItem.rightBarButtonItem?.isEnabled = true
                 Constant.MyClassConstants.googleMarkerArray.removeAll()
                 if !Constant.MyClassConstants.resortsArray.isEmpty {
                     
@@ -273,7 +268,7 @@ class GoogleMapViewController: UIViewController {
     func destinationSelectedAtIndex(sender: UIButton) {
         
         Constant.MyClassConstants.destinationOrResortSelectedBy = Constant.omnitureCommonString.typedSelection
-        if self.sourceController != "" && self.sourceController == Constant.MyClassConstants.createAlert || self.sourceController == Constant.MyClassConstants.editAlert {
+        if sourceController != "" && sourceController == Constant.MyClassConstants.createAlert || sourceController == Constant.MyClassConstants.editAlert {
             let senderButton = sender
             
             if senderButton.superview!.superview!.tag == 0 {
@@ -294,7 +289,7 @@ class GoogleMapViewController: UIViewController {
                 }
             }
             sender.isSelected = true
-            _ = self.navigationController?.popViewController(animated: true)
+            _ = navigationController?.popViewController(animated: true)
             
         } else {
             
@@ -369,7 +364,7 @@ class GoogleMapViewController: UIViewController {
                 }
             }
             sender.isSelected = true
-                _ = self.navigationController?.popViewController(animated: true)
+                _ = navigationController?.popViewController(animated: true)
         }
         
     }
@@ -442,15 +437,15 @@ class GoogleMapViewController: UIViewController {
             marker.icon = UIImage(named: Constant.assetImageNames.pinActiveImage)
             marker.appearAnimation = GMSMarkerAnimation.pop
             bounds = bounds.includingCoordinate(marker.position)
-            marker.map = self.mapView
+            marker.map = mapView
             Constant.MyClassConstants.googleMarkerArray.append(marker)
             
         }
         
-        if !Constant.MyClassConstants.isRunningOnIphone && self.mapTableView != nil {
-                self.mapTableView.isHidden = false
-                self.alertView.isHidden = true
-                self.mapTableView.reloadData()
+        if !Constant.MyClassConstants.isRunningOnIphone && mapTableView != nil {
+                mapTableView.isHidden = false
+                alertView.isHidden = true
+                mapTableView.reloadData()
         }
         
     }
@@ -472,7 +467,7 @@ class GoogleMapViewController: UIViewController {
             transition.type = kCATransitionPush
             transition.subtype = kCATransitionFromTop
             viewController.view.layer.add(transition, forKey: kCATransition)
-            self.navigationController?.pushViewController(viewController, animated: false)
+            navigationController?.pushViewController(viewController, animated: false)
             UIApplication.shared.keyWindow?.layer.backgroundColor = UIColor.clear.cgColor
         } else {
             if sender.isSelected == true {
@@ -507,7 +502,7 @@ class GoogleMapViewController: UIViewController {
                 } else {
                     
                     selectedMarker.icon = UIImage(named: Constant.assetImageNames.pinFocusImage)
-                    self.mapView.selectedMarker = selectedMarker
+                    mapView.selectedMarker = selectedMarker
                     selectedMarker.isFlat = true
                     
                 }
@@ -517,9 +512,9 @@ class GoogleMapViewController: UIViewController {
         }
         
         if Constant.MyClassConstants.addResortSelectedIndex.count == 0 {
-            self.navigationItem.rightBarButtonItem!.isEnabled = false
+            navigationItem.rightBarButtonItem!.isEnabled = false
         } else {
-            self.navigationItem.rightBarButtonItem!.isEnabled = true
+            navigationItem.rightBarButtonItem!.isEnabled = true
         }
         if Constant.RunningDevice.deviceIdiom == .phone && resortCollectionView != nil {
             resortCollectionView.reloadData()
@@ -544,8 +539,8 @@ class GoogleMapViewController: UIViewController {
     
     //***** need to work from piyush *****//
     func reloadView() {
-        if self.mapTableView != nil {
-            self.mapTableView.reloadData()
+        if mapTableView != nil {
+            mapTableView.reloadData()
         }
     }
     
@@ -563,7 +558,7 @@ class GoogleMapViewController: UIViewController {
     //***** This function called when navigation back button pressed *****//
     func applyButtonPressed(_ sender: UIBarButtonItem) {
         
-        if self.sourceController == Constant.MyClassConstants.vacationSearch {
+        if sourceController == Constant.MyClassConstants.vacationSearch {
             
             let storedata = RealmLocalStorage()
             let Membership = Session.sharedSession.selectedMembership
@@ -593,9 +588,9 @@ class GoogleMapViewController: UIViewController {
             }
             
             if Constant.RunningDevice.deviceIdiom == .phone {
-                _ = self.navigationController?.popViewController(animated: true)
+                _ = navigationController?.popViewController(animated: true)
             } else {
-                self.navigationController?.dismiss(animated: true, completion: nil)
+                navigationController?.dismiss(animated: true, completion: nil)
             }
             
         } else {
@@ -608,9 +603,9 @@ class GoogleMapViewController: UIViewController {
         Constant.MyClassConstants.selectedGetawayAlertDestinationArray.append(Constant.selectedDestType.resorts(selectedResortsArray))
             
             if Constant.RunningDevice.deviceIdiom == .phone {
-                _ = self.navigationController?.popViewController(animated: true)
+                _ = navigationController?.popViewController(animated: true)
             } else {
-                self.navigationController?.popViewController(animated: true)
+                navigationController?.popViewController(animated: true)
             }
         }
         
@@ -622,23 +617,22 @@ class GoogleMapViewController: UIViewController {
             
             let pageWidth = resortCollectionView.bounds.size.width
             let page = scrollView.contentOffset.x / pageWidth
-            self.currentIndex = Int(page)
+            currentIndex = Int(page)
         }
     }
     
     // ***** Drag button function implementation *****//
     @IBAction func dragButtonClicked(_ sender: AnyObject?) {
         let currentZoom = mapView.camera.zoom
-        if self.draggingView.frame.origin.x == 0 {
+        if draggingView.frame.origin.x == 0 {
             hideSideView = false
-            self.mapSideView.isHidden = false
+            mapSideView.isHidden = false
             if currentZoom >= 10 {
-                self.view.endEditing(true)
-                self.mapTableView.isHidden = false
-                self.alertView.isHidden = true
+                view.endEditing(true)
+                mapTableView.isHidden = false
+                alertView.isHidden = true
             }
             UIView.animate (withDuration: 0.5, delay: 0.1, options: UIViewAnimationOptions.curveEaseIn, animations: {
-                
                 self.mapSideView.frame = CGRect(x: 0, y: self.mapSideView.frame.origin.y, width: self.mapSideView.frame.size.width, height: self.mapSideView.frame.size.height)
                 self.draggingView.frame = CGRect(x: self.mapSideView.frame.size.width, y: self.draggingView.frame.origin.y, width: self.draggingView.frame.size.width, height: self.draggingView.frame.size.height)
                 
@@ -685,8 +679,8 @@ class GoogleMapViewController: UIViewController {
     //***** Method to create bottom resort view in collection view and pop up with custom animation *****//
     func createBottomResortView(marker: GMSMarker) {
         
-        if resortCollectionView != nil && Constant.MyClassConstants.resortsArray.count > 0 {
-            self.resortCollectionView.reloadData()
+        if resortCollectionView != nil && !Constant.MyClassConstants.resortsArray.isEmpty {
+            resortCollectionView.reloadData()
             DispatchQueue.main.async {
                 let indexPath = IndexPath(row: self.currentIndex, section: 0)
                 self.resortCollectionView.scrollToItem(at: indexPath, at: UICollectionViewScrollPosition.right, animated: true)
@@ -750,9 +744,9 @@ class GoogleMapViewController: UIViewController {
     // ***** This method executes when we want to hide bottom resort view *****//
     func removeBottomView() {
         
-        self.currentIndex = 0
-        if self.navigationItem.rightBarButtonItem != nil {
-            self.navigationItem.rightBarButtonItem!.isEnabled = false
+        currentIndex = 0
+        if navigationItem.rightBarButtonItem != nil {
+            navigationItem.rightBarButtonItem!.isEnabled = false
         }
         UIView.animate (withDuration: 0.5, delay: 0.1, options: UIViewAnimationOptions.curveEaseIn, animations: {
             self.resortView.frame = CGRect(x: 0, y: self.view.frame.height, width: self.view.frame.width, height: self.bottomResortHeight)
@@ -791,7 +785,7 @@ class GoogleMapViewController: UIViewController {
         }
         
         if sender.direction == .down {
-            self.removeBottomView()
+            removeBottomView()
         } else if sender.direction == .left && Constant.RunningDevice.deviceIdiom == .pad {
             
             UIView.animate (withDuration: 0.5, delay: 0.1, options: UIViewAnimationOptions.curveEaseIn, animations: {
@@ -803,11 +797,11 @@ class GoogleMapViewController: UIViewController {
             })
             
         } else if sender.direction == .right {
-            self.mapSideView.isHidden = false
-            self.draggingView.isHidden = false
-            if self.containerView != nil {
-                self.containerView.isHidden = false
-                self.view.bringSubview(toFront: self.containerView)
+            mapSideView.isHidden = false
+            draggingView.isHidden = false
+            if containerView != nil {
+                containerView.isHidden = false
+                view.bringSubview(toFront: containerView)
                 UIView.animate (withDuration: 0.5, delay: 0.1, options: UIViewAnimationOptions.curveEaseIn, animations: {
                     self.containerView.frame = CGRect(x: 0, y: self.containerView.frame.origin.y, width: self.containerView.frame.size.width, height: self.self.containerView.frame.size.height)
                 }, completion: { _ in
@@ -844,11 +838,11 @@ class GoogleMapViewController: UIViewController {
         
         if Constant.RunningDevice.deviceIdiom == .pad {
             
-            if self.zoomIn == true {
+            if zoomIn == true {
                 
-                if self.navigationItem.rightBarButtonItem != nil {
+                if navigationItem.rightBarButtonItem != nil {
                     
-                    self.navigationItem.rightBarButtonItem?.isEnabled = true
+                    navigationItem.rightBarButtonItem?.isEnabled = true
                 }
                 
                 UIView.animate (withDuration: 0.5, delay: 0.1, options: UIViewAnimationOptions.curveEaseIn, animations: {
@@ -868,19 +862,19 @@ class GoogleMapViewController: UIViewController {
                 })
             } else {
                 
-                if self.navigationItem.rightBarButtonItem != nil && Constant.MyClassConstants.addResortSelectedIndex.count == 0 {
-                    if self.navigationItem.rightBarButtonItem != nil {
-                        self.navigationItem.rightBarButtonItem!.isEnabled = false
+                if navigationItem.rightBarButtonItem != nil && Constant.MyClassConstants.addResortSelectedIndex.isEmpty {
+                    if navigationItem.rightBarButtonItem != nil {
+                        navigationItem.rightBarButtonItem!.isEnabled = false
                     }
                 } else {
-                    if self.navigationItem.rightBarButtonItem != nil {
-                        self.navigationItem.rightBarButtonItem!.isEnabled = true
+                    if navigationItem.rightBarButtonItem != nil {
+                        navigationItem.rightBarButtonItem!.isEnabled = true
                     }
                 }
-                self.mapSideView.isHidden = false
-                self.draggingView.isHidden = false
-                if self.containerView != nil {
-                    self.containerView.isHidden = true
+                mapSideView.isHidden = false
+                draggingView.isHidden = false
+                if containerView != nil {
+                    containerView.isHidden = true
                 }
                 UIView.animate (withDuration: 0.5, delay: 0.1, options: UIViewAnimationOptions.curveEaseIn, animations: {
                     
@@ -913,9 +907,9 @@ class GoogleMapViewController: UIViewController {
             }
             
             if Constant.RunningDevice.deviceIdiom == .pad {
-                self.navigationController?.dismiss(animated: true, completion: nil)
+                navigationController?.dismiss(animated: true, completion: nil)
             } else {
-                _ = self.navigationController?.popViewController(animated: true)
+                _ = navigationController?.popViewController(animated: true)
             }
         }
         
@@ -939,9 +933,9 @@ class GoogleMapViewController: UIViewController {
         Constant.MyClassConstants.realmStoredDestIdOrCodeArray.removeAllObjects()
         Constant.MyClassConstants.whereTogoContentArray.add(Constant.MyClassConstants.allDestinations)
         if Constant.RunningDevice.deviceIdiom == .pad {
-            self.navigationController?.dismiss(animated: true, completion: nil)
+            navigationController?.dismiss(animated: true, completion: nil)
         } else {
-            _ = self.navigationController?.popViewController(animated: true)
+            _ = navigationController?.popViewController(animated: true)
         }
     }
     
@@ -957,15 +951,15 @@ class GoogleMapViewController: UIViewController {
         }
         if Constant.MyClassConstants.runningFunctionality != Constant.MyClassConstants.resortFunctionalityCheck && Constant.MyClassConstants.runningFunctionality != Constant.MyClassConstants.createAlert && Constant.MyClassConstants.runningFunctionality != Constant.MyClassConstants.editAlert {
             //**** Create table view header ****//
-            var  headerView = UIView(frame: CGRect(x: 0, y: 0, width: self.searchDisplayTableView.bounds.width, height: 40))
-            let nameLabel = UILabel(frame: CGRect(x: 15, y: 5, width: self.searchDisplayTableView.bounds.width - 130, height: 30))
+            var  headerView = UIView(frame: CGRect(x: 0, y: 0, width: searchDisplayTableView.bounds.width, height: 40))
+            let nameLabel = UILabel(frame: CGRect(x: 15, y: 5, width: searchDisplayTableView.bounds.width - 130, height: 30))
             
             nameLabel.text = Constant.HeaderViewConstantStrings.search
             nameLabel.font = UIFont(name: Constant.fontName.helveticaNeue, size: 15)
             headerView.addSubview(nameLabel)
             
             let selectButton = UIButton(type: UIButtonType.system) as UIButton
-            let bounds = CGRect(x: self.view.bounds.width - 68, y: 0, width: 60, height: 40)
+            let bounds = CGRect(x: view.bounds.width - 68, y: 0, width: 60, height: 40)
             selectButton.frame = bounds
             //selectButton.imageView?.contentMode = .scaleAspectFit
             selectButton.setImage(UIImage(named: Constant.assetImageNames.plusIcon), for: .normal)
@@ -975,11 +969,11 @@ class GoogleMapViewController: UIViewController {
             headerView.addSubview(selectButton)
             if Constant.MyClassConstants.whereTogoContentArray.contains(Constant.MyClassConstants.allDestinations) {
                 selectButton.isEnabled = false
-                headerView = UIView(frame: CGRect(x: 0, y: 0, width: self.searchDisplayTableView.bounds.width, height: 0))
+                headerView = UIView(frame: CGRect(x: 0, y: 0, width: searchDisplayTableView.bounds.width, height: 0))
             } else {
                 selectButton.isEnabled = true
             }
-            self.searchDisplayTableView.tableHeaderView = headerView
+            searchDisplayTableView.tableHeaderView = headerView
         }
         
         UIView.animate (withDuration: 0.5, delay: 0.1, options: UIViewAnimationOptions.curveEaseIn, animations: {
@@ -1012,12 +1006,12 @@ class GoogleMapViewController: UIViewController {
     //***** Show screen in landscape/potrait mode. *****//
     func getScreenFrameForOrientation() {
         if Constant.RunningDevice.deviceIdiom == .pad {
-            if self.containerView != nil {
-                if self.containerView.isHidden == false {
-                    self.containerView.isHidden = true
+            if containerView != nil {
+                if containerView.isHidden == false {
+                    containerView.isHidden = true
                 } else {
-                    if self.mapSideView.frame.origin.x != 0 {
-                        self.mapSideView.isHidden = true
+                    if mapSideView.frame.origin.x != 0 {
+                        mapSideView.isHidden = true
                         //TODO
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.0) {
                             self.draggingView.frame = CGRect(x: 0, y: self.draggingView.frame.origin.y, width: self.draggingView.frame.size.width, height: self.draggingView.frame.size.height)
@@ -1029,8 +1023,8 @@ class GoogleMapViewController: UIViewController {
                     }
                 }
                 
-                let containerVC = self.childViewControllers[0] as! ResortDetailsViewController
-                containerVC.senderViewController = Constant.MyClassConstants.searchResult
+                let containerVC = childViewControllers[0] as! ResortDetailsViewController
+                containerVC.senderViewController = Constant.MyClassConstants.showSearchResultButton
                 containerVC.viewWillAppear(true)
             }
         }
@@ -1049,6 +1043,7 @@ class GoogleMapViewController: UIViewController {
         Constant.MyClassConstants.googleMarkerArray.removeAll()
         mapView.clear()
         needCameraChange = true
+
         displaySearchedResort()
         
         if Constant.RunningDevice.deviceIdiom == .pad {
@@ -1059,7 +1054,7 @@ class GoogleMapViewController: UIViewController {
     func nameLabelPressed(_ sender: UITapGestureRecognizer) {
         
         if Constant.MyClassConstants.systemAccessToken != nil {
-            let selectedResort = Constant.MyClassConstants.resortsArray[self.currentIndex]
+            let selectedResort = Constant.MyClassConstants.resortsArray[currentIndex]
             
             //***** Favorites resort API call after successfull call *****//
             Helper.getUserFavorites {[unowned self] error in
@@ -1119,13 +1114,13 @@ extension GoogleMapViewController: GMSMapViewDelegate {
             if mapView.selectedMarker == nil {
                 marker.icon = UIImage(named: Constant.assetImageNames.pinFocusImage)
                 marker.isFlat = true
-                self.mapView.selectedMarker = marker
+                mapView.selectedMarker = marker
                 Constant.MyClassConstants.resortsDescriptionArray = Constant.MyClassConstants.resortsArray[marker.userData as! Int]
                 
                 Helper.getResortWithResortCode(code: Constant.MyClassConstants.resortsDescriptionArray.resortCode!, viewcontroller: self)
                 
                 let rightSwipe = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipes(sender:)))
-                self.handleSwipes(sender: rightSwipe)
+                handleSwipes(sender: rightSwipe)
                 
             } else {
                 
@@ -1166,15 +1161,15 @@ extension GoogleMapViewController: GMSMapViewDelegate {
                 
                 marker.icon = UIImage(named: Constant.assetImageNames.pinFocusImage)
                 marker.isFlat = true
-                self.currentIndex = marker.userData as! Int
-                self.mapView.selectedMarker = marker
-                self.createBottomResortView(marker: marker)
+                currentIndex = marker.userData as! Int
+                mapView.selectedMarker = marker
+                createBottomResortView(marker: marker)
                 
-            } else if marker.userData as! Int == self.mapView.selectedMarker?.userData as! Int {
+            } else if marker.userData as! Int == mapView.selectedMarker?.userData as! Int {
                 
                 marker.icon = UIImage(named: Constant.assetImageNames.pinActiveImage)
                 marker.isFlat = false
-                self.removeBottomView()
+                removeBottomView()
                 
             } else {
                 
@@ -1190,7 +1185,7 @@ extension GoogleMapViewController: GMSMapViewDelegate {
                             selectedMarker.isFlat = false
                         }
                     }
-                    self.mapView.selectedMarker = marker
+                    mapView.selectedMarker = marker
                     self.currentIndex = marker.userData as! Int
                     
                     let indexPath = IndexPath(row: self.currentIndex, section: 0)
@@ -1225,14 +1220,14 @@ extension GoogleMapViewController: GMSMapViewDelegate {
             nwCordinates.longitude = northWest.longitude
             
             let geoAreaReq = GeoArea(nwCordinates, seCordinates)
-            self.apiCallWithRectangleRequest(request: geoAreaReq)
+            apiCallWithRectangleRequest(request: geoAreaReq)
             
         } else {
             
             if !Constant.MyClassConstants.isRunningOnIphone {
                 
-                self.alertView.isHidden = false
-                self.mapTableView.isHidden = true
+                alertView.isHidden = false
+                mapTableView.isHidden = true
             }
             
         }
@@ -1243,7 +1238,7 @@ extension GoogleMapViewController: GMSMapViewDelegate {
 
 extension GoogleMapViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        self.currentIndex = indexPath.item
+        currentIndex = indexPath.item
     }
 }
 
@@ -1301,7 +1296,7 @@ extension GoogleMapViewController: UICollectionViewDataSource {
         let resortFavoritesButton = UIButton(frame: CGRect(x: cell.contentView.frame.width - 60, y: 10, width: 50, height: 50))
         resortFavoritesButton.tag = indexPath.row
         
-        if self.sourceController == Constant.MyClassConstants.createAlert || self.sourceController == Constant.MyClassConstants.editAlert || self.sourceController == Constant.MyClassConstants.vacationSearch {
+        if sourceController == Constant.MyClassConstants.createAlert || sourceController == Constant.MyClassConstants.editAlert || sourceController == Constant.MyClassConstants.vacationSearch {
             resortFavoritesButton.setImage(UIImage(named: Constant.assetImageNames.optOffImage), for: UIControlState.normal)
             resortFavoritesButton.setImage(UIImage(named: Constant.assetImageNames.optOnImage), for: UIControlState.selected)
             if Constant.MyClassConstants.addResortSelectedIndex.contains(indexPath.row) {
@@ -1369,7 +1364,7 @@ extension GoogleMapViewController: UICollectionViewDataSource {
             var visible: [AnyObject] = resortCollectionView.indexPathsForVisibleItems as [AnyObject]
             let indexpath: NSIndexPath = (visible[0] as! NSIndexPath)
             
-            self.currentIndex = indexpath.row
+            currentIndex = indexpath.row
             DispatchQueue.main.async {
                 
                 for marker in Constant.MyClassConstants.googleMarkerArray {
@@ -1410,7 +1405,7 @@ extension GoogleMapViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        if self.sourceController != Constant.MyClassConstants.createAlert && self.sourceController != Constant.MyClassConstants.editAlert && self.sourceController != Constant.MyClassConstants.vacationSearch {
+        if sourceController != Constant.MyClassConstants.createAlert && sourceController != Constant.MyClassConstants.editAlert && sourceController != Constant.MyClassConstants.vacationSearch {
             
             if tableView.tag == 1 {
                 
@@ -1422,8 +1417,8 @@ extension GoogleMapViewController: UITableViewDelegate {
                     let selectedResort = Constant.MyClassConstants.resorts?[indexPath.row]
                     
                     Helper.getResortWithResortCode(code: selectedResort?.resortCode ?? "", viewcontroller: self)
-                    self.googleMapSearchBar.text = ""
-                    self.hidePopUpView()
+                    googleMapSearchBar.text = ""
+                    hidePopUpView()
                 } else {
                     
                     showHudAsync()
@@ -1434,8 +1429,9 @@ extension GoogleMapViewController: UITableViewDelegate {
                         }
                         self.apiCallWithRectangleRequest(request: geoArea)
                     }
+
                     
-                    self.hidePopUpView()
+                    hidePopUpView()
                 }
             } else {
                 
@@ -1444,7 +1440,7 @@ extension GoogleMapViewController: UITableViewDelegate {
                 Helper.getResortWithResortCode(code: Constant.MyClassConstants.resortsDescriptionArray.resortCode!, viewcontroller: self)
                 
                 let rightSwipe = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipes(sender:)))
-                self.handleSwipes(sender: rightSwipe)
+                handleSwipes(sender: rightSwipe)
             }
         }
     }
@@ -1515,7 +1511,7 @@ extension GoogleMapViewController: UITableViewDataSource {
     
     private func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
-        let sectionHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 30))
+        let sectionHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 30))
         sectionHeaderView.backgroundColor = IUIKColorPalette.titleBackdrop.color
         
         return sectionHeaderView
@@ -1528,7 +1524,7 @@ extension GoogleMapViewController: UITableViewDataSource {
             if indexPath.section == 0 {
                 
                 guard let cell: ResortDestinationCell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.destinationCell, for: indexPath as IndexPath) as? ResortDestinationCell else { return UITableViewCell() }
-                if self.sourceController != Constant.MyClassConstants.createAlert && self.sourceController != Constant.MyClassConstants.editAlert && self.sourceController != Constant.MyClassConstants.vacationSearch {
+                if sourceController != Constant.MyClassConstants.createAlert && sourceController != Constant.MyClassConstants.editAlert && sourceController != Constant.MyClassConstants.vacationSearch {
                     
                     cell.addDestinationButton.isHidden = true
                     cell.destinationMapIcon.isHidden = true
@@ -1564,7 +1560,7 @@ extension GoogleMapViewController: UITableViewDataSource {
             } else {
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.resortCell, for: indexPath as IndexPath) as? ResortsTableViewCell else { return UITableViewCell() }
                 
-                if self.sourceController != Constant.MyClassConstants.createAlert && self.sourceController != Constant.MyClassConstants.editAlert && self.sourceController != Constant.MyClassConstants.vacationSearch {
+                if sourceController != Constant.MyClassConstants.createAlert && sourceController != Constant.MyClassConstants.editAlert && sourceController != Constant.MyClassConstants.vacationSearch {
                     
                     cell.addResortButton.isHidden = true
                     cell.showMapButton.isHidden = true
@@ -1611,7 +1607,7 @@ extension GoogleMapViewController: UITableViewDataSource {
             cell.backgroundColor = IUIKColorPalette.contentBackground.color
             cell.favoriteButton.tag = indexPath.row
             
-            if self.sourceController == Constant.MyClassConstants.createAlert || self.sourceController == Constant.MyClassConstants.editAlert || self.sourceController == Constant.MyClassConstants.vacationSearch {
+            if sourceController == Constant.MyClassConstants.createAlert || sourceController == Constant.MyClassConstants.editAlert || sourceController == Constant.MyClassConstants.vacationSearch {
                 
                 cell.favoriteButton.setImage(UIImage(named: Constant.assetImageNames.optOffImage), for: UIControlState.normal)
                 cell.favoriteButton.setImage(UIImage(named: Constant.assetImageNames.optOnImage), for: UIControlState.selected)
@@ -1663,23 +1659,23 @@ extension GoogleMapViewController: UISearchBarDelegate {
     //**** Search bar controller delegate ****//
     
     func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
-        self.zoomIn = true
-        self.googleMapSearchBar.showsCancelButton = true
+        zoomIn = true
+        googleMapSearchBar.showsCancelButton = true
         if Constant.RunningDevice.deviceIdiom == .pad {
-            self.hideMapSideView(flag: true)
+            hideMapSideView(flag: true)
         }
         
         return true
     }
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        self.googleMapSearchBar.resignFirstResponder()
+        googleMapSearchBar.resignFirstResponder()
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         
-        self.googleMapSearchBar.resignFirstResponder()
-        self.googleMapSearchBar.showsCancelButton = false
-        self.hidePopUpView()
+        googleMapSearchBar.resignFirstResponder()
+        googleMapSearchBar.showsCancelButton = false
+        hidePopUpView()
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
@@ -1688,21 +1684,21 @@ extension GoogleMapViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         
         if Constant.RunningDevice.deviceIdiom == .pad {
-            self.hideMapSideView(flag: true)
+            hideMapSideView(flag: true)
         }
         if searchBar.text!.characters.count >= 3 {
             
-            DirectoryClient.searchDestinations(Constant.MyClassConstants.systemAccessToken, request: SearchDestinationsRequest(query: searchBar.text), onSuccess: { (response) in
+            DirectoryClient.searchDestinations(Constant.MyClassConstants.systemAccessToken, request: SearchDestinationsRequest(query: searchBar.text), onSuccess: { [weak self] (response) in
                 if response.resorts.count > 0 {
                     Constant.MyClassConstants.resorts = response.resorts
                     Constant.MyClassConstants.resortsArray = response.resorts
                 }
                 
                 Constant.MyClassConstants.destinations = response.destinations
-                self.showPopUpView()
-                self.searchDisplayTableView.reloadData()
+                self?.showPopUpView()
+                self?.searchDisplayTableView.reloadData()
                 
-            }) { error in
+            }) {  [unowned self] error in
                 Logger.sharedInstance.warning(error.description)
                 self.presentErrorAlert(UserFacingCommonError.generic)
         
@@ -1733,7 +1729,7 @@ extension GoogleMapViewController: SearchResultContentTableCellDelegate {
             
         } else {
             Constant.MyClassConstants.btnTag = sender.tag
-            self.performSegue(withIdentifier: Constant.segueIdentifiers.preLoginSegue, sender: self)
+            performSegue(withIdentifier: Constant.segueIdentifiers.preLoginSegue, sender: self)
         }
         
     }

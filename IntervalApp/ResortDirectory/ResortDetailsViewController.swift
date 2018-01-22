@@ -48,6 +48,7 @@ class ResortDetailsViewController: UIViewController {
     fileprivate let moreNavArray = ["Share via email", "Share via text", "Tweet", "Facebook", "Pinterest"]
     
     var senderViewController: String? = ""
+    var showSearchResults = false
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -57,6 +58,7 @@ class ResortDetailsViewController: UIViewController {
             navigationController?.navigationBar.isHidden = false
         }
         if !Constant.MyClassConstants.isFromSearchResult {
+
             cancelButton?.setTitle("Done".localized(), for: .normal)
             if Constant.MyClassConstants.isFromExchange && Constant.RunningDevice.deviceIdiom == .phone {
                 previousButton?.isHidden = true
@@ -75,7 +77,9 @@ class ResortDetailsViewController: UIViewController {
         } else {
             navigationController?.navigationBar.isHidden = true
         }
-        
+
+        // Notification to perform vacation search after user pre-login
+        NotificationCenter.default.addObserver(self, selector: #selector(showVacationSearch), name: NSNotification.Name(rawValue: Constant.MyClassConstants.showVacationSearchNotification), object: nil)
         if headerTextForShowingResortCounter != nil {
             
             headerTextForShowingResortCounter?.text = "Resort \(Constant.MyClassConstants.vacationSearchContentPagerRunningIndex) of  \(Constant.MyClassConstants.resortsArray.count)".localized()
@@ -106,14 +110,13 @@ class ResortDetailsViewController: UIViewController {
                 Constant.MyClassConstants.amenitiesDictionary.setValue(onsiteArray, forKey: Constant.MyClassConstants.onsiteDictKey)
             }
             
-           tableViewResorts.reloadData()
+            tableViewResorts.reloadData()
+
         }
     }
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         // omniture tracking with event 35
         if let resortCode = Constant.MyClassConstants.resortsDescriptionArray.resortCode {
             let userInfo: [String: String] = [
@@ -142,12 +145,13 @@ class ResortDetailsViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         if Constant.RunningDevice.deviceIdiom == .phone {
-            navigationController?.navigationBar.isHidden = false
+            navigationController?.navigationBar.isHidden = showSearchResults
+            //showSearchResults ? (navigationController?.navigationBar.isHidden = true) : (navigationController?.navigationBar.isHidden = false)
             tabBarController?.tabBar.isHidden = false
         }
         navigationController?.navigationBar.isHidden = false
     }
-    
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -167,8 +171,8 @@ class ResortDetailsViewController: UIViewController {
                     Constant.MyClassConstants.imagesArray.append(imgUrl)
                 }
             }
+
             headerTextForShowingResortCounter?.text = "Resort \(Constant.MyClassConstants.vacationSearchContentPagerRunningIndex) of  \(Constant.MyClassConstants.resortsArray.count)".localized()
-            
             tableViewResorts.reloadData()
             // omniture tracking with event 35
             if let resortCode = Constant.MyClassConstants.resortsDescriptionArray.resortCode {
@@ -184,7 +188,6 @@ class ResortDetailsViewController: UIViewController {
                 Constant.MyClassConstants.vacationSearchContentPagerRunningIndex = Constant.MyClassConstants.vacationSearchContentPagerRunningIndex - 1
                 startIndex = startIndex - 1
                 showHudAsync()
-                
                 guard let resortCode = Constant.MyClassConstants.resortsArray[Constant.MyClassConstants.vacationSearchContentPagerRunningIndex - 1].resortCode else { return }
                 
                 DirectoryClient.getResortDetails(Constant.MyClassConstants.systemAccessToken, resortCode: resortCode, onSuccess: { response in
@@ -225,13 +228,13 @@ class ResortDetailsViewController: UIViewController {
                     Constant.MyClassConstants.resortsDescriptionArray = response
                     Constant.MyClassConstants.imagesArray.removeAll()
                     let imagesArray = Constant.MyClassConstants.resortsDescriptionArray.images
-                    for imgStr in imagesArray {
-                        if imgStr.size == Constant.MyClassConstants.imageSize {
-                            if let imgURL = imgStr.url {
-                                Constant.MyClassConstants.imagesArray.append(imgURL)
-                            }
+                    for imgStr in imagesArray where imgStr.size == Constant.MyClassConstants.imageSize {
+                        if let url = imgStr.url {
+                            Constant.MyClassConstants.imagesArray.append(url)
+
                         }
                     }
+                    
                     Constant.MyClassConstants.vacationSearchContentPagerRunningIndex = Constant.MyClassConstants.vacationSearchContentPagerRunningIndex + 1
                     self.headerTextForShowingResortCounter?.text = "Resort \(Constant.MyClassConstants.vacationSearchContentPagerRunningIndex) of  \(Constant.MyClassConstants.resortsArray.count)".localized()
                     self.hideHudAsync()
@@ -254,7 +257,7 @@ class ResortDetailsViewController: UIViewController {
             } else {
                 Constant.MyClassConstants.vacationSearchContentPagerRunningIndex = Constant.MyClassConstants.vacationSearchContentPagerRunningIndex + 1
                 arrayRunningIndex = arrayRunningIndex + 1
-                
+
                 Constant.MyClassConstants.resortsDescriptionArray = resortDescriptionArrayContainer[arrayRunningIndex]
                 Constant.MyClassConstants.imagesArray.removeAll()
                 let imagesArray = Constant.MyClassConstants.resortsDescriptionArray.images
@@ -341,7 +344,10 @@ class ResortDetailsViewController: UIViewController {
                 } else {
                     storyboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
                 }
+
+                
                 if let initialViewController = storyboard.instantiateInitialViewController() {
+                   showSearchResults = true
                     navigationController?.pushViewController(initialViewController, animated: true)
                 }
             } catch {
@@ -355,10 +361,11 @@ class ResortDetailsViewController: UIViewController {
                 storyboard = UIStoryboard(name: Constant.storyboardNames.resortDirectoryIpad, bundle: nil)
                 viewController = storyboard.instantiateViewController(withIdentifier: Constant.storyboardNames.signInPreLoginViewControlleriPad)
             } else {
-                storyboard = UIStoryboard(name: Constant.storyboardNames.signInPreLoginController, bundle: nil)
+                storyboard = UIStoryboard(name: Constant.storyboardNames.iphone, bundle: nil)
                 viewController = storyboard.instantiateViewController(withIdentifier: Constant.storyboardNames.signInPreLoginController)
             }
-            present(viewController, animated: true, completion: nil)
+         navigationController?.view.layer.add(Helper.bottomToTopTransition(), forKey: nil)
+         navigationController?.pushViewController(viewController, animated: true)
         }
     }
     //***** Function call for More button *****//
@@ -399,8 +406,8 @@ class ResortDetailsViewController: UIViewController {
         } else {
             tappedButtonDictionary.updateValue(true, forKey: sender.tag)
         }
-        tableViewResorts.reloadData()
-        
+        tableViewResorts.reloadSections(IndexSet(integer: sender.tag), with: .automatic)
+
     }
     //Function for forward button
     @IBAction func forwardButtonClicked(_ sender: AnyObject) {
@@ -485,13 +492,15 @@ extension ResortDetailsViewController: UITableViewDelegate {
                             guard let font = UIFont(name: Constant.fontName.helveticaNeue, size: 15.0) else { return 0 }
                                 height = heightForView(description, font: font, width: (view.frame.size.width) - 40)
                             return height + 40
+
                         } else {
                             guard let font = UIFont(name: Constant.fontName.helveticaNeue, size: 14.0) else { return 0 }
                             if let description = Constant.MyClassConstants.resortsDescriptionArray.description {
                                 height = heightForView(description, font: font, width: view.frame.size.width - 40)
                             }
-                            //here 60 is header label
-                            return height + 60
+
+                            return height + 90
+
                         }
                     } else {
                         return 60
@@ -570,7 +579,7 @@ extension ResortDetailsViewController: UITableViewDelegate {
                 let mailComposeViewController = configuredMailComposeViewController()
                 if MFMailComposeViewController.canSendMail() {
                     
-                    self.dismiss(animated: true, completion: {
+                    dismiss(animated: true, completion: {
                         self.present(mailComposeViewController, animated: true, completion: nil)
                     })
                 } else {
@@ -579,7 +588,7 @@ extension ResortDetailsViewController: UITableViewDelegate {
             case 1:
                 let txtComposeViewController = configuredMessageComposeViewController()
                 if MFMessageComposeViewController.canSendText() {
-                    self.dismiss(animated: true, completion: {
+                    dismiss(animated: true, completion: {
                         self.present(txtComposeViewController, animated: true, completion: nil)
                     })
                 } else {
@@ -674,7 +683,7 @@ extension ResortDetailsViewController: UITableViewDataSource {
         if tableView.tag == 1 {
             return 1
         } else {
-            if senderViewController == Constant.MyClassConstants.searchResult {
+            if senderViewController == Constant.MyClassConstants.showSearchResultButton {
                 return 8
             } else {
                 return 7
@@ -1084,7 +1093,7 @@ extension ResortDetailsViewController: MFMailComposeViewControllerDelegate {
     func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Swift.Error?) {
         
         switch result.rawValue {
-            
+        
         case MFMailComposeResult.cancelled.rawValue:
             dismiss(animated: true)
             break

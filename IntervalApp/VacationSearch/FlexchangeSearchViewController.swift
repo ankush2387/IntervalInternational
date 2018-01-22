@@ -65,7 +65,7 @@ class FlexchangeSearchViewController: UIViewController {
             
             self.hideHudAsync()
             let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
-            guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: "RelinquishmentSelectionViewController") as? RelinquishmentSelectionViewController else { return }
+            guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: "RelinquishmentViewController") as? RelinquishmentViewController else { return }
             
             let transitionManager = TransitionManager()
             self.navigationController?.transitioningDelegate = transitionManager
@@ -100,9 +100,10 @@ class FlexchangeSearchViewController: UIViewController {
                 
                 let searchCriteria = Helper.createSearchCriteriaFor(deal: deal)
                 
-                let settings = Helper.createSettings()
-                Constant.MyClassConstants.initialVacationSearch = VacationSearch(settings, searchCriteria)
-                
+                if let settings = Session.sharedSession.appSettings {
+                    Constant.MyClassConstants.initialVacationSearch = VacationSearch(settings, searchCriteria)
+                }
+
                 if let flexchangeName = selectedFlexchange?.name {
                     Constant.MyClassConstants.vacationSearchResultHeaderLabel = flexchangeName
                 }

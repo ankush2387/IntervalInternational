@@ -167,7 +167,8 @@ class OwnershipViewController: UIViewController {
         }
         if self.requiredNumberOfSection() == 0 {
             
-            presentAlert(with: Constant.ControllerTitles.relinquishmentSelectiongControllerTitle, message: Constant.MyClassConstants.noRelinquishmentavailable)
+            presentAlert(with: "Relinquishment Selection".localized(),
+                         message: "No Relinquishment Available".localized())
         }
         
         if self.ownerShiptableView != nil {
@@ -835,7 +836,8 @@ extension OwnershipViewController: UITableViewDataSource {
                         let dateString = date[0]
                         let date = Helper.convertStringToDate(dateString: dateString, format: Constant.MyClassConstants.dateFormat)
                        
-                        let myComponents = Calendar.current.dateComponents([.day, .weekday, .month, .year], from: date)
+                        let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
+                        let myComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: date)
                         let day = myComponents.day ?? 0
                         var month = ""
                         if day < 10 {
@@ -902,7 +904,8 @@ extension OwnershipViewController: UITableViewDataSource {
                     
                     let dateString = date[0]
                     let date = Helper.convertStringToDate(dateString: dateString, format: Constant.MyClassConstants.dateFormat)
-                    let myComponents = Calendar.current.dateComponents([.day, .weekday, .month, .year], from: date)
+                    let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
+                    let myComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: date)
                     let day = myComponents.day ?? 0
                     var month = ""
                     if day < 10 {

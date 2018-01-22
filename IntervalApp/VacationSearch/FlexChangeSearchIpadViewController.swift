@@ -116,10 +116,11 @@ class FlexChangeSearchIpadViewController: UIViewController {
             Constant.MyClassConstants.isFromExchange = true
             
             let searchCriteria = Helper.createSearchCriteriaFor(deal: deal)
-            let settings = Helper.createSettings()
             
-            Constant.MyClassConstants.initialVacationSearch = VacationSearch(settings, searchCriteria)
-            
+            if let settings = Session.sharedSession.appSettings {
+                 Constant.MyClassConstants.initialVacationSearch = VacationSearch(settings, searchCriteria)
+            }
+
             ExchangeClient.searchDates(Session.sharedSession.userAccessToken, request:Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request, onSuccess: { response in
                 Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.response = response
                 Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
@@ -168,7 +169,7 @@ class FlexChangeSearchIpadViewController: UIViewController {
             
             self.hideHudAsync()
             let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
-            guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.relinquishmentSelectionViewController) as? RelinquishmentSelectionViewController else { return }
+            guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.relinquishmentSelectionViewController) as? RelinquishmentViewController else { return }
             
             let transitionManager = TransitionManager()
             self.navigationController?.transitioningDelegate = transitionManager

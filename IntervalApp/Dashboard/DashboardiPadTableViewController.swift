@@ -258,8 +258,11 @@ class DashboardIPadTableViewController: UITableViewController {
         if !searchDateResponse.checkInDates.isEmpty {
             showHudAsync()
             let searchCriteria = createSearchCriteriaFor(alert: getawayAlert)
-            let settings = Helper.createSettings()
-            Constant.MyClassConstants.initialVacationSearch = VacationSearch(settings, searchCriteria)
+
+            if let settings = Session.sharedSession.appSettings {
+                Constant.MyClassConstants.initialVacationSearch = VacationSearch(settings, searchCriteria)
+            }
+
             Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.response = searchDateResponse
             // Get activeInterval
             guard let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval() else { return }
@@ -292,7 +295,7 @@ class DashboardIPadTableViewController: UITableViewController {
         // Split destinations and resorts to create multiples VacationSearchCriteria
         let checkInDate = alert.getCheckInDate()
         
-        let searchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Rental)
+        let searchCriteria = VacationSearchCriteria(searchType: VacationSearchType.RENTAL)
         searchCriteria.checkInDate = Helper.convertStringToDate(dateString: checkInDate, format: Constant.MyClassConstants.dateFormat)
         if let earliestCheckInDate = alert.earliestCheckInDate {
             searchCriteria.checkInFromDate = Helper.convertStringToDate(dateString: earliestCheckInDate, format: Constant.MyClassConstants.dateFormat)
