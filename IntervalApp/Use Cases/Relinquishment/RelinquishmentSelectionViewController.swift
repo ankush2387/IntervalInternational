@@ -149,16 +149,16 @@ class RelinquishmentSelectionViewController: UIViewController {
             }
         }
         
-        if self.requiredNumberOfSection() == 0 {
-            presentAlert(with: Constant.ControllerTitles.relinquishmentSelectiongControllerTitle, message: Constant.MyClassConstants.noRelinquishmentavailable)
-        
-        }
-        
-        if self.relinquishmentTableview != nil {
-            relinquishmentTableview.reloadData()
-        }
-        // Adding controller title
-        self.title = Constant.ControllerTitles.relinquishmentSelectiongControllerTitle
+//        if self.requiredNumberOfSection() == 0 {
+//            presentAlert(with: Constant.ControllerTitles.relinquishmentSelectiongControllerTitle, message: Constant.MyClassConstants.noRelinquishmentavailable)
+//        
+//        }
+//        
+//        if self.relinquishmentTableview != nil {
+//            relinquishmentTableview.reloadData()
+//        }
+//        // Adding controller title
+//        self.title = Constant.ControllerTitles.relinquishmentSelectiongControllerTitle
         
         // Adding navigation back button
         let menuButton = UIBarButtonItem(image: #imageLiteral(resourceName: "BackArrowNav"), style: .plain, target: self, action: #selector(RelinquishmentSelectionViewController.menuBackButtonPressed(_:)))
