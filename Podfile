@@ -38,8 +38,8 @@ target 'IntervalApp' do
     pod 'CVCalendar', :git=>'https://github.com/Mozharovsky/CVCalendar', :tag => '1.4.0'
     pod 'XCGLogger', :git=>'https://github.com/DaveWoodCom/XCGLogger.git', branch: 'swift_3.0'
     pod 'ReactiveKit', :git=>'https://github.com/ReactiveKit/ReactiveKit.git', :tag => 'v3.6.2'
-    pod 'IntervalUIKit', :git => 'https://bitbucket.iilg.com/scm/iimob/interval-uikit-ios.git', :commit => 'b831e371'
-    pod 'DarwinSDK', :git => 'https://bitbucket.iilg.com/scm/iimob/darwin-sdk-ios.git', branch: 'develop', :commit => 'cc08ef39422'
+    pod 'IntervalUIKit', :git => 'https://bitbucket.iilg.com/scm/iimob/interval-uikit-ios.git', :commit => '878ae9d5'
+    pod 'DarwinSDK', :git => 'https://bitbucket.iilg.com/scm/iimob/darwin-sdk-ios.git', branch: 'develop', :commit => '76d6cc4291c'
 end
 
 target 'IntervalAppTests' do

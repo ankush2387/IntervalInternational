@@ -28,7 +28,7 @@ class RentalInventoryCVCell: UICollectionViewCell {
         let price = Int(unit.prices[0].price)
         
         self.getawayPrice.text = String(price)
-        if Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.Combined {
+        if Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.COMBINED {
             self.getawayPrice.isHidden = true
             self.currencySymbol.isHidden = true
             getawayNameLabel.text = "Getaway"

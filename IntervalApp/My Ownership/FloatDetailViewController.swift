@@ -241,7 +241,8 @@ class FloatDetailViewController: UIViewController {
             
         } else {
             if let fltDetailsSelectedDate = Constant.MyClassConstants.relinquishmentFloatDetialSelectedDate {
-                myComponents = Calendar.current.dateComponents([.day, .weekday, .month, .year], from: fltDetailsSelectedDate)
+                let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
+                myComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: fltDetailsSelectedDate)
                 let year = String(describing: myComponents.year!)
                 var  month = String(describing: myComponents.month!)
                 if(month.characters.count == 1) {
@@ -539,8 +540,8 @@ extension FloatDetailViewController: UITableViewDataSource {
                     registrationNumbercell.resortAttributeLabel.text = Constant.MyClassConstants.selectedFloatWeek.floatDetails[0].checkInDate
                 }
                 if let selectedDate = Constant.MyClassConstants.relinquishmentFloatDetialSelectedDate {
-                    
-                    let myComponents = Calendar.current.dateComponents([.day, .weekday, .month, .year], from: selectedDate)
+                    let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
+                    let myComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: selectedDate)
                     if let year = myComponents.year, let weekDayComp = myComponents.weekday, let monthComp = myComponents.month, let dayComp = myComponents.day {
                         
                         let weekDay = "\(Helper.getWeekdayFromInt(weekDayNumber: weekDayComp))"

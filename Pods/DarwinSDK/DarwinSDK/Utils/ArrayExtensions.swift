@@ -31,20 +31,20 @@ extension Array  {
     }
     */
     
-    func closetIndexTo(_ to :Int) -> Int {
+    func closetDiffTo(_ to :Int) -> Int {
         var min = Int.max
         var closet = to
         
         for element in self {
             let value: Int = element as! Int
-            let diff = value - to
+            let diff = abs(value - to)
 
             if diff <= min {
                 min = diff
                 closet = value
             }
         }
-        return abs(closet)
+        return closet
     }
     
 }

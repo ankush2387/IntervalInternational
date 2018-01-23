@@ -11,13 +11,14 @@ import DarwinSDK
 import GoogleMaps
 
 class Constant: NSObject {
-    
+
     static var holdingTimer: Timer?
     static var holdingTime = 18
     static var decreaseValue = 1
     static var activeAlertCount = 0
     static var needToReloadAlert = false
     static var selectedAlertToEdit: RentalAlert?
+    static var calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
   
       //***** common function to get device orientation *****//
     struct RunningDevice {
@@ -265,7 +266,7 @@ class Constant: NSObject {
         static var googleMarkerArray = [GMSMarker]()
         
         static let sidemenuIntervalInternationalCorporationLabel = "2015 Interval International. Privacy/Legal".localized()
-        static let noRelinquishmentavailable = "No Relinquishment available".localized()
+        
         static let relinquishmentTitle = "Select all or any lock-off portion".localized()
         static let floatTitle = "Select one lock-off portion at a time".localized()
         static let bedroomTitle = "Choose Bedrooms".localized()
@@ -276,7 +277,7 @@ class Constant: NSObject {
         static var alertWindowStartDate: Date?
         static var alertWindowEndDate: Date?
         static var todaysDate = Date()
-        static var dateAfterTwoYear = NSCalendar.current.date(byAdding: .month, value: 24, to: NSDate() as Date)
+        static var dateAfterTwoYear = calendar.date(byAdding: .month, value: 24, to: NSDate() as Date)
         
         static var bundelVersionUsedString = "CFBundleShortVersionString".localized()
         static var member = "Member #  ".localized()
@@ -941,7 +942,7 @@ class Constant: NSObject {
         static var magazinesControllerTitle = "Magazines".localized()
         static var whoWillBeCheckingInControllerTitle = "Who will be checking-in?".localized()
         static var checkOutControllerTitle = "Check Out".localized()
-        static var relinquishmentSelectiongControllerTitle = "Relinquishment Selection".localized()
+        
         static var confirmationControllerTitle = "Confirmation".localized()
         static var intervalHDiPadControllerTitle =  "IntervalHDIpadPlayerViewController".localized()
         static var clubpointselection = "Club Point Selection".localized()
@@ -1028,7 +1029,7 @@ class Constant: NSObject {
         static var whoWillBeCheckingInIpadViewController = "WhoWillBeCheckingInIPadViewController"
         static var checkOutViewController = "CheckOutViewController"
         static var addDebitOrCreditCardViewController = "AddDebitOrCreditCardViewController"
-        static var relinquishmentSelectionViewController = "RelinquishmentSelectionViewController"
+        static var relinquishmentSelectionViewController = "RelinquishmentViewController"
         static var availablePointToolViewController = "AvailablePointToolViewController"
         static var clubPointViewController = "ClubPointPageItemViewController"
         static var clubPointsSelectionViewController = "clubpointselectionPageviewcontroller"

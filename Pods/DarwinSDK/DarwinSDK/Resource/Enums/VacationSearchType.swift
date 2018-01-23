@@ -9,11 +9,9 @@
 import Foundation
 
 public enum VacationSearchType : String {
-    case Combined = "COMBINED"
-    case Exchange = "EXCHANGE"
-    case Rental = "RENTAL"
-    case Unknown = "UNKNOWN"
-    
+    case COMBINED = "COMBINED"
+    case EXCHANGE = "EXCHANGE"
+    case RENTAL = "RENTAL"
     
     var name: String {
         return self.rawValue
@@ -36,14 +34,15 @@ public enum VacationSearchType : String {
     }
     
     public static func fromName(name : String) -> VacationSearchType {
-        if VacationSearchType.Combined.name == name {
-            return VacationSearchType.Combined
-        } else if VacationSearchType.Exchange.name == name {
-            return VacationSearchType.Exchange
-        } else if VacationSearchType.Rental.name == name {
-            return VacationSearchType.Rental
+        if VacationSearchType.COMBINED.name == name {
+            return VacationSearchType.COMBINED
+        } else if VacationSearchType.EXCHANGE.name == name {
+            return VacationSearchType.EXCHANGE
+        } else if VacationSearchType.RENTAL.name == name {
+            return VacationSearchType.RENTAL
         } else {
-            return VacationSearchType.Unknown
+            // Fallback
+            return VacationSearchType.RENTAL
         }
     }
 }

@@ -38,6 +38,12 @@ class CertificateViewController: UIViewController {
         // Left blank intentionally
     }
     
+    @IBAction func redeemMyCertificateButtonTapped(_ sender: Any) {
+        if let url = URL(string: "https://www.intervalworld.com/web/my/home") {
+            NetworkHelper.open(url)
+        }
+    }
+    
     func getAccommodationCertificateSummary(sendertag: Int) {
        
         // show hud
@@ -147,8 +153,9 @@ extension CertificateViewController: UITableViewDataSource {
             let calendarFromDate = Helper.convertStringToDate(dateString: fromDate, format: Constant.MyClassConstants.dateFormat)
             let calendarToDate = Helper.convertStringToDate(dateString: toDate, format: Constant.MyClassConstants.dateFormat)
    
-            let startComponents = Calendar.current.dateComponents([.day, .weekday, .month, .year], from: calendarFromDate)
-            let endComponents = Calendar.current.dateComponents([.day, .weekday, .month, .year], from: calendarToDate)
+            let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
+            let startComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: calendarFromDate)
+            let endComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: calendarToDate)
             if let year = startComponents.year, let month = startComponents.month, let day = startComponents.day, let weekDay = startComponents.weekday {
                 let monthName = "\(Helper.getMonthnameFromInt(monthNumber: month))"
                 cell.travelWindowStartDateLbl.text = "\(day)".uppercased()

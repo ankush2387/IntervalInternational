@@ -117,7 +117,7 @@ class EditMyAlertIpadViewController: UIViewController {
         
         if let startDate = Constant.MyClassConstants.alertWindowStartDate {
             self.travelWindowEndDateSelectionButton.isEnabled = true
-            let calendar = Calendar.current
+            let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
             let anchorComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: startDate)
             self.startDateDayLabel.text = "\(anchorComponents.day ?? 0)".localized()
             self.startDateDayNameLabel.text = "\(Helper.getWeekdayFromInt(weekDayNumber: anchorComponents.weekday ?? 0))".localized()
@@ -131,14 +131,14 @@ class EditMyAlertIpadViewController: UIViewController {
             if let startDate = Constant.MyClassConstants.alertWindowStartDate {
                 if endDate.isGreaterThanDate(startDate) {
                     
-                    let calendar = Calendar.current
+                    let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
                     let anchorComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: endDate)
                     self.endDateDayLabel.text = "\(anchorComponents.day ?? 0)"
                     self.endDateDayNameLabel.text = "\(Helper.getWeekdayFromInt(weekDayNumber: anchorComponents.weekday ?? 0))".localized()
                     self.endDateMonthYearLabel.text = "\(Helper.getMonthnameFromInt(monthNumber: anchorComponents.month ?? 0)) \(anchorComponents.year ?? 0)".localized()
                 } else {
                     
-                    let calendar = Calendar.current
+                    let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
                     let anchorComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: startDate)
                     self.endDateDayLabel.text = "\(anchorComponents.day ?? 0)".localized()
                     self.endDateDayNameLabel.text = "\(Helper.getWeekdayFromInt(weekDayNumber: anchorComponents.weekday ?? 0))".localized()

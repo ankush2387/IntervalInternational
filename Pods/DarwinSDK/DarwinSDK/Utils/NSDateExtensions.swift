@@ -26,40 +26,48 @@ extension Date {
     }
     
     func yesterday() -> Date {
-        return createCalendar().date(byAdding: Calendar.Component.day, value: -1, to: self)!
+        let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
+        return calendar.date(byAdding: Calendar.Component.day, value: -1, to: self)!
     }
     
     func tomorrow() -> Date {
-        return createCalendar().date(byAdding: Calendar.Component.day, value: +1, to: self)!
+        let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
+        return calendar.date(byAdding: Calendar.Component.day, value: +1, to: self)!
     }
     
     func plusDays(_ days:Int) -> Date {
-        return createCalendar().date(byAdding: .day, value: days, to: self)!
+        let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
+        return calendar.date(byAdding: .day, value: days, to: self)!
     }
     
     func minusDays(_ days:Int) -> Date {
-        return createCalendar().date(byAdding: .day, value: -1 * days, to: self)!
+        let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
+        return calendar.date(byAdding: .day, value: -1 * days, to: self)!
     }
     
     func plusMonths(_ months:Int) -> Date {
-        return createCalendar().date(byAdding: .month, value: months, to: self)!
+        let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
+        return calendar.date(byAdding: .month, value: months, to: self)!
     }
     
     func minusMonths(_ months:Int) -> Date {
-        return createCalendar().date(byAdding: .month, value: -1 * months, to: self)!
+        let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
+        return calendar.date(byAdding: .month, value: -1 * months, to: self)!
     }
     
     func plusYears(_ years:Int) -> Date {
-        return createCalendar().date(byAdding: .year, value: years, to: self)!
+        let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
+        return calendar.date(byAdding: .year, value: years, to: self)!
     }
     
     func minusYears(_ years:Int) -> Date {
-        return createCalendar().date(byAdding: .year, value: -1 * years, to: self)!
+        let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
+        return calendar.date(byAdding: .year, value: -1 * years, to: self)!
     }
 
     func startOfMonth() -> Date {
-        let startOfMonth = createCalendar().date(from: createCalendar().dateComponents([.year, .month], from: self))
-        return startOfMonth!
+        let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
+        return calendar.date(from: calendar.dateComponents([.year, .month], from: self))!
     }
     
     func endOfMonth() -> Date {
@@ -69,13 +77,15 @@ extension Date {
     }
     
     func withDayOfMonth(_ day:Int) -> Date {
-        return createCalendar().date(bySetting: .day, value: day, of: self)!
+        let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
+        return calendar.date(bySetting: .day, value: day, of: self)!
     }
     
     func lengthOfMonth() -> Int {
         if #available(iOS 10.0, *) {
             // Calculate start and end of the current month
-            let interval = createCalendar().dateInterval(of: .month, for: self)!
+            let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
+            let interval = calendar.dateInterval(of: .month, for: self)!
             return self.diffInDays(from: interval.start, to: interval.end)
         } else {
             // Fallback on earlier versions
@@ -84,7 +94,8 @@ extension Date {
     }
     
     func monthOfYear() -> Int {
-        return createCalendar().component(.month, from: self)
+        let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
+        return calendar.component(.month, from: self)
     }
     
     func daysBetween(to:Date) -> Int {
@@ -101,20 +112,19 @@ extension Date {
     
     fileprivate func diffInDays(from:Date, to:Date) -> Int {
         // Compute difference in days
-        return createCalendar().dateComponents([.day], from: from.transformToShortFormat(), to: to.transformToShortFormat()).day!
+        let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
+        return calendar.dateComponents([.day], from: from.transformToShortFormat(), to: to.transformToShortFormat()).day!
     }
     
     fileprivate func createDateFormatter(_ format:String) -> DateFormatter {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = format
-        dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
-        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+        if let timeZone = TimeZone(identifier: "UTC") {
+            dateFormatter.timeZone = timeZone
+        } else {
+            dateFormatter.timeZone = NSTimeZone.local
+        }
         return dateFormatter
-    }
-    
-    fileprivate func createCalendar() -> Calendar {
-        let calendar = Calendar(identifier: .gregorian) // Calendar.current
-        return calendar
     }
     
 }

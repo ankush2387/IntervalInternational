@@ -87,7 +87,8 @@ class ShareActivityMessage: NSObject, UIActivityItemSource {
         message.append("Location: \(location)\n")
         if (Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.unit?.checkInDate) != nil {
             let checkInDate = Helper.convertStringToDate(dateString: Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.unit?.checkInDate ?? "", format: Constant.MyClassConstants.dateFormat)
-            let myComponents = Calendar.current.dateComponents([.day, .weekday, .month, .year], from: checkInDate)
+            let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
+            let myComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: checkInDate)
             let formatedCheckInDate = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month ?? 0))/\(myComponents.day ?? 0)/\(myComponents.year ?? 0)"
             message.append("CheckIn: \(formatedCheckInDate)\n")
         }
@@ -95,7 +96,8 @@ class ShareActivityMessage: NSObject, UIActivityItemSource {
         //format CheckOut Date
         if (Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.unit?.checkOutDate) != nil {
         let checkOutDate = Helper.convertStringToDate(dateString: Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.unit?.checkOutDate ?? "", format: Constant.MyClassConstants.dateFormat)
-        let myComponents1 = Calendar.current.dateComponents([.day, .weekday, .month, .year], from: checkOutDate)
+        let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
+        let myComponents1 = calendar.dateComponents([.day, .weekday, .month, .year], from: checkOutDate)
         let formatedCheckOutDate = "\(Helper.getMonthnameFromInt(monthNumber: myComponents1.month ?? 0))/\(myComponents1.day ?? 0)/\(myComponents1.year ?? 0)"
         message.append("CheckOut: \(formatedCheckOutDate)\n")
         }

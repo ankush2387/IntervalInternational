@@ -76,7 +76,7 @@ class UpComingTripCell: UITableViewCell {
         checkInDateView.layer.borderColor = UIColor.lightGray.cgColor
         checkOutDateView.layer.borderColor = UIColor.lightGray.cgColor
         
-        let calendar = Calendar(identifier: Calendar.Identifier.gregorian)
+        let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
         let checkInDate = Helper.convertStringToDate(dateString: checkInDate, format: Constant.MyClassConstants.dateFormat)
         let checkOutDate = Helper.convertStringToDate(dateString: checkOutDate, format: Constant.MyClassConstants.dateFormat)
         
@@ -100,11 +100,11 @@ class UpComingTripCell: UITableViewCell {
     
     func setDepositInformation(with depositDetails: Deposit) {
         
-        let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
+        let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
         if let checkInDate = depositDetails.checkInDate {
             let checkInDate = Helper.convertStringToDate(dateString: checkInDate, format: Constant.MyClassConstants.dateFormat)
             
-            let dateComponents = myCalendar.dateComponents([.day, .weekday, .month, .year], from: checkInDate)
+            let dateComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: checkInDate)
             if let day = dateComponents.day, let month = dateComponents.month {
                 checkInDateLabel.text = "\(Helper.getMonthnameFromInt(monthNumber: month)) \(String(format: "%02d", arguments: [day]))"
             }

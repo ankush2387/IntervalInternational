@@ -347,15 +347,15 @@ class ClubPointSelectionViewController: UIViewController {
     
     func setDate() {
         
-        let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
+        let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
         guard let fromStartDateString = Constant.MyClassConstants.todatearray[0] as? String else { return }
         guard let toStartDateString = Constant.MyClassConstants.fromdatearray[0] as? String else { return }
         guard let fromEndDateString = Constant.MyClassConstants.todatearray[1] as? String else { return }
         guard let toEndDateString = Constant.MyClassConstants.fromdatearray[1] as? String else { return }
-        let fromStartComponents = myCalendar.dateComponents([.day, .weekday, .month, .year], from: Helper.convertStringToDate(dateString: fromStartDateString, format: "yyyy-MM-dd"))
-        let toStartComponents = myCalendar.dateComponents([.day, .weekday, .month, .year], from: Helper.convertStringToDate(dateString: toStartDateString, format: "yyyy-MM-dd"))
-        let fromEndComponents = myCalendar.dateComponents([.day, .weekday, .month, .year], from: Helper.convertStringToDate(dateString: fromEndDateString, format: "yyyy-MM-dd"))
-        let toEndComponents = myCalendar.dateComponents([.day, .weekday, .month, .year], from: Helper.convertStringToDate(dateString: toEndDateString, format: Constant.MyClassConstants.dateFormat))
+        let fromStartComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: Helper.convertStringToDate(dateString: fromStartDateString, format: "yyyy-MM-dd"))
+        let toStartComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: Helper.convertStringToDate(dateString: toStartDateString, format: "yyyy-MM-dd"))
+        let fromEndComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: Helper.convertStringToDate(dateString: fromEndDateString, format: "yyyy-MM-dd"))
+        let toEndComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: Helper.convertStringToDate(dateString: toEndDateString, format: Constant.MyClassConstants.dateFormat))
         
         startdatefirstbtn.text = String(describing: toStartComponents.day!)
         enddatefirstbtn.text = String(describing: fromStartComponents.day!)

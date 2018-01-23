@@ -120,6 +120,7 @@ open class DarwinSDK {
         
         if let errorDesc = json["error_description"].string {
             userInfo["apiErrorDescription"] = errorDesc as Any
+            
         }
 
         // Process errors have a different payload =>
@@ -161,6 +162,7 @@ open class DarwinSDK {
         
         if let errorDesc = json["error_description"].string {
             userInfo["apiErrorDescription"] = errorDesc as Any
+            userInfo[NSLocalizedDescriptionKey] = errorDesc as Any
         }
         
         if let accountLocked = json["accountLocked"].bool {

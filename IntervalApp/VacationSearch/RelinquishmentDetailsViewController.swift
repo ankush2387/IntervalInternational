@@ -102,8 +102,8 @@ extension RelinquishmentDetailsViewController: UITableViewDataSource, UITableVie
                 
                 let dateString = openWeek.checkInDate
                 let date = Helper.convertStringToDate(dateString: dateString!, format: "yyyy-MM-dd")
-                let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
-                let myComponents = myCalendar.dateComponents([.day, .weekday, .month, .year], from: date)
+                let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
+                let myComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: date)
                 let day = myComponents.day!
                 var month = ""
                 if day < 10 {

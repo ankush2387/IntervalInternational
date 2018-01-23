@@ -94,8 +94,8 @@ class RelinquishmentSelectionOpenWeeksCell: UITableViewCell {
                 dateString = dateStr
             }
             let date = Helper.convertStringToDate(dateString: dateString, format: Constant.MyClassConstants.dateFormat)
-            let myCalendar = Calendar.current
-            let myComponents = myCalendar.dateComponents([.day, .weekday, .month, .year], from: date)
+            let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
+            let myComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: date)
             let day = myComponents.day ?? 0
             var month = ""
             if let monthNumber = myComponents.month {
@@ -135,8 +135,8 @@ class RelinquishmentSelectionOpenWeeksCell: UITableViewCell {
     }
     
     func getDaysDiff(expiration: Date) -> Int {
-        let cal = NSCalendar.current
-        let returnDate = cal.dateComponents(Set<Calendar.Component>([.day]), from: Constant.MyClassConstants.todaysDate as Date, to: expiration )
+        let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
+        let returnDate = calendar.dateComponents(Set<Calendar.Component>([.day]), from: Constant.MyClassConstants.todaysDate as Date, to: expiration )
         return returnDate.day ?? 0
     }
 }

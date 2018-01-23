@@ -53,6 +53,7 @@ final public class SimpleAvailableRelinquishmentPointsCell: SimpleTableViewCell 
 
     // MARK: - Private functions
     private func setUI() {
+        selectionStyle = .none
         pointsLabel.textColor = IntervalThemeFactory.deviceTheme.textColorDarkOrange
         goldPointsSubHeadingLabel.textColor = IntervalThemeFactory.deviceTheme.textColorGray
         goldPointsHeadingLabel.textColor = IntervalThemeFactory.deviceTheme.textColorBlack

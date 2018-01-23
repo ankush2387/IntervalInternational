@@ -801,15 +801,15 @@ public class Helper {
         
         switch brType {
             
-        case UnitSize.Studio.rawValue:
+        case UnitSize.STUDIO.rawValue:
             return Constant.roomType.studio
-        case UnitSize.OneBedroom.rawValue:
+        case UnitSize.ONE_BEDROOM.rawValue:
             return Constant.roomType.oneBedRoom
-        case UnitSize.TwoBedroom.rawValue:
+        case UnitSize.TWO_BEDROOM.rawValue:
             return Constant.roomType.twoBedRoom
-        case UnitSize.ThreeBedroom.rawValue:
+        case UnitSize.THREE_BEDROOM.rawValue:
             return Constant.roomType.threeBedRoom
-        case UnitSize.FourBedroom.rawValue:
+        case UnitSize.FOUR_BEDROOM.rawValue:
             return Constant.roomType.fourBedRoom
         default:
             return Constant.roomType.unKnown
@@ -820,30 +820,31 @@ public class Helper {
         
         switch kitchenType {
             
-        case KitchenType.NoKitchen.rawValue:
+        case KitchenType.NO_KITCHEN.rawValue:
             return Constant.kitchenType.noKitchen
-        case KitchenType.LimitedKitchen.rawValue:
+        case KitchenType.LIMITED_KITCHEN.rawValue:
             return Constant.kitchenType.limitedKitchen
-        case KitchenType.FullKitchen.rawValue:
+        case KitchenType.FULL_KITCHEN.rawValue:
             return Constant.kitchenType.fullKitchen
         default:
             return Constant.kitchenType.unKnown
         }
     }
+
     //***** function to return unitsize kitchen type in lower case with space form server kitchen type *****//
     static func getBedroomNumbers(bedroomType: String) -> String {
         
         switch bedroomType {
             
-        case UnitSize.Studio.rawValue:
+        case UnitSize.STUDIO.rawValue:
             return "Studio"
-        case UnitSize.OneBedroom.rawValue:
+        case UnitSize.ONE_BEDROOM.rawValue:
             return "1 Bedroom"
-        case UnitSize.TwoBedroom.rawValue:
+        case UnitSize.TWO_BEDROOM.rawValue:
             return "2 Bedroom"
-        case UnitSize.ThreeBedroom.rawValue:
+        case UnitSize.THREE_BEDROOM.rawValue:
             return "3 Bedroom"
-        case UnitSize.FourBedroom.rawValue:
+        case UnitSize.FOUR_BEDROOM.rawValue:
             return "4 Bedroom"
         default:
             return ""
@@ -851,23 +852,24 @@ public class Helper {
     }
     
     static func getSearchDates() -> (Date, Date) {
+        let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
         
-        var fromDate = (Calendar.current as NSCalendar).date(byAdding: .day, value: -(Constant.MyClassConstants.totalWindow / 2), to: Constant.MyClassConstants.vacationSearchShowDate, options: [])!
+        var fromDate = (calendar as NSCalendar).date(byAdding: .day, value: -(Constant.MyClassConstants.totalWindow / 2), to: Constant.MyClassConstants.vacationSearchShowDate, options: [])!
         
         var toDate: Date!
         if (fromDate.isGreaterThanDate(Constant.MyClassConstants.todaysDate)) {
             
-            toDate = (Calendar.current as NSCalendar).date(byAdding: .day, value: (Constant.MyClassConstants.totalWindow / 2), to: Constant.MyClassConstants.vacationSearchShowDate, options: [])!
+            toDate = (calendar as NSCalendar).date(byAdding: .day, value: (Constant.MyClassConstants.totalWindow / 2), to: Constant.MyClassConstants.vacationSearchShowDate, options: [])!
         } else {
             _ = Helper.getDifferenceOfDates()
             fromDate = Constant.MyClassConstants.todaysDate
-            toDate = (Calendar.current as NSCalendar).date(byAdding: .day, value: (Constant.MyClassConstants.totalWindow) + Helper.getDifferenceOfDates(), to: Constant.MyClassConstants.vacationSearchShowDate as Date, options: [])!
+            toDate = (calendar as NSCalendar).date(byAdding: .day, value: (Constant.MyClassConstants.totalWindow) + Helper.getDifferenceOfDates(), to: Constant.MyClassConstants.vacationSearchShowDate as Date, options: [])!
         }
         
         if (toDate.isGreaterThanDate(Constant.MyClassConstants.dateAfterTwoYear!)) {
             
             toDate = Constant.MyClassConstants.dateAfterTwoYear
-            fromDate = (Calendar.current as NSCalendar).date(byAdding: .day, value: -(Constant.MyClassConstants.totalWindow) + Helper.getDifferenceOfDatesAhead(), to: Constant.MyClassConstants.vacationSearchShowDate as Date, options: [])!
+            fromDate = (calendar as NSCalendar).date(byAdding: .day, value: -(Constant.MyClassConstants.totalWindow) + Helper.getDifferenceOfDatesAhead(), to: Constant.MyClassConstants.vacationSearchShowDate as Date, options: [])!
         }
         Constant.MyClassConstants.currentFromDate = fromDate
         Constant.MyClassConstants.currentToDate = toDate
@@ -877,31 +879,20 @@ public class Helper {
     
     //***** common function that returns date difference between todate and fromdate *****//
     static func getDifferenceOfDates() -> Int {
-        
-        let cal = NSCalendar.current
-        
-        let returnDate = cal.dateComponents(Set<Calendar.Component>([.day]), from: Constant.MyClassConstants.vacationSearchShowDate as Date, to: Constant.MyClassConstants.todaysDate as Date)
-        // let returnDate = Calendar.current.components(.Day, fromDate: Constant.MyClassConstants.vacationSearchShowDate, toDate: Constant.MyClassConstants.todaysDate, options: [])
-        
-        //let returnDate1 = (Calendar.current as NSCalendar).date
-        
+        let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
+        let returnDate = calendar.dateComponents(Set<Calendar.Component>([.day]), from: Constant.MyClassConstants.vacationSearchShowDate as Date, to: Constant.MyClassConstants.todaysDate as Date)
         return returnDate.day!
     }
     
     static func getUpcommingcheckinDatesDiffrence(date: Date) -> Int {
-        
-        let cal = NSCalendar.current
-        
-        let returnDate = cal.dateComponents(Set<Calendar.Component>([.day]), from: Constant.MyClassConstants.todaysDate, to: date)
-        
+        let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
+        let returnDate = calendar.dateComponents(Set<Calendar.Component>([.day]), from: Constant.MyClassConstants.todaysDate, to: date)
         return returnDate.day!
     }
     //***** common function that returns date difference for two years between todate and fromdate *****//
     static func getDifferenceOfDatesAhead() -> Int {
-        let cal = NSCalendar.current
-        
-        let returnDate = cal.dateComponents(Set<Calendar.Component>([.day]), from: Constant.MyClassConstants.vacationSearchShowDate as Date, to: Constant.MyClassConstants.dateAfterTwoYear!)
-        
+        let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
+        let returnDate = calendar.dateComponents(Set<Calendar.Component>([.day]), from: Constant.MyClassConstants.vacationSearchShowDate as Date, to: Constant.MyClassConstants.dateAfterTwoYear!)
         return returnDate.day!
     }
     
@@ -1650,7 +1641,7 @@ public class Helper {
             Constant.MyClassConstants.initialVacationSearch.rentalSearch?.inventory = response.resorts
             showScrollingCalendar(vacationSearch:Constant.MyClassConstants.initialVacationSearch)
 
-            if Constant.MyClassConstants.isFromSorting == false && Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType != VacationSearchType.Combined {
+            if Constant.MyClassConstants.isFromSorting == false && Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType != VacationSearchType.COMBINED {
                 helperDelegate?.resortSearchComplete()
             } else {
                 
@@ -1802,9 +1793,8 @@ public class Helper {
         Constant.MyClassConstants.noAvailabilityView = true
         DarwinSDK.logger.info("Show the Not Availability Screen.")
     }
-    
+
     static func showScrollingCalendar(vacationSearch: VacationSearch) {
-        
         DarwinSDK.logger.info("-- Create Calendar based on Booking Window Intervals --")
         Constant.MyClassConstants.calendarDatesArray.removeAll()
         let calendar = vacationSearch.createCalendar()
@@ -1815,23 +1805,27 @@ public class Helper {
         }
     }
     
+    // FIXME (Frank): Remove this helper method
+    /*
     static func createSettings() -> Settings {
         let vacationSearchSettings = VacationSearchSettings()
-        vacationSearchSettings.bookingIntervalDateStrategy = BookingIntervalDateStrategy.First.rawValue
+        vacationSearchSettings.bookingIntervalDateStrategy = BookingIntervalDateStrategy.FIRST.rawValue
         vacationSearchSettings.collapseBookingIntervalsOnChange = true
-        vacationSearchSettings.vacationSearchTypes = [String] (arrayLiteral: VacationSearchType.Combined.rawValue, VacationSearchType.Exchange.rawValue, VacationSearchType.Rental.rawValue)
+        vacationSearchSettings.vacationSearchTypes = [String] (arrayLiteral: VacationSearchType.COMBINED.rawValue, VacationSearchType.EXCHANGE.rawValue, VacationSearchType.RENTAL.rawValue)
         
         let settings = Settings()
         settings.vacationSearch = vacationSearchSettings
         
         return settings
     }
-    
+    */
+
     static func showNearestCheckInDateSelectedMessage() {
         Constant.MyClassConstants.isShowAvailability = true
         DarwinSDK.logger.info("NEAREST CHECK-IN DATE SELECTED - We found availability close to your desired Check-in Date")
     }
     
+    // FIXME (Frank): Remove this helper method
     static func resolveDestinationInfo(destination: AreaOfInfluenceDestination) -> String {
         var info = String()
         info.append(destination.destinationName)
@@ -1854,6 +1848,7 @@ public class Helper {
         return info
     }
     
+    // FIXME (Frank): Remove this helper method
     static func resolveUnitInfo(unit: InventoryUnit) -> String {
         var info = String()
         info.append("    ")
@@ -1928,7 +1923,7 @@ public class Helper {
         area.areaCode = deal.areaCode
         area.areaName = deal.name
         
-        let searchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Exchange)
+        let searchCriteria = VacationSearchCriteria(searchType: VacationSearchType.EXCHANGE)
         searchCriteria.area = area
         searchCriteria.checkInDate = deal.getCheckInDate()
         searchCriteria.checkInFromDate = deal.getCheckInFromDate()
@@ -1944,13 +1939,13 @@ public class Helper {
         travelParty.children = children
         return travelParty
     }
-    
+
     static func createSearchCriteriaForRentalDeal(deal: RentalDeal) -> VacationSearchCriteria {
         let area = Area()
         area.areaCode = deal.areaCodes[0]
         area.areaName = deal.header
         
-        let searchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Rental)
+        let searchCriteria = VacationSearchCriteria(searchType: VacationSearchType.RENTAL)
         searchCriteria.checkInDate = deal.getCheckInDate()
         searchCriteria.area = area
         

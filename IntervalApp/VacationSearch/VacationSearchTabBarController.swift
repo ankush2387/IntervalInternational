@@ -13,21 +13,16 @@ class VacationSearchTabBarController: UITabBarController {
 
     var moreButton: UIBarButtonItem?
     let vacationVC = VacationSearchViewController()
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        self.title = Constant.ControllerTitles.vacationSearchTabBarController
-    }
-    
+
     override func viewWillAppear(_ animated: Bool) {
-       
-           UITabBar.appearance().selectionIndicatorImage = nil
-      
+        super.viewWillAppear(animated)
+        title = Constant.ControllerTitles.vacationSearchTabBarController
+        UITabBar.appearance().selectionIndicatorImage = nil
     }
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        title = ""
     }
 }
 

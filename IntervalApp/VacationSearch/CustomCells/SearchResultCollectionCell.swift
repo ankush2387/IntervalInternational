@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import DarwinSDK
 
 class SearchResultCollectionCell: UICollectionViewCell {
     
@@ -24,8 +25,8 @@ class SearchResultCollectionCell: UICollectionViewCell {
         
         let calendarDate = Helper.convertStringToDate(dateString: Constant.MyClassConstants.calendarDatesArray[index].checkInDate ?? "", format: Constant.MyClassConstants.dateFormat)
         
-        let myCalendar = Calendar.current
-        let startComponents = myCalendar.dateComponents([.day, .weekday, .month, .year], from: calendarDate)
+        let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
+        let startComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: calendarDate)
         let year = "\(startComponents.year ?? 0)"
         let monthName = "\(Helper.getMonthnameFromInt(monthNumber: startComponents.month ?? 0))"
         let day = startComponents.day ?? 0

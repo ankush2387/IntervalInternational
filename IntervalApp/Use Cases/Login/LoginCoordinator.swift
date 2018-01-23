@@ -31,7 +31,7 @@ final class LoginCoordinator: ComputationHelper {
     private let configuration: Config
     private let sessionStore: Session
     private let backgroundImages: [UIImage]
-    private let clientAPIStore: ClientAPIStore
+    private let userClientAPIStore: UserClientAPIStore
     private var messaging: Messaging
     private var backgroundImageIndex: Int {
         
@@ -62,14 +62,14 @@ final class LoginCoordinator: ComputationHelper {
          messaging: Messaging,
          configuration: Config,
          sessionStore: Session,
-         clientAPIStore: ClientAPIStore) {
+         userClientAPIStore: UserClientAPIStore) {
         
         self.messaging = messaging
         self.sessionStore = sessionStore
         self.configuration = configuration
         self.encryptedStore = encryptedStore
         self.decryptedStore = decryptedStore
-        self.clientAPIStore = clientAPIStore
+        self.userClientAPIStore = userClientAPIStore
         self.backgroundImages = backgroundImages
     }
 
@@ -80,7 +80,7 @@ final class LoginCoordinator: ComputationHelper {
                   messaging: Messaging.messaging(),
                   configuration: Config.sharedInstance,
                   sessionStore: Session.sharedSession,
-                  clientAPIStore: ClientAPI.sharedInstance)
+                  userClientAPIStore: ClientAPI.sharedInstance)
     }
 
     // MARK: - Public functions
@@ -88,7 +88,8 @@ final class LoginCoordinator: ComputationHelper {
         
         let viewModel = LoginViewModel(backgroundImage: backgroundImages[backgroundImageIndex],
                                        sessionStore: Session.sharedSession,
-                                       clientAPIStore: clientAPIStore,
+                                       userClientAPIStore: userClientAPIStore,
+                                       authProviderClientAPIStore: ClientAPI.sharedInstance,
                                        encryptedStore: encryptedStore,
                                        decryptedStore: UserDafaultsWrapper(),
                                        configuration: Config.sharedInstance,
@@ -232,7 +233,7 @@ final class LoginCoordinator: ComputationHelper {
                     return
                 }
                 
-                self.clientAPIStore.writeSelected(membership: membership, for: accessToken)
+                self.userClientAPIStore.writeSelected(membership: membership, for: accessToken)
                     .then(delegate.didLogin)
                     .onError { [unowned self] error in
                         self.loginViewController.presentErrorAlert(UserFacingCommonError.custom(title: "Error".localized(),

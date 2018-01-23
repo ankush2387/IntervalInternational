@@ -9,10 +9,9 @@
 import Foundation
 
 public enum BookingIntervalDateStrategy : String {
-    case First = "FIRST"
-    case Middle = "MIDDLE"
-    case Nearest = "NEAREST"
-    case Unknown = "UNKNOWN"
+    case FIRST = "FIRST"
+    case MIDDLE = "MIDDLE"
+    case NEAREST = "NEAREST"
     
     var name: String {
         return self.rawValue
@@ -35,14 +34,15 @@ public enum BookingIntervalDateStrategy : String {
     }
     
     public static func fromName(name : String) -> BookingIntervalDateStrategy {
-        if BookingIntervalDateStrategy.First.name == name {
-            return BookingIntervalDateStrategy.First
-        } else if BookingIntervalDateStrategy.Middle.name == name {
-            return BookingIntervalDateStrategy.Middle
-        } else if BookingIntervalDateStrategy.Nearest.name == name {
-            return BookingIntervalDateStrategy.Nearest
+        if BookingIntervalDateStrategy.FIRST.name == name {
+            return BookingIntervalDateStrategy.FIRST
+        } else if BookingIntervalDateStrategy.MIDDLE.name == name {
+            return BookingIntervalDateStrategy.MIDDLE
+        } else if BookingIntervalDateStrategy.NEAREST.name == name {
+            return BookingIntervalDateStrategy.NEAREST
         } else {
-            return BookingIntervalDateStrategy.Unknown
+            // Fallback
+            return BookingIntervalDateStrategy.FIRST
         }
     }
 }
