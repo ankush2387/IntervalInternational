@@ -81,9 +81,8 @@ extension AdditionalInformationViewController: UITableViewDataSource, SimpleView
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard let headerView = SimpleLabelHeaderView.headerView() as? SimpleLabelHeaderView else { return nil }
-        guard let headerTitle = viewModel.title(for: section) else { return nil }
         headerView.headerType = .sectionHeaderGray
-        headerView.viewModel = SimpleLabelHeaderViewModel(headerTitle: headerTitle)
+        headerView.viewModel = SimpleLabelHeaderViewModel(headerTitle: viewModel.title(for: section))
         return headerView
     }
 
