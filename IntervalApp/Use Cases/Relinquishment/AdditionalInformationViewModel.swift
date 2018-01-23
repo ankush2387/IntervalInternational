@@ -98,7 +98,8 @@ final class AdditionalInformationViewModel {
 
             let createResortDetailViewModel = { (image: UIImage) in
                 let resort = self.relinquishment.resort
-                self.simpleCellViewModels[.resortDetails] = [SimpleResortDetailViewModel(resortNameLabelText: resort?.resortName,
+                self.simpleCellViewModels[.resortDetails] = [SimpleSeperatorCellViewModel(),
+                                                             SimpleResortDetailViewModel(resortNameLabelText: resort?.resortName,
                                                                                          resortLocationLabelText: resort?.address?.cityName,
                                                                                          resortCodeLabelText: resort?.resortCode,
                                                                                          resortImage: image)]
