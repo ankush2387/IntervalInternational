@@ -38,7 +38,9 @@ final public class SimpleOwnershipCell: SimpleTableViewCell {
     @IBOutlet private weak var relinquishmentPromotionBackgroundViewHeight: NSLayoutConstraint!
     @IBOutlet private weak var exchangeNumberLabelHeight: NSLayoutConstraint!
     @IBOutlet private weak var actionButtonHeight: NSLayoutConstraint!
-    
+    @IBOutlet private weak var resortNameTopOffset: NSLayoutConstraint!
+    @IBOutlet private weak var monthLabelHeight: NSLayoutConstraint!
+
     // MARK: - Public properties
     public var actionButtonTapped: (() -> Void)?
     
@@ -99,6 +101,14 @@ final public class SimpleOwnershipCell: SimpleTableViewCell {
     }
     
     private func setConstraints() {
+
+        let secondaryLableValues = [viewModel?.unitDetailsLabelText.value,
+         viewModel?.unitCapacityLabelText.value,
+         viewModel?.statusLabelText.value,
+         viewModel?.expirationDateLabelText.value,
+         viewModel?.flagsLabelText.value].flatMap { $0 }
+
+        resortNameTopOffset.constant = secondaryLableValues.count == 0 ? 40 : 5
         extraInformationLabelHeight.constant = viewModel?.extraInformationLabelText.value == nil ? 0 : 20
         stateLabelHeight.constant = viewModel?.ownershipStateLabelText.value == nil ? 0 : 40
         exchangeNumberLabelHeight.constant = viewModel?.exchangeNumberLabelText.value == nil ? 0 : 30
