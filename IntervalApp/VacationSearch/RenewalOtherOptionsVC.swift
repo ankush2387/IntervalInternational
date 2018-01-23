@@ -124,7 +124,9 @@ extension RenewalOtherOptionsVC: UITableViewDataSource {
                             currencyCodeWithSymbol = Helper.currencyCodeToSymbol(code: currencyCode)
                         }
                         if renewalComboProduct.isCoreProduct {
-                            cell.renewelCoreImageView?.image = UIImage(named: renewalComboProduct.productCode!)
+                            if let productCode = renewalComboProduct.productCode {
+                            cell.renewelCoreImageView?.image = UIImage(named: productCode)
+                            }
                             
                             let price = String(format: "%.0f", renewalComboProduct.price)
                             
@@ -143,7 +145,9 @@ extension RenewalOtherOptionsVC: UITableViewDataSource {
                             cell.renewelLbl?.attributedText = attributeString
                             
                         } else {
-                            cell.renewelnonCoreImageView?.image = UIImage(named: renewalComboProduct.productCode!)
+                            if let productCode = renewalComboProduct.productCode {
+                                cell.renewelnonCoreImageView?.image = UIImage(named: productCode)
+                            }
                             
                             let price = String(format: "%.0f", renewalComboProduct.price)
                             
@@ -186,12 +190,14 @@ extension RenewalOtherOptionsVC: UITableViewDataSource {
                     cell.renewelnonCoreImageView?.isHidden = true
                     
                     // show only non core image
-                    cell.renewelImageView?.image = UIImage(named: coreProduct.productCode!)
-                    var currencyCodeWithSymbol: String = ""
+                if let productCode = coreProduct.productCode {
+                    cell.renewelImageView?.image = UIImage(named:productCode)
+                }
+                    var currencyCodeWithSymbol = ""
                     if let currencyCode = forceRenewals.currencyCode {
                           currencyCodeWithSymbol = Helper.currencyCodeToSymbol(code: currencyCode)
                     }
-                    guard let displayName = coreProduct.displayName?.capitalized, let currencyCode = forceRenewals.currencyCode else { return cell}
+                    guard let displayName = coreProduct.displayName?.capitalized, let currencyCode = forceRenewals.currencyCode else { return cell }
                     let price = String(format: "%.0f", coreProduct.price)
                     priceAndCurrency = currencyCodeWithSymbol + "\(price)" + " " + currencyCode
                     
