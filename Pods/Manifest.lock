@@ -51,7 +51,7 @@ PODS:
     - GoogleToolboxForMac/Defines (= 2.1.1)
   - HexColors (4.0.0)
   - HockeySDK/AllFeaturesLib (5.0.0)
-  - IntervalUIKit (4.2.0):
+  - IntervalUIKit (4.3.1):
     - ActionSheetPicker-3.0 (~> 2.2.0)
     - Bond (= 6.3.0)
     - ReactiveKit (= 3.6.2)
@@ -100,7 +100,7 @@ DEPENDENCIES:
   - FSCalendar (~> 2.1.1)
   - GoogleMaps (~> 2.2.0)
   - HockeySDK/AllFeaturesLib
-  - IntervalUIKit (from `https://bitbucket.iilg.com/scm/iimob/interval-uikit-ios.git`, commit `6fe1e2fc`)
+  - IntervalUIKit (from `https://bitbucket.iilg.com/scm/iimob/interval-uikit-ios.git`, commit `00389977`)
   - Nimble
   - Quick
   - ReactiveKit (from `https://github.com/ReactiveKit/ReactiveKit.git`, tag `v3.6.2`)
@@ -130,7 +130,7 @@ EXTERNAL SOURCES:
     :commit: 59c5d5602a9
     :git: https://bitbucket.iilg.com/scm/iimob/darwin-sdk-ios.git
   IntervalUIKit:
-    :commit: 6fe1e2fc
+    :commit: 00389977
     :git: https://bitbucket.iilg.com/scm/iimob/interval-uikit-ios.git
   ReactiveKit:
     :git: https://github.com/ReactiveKit/ReactiveKit.git
@@ -159,7 +159,7 @@ CHECKOUT OPTIONS:
     :commit: 59c5d5602a9da62198b2868666c773b9a50a1f41
     :git: https://bitbucket.iilg.com/scm/iimob/darwin-sdk-ios.git
   IntervalUIKit:
-    :commit: 6fe1e2fc
+    :commit: 00389977
     :git: https://bitbucket.iilg.com/scm/iimob/interval-uikit-ios.git
   ReactiveKit:
     :git: https://github.com/ReactiveKit/ReactiveKit.git
@@ -194,7 +194,7 @@ SPEC CHECKSUMS:
   GoogleToolboxForMac: 8e329f1b599f2512c6b10676d45736bcc2cbbeb0
   HexColors: 5f95843ef89aff6a72e1fd3a8ebabf205cc43379
   HockeySDK: 82bf8dcbe1af3c87c24dc98924fcf2e2ba5be8c4
-  IntervalUIKit: 834c9fc996daef2c394bd4f855989066c5d5eb1f
+  IntervalUIKit: 2065a6b4354b8ec2e274a9a391269a6c93291d57
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
   Nimble: bfe1f814edabba69ff145cb1283e04ed636a67f2
   PPTopMostController: 4e6f1e5f8c645bdcc74cd837a20f607ff262c048
@@ -213,6 +213,6 @@ SPEC CHECKSUMS:
   TPKeyboardAvoiding: 0d6af20e95e2850f4c621841225b59ec7d8dd852
   XCGLogger: 38063ea89b4c8b23232d18efd2e12eb0005f3ea4
 
-PODFILE CHECKSUM: e2eba2987e2139c43b94a1ddede9737ac8e630c0
+PODFILE CHECKSUM: cbe7f9ac4751b6325dbb7ba6aa89e5f07328f4b3
 
 COCOAPODS: 1.3.1

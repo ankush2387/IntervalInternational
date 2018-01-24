@@ -19,14 +19,19 @@ final public class SimpleDisclosureIndicatorCell: SimpleTableViewCell {
         didSet {
             if let viewModel = viewModel {
                 viewModel.headerLabelText.bind(to: headerLabel.reactive.attributedText).dispose(in: onReuseBag)
+                viewModel.isEditing.observeNext { [weak self] enabled in
+                    self?.accessoryType = enabled ? .disclosureIndicator : .none
+                }.dispose(in: onReuseBag)
             }
         }
     }
 
     // MARK: - IBActions
     @IBAction func cellTapped(_ sender: Any) {
-        self.isSelected = true
-        cellTapped?()
-        self.isSelected = false
+        if viewModel?.isEditing.value == true {
+            isSelected = true
+            cellTapped?()
+            isSelected = false
+        }
     }
 }
