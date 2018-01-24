@@ -1901,7 +1901,7 @@ public class Helper {
         switch vacationSearchType {
             
         case "COMBINED":
-            return "Search ALL"
+            return "Search All"
         case "EXCHANGE":
             return "Exchange"
         case "RENTAL":
