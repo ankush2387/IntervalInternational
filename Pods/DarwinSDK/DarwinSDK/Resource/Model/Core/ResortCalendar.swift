@@ -30,4 +30,12 @@ open class ResortCalendar {
         self.tdiColorValue = json["tdiColorValue"].intValue
     }
     
+    open func getDaysUntilCheckInDate() -> Int {
+        if let checkInDate = self.checkInDate {
+            let today = Date()
+            return today.daysBetween(to: checkInDate.dateFromShortFormat()!)
+        }
+        return -1 // Passed
+    }
+    
 }

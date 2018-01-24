@@ -1688,8 +1688,8 @@ extension GoogleMapViewController: UISearchBarDelegate {
         }
         if searchBar.text!.characters.count >= 3 {
             
-            DirectoryClient.searchDestinations(Constant.MyClassConstants.systemAccessToken, request: SearchDestinationsRequest(query: searchBar.text), onSuccess: { [weak self] (response) in
-                if response.resorts.count > 0 {
+            DirectoryClient.searchDestinations(Constant.MyClassConstants.systemAccessToken, request: SearchDestinationsRequest(query: searchBar.text), onSuccess: { [weak self] response in
+                if !response.resorts.isEmpty {
                     Constant.MyClassConstants.resorts = response.resorts
                     Constant.MyClassConstants.resortsArray = response.resorts
                 }
@@ -1698,10 +1698,8 @@ extension GoogleMapViewController: UISearchBarDelegate {
                 self?.showPopUpView()
                 self?.searchDisplayTableView.reloadData()
                 
-            }) {  [unowned self] error in
-                Logger.sharedInstance.warning(error.description)
-                self.presentErrorAlert(UserFacingCommonError.generic)
-        
+            }) { [weak self] error in
+                self?.presentErrorAlert(UserFacingCommonError.handleError(error))
             }
         }
     }

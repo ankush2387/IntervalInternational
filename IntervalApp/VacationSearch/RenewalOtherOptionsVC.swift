@@ -102,7 +102,7 @@ extension RenewalOtherOptionsVC: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.renewelCell) as!
         RenewelCell
         
-        let term = "1 year"
+        let term = "1-year"
         
         var priceAndCurrency = ""
         
@@ -119,12 +119,14 @@ extension RenewalOtherOptionsVC: UITableViewDataSource {
                         cell.renewelnonCoreImageView?.isHidden = false
                         
                         // currency code
-                        var currencyCodeWithSymbol: String = ""
+                        var currencyCodeWithSymbol = ""
                         if let currencyCode = forceRenewals.currencyCode {
                             currencyCodeWithSymbol = Helper.currencyCodeToSymbol(code: currencyCode)
                         }
                         if renewalComboProduct.isCoreProduct {
-                            cell.renewelCoreImageView?.image = UIImage(named: renewalComboProduct.productCode!)
+                            if let productCode = renewalComboProduct.productCode {
+                            cell.renewelCoreImageView?.image = UIImage(named: productCode)
+                            }
                             
                             let price = String(format: "%.0f", renewalComboProduct.price)
                             
@@ -143,15 +145,17 @@ extension RenewalOtherOptionsVC: UITableViewDataSource {
                             cell.renewelLbl?.attributedText = attributeString
                             
                         } else {
-                            cell.renewelnonCoreImageView?.image = UIImage(named: renewalComboProduct.productCode!)
+                            if let productCode = renewalComboProduct.productCode {
+                                cell.renewelnonCoreImageView?.image = UIImage(named: productCode)
+                            }
                             
                             let price = String(format: "%.0f", renewalComboProduct.price)
                             
                             priceAndCurrency = currencyCodeWithSymbol + "\(price)" + " " + (forceRenewals.currencyCode)!
                             
                             // formatted string
-                            
-                            let mainString = Helper.returnIntervalMembershipStringWithDisplayName2(displayName: String(describing: renewalComboProduct.displayName!), price: priceAndCurrency, term: term)
+                            guard let displayName = renewalComboProduct.displayName?.capitalized else { return cell }
+                            let mainString = Helper.returnIntervalMembershipStringWithDisplayName2(displayName: displayName, price: priceAndCurrency, term: term)
                             
                             let range = (mainString as NSString).range(of: priceAndCurrency)
                             
@@ -179,25 +183,26 @@ extension RenewalOtherOptionsVC: UITableViewDataSource {
         } else {
             
             let lowestTerm = forceRenewals.products[0].term
-            for coreProduct in (forceRenewals.products) {
-                if coreProduct.term == lowestTerm {
-                 
+            for coreProduct in forceRenewals.products where coreProduct.term == lowestTerm {
+                
                     // hide core and non core image here
                     cell.renewelCoreImageView?.isHidden = true
                     cell.renewelnonCoreImageView?.isHidden = true
                     
                     // show only non core image
-                    cell.renewelImageView?.image = UIImage(named: coreProduct.productCode!)
-                    var currencyCodeWithSymbol: String = ""
+                if let productCode = coreProduct.productCode {
+                    cell.renewelImageView?.image = UIImage(named:productCode)
+                }
+                    var currencyCodeWithSymbol = ""
                     if let currencyCode = forceRenewals.currencyCode {
                           currencyCodeWithSymbol = Helper.currencyCodeToSymbol(code: currencyCode)
                     }
+                    guard let displayName = coreProduct.displayName?.capitalized, let currencyCode = forceRenewals.currencyCode else { return cell }
                     let price = String(format: "%.0f", coreProduct.price)
-                    priceAndCurrency = currencyCodeWithSymbol + "\(price)" + " " + (forceRenewals.currencyCode)!
+                    priceAndCurrency = currencyCodeWithSymbol + "\(price)" + " " + currencyCode
                     
                     // formatted string
-                    
-                    let mainString = Helper.returnIntervalMembershipStringWithDisplayName5(displayName: String(describing: coreProduct.displayName!), price: priceAndCurrency, term: term)
+                    let mainString = Helper.returnIntervalMembershipStringWithDisplayName5(displayName: displayName, price: priceAndCurrency, term: term)
                     
                     let range = (mainString as NSString).range(of: priceAndCurrency)
                     
@@ -209,7 +214,6 @@ extension RenewalOtherOptionsVC: UITableViewDataSource {
                     // set button select tag
                     cell.buttonSelect.tag = indexPath.section
                     break
-            }
         }
         return cell
     }

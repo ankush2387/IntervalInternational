@@ -54,14 +54,16 @@ final class LoginViewModel {
     private let configuration: Config
     private let encryptedStore: EncryptedItemDataStore
     private let decryptedStore: DecryptedItemDataStore
-    private let clientAPIStore: ClientAPIStore
+    private let userClientAPIStore: UserClientAPIStore
+    private let authProviderClientAPIStore: AuthProviderClientAPIStore
     private let disposeBag = DisposeBag()
     private var sessionStore: SessionStore
     
     // MARK: - Lifecycle
     init(backgroundImage: UIImage,
          sessionStore: SessionStore,
-         clientAPIStore: ClientAPIStore,
+         userClientAPIStore: UserClientAPIStore,
+         authProviderClientAPIStore: AuthProviderClientAPIStore,
          encryptedStore: EncryptedItemDataStore,
          decryptedStore: DecryptedItemDataStore,
          configuration: Config,
@@ -71,10 +73,11 @@ final class LoginViewModel {
         self.appBundle = appBundle
         self.sessionStore = sessionStore
         self.configuration = configuration
-        self.clientAPIStore = clientAPIStore
         self.encryptedStore = encryptedStore
         self.decryptedStore = decryptedStore
+        self.userClientAPIStore = userClientAPIStore
         self.backgroundImage = Observable(backgroundImage)
+        self.authProviderClientAPIStore = authProviderClientAPIStore
         self.username = Observable(try? encryptedStore.getItem(for: Persistent.userName.key, ofType: String()).unwrappedString)
         self.password = Observable(try? encryptedStore.getItem(for: Persistent.password.key, ofType: String()).unwrappedString)
         self.clientTokenLoaded.observeNext(with: checkAppVersion).dispose(in: disposeBag)
@@ -117,7 +120,7 @@ final class LoginViewModel {
     
     func readCurrentProfileForAccessToken(accessToken: DarwinAccessToken) -> Promise<Void> {
         return Promise { [unowned self] resolve, reject in
-            self.clientAPIStore.readCurrentProfile(for: accessToken)
+            self.userClientAPIStore.readCurrentProfile(for: accessToken)
                 .then { user in
                     
                     guard let memberships = user.memberships, user.hasMembership() else {
@@ -149,7 +152,7 @@ final class LoginViewModel {
     private func login(userName: String, password: String) -> Promise<Void> {
         return Promise { [unowned self] resolve, reject in
             defer { self.userIsNotLogginIn() }
-            self.clientAPIStore.readAccessToken(for: userName, and: password)
+            self.authProviderClientAPIStore.readAccessToken(for: userName, and: password)
                 .then(self.saveUserAccessToken)
                 .then(self.readCurrentProfileForAccessToken)
                 .then(self.didLoginUser)

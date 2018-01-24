@@ -60,8 +60,32 @@ final public class SimpleOwnershipCellViewModel {
         self.relinquishmentPromotionLabelText = Observable(relinquishmentPromotionLabelText)
         self.actionButton = Observable(actionButton)
 
+        let staticIncrement: CGFloat = 40
+        
         if case .some = ownershipStateLabelText {
-            cellHeight.next(170)
+            cellHeight.value += staticIncrement
+        }
+        
+        if case .some = relinquishmentPromotionLabelText {
+            cellHeight.value += staticIncrement
+        }
+
+        if let monthText = monthLabelText {
+            let newLines = monthText.filter { $0 == "\n" }
+            let newHeightAdjustment = newLines.count * 20
+            cellHeight.value += CGFloat(newHeightAdjustment)
+        }
+        
+        if let messages = extraInformationLabelText {
+            let newLines = messages.filter { $0 == "\n" }
+            let newHeightAdjustment = newLines.count * 60
+            cellHeight.value += CGFloat(newHeightAdjustment)
+        }
+        
+        if let flags = flagsLabelText {
+            let newLines = flags.filter { $0 == "\n" }
+            let newHeightAdjustment = newLines.count * 20
+            cellHeight.value += CGFloat(newHeightAdjustment)
         }
     }
 }

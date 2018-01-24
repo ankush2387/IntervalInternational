@@ -341,7 +341,16 @@ open class DirectoryClient {
                 
                 switch statusCode {
                 case 200...209:
-                    onSuccess(json.arrayValue.map { ResortCalendar(json: $0) })
+                    let calendar = json.arrayValue.map { ResortCalendar(json: $0) }
+                    var newCalendar = [ResortCalendar]()
+                    
+                    for resortCalendar in calendar {
+                        let diff = resortCalendar.getDaysUntilCheckInDate()
+                        if diff > 14 {
+                            newCalendar.append(resortCalendar)
+                        }
+                    }
+                    onSuccess(newCalendar)
                     
                 default:
                     onError(DarwinSDK.parseDarwinError(statusCode: statusCode, json: json))
