@@ -118,6 +118,12 @@ extension ClientAPI: DirectoryClientAPIStore {
             DirectoryClient.getResortUnits(accessToken, resortCode: resortCode, onSuccess: resolve, onError: reject)
         }
     }
+
+    func readResortClubPointChart(for accessToken: DarwinAccessToken, and resortCode: String) -> Promise<ClubPointsChart> {
+        return Promise { resolve, reject in
+            DirectoryClient.getResortClubPointsChart(accessToken, resortCode: resortCode, onSuccess: resolve, onError: reject)
+        }
+    }
 }
 
 extension ClientAPI: ImageAPIStore {

@@ -13,4 +13,5 @@ import Foundation
 protocol DirectoryClientAPIStore {
     func readResort(for accessToken: DarwinAccessToken, and resortCode: String) -> Promise<Resort>
     func readResortUnits(for accessToken: DarwinAccessToken, and resortCode: String) -> Promise<[InventoryUnit]>
+    func readResortClubPointChart(for accessToken: DarwinAccessToken, and resortCode: String) -> Promise<ClubPointsChart>
 }
