@@ -11,46 +11,47 @@ import IntervalUIKit
 
 class ResortDirectoryTabController: UITabBarController {
     
+    
+    
     override func viewDidLoad() {
-        
         super.viewDidLoad()
-        
         let appearance = UITabBarItem.appearance()
         let attributes: [String: AnyObject] = [NSFontAttributeName: UIFont(name: Constant.fontName.helveticaNeue, size: 15)!, NSForegroundColorAttributeName: IUIKColorPalette.primary1.color]
         appearance.setTitleTextAttributes(attributes, for: UIControlState())
-        
+
         //***** Handle hamberger menu button for prelogin and post login case *****//
         if((Session.sharedSession.userAccessToken) != nil && Constant.MyClassConstants.isLoginSuccessfull) {
-            
+
             if let rvc = self.revealViewController() {
-                
+
                 //***** Add the hamburger menu *****//
                 let menuButton = UIBarButtonItem(image: UIImage(named: Constant.assetImageNames.ic_menu), style: .plain, target: rvc, action: #selector(SWRevealViewController.revealToggle(_:)))
                 menuButton.tintColor = UIColor.white
                 self.navigationItem.leftBarButtonItem = menuButton
-                
+
                 //***** This line allows the user to swipe left-to-right to reveal the menu. We might want to comment this out if it becomes confusing. *****//
                 self.view.addGestureRecognizer( rvc.panGestureRecognizer())
                 //Allow user to tap anywhere to dismiss reveal menu
                 self.view.addGestureRecognizer(rvc.tapGestureRecognizer())
             }
-            
+
         } else {
-            
+
             let menuButton = UIBarButtonItem(image: UIImage(named: Constant.assetImageNames.backArrowNav), style: .plain, target: self, action: #selector(ResortDirectoryTabController.menuBackButtonPressed(_:)))
             menuButton.tintColor = UIColor.white
             self.tabBarController?.delegate = self
             self.navigationItem.leftBarButtonItem = menuButton
-            
+
         }
         
     }
     override func viewWillAppear(_ animated: Bool) {
-        //***** Register notification for this class to call the specific method when notification fired *****//
+        navigationController?.navigationBar.isHidden = false
+//        //***** Register notification for this class to call the specific method when notification fired *****//
         //NotificationCenter.default.addObserver(self, selector: #selector(reloadView), name: NSNotification.Name(rawValue: Constant.notificationNames.reloadFavoritesTabNotification), object: nil)
-        
+
         if(Constant.MyClassConstants.sideMenuOptionSelected == Constant.MyClassConstants.favoritesFunctionalityCheck) {
-            
+
             self.title = Constant.ControllerTitles.favoritesViewController
             self.selectedIndex = 2
         } else if(Constant.MyClassConstants.sideMenuOptionSelected == Constant.MyClassConstants.list) {
@@ -59,10 +60,10 @@ class ResortDirectoryTabController: UITabBarController {
             if(Constant.MyClassConstants.runningFunctionality != Constant.MyClassConstants.resortFunctionalityCheck) {
                 self.title = Constant.ControllerTitles.vacationSearchDestinationController
             } else {
-                
+
                 self.title = Constant.ControllerTitles.resortDirectoryViewController
                 self.selectedIndex = 0
-                
+
             }
         }
         if(Constant.RunningDevice.deviceIdiom == .phone) {

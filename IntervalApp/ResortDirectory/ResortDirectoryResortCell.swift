@@ -30,17 +30,23 @@ class ResortDirectoryResortCell: UITableViewCell {
     @IBOutlet weak var searchVacationButton: IUIKButton?
     @IBOutlet weak var showResortLocationButton: UIButton?
     @IBOutlet weak var showResortWeatherbutton: UIButton?
+    @IBOutlet weak var detailsPageControl: PageControl!
+    
+    var selectedIndexPath:IndexPath = []
+    
     //***** class variables *****//
      var delegate: ResortDirectoryResortCellDelegate?
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        
         if case .some = resortCollectionView {
             
             resortCollectionView.delegate = self
             resortCollectionView.dataSource = self
             resortCollectionView.isPagingEnabled = true
+            detailsPageControl.numberOfPages = Constant.MyClassConstants.imagesArray.count
+            
+            
         }
         
         if case .some = favoriteButton {
@@ -101,7 +107,6 @@ extension ResortDirectoryResortCell: UICollectionViewDataSource {
 				}
 				}, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
 		}
-        cell.pageControl.currentPage = indexPath.row
         cell.delegate = self
         return cell
     }
@@ -111,6 +116,13 @@ extension ResortDirectoryResortCell: UICollectionViewDataSource {
 extension ResortDirectoryResortCell: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 0
+    }
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        let pageWidth = resortCollectionView.bounds.size.width
+        let page = scrollView.contentOffset.x / pageWidth
+        detailsPageControl.currentPage = Int(page)
+        
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
@@ -123,6 +135,7 @@ extension ResortDirectoryResortCell: UICollectionViewDelegateFlowLayout {
 			return CGSize(width: UIScreen.main.bounds.width, height: collectionView.frame.height)
 		}
 	}
+    
 }
 
 //***** custom cell delegate methods implementation *****//

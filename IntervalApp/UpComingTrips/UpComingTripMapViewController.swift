@@ -119,7 +119,7 @@ extension UIViewController {
             self.present(mapDetailsNav, animated: true, completion: nil)
         } else {
         self.navigationController?.view.layer.add(Helper.bottomToTopTransition(), forKey: nil)
-            self.navigationController?.pushViewController(mapVC, animated: false)
+        self.navigationController?.pushViewController(mapVC, animated: false)
             mapVC.presentedModally = false
         }
         
