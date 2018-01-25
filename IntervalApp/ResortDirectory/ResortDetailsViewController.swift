@@ -70,8 +70,9 @@ class ResortDetailsViewController: UIViewController {
             headerTextForShowingResortCounter?.isHidden = true
             
             if Constant.RunningDevice.deviceIdiom == .phone {
-               // navigationController?.navigationBar.isHidden = true
                 tabBarController?.tabBar.isHidden = true
+            } else {
+               navigationController?.navigationBar.isHidden = false
             }
             
         } else {

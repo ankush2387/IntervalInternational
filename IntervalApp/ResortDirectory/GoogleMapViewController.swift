@@ -49,32 +49,30 @@ class GoogleMapViewController: UIViewController {
     var needCameraChange = false
     var selectedDestination = AreaOfInfluenceDestination()
     
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
         //used to not remove observers if going to map or weather view
         Constant.MyClassConstants.goingToMapOrWeatherView = false
 
+        navigationController?.navigationBar.isHidden = false
         // Adding notifications so that it invoke the specific method when the notification is fired
         NotificationCenter.default.addObserver(self, selector: #selector(closeButtonClicked), name: NSNotification.Name(rawValue: Constant.notificationNames.closeButtonClickedNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(reloadView), name: NSNotification.Name(rawValue: Constant.notificationNames.reloadFavoritesTabNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(resortSelectedFromsearchResultWithlatlong), name: NSNotification.Name(rawValue: Constant.notificationNames.reloadMapNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(displaySearchedResort), name: NSNotification.Name(rawValue: Constant.notificationNames.addMarkerWithRactangleRequestNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(updateMapMarkers), name: NSNotification.Name(rawValue: Constant.notificationNames.reloadMapForApply), object: nil)
+        
         googleMapSearchBar.placeholder = Constant.buttonTitles.searchVacation
         if Constant.MyClassConstants.runningFunctionality != Constant.MyClassConstants.resortFunctionalityCheck {
-
-            //***** Creating and adding left  bar button for back button *****//
-            let menuButton = UIBarButtonItem(image: UIImage(named: Constant.assetImageNames.backArrowNav), style: .plain, target: self, action: #selector(GoogleMapViewController.menuBackButtonPressed(_:)))
-            menuButton.tintColor = UIColor.white
-            navigationItem.leftBarButtonItem = menuButton
             navigationItem.title = Constant.ControllerTitles.vacationSearchDestinationController
         } else {
             navigationItem.title = Constant.MyClassConstants.resortDirectoryTitle
         }
 
         //***** Condition for maintaining the back button and hamberger menu according to logged in or pre login *****//
-        if Constant.MyClassConstants.runningFunctionality == Constant.MyClassConstants.resortFunctionalityCheck && Constant.MyClassConstants.isLoginSuccessfull {
+        if Constant.MyClassConstants.isLoginSuccessfull {
             if let rvc = revealViewController() {
                 rvc.delegate = self
                 //***** Add the hamburger menu *****//
@@ -93,6 +91,12 @@ class GoogleMapViewController: UIViewController {
             menuButton.tintColor = UIColor.white
             navigationItem.leftBarButtonItem = menuButton
         }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        navigationController?.navigationBar.isHidden = false
+        googleMapSearchBar.layoutIfNeeded()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
