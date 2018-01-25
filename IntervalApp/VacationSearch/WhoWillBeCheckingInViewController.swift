@@ -217,12 +217,7 @@ class WhoWillBeCheckingInViewController: UIViewController {
             let alertController = UIAlertController(title: Constant.AlertMessages.holdingTimeLostTitle, message: Constant.AlertMessages.holdingTimeLostMessage, preferredStyle: .alert)
             let Ok = UIAlertAction(title: Constant.AlertPromtMessages.ok, style: .default) { (_:UIAlertAction)  in
                 
-                let allViewControllers = self.navigationController?.viewControllers
-                for vc in allViewControllers.unsafelyUnwrapped {
-                    if vc.isKind(of: SearchResultViewController.self) {
-                        self.navigationController?.popToViewController(vc, animated: true)
-                    }
-                }
+                self.performSegue(withIdentifier: "unwindToAvailabiity", sender: self)
             }
             alertController.addAction(Ok)
             present(alertController, animated: true, completion:nil)

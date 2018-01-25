@@ -188,7 +188,7 @@ class VacationSearchIPadViewController: UIViewController, UITableViewDelegate, U
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if (segmentTitle == "Search Both" || segmentTitle == "Exchange") && tableView.tag != 1 {
+        if (segmentTitle == "Search All" || segmentTitle == "Exchange") && tableView.tag != 1 {
             return 4
         } else if tableView.tag == 1 {
             return 1
@@ -343,7 +343,7 @@ class VacationSearchIPadViewController: UIViewController, UITableViewDelegate, U
             case 0:
                 return 170
             case 1:
-                if segmentTitle == "Search ALL" || segmentTitle == "Exchange" {
+                if segmentTitle == "Search All" || segmentTitle == "Exchange" {
                     return 170
                 } else {
                     return 0
@@ -471,9 +471,9 @@ class VacationSearchIPadViewController: UIViewController, UITableViewDelegate, U
                 self.navigationController?.present(navController, animated: true)
             }
             
-        }, onError: {(_) in
-            self.hideHudAsync()
-            self.presentErrorAlert(UserFacingCommonError.generic)
+        }, onError: { [weak self] error in
+            self?.hideHudAsync()
+            self?.presentErrorAlert(UserFacingCommonError.handleError(error))
         })
     }
     
@@ -492,7 +492,7 @@ class VacationSearchIPadViewController: UIViewController, UITableViewDelegate, U
     private func executeExchangeSearchDates() {
         
         ExchangeClient.searchDates(Session.sharedSession.userAccessToken, request: Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request,
-               onSuccess: { (response) in
+               onSuccess: { response in
                 Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.response = response
                 
                 // Get activeInterval
@@ -514,16 +514,9 @@ class VacationSearchIPadViewController: UIViewController, UITableViewDelegate, U
                     Helper.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: Constant.MyClassConstants.initialVacationSearch.searchCheckInDate ?? "", format: Constant.MyClassConstants.dateFormat), senderViewController: self)
                     
                 }
-                                    
-                                    //expectation.fulfill()
         },
-           onError: { (error) in
-            DarwinSDK.logger.error("Error Code: \(error.code)")
-            DarwinSDK.logger.error("Error Description: \(error.description)")
-            
-            // TODO: Handle SDK/API errors
-            DarwinSDK.logger.error("Handle SDK/API errors.")
-                                    
+           onError: { [weak self] error in
+            self?.presentErrorAlert(UserFacingCommonError.handleError(error))
         }
         )
         
@@ -531,7 +524,7 @@ class VacationSearchIPadViewController: UIViewController, UITableViewDelegate, U
     func noAvailabilityResults(vacationSearch: VacationSearch) {
         hideHudAsync()
         Constant.MyClassConstants.initialVacationSearch = vacationSearch
-        let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
+        let mainStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
         if let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.vacationSearchController) as? VacationSearchResultIPadController {
             self.navigationController?.pushViewController(viewController, animated: true)
         }

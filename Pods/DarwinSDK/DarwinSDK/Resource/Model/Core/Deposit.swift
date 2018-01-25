@@ -86,5 +86,13 @@ open class Deposit {
             self.promotion = Promotion(json:promotionJson)
         }
     }
+    
+    open func getDaysUntilExpirationDate() -> Int {
+        if let expDate = self.expirationDate {
+            let today = Date()
+            return today.daysBetween(to: expDate.dateFromShortFormat()!)
+        }
+        return -1 // Expired
+    }
 
 }

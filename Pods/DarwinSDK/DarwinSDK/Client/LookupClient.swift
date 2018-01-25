@@ -99,7 +99,7 @@ open class LookupClient {
                         
                         // Sort 'states' alphabetically.
                         states.sort(by: {
-                            return $0.name! < $1.name!;
+                            return $0.name! < $1.name!
                         })
                         
                         onSuccess(states)

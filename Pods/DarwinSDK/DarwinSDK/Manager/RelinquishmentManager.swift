@@ -32,37 +32,57 @@ open class RelinquishmentManager {
         }
         
         // Grouping Deposits
-        //for deposit in filterDeposits(myUnits.deposits) {
-        for deposit in myUnits.deposits {
+        for deposit in self.filterDeposits(deposits: myUnits.deposits) {
+        //for deposit in myUnits.deposits {
             groups.intervalWeeks.append(Relinquishment(deposit: deposit))
         }
        
-        //return sort(groups)
-        return groups
+        return sort(gropus: groups)
     }
 
     //
     // Filter Deposits
     //
-    fileprivate static func filterDeposits(deposits: [Deposit]) -> [Deposit] {
-        //var filteredDeposits = [Deposit]()
+    fileprivate func filterDeposits(deposits: [Deposit]) -> [Deposit] {
+        var filteredDeposits = [Deposit]()
         
-        //for deposit in deposits {
+        for deposit in deposits {
             // Filter out deposits based on:
             //  Rule-1: expired for >90 days
             //  Rule-2: PointsProgram is CIG and non actions
             
-            //if let value = deposit.pointsProgramCode, PointsProgramCode.fromName(name: value).isCIG(), !deposit.actions.isEmpty {
-            //    filteredDeposits.append(deposit)
-            //}
-        //}
-        return deposits
+            if !excludeDeposit(deposit: deposit) {
+                filteredDeposits.append(deposit)
+            }
+        }
+        return filteredDeposits
+    }
+    
+    fileprivate func excludeDeposit(deposit: Deposit) -> Bool {
+        return evaluateFilterOutByExpirationDateGreatThan90Days(deposit: deposit) || evaluateFilterOutByCIGPointsProgramWithNoActions(deposit: deposit)
+    }
+    
+    fileprivate func evaluateFilterOutByExpirationDateGreatThan90Days(deposit: Deposit) -> Bool {
+        let diff = deposit.getDaysUntilExpirationDate()
+        if diff < 0 && abs(diff) > 90 {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    fileprivate func evaluateFilterOutByCIGPointsProgramWithNoActions(deposit: Deposit) -> Bool {
+        if let value = deposit.pointsProgramCode, PointsProgramCode.fromName(name: value).isCIG(), deposit.actions.isEmpty {
+            return true
+        } else {
+            return false
+        }
     }
     
     //
     // Sort Relinquishment Groups
     //
-    fileprivate static func sort(gropus: RelinquishmentGroups) -> RelinquishmentGroups {
+    fileprivate func sort(gropus: RelinquishmentGroups) -> RelinquishmentGroups {
         
         // Sort by:
         //  Relinquishment Year (ASC)

@@ -263,6 +263,7 @@
 		3CA5B8052012929B00399682 /* AdditionalInformationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3CA5B8022012929B00399682 /* AdditionalInformationViewController.xib */; };
 		3CA5B808201292F200399682 /* RelinquishmentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CA5B806201292F100399682 /* RelinquishmentViewController.swift */; };
 		3CA5B809201292F200399682 /* RelinquishmentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CA5B807201292F100399682 /* RelinquishmentViewModel.swift */; };
+		3CB870162017A7DA0078EDDD /* RelinquishmentSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB870152017A7D90078EDDD /* RelinquishmentSelectionViewController.swift */; };
 		3CBD32771F992F7C004BE182 /* AppBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CBD32761F992F7C004BE182 /* AppBundle.swift */; };
 		3CC68CEE1FAA640F0024D15F /* EntityDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CC68CED1FAA640F0024D15F /* EntityDataStore.swift */; };
 		3CE4F4111F99519100B296B1 /* Date+ElapsedTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CE4F4101F99519100B296B1 /* Date+ElapsedTime.swift */; };
@@ -678,6 +679,7 @@
 		3CA5B8022012929B00399682 /* AdditionalInformationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AdditionalInformationViewController.xib; sourceTree = "<group>"; };
 		3CA5B806201292F100399682 /* RelinquishmentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelinquishmentViewController.swift; sourceTree = "<group>"; };
 		3CA5B807201292F100399682 /* RelinquishmentViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelinquishmentViewModel.swift; sourceTree = "<group>"; };
+		3CB870152017A7D90078EDDD /* RelinquishmentSelectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelinquishmentSelectionViewController.swift; sourceTree = "<group>"; };
 		3CBD32761F992F7C004BE182 /* AppBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppBundle.swift; sourceTree = "<group>"; };
 		3CC68CED1FAA640F0024D15F /* EntityDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntityDataStore.swift; sourceTree = "<group>"; };
 		3CE4F4101F99519100B296B1 /* Date+ElapsedTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+ElapsedTime.swift"; sourceTree = "<group>"; };
@@ -1419,6 +1421,7 @@
 		3CA5B7FF2012922F00399682 /* Relinquishment */ = {
 			isa = PBXGroup;
 			children = (
+				3CB870152017A7D90078EDDD /* RelinquishmentSelectionViewController.swift */,
 				3CA5B807201292F100399682 /* RelinquishmentViewModel.swift */,
 				3CA5B806201292F100399682 /* RelinquishmentViewController.swift */,
 				3CA5B8002012929B00399682 /* AdditionalInformationViewModel.swift */,
@@ -2215,6 +2218,7 @@
 				3AAA5A371C720F4500A5EA6D /* SideMenuTableViewController.swift in Sources */,
 				3A623C6A1CF728BC00389708 /* UIImageView+UIActivityIndicatorForSDWebImage.m in Sources */,
 				3C3D799720080ABE00F06527 /* OmnitureIdentifier.swift in Sources */,
+				3CB870162017A7DA0078EDDD /* RelinquishmentSelectionViewController.swift in Sources */,
 				6163027F2014ED0D0067A9DC /* SupportClientAPIStore.swift in Sources */,
 				3C466B621F86862D002D43F7 /* AppCoordinator.swift in Sources */,
 				3AC5720F1E2A2A5000969CF7 /* AvailablePointCell.swift in Sources */,

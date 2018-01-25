@@ -58,12 +58,7 @@ class PaymentSelectionViewController: UIViewController {
             let alertController = UIAlertController(title: Constant.AlertMessages.holdingTimeLostTitle, message: Constant.AlertMessages.holdingTimeLostMessage, preferredStyle: .alert)
             let Ok = UIAlertAction(title: Constant.AlertPromtMessages.ok, style: .default) { (_:UIAlertAction)  in
                 
-                let allViewControllers = self.navigationController?.viewControllers
-                for vc in allViewControllers.unsafelyUnwrapped {
-                    if vc.isKind(of: SearchResultViewController.self) {
-                        self.navigationController?.popToViewController(vc, animated: true)
-                    }
-                }
+                 self.performSegue(withIdentifier: "unwindToAvailabiity", sender: self)
             }
             alertController.addAction(Ok)
             present(alertController, animated: true, completion:nil)
@@ -143,6 +138,7 @@ class PaymentSelectionViewController: UIViewController {
             cvv.borderStyle = UITextBorderStyle.line
             cvv.layer.borderColor = UIColor.lightGray.cgColor
             cvv.keyboardType = UIKeyboardType.numberPad
+            addDoneButtonOnNumpad(textField: cvv)
             
             let numberFrame = CGRect(x: 142, y: 0, width: 120, height: 35)
             expiryDate = UITextField(frame: numberFrame)
@@ -150,7 +146,10 @@ class PaymentSelectionViewController: UIViewController {
             expiryDate.layer.borderWidth = 1.0
             expiryDate.borderStyle = UITextBorderStyle.line
             expiryDate.layer.borderColor = UIColor.lightGray.cgColor
+            expiryDate.returnKeyType = .done
+            expiryDate.autocorrectionType = .no
             expiryDate.keyboardType = UIKeyboardType.numbersAndPunctuation
+            expiryDate.delegate = self
             //adding text fields on view
             inputView.addSubview(cvv)
             inputView.addSubview(expiryDate)
@@ -174,10 +173,12 @@ class PaymentSelectionViewController: UIViewController {
                     self.present(alertController, animated: true, completion:nil)
                     return
                 }
-                if expDate.isEmpty {
+                let letters = CharacterSet.letters
+                let range =  expDate.rangeOfCharacter(from: letters)
+                if expDate.isEmpty || !(range?.isEmpty ?? false) {
                     self.selectedCardIndex = -1
                     self.paymentSelectionTBLview.reloadData()
-                    let alertController = UIAlertController(title: "Alert".localized(), message: "Exp Date can not be empty!".localized(), preferredStyle: .alert)
+                    let alertController = UIAlertController(title: "Alert".localized(), message: "Exp Date can not be empty or Alphabet!".localized(), preferredStyle: .alert)
                     let Ok = UIAlertAction(title: Constant.AlertPromtMessages.ok, style: .default)
                     alertController.addAction(Ok)
                     self.present(alertController, animated: true, completion:nil)
@@ -281,6 +282,20 @@ class PaymentSelectionViewController: UIViewController {
             
         }
         }
+    }
+    
+    func addDoneButtonOnNumpad(textField: UITextField) {
+        
+        let keypadToolbar: UIToolbar = UIToolbar()
+        
+        // add a done button to the numberpad
+        keypadToolbar.items=[
+            UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.done, target: textField, action: #selector(UITextField.resignFirstResponder)),
+            UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: self, action: nil)
+        ]
+        keypadToolbar.sizeToFit()
+        // add a toolbar with a done button above the number pad
+        textField.inputAccessoryView = keypadToolbar
     }
 
     override func didReceiveMemoryWarning() {
@@ -430,5 +445,13 @@ extension PaymentSelectionViewController: UITableViewDataSource {
             
             return cell
         }
+    }
+}
+
+extension PaymentSelectionViewController:UITextFieldDelegate {
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
 }

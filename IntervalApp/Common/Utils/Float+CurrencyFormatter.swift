@@ -16,11 +16,11 @@ extension Float {
     
     func currencyFormatter(for currency: String = "", baseLineOffSet: Int = 5) -> NSAttributedString? {
         
-        let numFor = NumberFormatter()
-            numFor.numberStyle = .decimal
-            numFor.maximumFractionDigits = 2
-            numFor.minimumFractionDigits = 2
-        let chargedAmount = numFor.string(from: self as NSNumber)
+        let numberFormatter = NumberFormatter()
+            numberFormatter.numberStyle = .decimal
+            numberFormatter.maximumFractionDigits = 2
+            numberFormatter.minimumFractionDigits = 2
+        let chargedAmount = numberFormatter.string(from: self as NSNumber)
         let amount = chargedAmount.unwrappedString
         let attributes: [String: Any] = [NSFontAttributeName: UIFont.systemFont(ofSize: 9), NSBaselineOffsetAttributeName: baseLineOffSet]
         let attributedTextWithAttributedCurrencySign = NSMutableAttributedString(string: currency, attributes: attributes)

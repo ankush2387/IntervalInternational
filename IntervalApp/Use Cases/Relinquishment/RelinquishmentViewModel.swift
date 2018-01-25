@@ -14,6 +14,7 @@ final class RelinquishmentViewModel {
     
     // MARK: - Private properties
     private let clientAPI: ExchangeClientAPIStore
+    private let directoryClientAPIStore: DirectoryClientAPIStore
     private let sessionStore: SessionStore
     private let entityDataStore: EntityDataStore
     private let relinquishmentManager: RelinquishmentManager
@@ -24,15 +25,22 @@ final class RelinquishmentViewModel {
     private var simpleCellViewModels: [Section: [SimpleCellViewModel]] = [:]
     
     // MARK: - Lifecycle
-    init(clientAPI: ExchangeClientAPIStore, sessionStore: SessionStore, entityDataStore: EntityDataStore, relinquishmentManager: RelinquishmentManager) {
+    init(clientAPI: ExchangeClientAPIStore,
+         directoryClientAPIStore: DirectoryClientAPIStore,
+         sessionStore: SessionStore,
+         entityDataStore: EntityDataStore,
+         relinquishmentManager: RelinquishmentManager) {
+
         self.clientAPI = clientAPI
         self.sessionStore = sessionStore
         self.entityDataStore = entityDataStore
         self.relinquishmentManager = relinquishmentManager
+        self.directoryClientAPIStore = directoryClientAPIStore
     }
     
     convenience init() {
         self.init(clientAPI: ClientAPI.sharedInstance,
+                  directoryClientAPIStore: ClientAPI.sharedInstance,
                   sessionStore: Session.sharedSession,
                   entityDataStore: EntityDataSource.sharedInstance,
                   relinquishmentManager: RelinquishmentManager())
@@ -116,6 +124,19 @@ final class RelinquishmentViewModel {
                 .onError { _ in reject(UserFacingCommonError.generic) }
         }
     }
+
+    func readResortClubPointChart(for relinquishment: Relinquishment) -> Promise<ClubPointsChart> {
+        return Promise { [unowned self] resolve, reject in
+            guard let accessToken = self.sessionStore.userAccessToken, let resortCode = relinquishment.resort?.resortCode else {
+                reject(UserFacingCommonError.invalidSession)
+                return
+            }
+
+            self.directoryClientAPIStore.readResortClubPointChart(for: accessToken, and: resortCode)
+                .then(resolve)
+                .onError { _ in reject(UserFacingCommonError.noData) }
+        }
+    }
     
     // MARK: - Private functions
     private func processRelinquishmentGroups(myUnits: MyUnits) -> Promise<Void> {
@@ -131,7 +152,8 @@ final class RelinquishmentViewModel {
     }
     
     private func processCIGProgram(for relinquishmentGroups: RelinquishmentGroups) -> [SimpleCellViewModel] {
-        guard let availablePoints = relinquishmentGroups.cigPointsProgram?.availablePoints else { return [] }
+        guard relinquishmentGroups.hasCIGPointsProgram() else { return [] }
+        let availablePoints = relinquishmentGroups.cigPointsProgram?.availablePoints ?? 0
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = .decimal
         return [SimpleAvailableRelinquishmentPointsCellViewModel(cigImage: #imageLiteral(resourceName: "CIG"),
@@ -144,60 +166,122 @@ final class RelinquishmentViewModel {
 
     private func process(relinquishment: Relinquishment) -> SimpleCellViewModel {
 
-        let processUnitDetails = { (unit: InventoryUnit?) -> String? in
-
-            guard let unit = unit else { return nil }
-            
-            guard !relinquishment.lockOff else {
-                return "Lock Off Capable".localized()
-            }
-            
-            var unitDetails = ""
-
-            if let unitSize = unit.unitSize {
-                unitDetails = Helper.getBedroomNumbers(bedroomType: unitSize)
-            }
-
-            if let kitchenType = unit.kitchenType {
-                unitDetails += ", \(Helper.getKitchenEnums(kitchenType: kitchenType))"
-            }
-
-            if let unitNumber = unit.unitNumber {
-                unitDetails += ", \(unitNumber)"
-            }
-
-            return unitDetails
-        }
-
         let resortName = "\((relinquishment.resort?.resortName).unwrappedString) / \((relinquishment.resort?.resortCode).unwrappedString)"
         let relinquishmentYear = relinquishment.relinquishmentYear == nil ? nil : String(relinquishment.relinquishmentYear ?? 0)
-        let actionButtonImage = relinquishment.hasActions() ? #imageLiteral(resourceName: "VS_List-Plus_ORNG") : nil
-        let checkInDate = relinquishment.supressCheckInDate() ? nil : processCheckInDate(relinquishment.checkInDate)
         let weekNumber = relinquishment.supressWeekNumber() ? nil : processWeek(for: relinquishment.weekNumber)
         let ownershipState = relinquishment.isDeposit() ? "Deposited".localized() : nil
         let exchangeNumber = relinquishment.isDeposit() ? String(relinquishment.exchangeNumber ?? 0) : nil
         let formattedExchangeNumber = exchangeNumber == nil ? nil : "#\(exchangeNumber ?? "")"
-
-        var unitCapacity: String? = nil
-        if let unit = relinquishment.unit, !relinquishment.lockOff {
-            unitCapacity = "Sleeps \(unit.tradeOutCapacity)".localized()
-        }
-
+        
         return SimpleOwnershipCellViewModel(ownershipStateLabelText: ownershipState,
                                             exchangeNumberLabelText: formattedExchangeNumber,
-                                            extraInformationLabelText: nil,
-                                            monthLabelText: checkInDate,
+                                            extraInformationLabelText: processExtraInformation(for: relinquishment),
+                                            monthLabelText: processCheckInInformation(for: relinquishment),
                                             yearLabelText: relinquishmentYear,
                                             weekLabelText: weekNumber,
                                             resortNameLabelText: resortName,
-                                            unitDetailsLabelText: processUnitDetails(relinquishment.unit),
-                                            unitCapacityLabelText: unitCapacity,
+                                            unitDetailsLabelText: processUnitDetails(for: relinquishment),
+                                            unitCapacityLabelText: processUnitCapacity(for: relinquishment),
                                             statusLabelText: nil,
                                             expirationDateLabelText: nil,
-                                            flagsLabelText: nil,
+                                            flagsLabelText: processFormattedFlagsMessage(for: relinquishment),
                                             relinquishmentPromotionImage: nil,
                                             relinquishmentPromotionLabelText: nil,
-                                            actionButton: actionButtonImage)
+                                            actionButton: processActionButton(for: relinquishment))
+    }
+    
+    private func processActionButton(for relinquishment: Relinquishment) -> UIImage? {
+        
+        if relinquishment.hasActions() && (relinquishment.actions.map { $0.uppercased() }.contains("SHOP")) {
+            return #imageLiteral(resourceName: "VS_List-Plus_ORNG")
+        }
+        
+        if (relinquishment.memberUnitLocked || relinquishment.bulkAssignment)
+            && !relinquishment.hasActions() && relinquishment.hasResortPhoneNumber() {
+            return #imageLiteral(resourceName: "ResortDial-inIcon")
+        }
+        
+        // TODO: Temporary code to be removed
+        // Done in order to reduce bugs being opened
+        if !relinquishment.lockOff && !relinquishment.requireAdditionalInfo() {
+            return nil
+        }
+        
+        return nil
+    }
+    
+    private func processExtraInformation(for relinquishment: Relinquishment) -> String? {
+        
+        var extraInformationText: String?
+        
+        if relinquishment.blackedOut {
+            extraInformationText = "Blackout Copy TBD.".localized()
+        }
+        
+        if relinquishment.memberUnitLocked && !relinquishment.hasActions() && relinquishment.hasResortPhoneNumber() {
+            let message = "Unit not available due to resort lock. Please contact resort/club.".localized()
+            extraInformationText = extraInformationText.unwrappedString.isEmpty ?
+                message : extraInformationText.unwrappedString + "\n" + message
+        }
+        
+        if relinquishment.bulkAssignment && !relinquishment.hasActions() && relinquishment.hasResortPhoneNumber() {
+            let message = "Bulk Week Copy TBD".localized()
+            extraInformationText = extraInformationText.unwrappedString.isEmpty ?
+                message : extraInformationText.unwrappedString + "\n" + message
+        }
+
+        return extraInformationText
+    }
+    
+    private func processUnitDetails(for relinquishment: Relinquishment) -> String? {
+
+        guard let unit = relinquishment.unit, relinquishment.weekNumber != "POINTS_WEEK" else { return nil }
+        
+        guard !relinquishment.lockOff else {
+            return "Lock Off Capable".localized()
+        }
+        
+        var unitDetails = ""
+        
+        if let unitSize = unit.unitSize {
+            unitDetails = Helper.getBedroomNumbers(bedroomType: unitSize)
+        }
+        
+        if let kitchenType = unit.kitchenType {
+            unitDetails += ", \(Helper.getKitchenEnums(kitchenType: kitchenType))"
+        }
+        
+        if let unitNumber = unit.unitNumber {
+            unitDetails += ", \(unitNumber)"
+        }
+        
+        return unitDetails
+    }
+
+    private func processUnitCapacity(for relinquishment: Relinquishment) -> String? {
+        guard relinquishment.weekNumber != "POINTS_WEEK" else { return nil }
+        guard let unit = relinquishment.unit, !relinquishment.lockOff else { return nil }
+        return "Sleeps \(unit.tradeOutCapacity)".localized()
+    }
+    
+    private func processFormattedFlagsMessage(for relinquishment: Relinquishment) -> String? {
+        var formattedFlagsMessage: String? = nil
+        
+        let flags = [(relinquishment.blackedOut, "Blackout".localized()),
+                     (relinquishment.memberUnitLocked, "Locked".localized()),
+                     (relinquishment.bulkAssignment, "Bulk Week".localized()),
+                     (relinquishment.supplementalWeek, "Supplemental Week".localized()),
+                     (relinquishment.waitList, "Waitlist".localized())]
+        
+        let processFlags = { (flag: (isActive: Bool, message: String)) in
+            if flag.isActive {
+                let currentFlagMessage = formattedFlagsMessage.unwrappedString
+                formattedFlagsMessage = currentFlagMessage.isEmpty ? flag.message : currentFlagMessage + "\n" + flag.message
+            }
+        }
+        
+        flags.forEach(processFlags)
+        return formattedFlagsMessage
     }
     
     private func simpleCellViewModel(for indexPath: IndexPath) -> SimpleCellViewModel {
@@ -211,9 +295,15 @@ final class RelinquishmentViewModel {
         return relinquishments[section]?[indexPath.row]
     }
 
-    private func processCheckInDate(_ checkInDate: String?) -> String? {
+    private func processCheckInInformation(for relinquishment: Relinquishment) -> String? {
+
+        if relinquishment.weekNumber == "POINTS_WEEK" {
+            return "CLUB \nPOINTS".localized()
+        }
+
+        guard relinquishment.supressCheckInDate() == false else { return nil }
         // TODO: Based this off existing code, Frank is going to provide a helper method in SDK to do this based on UTC 0 always
-        guard let checkInDate = checkInDate else { return nil }
+        guard let checkInDate = relinquishment.checkInDate else { return nil }
         let format = "yyyy-MM-dd"
         guard let date = checkInDate.dateFromString(for: format) else { return nil }
         let calendar = NSCalendar.current
