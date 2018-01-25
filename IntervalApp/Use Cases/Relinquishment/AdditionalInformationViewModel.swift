@@ -53,6 +53,8 @@ final class AdditionalInformationViewModel {
                 .then(self.updateResortInRelinquishment)
                 .then(self.setResortDetailViewModel)
                 .then(self.checkIfUserNeedsToPickInventoryUnit)
+                .then(self.setResortUnitDetailsViewModel)
+                .then(self.setReservationDetailsViewModel)
                 .then(resolve)
                 .onError { _ in reject(UserFacingCommonError.noData) }
         }
@@ -85,6 +87,12 @@ final class AdditionalInformationViewModel {
         guard let section = Section(rawValue: indexPath.section),
             let cellViewModel = simpleCellViewModels[section]?[indexPath.row] else { return SimpleSeperatorCellViewModel() }
         return cellViewModel
+    }
+
+    func hasCellViewModels(for section: Int) -> Bool {
+        guard let sectionIdentifier = Section(rawValue: section),
+            let count = simpleCellViewModels[sectionIdentifier]?.count else { return false }
+        return count > 0
     }
 
     private func setResortDetailViewModel() -> Promise<Void> {
@@ -126,14 +134,26 @@ final class AdditionalInformationViewModel {
                     return
                 }
 
-                self.directoryClientAPIStore.readResortUnits(for: accessToken, and: resortCode).then {
-                    print($0)
-                    resolve()
-                }.onError(reject)
+                resolve()
 
             } else {
                 resolve()
             }
         }
+    }
+
+    private func setResortUnitDetailsViewModel() -> Promise<Void> {
+        let foo = NSAttributedString(string: "Select a Club Resort".localized(), attributes: [NSForegroundColorAttributeName: IntervalThemeFactory.deviceTheme.textColorGray])
+        simpleCellViewModels[.unitDetails] = [SimpleDisclosureIndicatorCellViewModel(headerLabelText: foo)]
+        return Promise.resolve()
+    }
+
+    private func setReservationDetailsViewModel() -> Promise<Void> {
+        let viewModel1 = SimpleFloatingLabelTextFieldCellViewModel(placeholderText: "Reservation Number")
+        viewModel1.isEditing.next(true)
+        let viewModel2 = SimpleFloatingLabelTextFieldCellViewModel(placeholderText: "Unit Number")
+        viewModel2.isEditing.next(true)
+        simpleCellViewModels[.reservationDetails] = [viewModel1, viewModel2]
+        return Promise.resolve()
     }
 }

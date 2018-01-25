@@ -39,6 +39,10 @@ class WeatherViewController: UIViewController {
         setup()
         
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        navigationController?.navigationBar.isHidden = true
+    }
     override func viewDidDisappear(_ animated: Bool) {
         if Constant.RunningDevice.deviceIdiom == .phone && !presentedModally {
             navigationController?.navigationBar.isHidden = false

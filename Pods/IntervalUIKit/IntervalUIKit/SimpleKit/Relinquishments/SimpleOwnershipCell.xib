@@ -164,7 +164,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Poi-eU-WWI">
-                        <rect key="frame" x="384" y="104.5" width="30" height="30"/>
+                        <rect key="frame" x="401" y="104.5" width="30" height="30"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="30" id="Ez1-y6-zuW"/>
                             <constraint firstAttribute="height" constant="30" id="bR2-nZ-m9g"/>
@@ -198,7 +198,7 @@
                     <constraint firstItem="crj-rn-I4C" firstAttribute="leading" secondItem="Nt8-SV-Aps" secondAttribute="leading" id="HKc-zY-SFg"/>
                     <constraint firstItem="Nt8-SV-Aps" firstAttribute="top" secondItem="5o5-6k-Eot" secondAttribute="bottom" constant="1" id="JcX-qp-bRH"/>
                     <constraint firstItem="1nk-GE-i4w" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="Kp2-wZ-Qlc"/>
-                    <constraint firstItem="Poi-eU-WWI" firstAttribute="trailing" secondItem="H2p-sc-9uM" secondAttribute="trailingMargin" constant="-17" id="MRQ-Ey-mk2"/>
+                    <constraint firstItem="Poi-eU-WWI" firstAttribute="trailing" secondItem="H2p-sc-9uM" secondAttribute="trailingMargin" id="MRQ-Ey-mk2"/>
                     <constraint firstItem="crj-rn-I4C" firstAttribute="trailing" secondItem="Nt8-SV-Aps" secondAttribute="trailing" id="Mb6-yC-tUq"/>
                     <constraint firstItem="rzK-Js-sbe" firstAttribute="trailing" secondItem="H2p-sc-9uM" secondAttribute="trailingMargin" constant="-50" id="P6h-ID-Qq5"/>
                     <constraint firstItem="7XT-Qo-t6J" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="PMn-66-TIa"/>

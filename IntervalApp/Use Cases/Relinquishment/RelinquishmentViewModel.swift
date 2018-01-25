@@ -8,6 +8,7 @@
 
 import then
 import DarwinSDK
+import RealmSwift
 import IntervalUIKit
 
 final class RelinquishmentViewModel {
@@ -96,6 +97,12 @@ final class RelinquishmentViewModel {
         }
     }
     
+    func relinquish(_ relinquishment: Relinquishment) -> Promise<Void> {
+        // Currently only handling two states, `deposited`, and `open week`
+        // Will later handle `pending`
+        return relinquishment.isDeposit() ? depositDepositedWeek(for: relinquishment) : depositOpenWeek(for: relinquishment)
+    }
+    
     func relinquish(_ availablePoints: Int?, for code: String?, and relinquishmentID: String?) -> Promise<Void> {
         return Promise { [unowned self] resolve, reject in
             
@@ -140,15 +147,52 @@ final class RelinquishmentViewModel {
     
     // MARK: - Private functions
     private func processRelinquishmentGroups(myUnits: MyUnits) -> Promise<Void> {
-        let relinquishmentGroups = relinquishmentManager.getRelinquishmentGroups(myUnits: myUnits)
-        relinquishments[.cigWeeks] = relinquishmentGroups.cigPointsWeeks
-        relinquishments[.points] = relinquishmentGroups.pointsWeeks
-        relinquishments[.intervalWeeks] = relinquishmentGroups.intervalWeeks
-        simpleCellViewModels[.cigProgram] = processCIGProgram(for: relinquishmentGroups)
-        simpleCellViewModels[.cigWeeks] = relinquishmentGroups.cigPointsWeeks.map(process)
-        simpleCellViewModels[.points] = relinquishmentGroups.pointsWeeks.map(process)
-        simpleCellViewModels[.intervalWeeks] = relinquishmentGroups.intervalWeeks.map(process)
-        return Promise.resolve()
+        return Promise { [unowned self] resolve, reject in
+
+            let relinquishmentGroups = self.relinquishmentManager.getRelinquishmentGroups(myUnits: myUnits)
+            self.simpleCellViewModels[.cigProgram] = self.processCIGProgram(for: relinquishmentGroups)
+
+            self.filterStored(relinquishmentGroups.cigPointsWeeks).then {
+                self.relinquishments[.cigWeeks] = $0
+                self.simpleCellViewModels[.cigWeeks] = $0.map(self.process)
+                }.onError(reject)
+
+            self.filterStored(relinquishmentGroups.pointsWeeks).then {
+                self.relinquishments[.points] = $0
+                self.simpleCellViewModels[.points] = $0.map(self.process)
+                }.onError(reject)
+
+            self.filterStored(relinquishmentGroups.intervalWeeks).then {
+                self.relinquishments[.intervalWeeks] = $0
+                self.simpleCellViewModels[.intervalWeeks] = $0.map(self.process)
+                }.onError(reject)
+
+            resolve()
+        }
+    }
+    
+    private func filterStored(_ relinquishments: [Relinquishment]) -> Promise<[Relinquishment]> {
+        return Promise { [unowned self] resolve, reject in
+            
+            self.entityDataStore.readObjectsFromDisk(type: OpenWeeksStorage.self, predicate: nil, encoding: .decrypted)
+                .then { openWeeksStore in
+
+                    let depositedWeeksRelinquishmentIDs = openWeeksStore
+                        .flatMap { $0.openWeeks }
+                        .flatMap { $0.deposits }
+                        .flatMap { $0.relinquishmentID }
+
+                    let depositedOpenWeeksRelinquishmentIDs = openWeeksStore
+                        .flatMap { $0.openWeeks }
+                        .flatMap { $0.openWeeks }
+                        .flatMap { $0.relinquishmentID }
+
+                    let relinquishmentIDs = depositedWeeksRelinquishmentIDs + depositedOpenWeeksRelinquishmentIDs
+                    let filteredRelinquishments = relinquishments.filter { !relinquishmentIDs.contains($0.relinquishmentId.unwrappedString) }
+                    resolve(filteredRelinquishments)
+
+                }.onError(reject)
+        }
     }
     
     private func processCIGProgram(for relinquishmentGroups: RelinquishmentGroups) -> [SimpleCellViewModel] {
@@ -302,11 +346,10 @@ final class RelinquishmentViewModel {
         }
 
         guard relinquishment.supressCheckInDate() == false else { return nil }
-        // TODO: Based this off existing code, Frank is going to provide a helper method in SDK to do this based on UTC 0 always
         guard let checkInDate = relinquishment.checkInDate else { return nil }
         let format = "yyyy-MM-dd"
         guard let date = checkInDate.dateFromString(for: format) else { return nil }
-        let calendar = NSCalendar.current
+        let calendar = CalendarHelper().createCalendar()
         let parsedDate = calendar.dateComponents([.day, .weekday, .month, .year], from: date)
         guard let day = parsedDate.day, let month = parsedDate.month else { return nil }
         let lookedUpMonth = Helper.getMonthnameFromInt(monthNumber: month)
@@ -318,5 +361,45 @@ final class RelinquishmentViewModel {
         guard let weekIdentifier = weekIdentifier else { return nil }
         guard !Constant.getWeekNumber(weekType: weekIdentifier).isEmpty else { return nil }
         return "Week \(Constant.getWeekNumber(weekType: weekIdentifier))".localized()
+    }
+    
+    private func depositDepositedWeek(for relinquishment: Relinquishment) -> Promise<Void> {
+        return Promise { [unowned self] resolve, reject in
+            let resort = ResortList()
+            let selectedOpenWeek = Deposits()
+            let storedata = OpenWeeksStorage()
+            let relinquishmentList = TradeLocalData()
+            selectedOpenWeek.weekNumber = relinquishment.weekNumber.unwrappedString
+            selectedOpenWeek.relinquishmentYear = relinquishment.relinquishmentYear ?? 0
+            selectedOpenWeek.relinquishmentID = relinquishment.relinquishmentId.unwrappedString
+            resort.resortName = relinquishment.resort?.resortName ?? ""
+            selectedOpenWeek.resort.append(resort)
+            relinquishmentList.deposits.append(selectedOpenWeek)
+            storedata.openWeeks.append(relinquishmentList)
+            storedata.membeshipNumber = self.sessionStore.selectedMembership?.memberNumber ?? ""
+            self.entityDataStore.writeToDisk(storedata, encoding: .decrypted)
+                .then(resolve)
+                .onError { _ in reject(UserFacingCommonError.generic) }
+        }
+    }
+    
+    private func depositOpenWeek(for relinquishment: Relinquishment) -> Promise<Void> {
+        return Promise { [unowned self] resolve, reject in
+            let resort = ResortList()
+            let storedata = OpenWeeksStorage()
+            let selectedOpenWeek = OpenWeeks()
+            let relinquishmentList = TradeLocalData()
+            selectedOpenWeek.weekNumber = relinquishment.weekNumber.unwrappedString
+            selectedOpenWeek.relinquishmentID = relinquishment.relinquishmentId.unwrappedString
+            selectedOpenWeek.relinquishmentYear = relinquishment.relinquishmentYear ?? 0
+            resort.resortName = relinquishment.resort?.resortName ?? ""
+            selectedOpenWeek.resort.append(resort)
+            relinquishmentList.openWeeks.append(selectedOpenWeek)
+            storedata.openWeeks.append(relinquishmentList)
+            storedata.membeshipNumber = self.sessionStore.selectedMembership?.memberNumber ?? ""
+            self.entityDataStore.writeToDisk(storedata, encoding: .decrypted)
+                .then(resolve)
+                .onError { _ in reject(UserFacingCommonError.generic) }
+        }
     }
  }

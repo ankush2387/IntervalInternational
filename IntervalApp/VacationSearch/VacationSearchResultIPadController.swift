@@ -82,6 +82,10 @@ class VacationSearchResultIPadController: UIViewController {
         
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        navigationController?.navigationBar.isHidden = false
+    }
+    
     func createSections() {
         
         let sections = Constant.MyClassConstants.initialVacationSearch.createSections()
@@ -376,7 +380,7 @@ class VacationSearchResultIPadController: UIViewController {
     
     // function called when search result page map view button pressed
     @IBAction func mapViewButtonPressed(_ sender: Any) {
-        
+        Constant.MyClassConstants.isFromSearchResult = false
         self.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultMapSegue, sender: nil)
     }
     
