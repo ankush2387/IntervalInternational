@@ -63,9 +63,9 @@ class SearchResultViewController: UIViewController {
         
         if !Constant.MyClassConstants.resortsArray.isEmpty {
 
-           let inventoryData = Constant.MyClassConstants.resortsArray[0].inventory
-           let currencyHelper = CurrencyHelperLocator.sharedInstance.provideHelper()
-           let currency = currencyHelper.getCurrency(currencyCode: (inventoryData?.currencyCode)! )
+           guard let currencycode = Constant.MyClassConstants.resortsArray[0].inventory?.currencyCode else { return }
+           let currencyHelper = CurrencyHelper()
+           let currency = currencyHelper.getCurrency(currencyCode: currencycode )
            currencyCode = ("\(currencyHelper.getCurrencyFriendlySymbol(currencyCode: currency.code))")
 
         }
@@ -663,7 +663,6 @@ class SearchResultViewController: UIViewController {
     // Common method to get exchange collection view cell
     func getGetawayCollectionCell(indexPath: IndexPath, collectionView: UICollectionView) -> RentalInventoryCVCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.reUsableIdentifiers.resortInventoryCell, for: indexPath) as? RentalInventoryCVCell else { return RentalInventoryCVCell() }
-        cell.setCurrencyCode(code: currencyCode)
         return cell
     }
     

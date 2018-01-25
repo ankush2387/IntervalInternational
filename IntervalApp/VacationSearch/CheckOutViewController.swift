@@ -94,7 +94,7 @@ class CheckOutViewController: UIViewController {
                     self.isTripProtectionEnabled = false
                 }
                 guard let curCode = Constant.MyClassConstants.exchangeFees[0].currencyCode else { return }
-                let currencyHelper = CurrencyHelperLocator.sharedInstance.provideHelper()
+                let currencyHelper = CurrencyHelper()
                 let currency = currencyHelper.getCurrency(currencyCode: curCode)
                 currencyCode = ("\(currencyHelper.getCurrencyFriendlySymbol(currencyCode: currency.code))")
                 
@@ -117,7 +117,7 @@ class CheckOutViewController: UIViewController {
                 showInsurance = false
             }
             guard let curCode = Constant.MyClassConstants.rentalFees[0].currencyCode else { return }
-            let currencyHelper = CurrencyHelperLocator.sharedInstance.provideHelper()
+            let currencyHelper = CurrencyHelper()
             let currency = currencyHelper.getCurrency(currencyCode: curCode)
             currencyCode = ("\(currencyHelper.getCurrencyFriendlySymbol(currencyCode: currency.code))")
         }

@@ -21,28 +21,22 @@ class RentalInventoryCVCell: UICollectionViewCell {
     
     @IBOutlet weak var imgViewGetaway: UIImageView!
 
-    func setCurrencyCode(code: String) {
-        
-        if Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.COMBINED {
-            getawayPrice.isHidden = true
-            currencySymbol.isHidden = true
-            getawayNameLabel.text = "Getaway"
-            imgViewGetaway.isHidden = false
-        } else {
-            getawayPrice.isHidden = false
-            currencySymbol.text = code
-            getawayNameLabel.text = "Per Week"
-            imgViewGetaway.isHidden = true
-        }
-        
-    }
-
     func setDataForRentalInventory(invetoryItem: Resort, indexPath: IndexPath, code: String) {
 
         if let unit = (invetoryItem.inventory?.units[indexPath.item]) {
-
-            let price = Int(unit.prices[0].price)
-            getawayPrice.text = String(price)
+            
+            if Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.COMBINED {
+                getawayNameLabel.text = "Getaway"
+                imgViewGetaway.isHidden = false
+                getawayPrice.isHidden = true
+            } else {
+                let price = Float(unit.prices[0].price)
+                if let attributedAmount = price.currencyFormatter(for:code) {
+                    getawayPrice.attributedText = attributedAmount
+                }
+                getawayNameLabel.text = "Per Week"
+                imgViewGetaway.isHidden = true
+            }
             var bedRoomDetails = ""
             if let bedType = unit.unitSize {
                 bedRoomDetails.append(" \(Helper.getBrEnums(brType: bedType))")

@@ -76,7 +76,7 @@ class VacationSearchResultIPadController: UIViewController {
         if !Constant.MyClassConstants.resortsArray.isEmpty {
             let inventoryData = Constant.MyClassConstants.resortsArray[0].inventory
             if let code = inventoryData?.currencyCode {
-                let currencyHelper = CurrencyHelperLocator.sharedInstance.provideHelper()
+                let currencyHelper = CurrencyHelper()
                 let currency = currencyHelper.getCurrency(currencyCode: code)
                 currencyCode = ("\(currencyHelper.getCurrencyFriendlySymbol(currencyCode: currency.code))")
             }
@@ -1078,11 +1078,8 @@ extension VacationSearchResultIPadController: UICollectionViewDataSource {
                     return cell
                     
                 } else {
-                    
                     guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "RentalInventory", for: indexPath) as? RentalInventoryCVCell else { return UICollectionViewCell() }
                     cell.setDataForRentalInventory(invetoryItem: inventoryItem, indexPath: indexPath, code: currencyCode)
-                    //cell.setCurrencyCode(code: currencyCode)
-
                     return cell
                 }
             } else if Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.EXCHANGE {
