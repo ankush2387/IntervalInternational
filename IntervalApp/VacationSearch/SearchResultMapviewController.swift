@@ -60,7 +60,7 @@ class SearchResultMapviewController: UIViewController {
         
             NotificationCenter.default.addObserver(self, selector: #selector(closeDetailView), name: NSNotification.Name(rawValue: Constant.notificationNames.closeButtonClickedNotification), object: nil)
         
-        self.navigationController?.isNavigationBarHidden = false
+        navigationController?.navigationBar.isHidden = false
     }
     
     override func didReceiveMemoryWarning() {

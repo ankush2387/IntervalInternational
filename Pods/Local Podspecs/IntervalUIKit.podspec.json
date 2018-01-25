@@ -5,14 +5,14 @@
   },
   "summary": "User Interface classes for Interval applications",
   "requires_arc": true,
-  "version": "4.0.0",
+  "version": "4.2.0",
   "authors": {
     "Interval International": "support@intervalintl.com"
   },
   "homepage": "https://bitbucket.org/intervalintl/intervaluikit-ios",
   "source": {
     "git": "https://bitbucket.org/intervalintl/intervaluikit-ios.git",
-    "tag": "4.0.0"
+    "tag": "4.2.0"
   },
   "frameworks": "UIKit",
   "source_files": "IntervalUIKit/**/*.{swift}",
@@ -23,6 +23,12 @@
     ],
     "ReactiveKit": [
       "3.6.2"
+    ],
+    "ActionSheetPicker-3.0": [
+      "~>2.2.0"
+    ],
+    "SkyFloatingLabelTextField": [
+      "~>3.2.0"
     ]
   }
 }

@@ -6,6 +6,7 @@
 //  Copyright © 2017 Interval International. All rights reserved.
 //
 
+import then
 import DarwinSDK
 import IntervalUIKit
 
@@ -71,7 +72,6 @@ final class RelinquishmentViewController: UIViewController {
         let relinquishmentID = Constant.MyClassConstants.relinquishmentProgram.relinquishmentId
         let availablePoints = Constant.MyClassConstants.relinquishmentProgram.availablePoints
         let code = Constant.MyClassConstants.relinquishmentProgram.code
-        let popViewController = { [weak self] in self?.navigationController?.popViewController(animated: true) }
         
         Constant.MyClassConstants.whatToTradeArray.add(Constant.MyClassConstants.relinquishmentProgram)
         Constant.MyClassConstants.relinquishmentIdArray.append(relinquishmentID.unwrappedString)
@@ -82,13 +82,101 @@ final class RelinquishmentViewController: UIViewController {
     }
     
     fileprivate func processNavigationAction(for relinquishment: Relinquishment) {
-        
-        if relinquishment.requireAdditionalInfo() {
+
+        showHudAsync()
+
+        if (relinquishment.memberUnitLocked || relinquishment.bulkAssignment)
+            && !relinquishment.hasActions() && relinquishment.hasResortPhoneNumber() {
+            defer { hideHudAsync() }
+            guard let resortPhoneNumber = relinquishment.resort?.phone,
+                let url = URL(string: "tel://\(resortPhoneNumber)"),
+                UIApplication.shared.canOpenURL(url) else {
+                presentErrorAlert(UserFacingCommonError.noData)
+                return
+            }
+            
+            NetworkHelper.open(url)
+        } else if relinquishment.pointsMatrix {
+
+//            showHudAsync()
+//            viewModel.readResortClubPointChart(for: relinquishment)
+//                .then(performHorribleSingletonCode)
+//                .then(pushClubPointSelectionView)
+//                .onViewError(presentErrorAlert)
+//                .finally(hideHudAsync)
+
+        } else if relinquishment.requireAdditionalInfo() {
+            defer { hideHudAsync() }
             // This viewController must delegate back when the relinquishment has been saved
             // Must find out how this data must be stored... to make changes in viewModel
             let viewModel = AdditionalInformationViewModel(relinquishment: relinquishment)
             let additionalInformationViewController = AdditionalInformationViewController(viewModel: viewModel)
             navigationController?.pushViewController(additionalInformationViewController, animated: true)
+        } else if relinquishment.lockOff {
+            // Do nothing...
+        } else {
+            
+            viewModel.relinquish(relinquishment)
+                .then(popViewController)
+                .onViewError(presentErrorAlert)
+                .finally(hideHudAsync)
+        }
+    }
+    
+    private func popViewController() {
+        navigationController?.popViewController(animated: true)
+    }
+    
+    private func performHorribleSingletonCode(for clubPointsChart: ClubPointsChart) -> Promise<Void> {
+        return Promise { resolve, reject in
+
+            // Not my code...
+            // Old code to keep existing behavior...
+            // Code not currently working...
+
+            Constant.MyClassConstants.matrixDataArray.removeAllObjects()
+            Constant.MyClassConstants.selectionType = 1
+            Constant.MyClassConstants.matrixType = clubPointsChart.type.unwrappedString
+            Constant.MyClassConstants.matrixDescription = clubPointsChart.matrices[0].description.unwrappedString
+            let showSegment = Constant.MyClassConstants.matrixDescription == Constant.MyClassConstants.matrixTypeSingle
+                || Constant.MyClassConstants.matrixDescription == Constant.MyClassConstants.matrixTypeColor
+            Constant.MyClassConstants.showSegment = !showSegment
+
+            clubPointsChart.matrices.forEach {
+                let pointsDictionary = NSMutableDictionary()
+                $0.grids.forEach { grid in
+                    guard let gridFromDate = grid.fromDate else { return }
+                    Constant.MyClassConstants.fromdatearray.add(gridFromDate)
+                    guard let gridToDate = grid.toDate else { return }
+                    Constant.MyClassConstants.todatearray.add(gridToDate)
+                    grid.rows.forEach { row in
+                        if let rowLabel = row.label {
+                            Constant.MyClassConstants.labelarray.add(rowLabel)
+                        }
+                    }
+
+                    let dictKey = "\(String(describing: gridFromDate)) - \(String(describing: gridToDate))"
+                    pointsDictionary.setObject(grid.rows, forKey: String(describing: dictKey) as NSCopying)
+                }
+
+                Constant.MyClassConstants.matrixDataArray.add(pointsDictionary)
+            }
+
+            resolve()
+        }
+    }
+
+    private func pushClubPointSelectionView() -> Promise<Void> {
+        return Promise { [weak self] resolve, reject in
+            guard let viewController = UIStoryboard(name: Constant.storyboardNames.ownershipIphone, bundle: nil)
+                .instantiateViewController(withIdentifier: Constant.storyboardControllerID.clubPointSelectionViewController)
+                as? ClubPointSelectionViewController else {
+                    reject(UserFacingCommonError.generic)
+                    return
+            }
+
+            self?.navigationController?.pushViewController(viewController, animated: true)
+            resolve()
         }
     }
 }
@@ -144,5 +232,33 @@ extension RelinquishmentViewController: UITableViewDataSource, SimpleViewModelBi
         }
         
         return cell
+    }
+}
+
+// Temporary code, to not change model across application
+
+extension OpenWeek {
+    public convenience init(relinquishment: Relinquishment) {
+        self.init()
+        relinquishmentId = relinquishment.relinquishmentId
+        actions = relinquishment.actions
+        relinquishmentYear = relinquishment.relinquishmentYear
+        exchangeStatus = relinquishment.exchangeStatus
+        weekNumber = relinquishment.exchangeStatus
+        masterUnitNumber = relinquishment.masterUnitNumber
+        checkInDates = relinquishment.checkInDates
+        checkInDate = relinquishment.checkInDate
+        checkOutDate = relinquishment.checkOutDate
+        pointsProgramCode = relinquishment.pointsProgramCode
+        resort = relinquishment.resort
+        unit = relinquishment.unit
+        pointsMatrix = relinquishment.pointsMatrix
+        blackedOut = relinquishment.blackedOut
+        bulkAssignment = relinquishment.bulkAssignment
+        memberUnitLocked = relinquishment.memberUnitLocked
+        payback = relinquishment.payback
+        reservationAttributes = relinquishment.reservationAttributes
+        virtualWeekActions = relinquishment.virtualWeekActions
+        promotion = relinquishment.promotion
     }
 }

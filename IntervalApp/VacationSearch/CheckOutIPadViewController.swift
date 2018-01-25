@@ -1053,11 +1053,19 @@ extension CheckOutIPadViewController: UITableViewDataSource {
                         cell.priceLabel.numberOfLines = 0
                         if renewalsArray.count > 1 {
                             renewalIndex = 1
-                            cell.priceLabel.text = "\(String(describing: renewalsArray[renewalIndex].displayName ?? "")) Package Renewal Fee".localized()
+                            cell.priceLabel.text = "\(String(describing: renewalsArray[renewalIndex].displayName?.capitalized ?? "")) Package".localized()
+                            let packagePrice = renewalsArray[renewalIndex].price + renewalsArray[0].price
+                            cell.setTotalPrice(with: currencyCode, and: packagePrice)
                         } else {
-                            cell.priceLabel.text = "\(String(describing: renewalsArray[renewalIndex].displayName ?? "")) Renewal Fee".localized()
+                            if let displayName = renewalsArray[renewalIndex].displayName {
+                                if displayName.caseInsensitiveCompare("INTERVAL") == ComparisonResult.orderedSame {
+                                    cell.priceLabel.text = "\(displayName) Membership".capitalized.localized()
+                                } else {
+                                    cell.priceLabel.text = "\(String(describing: renewalsArray[renewalIndex].displayName?.capitalized ?? ""))".localized()
+                                }
+                            }
+                            cell.setTotalPrice(with: currencyCode, and: renewalsArray[renewalIndex].price)
                         }
-                        cell.setTotalPrice(with: currencyCode, and: renewalsArray[renewalIndex].price)
                     }
                 } else {
                     

@@ -287,7 +287,7 @@ extension RenewelViewController: UITableViewDataSource {
         cell.selectionStyle = .none
         cell.selectButton?.tag = indexPath.section
         
-        let term = "1 year"
+        let term = "1-year"
         
         var priceAndCurrency = ""
         
@@ -296,7 +296,7 @@ extension RenewelViewController: UITableViewDataSource {
     
              if lblHeaderTitle?.text == Constant.MyClassConstants.freeGuestCertificateTitle || Constant.MyClassConstants.renewalsHeaderTitle == Constant.MyClassConstants.freeGuestCertificateTitle {
                 let lowestTerm = forceRenewals.crossSelling[0].term
-                for crossSelling in (forceRenewals.crossSelling) where crossSelling.term == lowestTerm {
+                for crossSelling in forceRenewals.crossSelling where crossSelling.term == lowestTerm {
                     if let productCode = crossSelling.productCode {
                         cell.renewelImageView?.image = UIImage(named: productCode )
                     }
@@ -381,7 +381,7 @@ extension RenewelViewController: UITableViewDataSource {
                                 var mainString = ""
                                 // Create attributed string
                                 
-                                if let displayName = renewalComboProduct.displayName {
+                                if let displayName = renewalComboProduct.displayName?.capitalized {
                                 if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
                                     
                                     mainString = Helper.returnIntervalMembershipStringWithDisplayName(displayName: String(describing: displayName), price: priceAndCurrency, term: term)
@@ -510,9 +510,9 @@ extension RenewelViewController: UITableViewDataSource {
                     }
                     
                     // formatted string
-                    if let displayName = nonCoreProduct.displayName {
+                    if let displayName = nonCoreProduct.displayName?.capitalized {
                         
-                        let mainString = Helper.returnIntervalMembershipStringWithDisplayName2(displayName: String(describing: displayName), price: priceAndCurrency, term: term)
+                        let mainString = Helper.returnIntervalMembershipStringWithDisplayName2(displayName: displayName, price: priceAndCurrency, term: term)
                         
                         let range = (mainString as NSString).range(of: priceAndCurrency)
                         
@@ -572,13 +572,13 @@ extension RenewelViewController: UITableViewDataSource {
                         priceAndCurrency = currencyCodeWithSymbol + "\(price)" + " " + currencyCode
                     }
                     
-                    if let displayName = nonCoreProduct.displayName {
+                    if let displayName = nonCoreProduct.displayName?.capitalized {
                         
                         // Create attributed string
-                        var mainString = Helper.returnIntervalMembershipStringWithDisplayName3(displayName: String(describing: displayName), price: priceAndCurrency, term: term)
+                        var mainString = Helper.returnIntervalMembershipStringWithDisplayName3(displayName: displayName, price: priceAndCurrency, term: term)
                         
                         if Constant.MyClassConstants.noThanksForNonCore {
-                            mainString = Helper.returnIntervalMembershipStringWithDisplayName4(displayName: String(describing: displayName), price: priceAndCurrency, term: term)
+                            mainString = Helper.returnIntervalMembershipStringWithDisplayName4(displayName: displayName, price: priceAndCurrency, term: term)
                         }
                         
                         let range = (mainString as NSString).range(of: priceAndCurrency)
