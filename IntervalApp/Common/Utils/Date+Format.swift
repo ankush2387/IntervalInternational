@@ -6,6 +6,7 @@
 //  Copyright © 2018 Interval International. All rights reserved.
 //
 
+import DarwinSDK
 import Foundation
 
 var hourFormatter: DateFormatter = {
@@ -41,6 +42,14 @@ extension Date {
         
         // Calculates the numbers of seconds the string was created after UNIX inception 1970.
         self.init(timeIntervalSince1970: milliSeconds/1000.0)
+    }
+    
+    var intervalShortDateFormat: String {
+        return "yyyy-MM-dd"
+    }
+    
+    func intervalShortDate() -> String {
+        return self.formatDateAs(intervalShortDateFormat)
     }
     
     func shortDateFormat() -> String {

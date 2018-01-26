@@ -72,7 +72,6 @@ final class RelinquishmentViewController: UIViewController {
         let relinquishmentID = Constant.MyClassConstants.relinquishmentProgram.relinquishmentId
         let availablePoints = Constant.MyClassConstants.relinquishmentProgram.availablePoints
         let code = Constant.MyClassConstants.relinquishmentProgram.code
-        let popViewController = { [weak self] in self?.navigationController?.popViewController(animated: true) }
         
         Constant.MyClassConstants.whatToTradeArray.add(Constant.MyClassConstants.relinquishmentProgram)
         Constant.MyClassConstants.relinquishmentIdArray.append(relinquishmentID.unwrappedString)
@@ -84,12 +83,11 @@ final class RelinquishmentViewController: UIViewController {
     
     fileprivate func processNavigationAction(for relinquishment: Relinquishment) {
 
-        defer { hideHudAsync() }
         showHudAsync()
 
         if (relinquishment.memberUnitLocked || relinquishment.bulkAssignment)
             && !relinquishment.hasActions() && relinquishment.hasResortPhoneNumber() {
-            
+            defer { hideHudAsync() }
             guard let resortPhoneNumber = relinquishment.resort?.phone,
                 let url = URL(string: "tel://\(resortPhoneNumber)"),
                 UIApplication.shared.canOpenURL(url) else {
@@ -108,6 +106,7 @@ final class RelinquishmentViewController: UIViewController {
 //                .finally(hideHudAsync)
 
         } else if relinquishment.requireAdditionalInfo() {
+            defer { hideHudAsync() }
             // This viewController must delegate back when the relinquishment has been saved
             // Must find out how this data must be stored... to make changes in viewModel
             let viewModel = AdditionalInformationViewModel(relinquishment: relinquishment)
@@ -117,39 +116,17 @@ final class RelinquishmentViewController: UIViewController {
             // Do nothing...
         } else {
             
+            viewModel.relinquish(relinquishment)
+                .then(popViewController)
+                .onViewError(presentErrorAlert)
+                .finally(hideHudAsync)
         }
     }
     
-    private func test() {
-//        Constant.ControllerTitles.selectedControllerTitle = Constant.storyboardControllerID.relinquishmentSelectionViewController
-////        Constant.MyClassConstants.relinquishmentSelectedWeek = intervalOpenWeeksArray[sender.tag]
-//        Constant.MyClassConstants.whatToTradeArray.add(Constant.MyClassConstants.relinquishmentSelectedWeek)
-//        if let relinquishmentId = Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId {
-//            Constant.MyClassConstants.relinquishmentIdArray.append(relinquishmentId)
-//        }
-//
-//        //Realm local storage for selected relinquishment
-//        let storedata = OpenWeeksStorage()
-//        let Membership = Session.sharedSession.selectedMembership
-//        let relinquishmentList = TradeLocalData()
-//
-//        let selectedOpenWeek = OpenWeeks()
-//        selectedOpenWeek.weekNumber = Constant.MyClassConstants.relinquishmentSelectedWeek.weekNumber!
-//        selectedOpenWeek.relinquishmentID = Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId!
-//        selectedOpenWeek.relinquishmentYear = Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentYear!
-//        let resort = ResortList()
-//        resort.resortName = (Constant.MyClassConstants.relinquishmentSelectedWeek.resort?.resortName)!
-//
-//        selectedOpenWeek.resort.append(resort)
-//        relinquishmentList.openWeeks.append(selectedOpenWeek)
-//        storedata.openWeeks.append(relinquishmentList)
-//        storedata.membeshipNumber = Membership!.memberNumber!
-//        let realm = try! Realm()
-//        try! realm.write {
-//            realm.add(storedata)
-//        }
+    private func popViewController() {
+        navigationController?.popViewController(animated: true)
     }
-
+    
     private func performHorribleSingletonCode(for clubPointsChart: ClubPointsChart) -> Promise<Void> {
         return Promise { resolve, reject in
 
@@ -255,5 +232,33 @@ extension RelinquishmentViewController: UITableViewDataSource, SimpleViewModelBi
         }
         
         return cell
+    }
+}
+
+// Temporary code, to not change model across application
+
+extension OpenWeek {
+    public convenience init(relinquishment: Relinquishment) {
+        self.init()
+        relinquishmentId = relinquishment.relinquishmentId
+        actions = relinquishment.actions
+        relinquishmentYear = relinquishment.relinquishmentYear
+        exchangeStatus = relinquishment.exchangeStatus
+        weekNumber = relinquishment.exchangeStatus
+        masterUnitNumber = relinquishment.masterUnitNumber
+        checkInDates = relinquishment.checkInDates
+        checkInDate = relinquishment.checkInDate
+        checkOutDate = relinquishment.checkOutDate
+        pointsProgramCode = relinquishment.pointsProgramCode
+        resort = relinquishment.resort
+        unit = relinquishment.unit
+        pointsMatrix = relinquishment.pointsMatrix
+        blackedOut = relinquishment.blackedOut
+        bulkAssignment = relinquishment.bulkAssignment
+        memberUnitLocked = relinquishment.memberUnitLocked
+        payback = relinquishment.payback
+        reservationAttributes = relinquishment.reservationAttributes
+        virtualWeekActions = relinquishment.virtualWeekActions
+        promotion = relinquishment.promotion
     }
 }

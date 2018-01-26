@@ -128,6 +128,7 @@ final class LoginViewModel {
                         return
                     }
                     
+                    // TODO: FRANK MAKE SURE MULTIPLE MEMEBERSHIPS ARE BEING SET
                     self.sessionStore.contact = user
                     self.fetchedMoreThanOneMembership = memberships.count > 1
                     resolve()

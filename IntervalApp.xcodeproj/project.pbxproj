@@ -247,6 +247,8 @@
 		3C4F17291FA39204001EF71F /* Float+CurrencyFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C4F17281FA39204001EF71F /* Float+CurrencyFormatter.swift */; };
 		3C4F172B1FA77056001EF71F /* EntityDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C4F172A1FA77056001EF71F /* EntityDataSource.swift */; };
 		3C4F172D1FA7801C001EF71F /* CommonErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C4F172C1FA7801C001EF71F /* CommonErrors.swift */; };
+		3C551C2C201A649200CD69C8 /* AdditionalInformationHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C551C2A201A649200CD69C8 /* AdditionalInformationHeaderView.swift */; };
+		3C551C2D201A649200CD69C8 /* AdditionalInformationHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3C551C2B201A649200CD69C8 /* AdditionalInformationHeaderView.xib */; };
 		3C584A231FBCA63A00584831 /* UIViewController+SimpleActionSheetPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C584A221FBCA63A00584831 /* UIViewController+SimpleActionSheetPicker.swift */; };
 		3C58DD571F8D167F003C5791 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C58DD551F8D167F003C5791 /* LoginViewController.swift */; };
 		3C58DD5A1F8D2A46003C5791 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C58DD591F8D2A46003C5791 /* LoginViewModel.swift */; };
@@ -309,6 +311,10 @@
 		618AEFD01FA2C0D00097B423 /* ChargeSummaryTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 618AEFCE1FA2C0D00097B423 /* ChargeSummaryTableViewCell.xib */; };
 		61906E541FABEB390094C035 /* MemoryItemWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61906E531FABEB390094C035 /* MemoryItemWrapper.swift */; };
 		61A420C11FA9819F00B06708 /* Data+EncryptionKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61A420C01FA9819F00B06708 /* Data+EncryptionKey.swift */; };
+		61B9AF53201988B9003C45C0 /* SelectionTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61B9AF52201988B9003C45C0 /* SelectionTableViewController.swift */; };
+		61B9AF55201988E5003C45C0 /* SelectionTableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61B9AF54201988E5003C45C0 /* SelectionTableViewModel.swift */; };
+		61B9AF5820198AAA003C45C0 /* SelectionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61B9AF5620198AAA003C45C0 /* SelectionTableViewCell.swift */; };
+		61B9AF5920198AAA003C45C0 /* SelectionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 61B9AF5720198AAA003C45C0 /* SelectionTableViewCell.xib */; };
 		61C025091F929CFC003BFF55 /* PromiseErrorConversionSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C025081F929CFC003BFF55 /* PromiseErrorConversionSpec.swift */; };
 		6DA84D4CB313A73FADEF918F /* Pods_IntervalAppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A1F9F039DD01C61F912475E /* Pods_IntervalAppTests.framework */; };
 		CE533D6620FB623EC9811046 /* Pods_IntervalApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2CBCD7E8490E488AB822061 /* Pods_IntervalApp.framework */; };
@@ -663,6 +669,8 @@
 		3C4F17281FA39204001EF71F /* Float+CurrencyFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Float+CurrencyFormatter.swift"; sourceTree = "<group>"; };
 		3C4F172A1FA77056001EF71F /* EntityDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntityDataSource.swift; sourceTree = "<group>"; };
 		3C4F172C1FA7801C001EF71F /* CommonErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonErrors.swift; sourceTree = "<group>"; };
+		3C551C2A201A649200CD69C8 /* AdditionalInformationHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdditionalInformationHeaderView.swift; sourceTree = "<group>"; };
+		3C551C2B201A649200CD69C8 /* AdditionalInformationHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AdditionalInformationHeaderView.xib; sourceTree = "<group>"; };
 		3C584A221FBCA63A00584831 /* UIViewController+SimpleActionSheetPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+SimpleActionSheetPicker.swift"; sourceTree = "<group>"; };
 		3C58DD551F8D167F003C5791 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		3C58DD591F8D2A46003C5791 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
@@ -725,6 +733,10 @@
 		618AEFCE1FA2C0D00097B423 /* ChargeSummaryTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChargeSummaryTableViewCell.xib; sourceTree = "<group>"; };
 		61906E531FABEB390094C035 /* MemoryItemWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryItemWrapper.swift; sourceTree = "<group>"; };
 		61A420C01FA9819F00B06708 /* Data+EncryptionKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+EncryptionKey.swift"; sourceTree = "<group>"; };
+		61B9AF52201988B9003C45C0 /* SelectionTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionTableViewController.swift; sourceTree = "<group>"; };
+		61B9AF54201988E5003C45C0 /* SelectionTableViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionTableViewModel.swift; sourceTree = "<group>"; };
+		61B9AF5620198AAA003C45C0 /* SelectionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionTableViewCell.swift; sourceTree = "<group>"; };
+		61B9AF5720198AAA003C45C0 /* SelectionTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SelectionTableViewCell.xib; sourceTree = "<group>"; };
 		61C025081F929CFC003BFF55 /* PromiseErrorConversionSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromiseErrorConversionSpec.swift; sourceTree = "<group>"; };
 		794DEBA45E109CB6B2912F1A /* Pods-IntervalApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IntervalApp.release.xcconfig"; path = "Pods/Target Support Files/Pods-IntervalApp/Pods-IntervalApp.release.xcconfig"; sourceTree = "<group>"; };
 		9A1F9F039DD01C61F912475E /* Pods_IntervalAppTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_IntervalAppTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1427,6 +1439,8 @@
 				3CA5B8002012929B00399682 /* AdditionalInformationViewModel.swift */,
 				3CA5B8012012929B00399682 /* AdditionalInformationViewController.swift */,
 				3CA5B8022012929B00399682 /* AdditionalInformationViewController.xib */,
+				3C551C2A201A649200CD69C8 /* AdditionalInformationHeaderView.swift */,
+				3C551C2B201A649200CD69C8 /* AdditionalInformationHeaderView.xib */,
 			);
 			path = Relinquishment;
 			sourceTree = "<group>";
@@ -1587,6 +1601,17 @@
 			path = Memory;
 			sourceTree = "<group>";
 		};
+		61B9AF512019887D003C45C0 /* SelectionViewController */ = {
+			isa = PBXGroup;
+			children = (
+				61B9AF54201988E5003C45C0 /* SelectionTableViewModel.swift */,
+				61B9AF52201988B9003C45C0 /* SelectionTableViewController.swift */,
+				61B9AF5620198AAA003C45C0 /* SelectionTableViewCell.swift */,
+				61B9AF5720198AAA003C45C0 /* SelectionTableViewCell.xib */,
+			);
+			path = SelectionViewController;
+			sourceTree = "<group>";
+		};
 		61C025051F929CC1003BFF55 /* Login */ = {
 			isa = PBXGroup;
 			children = (
@@ -1616,6 +1641,7 @@
 		61C0250A1F92CF8D003BFF55 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				61B9AF512019887D003C45C0 /* SelectionViewController */,
 				3C9186F71FA2697A00F484ED /* Charge Summary ViewController */,
 			);
 			path = "View Controllers";
@@ -1927,9 +1953,11 @@
 				3AEF710F1DDF513D00FA076D /* SlideAgreeButtonCell.xib in Resources */,
 				3AF8701B1EA63B8400056A14 /* ADBMobileConfig.json in Resources */,
 				DC7BA83C1DB911D600BB0C3B /* Magazines.storyboard in Resources */,
+				61B9AF5920198AAA003C45C0 /* SelectionTableViewCell.xib in Resources */,
 				3A586CC51DDCA24F00EF6756 /* TotalCostCell.xib in Resources */,
 				3AAA5A3B1C720F4500A5EA6D /* LaunchScreen.storyboard in Resources */,
 				3A39965B1E5B028600527A99 /* UpcomingTrip.xib in Resources */,
+				3C551C2D201A649200CD69C8 /* AdditionalInformationHeaderView.xib in Resources */,
 				618AEFD01FA2C0D00097B423 /* ChargeSummaryTableViewCell.xib in Resources */,
 				DC04BB3E1DB829F100227FF5 /* IntervalHDIpad.storyboard in Resources */,
 				3A586CC91DDCA28200EF6756 /* PromotionsDiscountCell.xib in Resources */,
@@ -2033,6 +2061,7 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-IntervalApp/Pods-IntervalApp-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/ActionSheetPicker-3.0/ActionSheetPicker_3_0.framework",
 				"${BUILT_PRODUCTS_DIR}/AdobeMobileSDK/AdobeMobileSDK.framework",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/Bond/Bond.framework",
@@ -2051,6 +2080,7 @@
 				"${BUILT_PRODUCTS_DIR}/RealmSwift/RealmSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
 				"${BUILT_PRODUCTS_DIR}/SVProgressHUD/SVProgressHUD.framework",
+				"${BUILT_PRODUCTS_DIR}/SkyFloatingLabelTextField/SkyFloatingLabelTextField.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
 				"${BUILT_PRODUCTS_DIR}/TPKeyboardAvoiding/TPKeyboardAvoiding.framework",
 				"${BUILT_PRODUCTS_DIR}/XCGLogger/XCGLogger.framework",
@@ -2059,6 +2089,7 @@
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ActionSheetPicker_3_0.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AdobeMobileSDK.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Bond.framework",
@@ -2077,6 +2108,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RealmSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SVProgressHUD.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SkyFloatingLabelTextField.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TPKeyboardAvoiding.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/XCGLogger.framework",
@@ -2181,7 +2213,7 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-IntervalApp/Pods-IntervalApp-resources.sh",
 				"$PODS_CONFIGURATION_BUILD_DIR/Brightcove-Player-SDK/BCOVPUIResources.bundle",
 				"${PODS_ROOT}/GoogleMaps/Maps/Frameworks/GoogleMaps.framework/Versions/A/Resources/GoogleMaps.bundle",
-				"$PODS_CONFIGURATION_BUILD_DIR/HockeySDK/HockeySDKResources.bundle",
+				$PODS_CONFIGURATION_BUILD_DIR/HockeySDK/HockeySDKResources.bundle,
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
@@ -2370,6 +2402,7 @@
 				3A2089E01E2544FF001AFFD2 /* RelinquishmentSelectionOpenWeeksCell.swift in Sources */,
 				DC7EF5111D709F8800E9E360 /* ResortDirectoryTBLCell.swift in Sources */,
 				3AAA5A2C1C720F4500A5EA6D /* SimpleAlert.swift in Sources */,
+				61B9AF5820198AAA003C45C0 /* SelectionTableViewCell.swift in Sources */,
 				DC7EF4D11D709EAA00E9E360 /* UpComingTripDetailIPadViewController.swift in Sources */,
 				3A932D5E1C886918004BF665 /* PolicyCell.swift in Sources */,
 				3AAA5A4B1C720F4500A5EA6D /* VacationSearchViewController.swift in Sources */,
@@ -2408,6 +2441,7 @@
 				3C291A381FBCFCCE00F294FD /* MembershipSelectionTableViewCell.swift in Sources */,
 				61698B361F997DA4004BB6AF /* AppState.swift in Sources */,
 				617434731F8EFE89006292E0 /* String+Localization.swift in Sources */,
+				61B9AF53201988B9003C45C0 /* SelectionTableViewController.swift in Sources */,
 				3A3A012E1C99BD0B00B7EC37 /* BedroomSizeTableViewCell.swift in Sources */,
 				3CFED38C1F910EAA0026A922 /* ItemDataStore.swift in Sources */,
 				3A3A01421C99BD0B00B7EC37 /* OwnershipDetailWithFreeDepositTableViewCell.swift in Sources */,
@@ -2432,6 +2466,7 @@
 				616302832014ED610067A9DC /* RentalClientAPIStore.swift in Sources */,
 				3A932D521C8868C2004BF665 /* UnitDetailCell.swift in Sources */,
 				3AEF710E1DDF513D00FA076D /* SlideAgreeButtonCell.swift in Sources */,
+				61B9AF55201988E5003C45C0 /* SelectionTableViewModel.swift in Sources */,
 				3A1780BA1CDE3038006D2E44 /* File.swift in Sources */,
 				3CED4BC51F9689BB001261A2 /* NetworkHelper.swift in Sources */,
 				3AFA86681DF305A300DCAECF /* CheckOutIPadViewController.swift in Sources */,
@@ -2451,6 +2486,7 @@
 				3A3A01431C99BD0B00B7EC37 /* OwnershipFloatTableViewCell.swift in Sources */,
 				DC7BA83E1DB911D600BB0C3B /* MagazinesIPadViewController.swift in Sources */,
 				3A645C0E1CF853180033EEB7 /* Reachability.swift in Sources */,
+				3C551C2C201A649200CD69C8 /* AdditionalInformationHeaderView.swift in Sources */,
 				3A3A01471C99BD0B00B7EC37 /* VacationDetailTableViewCell.swift in Sources */,
 				E918EF281F3373AE00C84D51 /* MembershipProductCell.swift in Sources */,
 				3A892F471CD3902F00AE6F45 /* ExchangeCell0.swift in Sources */,
@@ -2695,7 +2731,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer: Aylwing Olivas (BK2HSFRB8Y)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 61;
+				CURRENT_PROJECT_VERSION = 62;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (

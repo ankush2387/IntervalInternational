@@ -22,6 +22,9 @@ class CalendarViewController: UIViewController {
     var requestedController = ""
     
     var dateArray = [Date]()
+    var datesToAllow = [Date]()
+
+    var didSelectDate: ((Date?) -> Void)?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,12 +38,17 @@ class CalendarViewController: UIViewController {
         calendar.appearance.caseOptions = [.headerUsesUpperCase, .weekdayUsesUpperCase]
         calendar.delegate = self
           calendar.dataSource = self
-        if let date = Constant.MyClassConstants.relinquishmentFloatDetialSelectedDate {
-            calendar.select(date)
+
+        if !datesToAllow.isEmpty {
+            calendar.select(Date())
         } else {
-             calendar.select(Constant.MyClassConstants.vacationSearchShowDate)
+            if let date = Constant.MyClassConstants.relinquishmentFloatDetialSelectedDate {
+                calendar.select(date)
+            } else {
+                calendar.select(Constant.MyClassConstants.vacationSearchShowDate)
+            }
+            calendar.deselect(Date())
         }
-        calendar.deselect(Date())
     }
     //***** navigation back button action *****//
     func menuBackButtonPressed(_ sender: UIBarButtonItem) {
@@ -55,6 +63,17 @@ class CalendarViewController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+
+    fileprivate func dateIsAllowed(_ date: Date) -> Bool {
+        let dateIsAllowed = !(datesToAllow.filter {
+            let calendar = CalendarHelper().createCalendar()
+            let parsedDateFromAllowedDates = calendar.dateComponents([.day, .weekday, .month, .year], from: $0)
+            let parsedDateFromCalendarDate = calendar.dateComponents([.day, .weekday, .month, .year], from: date)
+            return parsedDateFromAllowedDates.month == parsedDateFromCalendarDate.month
+                && parsedDateFromAllowedDates.day == parsedDateFromCalendarDate.day
+            }.isEmpty)
+        return dateIsAllowed
     }
 }
 
@@ -90,7 +109,8 @@ extension CalendarViewController: FSCalendarDelegate {
             }
             _ = self.navigationController?.popViewController(animated: true)
         }
-        
+
+        didSelectDate?(date)
     }
     
     func calendar(_ calendar: FSCalendar, boundingRectWillChange bounds: CGRect, animated: Bool) {
@@ -99,7 +119,11 @@ extension CalendarViewController: FSCalendarDelegate {
     }
     
     func calendar(_ calendar: FSCalendar, shouldSelect date: Date) -> Bool {
-        
+
+        if !datesToAllow.isEmpty {
+            return dateIsAllowed(date)
+        }
+
          if self.requestedController == Constant.MyClassConstants.relinquishment {
             return true
         } else {
@@ -190,10 +214,14 @@ extension CalendarViewController: FSCalendarDataSource {
 extension CalendarViewController: FSCalendarDelegateAppearance {
     
     func calendar(_ fsCalendar: FSCalendar, appearance: FSCalendarAppearance, titleDefaultColorFor date: Date) -> UIColor? {
-        
+
+        if !datesToAllow.isEmpty {
+            return dateIsAllowed(date) ? .blue : .lightGray
+        }
+
          if self.requestedController == Constant.MyClassConstants.relinquishmentFlaotWeek {
             if Constant.MyClassConstants.floatDetailsCalendarDateArray.contains(date) {
-                return UIColor.darkText
+                return UIColor.blue
             } else {
                 return UIColor.lightGray
             }
@@ -209,16 +237,20 @@ extension CalendarViewController: FSCalendarDelegateAppearance {
             } else if date .isLessThanDate(startDT) {
                  return UIColor.lightGray
             } else {
-                return UIColor.darkText
+                return UIColor.blue
             }
         }
     }
     
     public func calendar(_ fsCalendar: FSCalendar, appearance: FSCalendarAppearance, subtitleDefaultColorFor date: Date) -> UIColor? {
-        
+
+        if !datesToAllow.isEmpty {
+            return dateIsAllowed(date) ? .blue : .lightGray
+        }
+
         if self.requestedController == Constant.MyClassConstants.relinquishmentFlaotWeek {
             if Constant.MyClassConstants.floatDetailsCalendarDateArray.contains(date) {
-                return UIColor.darkText
+                return UIColor.blue
             } else {
                 return UIColor.lightGray
             }
@@ -234,7 +266,7 @@ extension CalendarViewController: FSCalendarDelegateAppearance {
             } else if date .isLessThanDate(startDT) {
                 return UIColor.lightGray
             } else {
-                return UIColor.darkText
+                return UIColor.blue
             }
         }
         

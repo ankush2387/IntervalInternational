@@ -26,16 +26,19 @@ public enum SimpleViewModelType {
     case labelLabel
     case buttonCell
     case textField
+    case floatingLabelTextField
     case labelTextLabelText
     case simpleResortDetailViewModel
     case simpleSeperatorCellViewModel
     case ownershipTableViewCellViewModel
+    case disclosureIndicatorCellViewModel
     case availableRelinquishmentPointsCellViewModel
     case labelTextFieldLabelTextFieldButtonButton
     
     // Careful all future additions must be kept in sync with the enumeration!
     static let allValues = [labelSwitch, labelLabel, buttonCell, labelTextLabelText, simpleResortDetailViewModel,
-                            textField, simpleSeperatorCellViewModel, ownershipTableViewCellViewModel, availableRelinquishmentPointsCellViewModel,
+                            textField, floatingLabelTextField, simpleSeperatorCellViewModel, ownershipTableViewCellViewModel,
+                            disclosureIndicatorCellViewModel, availableRelinquishmentPointsCellViewModel,
                             labelTextFieldLabelTextFieldButtonButton]
     
     
@@ -53,6 +56,9 @@ public enum SimpleViewModelType {
             
         case .textField:
             return String(describing: SimpleTextFieldCell.self)
+
+        case .floatingLabelTextField:
+            return String(describing: SimpleFloatingLabelTextFieldCell.self)
             
         case .simpleSeperatorCellViewModel:
             return String(describing: SimpleSeperatorCell.self)
@@ -65,6 +71,9 @@ public enum SimpleViewModelType {
 
         case .labelTextLabelText:
             return String(describing: SimpleLabelTextLabelTextCell.self)
+
+        case .disclosureIndicatorCellViewModel:
+            return String(describing: SimpleDisclosureIndicatorCell.self)
 
         case .availableRelinquishmentPointsCellViewModel:
             return String(describing: SimpleAvailableRelinquishmentPointsCell.self)
