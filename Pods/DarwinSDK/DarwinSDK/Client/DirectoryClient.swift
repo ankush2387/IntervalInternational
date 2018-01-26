@@ -342,15 +342,7 @@ open class DirectoryClient {
                 switch statusCode {
                 case 200...209:
                     let calendar = json.arrayValue.map { ResortCalendar(json: $0) }
-                    var newCalendar = [ResortCalendar]()
-                    
-                    for resortCalendar in calendar {
-                        let diff = resortCalendar.getDaysUntilCheckInDate()
-                        if diff > 14 {
-                            newCalendar.append(resortCalendar)
-                        }
-                    }
-                    onSuccess(newCalendar)
+                    onSuccess(filterOutCalendarChechInDatesWithLessThan14DaysFromToday(calendar: calendar))
                     
                 default:
                     onError(DarwinSDK.parseDarwinError(statusCode: statusCode, json: json))
@@ -360,7 +352,7 @@ open class DirectoryClient {
                 DarwinSDK.logger.debug("Got \(response.response?.statusCode ?? 0) - \(response)")
         }
     }
-    
+
     // STATUS: Unit Test PENDING
     // Darwin API endpoint: GET /directory/resorts/{resortCode}/weather
     // Get resort weather. Requires an access token (system or user)
@@ -520,6 +512,19 @@ open class DirectoryClient {
             .responseString { response in
                 DarwinSDK.logger.debug("Got \(response.response?.statusCode ?? 0) - \(response)")
         }
+    }
+    
+    fileprivate static func filterOutCalendarChechInDatesWithLessThan14DaysFromToday(calendar: [ResortCalendar]) -> [ResortCalendar] {
+        var newCalendar = [ResortCalendar]()
+        if !calendar.isEmpty {
+            for resortCalendar in calendar {
+                let diff = resortCalendar.getDaysUntilCheckInDate()
+                if diff > 14 {
+                    newCalendar.append(resortCalendar)
+                }
+            }
+        }
+        return newCalendar
     }
 
 }

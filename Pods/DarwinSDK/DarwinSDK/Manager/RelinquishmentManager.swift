@@ -21,22 +21,25 @@ open class RelinquishmentManager {
         }
         
         // Grouping OpenWeeks
-        for openWeek in myUnits.openWeeks {
-            if let value = openWeek.pointsProgramCode, PointsProgramCode.fromName(name: value).isCIG() {
-                groups.cigPointsWeeks.append(Relinquishment(openWeek: openWeek))
-            } else if let value = openWeek.weekNumber, WeekNumber.fromName(name: value).isPointWeek() {
-               groups.pointsWeeks.append(Relinquishment(openWeek: openWeek))
-            } else {
-                groups.intervalWeeks.append(Relinquishment(openWeek: openWeek))
+        if !myUnits.openWeeks.isEmpty {
+            for openWeek in myUnits.openWeeks {
+                if let value = openWeek.pointsProgramCode, PointsProgramCode.fromName(name: value).isCIG() {
+                    groups.cigPointsWeeks.append(Relinquishment(openWeek: openWeek))
+                } else if let value = openWeek.weekNumber, WeekNumber.fromName(name: value).isPointWeek() {
+                   groups.pointsWeeks.append(Relinquishment(openWeek: openWeek))
+                } else {
+                    groups.intervalWeeks.append(Relinquishment(openWeek: openWeek))
+                }
             }
         }
         
         // Grouping Deposits
-        for deposit in self.filterDeposits(deposits: myUnits.deposits) {
-        //for deposit in myUnits.deposits {
-            groups.intervalWeeks.append(Relinquishment(deposit: deposit))
+        if !myUnits.deposits.isEmpty {
+            for deposit in self.filterDeposits(deposits: myUnits.deposits) {
+                groups.intervalWeeks.append(Relinquishment(deposit: deposit))
+            }
         }
-       
+
         return sort(gropus: groups)
     }
 

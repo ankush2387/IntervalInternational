@@ -10,23 +10,23 @@ import Foundation
 
 extension String {
     
-    func dateFromFormat(_ format:String) -> Date! {
+    public func dateFromFormat(_ format:String) -> Date! {
         return createDateFormatter(format).date(from: self)
     }
 
-	func dateFromLongFormat() -> Date! {
+	public func dateFromLongFormat() -> Date! {
 		return self.dateFromFormat("yyyy-MM-dd'T'HH:mm:ssXXX")
 	}
 
-    func dateFromShortFormat() -> Date! {
+    public func dateFromShortFormat() -> Date! {
         return self.dateFromFormat("yyyy-MM-dd")
     }
 
-    func indexOf(_ innerStr: String) -> String.Index? {
+    public func indexOf(_ innerStr: String) -> String.Index? {
         return self.range(of: innerStr, options: .literal, range: nil, locale: nil)?.lowerBound
     }
     
-    func trim() -> String? {
+    public func trim() -> String? {
         return self.trimmingCharacters(in: CharacterSet.whitespaces)
     }
 

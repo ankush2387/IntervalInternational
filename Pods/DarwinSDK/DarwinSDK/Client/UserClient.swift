@@ -78,56 +78,23 @@ open class UserClient {
     }
 
     // STATUS: Unit Test passed
-    // Darwin API endpoint: PUT /user/profiles/current
-    // Set user session. Requires an access token (user)
+    // Darwin API endpoint: PUT /user/memberships/current
+    // Update membershipNumber in session and get the current Membership. Requires an access token (user)
     //
-    open static func putSessionsUser( _ accessToken: DarwinAccessToken!, member: Membership, onSuccess: @escaping() -> Void, onError: @escaping (_ error: NSError) -> Void ) {
-        let endpoint = "\(DarwinSDK.sharedInstance.getApiUri())/user/sessions/user"
-        
-        let headers: [String: String] = [
-            "Authorization": "Bearer \(accessToken.token!)"
-        ]
-        
-        let params: [String: AnyObject] = [
-            "membershipNumber": member.memberNumber as AnyObject? ?? "" as AnyObject
-        ]
-        
-        DarwinSDK.logger.debug("About to try \(endpoint) with token=\(accessToken.token!) and request payload=\(params)")
-        
-        IntervalAlamofireManager.sharedInstance.defaultManager.request(endpoint, method: .put, parameters: params, encoding: JSONEncoding.default, headers: headers)
-            //.validate(statusCode: 200...201)
-            .responseJSON { response in
-                let statusCode = response.response?.statusCode ?? 200
-                let json = JSON(response.result.value ?? "{}")
-                DarwinSDK.logger.debug("Response: \(statusCode) - \(json)")
-                
-                switch statusCode {
-                    case 200...209:
-                        onSuccess()
-                    
-                    default:
-                        onError(DarwinSDK.parseDarwinError(statusCode:statusCode, json:json))
-                }
-            }
-            .responseString { response in
-                DarwinSDK.logger.debug("Got \(response.response?.statusCode ?? 0) - \(response)")
-        }
-    }
-    
-    // STATUS: Unit Test passed
-    // Darwin API endpoint: GET /user/memberships/current
-    // Get current membership. Requires an access token (user)
-    //
-    open static func getCurrentMembership( _ accessToken: DarwinAccessToken!, onSuccess: @escaping(_ membership: Membership) -> Void, onError: @escaping(_ error: NSError) -> Void ) {
+    open static func updateSessionAndGetCurrentMembership( _ accessToken: DarwinAccessToken!, membershipNumber: String, onSuccess: @escaping(_ membership: Membership) -> Void, onError: @escaping (_ error: NSError) -> Void ) {
         let endpoint = "\(DarwinSDK.sharedInstance.getApiUri())/user/memberships/current"
         
         let headers: [String: String] = [
             "Authorization": "Bearer \(accessToken.token!)"
         ]
         
-        DarwinSDK.logger.debug("About to try \(endpoint) with token=\(accessToken.token!)")
+        let params: [String: AnyObject] = [
+            "membershipNumber": membershipNumber as AnyObject
+        ]
         
-        IntervalAlamofireManager.sharedInstance.defaultManager.request(endpoint, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers)
+        DarwinSDK.logger.debug("About to try \(endpoint) with token=\(accessToken.token!) and request payload=\(params)")
+        
+        IntervalAlamofireManager.sharedInstance.defaultManager.request(endpoint, method: .put, parameters: params, encoding: JSONEncoding.default, headers: headers)
             //.validate(statusCode: 200...201)
             .responseJSON { response in
                 let statusCode = response.response?.statusCode ?? 200
@@ -146,7 +113,7 @@ open class UserClient {
                 DarwinSDK.logger.debug("Got \(response.response?.statusCode ?? 0) - \(response)")
         }
     }
-    
+
     // STATUS: Unit Test passed
     // Darwin API endpoint: GET /user/memberships/current
     // Get program available points of the current membership. Requires an access token (user)
