@@ -146,7 +146,8 @@ class WhatToUseViewController: UIViewController {
                         }
                     }
                 }
-                UserClient.getCurrentMembership(Session.sharedSession.userAccessToken, onSuccess: { membership in
+                UserClient.updateSessionAndGetCurrentMembership(Session.sharedSession.userAccessToken, membershipNumber: Session.sharedSession.selectedMembership?.memberNumber ?? "", onSuccess: { membership in
+                    Session.sharedSession.selectedMembership = membership
                     
                     // Got an access token!  Save it for later use.
                     self.hideHudAsync()
@@ -287,11 +288,12 @@ class WhatToUseViewController: UIViewController {
                     Constant.MyClassConstants.nearbyString = Constant.MyClassConstants.nearbyString.appending("\n")
                 }
             }
-            UserClient.getCurrentMembership(Session.sharedSession.userAccessToken, onSuccess: {(Membership) in
+            UserClient.updateSessionAndGetCurrentMembership(Session.sharedSession.userAccessToken, membershipNumber: Session.sharedSession.selectedMembership?.memberNumber ?? "", onSuccess: { membership in
+                Session.sharedSession.selectedMembership = membership
                 
                 // Got an access token!  Save it for later use.
                 self.hideHudAsync()
-                Constant.MyClassConstants.membershipContactArray = Membership.contacts!
+                Constant.MyClassConstants.membershipContactArray = membership.contacts!
                 
                 // check force renewals here
                 let forceRenewals = Constant.MyClassConstants.processStartResponse.view?.forceRenewals

@@ -233,11 +233,17 @@ final class LoginCoordinator: ComputationHelper {
                     return
                 }
                 
-                self.userClientAPIStore.writeSelected(membership: membership, for: accessToken)
-                    .then(delegate.didLogin)
+                self.userClientAPIStore.readMembership(for: accessToken, and: membership.memberNumber ?? "")
+                    
+                    .then { newMembership in
+                        self.sessionStore.selectedMembership = newMembership
+                        delegate.didLogin()
+                    }
+                    
                     .onError { [unowned self] error in
                         self.loginViewController.presentErrorAlert(UserFacingCommonError.custom(title: "Error".localized(),
                                                                                                 body: error.localizedDescription)) }
+                
             }
             
             let viewModel = SimpleActionSheetViewModel<MembershipSelectionTableViewCell>(cells: cells,

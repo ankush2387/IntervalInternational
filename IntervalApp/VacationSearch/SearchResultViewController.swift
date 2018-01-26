@@ -546,7 +546,8 @@ class SearchResultViewController: UIViewController {
                     }
                 }
             }
-            UserClient.getCurrentMembership(Session.sharedSession.userAccessToken, onSuccess: { membership in
+            UserClient.updateSessionAndGetCurrentMembership(Session.sharedSession.userAccessToken, membershipNumber: Session.sharedSession.selectedMembership?.memberNumber ?? "", onSuccess: { membership in
+                Session.sharedSession.selectedMembership = membership
                 
                 // Got an access token!  Save it for later use.
                 self.hideHudAsync()
@@ -700,7 +701,8 @@ class SearchResultViewController: UIViewController {
     
     // MARK: - Call for membership
     func checkUserMembership(response: RentalProcessPrepareResponse) {
-        UserClient.getCurrentMembership(Session.sharedSession.userAccessToken, onSuccess: { membership in
+        UserClient.updateSessionAndGetCurrentMembership(Session.sharedSession.userAccessToken, membershipNumber: Session.sharedSession.selectedMembership?.memberNumber ?? "", onSuccess: { membership in
+            Session.sharedSession.selectedMembership = membership
             
             // Got an access token!  Save it for later use.
             self.hideHudAsync()

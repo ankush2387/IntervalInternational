@@ -657,7 +657,8 @@ extension VacationSearchResultIPadController: UICollectionViewDelegate {
                                     }
                                 }
                                 
-                                UserClient.getCurrentMembership(Session.sharedSession.userAccessToken, onSuccess: { membership in
+                                UserClient.updateSessionAndGetCurrentMembership(Session.sharedSession.userAccessToken, membershipNumber: Session.sharedSession.selectedMembership?.memberNumber ?? "", onSuccess: { membership in
+                                    Session.sharedSession.selectedMembership = membership
                                     
                                     // Got an access token!  Save it for later use.
                                     self.hideHudAsync()
@@ -909,7 +910,8 @@ extension VacationSearchResultIPadController: UICollectionViewDelegate {
                     }
                 }
             }
-            UserClient.getCurrentMembership(Session.sharedSession.userAccessToken, onSuccess: { membership in
+            UserClient.updateSessionAndGetCurrentMembership(Session.sharedSession.userAccessToken, membershipNumber: Session.sharedSession.selectedMembership?.memberNumber ?? "", onSuccess: { membership in
+                Session.sharedSession.selectedMembership = membership
                 
                 // Got an access token!  Save it for later use.
                 self.hideHudAsync()

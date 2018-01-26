@@ -56,10 +56,12 @@ extension ClientAPI: UserClientAPIStore {
         }
     }
 
-    // TODO FRANK REMOVE 
-    func writeSelected(membership: Membership, for accessToken: DarwinAccessToken) -> Promise<Void> {
+    func readMembership(for accessToken: DarwinAccessToken, and membershipNumber: String) -> Promise<Membership> {
         return Promise { resolve, reject in
-            UserClient.putSessionsUser(accessToken, member: membership, onSuccess: resolve, onError: reject)
+            UserClient.updateSessionAndGetCurrentMembership(accessToken,
+                                                            membershipNumber: membershipNumber,
+                                                            onSuccess: resolve,
+                                                            onError: reject)
         }
     }
 }

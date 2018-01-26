@@ -410,8 +410,8 @@ class LoginIPadViewController: UIViewController {
         //***** Update the API session for the current access token *****//
         let context = Session.sharedSession
         
-        UserClient.putSessionsUser(context.userAccessToken, member: context.selectedMembership!,
-                                   onSuccess: {
+        UserClient.updateSessionAndGetCurrentMembership(Session.sharedSession.userAccessToken, membershipNumber: Session.sharedSession.selectedMembership?.memberNumber ?? "", onSuccess: { membership in
+            Session.sharedSession.selectedMembership = membership
                                     //***** Favorites resort API call after successfull call *****//
                                     Helper.getUserFavorites {[unowned self] error in
                                         if case .some = error {
