@@ -33,6 +33,7 @@ final class AdditionalInformationViewModel {
     private let sessionStore: SessionStore
     private let relinquishment: Relinquishment
     private let imageAPIStore: ImageAPIStore
+    private let exchangeClientAPIStore: ExchangeClientAPIStore
     private let directoryClientAPIStore: DirectoryClientAPIStore
     private let sectionTitle = [nil, "Resort Unit Details".localized(), "Reservation Details".localized()]
     private enum Section: Int { case resortDetails, unitDetails, reservationDetails }
@@ -42,12 +43,14 @@ final class AdditionalInformationViewModel {
     init(relinquishment: Relinquishment,
          sessionStore: SessionStore = Session.sharedSession,
          imageAPIStore: ImageAPIStore = ClientAPI.sharedInstance,
-         directoryClientAPIStore: DirectoryClientAPIStore = ClientAPI.sharedInstance) {
+         directoryClientAPIStore: DirectoryClientAPIStore = ClientAPI.sharedInstance,
+         exchangeClientAPIStore: ExchangeClientAPIStore = ClientAPI.sharedInstance) {
 
         self.sessionStore = sessionStore
         self.relinquishment = relinquishment
         self.imageAPIStore = imageAPIStore
         self.directoryClientAPIStore = directoryClientAPIStore
+        self.exchangeClientAPIStore = exchangeClientAPIStore
     }
 
     // MARK: - Public functions
@@ -63,7 +66,7 @@ final class AdditionalInformationViewModel {
                 reject(UserFacingCommonError.generic)
                 return
             }
-
+        
             self.resort.observeNext { [unowned self] resort in
                 let resortName = resort?.resortName ?? ""
                 let resortCode = resort?.resortCode ?? ""
@@ -71,7 +74,17 @@ final class AdditionalInformationViewModel {
                 let formattedHeaderText = self.createResortUnitDetailsHeaderText(with: newHeaderText,
                                                                              userSelection: true)
                 self.resortUnitDetailsViewModel?.headerLabelText.next(formattedHeaderText)
+                self.relinquishment.resort = resort
+                self.relinquishment.fixWeekReservation?.resort = resort
                 }.dispose(in: self.disposeBag)
+            
+            self.unitNumberVM?.textFieldValue.observeNext { [unowned self] unitNumber in
+                self.relinquishment.fixWeekReservation?.unit?.unitNumber = unitNumber
+            }.dispose(in: self.disposeBag)
+            
+            self.numberOfBedroomsVM?.textFieldValue.observeNext { [unowned self] numberOfBedrooms in
+                self.relinquishment.fixWeekReservation?.unit?.unitSize = numberOfBedrooms
+            }.dispose(in: self.disposeBag)
 
             self.directoryClientAPIStore.readResort(for: accessToken, and: resortCode)
                 .then(self.updateResortInRelinquishment)
@@ -203,8 +216,9 @@ final class AdditionalInformationViewModel {
         relinquishment.unit = inventoryUnit
     }
     
-    func update(checkInDate: String?) {
+    func update(checkInDate: String?, weekNumber: String? = nil) {
         relinquishment.fixWeekReservation?.checkInDate = checkInDate
+        relinquishment.fixWeekReservation?.weekNumber = weekNumber == nil ? relinquishment.weekNumber : weekNumber
     }
     
     func getResortCalendars() -> Promise<[ResortCalendar]> {
@@ -225,6 +239,22 @@ final class AdditionalInformationViewModel {
     func checkInDates() -> [Date] {
         let format = "yyyy-MM-dd"
         return relinquishment.checkInDates.flatMap { $0.dateFromString(for: format) }
+    }
+    func updateFixWeekReservation() -> Promise<Void> {
+        return Promise { [unowned self] resolve, reject in
+            guard let accessToken = self.sessionStore.userAccessToken,
+                let relinquishmentID = self.relinquishment.relinquishmentId,
+                let fixWeekReservation = self.relinquishment.fixWeekReservation else {
+                reject(UserFacingCommonError.generic)
+                return
+            }
+            
+            self.exchangeClientAPIStore.writeFixWeekReservation(for: accessToken,
+                                                                relinquishmentID: relinquishmentID,
+                                                                reservation: fixWeekReservation).then(resolve).onError {
+                                                                    reject(UserFacingCommonError.handleError($0))
+            }
+        }
     }
 
     private func setResortDetailViewModel() -> Promise<Void> {

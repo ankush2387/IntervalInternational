@@ -13,4 +13,5 @@ import Foundation
 protocol ExchangeClientAPIStore {
     func readMyUnits(for accessToken: DarwinAccessToken) -> Promise<MyUnits>
     func readFlexchangeDeals(for accessToken: DarwinAccessToken) -> Promise<[FlexExchangeDeal]>
+    func writeFixWeekReservation(for accessToken: DarwinAccessToken, relinquishmentID: String, reservation: FixWeekReservation) -> Promise<Void>
 }

@@ -161,10 +161,18 @@ final class AdditionalInformationViewController: UIViewController {
         let identifier = "CalendarViewController"
         if let viewController = UIStoryboard(name: storyBoardName,
                                              bundle: nil).instantiateViewController(withIdentifier: identifier) as? CalendarViewController {
-
-            viewController.didSelectDate = {
-                self.viewModel.update(checkInDate: $0?.intervalShortDate())
-                viewModel.textFieldValue.next($0?.shortDateFormat())
+            let format = "yyyy-MM-dd"
+            var resortCalendars: [ResortCalendar]?
+            viewController.didSelectDate = { date in
+                
+                let selectedResortCalendar = resortCalendars?.first(where: {
+                    let resortDate = $0.checkInDate.unwrappedString.dateFromString(for: format)
+                    return resortDate?.intervalShortDate() == date?.intervalShortDate()
+                })
+                
+                self.viewModel.update(checkInDate: selectedResortCalendar?.checkInDate, weekNumber: selectedResortCalendar?.weekNumber)
+                let dateFormattedForUI = selectedResortCalendar?.checkInDate?.dateFromString(for: format)
+                viewModel.textFieldValue.next(dateFormattedForUI?.shortDateFormat())
             }
 
             var datesToAllow = self.viewModel.checkInDates()
@@ -173,7 +181,7 @@ final class AdditionalInformationViewController: UIViewController {
                 showHudAsync()
                 self.viewModel.getResortCalendars()
                     .then { calendars in
-                        let format = "yyyy-MM-dd"
+                        resortCalendars = calendars
                         datesToAllow = calendars.flatMap { $0.checkInDate.unwrappedString.dateFromString(for: format) }
                         viewController.datesToAllow = datesToAllow
                     }

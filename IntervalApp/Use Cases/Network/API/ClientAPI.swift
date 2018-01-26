@@ -104,6 +104,16 @@ extension ClientAPI: ExchangeClientAPIStore {
             ExchangeClient.getFlexExchangeDeals(accessToken, onSuccess: resolve, onError: reject)
         }
     }
+    
+    func writeFixWeekReservation(for accessToken: DarwinAccessToken, relinquishmentID: String, reservation: FixWeekReservation) -> Promise<Void> {
+        return Promise { resolve, reject in
+            ExchangeClient.updateFixWeekReservation(accessToken,
+                                                    relinquishmentId: relinquishmentID,
+                                                    reservation: reservation,
+                                                    onSuccess: resolve,
+                                                    onError: reject)
+        }
+    }
 }
 
 extension ClientAPI: DirectoryClientAPIStore {
