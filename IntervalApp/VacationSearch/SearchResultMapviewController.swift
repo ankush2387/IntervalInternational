@@ -264,31 +264,31 @@ class SearchResultMapviewController: UIViewController {
     
     //***** This method executes when bottom resort view favorite button pressed *****//
     func bottomResortFavoritesButtonPressed(sender: UIButton) {
-        
-          if (sender.isSelected == false) {
+        guard let resortCode = Constant.MyClassConstants.resortsArray[sender.tag].resortCode else { return }
+          if !sender.isSelected {
             
             showHudAsync()
 
-            UserClient.addFavoriteResort(Session.sharedSession.userAccessToken, resortCode: Constant.MyClassConstants.resortsArray[sender.tag].resortCode!, onSuccess: {(_) in
+            UserClient.addFavoriteResort(Session.sharedSession.userAccessToken, resortCode: resortCode, onSuccess: { _ in
             
                 self.hideHudAsync()
                 sender.isSelected = true
-                Constant.MyClassConstants.favoritesResortCodeArray.add(Constant.MyClassConstants.resortsArray[sender.tag].resortCode!)
+                Constant.MyClassConstants.favoritesResortCodeArray.append(Constant.MyClassConstants.resortsArray[sender.tag].resortCode!)
                 self.resortCollectionView.reloadData()
             
-            }, onError: {(error) in
-                self.hideHudAsync()
-                intervalPrint(error)
+            }, onError: { [weak self] error in
+                self?.hideHudAsync()
+                self?.presentErrorAlert(UserFacingCommonError.handleError(error))
             })
         } else {
             
             showHudAsync()
 
-            UserClient.removeFavoriteResort(Session.sharedSession.userAccessToken, resortCode: Constant.MyClassConstants.resortsArray[sender.tag].resortCode!, onSuccess: {(_) in
+            UserClient.removeFavoriteResort(Session.sharedSession.userAccessToken, resortCode: resortCode, onSuccess: { _ in
                 
                 sender.isSelected = false
                 self.hideHudAsync()
-            Constant.MyClassConstants.favoritesResortCodeArray.remove(Constant.MyClassConstants.resortsDescriptionArray.resortCode!)
+            Constant.MyClassConstants.favoritesResortCodeArray = Constant.MyClassConstants.favoritesResortCodeArray.filter{ $0 != resortCode }
                  self.resortCollectionView.reloadData()
                 ADBMobile.trackAction(Constant.omnitureEvents.event51, data: nil)
             }, onError: {(error) in

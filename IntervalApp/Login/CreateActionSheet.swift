@@ -90,8 +90,7 @@ class CreateActionSheet: UITableViewController {
     }
     
     //***** Function called when we have found that user selected one of membership from list *****//
-    func membershipWasSelected() {
-        
+    func membershipWasSelected(isForSearchVacation: Bool) {
         showHudAsync()
         
         //***** Update the API session for the current access token *****//
@@ -134,8 +133,9 @@ class CreateActionSheet: UITableViewController {
                                                 controller.navigationController?.popViewController(animated: true)
                                                 NotificationCenter.default.post(name:NSNotification.Name(rawValue: Constant.notificationNames.reloadFavoritesTabNotification), object: nil)
                                                 
-                                                NotificationCenter.default.post(name:NSNotification.Name(rawValue: Constant.MyClassConstants.showVacationSearchNotification), object: nil)
-                                                
+                                                if isForSearchVacation {
+                                                    NotificationCenter.default.post(name:NSNotification.Name(rawValue: Constant.MyClassConstants.showVacationSearchNotification), object: nil)
+                                                }
                                                 
                                             } else {
                                                 NotificationCenter.default.post(name:NSNotification.Name(rawValue: Constant.notificationNames.reloadFavoritesTabNotification), object: nil)

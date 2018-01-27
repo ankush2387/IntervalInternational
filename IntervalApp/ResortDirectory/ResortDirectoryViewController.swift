@@ -307,12 +307,12 @@ class ResortDirectoryViewController: UIViewController {
                     intervalPrint(response)
                     self.hideHudAsync()
                     sender.isSelected = true
-                    Constant.MyClassConstants.favoritesResortCodeArray.add(resortCode)
+                    Constant.MyClassConstants.favoritesResortCodeArray.append(resortCode)
                     self.resortTableView.reloadData()
                     
                 }, onError: { [weak self] error in
                     self?.hideHudAsync()
-                    intervalPrint(error)
+                    self?.presentErrorAlert(UserFacingCommonError.handleError(error))
                 })
             } else {
                 
@@ -321,12 +321,12 @@ class ResortDirectoryViewController: UIViewController {
                     intervalPrint(response)
                     sender.isSelected = false
                     self.hideHudAsync()
-                    Constant.MyClassConstants.favoritesResortCodeArray.remove(resortCode)
+                    Constant.MyClassConstants.favoritesResortCodeArray = Constant.MyClassConstants.favoritesResortCodeArray.filter { $0 != resortCode }
                     self.resortTableView.reloadData()
                     
                 }, onError: { [weak self] error in
                     self?.hideHudAsync()
-                    intervalPrint(error)
+                    self?.presentErrorAlert(UserFacingCommonError.handleError(error))
                 })
                 
             }
@@ -700,7 +700,7 @@ extension ResortDirectoryViewController: ResortFavoritesTableViewCellDelegate {
                 UserClient.removeFavoriteResort(Session.sharedSession.userAccessToken, resortCode: resortCode, onSuccess: { [weak self] in
                     guard let strongSelf = self else { return }
                     strongSelf.hideHudAsync()
-                    Constant.MyClassConstants.favoritesResortCodeArray.remove(resortCode)
+                    Constant.MyClassConstants.favoritesResortCodeArray = Constant.MyClassConstants.favoritesResortCodeArray.filter { $0 != resortCode }
     
                 }, onError: {[weak self] error in
                     self?.hideHudAsync()

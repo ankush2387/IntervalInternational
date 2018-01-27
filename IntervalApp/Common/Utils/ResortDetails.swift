@@ -101,10 +101,5 @@ extension ResortDetails: SearchResultContentTableCellDelegate {
             intervalPrint()
             unfavHandler(rowNumber)
         }
-
-    }
-    
-    func unfavoriteButtonClicked(_ sender: UIButton) {
-        NotificationCenter.default.post(name: Notification.Name(rawValue: Constant.notificationNames.showUnfavorite), object: sender)
     }
 }

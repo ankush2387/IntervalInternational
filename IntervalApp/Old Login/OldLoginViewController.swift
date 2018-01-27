@@ -240,7 +240,7 @@ extension OldLoginViewController {
                 Constant.MyClassConstants.loginOriginationPoint = Constant.omnitureCommonString.signInPage
                ADBMobile.trackAction(Constant.omnitureEvents.event70, data: nil)
                 // let the login process continue
-                Helper.accessTokenDidChange(sender: self)
+                Helper.accessTokenDidChange(sender: self, isForSearch: false)
                 
             } else {
                 

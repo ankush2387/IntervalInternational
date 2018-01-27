@@ -61,7 +61,7 @@ class GoogleMapViewController: UIViewController {
         //***** Adding notifications so that it invoke the specific method when the notification is fired *****//
         navigationController?.setNavigationBarHidden(false, animated: true)
         NotificationCenter.default.addObserver(self, selector: #selector(closeButtonClicked), name: NSNotification.Name(rawValue: Constant.notificationNames.closeButtonClickedNotification), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(reloadView), name: NSNotification.Name(rawValue: Constant.notificationNames.reloadFavoritesTabNotification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(addRemoveFavorite), name: NSNotification.Name(rawValue: Constant.notificationNames.reloadFavoritesTabNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(resortSelectedFromsearchResultWithlatlong), name: NSNotification.Name(rawValue: Constant.notificationNames.reloadMapNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(displaySearchedResort), name: NSNotification.Name(rawValue: Constant.notificationNames.addMarkerWithRactangleRequestNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(updateMapMarkers), name: NSNotification.Name(rawValue: Constant.notificationNames.reloadMapForApply), object: nil)
@@ -100,11 +100,15 @@ class GoogleMapViewController: UIViewController {
             menuButton.tintColor = UIColor.white
             navigationItem.leftBarButtonItem = menuButton
         }
+        
+        if resortCollectionView != nil {
+            resortCollectionView.reloadData()
+        }
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         if Constant.MyClassConstants.goingToMapOrWeatherView == false {
-            Constant.MyClassConstants.btnTag = -1
+            //Constant.MyClassConstants.btnTag = -1
             
             //**** Remove added observers ****//
             NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.closeButtonClickedNotification), object: nil)
@@ -500,30 +504,47 @@ class GoogleMapViewController: UIViewController {
     
     //***** This method executes when bottom resort view favorite button pressed *****//
     func bottomResortFavoritesButtonPressed(sender: UIButton) {
-        
-        selectedFavButton = sender
-        if Session.sharedSession.userAccessToken == nil {
-            
-            let storyboard = UIStoryboard(name: Constant.storyboardNames.iphone, bundle: nil)
-            let viewController = storyboard.instantiateViewController(withIdentifier: Constant.storyboardNames.signInPreLoginController)
-            
-            //***** creating animation transition to show custom transition animation *****//
-            let transition: CATransition = CATransition()
-            let timeFunc: CAMediaTimingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
-            transition.duration = 0.4
-            transition.timingFunction = timeFunc
-            transition.type = kCATransitionPush
-            transition.subtype = kCATransitionFromTop
-            viewController.view.layer.add(transition, forKey: kCATransition)
-            navigationController?.pushViewController(viewController, animated: false)
-            UIApplication.shared.keyWindow?.layer.backgroundColor = UIColor.clear.cgColor
-        } else {
-            if sender.isSelected == true {
-                sender.isSelected = false
+            guard let resortCode = Constant.MyClassConstants.resortsArray[sender.tag].resortCode else { return }
+            if Session.sharedSession.userAccessToken != nil {
+                
+                if !sender.isSelected {
+                    showHudAsync()
+                    UserClient.addFavoriteResort(Session.sharedSession.userAccessToken, resortCode:resortCode, onSuccess: { response in
+                        self.hideHudAsync()
+                        sender.isSelected = true
+                        Constant.MyClassConstants.favoritesResortCodeArray.append(resortCode)
+                        if case .some = self.mapTableView {
+                            self.mapTableView.reloadData()
+                        } else if case .some = self.resortCollectionView {
+                            self.resortCollectionView.reloadData()
+                        }
+                    }, onError: { [weak self] error in
+                        self?.hideHudAsync()
+                        self?.presentErrorAlert(UserFacingCommonError.handleError(error))
+                    })
+                } else {
+                    
+                    showHudAsync()
+                    UserClient.removeFavoriteResort(Session.sharedSession.userAccessToken, resortCode: resortCode, onSuccess: { _ in
+                        sender.isSelected = false
+                        self.hideHudAsync()
+                        Constant.MyClassConstants.favoritesResortCodeArray = Constant.MyClassConstants.favoritesResortCodeArray.filter { $0 != resortCode }
+                        if case .some = self.mapTableView {
+                            self.mapTableView.reloadData()
+                        } else if case .some = self.resortCollectionView {
+                            self.resortCollectionView.reloadData()
+                        }
+                        
+                    }, onError: { [weak self] error in
+                        self?.hideHudAsync()
+                        self?.presentErrorAlert(UserFacingCommonError.handleError(error))
+                    })
+                    
+                }
             } else {
-                sender.isSelected = true
+                Constant.MyClassConstants.btnTag = sender.tag
+                performSegue(withIdentifier: Constant.segueIdentifiers.preLoginSegue, sender: nil)
             }
-        }
     }
     //***** Function to hold selected object and release on deselecton *****//
     func addResortPressedAtIndex(sender: UIButton) {
@@ -585,10 +606,16 @@ class GoogleMapViewController: UIViewController {
         }
     }
     
-    //***** need to work from piyush *****//
-    func reloadView() {
-        if mapTableView != nil {
-            mapTableView.reloadData()
+    // MARK: - Fuction to add remove favorite after Pre-Login
+    func addRemoveFavorite() {
+        if Constant.MyClassConstants.btnTag != -1 {
+        guard let resortCode = Constant.MyClassConstants.resortsArray[Constant.MyClassConstants.btnTag].resortCode else { return }
+        let isFavorite = Helper.isResrotFavorite(resortCode: resortCode)
+        let favoriteTempButton = UIButton()
+        favoriteTempButton.tag = Constant.MyClassConstants.btnTag
+        favoriteTempButton.isSelected = isFavorite
+        Constant.MyClassConstants.btnTag = -1
+        bottomResortFavoritesButtonPressed(sender: favoriteTempButton)
         }
     }
     
@@ -1717,7 +1744,7 @@ extension GoogleMapViewController: UITableViewDataSource {
                 cell.favoriteButton.addTarget(self, action: #selector(addResortPressedAtIndex(sender:)), for: .touchUpInside)
                 
                 if Constant.MyClassConstants.addResortSelectedIndex.contains(indexPath.row) {
-                    cell.favoriteButton.isSelected = false
+                    //cell.favoriteButton.isSelected = false
                     cell.favoriteButton.isSelected = true
                 } else {
                     cell.favoriteButton.isSelected = false
@@ -1726,7 +1753,7 @@ extension GoogleMapViewController: UITableViewDataSource {
                 
                 let status = Helper.isResrotFavorite(resortCode: resortDetails.resortCode ?? "")
                 if status {
-                    cell.favoriteButton.isSelected = false
+                    //cell.favoriteButton.isSelected = false
                     cell.favoriteButton.isSelected = true
                 } else {
                     cell.favoriteButton.isSelected = false
@@ -1812,29 +1839,8 @@ extension GoogleMapViewController: UISearchBarDelegate {
 //***** Custom delegate methods with Extension for favorite unfavorite functionality *****//
 
 extension GoogleMapViewController: SearchResultContentTableCellDelegate {
-    func favoriteButtonClicked(_ sender: UIButton) {
     
-        if Session.sharedSession.userAccessToken != nil {
-            if sender.isSelected == false {
-                
-                UserClient.addFavoriteResort(Session.sharedSession.userAccessToken, resortCode: Constant.MyClassConstants.resortsArray[sender.tag].resortCode ?? "", onSuccess: {(_) in
-                    
-                    sender.isSelected = true
-                    
-                }, onError: {[unowned self](_) in
-                    self.presentAlert(with: "Error".localized(), message: "Please try again!".localized())
-                })
-            } else {
-                sender.isSelected = false
-            }
-            
-        } else {
-            Constant.MyClassConstants.btnTag = sender.tag
-            performSegue(withIdentifier: Constant.segueIdentifiers.preLoginSegue, sender: self)
-        }
-        
-    }
-    func unfavoriteButtonClicked(_ sender: UIButton) {
-        
+    func favoriteButtonClicked(_ sender: UIButton) {
+        bottomResortFavoritesButtonPressed(sender: sender)
     }
 }
