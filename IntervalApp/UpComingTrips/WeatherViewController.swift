@@ -196,8 +196,7 @@ extension UIViewController {
             
         }) {[unowned self] error in
             completionHandler(false)
-            self.presentAlert(with: " Show weather alert".localized(), message: error.description.localized())
+            self.presentErrorAlert(UserFacingCommonError.handleError(error))
         }
-
     }
 }
