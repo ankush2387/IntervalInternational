@@ -94,7 +94,7 @@ open class Relinquishment {
         }
         
         // OpenWeek: More
-        checkInDates = openWeek.checkInDates
+        checkInDates = filterOutChechInDatesWithLessThan14DaysFromToday(checkInDates: openWeek.checkInDates)
         masterUnitNumber = openWeek.masterUnitNumber
         
         // Extra
@@ -102,7 +102,7 @@ open class Relinquishment {
             lockOff = !value.lockOffUnits.isEmpty
         }
     }
-   
+    
     public init(deposit:Deposit) {
         relinquishmentId = deposit.relinquishmentId
         actions = deposit.actions
@@ -192,5 +192,23 @@ open class Relinquishment {
         if fixWeekReservation != nil {
             fixWeekReservation = FixWeekReservation()
         }
+    }
+    
+    fileprivate func filterOutChechInDatesWithLessThan14DaysFromToday(checkInDates: [String]) -> [String] {
+        var newCheckInDates = [String]()
+        if !checkInDates.isEmpty {
+            for checkInDate in checkInDates {
+                let diff = getDaysUntilCheckInDate(checkInDate: checkInDate)
+                if diff > 14 {
+                    newCheckInDates.append(checkInDate)
+                }
+            }
+        }
+        return newCheckInDates
+    }
+    
+    fileprivate func getDaysUntilCheckInDate(checkInDate: String) -> Int {
+        let today = Date()
+        return today.daysBetween(to: checkInDate.dateFromShortFormat()!)
     }
 }

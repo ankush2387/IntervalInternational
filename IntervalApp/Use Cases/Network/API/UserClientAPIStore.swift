@@ -12,5 +12,5 @@ import Foundation
 
 protocol UserClientAPIStore {
     func readCurrentProfile(for accessToken: DarwinAccessToken) -> Promise<Contact>
-    func writeSelected(membership: Membership, for accessToken: DarwinAccessToken) -> Promise<Void>
+    func readMembership(for accessToken: DarwinAccessToken, and membershipNumber: String) -> Promise<Membership>
 }

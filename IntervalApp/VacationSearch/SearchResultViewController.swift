@@ -43,6 +43,7 @@ class SearchResultViewController: UIViewController {
     var myActivityIndicator = UIActivityIndicatorView()
     var value: String = ""
     var alertFilterOptionsArray = [Constant.AlertResortDestination]()
+    var currencyCode = ""
     
     // Only one section with surroundings found
     var onlySurroundingsFound = false
@@ -60,6 +61,14 @@ class SearchResultViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        if !Constant.MyClassConstants.resortsArray.isEmpty {
+
+           guard let currencycode = Constant.MyClassConstants.resortsArray[0].inventory?.currencyCode else { return }
+           let currencyHelper = CurrencyHelper()
+           let currency = currencyHelper.getCurrency(currencyCode: currencycode )
+           currencyCode = ("\(currencyHelper.getCurrencyFriendlySymbol(currencyCode: currency.code))")
+
+        }
         navigationController?.navigationBar.isHidden = false
         createSections()
         self.searchResultTableView.reloadData()
@@ -546,7 +555,8 @@ class SearchResultViewController: UIViewController {
                     }
                 }
             }
-            UserClient.getCurrentMembership(Session.sharedSession.userAccessToken, onSuccess: { membership in
+            UserClient.updateSessionAndGetCurrentMembership(Session.sharedSession.userAccessToken, membershipNumber: Session.sharedSession.selectedMembership?.memberNumber ?? "", onSuccess: { membership in
+                Session.sharedSession.selectedMembership = membership
                 
                 // Got an access token!  Save it for later use.
                 self.hideHudAsync()
@@ -700,7 +710,8 @@ class SearchResultViewController: UIViewController {
     
     // MARK: - Call for membership
     func checkUserMembership(response: RentalProcessPrepareResponse) {
-        UserClient.getCurrentMembership(Session.sharedSession.userAccessToken, onSuccess: { membership in
+        UserClient.updateSessionAndGetCurrentMembership(Session.sharedSession.userAccessToken, membershipNumber: Session.sharedSession.selectedMembership?.memberNumber ?? "", onSuccess: { membership in
+            Session.sharedSession.selectedMembership = membership
             
             // Got an access token!  Save it for later use.
             self.hideHudAsync()
@@ -1010,8 +1021,7 @@ extension SearchResultViewController: UICollectionViewDelegate {
                     selectedSection = collectionView.superview?.superview?.tag ?? 0
                     selectedRow = collectionView.tag
                     Constant.MyClassConstants.selectedUnitIndex = indexPath.item
-                    
-                    
+
                     if collectionView.superview?.superview?.tag == 0 {
                         
                         if !combinedExactSearchItems.isEmpty {
@@ -1304,7 +1314,7 @@ extension SearchResultViewController: UICollectionViewDataSource {
                     
                 } else {
                     let cell = self.getGetawayCollectionCell(indexPath: indexPath, collectionView: collectionView)
-                    cell.setDataForRentalInventory(invetoryItem: inventoryItem, indexPath: indexPath)
+                    cell.setDataForRentalInventory(invetoryItem: inventoryItem, indexPath: indexPath, code: currencyCode)
                     return cell
                 }
                 
@@ -1390,9 +1400,11 @@ extension SearchResultViewController: UICollectionViewDataSource {
                     } else if collectionView.superview?.superview?.tag == 0 && !combinedExactSearchItems.isEmpty {
                         if combinedExactSearchItems[collectionView.tag].hasRentalAvailability() {
                             let cell = self.getGetawayCollectionCell(indexPath: indexPath, collectionView: collectionView)
+
                             if let rentalAvailability = combinedExactSearchItems[collectionView.tag].rentalAvailability {
-                                cell.setDataForRentalInventory( invetoryItem: rentalAvailability, indexPath: indexPath)
+                                cell.setDataForRentalInventory( invetoryItem: rentalAvailability, indexPath: indexPath, code: currencyCode)
                             }
+
                             return cell
                         } else {
                             let cell = self.getExchangeCollectionCell(indexPath: indexPath, collectionView: collectionView)
@@ -1404,8 +1416,10 @@ extension SearchResultViewController: UICollectionViewDataSource {
                     } else {
                         if combinedSurroundingSearchItems[collectionView.tag].hasRentalAvailability() {
                             let cell = self.getGetawayCollectionCell(indexPath: indexPath, collectionView: collectionView)
+
                             guard let rentalAvailability = combinedSurroundingSearchItems[collectionView.tag].rentalAvailability else { return cell }
-                            cell.setDataForRentalInventory( invetoryItem:rentalAvailability, indexPath: indexPath)
+                                cell.setDataForRentalInventory( invetoryItem: rentalAvailability, indexPath: indexPath, code: currencyCode)
+
                             return cell
                         } else {
                             let cell = self.getExchangeCollectionCell(indexPath: indexPath, collectionView: collectionView)

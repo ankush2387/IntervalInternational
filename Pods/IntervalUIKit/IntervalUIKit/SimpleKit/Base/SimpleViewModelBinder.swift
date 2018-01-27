@@ -58,6 +58,10 @@ public extension SimpleViewModelBinder {
             view.viewModel = viewModel
         case (let viewModel as SimpleResortDetailViewModel, let view as SimpleResortDetailViewCell):
             view.viewModel = viewModel
+        case (let viewModel as SimpleFloatingLabelTextFieldCellViewModel, let view as SimpleFloatingLabelTextFieldCell):
+            view.viewModel = viewModel
+        case (let viewModel as SimpleDisclosureIndicatorCellViewModel, let view as SimpleDisclosureIndicatorCell):
+            view.viewModel = viewModel
         case (let viewModel as SimpleAvailableRelinquishmentPointsCellViewModel, let view as SimpleAvailableRelinquishmentPointsCell):
             view.viewModel = viewModel
         case (let viewModel as SimpleOwnershipCellViewModel, let view as SimpleOwnershipCell):

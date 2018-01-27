@@ -18,27 +18,15 @@ class ResortCollectionViewCell: UICollectionViewCell {
     
     //***** Outlets *****//
     @IBOutlet weak var imgView: UIImageView!
-    @IBOutlet weak var pageControl: PageControl!
     @IBOutlet weak var favoriteButton: UIButton!
     
      //***** class variables *****//
     var delegate: ResortCollectionViewCellDelegate?
     
     override func awakeFromNib() {
-       
         super.awakeFromNib()
+        
           NotificationCenter.default.addObserver(self, selector: #selector(loginNotification), name: NSNotification.Name(rawValue: Constant.notificationNames.reloadFavoritesTabNotification), object: nil)
-        let height: NSLayoutConstraint = NSLayoutConstraint(item: pageControl, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: 70)
-        
-        //self.pageControl = PageControl(activeImage: UIImage(named: "selected")!, inactiveImage: UIImage(named: "unselected")!)
-        pageControl.addConstraint(height)
-        if(Constant.MyClassConstants.imagesArray.count > 1) {
-           pageControl.isHidden = true
-        } else {
-            pageControl.isHidden = true
-        }
-        pageControl.numberOfPages = Constant.MyClassConstants.imagesArray.count
-        
     }
     
      //***** custom cell favorites button action implementation *****//

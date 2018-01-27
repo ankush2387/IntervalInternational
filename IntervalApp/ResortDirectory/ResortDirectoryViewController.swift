@@ -61,6 +61,9 @@ class ResortDirectoryViewController: UIViewController {
         
         getScreenFrameForOrientation()
     }
+    override func viewDidAppear(_ animated: Bool) {
+        navigationController?.navigationBar.isHidden = false
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -105,13 +108,16 @@ class ResortDirectoryViewController: UIViewController {
         
     }
     
-  
-    
     override func viewDidLayoutSubviews() {
         
         self.view.subviews.last?.frame = CGRect(x: -(self.view.subviews.last?.frame.width)!, y: 64, width: (self.view.subviews.last?.frame.width)!, height: (self.view.subviews.last?.frame.height)!)
     }
+    
     override func viewWillAppear(_ animated: Bool) {
+        if Constant.MyClassConstants.showResortDetailsWhenClickedDone {
+            self.view.subviews.last?.isHidden = false
+            Constant.MyClassConstants.showResortDetailsWhenClickedDone = false
+        }
         
         tabBarController?.tabBar.isHidden = false
         navigationController?.navigationBar.isHidden = false
@@ -244,6 +250,18 @@ class ResortDirectoryViewController: UIViewController {
             self.view.subviews.last?.isHidden = true
         })
     }
+    
+    func showResortTableView() {
+        UIView.animate (withDuration: 0.5, delay: 0.1, options: UIViewAnimationOptions.curveEaseIn, animations: {
+            
+            (self.view.subviews.last?.frame = CGRect(x: (self.view.subviews.last?.frame.width)!, y: 64, width: (self.view.subviews.last?.frame.width)!, height: (self.view.subviews.last?.frame.height)!))!
+            
+        }, completion: { _ in
+            self.view.subviews.last?.isHidden = false
+        })
+    }
+    
+    
     
     //***** Notification to load list of available regions *****//
     func reloadRegionTable() {
@@ -418,6 +436,7 @@ extension ResortDirectoryViewController: UITableViewDelegate {
                 let selectedResort = Constant.MyClassConstants.resortDirectoryResortArray[indexPath.row]
                 showHudAsync()
                 //***** Favorites resort API call after successfull call *****//
+                Constant.MyClassConstants.isFromSearchResult = false
                 Helper.getUserFavorites {[unowned self] error in
                     if case .some = error {
                         self.presentAlert(with: "Error".localized(), message: error?.localizedDescription ?? "")

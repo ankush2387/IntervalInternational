@@ -179,6 +179,7 @@ extension SideMenuiPadTableViewController: UITableViewDelegate {
             
         case 8 :
             Constant.MyClassConstants.runningFunctionality = Constant.MyClassConstants.resortFunctionalityCheck
+            Constant.MyClassConstants.isFromSearchResult = false
         case 3 :
             Constant.MyClassConstants.runningFunctionality = Constant.MyClassConstants.vacationSearchFunctionalityCheck
         default :

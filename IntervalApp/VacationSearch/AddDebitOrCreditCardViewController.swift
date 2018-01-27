@@ -286,6 +286,11 @@ class AddDebitOrCreditCardViewController: UIViewController {
         } else {
             
             if hideStatus == false {
+                if dropDownSelectionRow == 0 {
+                     Constant.GetawaySearchResultCardFormDetailData.state.removeAll()
+                    let indexPath = IndexPath(row: 4, section: dropDownSelectionSection)
+                    cardDetailTBLview.reloadRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
+                }
                 if dropDownSelectionRow == 4 && Constant.GetawaySearchResultGuestFormDetailData.stateListArray.isEmpty {
                     let state = State()
                     state.name = "N/A"
@@ -340,6 +345,9 @@ class AddDebitOrCreditCardViewController: UIViewController {
     func pickerDoneButtonPressed(_ sender: UIButton) {
         hideStatus = false
         pickerBaseView.isHidden = true
+        let row = pickerView.selectedRow(inComponent: 0)
+        intervalPrint(row)
+        pickerView(pickerView, didSelectRow: row, inComponent:0)
         let indexPath = IndexPath(row: dropDownSelectionRow, section: dropDownSelectionSection)
         cardDetailTBLview.reloadRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
     }

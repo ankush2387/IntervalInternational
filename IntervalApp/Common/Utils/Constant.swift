@@ -179,7 +179,7 @@ class Constant: NSObject {
         
         //***** global variable  that hold  Boolean value successfull login status *****//
         static var isLoginSuccessfull = false
-        
+        static var showResortDetailsWhenClickedDone = false
         static var isFromSorting = false
         
         static var isFromSearchResult = false

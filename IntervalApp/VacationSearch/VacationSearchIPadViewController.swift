@@ -142,7 +142,8 @@ class VacationSearchIPadViewController: UIViewController, UITableViewDelegate, U
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        navigationController?.isNavigationBarHidden = false
+        super.viewWillAppear(animated)
+        navigationController?.navigationBar.isHidden = false
         Constant.MyClassConstants.topDeals = []
         
         if let rvc = revealViewController() {

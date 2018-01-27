@@ -39,25 +39,25 @@ class UpComingTripMapViewController: UIViewController, GMSMapViewDelegate {
             doneButton.setTitle("Done", for: .normal)
             doneButton.addTarget(self, action: #selector(UpComingTripMapViewController.doneButtonPressed(_:)), for: .touchUpInside)
         doneButtonView.addSubview(doneButton)
-        self.view.addSubview(doneButtonView)
+        view.addSubview(doneButtonView)
     }
+    
     func setupNavigationForModalPresentation() {
-        
         //Nav-bar button
         let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(UpComingTripMapViewController.menuBackButtonPressed(_:)))
         doneButton.tintColor = .white
-        self.navigationItem.rightBarButtonItem = doneButton
-
+        navigationItem.rightBarButtonItem = doneButton
     }
     
     func menuBackButtonPressed(_ sender: UIBarButtonItem) {
         view.layer.add(Helper.topToBottomTransition(), forKey: nil)
-        dismiss(animated: false, completion: nil)
-        
+        dismiss(animated: false)
     }
+    
     func doneButtonPressed(_ sender: UIButton) {
-    navigationController?.view.layer.add(Helper.topToBottomTransition(), forKey: nil)
-        self.navigationController?.popViewController(animated: true)
+        Constant.MyClassConstants.showResortDetailsWhenClickedDone = true
+        navigationController?.view.layer.add(Helper.topToBottomTransition(), forKey: nil)
+        navigationController?.popViewController(animated: true)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -85,7 +85,6 @@ class UpComingTripMapViewController: UIViewController, GMSMapViewDelegate {
         
         mapView = GMSMapView.map(withFrame: mapframe, camera: camera)
         mapView.isUserInteractionEnabled = true
-//        mapView.isMyLocationEnabled = true
 
         //create Marker
         let  position = CLLocationCoordinate2DMake(latitude, longitude)
@@ -100,8 +99,7 @@ class UpComingTripMapViewController: UIViewController, GMSMapViewDelegate {
 
         mapView.settings.zoomGestures = true
         mapView.delegate = self
-        self.view.addSubview(mapView)
-        
+        view.addSubview(mapView)
     }
 }
 
@@ -119,11 +117,9 @@ extension UIViewController {
             self.present(mapDetailsNav, animated: true, completion: nil)
         } else {
         self.navigationController?.view.layer.add(Helper.bottomToTopTransition(), forKey: nil)
-            self.navigationController?.pushViewController(mapVC, animated: false)
+        self.navigationController?.pushViewController(mapVC, animated: false)
             mapVC.presentedModally = false
         }
-        
         completionHandler(true)
-
     }
 }

@@ -35,12 +35,12 @@ class WeatherViewController: UIViewController {
         } else {
             setupDoneButtonView()
         }
-
         setup()
-        
     }
+    
     override func viewDidDisappear(_ animated: Bool) {
-        if Constant.RunningDevice.deviceIdiom == .phone && !presentedModally {
+        super.viewDidDisappear(animated)
+        if !presentedModally {
             navigationController?.navigationBar.isHidden = false
             tabBarController?.tabBar.isHidden = false
         }
@@ -60,20 +60,19 @@ class WeatherViewController: UIViewController {
     }
 
     func doneButtonPressed(_ sender: UIButton) {
-    self.navigationController?.view.layer.add(Helper.topToBottomTransition(), forKey: nil)
-        self.navigationController?.popViewController(animated: true)
+        Constant.MyClassConstants.showResortDetailsWhenClickedDone = true
+        navigationController?.view.layer.add(Helper.topToBottomTransition(), forKey: nil)
+        navigationController?.popViewController(animated: true)
     }
     override func viewDidAppear(_ animated: Bool) {
-         if Constant.RunningDevice.deviceIdiom == .phone && !presentedModally {
+        super.viewDidAppear(animated)
+        if !presentedModally {
             tabBarController?.tabBar.isHidden = true
             navigationController?.navigationBar.isHidden = true
         }
-        
     }
     
     func setupNavBarForModalPresentation() {
-        
-        
         //Nav-bar button
         let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(WeatherViewController.menuBackButtonPressed(_:)))
         doneButton.tintColor = .white
@@ -88,7 +87,6 @@ class WeatherViewController: UIViewController {
         if let countryCode = self.countryCode {
             resortNameLabel.text?.append(", \(countryCode)")
         }
-        navigationController?.navigationBar.isHidden = false
         weatherConditionLabel.text = resortWeather?.condition
         displayFarenheit()
     
@@ -153,19 +151,19 @@ class WeatherViewController: UIViewController {
     }
     
     @IBAction func didPressCelsiusButton(_ sender: Any) {
-        self.fahrenheitButton.setTitleColor(UIColor(red: 0 / 255, green: 122 / 255, blue: 255 / 255, alpha: 1.0), for: .normal)
-        self.celsiusButton.setTitleColor(selectedButtonTextColor, for: .normal)
+       fahrenheitButton.setTitleColor(UIColor(red: 0 / 255, green: 122 / 255, blue: 255 / 255, alpha: 1.0), for: .normal)
+        celsiusButton.setTitleColor(selectedButtonTextColor, for: .normal)
         displayCelsius()
     }
     @IBAction func didPressFahrenheitButton(_ sender: Any) {
-        self.fahrenheitButton.setTitleColor(selectedButtonTextColor, for: .normal)
-        self.celsiusButton.setTitleColor(UIColor(red: 0 / 255, green: 122 / 255, blue: 255 / 255, alpha: 1.0), for: .normal)
+        fahrenheitButton.setTitleColor(selectedButtonTextColor, for: .normal)
+        celsiusButton.setTitleColor(UIColor(red: 0 / 255, green: 122 / 255, blue: 255 / 255, alpha: 1.0), for: .normal)
         displayFarenheit()
     }
     
     func menuBackButtonPressed(_ sender: UIBarButtonItem) {
         view.layer.add(Helper.topToBottomTransition(), forKey: nil)
-        dismiss(animated: true, completion: nil)
+        dismiss(animated: true)
     }
 
     override func didReceiveMemoryWarning() {
@@ -177,7 +175,6 @@ class WeatherViewController: UIViewController {
 
 extension UIViewController {
     func displayWeatherView(resortCode: String, resortName: String, countryCode: String, presentModal: Bool, completionHandler: @escaping (_ response: Bool) -> Void) {
-        
         DirectoryClient.getResortWeather(Constant.MyClassConstants.systemAccessToken, resortCode: resortCode, onSuccess: { (response) in
             if let weatherResponse = response as? ResortWeather {
                 let storyboard = UIStoryboard(name: "MyUpcomingTripIphone", bundle: nil)
@@ -197,12 +194,9 @@ extension UIViewController {
                 completionHandler(true)
             }
             
-        }) { (error) in
+        }) {[unowned self] error in
             completionHandler(false)
-            intervalPrint(error)
-            self.presentErrorAlert(UserFacingCommonError.generic)
-            
+            self.presentErrorAlert(UserFacingCommonError.handleError(error))
         }
-
     }
 }

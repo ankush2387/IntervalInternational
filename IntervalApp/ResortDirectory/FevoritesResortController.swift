@@ -95,6 +95,11 @@ class FevoritesResortController: UIViewController {
         }
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        navigationController?.navigationBar.isHidden = false
+    }
+    
     fileprivate func setupView() {
         if Session.sharedSession.userAccessToken == nil {
             self.hideHudAsync()

@@ -23,4 +23,11 @@ class GetawayCell: UITableViewCell {
     
     //@IBOutlet weak var contentView: UIView!
     @IBOutlet weak var viewContent: UIView!
+    
+    func setGetawayPrice(with currencyDisplayes: String, and chargeAmount: Float) {
+        
+        if let attributedAmount = chargeAmount.currencyFormatter(for:currencyDisplayes) {
+            getawayPrice.attributedText = attributedAmount
+        }
+    }
 }
