@@ -48,6 +48,7 @@ class VacationSearchResultIPadController: UIViewController {
     var myActivityIndicator = UIActivityIndicatorView()
     var alertFilterOptionsArray = [Constant.AlertResortDestination]()
     var showInfoIcon = false
+    var currencyCode = ""
     
     //Button events
     @IBAction func searchBothRentalClicked(_ sender: UIControl) {
@@ -68,10 +69,19 @@ class VacationSearchResultIPadController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        
-        //navigationController?.setNavigationBarHidden(false, animated: true)
+
         navigationController?.navigationBar.isHidden = false
         navigationController?.navigationBar.barTintColor = #colorLiteral(red: 0.2745098039, green: 0.5333333333, blue: 0.7568627451, alpha: 1)
+
+        if !Constant.MyClassConstants.resortsArray.isEmpty {
+            let inventoryData = Constant.MyClassConstants.resortsArray[0].inventory
+            if let code = inventoryData?.currencyCode {
+                let currencyHelper = CurrencyHelper()
+                let currency = currencyHelper.getCurrency(currencyCode: code)
+                currencyCode = ("\(currencyHelper.getCurrencyFriendlySymbol(currencyCode: currency.code))")
+            }
+        }
+
         let nib = UINib(nibName: Constant.customCellNibNames.searchResultCollectionCell, bundle: nil)
         searchedDateCollectionView?.register(nib, forCellWithReuseIdentifier: Constant.customCellNibNames.searchResultCollectionCell)
         
@@ -1070,9 +1080,8 @@ extension VacationSearchResultIPadController: UICollectionViewDataSource {
                     return cell
                     
                 } else {
-                    
                     guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "RentalInventory", for: indexPath) as? RentalInventoryCVCell else { return UICollectionViewCell() }
-                    cell.setDataForRentalInventory(invetoryItem: inventoryItem, indexPath: indexPath)
+                    cell.setDataForRentalInventory(invetoryItem: inventoryItem, indexPath: indexPath, code: currencyCode)
                     return cell
                 }
             } else if Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.EXCHANGE {
@@ -1173,8 +1182,10 @@ extension VacationSearchResultIPadController: UICollectionViewDataSource {
                             
                             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "RentalInventory", for: indexPath) as? RentalInventoryCVCell else { return UICollectionViewCell() }
                             if let rentalAvailability = combinedExactSearchItems[collectionView.tag].rentalAvailability {
-                                cell.setDataForRentalInventory( invetoryItem: rentalAvailability, indexPath: indexPath)
+
+                                cell.setDataForRentalInventory( invetoryItem: rentalAvailability, indexPath: indexPath, code: currencyCode)
                             }
+
                             return cell
                             
                         } else {
@@ -1193,9 +1204,11 @@ extension VacationSearchResultIPadController: UICollectionViewDataSource {
                             
                             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.reUsableIdentifiers.resortInventoryCell, for: indexPath) as? RentalInventoryCVCell else { return UICollectionViewCell() }
                             if let rentalAvailability = combinedSurroundingSearchItems[collectionView.tag].rentalAvailability {
-                                cell.setDataForRentalInventory( invetoryItem: rentalAvailability, indexPath: indexPath)
+
+                                cell.setDataForRentalInventory( invetoryItem: rentalAvailability, indexPath: indexPath, code: currencyCode)
                             }
-                            return cell
+                             return cell
+
                             
                         } else {
                             

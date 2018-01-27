@@ -94,7 +94,9 @@ class CheckOutViewController: UIViewController {
                     self.isTripProtectionEnabled = false
                 }
                 guard let curCode = Constant.MyClassConstants.exchangeFees[0].currencyCode else { return }
-                currencyCode = Helper.currencyCodeToSymbol(code: curCode)
+                let currencyHelper = CurrencyHelper()
+                let currency = currencyHelper.getCurrency(currencyCode: curCode)
+                currencyCode = ("\(currencyHelper.getCurrencyFriendlySymbol(currencyCode: currency.code))")
                 
             }
         } else {
@@ -115,7 +117,9 @@ class CheckOutViewController: UIViewController {
                 showInsurance = false
             }
             guard let curCode = Constant.MyClassConstants.rentalFees[0].currencyCode else { return }
-            currencyCode = Helper.currencyCodeToSymbol(code: curCode)
+            let currencyHelper = CurrencyHelper()
+            let currency = currencyHelper.getCurrency(currencyCode: curCode)
+            currencyCode = ("\(currencyHelper.getCurrencyFriendlySymbol(currencyCode: currency.code))")
         }
         
         //Register custom cell xib with tableview
