@@ -15,10 +15,10 @@ import DarwinSDK
 class FevoritesResortController: UIViewController {
     
     //***** Outlets *****//
-    @IBOutlet weak var signInView: UIView!
-    @IBOutlet weak var resortTableBaseView: UIView!
-    @IBOutlet var resortTableView: UITableView!
-    @IBOutlet var containerView: UIView!
+    @IBOutlet fileprivate weak var signInView: UIView!
+    @IBOutlet fileprivate weak var resortTableBaseView: UIView!
+    @IBOutlet fileprivate var resortTableView: UITableView!
+    @IBOutlet fileprivate var containerView: UIView!
     
     //***** class variables *****//
     let datasource = ResortDetails()
