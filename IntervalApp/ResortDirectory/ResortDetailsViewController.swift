@@ -52,6 +52,7 @@ class ResortDetailsViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        self.hideHudAsync()
         if Constant.RunningDevice.deviceIdiom == .phone {
             navigationController?.navigationBar.isHidden = true
         } else {
@@ -112,7 +113,6 @@ class ResortDetailsViewController: UIViewController {
             }
             
             tableViewResorts.reloadData()
-
         }
     }
     

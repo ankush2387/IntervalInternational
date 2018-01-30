@@ -32,13 +32,13 @@ class FevoritesResortController: UIViewController {
         super.viewDidLoad()
         
         Constant.MyClassConstants.signInRequestedController = self
-        
         //***** Register custom cell with map tale view with some validation check *****//
         resortTableView.register(UINib(nibName: Constant.customCellNibNames.searchResultContentTableCell, bundle: nil), forCellReuseIdentifier: Constant.customCellNibNames.searchResultContentTableCell)
         
         //***** Register delegate and data source with tableview *****//
         resortTableView.dataSource = datasource
         resortTableView.delegate = datasource
+        datasource.delegate = self
         datasource.unfavHandler = { [weak self] rowNumber in
             guard let strongSelf = self else { return }
             strongSelf.unfavClicked(rowNumber: rowNumber)
@@ -46,18 +46,18 @@ class FevoritesResortController: UIViewController {
         }
     }
     override func viewWillLayoutSubviews() {
-        self.mapView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+        mapView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
     }
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         if Constant.RunningDevice.deviceIdiom == .pad && resortTableView != nil {
-            if self.containerView != nil {
-                self.containerView.isHidden = true
-                if self.emptyFavoritesMessageView != nil {
-                    self.emptyFavoritesMessageView.isHidden = false
-                    self.backgroundView.isHidden = true
+            if containerView != nil {
+                containerView.isHidden = true
+                if emptyFavoritesMessageView != nil {
+                    emptyFavoritesMessageView.isHidden = false
+                    backgroundView.isHidden = true
                     
                     var count = 0
-                    for subView in self.view.subviews {
+                    for subView in view.subviews {
                         if subView .isKind(of: GMSMapView.self) {
                             count = count + 1
                         }
@@ -103,12 +103,12 @@ class FevoritesResortController: UIViewController {
     fileprivate func setupView() {
         if Session.sharedSession.userAccessToken == nil {
             self.hideHudAsync()
-            self.signInView.isHidden = false
-            self.resortTableBaseView.isHidden = true
+            signInView.isHidden = false
+            resortTableBaseView.isHidden = true
         } else {
-            self.resortTableBaseView.isHidden = true
-            if self.resortTableBaseView != nil {
-                self.resortTableBaseView.isHidden = false
+            resortTableBaseView.isHidden = true
+            if resortTableBaseView != nil {
+                resortTableBaseView.isHidden = false
             }
             
             self.signInView.isHidden = true
@@ -119,55 +119,55 @@ class FevoritesResortController: UIViewController {
             resortTableView.reloadData()
             if !Constant.MyClassConstants.favoritesResortArray.isEmpty {
                 
-                if self.emptyFavoritesMessageView != nil {
-                    self.emptyFavoritesMessageView.removeFromSuperview()
+                if emptyFavoritesMessageView != nil {
+                    emptyFavoritesMessageView.removeFromSuperview()
                 }
             } else {
                 
                 if UIDevice().userInterfaceIdiom == .pad {
                     if Constant.MyClassConstants.favoritesResortArray.isEmpty {
-                        backgroundView.frame = CGRect(x: 0, y: 0, width: self.resortTableView.frame.size.width - 20, height: UIScreen.main.bounds.height)
+                        backgroundView.frame = CGRect(x: 0, y: 0, width: resortTableView.frame.size.width - 20, height: UIScreen.main.bounds.height)
                         backgroundView.backgroundColor = UIColor.white
-                        self.view.addSubview(backgroundView)
+                        view.addSubview(backgroundView)
                         let messageView = UIView()
                         
-                        messageView.frame = CGRect(x: 20, y: 60, width: self.resortTableView.frame.size.width - 20, height: 600)
+                        messageView.frame = CGRect(x: 20, y: 60, width: resortTableView.frame.size.width - 20, height: 600)
                         
-                        self.emptyFavoritesMessageView = Helper.displayEmptyFavoritesMessage(requestedView: messageView)
+                        emptyFavoritesMessageView = Helper.displayEmptyFavoritesMessage(requestedView: messageView)
                         backgroundView.addSubview(self.emptyFavoritesMessageView)
                         
-                        if self.containerView != nil {
-                            self.containerView.isHidden = true
+                        if containerView != nil {
+                            containerView.isHidden = true
                         }
                     }
                 } else {
-                    self.emptyFavoritesMessageView = Helper.displayEmptyFavoritesMessage(requestedView: self.view)
-                    self.view.superview?.addSubview(self.emptyFavoritesMessageView)
+                    emptyFavoritesMessageView = Helper.displayEmptyFavoritesMessage(requestedView: self.view)
+                    view.superview?.addSubview(emptyFavoritesMessageView)
                 }
             }
         }
         
-        self.navigationItem.title = Constant.ControllerTitles.favoritesViewController
+        navigationItem.title = Constant.ControllerTitles.favoritesViewController
         
         //***** Condition for maintaining the back button and hamberger menu according to logged in or pre login *****//
         if Session.sharedSession.userAccessToken != nil && Constant.MyClassConstants.isLoginSuccessfull {
-            if let rvc = self.revealViewController() {
+            if let rvc = revealViewController() {
                 //set SWRevealViewController's Delegate
                 rvc.delegate = self
                 
                 //***** Add the hamburger menu *****//
                 let menuButton = UIBarButtonItem(image: UIImage(named: Constant.assetImageNames.ic_menu), style: .plain, target: rvc, action: #selector(SWRevealViewController.revealToggle(_:)))
                 menuButton.tintColor = UIColor.white
-                self.navigationItem.leftBarButtonItem = menuButton
+                navigationItem.leftBarButtonItem = menuButton
                 
                 //***** This line allows the user to swipe left-to-right to reveal the menu. We might want to comment this out if it becomes confusing. *****//
-                self.view.addGestureRecognizer( rvc.panGestureRecognizer())
+                view.addGestureRecognizer( rvc.panGestureRecognizer())
             }
             
         } else {
             let menuButton = UIBarButtonItem(image: #imageLiteral(resourceName: "BackArrowNav"), style: .plain, target: self, action: #selector(FevoritesResortController.menuBackButtonPressed(_:)))
             menuButton.tintColor = UIColor.white
-            self.navigationItem.leftBarButtonItem = menuButton
+            navigationItem.leftBarButtonItem = menuButton
         }
         
         if UIDevice().userInterfaceIdiom == .pad {
@@ -204,19 +204,19 @@ class FevoritesResortController: UIViewController {
                 }
             }
             if mapCount == 0 {
-                let mapframe = CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: self.view.bounds.size.height)
+                let mapframe = CGRect(x: 0, y: 0, width: view.bounds.size.width, height: view.bounds.size.height)
                 let camera = GMSCameraPosition.camera(withLatitude: 4.739001, longitude: -74.059616, zoom: 8)
                 mapView = GMSMapView.map(withFrame: mapframe, camera: camera)
                 resortTableBaseView.addSubview(mapView)
             }
-            self.backgroundView.isHidden = false
+            backgroundView.isHidden = false
             
         } else if !Constant.MyClassConstants.favoritesResortArray.isEmpty {
             backgroundView.isHidden = true
             if let latitude = Constant.MyClassConstants.favoritesResortArray.last?.coordinates?.latitude, let longitude = Constant.MyClassConstants.favoritesResortArray.last?.coordinates?.longitude {
                 camera = GMSCameraPosition.camera(withLatitude:latitude, longitude:longitude, zoom: 8)
                 
-                let mapframe = CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: self.view.bounds.size.height)
+                let mapframe = CGRect(x: 0, y: 0, width: view.bounds.size.width, height: view.bounds.size.height)
                 mapView = GMSMapView.map(withFrame: mapframe, camera: camera)
             }
             mapView.isMyLocationEnabled = true
@@ -253,9 +253,9 @@ class FevoritesResortController: UIViewController {
             mapView.settings.allowScrollGesturesDuringRotateOrZoom = false
             mapView.animate(toZoom: 8.0)
             
-            if self.resortTableBaseView != nil && self.resortTableBaseView.isHidden == false {
+            if resortTableBaseView != nil && resortTableBaseView.isHidden == false {
                 resortTableBaseView.backgroundColor = UIColor.clear
-                resortTableBaseView.bringSubview(toFront: self.resortTableView)
+                resortTableBaseView.bringSubview(toFront: resortTableView)
             }
         }
     }
@@ -272,8 +272,8 @@ class FevoritesResortController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        if self.emptyFavoritesMessageView != nil {
-            self.emptyFavoritesMessageView.removeFromSuperview()
+        if emptyFavoritesMessageView != nil {
+            emptyFavoritesMessageView.removeFromSuperview()
         }
     }
     @IBAction func signInButtonPressed(_ sender: AnyObject) {
@@ -283,7 +283,7 @@ class FevoritesResortController: UIViewController {
     }
     //***** method called when notification fired with reloadFavoritesTab *****//
     func reloadView() {
-        self.viewWillAppear(true)
+        viewWillAppear(true)
     }
     
     //***** method called login help button pressed and redirect to webView *****//
@@ -382,21 +382,21 @@ extension FevoritesResortController: GMSMapViewDelegate {
             if Constant.MyClassConstants.googleMarkerArray.count == 0 {
                 
             } else {
-                if self.containerView != nil {
-                self.containerView.isHidden = false
-                self.view.bringSubview(toFront: self.containerView)
+                if containerView != nil {
+                containerView.isHidden = false
+                view.bringSubview(toFront: self.containerView)
                 }
                 Constant.MyClassConstants.resortsDescriptionArray = Constant.MyClassConstants.favoritesResortArray[marker.userData as? Int ?? 0]
                 if let resortCode = Constant.MyClassConstants.resortsDescriptionArray.resortCode {
                     Helper.getResortWithResortCode(code: resortCode, viewcontroller: self)
                 }
                 
-                guard let containerVC = self.childViewControllers[0] as? ResortDetailsViewController else { return false }
+                guard let containerVC = childViewControllers[0] as? ResortDetailsViewController else { return false }
                 containerVC.senderViewController = Constant.MyClassConstants.showSearchResultButton
 
                 containerVC.viewWillAppear(true)
                 
-                if self.containerView != nil {
+                if containerView != nil {
                     UIView.animate (withDuration: 0.5, delay: 0.1, options: UIViewAnimationOptions.curveEaseIn, animations: {
                     
                     self.containerView.frame = CGRect(x: 0, y: 64, width: self.containerView.frame.size.width, height: self.containerView.frame.size.height)
@@ -413,16 +413,16 @@ extension FevoritesResortController: GMSMapViewDelegate {
 }
 //***** custom delegate methods extension class implementation  *****//
 extension FevoritesResortController: ResortDetailsDelegate {
-    
+
     func tableViewSelected(_ index: Int) {
         if Constant.RunningDevice.deviceIdiom == .pad {
-            self.containerView.isHidden = false
+            containerView.isHidden = false
             let selectedResort = Constant.MyClassConstants.favoritesResortArray[index]
             if let resortCode = selectedResort.resortCode {
                 Helper.getResortWithResortCode(code: resortCode, viewcontroller: self)
             }
             
-            guard let containerVC = self.childViewControllers[0] as? ResortDetailsViewController else { return }
+            guard let containerVC = childViewControllers[0] as? ResortDetailsViewController else { return }
             containerVC.senderViewController = Constant.MyClassConstants.showSearchResultButton
 
             containerVC.viewWillAppear(true)
@@ -438,7 +438,9 @@ extension FevoritesResortController: ResortDetailsDelegate {
             let selectedResort = Constant.MyClassConstants.favoritesResortArray[index]
             if let resortCode = selectedResort.resortCode {
                 Helper.getResortWithResortCode(code: resortCode, viewcontroller: self)
+                showHudAsync()
             }
         }
     }
+
 }
