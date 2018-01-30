@@ -18,7 +18,6 @@ class RentalInventoryCVCell: UICollectionViewCell {
     @IBOutlet weak var kitchenType: UILabel!
     @IBOutlet weak var promotionsView: UIView!
     @IBOutlet weak var currencySymbol: UILabel!
-    
     @IBOutlet weak var imgViewGetaway: UIImageView!
 
     func setDataForRentalInventory(invetoryItem: Resort, indexPath: IndexPath, code: String) {

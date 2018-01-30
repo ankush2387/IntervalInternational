@@ -75,6 +75,8 @@ class SearchResultViewController: UIViewController {
         self.searchResultColelctionView.reloadData()
     }
     
+    @IBAction func unwindToAvailabiity(_ segue: UIStoryboardSegue) {}
+    
     func createSections() {
         let sections = Constant.MyClassConstants.initialVacationSearch.createSections()
         

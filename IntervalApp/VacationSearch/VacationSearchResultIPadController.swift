@@ -197,6 +197,7 @@ class VacationSearchResultIPadController: UIViewController {
         self.collectionviewSelectedIndex = Constant.MyClassConstants.searchResultCollectionViewScrollToIndex
     }
     
+    @IBAction func unwindToAvailabiity(_ segue: UIStoryboardSegue) {}
     // Function called to dismiss current controller when back button pressed.
     func menuBackButtonPressed(_ sender: UIBarButtonItem) {
         _ = self.navigationController?.popViewController(animated: true)

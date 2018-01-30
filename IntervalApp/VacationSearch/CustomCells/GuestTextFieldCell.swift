@@ -16,6 +16,7 @@ class GuestTextFieldCell: UITableViewCell {
     @IBOutlet weak var borderView: UIView!
     @IBOutlet weak var nameTF: UITextField!
     
+    @IBOutlet weak var acceptedCardsMSG: UILabel!
     //class variables
     
     override func awakeFromNib() {
