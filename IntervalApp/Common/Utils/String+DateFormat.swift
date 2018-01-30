@@ -113,7 +113,7 @@ extension String {
         
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-        dateFormatter.timeZone = TimeZone.autoupdatingCurrent
+        dateFormatter.timeZone = TimeZone(identifier: "UTC")
         dateFormatter.dateFormat = format
         return dateFormatter.date(from: self)
     }

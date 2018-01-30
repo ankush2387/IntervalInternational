@@ -32,6 +32,7 @@ class WhatToUseViewController: UIViewController {
     var selectedRowSection = -1
     var showInfoIcon = false
     var hasbothSearchAvailability = true
+    var currencyCode = ""
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
@@ -51,6 +52,10 @@ class WhatToUseViewController: UIViewController {
         let menuButton = UIBarButtonItem(image: #imageLiteral(resourceName: "BackArrowNav"), style: .plain, target: self, action:#selector(AccomodationCertsDetailController.menuBackButtonPressed(_:)))
         menuButton.tintColor = UIColor.white
         self.navigationItem.leftBarButtonItem = menuButton
+        guard let currencycode = Constant.MyClassConstants.selectedResort.inventory?.currencyCode else { return }
+        let currencyHelper = CurrencyHelper()
+        let currency = currencyHelper.getCurrency(currencyCode: currencycode )
+        currencyCode = ("\(currencyHelper.getCurrencyFriendlySymbol(currencyCode: currency.code))")
     }
     
     override func didReceiveMemoryWarning() {
@@ -146,7 +151,8 @@ class WhatToUseViewController: UIViewController {
                         }
                     }
                 }
-                UserClient.getCurrentMembership(Session.sharedSession.userAccessToken, onSuccess: { membership in
+                UserClient.updateSessionAndGetCurrentMembership(Session.sharedSession.userAccessToken, membershipNumber: Session.sharedSession.selectedMembership?.memberNumber ?? "", onSuccess: { membership in
+                    Session.sharedSession.selectedMembership = membership
                     
                     // Got an access token!  Save it for later use.
                     self.hideHudAsync()
@@ -287,11 +293,12 @@ class WhatToUseViewController: UIViewController {
                     Constant.MyClassConstants.nearbyString = Constant.MyClassConstants.nearbyString.appending("\n")
                 }
             }
-            UserClient.getCurrentMembership(Session.sharedSession.userAccessToken, onSuccess: {(Membership) in
+            UserClient.updateSessionAndGetCurrentMembership(Session.sharedSession.userAccessToken, membershipNumber: Session.sharedSession.selectedMembership?.memberNumber ?? "", onSuccess: { membership in
+                Session.sharedSession.selectedMembership = membership
                 
                 // Got an access token!  Save it for later use.
                 self.hideHudAsync()
-                Constant.MyClassConstants.membershipContactArray = Membership.contacts!
+                Constant.MyClassConstants.membershipContactArray = membership.contacts!
                 
                 // check force renewals here
                 let forceRenewals = Constant.MyClassConstants.processStartResponse.view?.forceRenewals
@@ -806,7 +813,7 @@ extension WhatToUseViewController: UITableViewDataSource {
                 }
             }
             if let price = Constant.MyClassConstants.selectedResort.inventory?.units[Constant.MyClassConstants.selectedUnitIndex].prices[0].price {
-                cell.getawayPrice.text = String(Int(price))
+                cell.setGetawayPrice(with: currencyCode, and: price)
             }
             
             cell.selectionStyle = UITableViewCellSelectionStyle.none

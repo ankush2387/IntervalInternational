@@ -236,19 +236,15 @@ final class RelinquishmentViewModel {
     
     private func processActionButton(for relinquishment: Relinquishment) -> UIImage? {
         
-        if relinquishment.hasActions() && (relinquishment.actions.map { $0.uppercased() }.contains("SHOP")) {
+        // The code after the and remove is temporary remove (FRANK)
+        if relinquishment.hasActions() && (relinquishment.actions.map { $0.uppercased() }.contains("SHOP"))
+            && !relinquishment.lockOff && !relinquishment.requireAdditionalInfo() {
             return #imageLiteral(resourceName: "VS_List-Plus_ORNG")
         }
         
         if (relinquishment.memberUnitLocked || relinquishment.bulkAssignment)
             && !relinquishment.hasActions() && relinquishment.hasResortPhoneNumber() {
             return #imageLiteral(resourceName: "ResortDial-inIcon")
-        }
-        
-        // TODO: Temporary code to be removed
-        // Done in order to reduce bugs being opened
-        if !relinquishment.lockOff && !relinquishment.requireAdditionalInfo() {
-            return nil
         }
         
         return nil

@@ -155,7 +155,9 @@ class CheckOutIPadViewController: UIViewController {
                 }
                 
                 guard let curCode = Constant.MyClassConstants.exchangeFees[0].currencyCode else { return }
-                currencyCode = Helper.currencyCodeToSymbol(code: curCode)
+                let currencyHelper = CurrencyHelper()
+                let currency = currencyHelper.getCurrency(currencyCode: curCode)
+                currencyCode = ("\(currencyHelper.getCurrencyFriendlySymbol(currencyCode: currency.code))")
             }
         } else {
             for advisement in (Constant.MyClassConstants.viewResponse.resort?.advisements)! {
@@ -173,7 +175,9 @@ class CheckOutIPadViewController: UIViewController {
             }
             
             guard let curCode = Constant.MyClassConstants.rentalFees[0].currencyCode else { return }
-            currencyCode = Helper.currencyCodeToSymbol(code: curCode)
+            let currencyHelper = CurrencyHelper()
+            let currency = currencyHelper.getCurrency(currencyCode: curCode)
+            currencyCode = ("\(currencyHelper.getCurrencyFriendlySymbol(currencyCode: currency.code))")
             
         }
         
@@ -1328,7 +1332,7 @@ extension CheckOutIPadViewController: UITableViewDataSource {
                     cell.agreeLabel.layer.borderColor = #colorLiteral(red: 0.6666666667, green: 0.7921568627, blue: 0.3607843137, alpha: 1).cgColor
                     cell.agreeLabel.text = Constant.AlertMessages.agreeToFeesMessage
                     cell.agreeLabel.textColor = UIColor.white
-                    cell.allInclusiveSelectedCheckBox.isHidden = false
+                    //cell.allInclusiveSelectedCheckBox.isHidden = false
                 } else {
                     if let image = UIImage(named: Constant.assetImageNames.swipeArrowOrgImage) {
                         cell.agreeButton?.imageName = image
@@ -1347,7 +1351,7 @@ extension CheckOutIPadViewController: UITableViewDataSource {
                 cell.agreeButton?.tag = indexPath.section
                 cell.feesTitleLabel.text = Constant.CheckOutIPadViewControllerCellIdentifiersAndHardCodedStrings.acceptedTermAndConditionString
                 cell.isUserInteractionEnabled = true
-                cell.allInclusiveSelectedCheckBox.isHidden = true
+                //cell.allInclusiveSelectedCheckBox.isHidden = true
                 
                 if isAgreed {
                     cell.agreeLabel.backgroundColor = #colorLiteral(red: 0.6666666667, green: 0.7921568627, blue: 0.3607843137, alpha: 1)

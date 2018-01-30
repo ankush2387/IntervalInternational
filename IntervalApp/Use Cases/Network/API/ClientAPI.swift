@@ -56,9 +56,12 @@ extension ClientAPI: UserClientAPIStore {
         }
     }
 
-    func writeSelected(membership: Membership, for accessToken: DarwinAccessToken) -> Promise<Void> {
+    func readMembership(for accessToken: DarwinAccessToken, and membershipNumber: String) -> Promise<Membership> {
         return Promise { resolve, reject in
-            UserClient.putSessionsUser(accessToken, member: membership, onSuccess: resolve, onError: reject)
+            UserClient.updateSessionAndGetCurrentMembership(accessToken,
+                                                            membershipNumber: membershipNumber,
+                                                            onSuccess: resolve,
+                                                            onError: reject)
         }
     }
 }
@@ -103,6 +106,16 @@ extension ClientAPI: ExchangeClientAPIStore {
             ExchangeClient.getFlexExchangeDeals(accessToken, onSuccess: resolve, onError: reject)
         }
     }
+    
+    func writeFixWeekReservation(for accessToken: DarwinAccessToken, relinquishmentID: String, reservation: FixWeekReservation) -> Promise<Void> {
+        return Promise { resolve, reject in
+            ExchangeClient.updateFixWeekReservation(accessToken,
+                                                    relinquishmentId: relinquishmentID,
+                                                    reservation: reservation,
+                                                    onSuccess: resolve,
+                                                    onError: reject)
+        }
+    }
 }
 
 extension ClientAPI: DirectoryClientAPIStore {
@@ -122,6 +135,27 @@ extension ClientAPI: DirectoryClientAPIStore {
     func readResortClubPointChart(for accessToken: DarwinAccessToken, and resortCode: String) -> Promise<ClubPointsChart> {
         return Promise { resolve, reject in
             DirectoryClient.getResortClubPointsChart(accessToken, resortCode: resortCode, onSuccess: resolve, onError: reject)
+        }
+    }
+
+    func readResorts(for accessToken: DarwinAccessToken, and clubCode: String) -> Promise<[Resort]> {
+        return Promise { resolve, reject in
+            DirectoryClient.getResortsByClub(accessToken, clubCode: clubCode, onSuccess: resolve, onError: reject)
+        }
+    }
+
+    func readResortUnitSizes(for accessToken: DarwinAccessToken, and resortCode: String) -> Promise<[InventoryUnit]> {
+        return Promise { resolve, reject in
+            DirectoryClient.getResortUnitSizes(accessToken, resortCode: resortCode, onSuccess: resolve, onError: reject)
+        }
+    }
+    
+    func readResortCalendars(for accessToken: DarwinAccessToken, and resortCode: String, and relinquishmentYear: Int) -> Promise<[ResortCalendar]> {
+        return Promise { resolve, reject in
+            DirectoryClient.getResortCalendars(accessToken,
+                                               resortCode: resortCode,
+                                               year: relinquishmentYear,
+                                               onSuccess: resolve, onError: reject)
         }
     }
 }

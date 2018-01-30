@@ -99,8 +99,8 @@ class CreateActionSheet: UITableViewController {
         if let selectedMemberShip = context.selectedMembership {
             
             //if let selectedMemberShip = context.selectedMemberShip
-            UserClient.putSessionsUser(context.userAccessToken, member: selectedMemberShip,
-                                       onSuccess: {[unowned self] in
+            UserClient.updateSessionAndGetCurrentMembership(Session.sharedSession.userAccessToken, membershipNumber: Session.sharedSession.selectedMembership?.memberNumber ?? "", onSuccess: { membership in
+                Session.sharedSession.selectedMembership = membership
                                         self.hideHudAsync()
                                         Constant.MyClassConstants.isLoginSuccessfull = true
                                         

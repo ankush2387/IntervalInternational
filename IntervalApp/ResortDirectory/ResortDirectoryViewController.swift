@@ -74,10 +74,6 @@ class ResortDirectoryViewController: UIViewController {
             resortTableView.register(UINib(nibName: Constant.customCellNibNames.searchResultContentTableCell, bundle: nil), forCellReuseIdentifier: Constant.customCellNibNames.searchResultContentTableCell)
         }
         
-        func viewWillAppear(_ animated: Bool) {
-            navigationController?.navigationBar.isHidden = false
-        }
-        
         if backgroundImageView != nil && Constant.MyClassConstants.resortDirectoryAreaListArray.count > 0 {
             
             if Constant.MyClassConstants.resortDirectoryAreaListArray[0].images.count > 0 {
@@ -112,13 +108,16 @@ class ResortDirectoryViewController: UIViewController {
         
     }
     
-  
-    
     override func viewDidLayoutSubviews() {
         
         self.view.subviews.last?.frame = CGRect(x: -(self.view.subviews.last?.frame.width)!, y: 64, width: (self.view.subviews.last?.frame.width)!, height: (self.view.subviews.last?.frame.height)!)
     }
+    
     override func viewWillAppear(_ animated: Bool) {
+        if Constant.MyClassConstants.showResortDetailsWhenClickedDone {
+            self.view.subviews.last?.isHidden = false
+            Constant.MyClassConstants.showResortDetailsWhenClickedDone = false
+        }
         
         tabBarController?.tabBar.isHidden = false
         navigationController?.navigationBar.isHidden = false
@@ -251,6 +250,18 @@ class ResortDirectoryViewController: UIViewController {
             self.view.subviews.last?.isHidden = true
         })
     }
+    
+    func showResortTableView() {
+        UIView.animate (withDuration: 0.5, delay: 0.1, options: UIViewAnimationOptions.curveEaseIn, animations: {
+            
+            (self.view.subviews.last?.frame = CGRect(x: (self.view.subviews.last?.frame.width)!, y: 64, width: (self.view.subviews.last?.frame.width)!, height: (self.view.subviews.last?.frame.height)!))!
+            
+        }, completion: { _ in
+            self.view.subviews.last?.isHidden = false
+        })
+    }
+    
+    
     
     //***** Notification to load list of available regions *****//
     func reloadRegionTable() {

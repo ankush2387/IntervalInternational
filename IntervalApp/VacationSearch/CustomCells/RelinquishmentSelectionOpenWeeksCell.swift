@@ -34,6 +34,7 @@ class RelinquishmentSelectionOpenWeeksCell: UITableViewCell {
     @IBOutlet weak var checkBox: IUIKCheckbox!
     
     @IBOutlet weak var requestTypeLbl: UILabel!
+    @IBOutlet weak var expiresDateLbl: UILabel!
     
     static let identifier = "FloatSavedCell"
     
@@ -50,8 +51,8 @@ class RelinquishmentSelectionOpenWeeksCell: UITableViewCell {
     
     func setupDepositedCell(deposit: Deposit) {
         
-        if let resortName = deposit.resort?.resortName {
-           self.resortName.text = resortName.localized()
+        if let strResortName = deposit.resort?.resortName {
+           resortName.text = strResortName.localized()
         }
         
         if let resortCode = deposit.resort?.resortCode {
@@ -129,8 +130,8 @@ class RelinquishmentSelectionOpenWeeksCell: UITableViewCell {
             }
         }
         //hide promotions
-        promLabel.isHidden = true
-        promImgView.isHidden = true
+        promLabel.text = ""
+        promImgView.image = nil
         
     }
     

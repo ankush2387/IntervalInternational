@@ -48,7 +48,8 @@ class MemberShipViewController: UIViewController {
             Constant.MyClassConstants.memberNumber = memberNo
         }
         
-    UserClient.getCurrentMembership(Session.sharedSession.userAccessToken, onSuccess: { (membership) in
+        UserClient.updateSessionAndGetCurrentMembership(Session.sharedSession.userAccessToken, membershipNumber: Session.sharedSession.selectedMembership?.memberNumber ?? "", onSuccess: { membership in
+            Session.sharedSession.selectedMembership = membership
             if let ownerships = membership.ownerships {
                 self.ownershipArray = ownerships
             }
@@ -97,7 +98,8 @@ class MemberShipViewController: UIViewController {
         
         //***** Update the API session for the current access token *****//
         let context = Session.sharedSession
-        UserClient.putSessionsUser(context.userAccessToken, member: context.selectedMembership!, onSuccess: {
+        UserClient.updateSessionAndGetCurrentMembership(Session.sharedSession.userAccessToken, membershipNumber: Session.sharedSession.selectedMembership?.memberNumber ?? "", onSuccess: { membership in
+            Session.sharedSession.selectedMembership = membership
                                         
             //***** Done!  Segue to the Home page *****//
             self.dismiss(animated: true, completion: nil)
