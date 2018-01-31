@@ -11,10 +11,12 @@ import Foundation
 final class SelectionTableViewModel {
 
     // MARK: - Private properties
-    let cellTexts: [String?]
+    let cellTexts: [SelectionCell]
+    let currentSelection: SelectionCell?
 
     // MARK: - Lifecycle
-    init(cellTexts: [String?]) {
+    init(cellTexts: [SelectionCell], currentSelection: SelectionCell?) {
         self.cellTexts = cellTexts
+        self.currentSelection = currentSelection
     }
 }

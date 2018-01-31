@@ -27,6 +27,10 @@ final class AdditionalInformationViewModel {
         checkInDateVM?.textFieldValue.value.unwrappedString.isEmpty == false
     }
 
+    var resortPhoneNumber: String? {
+        return resort.value?.phone ?? relinquishment.resort?.phone
+    }
+
     // MARK: - Private properties
     private var onlyOneResortInRelinquishment = false
     private let disposeBag = DisposeBag()
@@ -76,6 +80,17 @@ final class AdditionalInformationViewModel {
                 self.resortUnitDetailsViewModel?.headerLabelText.next(formattedHeaderText)
                 self.relinquishment.resort = resort
                 self.relinquishment.fixWeekReservation?.resort = resort
+
+                self.reservationNumberVM?.textFieldValue.next(nil)
+                self.reservationNumberVM?.isEditing.next(true)
+                self.unitNumberVM?.isTappableTextField.next(true)
+                self.unitNumberVM?.textFieldValue.next(nil)
+                self.numberOfBedroomsVM?.isTappableTextField.next(true)
+                self.numberOfBedroomsVM?.textFieldValue.next(nil)
+                self.checkInDateVM?.textFieldValue.next(nil)
+                self.numberOfBedroomsVM?.isTappableTextField.next(true)
+                self.checkInDateVM?.isTappableTextField.next(true)
+
                 }.dispose(in: self.disposeBag)
             
             self.unitNumberVM?.textFieldValue.observeNext { [unowned self] unitNumber in
@@ -198,27 +213,18 @@ final class AdditionalInformationViewModel {
                 }.onError { _ in reject(UserFacingCommonError.noData) }
         }
     }
-
-    func resortHasBeenSelected() {
-        reservationNumberVM?.textFieldValue.next(nil)
-        reservationNumberVM?.isEditing.next(true)
-        unitNumberVM?.isTappableTextField.next(true)
-        unitNumberVM?.textFieldValue.next(nil)
-        numberOfBedroomsVM?.isTappableTextField.next(true)
-        numberOfBedroomsVM?.textFieldValue.next(nil)
-        checkInDateVM?.textFieldValue.next(nil)
-
-        numberOfBedroomsVM?.isTappableTextField.next(true)
-        checkInDateVM?.isTappableTextField.next(true)
-    }
     
     func update(inventoryUnit: InventoryUnit?) {
         relinquishment.unit = inventoryUnit
     }
     
-    func update(checkInDate: String?, weekNumber: String? = nil) {
-        relinquishment.fixWeekReservation?.checkInDate = checkInDate
-        relinquishment.fixWeekReservation?.weekNumber = weekNumber == nil ? relinquishment.weekNumber : weekNumber
+    func updateDate(with resortCalendar: ResortCalendar?) {
+        relinquishment.fixWeekReservation?.checkInDate = resortCalendar?.checkInDate
+        if let weekNumber = resortCalendar?.weekNumber {
+            relinquishment.fixWeekReservation?.weekNumber = weekNumber
+        } else {
+            relinquishment.fixWeekReservation?.weekNumber = relinquishment.weekNumber
+        }
     }
     
     func getResortCalendars() -> Promise<[ResortCalendar]> {
@@ -251,9 +257,9 @@ final class AdditionalInformationViewModel {
             
             self.exchangeClientAPIStore.writeFixWeekReservation(for: accessToken,
                                                                 relinquishmentID: relinquishmentID,
-                                                                reservation: fixWeekReservation).then(resolve).onError {
-                                                                    reject(UserFacingCommonError.handleError($0))
-            }
+                                                                reservation: fixWeekReservation)
+                .then(resolve)
+                .onError { reject(UserFacingCommonError.handleError($0)) }
         }
     }
 

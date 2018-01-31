@@ -66,14 +66,17 @@ class CalendarViewController: UIViewController {
     }
 
     fileprivate func dateIsAllowed(_ date: Date) -> Bool {
-        let dateIsAllowed = !(datesToAllow.filter {
+
+        let foundMatch = datesToAllow.first {
             let calendar = CalendarHelper().createCalendar()
             let parsedDateFromAllowedDates = calendar.dateComponents([.day, .weekday, .month, .year], from: $0)
             let parsedDateFromCalendarDate = calendar.dateComponents([.day, .weekday, .month, .year], from: date)
             return parsedDateFromAllowedDates.month == parsedDateFromCalendarDate.month
                 && parsedDateFromAllowedDates.day == parsedDateFromCalendarDate.day
-            }.isEmpty)
-        return dateIsAllowed
+                && parsedDateFromAllowedDates.year == parsedDateFromCalendarDate.year
+        }
+
+        return foundMatch != nil
     }
 }
 
@@ -135,7 +138,11 @@ extension CalendarViewController: FSCalendarDelegate {
 extension CalendarViewController: FSCalendarDataSource {
     
     func minimumDate(for calendar: FSCalendar) -> Date {
-        
+
+        if let minimumDate = (datesToAllow.sorted { $0 < $1 }.first), !datesToAllow.isEmpty {
+            return minimumDate
+        }
+
         if self.requestedController == Constant.MyClassConstants.relinquishmentFlaotWeek {
             guard let date = Constant.MyClassConstants.relinquishmentFloatDetialMinDate else { return Date() }
             return date
@@ -159,6 +166,11 @@ extension CalendarViewController: FSCalendarDataSource {
     }
     
     func maximumDate(for fsCalendar: FSCalendar) -> Date {
+
+        if let maximumDate = (datesToAllow.sorted { $0 > $1 }.first), !datesToAllow.isEmpty {
+            return maximumDate
+        }
+
         let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
         
         if self.requestedController == Constant.MyClassConstants.relinquishmentFlaotWeek {
@@ -212,7 +224,15 @@ extension CalendarViewController: FSCalendarDataSource {
 }
 
 extension CalendarViewController: FSCalendarDelegateAppearance {
-    
+
+    func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, fillSelectionColorFor date: Date) -> UIColor? {
+        return datesToAllow.isEmpty ? nil : .clear
+    }
+
+    func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, titleSelectionColorFor date: Date) -> UIColor? {
+        return datesToAllow.isEmpty ? nil : .lightGray
+    }
+
     func calendar(_ fsCalendar: FSCalendar, appearance: FSCalendarAppearance, titleDefaultColorFor date: Date) -> UIColor? {
 
         if !datesToAllow.isEmpty {

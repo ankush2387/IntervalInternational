@@ -48,6 +48,7 @@
             <connections>
                 <outlet property="cellImageView" destination="hGU-GB-54g" id="TNq-w9-Oo6"/>
                 <outlet property="cellLabel" destination="zbb-2S-Ihm" id="H8H-wo-5tU"/>
+                <outlet property="selectionView" destination="H2p-sc-9uM" id="Tnc-tJ-t5T"/>
             </connections>
             <point key="canvasLocation" x="43" y="103.5"/>
         </tableViewCell>

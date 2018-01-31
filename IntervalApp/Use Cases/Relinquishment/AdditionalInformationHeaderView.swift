@@ -22,4 +22,11 @@ final class AdditionalInformationHeaderView: UITableViewCell {
     open class func headerView() -> UIView? {
         return Bundle(for: self).loadNibNamed(reuseIdentifier, owner: self)?.first as? UIView
     }
+
+    public var callButtonTapped: CallBack?
+
+    // MARK: - IBActions
+    @IBAction func didPressCallButton(_ sender: Any) {
+        callButtonTapped?()
+    }
 }

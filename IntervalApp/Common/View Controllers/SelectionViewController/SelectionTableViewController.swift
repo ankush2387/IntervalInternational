@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol SelectionCell {
+    var labelText: String? { get }
+}
+
 final class SelectionTableViewController: UITableViewController {
 
     // MARK: - Public properties
@@ -44,14 +48,14 @@ final class SelectionTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: SelectionTableViewCell.identifier) as? SelectionTableViewCell else { return UITableViewCell() }
-        cell.setCell(labelText: viewModel.cellTexts[indexPath.row])
-        return cell
-    }
+        let currentSelectionCell = viewModel.cellTexts[indexPath.row]
+        let isSelected = currentSelectionCell.labelText == viewModel.currentSelection?.labelText
+        cell.setCell(labelText: currentSelectionCell.labelText, isSelected: isSelected)
 
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if let cell = tableView.cellForRow(at: indexPath) as? SelectionTableViewCell {
-            cell.selectCell()
-            didSelectRow?(indexPath.row)
+        cell.tapped = { [weak self] in
+            self?.didSelectRow?(indexPath.row)
         }
+
+        return cell
     }
 }

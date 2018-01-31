@@ -28,7 +28,7 @@ extension String {
      specified in the date string.  The input string MUST be from the "Zulu" timezone aka UTC+0.
      
      - returns: If the input string specifies a non-Zulu TZ offset then the same string will be returned.
-     Otherwise the format is Januaary 1, 2016.
+     Otherwise the format is January 1, 2016.
      */
     func shortDateFormatUnlocalized() -> String {
         let inputFormatter = DateFormatter()

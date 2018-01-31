@@ -13,19 +13,29 @@ final class SelectionTableViewCell: UITableViewCell {
     // MARK: - IBOutlets
     @IBOutlet private weak var cellLabel: UILabel!
     @IBOutlet private weak var cellImageView: UIImageView!
-    
+    @IBOutlet private weak var selectionView: UIView!
+
     // MARK: - Public properties
     static let cellHeight: CGFloat = 70
     static let identifier = "SelectionTableViewCell"
     static let xib = UINib(nibName: identifier, bundle: nil)
+    public var tapped: (() -> Void)?
 
     // MARK: Public functions
-    func setCell(labelText: String?) {
+    func setCell(labelText: String?, isSelected: Bool) {
         cellLabel.text = labelText
-        cellImageView.image = #imageLiteral(resourceName: "Select-Off")
+        cellImageView.image = isSelected ? #imageLiteral(resourceName: "Select-On") : #imageLiteral(resourceName: "Select-Off")
     }
 
-    func selectCell() {
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        selectionView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(cellTapped)))
+    }
+
+    // MARK: - Private properties
+    @objc private func cellTapped() {
+        isSelected = true
         cellImageView.image = #imageLiteral(resourceName: "Select-On")
+        tapped?()
     }
 }

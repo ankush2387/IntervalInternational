@@ -31,7 +31,7 @@ final class RelinquishmentViewModel {
          sessionStore: SessionStore,
          entityDataStore: EntityDataStore,
          relinquishmentManager: RelinquishmentManager) {
-
+        
         self.clientAPI = clientAPI
         self.sessionStore = sessionStore
         self.entityDataStore = entityDataStore
@@ -61,26 +61,26 @@ final class RelinquishmentViewModel {
     func title(for section: Int) -> String? {
         return sectionTitle[section]
     }
-
+    
     func numberOfSections() -> Int {
         return simpleCellViewModels.count
     }
-
+    
     func hasCellViewModels(for section: Int) -> Bool {
         guard let sectionIdentifier = Section(rawValue: section),
             let count = simpleCellViewModels[sectionIdentifier]?.count else { return false }
         return count > 0
     }
-
+    
     func numberOfRows(for section: Int) -> Int {
         guard let sectionIdentifier = Section(rawValue: section) else { return 0 }
         return simpleCellViewModels[sectionIdentifier]?.count ?? 0
     }
-
+    
     func heightOfCell(for indexPath: IndexPath) -> CGFloat {
         return simpleCellViewModel(for: indexPath).cellHeight.value
     }
-
+    
     func cellViewModel(for indexPath: IndexPath) -> SimpleCellViewModel {
         return simpleCellViewModel(for: indexPath)
     }
@@ -131,14 +131,14 @@ final class RelinquishmentViewModel {
                 .onError { _ in reject(UserFacingCommonError.generic) }
         }
     }
-
+    
     func readResortClubPointChart(for relinquishment: Relinquishment) -> Promise<ClubPointsChart> {
         return Promise { [unowned self] resolve, reject in
             guard let accessToken = self.sessionStore.userAccessToken, let resortCode = relinquishment.resort?.resortCode else {
                 reject(UserFacingCommonError.invalidSession)
                 return
             }
-
+            
             self.directoryClientAPIStore.readResortClubPointChart(for: accessToken, and: resortCode)
                 .then(resolve)
                 .onError { _ in reject(UserFacingCommonError.noData) }
@@ -148,25 +148,25 @@ final class RelinquishmentViewModel {
     // MARK: - Private functions
     private func processRelinquishmentGroups(myUnits: MyUnits) -> Promise<Void> {
         return Promise { [unowned self] resolve, reject in
-
+            
             let relinquishmentGroups = self.relinquishmentManager.getRelinquishmentGroups(myUnits: myUnits)
             self.simpleCellViewModels[.cigProgram] = self.processCIGProgram(for: relinquishmentGroups)
-
+            
             self.filterStored(relinquishmentGroups.cigPointsWeeks).then {
                 self.relinquishments[.cigWeeks] = $0
                 self.simpleCellViewModels[.cigWeeks] = $0.map(self.process)
                 }.onError(reject)
-
+            
             self.filterStored(relinquishmentGroups.pointsWeeks).then {
                 self.relinquishments[.points] = $0
                 self.simpleCellViewModels[.points] = $0.map(self.process)
                 }.onError(reject)
-
+            
             self.filterStored(relinquishmentGroups.intervalWeeks).then {
                 self.relinquishments[.intervalWeeks] = $0
                 self.simpleCellViewModels[.intervalWeeks] = $0.map(self.process)
                 }.onError(reject)
-
+            
             resolve()
         }
     }
@@ -176,21 +176,21 @@ final class RelinquishmentViewModel {
             
             self.entityDataStore.readObjectsFromDisk(type: OpenWeeksStorage.self, predicate: nil, encoding: .decrypted)
                 .then { openWeeksStore in
-
+                    
                     let depositedWeeksRelinquishmentIDs = openWeeksStore
                         .flatMap { $0.openWeeks }
                         .flatMap { $0.deposits }
                         .flatMap { $0.relinquishmentID }
-
+                    
                     let depositedOpenWeeksRelinquishmentIDs = openWeeksStore
                         .flatMap { $0.openWeeks }
                         .flatMap { $0.openWeeks }
                         .flatMap { $0.relinquishmentID }
-
+                    
                     let relinquishmentIDs = depositedWeeksRelinquishmentIDs + depositedOpenWeeksRelinquishmentIDs
                     let filteredRelinquishments = relinquishments.filter { !relinquishmentIDs.contains($0.relinquishmentId.unwrappedString) }
                     resolve(filteredRelinquishments)
-
+                    
                 }.onError(reject)
         }
     }
@@ -200,16 +200,16 @@ final class RelinquishmentViewModel {
         let availablePoints = relinquishmentGroups.cigPointsProgram?.availablePoints ?? 0
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = .decimal
-        return [SimpleAvailableRelinquishmentPointsCellViewModel(cigImage: #imageLiteral(resourceName: "CIG"),
+        return [SimpleAvailableRelinquishmentPointsCellViewModel(cigImage:  #imageLiteral(resourceName: "CIG"),
                                                                  actionButtonImage: #imageLiteral(resourceName: "VS_List-Plus_ORNG"),
                                                                  numberOfPoints: numberFormatter.string(from: availablePoints as NSNumber),
                                                                  availablePointsButtonText: "Available Points Tool".localized(),
                                                                  goldPointsHeadingLabelText: "Club Interval Gold Points".localized(),
                                                                  goldPointsSubHeadingLabel: "Available Points as of Today".localized())]
     }
-
+    
     private func process(relinquishment: Relinquishment) -> SimpleCellViewModel {
-
+        
         let resortName = "\((relinquishment.resort?.resortName).unwrappedString) / \((relinquishment.resort?.resortCode).unwrappedString)"
         let relinquishmentYear = relinquishment.relinquishmentYear == nil ? nil : String(relinquishment.relinquishmentYear ?? 0)
         let weekNumber = relinquishment.supressWeekNumber() ? nil : processWeek(for: relinquishment.weekNumber)
@@ -273,12 +273,12 @@ final class RelinquishmentViewModel {
             extraInformationText = extraInformationText.unwrappedString.isEmpty ?
                 message : extraInformationText.unwrappedString + "\n" + message
         }
-
+        
         return extraInformationText
     }
     
     private func processUnitDetails(for relinquishment: Relinquishment) -> String? {
-
+        
         guard let unit = relinquishment.unit, relinquishment.weekNumber != "POINTS_WEEK" else { return nil }
         
         guard !relinquishment.lockOff else {
@@ -287,12 +287,12 @@ final class RelinquishmentViewModel {
         
         var unitDetails = ""
         
-        if let unitSize = unit.unitSize {
-            unitDetails = Helper.getBedroomNumbers(bedroomType: unitSize)
+        if let unitSize = UnitSize(rawValue: unit.unitSize.unwrappedString) {
+            unitDetails = unitSize.friendlyName()
         }
         
-        if let kitchenType = unit.kitchenType {
-            unitDetails += ", \(Helper.getKitchenEnums(kitchenType: kitchenType))"
+        if let kitchenType = KitchenType(rawValue: unit.kitchenType.unwrappedString) {
+            unitDetails += ", \(kitchenType.friendlyName())"
         }
         
         if let unitNumber = unit.unitNumber {
@@ -301,7 +301,7 @@ final class RelinquishmentViewModel {
         
         return unitDetails
     }
-
+    
     private func processUnitCapacity(for relinquishment: Relinquishment) -> String? {
         guard relinquishment.weekNumber != "POINTS_WEEK" else { return nil }
         guard let unit = relinquishment.unit, !relinquishment.lockOff else { return nil }
@@ -338,13 +338,17 @@ final class RelinquishmentViewModel {
         guard let section = Section(rawValue: indexPath.section) else { return nil }
         return relinquishments[section]?[indexPath.row]
     }
-
+    
     private func processCheckInInformation(for relinquishment: Relinquishment) -> String? {
-
+        
         if relinquishment.weekNumber == "POINTS_WEEK" {
-            return "CLUB \nPOINTS".localized()
+            return "POINTS".localized()
         }
-
+        
+        if relinquishment.weekNumber == "FLOAT_WEEK" {
+            return "FLOAT".localized()
+        }
+        
         guard relinquishment.supressCheckInDate() == false else { return nil }
         guard let checkInDate = relinquishment.checkInDate else { return nil }
         let format = "yyyy-MM-dd"
@@ -402,4 +406,5 @@ final class RelinquishmentViewModel {
                 .onError { _ in reject(UserFacingCommonError.generic) }
         }
     }
- }
+}
+
