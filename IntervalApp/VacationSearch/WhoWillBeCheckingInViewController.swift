@@ -63,12 +63,9 @@ class WhoWillBeCheckingInViewController: UIViewController {
         Constant.GetawaySearchResultGuestFormDetailData.businessPhoneNumber = ""
         
         NotificationCenter.default.addObserver(self, selector: #selector(updateResortHoldingTime), name: NSNotification.Name(rawValue: Constant.notificationNames.updateResortHoldingTime), object: nil)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(enableGuestFormCheckout), name: NSNotification.Name(rawValue: Constant.notificationNames.enableGuestFormCheckout), object: nil)
-        
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWasShown), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillBeHidden), name: NSNotification.Name.UIKeyboardDidHide, object: nil)
-        
+        checkingInUserTBLview.reloadData()
     }
     
     override func viewDidLoad() {
@@ -108,7 +105,6 @@ class WhoWillBeCheckingInViewController: UIViewController {
         super.viewDidDisappear(true)
         navigationController?.navigationBar.isHidden = true
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.updateResortHoldingTime), object: nil)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.enableGuestFormCheckout), object: nil)
     }
     
     func keyboardWasShown(aNotification: NSNotification) {
@@ -146,14 +142,7 @@ class WhoWillBeCheckingInViewController: UIViewController {
             self.checkingInUserTBLview.scrollIndicatorInsets = contentInsets
         }
     }
-    
-    func validateUsername(str: String) -> Bool {
-        do {
-            let regex = try NSRegularExpression(pattern: "^[a-zA-Z\\_]{1,18}$", options: .caseInsensitive)
-            if regex.matches(in: str, options: [], range: NSMakeRange(0, str.characters.count)).count > 0 { return true }
-        } catch {}
-        return false
-    }
+
     //***** Function to check if the email entered by user is an valid email address. *****//
     func isValidEmail(testStr: String) -> Bool {
         
@@ -203,9 +192,18 @@ class WhoWillBeCheckingInViewController: UIViewController {
     
     //***** Checkout using guest. *****//
     func enableGuestFormCheckout() {
-        
         self.proceedToCheckoutButton.isEnabled = true
         self.proceedToCheckoutButton.alpha = 1.0
+    }
+    
+    func enableGuestButton(status :Bool) {
+        if status {
+            proceedToCheckoutButton.isEnabled = true
+            proceedToCheckoutButton.alpha = 1.0
+        } else {
+            proceedToCheckoutButton.isEnabled = false
+            proceedToCheckoutButton.alpha = 0.5
+        }
     }
     
     //***** Notification for update timer.*****//
@@ -279,7 +277,6 @@ class WhoWillBeCheckingInViewController: UIViewController {
                 self?.presentAlert(with: Constant.ControllerTitles.whoWillBeCheckingInControllerTitle, message: Constant.AlertMessages.operationFailedMessage)
                 
             })
-            
         }
     }
     
@@ -302,14 +299,11 @@ class WhoWillBeCheckingInViewController: UIViewController {
             }, onError: { [weak self] _ in
                 self?.presentErrorAlert(UserFacingCommonError.generic)
             })
-            
         } else {
-            
             self.requiredSectionIntTBLview = 2
             checkingInUserTBLview.reloadData()
             self.proceedToCheckoutButton.isEnabled = true
             self.proceedToCheckoutButton.alpha = 1.0
-            
         }
         
     }
@@ -318,11 +312,16 @@ class WhoWillBeCheckingInViewController: UIViewController {
     func dropDownButtonPressed(_ sender: IUIKButton) {
         
         if isKeyBoardOpen {
-            
-            self.activeField?.resignFirstResponder()
+            activeField?.resignFirstResponder()
         }
-        self.dropDownSelectionRow = sender.tag
-        self.dropDownSelectionSection = Int(sender.accessibilityValue!)!
+        dropDownSelectionRow = sender.tag
+        dropDownSelectionSection = Int(sender.accessibilityValue ?? "0") ?? 0
+        if dropDownSelectionRow == 4 && Constant.GetawaySearchResultGuestFormDetailData.stateListArray.isEmpty {
+            let state = State()
+            state.name = "N/A"
+            state.code = ""
+            Constant.GetawaySearchResultGuestFormDetailData.stateListArray.append(state)
+        }
         if !self.hideStatus {
             
             self.hideStatus = true
@@ -622,9 +621,31 @@ class WhoWillBeCheckingInViewController: UIViewController {
     
     func showCertificateInfo() {
         let storyboard = UIStoryboard(name: "VacationSearchIphone", bundle: nil)
-        let nav = storyboard.instantiateViewController(withIdentifier: "GestCertificateInfo") as! UINavigationController
+        guard let nav = storyboard.instantiateViewController(withIdentifier: "GestCertificateInfo") as? UINavigationController else { return }
         
-        self.present(nav, animated: true, completion: nil)
+        present(nav, animated: true)
+    }
+    
+    func editingChanged(_ textField: UITextField) {
+        /*if textField.text?.characters.count == 1 {
+            if textField.text?.characters.first == " " {
+                textField.text = ""
+                return
+            }
+        }*/
+        if proceedStatus == guestFormCheckForDetails() {
+            //checkingInUserTBLview.reloadData()
+        }
+
+        /*guard
+            let habit = habitNameField.text, !habit.isEmpty,
+            let goal = goalField.text, !goal.isEmpty,
+            let frequency = frequencyField.text, !frequency.isEmpty
+            else {
+                doneBarButton.isEnabled = false
+                return
+        }
+        doneBarButton.isEnabled = true*/
     }
 }
 
@@ -844,6 +865,7 @@ extension WhoWillBeCheckingInViewController: UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.guestTextFieldCell, for: indexPath) as! GuestTextFieldCell
             
             cell.nameTF.text = ""
+            cell.nameTF.addTarget(self, action: #selector(editingChanged), for: .editingChanged)
             cell.nameTF.delegate = self
             if indexPath.section == 3 {
                 
@@ -894,7 +916,6 @@ extension WhoWillBeCheckingInViewController: UITableViewDataSource {
                     }
                 }
             }
-            self.cellUsedFor = Constant.MyClassConstants.guestString
             cell.nameTF.tag = indexPath.row
             cell.nameTF.accessibilityValue = "\(indexPath.section)"
             cell.borderView.layer.borderColor = #colorLiteral(red: 0.9137254902, green: 0.9137254902, blue: 0.9215686275, alpha: 1).cgColor
@@ -981,8 +1002,6 @@ extension WhoWillBeCheckingInViewController: UITableViewDataSource {
                     }
                     
                 }
-                
-                self.cellUsedFor = Constant.MyClassConstants.guestString
                 cell.nameTF.tag = indexPath.row
                 cell.nameTF.accessibilityValue = "\(indexPath.section)"
                 cell.borderView.layer.borderColor = #colorLiteral(red: 0.9137254902, green: 0.9137254902, blue: 0.9215686275, alpha: 1).cgColor
@@ -1018,10 +1037,10 @@ extension WhoWillBeCheckingInViewController: UIPickerViewDelegate {
             Helper.getStates(country: Constant.GetawaySearchResultCardFormDetailData.countryCode, viewController: self)
         } else {
             if !Constant.GetawaySearchResultGuestFormDetailData.stateListArray.isEmpty {
-                guard let stateName = Constant.GetawaySearchResultGuestFormDetailData.stateListArray[row].name else { return }
+                guard let stateName = Constant.GetawaySearchResultGuestFormDetailData.stateListArray[row].name, let code = Constant.GetawaySearchResultGuestFormDetailData.stateListArray[row].code else { return }
                 
                 Constant.GetawaySearchResultGuestFormDetailData.state = stateName
-                Constant.GetawaySearchResultCardFormDetailData.stateCode = Constant.GetawaySearchResultGuestFormDetailData.stateListArray[row].code!
+                Constant.GetawaySearchResultCardFormDetailData.stateCode = code
                 
             }
             
@@ -1060,54 +1079,23 @@ extension WhoWillBeCheckingInViewController: UITextFieldDelegate {
         self.activeField?.resignFirstResponder()
     }
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        
-        if range.length == 1 && string.characters.count == 0 {
-            intervalPrint("backspace tapped")
-        }
+        let textFieldText: NSString = textField.text as NSString? ?? ""
+        let textAfterUpdate = textFieldText.replacingCharacters(in: range, with: string)
         
         guard let accessibilityValue = textField.accessibilityValue else { return false }
-        guard let textFieldText = textField.text else { return false }
         
-        if self.cellUsedFor == Constant.MyClassConstants.guestString {
             switch (Int(accessibilityValue)) ?? 0 {
             case 3 :
+                if !textAfterUpdate.isEmpty {
+                    textField.superview?.layer.borderColor = #colorLiteral(red: 0.9137254902, green: 0.9137254902, blue: 0.9215686275, alpha: 1).cgColor
+                } else {
+                    textField.superview?.layer.borderColor = UIColor.red.cgColor
+                }
                 
                 if textField.tag == 0 {
-                    
-                    if range.length == 1 && string.characters.count == 0 {
-                        Constant.GetawaySearchResultGuestFormDetailData.firstName.characters.removeLast()
-                    } else {
-                        Constant.GetawaySearchResultGuestFormDetailData.firstName = "\(textFieldText)\(string)"
-                    }
-                    
-                    let vfnm = self.validateUsername(str: Constant.GetawaySearchResultGuestFormDetailData.firstName)
-                    if vfnm || Constant.GetawaySearchResultGuestFormDetailData.firstName.characters.count == 0 {
-                        
-                        proceedStatus = true
-                        textField.superview?.layer.borderColor = #colorLiteral(red: 0.9137254902, green: 0.9137254902, blue: 0.9215686275, alpha: 1).cgColor
-                    } else {
-                        
-                        textField.superview?.layer.borderColor = UIColor.red.cgColor
-                        proceedStatus = false
-                    }
+                    Constant.GetawaySearchResultGuestFormDetailData.firstName = textAfterUpdate
                 } else {
-                    
-                    if range.length == 1 && string.characters.count == 0 {
-                        Constant.GetawaySearchResultGuestFormDetailData.lastName.characters.removeLast()
-                    } else {
-                        Constant.GetawaySearchResultGuestFormDetailData.lastName = "\(textFieldText)\(string)"
-                    }
-                    
-                    let vfnm = self.validateUsername(str: Constant.GetawaySearchResultGuestFormDetailData.lastName)
-                    if vfnm || Constant.GetawaySearchResultGuestFormDetailData.lastName.characters.count == 0 {
-                        proceedStatus = true
-                        textField.superview?.layer.borderColor = #colorLiteral(red: 0.9137254902, green: 0.9137254902, blue: 0.9215686275, alpha: 1).cgColor
-                    } else {
-                        
-                        textField.superview?.layer.borderColor = UIColor.red.cgColor
-                        proceedStatus = false
-                    }
-                    
+                    Constant.GetawaySearchResultGuestFormDetailData.lastName = textAfterUpdate
                 }
             case 4 :
                 
@@ -1116,288 +1104,37 @@ extension WhoWillBeCheckingInViewController: UITextFieldDelegate {
                     break
                     
                 case 1 :
-                    
-                    if range.length == 1 && string.characters.count == 0 {
-                        Constant.GetawaySearchResultGuestFormDetailData.address1.characters.removeLast()
-                    } else {
-                        Constant.GetawaySearchResultGuestFormDetailData.address1 = "\(textFieldText)\(string)"
-                    }
-                    
+                    Constant.GetawaySearchResultGuestFormDetailData.address1 = textAfterUpdate
                 case 2 :
-                    
-                    if range.length == 1 && string.characters.count == 0 {
-                        Constant.GetawaySearchResultGuestFormDetailData.address2.characters.removeLast()
-                    } else {
-                        
-                        Constant.GetawaySearchResultGuestFormDetailData.address2 = "\(textFieldText)\(string)"
-                    }
+                    Constant.GetawaySearchResultGuestFormDetailData.address2 = textAfterUpdate
                 case 3 :
-                    
-                    if range.length == 1 && string.characters.count == 0 {
-                        Constant.GetawaySearchResultGuestFormDetailData.city.characters.removeLast()
-                    } else {
-                        Constant.GetawaySearchResultGuestFormDetailData.city = "\(textField.text!)\(string)"
-                    }
-                    
+                    Constant.GetawaySearchResultGuestFormDetailData.city = textAfterUpdate
                 default :
-                    if range.length == 1 && string.characters.count == 0 {
-                        Constant.GetawaySearchResultGuestFormDetailData.pinCode.characters.removeLast()
-                    } else {
-                        
-                        Constant.GetawaySearchResultGuestFormDetailData.pinCode = "\(textFieldText)\(string)"
-                    }
-                    
-                    if Constant.GetawaySearchResultGuestFormDetailData.pinCode.characters.count > 6 {
-                        textField.superview?.layer.borderColor = UIColor.red.cgColor
-                        proceedStatus = false
-                    } else {
-                        textField.superview?.layer.borderColor = #colorLiteral(red: 0.9137254902, green: 0.9137254902, blue: 0.9215686275, alpha: 1).cgColor
-                        proceedStatus = true
-                    }
+                    Constant.GetawaySearchResultGuestFormDetailData.pinCode = textAfterUpdate
                 }
                 
             default :
                 
                 switch textField.tag {
                 case 0 :
-                    if range.length == 1 && string.characters.count == 0 {
-                        Constant.GetawaySearchResultGuestFormDetailData.email.characters.removeLast()
-                    } else {
-                        
-                        Constant.GetawaySearchResultGuestFormDetailData.email = "\(textFieldText)\(string)"
-                    }
+                    Constant.GetawaySearchResultGuestFormDetailData.email = textAfterUpdate
                     
                     let eml = self.isValidEmail(testStr: Constant.GetawaySearchResultGuestFormDetailData.email)
                     
-                    if eml || Constant.GetawaySearchResultGuestFormDetailData.email.characters.count == 0 {
-                        
+                    if eml || !textAfterUpdate.isEmpty {
                         textField.superview?.layer.borderColor = #colorLiteral(red: 0.9137254902, green: 0.9137254902, blue: 0.9215686275, alpha: 1).cgColor
-                        proceedStatus = true
                     } else {
-                        
                         textField.superview?.layer.borderColor = UIColor.red.cgColor
-                        proceedStatus = false
                     }
                     
                 case 1 :
-                    if range.length == 1 && string.characters.count == 0 {
-                        Constant.GetawaySearchResultGuestFormDetailData.homePhoneNumber.characters.removeLast()
-                    } else {
-                        Constant.GetawaySearchResultGuestFormDetailData.homePhoneNumber = "\(textFieldText)\(string)"
-                        
-                        if Constant.GetawaySearchResultGuestFormDetailData.homePhoneNumber.characters.count > 9 {
-                            
-                            textField.superview?.layer.borderColor = #colorLiteral(red: 0.9137254902, green: 0.9137254902, blue: 0.9215686275, alpha: 1).cgColor
-                            proceedStatus = true
-                            
-                        } else {
-                            
-                            textField.superview?.layer.borderColor = UIColor.red.cgColor
-                            proceedStatus = false
-                            
-                        }
-                    }
-                default :
-                    if range.length == 1 && string.characters.count == 0 {
-                        Constant.GetawaySearchResultGuestFormDetailData.businessPhoneNumber.characters.removeLast()
-                    } else {
-                        Constant.GetawaySearchResultGuestFormDetailData.businessPhoneNumber = "\(textFieldText)\(string)"
-                        
-                        if Constant.GetawaySearchResultGuestFormDetailData.businessPhoneNumber.characters.count > 9 {
-                            
-                            textField.superview?.layer.borderColor = #colorLiteral(red: 0.9137254902, green: 0.9137254902, blue: 0.9215686275, alpha: 1).cgColor
-                            proceedStatus = true
-                            
-                        } else {
-                            
-                            textField.superview?.layer.borderColor = UIColor.red.cgColor
-                            proceedStatus = false
-                            
-                        }
-                        
-                    }
-                    
-                }
-            }
-            if Int(accessibilityValue) == 3 {
-                
-                if textField.tag == 0 {
-                    
-                    if range.length == 1 && string.characters.count == 0 {
-                        Constant.GetawaySearchResultGuestFormDetailData.firstName.characters.removeLast()
-                    } else {
-                        Constant.GetawaySearchResultGuestFormDetailData.firstName = "\(textFieldText)\(string)"
-                    }
-                    
-                    let vfnm = self.validateUsername(str: Constant.GetawaySearchResultGuestFormDetailData.firstName)
-                    if vfnm || Constant.GetawaySearchResultGuestFormDetailData.firstName.characters.count == 0 {
-                        
-                        proceedStatus = true
-                        textField.superview?.layer.borderColor = #colorLiteral(red: 0.9137254902, green: 0.9137254902, blue: 0.9215686275, alpha: 1).cgColor
-                    } else {
-                        
-                        textField.superview?.layer.borderColor = UIColor.red.cgColor
-                        proceedStatus = false
-                    }
-                } else {
-                    
-                    if range.length == 1 && string.characters.count == 0 {
-                        Constant.GetawaySearchResultGuestFormDetailData.lastName.characters.removeLast()
-                    } else {
-                        Constant.GetawaySearchResultGuestFormDetailData.lastName = "\(textFieldText)\(string)"
-                    }
-                    
-                    let vfnm = self.validateUsername(str: Constant.GetawaySearchResultGuestFormDetailData.lastName)
-                    if vfnm || Constant.GetawaySearchResultGuestFormDetailData.lastName.characters.count == 0 {
-                        proceedStatus = true
-                        textField.superview?.layer.borderColor = #colorLiteral(red: 0.9137254902, green: 0.9137254902, blue: 0.9215686275, alpha: 1).cgColor
-                    } else {
-                        textField.superview?.layer.borderColor = UIColor.red.cgColor
-                        proceedStatus = false
-                    }
-                }
-            } else if Int(accessibilityValue) == 4 {
-                
-                switch textField.tag {
-                case 0, 4 :
-                    break
-                case 1 :
-                    if range.length == 1 && string.characters.count == 0 {
-                        Constant.GetawaySearchResultGuestFormDetailData.address1.characters.removeLast()
-                    } else {
-                        Constant.GetawaySearchResultGuestFormDetailData.address1 = "\(textFieldText)\(string)"
-                    }
-                case 2 :
-                    if range.length == 1 && string.characters.count == 0 {
-                        Constant.GetawaySearchResultGuestFormDetailData.address2.characters.removeLast()
-                    } else {
-                        
-                        Constant.GetawaySearchResultGuestFormDetailData.address2 = "\(textFieldText)\(string)"
-                    }
-                case 3:
-                    if range.length == 1 && string.characters.count == 0 {
-                        Constant.GetawaySearchResultGuestFormDetailData.city.characters.removeLast()
-                    } else {
-                        Constant.GetawaySearchResultGuestFormDetailData.city = "\(textFieldText)\(string)"
-                    }
-                default :
-                    if range.length == 1 && string.characters.count == 0 {
-                        Constant.GetawaySearchResultGuestFormDetailData.pinCode.characters.removeLast()
-                    } else {
-                        
-                        Constant.GetawaySearchResultGuestFormDetailData.pinCode = "\(textFieldText)\(string)"
-                    }
-                    
-                    if Constant.GetawaySearchResultGuestFormDetailData.pinCode.characters.count > 6 {
-                        textField.superview?.layer.borderColor = UIColor.red.cgColor
-                        proceedStatus = false
-                    } else {
-                        
-                        textField.superview?.layer.borderColor = #colorLiteral(red: 0.9137254902, green: 0.9137254902, blue: 0.9215686275, alpha: 1).cgColor
-                        proceedStatus = true
-                        
-                    }
-                }
-                
-            } else {
-                
-                switch textField.tag {
-                case 0 :
-                    if range.length == 1 && string.characters.count == 0 {
-                        Constant.GetawaySearchResultGuestFormDetailData.email.characters.removeLast()
-                    } else {
-                        
-                        Constant.GetawaySearchResultGuestFormDetailData.email = "\(textFieldText)\(string)"
-                    }
-                    
-                    let eml = self.isValidEmail(testStr: Constant.GetawaySearchResultGuestFormDetailData.email)
-                    
-                    if eml || Constant.GetawaySearchResultGuestFormDetailData.email.characters.count == 0 {
-                        
-                        textField.superview?.layer.borderColor = #colorLiteral(red: 0.9137254902, green: 0.9137254902, blue: 0.9215686275, alpha: 1).cgColor
-                        proceedStatus = true
-                    } else {
-                        
-                        textField.superview?.layer.borderColor = UIColor.red.cgColor
-                        proceedStatus = false
-                    }
-                case 1 :
-                    
-                    if range.length == 1 && string.characters.count == 0 {
-                        Constant.GetawaySearchResultGuestFormDetailData.homePhoneNumber.characters.removeLast()
-                    } else {
-                        Constant.GetawaySearchResultGuestFormDetailData.homePhoneNumber = "\(textFieldText)\(string)"
-                        
-                        if Constant.GetawaySearchResultGuestFormDetailData.homePhoneNumber.characters.count > 9 {
-                            
-                            textField.superview?.layer.borderColor = #colorLiteral(red: 0.9137254902, green: 0.9137254902, blue: 0.9215686275, alpha: 1).cgColor
-                            proceedStatus = true
-                            
-                        } else {
-                            
-                            textField.superview?.layer.borderColor = UIColor.red.cgColor
-                            proceedStatus = false
-                            
-                        }
-                    }
-                    
-                default :
-                    
-                    if range.length == 1 && string.characters.count == 0 {
-                        Constant.GetawaySearchResultGuestFormDetailData.businessPhoneNumber.characters.removeLast()
-                    } else {
-                        Constant.GetawaySearchResultGuestFormDetailData.businessPhoneNumber = "\(textFieldText)\(string)"
-                        
-                        if Constant.GetawaySearchResultGuestFormDetailData.businessPhoneNumber.characters.count > 9 {
-                            
-                            textField.superview?.layer.borderColor = #colorLiteral(red: 0.9137254902, green: 0.9137254902, blue: 0.9215686275, alpha: 1).cgColor
-                            proceedStatus = true
-                            
-                        } else {
-                            
-                            textField.superview?.layer.borderColor = UIColor.red.cgColor
-                            proceedStatus = false
-                            
-                        }
-                    }
+                    Constant.GetawaySearchResultGuestFormDetailData.homePhoneNumber = textAfterUpdate
+                default : Constant.GetawaySearchResultGuestFormDetailData.businessPhoneNumber = textAfterUpdate
                 }
             }
             let detailStatus = guestFormCheckForDetails()
-            if detailStatus {
-                NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.notificationNames.enableGuestFormCheckout), object: nil)
-            }
+            enableGuestButton(status: detailStatus)
             return  true
-            
-        } else {
-            
-            if Int(accessibilityValue) == 0 {
-                
-                switch textField.tag {
-                case 0 :
-                    Constant.GetawaySearchResultCardFormDetailData.nameOnCard = "\(textFieldText)\(string)"
-                case 1 :
-                    Constant.GetawaySearchResultCardFormDetailData.cardNumber = "\(textFieldText)\(string)"
-                default :
-                    Constant.GetawaySearchResultCardFormDetailData.cvv = "\(textFieldText)\(string)"
-                }
-                
-            } else {
-                
-                switch textField.tag {
-                case 1 :
-                    Constant.GetawaySearchResultCardFormDetailData.address1 = "\(textFieldText)\(string)"
-                case 2 :
-                    Constant.GetawaySearchResultCardFormDetailData.address2 = "\(textFieldText)\(string)"
-                case 3 :
-                    Constant.GetawaySearchResultCardFormDetailData.city = "\(textFieldText)\(string)"
-                default :
-                    Constant.GetawaySearchResultCardFormDetailData.pinCode = "\(textFieldText)\(string)"
-                }
-                
-            }
-            return  true
-        }
-        
     }
     func textFieldDidBeginEditing(_ textField: UITextField) {
         

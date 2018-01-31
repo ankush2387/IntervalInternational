@@ -305,7 +305,7 @@ class DashboardTableViewController: UITableViewController {
         switch dashboardArray[section] {
             
         case Constant.dashboardTableScreenReusableIdentifiers.alert:
-            return !Constant.MyClassConstants.getawayAlertsArray.isEmpty ? 1 : 0
+            return !Constant.MyClassConstants.searchDateResponse.isEmpty ? 1 : 0
         case Constant.dashboardTableScreenReusableIdentifiers.upcoming :
             return Constant.MyClassConstants.upcomingTripsArray.count <= 2 ? Constant.MyClassConstants.upcomingTripsArray.count : 2
         default:
