@@ -180,8 +180,6 @@ class VacationSearchResultIPadController: UIViewController {
         createSections()
         title = Constant.ControllerTitles.searchResultViewController
         
-        //self.searchedDateCollectionView.reloadData()
-        
         if Constant.MyClassConstants.showAlert == true {
             
             alertView = Helper.noResortView(senderView: self.view)
@@ -194,7 +192,14 @@ class VacationSearchResultIPadController: UIViewController {
             headerVw.isHidden = false
         }
         
-        self.collectionviewSelectedIndex = Constant.MyClassConstants.searchResultCollectionViewScrollToIndex
+        collectionviewSelectedIndex = Constant.MyClassConstants.searchResultCollectionViewScrollToIndex
+        var index = 0
+        for (Index, calendarItem) in Constant.MyClassConstants.calendarDatesArray.enumerated() where calendarItem.checkInDate == Constant.MyClassConstants.initialVacationSearch.searchCheckInDate {
+            index = Index
+            break
+        }
+        let indexpath = IndexPath(item: index, section: 0)
+        searchedDateCollectionView.scrollToItem(at: indexpath, at: .centeredHorizontally, animated: true)
     }
     
     // Function called to dismiss current controller when back button pressed.
@@ -634,7 +639,7 @@ extension VacationSearchResultIPadController: UICollectionViewDelegate {
                             let unitSize = units[indexPath.item].unitSize,
                             let kitchenType = units[indexPath.item].kitchenType {
                             
-                            let processRequest = RentalProcessStartRequest(resortCode: Constant.MyClassConstants.selectedResort.resortCode, checkInDate: checkInDate, checkOutDate: checkOutDate, unitSize: UnitSize(rawValue: unitSize), kitchenType: KitchenType(rawValue:kitchenType))
+                            let processRequest = RentalProcessStartRequest(resortCode: Constant.MyClassConstants.selectedResort.resortCode, checkInDate: checkInDate, checkOutDate: checkOutDate, unitSize: UnitSize(rawValue: unitSize), kitchenType: KitchenType(rawValue: kitchenType))
                             
                             RentalProcessClient.start(Session.sharedSession.userAccessToken, process: processResort, request: processRequest, onSuccess: { response in
                                 
@@ -891,8 +896,10 @@ extension VacationSearchResultIPadController: UICollectionViewDelegate {
         if let deposit = Constant.MyClassConstants.filterRelinquishments[0].deposit {
             processRequest.relinquishmentId = deposit.relinquishmentId
         }
-        processRequest.relinquishmentId = Constant.MyClassConstants.filterRelinquishments[0].openWeek?.relinquishmentId
         
+        if let clubPoints = Constant.MyClassConstants.filterRelinquishments[0].clubPoints {
+            processRequest.relinquishmentId = clubPoints.relinquishmentId
+        }
         ExchangeProcessClient.start(Session.sharedSession.userAccessToken, process: processResort, request: processRequest, onSuccess: { response in
             let processResort = ExchangeProcess()
             processResort.processId = response.processId

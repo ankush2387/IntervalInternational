@@ -61,8 +61,11 @@ class SideMenuTableViewController: UIViewController {
     @IBOutlet var sideMenuTable: UITableView?
     
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        Constant.activeAlertCount = Constant.MyClassConstants.searchDateResponse.filter { $0.1.checkInDates.count > 0 }.count
         //***** Adding notification to reload table when all alerts have been fetched *****//
         NotificationCenter.default.addObserver(self, selector: #selector(reloadBadgeView), name: NSNotification.Name(rawValue: Constant.notificationNames.getawayAlertsNotification), object: nil)
+        sideMenuTable?.reloadData()
     }
     
     override func viewDidLoad() {
@@ -87,7 +90,7 @@ class SideMenuTableViewController: UIViewController {
     //***** Function called for getaway alerts notification *****//
     
     func reloadBadgeView() {
-        self.sideMenuTable?.reloadData()
+        sideMenuTable?.reloadData()
     }
 }
 

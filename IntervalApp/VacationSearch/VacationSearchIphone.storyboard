@@ -384,7 +384,7 @@ transaction.</string>
                                                                 <rect key="frame" x="0.0" y="0.0" width="375" height="200"/>
                                                                 <autoresizingMask key="autoresizingMask"/>
                                                                 <subviews>
-                                                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="NoImageIcon" translatesAutoresizingMaskIntoConstraints="NO" id="oL6-xx-O0X">
+                                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="NoImageIcon" translatesAutoresizingMaskIntoConstraints="NO" id="oL6-xx-O0X">
                                                                         <rect key="frame" x="0.0" y="0.0" width="375" height="200"/>
                                                                         <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                     </imageView>
@@ -407,12 +407,12 @@ transaction.</string>
                                                     </connections>
                                                 </collectionView>
                                                 <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="5" translatesAutoresizingMaskIntoConstraints="NO" id="lUT-BP-A2b" customClass="PageControl" customModule="IntervalApp" customModuleProvider="target">
-                                                    <rect key="frame" x="70" y="80" width="305" height="37"/>
+                                                    <rect key="frame" x="70" y="83" width="305" height="37"/>
                                                     <color key="pageIndicatorTintColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <color key="currentPageIndicatorTintColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </pageControl>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="z4p-tA-zxM">
-                                                    <rect key="frame" x="0.0" y="117" width="375" height="80"/>
+                                                    <rect key="frame" x="0.0" y="120" width="375" height="80"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hyatt Vacation Resorts Asia Pacific" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jfx-8G-qeD">
                                                             <rect key="frame" x="20" y="10" width="335" height="20"/>
@@ -467,7 +467,7 @@ transaction.</string>
                                                     </constraints>
                                                 </view>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Q4p-2L-eg6">
-                                                    <rect key="frame" x="15" y="85" width="30" height="30"/>
+                                                    <rect key="frame" x="15" y="88" width="30" height="30"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="30" id="iNO-eV-E0t"/>
                                                         <constraint firstAttribute="height" constant="30" id="tIa-8X-GaF"/>
@@ -475,7 +475,7 @@ transaction.</string>
                                                     <state key="normal" image="WeatherIcon"/>
                                                 </button>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h7Q-vz-FRw">
-                                                    <rect key="frame" x="50" y="85" width="30" height="30"/>
+                                                    <rect key="frame" x="50" y="88" width="30" height="30"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="30" id="cLV-O0-wl4"/>
                                                         <constraint firstAttribute="height" constant="30" id="ddQ-Vr-DCO"/>
@@ -510,7 +510,7 @@ transaction.</string>
                                                 <constraint firstItem="Q4p-2L-eg6" firstAttribute="leading" secondItem="3KJ-3w-k8s" secondAttribute="leading" constant="15" id="ioi-DJ-R8O"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="QMA-5Y-6vY" secondAttribute="bottom" constant="-8" id="kXD-JP-cnh"/>
                                                 <constraint firstAttribute="trailing" secondItem="z4p-tA-zxM" secondAttribute="trailing" id="urA-kE-xDZ"/>
-                                                <constraint firstAttribute="bottom" secondItem="z4p-tA-zxM" secondAttribute="bottom" constant="3" id="wIX-jV-pKp"/>
+                                                <constraint firstAttribute="bottom" secondItem="z4p-tA-zxM" secondAttribute="bottom" id="wIX-jV-pKp"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="ggb-Ns-csQ" secondAttribute="trailing" constant="-8" id="ydz-UX-GzP"/>
                                             </constraints>
                                             <variation key="default">
@@ -550,7 +550,7 @@ transaction.</string>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Details" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f52-Bx-que">
-                                                    <rect key="frame" x="42" y="11" width="82" height="21"/>
+                                                    <rect key="frame" x="25" y="11" width="82" height="21"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="21" id="ZIe-Qz-9gt"/>
                                                         <constraint firstAttribute="width" constant="82" id="dAl-b5-2No"/>
@@ -560,7 +560,7 @@ transaction.</string>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JyE-0K-Roh">
-                                                    <rect key="frame" x="42" y="40" width="281" height="103"/>
+                                                    <rect key="frame" x="25" y="37" width="325" height="106"/>
                                                     <string key="text">Wyndham Vacation Resorts, Inc., is a leading provider of quality family vacations to exciting destinations such as Orlando, Fort Lauderdale, Daytona Beach,Wyndham Vacation Resorts, Inc., is a leading provider of quality family vacations to exciting destinations such as Orlando, Fort Lauderdale, Daytona Beach,Wyndham Vacation Resorts, Inc., is a leading provider of quality family vacations to exciting destinations such as Orlando, Fort Lauderdale, Daytona Beach,Wyndham Vacation Resorts, Inc., is a leading provider of quality family vacations to exciting destinations such as Orlando, Fort Lauderdale, Daytona Beach,Wyndham Vacation Resorts, Inc., is a leading provider of quality family vacations to exciting destinations such as Orlando, Fort Lauderdale, Daytona Beach,</string>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -568,11 +568,11 @@ transaction.</string>
                                                 </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="f52-Bx-que" firstAttribute="leading" secondItem="ZiT-u1-yMq" secondAttribute="leadingMargin" constant="27" id="1ju-WP-Af8"/>
-                                                <constraint firstItem="JyE-0K-Roh" firstAttribute="bottom" secondItem="ZiT-u1-yMq" secondAttribute="bottomMargin" id="8A3-4f-Gw3"/>
-                                                <constraint firstItem="JyE-0K-Roh" firstAttribute="centerX" secondItem="ZiT-u1-yMq" secondAttribute="centerX" constant="-5" id="Oaz-p8-LL5"/>
-                                                <constraint firstItem="JyE-0K-Roh" firstAttribute="top" secondItem="f52-Bx-que" secondAttribute="bottom" constant="8" symbolic="YES" id="gdt-zx-uiT"/>
-                                                <constraint firstItem="f52-Bx-que" firstAttribute="leading" secondItem="JyE-0K-Roh" secondAttribute="leading" id="hZM-2I-NpG"/>
+                                                <constraint firstItem="JyE-0K-Roh" firstAttribute="bottom" secondItem="ZiT-u1-yMq" secondAttribute="bottomMargin" id="1gR-F3-JSu"/>
+                                                <constraint firstItem="f52-Bx-que" firstAttribute="leading" secondItem="ZiT-u1-yMq" secondAttribute="leadingMargin" constant="10" id="1ju-WP-Af8"/>
+                                                <constraint firstItem="JyE-0K-Roh" firstAttribute="leading" secondItem="ZiT-u1-yMq" secondAttribute="leadingMargin" constant="10" id="4VM-eO-eE8"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="JyE-0K-Roh" secondAttribute="trailing" constant="10" id="DOm-Ar-eO1"/>
+                                                <constraint firstItem="JyE-0K-Roh" firstAttribute="top" secondItem="f52-Bx-que" secondAttribute="bottom" constant="5" id="Rpu-Q8-dka"/>
                                                 <constraint firstItem="f52-Bx-que" firstAttribute="top" secondItem="ZiT-u1-yMq" secondAttribute="topMargin" id="ksh-Wd-eWw"/>
                                             </constraints>
                                         </tableViewCellContentView>
@@ -607,7 +607,7 @@ transaction.</string>
                                                     </connections>
                                                 </button>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="United States of America" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dOn-HM-6x9">
-                                                    <rect key="frame" x="30" y="20" width="191" height="21"/>
+                                                    <rect key="frame" x="25" y="20" width="191" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.46666666670000001" blue="0.74509803919999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -616,7 +616,7 @@ transaction.</string>
                                             <constraints>
                                                 <constraint firstItem="dOn-HM-6x9" firstAttribute="centerY" secondItem="5N7-Iq-NDe" secondAttribute="centerY" id="PLt-gG-I1M"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="OOW-9j-39q" secondAttribute="trailing" id="ZRs-j7-4BS"/>
-                                                <constraint firstItem="dOn-HM-6x9" firstAttribute="leading" secondItem="5N7-Iq-NDe" secondAttribute="leadingMargin" constant="15" id="snj-Bs-NZd"/>
+                                                <constraint firstItem="dOn-HM-6x9" firstAttribute="leading" secondItem="5N7-Iq-NDe" secondAttribute="leadingMargin" constant="10" id="snj-Bs-NZd"/>
                                                 <constraint firstItem="OOW-9j-39q" firstAttribute="top" secondItem="5N7-Iq-NDe" secondAttribute="topMargin" constant="3" id="uGA-Zd-zrB"/>
                                             </constraints>
                                         </tableViewCellContentView>
@@ -633,17 +633,17 @@ transaction.</string>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Expandable Cell" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3av-fC-iS7">
-                                                    <rect key="frame" x="27" y="3" width="321" height="38"/>
+                                                    <rect key="frame" x="25" y="3" width="325" height="38"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="3av-fC-iS7" firstAttribute="leading" secondItem="Fiy-sG-SFm" secondAttribute="leadingMargin" constant="12" id="GMb-Hi-ayD"/>
+                                                <constraint firstItem="3av-fC-iS7" firstAttribute="leading" secondItem="Fiy-sG-SFm" secondAttribute="leadingMargin" constant="10" id="GMb-Hi-ayD"/>
                                                 <constraint firstItem="3av-fC-iS7" firstAttribute="top" secondItem="Fiy-sG-SFm" secondAttribute="topMargin" constant="-8" id="W82-3w-7iZ"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="3av-fC-iS7" secondAttribute="bottom" constant="-8" id="ntm-ol-giE"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="3av-fC-iS7" secondAttribute="trailing" constant="12" id="rhG-fI-NyC"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="3av-fC-iS7" secondAttribute="trailing" constant="10" id="rhG-fI-NyC"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
@@ -680,13 +680,13 @@ transaction.</string>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Med-zL-4Xu">
-                                                    <rect key="frame" x="20" y="0.0" width="335" height="17"/>
+                                                    <rect key="frame" x="18" y="0.0" width="339" height="17"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="JaT-hK-rPW">
-                                                    <rect key="frame" x="20" y="17" width="20" height="20"/>
+                                                    <rect key="frame" x="18" y="17" width="20" height="20"/>
                                                     <color key="backgroundColor" red="0.96862745100000003" green="0.41176470590000003" blue="0.19215686269999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="20" id="1GX-ac-ae0"/>
@@ -697,7 +697,7 @@ transaction.</string>
                                             <constraints>
                                                 <constraint firstItem="JaT-hK-rPW" firstAttribute="top" secondItem="Med-zL-4Xu" secondAttribute="bottom" id="0Od-Gu-lef"/>
                                                 <constraint firstItem="Med-zL-4Xu" firstAttribute="centerX" secondItem="qem-zP-t9w" secondAttribute="centerX" id="5bF-I1-xgd"/>
-                                                <constraint firstItem="Med-zL-4Xu" firstAttribute="leading" secondItem="qem-zP-t9w" secondAttribute="leadingMargin" constant="12" id="9kw-iw-mXT"/>
+                                                <constraint firstItem="Med-zL-4Xu" firstAttribute="leading" secondItem="qem-zP-t9w" secondAttribute="leadingMargin" constant="10" id="9kw-iw-mXT"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="JaT-hK-rPW" secondAttribute="bottom" constant="-4" id="To7-dz-fdh"/>
                                                 <constraint firstItem="Med-zL-4Xu" firstAttribute="leading" secondItem="JaT-hK-rPW" secondAttribute="leading" id="jgn-MM-ncy"/>
                                                 <constraint firstItem="Med-zL-4Xu" firstAttribute="top" secondItem="qem-zP-t9w" secondAttribute="top" id="lBd-m6-5BN"/>

@@ -61,7 +61,7 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="90"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="SV8-PJ-8ro" id="QuZ-X4-MXm">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="90"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="89.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -69,7 +69,7 @@
                                         <rect key="frame" x="0.0" y="118" width="375" height="60"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hNb-WP-agc" id="Cwz-JV-kqv">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="59.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -897,7 +897,7 @@
                                                             </constraints>
                                                         </imageView>
                                                     </subviews>
-                                                    <color key="backgroundColor" red="0.93725490199999995" green="0.50196078430000002" blue="0.1764705882" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="trailing" secondItem="HwS-Hl-Bvh" secondAttribute="trailing" constant="20" id="9Va-wo-ovn"/>
                                                         <constraint firstItem="DPQ-bC-1df" firstAttribute="leading" secondItem="oCm-Hm-h6I" secondAttribute="trailing" constant="8" id="Avy-7c-afu"/>
@@ -1558,7 +1558,7 @@
         <image name="close" width="32" height="32"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="LB4-mY-QYy"/>
+        <segue reference="v5y-Uh-olM"/>
         <segue reference="KTW-Os-bqS"/>
         <segue reference="1yd-In-YGU"/>
         <segue reference="SsD-cI-IVD"/>

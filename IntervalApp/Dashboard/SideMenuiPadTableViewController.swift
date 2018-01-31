@@ -54,7 +54,8 @@ class SideMenuiPadTableViewController: UIViewController, UITableViewDataSource {
     @IBOutlet fileprivate var sideMenuTable: UITableView!
     
     override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
+        super.viewWillAppear(animated)
+        Constant.activeAlertCount = Constant.MyClassConstants.searchDateResponse.filter { $0.1.checkInDates.count > 0 }.count
         //***** Adding notification to reload alert badge *****//
         NotificationCenter.default.addObserver(self, selector: #selector(reloadBadgeView), name: NSNotification.Name(rawValue: Constant.notificationNames.getawayAlertsNotification), object: nil)
     }

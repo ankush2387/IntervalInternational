@@ -244,9 +244,9 @@ class AddDebitOrCreditCardViewController: UIViewController {
                     self.dismiss(animated: false, completion: nil)
                     self.delegate?.newCreditCardAdded()
                     
-                    }, onError: {(_) in
-                        self.presentErrorAlert(UserFacingCommonError.generic)
-                        self.hideHudAsync()
+                    }, onError: {[weak self] error in
+                        self?.presentErrorAlert(UserFacingCommonError.handleError(error))
+                        self?.hideHudAsync()
                 })
             } else {
                 self.presentAlert(with: Constant.MyClassConstants.newCardalertTitle, message: Constant.MyClassConstants.newCardalertMess)
@@ -294,7 +294,7 @@ class AddDebitOrCreditCardViewController: UIViewController {
                 if dropDownSelectionRow == 4 && Constant.GetawaySearchResultGuestFormDetailData.stateListArray.isEmpty {
                     let state = State()
                     state.name = "N/A"
-                    state.code = nil
+                    state.code = ""
                     
                     Constant.GetawaySearchResultGuestFormDetailData.stateListArray.append(state)
                 }
@@ -803,78 +803,30 @@ extension AddDebitOrCreditCardViewController: UITextFieldDelegate {
     }
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
-        intervalPrint(string)
-        if range.length == 1 && string.isEmpty {
-            intervalPrint("backspace tapped")
-        }
-
+        let textFieldText: NSString = textField.text as NSString? ?? ""
+        let textAfterUpdate = textFieldText.replacingCharacters(in: range, with: string)
+        
         if Int(textField.accessibilityValue.unwrappedString) == 0 {
-                if textField.tag == 0 {
-                    
-                    if range.length == 1 && string.isEmpty {
-                        Constant.GetawaySearchResultCardFormDetailData.nameOnCard.removeLast()
-                    } else {
-                        if let textfieldText = textField.text {
-                          Constant.GetawaySearchResultCardFormDetailData.nameOnCard = "\(textfieldText)\(string)"
-                        }
-                    }
-
-                } else if textField.tag == 1 {
-                    
-                    if range.length == 1 && string.isEmpty {
-                        Constant.GetawaySearchResultCardFormDetailData.cardNumber.removeLast()
-                    } else {
-                        if let textfieldText = textField.text {
-                            Constant.GetawaySearchResultCardFormDetailData.cardNumber = "\(textfieldText)\(string)"
-                        }
-                    }
-                    
-                } else {
-                    
-                    if range.length == 1 && string.isEmpty {
-                        Constant.GetawaySearchResultCardFormDetailData.cvv.removeLast()
-                    } else {
-                        if let textfieldText = textField.text {
-                         Constant.GetawaySearchResultCardFormDetailData.cvv = "\(textfieldText)\(string)"
-                        }
-                    }
+            if textField.tag == 0 {
+                Constant.GetawaySearchResultCardFormDetailData.nameOnCard = textAfterUpdate
+            } else if textField.tag == 1 {
+                Constant.GetawaySearchResultCardFormDetailData.cardNumber = textAfterUpdate
+            } else {
+                Constant.GetawaySearchResultCardFormDetailData.cvv = textAfterUpdate
             }
         } else {
                 
-                if textField.tag == 1 {
-                    
-                    if range.length == 1 && string.isEmpty {
-                        Constant.GetawaySearchResultCardFormDetailData.address1.removeLast()
-                    } else {
-                        Constant.GetawaySearchResultCardFormDetailData.address1 = "\(textField.text ?? "")\(string)"
-                    }
-                    
-                } else if textField.tag == 2 {
-                    
-                    if range.length == 1 && string.isEmpty {
-                        Constant.GetawaySearchResultCardFormDetailData.address2.removeLast()
-                    } else {
-                        Constant.GetawaySearchResultCardFormDetailData.address2 = "\(textField.text ?? "")\(string)"
-
-                    }
-                    
-                } else if textField.tag == 3 {
-                    
-                    if range.length == 1 && string.isEmpty {
-                        Constant.GetawaySearchResultCardFormDetailData.city.removeLast()
-                    } else {
-                        Constant.GetawaySearchResultCardFormDetailData.city = "\(textField.text ?? "")\(string)"
-                    }
-                } else {
-                    
-                    if range.length == 1 && string.isEmpty {
-                        Constant.GetawaySearchResultCardFormDetailData.pinCode.removeLast()
-                    } else {
-                       Constant.GetawaySearchResultCardFormDetailData.pinCode = "\(textField.text ?? "")\(string)"
-                    }
+            if textField.tag == 1 {
+                
+                Constant.GetawaySearchResultCardFormDetailData.address1 = textAfterUpdate
+            } else if textField.tag == 2 {
+                Constant.GetawaySearchResultCardFormDetailData.address2 = textAfterUpdate
+            } else if textField.tag == 3 {
+                Constant.GetawaySearchResultCardFormDetailData.city = textAfterUpdate
+            } else {
+                Constant.GetawaySearchResultCardFormDetailData.pinCode = textAfterUpdate
                 }
             }
-        
             return  true
         }
         
