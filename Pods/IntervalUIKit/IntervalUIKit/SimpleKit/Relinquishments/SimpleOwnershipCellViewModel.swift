@@ -84,7 +84,7 @@ final public class SimpleOwnershipCellViewModel {
         
         if let flags = flagsLabelText {
             let newLines = flags.filter { $0 == "\n" }
-            let newHeightAdjustment = newLines.count * 20
+            let newHeightAdjustment = newLines.count * 25
             cellHeight.value += CGFloat(newHeightAdjustment)
         }
     }

@@ -51,7 +51,7 @@ PODS:
     - GoogleToolboxForMac/Defines (= 2.1.1)
   - HexColors (4.0.0)
   - HockeySDK/AllFeaturesLib (5.0.0)
-  - IntervalUIKit (4.3.1):
+  - IntervalUIKit (4.3.3):
     - ActionSheetPicker-3.0 (~> 2.2.0)
     - Bond (= 6.3.0)
     - ReactiveKit (= 3.6.2)
@@ -94,13 +94,13 @@ DEPENDENCIES:
   - Bond (from `https://github.com/ReactiveKit/Bond.git`, tag `6.3.0`)
   - Brightcove-Player-SDK (~> 5.3.4)
   - CVCalendar (from `https://github.com/Mozharovsky/CVCalendar`, tag `1.4.0`)
-  - DarwinSDK (from `https://bitbucket.iilg.com/scm/iimob/darwin-sdk-ios.git`, commit `ab03681e2c4`, branch `develop`)
+  - DarwinSDK (from `https://bitbucket.iilg.com/scm/iimob/darwin-sdk-ios.git`, commit `54f84bc7`, branch `develop`)
   - Firebase/Core (~> 4.3.0)
   - Firebase/Messaging (~> 4.3.0)
   - FSCalendar (~> 2.1.1)
   - GoogleMaps (~> 2.2.0)
   - HockeySDK/AllFeaturesLib
-  - IntervalUIKit (from `https://bitbucket.iilg.com/scm/iimob/interval-uikit-ios.git`, commit `00389977`)
+  - IntervalUIKit (from `https://bitbucket.iilg.com/scm/iimob/interval-uikit-ios.git`, commit `e9f94eb7`)
   - Nimble
   - Quick
   - ReactiveKit (from `https://github.com/ReactiveKit/ReactiveKit.git`, tag `v3.6.2`)
@@ -127,10 +127,10 @@ EXTERNAL SOURCES:
     :tag: 1.4.0
   DarwinSDK:
     :branch: develop
-    :commit: ab03681e2c4
+    :commit: 54f84bc7
     :git: https://bitbucket.iilg.com/scm/iimob/darwin-sdk-ios.git
   IntervalUIKit:
-    :commit: 00389977
+    :commit: e9f94eb7
     :git: https://bitbucket.iilg.com/scm/iimob/interval-uikit-ios.git
   ReactiveKit:
     :git: https://github.com/ReactiveKit/ReactiveKit.git
@@ -156,10 +156,10 @@ CHECKOUT OPTIONS:
     :git: https://github.com/Mozharovsky/CVCalendar
     :tag: 1.4.0
   DarwinSDK:
-    :commit: ab03681e2c4e731d5cb1c52de649f061b1f8e4de
+    :commit: 54f84bc70a8d1004cb8abd48f75aba83187c8b19
     :git: https://bitbucket.iilg.com/scm/iimob/darwin-sdk-ios.git
   IntervalUIKit:
-    :commit: 00389977
+    :commit: e9f94eb7
     :git: https://bitbucket.iilg.com/scm/iimob/interval-uikit-ios.git
   ReactiveKit:
     :git: https://github.com/ReactiveKit/ReactiveKit.git
@@ -194,7 +194,7 @@ SPEC CHECKSUMS:
   GoogleToolboxForMac: 8e329f1b599f2512c6b10676d45736bcc2cbbeb0
   HexColors: 5f95843ef89aff6a72e1fd3a8ebabf205cc43379
   HockeySDK: 82bf8dcbe1af3c87c24dc98924fcf2e2ba5be8c4
-  IntervalUIKit: 2065a6b4354b8ec2e274a9a391269a6c93291d57
+  IntervalUIKit: 00ed8a7788d8db616836bde362ae0605829c5b66
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
   Nimble: bfe1f814edabba69ff145cb1283e04ed636a67f2
   PPTopMostController: 4e6f1e5f8c645bdcc74cd837a20f607ff262c048
@@ -213,6 +213,6 @@ SPEC CHECKSUMS:
   TPKeyboardAvoiding: 0d6af20e95e2850f4c621841225b59ec7d8dd852
   XCGLogger: 38063ea89b4c8b23232d18efd2e12eb0005f3ea4
 
-PODFILE CHECKSUM: 6edc2f1f8b4a0831e0868f331b691e5db52a0648
+PODFILE CHECKSUM: e62b8f18590f45cf8269b09906d90b129f8abfb5
 
-COCOAPODS: 1.2.1
+COCOAPODS: 1.3.1

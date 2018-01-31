@@ -12,6 +12,8 @@ import SkyFloatingLabelTextField
 final public class SimpleFloatingLabelTextFieldCell: SimpleTableViewCell {
 
     // MARK: - IBOutlets
+    
+    @IBOutlet private weak var tappableView: UIView!
     @IBOutlet public weak var textField: SkyFloatingLabelTextField! {
         didSet {
             textField.delegate = self
@@ -26,18 +28,17 @@ final public class SimpleFloatingLabelTextFieldCell: SimpleTableViewCell {
                 setUI()
 
                 viewModel.placeholderText.observeNext { [weak self] placeholder in
+                    guard let strongSelf = self else { return }
                     if let placeholder = placeholder {
-                        self?.textField.placeholder = "    \(placeholder.uppercased())"
-                        self?.textField.title = "     \(placeholder.uppercased())"
+                        strongSelf.textField.placeholder = "    \(placeholder.uppercased())"
+                        strongSelf.textField.title = "     \(placeholder.uppercased())"
                     } else {
-                        self?.textField.placeholder = nil
-                        self?.textField.title = nil
+                        strongSelf.textField.placeholder = nil
+                        strongSelf.textField.title = nil
                     }
 
                 }.dispose(in: onReuseBag)
-                
-                
-                
+
                 viewModel.textFieldValue
                     .bidirectionalBind(to: textField.reactive.text)
                     .dispose(in: onReuseBag)
@@ -46,16 +47,25 @@ final public class SimpleFloatingLabelTextFieldCell: SimpleTableViewCell {
                     textField.keyboardType = keyboardType
                 }
 
-                viewModel.isTappableTextField.observeNext { [weak self] enabled in
-                    self?.textField.backgroundColor = enabled ? .clear : IntervalThemeFactory.deviceTheme.backgroundColorGray
-                }.dispose(in: onReuseBag)
-                
                 viewModel.isEditing
                     .observeNext { [weak self] editing in
-                        self?.textField.backgroundColor = editing ? .clear : IntervalThemeFactory.deviceTheme.backgroundColorGray
-                        self?.textField.textColor = editing ? IntervalThemeFactory.deviceTheme.textColorBlack : IntervalThemeFactory.deviceTheme.textColorGray
-                    }
-                    .dispose(in: onReuseBag)
+                        guard let strongSelf = self else { return }
+                        DispatchQueue.main.async {
+                            let isActive = viewModel.isTappableTextField.value || editing
+                            strongSelf.textField.backgroundColor = isActive ? .clear : IntervalThemeFactory.deviceTheme.backgroundColorGray
+                            strongSelf.textField.tintColor = editing ? IntervalThemeFactory.deviceTheme.textColorGray : .clear
+                            strongSelf.textField.textColor = editing ?
+                                IntervalThemeFactory.deviceTheme.textColorBlack : IntervalThemeFactory.deviceTheme.textColorGray
+
+                        }
+                    }.dispose(in: onReuseBag)
+
+                viewModel.isTappableTextField.observeNext { [weak self] enabled in
+                    guard let strongSelf = self else { return }
+                    strongSelf.tappableView.isHidden = !enabled
+                    strongSelf.tappableView.addGestureRecognizer(UITapGestureRecognizer(target: self,
+                                                                                        action: #selector(strongSelf.didSelectCell)))
+                    }.dispose(in: onReuseBag)
             }
         }
     }
@@ -81,22 +91,17 @@ final public class SimpleFloatingLabelTextFieldCell: SimpleTableViewCell {
         textField.rightView = viewModel?.showArrowIcon.value == true ? UIImageView(image: #imageLiteral(resourceName: "ForwardArrowIcon")) : nil
         textField.rightViewMode = viewModel?.showArrowIcon.value == true ? .always : .never
     }
+
+    @objc private func didSelectCell() {
+        if viewModel?.isTappableTextField.value == true {
+            didSelectTextField?()
+        }
+    }
 }
 
 extension SimpleFloatingLabelTextFieldCell: UITextFieldDelegate {
-    public func textFieldDidBeginEditing(_ textField: UITextField) {
-        
-        if viewModel?.isEditing.value == false {
-            textField.endEditing(true)
-        }
-        
-        if viewModel?.isTappableTextField.value == true {
-            didSelectTextField?()
-            textField.resignFirstResponder()
-        }
-    }
-
     public func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        // Just in case user wants to copy paste content
         return viewModel?.isEditing.value == true
     }
 }
