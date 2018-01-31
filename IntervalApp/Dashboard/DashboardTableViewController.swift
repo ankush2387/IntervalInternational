@@ -794,8 +794,9 @@ extension DashboardTableViewController: UICollectionViewDataSource {
             centerView.addSubview(unitLabel)
             
             let priceLabel = UILabel(frame: CGRect(x: 10, y: 35, width: centerView.frame.size.width - 20, height: 20))
-            if let pricefrom = topTenDeals.price?.fromPrice {
-                priceLabel.text = "From $ \(pricefrom) Wk."
+            if let pricefrom = topTenDeals.price?.fromPrice, let currencyCode = topTenDeals.price?.currencySymbol {
+                let price = pricefrom.currencyFormatter(for: currencyCode, baseLineOffSet: 7)
+                priceLabel.text = "From \(currencyCode)\(pricefrom) Wk."
             }
             
             priceLabel.numberOfLines = 2

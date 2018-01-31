@@ -129,7 +129,7 @@ class Constant: NSObject {
         
         static var rentalSortingRangeArray = ["Default", "A - Z", "Z - A", "Low - High", "High - Low", "A - Z", "Z - A", "Low - High", "High - Low"]
         
-        static var exchangeSortingOptionArray = ["Default", "Resort Name:", "Resort Name:", "City:", "City:", "Resort Tier:", "Resort Tier:"]
+        static var exchangeSortingOptionArray = ["Suggested", "Resort Name:", "Resort Name:", "City:", "City:", "Resort Tier:", "Resort Tier:"]
         static var exchangeSortingRangeArray = ["Default", "A - Z", "Z - A", "A - Z", "Z - A", "Low - High", "High - Low"]
         
         static var filteredIndex = 0
