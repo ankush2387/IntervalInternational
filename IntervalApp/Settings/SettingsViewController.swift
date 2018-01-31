@@ -81,7 +81,7 @@ final class SettingsViewController: UIViewController {
         Session.sharedSession.signOut()
         //Remove all favorites for a user.
         Constant.MyClassConstants.favoritesResortArray.removeAll()
-        Constant.MyClassConstants.favoritesResortCodeArray.removeAllObjects()
+        Constant.MyClassConstants.favoritesResortCodeArray.removeAll()
         //Remove available points for relinquishment program
         Constant.MyClassConstants.relinquishmentProgram = PointsProgram()
         //Remove all saved alerts for a user.

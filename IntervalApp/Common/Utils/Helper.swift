@@ -25,6 +25,7 @@ public class Helper {
     static var window: UIWindow?
     
     static var helperDelegate: HelperDelegate?
+    static var isForSearch = false
     
     /**
      Apply shadow on UIView or UIView subclass
@@ -235,7 +236,8 @@ public class Helper {
     }
     
     //***** function to get profile when we have found valid access token from server *****//
-    static func accessTokenDidChange(sender: UIViewController) {
+    static func accessTokenDidChange(sender: UIViewController, isForSearch: Bool) {
+        self.isForSearch = isForSearch
         
         if Reachability.isConnectedToNetwork() == true {
             
@@ -272,12 +274,12 @@ public class Helper {
                     if Constant.MyClassConstants.signInRequestedController is SignInPreLoginViewController {
                         
                         Session.sharedSession.selectedMembership = contact.memberships![0]
-                        CreateActionSheet().membershipWasSelected()
+                        CreateActionSheet().membershipWasSelected(isForSearchVacation: self.isForSearch)
                         
                     } else {
                         
                         Session.sharedSession.selectedMembership = contact.memberships![0]
-                        CreateActionSheet().membershipWasSelected()
+                        CreateActionSheet().membershipWasSelected(isForSearchVacation: self.isForSearch)
                     }
                 } else {
                     
@@ -315,7 +317,7 @@ public class Helper {
                 Constant.MyClassConstants.favoritesResortArray.removeAll()
                 for item in response {
                         if let resort = item.resort, let code = resort.resortCode {
-                            Constant.MyClassConstants.favoritesResortCodeArray.add(code)
+                            Constant.MyClassConstants.favoritesResortCodeArray.append(code)
                             Constant.MyClassConstants.favoritesResortArray.append(resort)
                         }
                     
@@ -1055,39 +1057,13 @@ public class Helper {
         
         messageView.frame = CGRect(x: 20, y: 84, width: requestedView.frame.width - 40, height: requestedView.frame.height / 2 + 50)
         messageView.layer.cornerRadius = 7
-        messageView.backgroundColor = UIColor(red: 244.0 / 255.0, green: 244.0 / 255.0, blue: 244.0 / 255.0, alpha: 1.0)
-        let messageLabel1 = UILabel()
-        
-        messageLabel1.frame = CGRect(x: 20, y: 20, width: messageView.frame.width - 40, height: 50)
-        messageLabel1.text = "Oops looks like you dont have any favorites!"
-        messageLabel1.numberOfLines = 2
-        messageLabel1.textAlignment = NSTextAlignment.center
-        messageView.addSubview(messageLabel1)
-        
-        let messageLabel2 = UILabel()
-        messageLabel2.frame = CGRect(x: 20, y: 80, width: messageView.frame.width - 40, height: 30)
-        messageLabel2.text = "You poor soul, you!"
-        messageLabel2.textAlignment = NSTextAlignment.center
-        messageView.addSubview(messageLabel2)
-        
-        let brokenHeartImageView = UIImageView()
-        brokenHeartImageView.frame = CGRect(x: messageView.frame.width / 2 - 25, y: 130, width: 40, height: 40)
-        brokenHeartImageView.image = UIImage(named: "FavoritesIcon")
-        messageView.addSubview(brokenHeartImageView)
-        
-        let messageLabel3 = UILabel()
-        messageLabel3.frame = CGRect(x: 10, y: 180, width: messageView.frame.width - 20, height: 100)
-        messageLabel3.text = "How's about you go favorite some resorts and when you come back they will be here all warm and toasty waiting for you!"
-        messageLabel3.numberOfLines = 3
-        messageLabel3.textAlignment = NSTextAlignment.center
-        messageLabel3.font = UIFont(name: "HelveticaNeue", size: 13)
-        messageView.addSubview(messageLabel3)
-        
-        let messageLabel4 = UILabel()
-        messageLabel4.frame = CGRect(x: 20, y: 290, width: messageView.frame.width - 40, height: 20)
-        messageLabel4.text = "Go on Get! "
-        messageLabel4.textAlignment = NSTextAlignment.center
-        messageView.addSubview(messageLabel4)
+        messageView.backgroundColor = #colorLiteral(red: 0.9568627451, green: 0.9568627451, blue: 0.9568627451, alpha: 1)
+        let messageLabel = UILabel()
+        messageLabel.frame = CGRect(x: 0, y: 0, width: messageView.frame.width, height: messageView.frame.height)
+        messageLabel.text = "You haven’t saved any Favorites.\nFeel free to add your favorite vacation destinations here and start planning today!"
+        messageLabel.numberOfLines = 0
+        messageLabel.textAlignment = NSTextAlignment.center
+        messageView.addSubview(messageLabel)
         
         return messageView
     }
@@ -1110,7 +1086,7 @@ public class Helper {
         
         titleLabel.frame = CGRect(x: 5, y: 0, width: noResortView.frame.size.width, height: noResortView.frame.size.height / 5)
         titleLabel.text = "No match found. Please select another date.".localized()
-        titleLabel.textAlignment = .justified
+        titleLabel.textAlignment = .center
         titleLabel.textColor = UIColor.white
         titleLabel.font = UIFont(name: "Helvetica", size: 12)
         noResortView.addSubview(titleLabel)

@@ -357,16 +357,18 @@ class ResortDetailsViewController: UIViewController {
             
         } else {
             var storyboard = UIStoryboard()
-            var viewController = UIViewController()
             if Constant.RunningDevice.deviceIdiom == .pad {
                 storyboard = UIStoryboard(name: Constant.storyboardNames.resortDirectoryIpad, bundle: nil)
-                viewController = storyboard.instantiateViewController(withIdentifier: Constant.storyboardNames.signInPreLoginViewControlleriPad)
+                if let viewController = storyboard.instantiateViewController(withIdentifier: Constant.storyboardNames.signInPreLoginViewControlleriPad) as? SignInPreLoginViewController {
+                    navigationController?.pushViewController(viewController, animated: true)
+                }
             } else {
                 storyboard = UIStoryboard(name: Constant.storyboardNames.iphone, bundle: nil)
-                viewController = storyboard.instantiateViewController(withIdentifier: Constant.storyboardNames.signInPreLoginController)
+                if let viewController = storyboard.instantiateViewController(withIdentifier: Constant.storyboardNames.signInPreLoginController) as? SignInPreLoginViewController {
+                    viewController.isForSearchVacation = true
+                    navigationController?.pushViewController(viewController, animated: true)
+                }
             }
-         navigationController?.view.layer.add(Helper.bottomToTopTransition(), forKey: nil)
-         navigationController?.pushViewController(viewController, animated: true)
         }
     }
     //***** Function call for More button *****//
@@ -1027,7 +1029,7 @@ extension ResortDetailsViewController: UITableViewDataSource {
                 UserClient.addFavoriteResort(Session.sharedSession.userAccessToken, resortCode: resortCode, onSuccess: { _ in
                     self.hideHudAsync()
                     sender.isSelected = true
-                    Constant.MyClassConstants.favoritesResortCodeArray.add(resortCode)
+                    Constant.MyClassConstants.favoritesResortCodeArray.append(resortCode)
                     self.tableViewResorts.reloadData()
                     ADBMobile.trackAction(Constant.omnitureEvents.event48, data: nil)
                     
@@ -1041,7 +1043,7 @@ extension ResortDetailsViewController: UITableViewDataSource {
                 UserClient.removeFavoriteResort(Session.sharedSession.userAccessToken, resortCode: resortCode, onSuccess: { _ in
                     sender.isSelected = false
                     self.hideHudAsync()
-                    Constant.MyClassConstants.favoritesResortCodeArray.remove(resortCode)
+                    Constant.MyClassConstants.favoritesResortCodeArray = Constant.MyClassConstants.favoritesResortCodeArray.filter { $0 != resortCode }
                     self.tableViewResorts.reloadData()
                     ADBMobile.trackAction(Constant.omnitureEvents.event51, data: nil)
                     NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.notificationNames.reloadFavoritesTabNotification), object: sender)

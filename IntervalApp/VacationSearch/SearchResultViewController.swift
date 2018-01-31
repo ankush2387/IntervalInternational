@@ -211,7 +211,7 @@ class SearchResultViewController: UIViewController {
                 for item in [response][0] {
                     if let resort = item.resort {
                         if let code = resort.resortCode {
-                            Constant.MyClassConstants.favoritesResortCodeArray.add(code)
+                            Constant.MyClassConstants.favoritesResortCodeArray.append(code)
                             Constant.MyClassConstants.favoritesResortArray.append(resort)
                         }
                     }
@@ -780,7 +780,7 @@ class SearchResultViewController: UIViewController {
                     
                     self.hideHudAsync()
                     sender.isSelected = true
-                    Constant.MyClassConstants.favoritesResortCodeArray.add(resortCode)
+                    Constant.MyClassConstants.favoritesResortCodeArray.append(resortCode)
                     let indexpath = IndexPath(row: sender.tag, section: Int(section ?? "0") ?? 0)
                     self.searchResultTableView.reloadRows(at: [indexpath], with: .automatic)
                     
@@ -794,7 +794,7 @@ class SearchResultViewController: UIViewController {
                     
                     sender.isSelected = false
                     self.hideHudAsync()
-                    Constant.MyClassConstants.favoritesResortCodeArray.remove(resortCode)
+                    Constant.MyClassConstants.favoritesResortCodeArray = Constant.MyClassConstants.favoritesResortCodeArray.filter{ $0 != resortCode }
                     let indexpath = IndexPath(row: sender.tag, section: Int(section ?? "0") ?? 0)
                     self.searchResultTableView.reloadRows(at: [indexpath], with: .automatic)
                     
@@ -1802,7 +1802,7 @@ extension SearchResultViewController: SearchResultContentTableCellDelegate {
                     
                     self.hideHudAsync()
                     sender.isSelected = true
-                    Constant.MyClassConstants.favoritesResortCodeArray.add(resortCode)
+                    Constant.MyClassConstants.favoritesResortCodeArray.append(resortCode)
                     self.searchResultTableView.reloadData()
                     
                 }, onError: {[unowned self](_) in
@@ -1816,7 +1816,7 @@ extension SearchResultViewController: SearchResultContentTableCellDelegate {
                     intervalPrint(response)
                     sender.isSelected = false
                     self.hideHudAsync()
-                    Constant.MyClassConstants.favoritesResortCodeArray.remove(resortCode)
+                    Constant.MyClassConstants.favoritesResortCodeArray = Constant.MyClassConstants.favoritesResortCodeArray.filter{ $0 != resortCode }
                     self.update()
                 }, onError: {[unowned self](_) in
                     self.hideHudAsync()
@@ -1828,9 +1828,6 @@ extension SearchResultViewController: SearchResultContentTableCellDelegate {
             self.performSegue(withIdentifier: Constant.segueIdentifiers.preLoginSegue, sender: self)
         }
         
-    }
-    func unfavoriteButtonClicked(_ sender: UIButton) {
-        sender.isSelected = false
     }
 }
 

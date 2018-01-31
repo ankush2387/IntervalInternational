@@ -12,7 +12,6 @@ import UIKit
 
 protocol SearchResultContentTableCellDelegate {
     func favoriteButtonClicked(_ sender: UIButton)
-    func unfavoriteButtonClicked(_ sender: UIButton)
 }
 
 class SearchResultContentTableCell: UITableViewCell {
@@ -22,8 +21,6 @@ class SearchResultContentTableCell: UITableViewCell {
     @IBOutlet weak var resortCountry: UILabel!
     @IBOutlet weak var resortCode: UILabel!
     @IBOutlet weak var resortNameGradientView: UIView!
-   // @IBOutlet weak var favoriteButton: UIButton!
-    
     @IBOutlet weak var favoriteButton: UIButton!
     @IBOutlet weak var tierImageView: UIImageView!
     
@@ -33,15 +30,8 @@ class SearchResultContentTableCell: UITableViewCell {
         super.awakeFromNib()
         // Initialization code
     }
-
-//    override func setSelected(_ selected: Bool, animated: Bool) {
-//        super.setSelected(selected, animated: animated)
-//
-//        // Configure the view for the selected state
-//    }
-
+    
     @IBAction func feboriteButtonPressed(_ sender: UIButton) {
        self.delegate?.favoriteButtonClicked(sender)
-        
     }
 }

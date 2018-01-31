@@ -80,7 +80,7 @@ class FevoritesResortController: UIViewController {
                 Constant.MyClassConstants.favoritesResortArray.removeAll()
                 for item in response {
                     if let resort = item.resort, let resortCode = resort.resortCode {
-                        Constant.MyClassConstants.favoritesResortCodeArray.add(resortCode)
+                        Constant.MyClassConstants.favoritesResortCodeArray.append(resortCode)
                         Constant.MyClassConstants.favoritesResortArray.append(resort)
                     }
                 }
@@ -319,7 +319,7 @@ class FevoritesResortController: UIViewController {
                 guard let strongSelf = self else { return }
                 strongSelf.hideHudAsync()
                 Constant.MyClassConstants.favoritesResortArray.remove(at: rowNumber)
-                Constant.MyClassConstants.favoritesResortCodeArray.remove(resortCode)
+                Constant.MyClassConstants.favoritesResortCodeArray = Constant.MyClassConstants.favoritesResortCodeArray.filter{ $0 != resortCode }
                 
                 strongSelf.resortTableView.beginUpdates()
                 strongSelf.resortTableView.deleteRows(at: [IndexPath(row: rowNumber, section: 0)], with: .automatic)

@@ -111,7 +111,7 @@ final class AppCoordinator {
         
         //Remove all favorites for a user.
         Constant.MyClassConstants.favoritesResortArray.removeAll()
-        Constant.MyClassConstants.favoritesResortCodeArray.removeAllObjects()
+        Constant.MyClassConstants.favoritesResortCodeArray.removeAll()
         //Remove all saved alerts for a user.
         Constant.MyClassConstants.getawayAlertsArray.removeAll()
         Constant.MyClassConstants.isLoginSuccessfull = false
@@ -253,7 +253,7 @@ extension AppCoordinator: LoginCoordinatorDelegate {
         Constant.MyClassConstants.loginOriginationPoint = Constant.omnitureCommonString.signInPage
         Constant.MyClassConstants.signInRequestedController = topViewController!
 
-        CreateActionSheet().membershipWasSelected()
+        CreateActionSheet().membershipWasSelected(isForSearchVacation: false)
         ///
         
         guard let contactID = session.contact?.contactId else {

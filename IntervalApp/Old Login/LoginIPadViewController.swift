@@ -351,7 +351,7 @@ class LoginIPadViewController: UIViewController {
                     Session.sharedSession.selectedMembership = contact.memberships![0]
                     //self.membershipWasSelected()
                     
-                    CreateActionSheet().membershipWasSelected()
+                    CreateActionSheet().membershipWasSelected(isForSearchVacation: false)
                     
                 } else {
                     
@@ -500,7 +500,7 @@ extension LoginIPadViewController {
         Helper.loginButtonPressed(sender: self, userName: username, password: password, completionHandler: { (success) in
             if (success) {
                 // let the login process continue
-                Helper.accessTokenDidChange(sender: self)
+                Helper.accessTokenDidChange(sender: self, isForSearch: false)
             } else {
                 
             }
