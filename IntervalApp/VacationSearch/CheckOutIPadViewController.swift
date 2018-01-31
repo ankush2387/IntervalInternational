@@ -53,6 +53,7 @@ class CheckOutIPadViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         navigationController?.navigationBar.isHidden = false
+        remainingResortHoldingTimeLabel.text = "We are holding this unit for \(Constant.holdingTime) minutes".localized()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -181,8 +182,6 @@ class CheckOutIPadViewController: UIViewController {
         }
         
         //Register custom cell xib with tableview
-        remainingResortHoldingTimeLabel.text = "We are holding this unit for \(Constant.holdingTime) minutes".localized()
-        
         self.bookingTableView.register(UINib(nibName: Constant.customCellNibNames.totalCostCell, bundle: nil), forCellReuseIdentifier: Constant.customCellNibNames.totalCostCell)
         self.bookingTableView.register(UINib(nibName: Constant.customCellNibNames.promotionsDiscountCell, bundle: nil), forCellReuseIdentifier: Constant.customCellNibNames.promotionsDiscountCell)
         
@@ -377,9 +376,13 @@ class CheckOutIPadViewController: UIViewController {
             remainingResortHoldingTimeLabel.text = "We are holding this unit for \(Constant.holdingTime) minutes".localized()
         } else {
             Constant.holdingTimer?.invalidate()
-            self.presentAlert(with: Constant.AlertMessages.holdingTimeLostTitle, message: Constant.AlertMessages.holdingTimeLostMessage, hideCancelButton: false, cancelButtonTitle: "Cancel".localized(), acceptButtonTitle: "Ok".localized(), acceptButtonStyle: .default, cancelHandler: nil, acceptHandler: {
-                self.navigationController?.popViewController(animated: true)
-            })
+            let alertController = UIAlertController(title: Constant.AlertMessages.holdingTimeLostTitle, message: Constant.AlertMessages.holdingTimeLostMessage, preferredStyle: .alert)
+            let Ok = UIAlertAction(title: Constant.AlertPromtMessages.ok, style: .default) { (_:UIAlertAction)  in
+                
+               self.performSegue(withIdentifier: "unwindToAvailabiity", sender: self)
+            }
+            alertController.addAction(Ok)
+            present(alertController, animated: true, completion:nil)
         }
     }
     

@@ -63,7 +63,7 @@ class RelinquishmentSelectionOpenWeeksCell: UITableViewCell {
             if type == Constant.MyClassConstants.depositType {
                 requestTypeLbl.text = Constant.MyClassConstants.lateDeposit
             } else {
-                requestTypeLbl.text = ""
+                requestTypeLbl.text = nil
             }
             
         }

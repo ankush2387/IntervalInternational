@@ -72,7 +72,7 @@ class GoogleMapViewController: UIViewController {
         }
 
         //***** Condition for maintaining the back button and hamberger menu according to logged in or pre login *****//
-        if Constant.MyClassConstants.isLoginSuccessfull {
+        if Constant.MyClassConstants.isLoginSuccessfull && Constant.MyClassConstants.runningFunctionality == Constant.MyClassConstants.resortFunctionalityCheck {
             if let rvc = revealViewController() {
                 rvc.delegate = self
                 //***** Add the hamburger menu *****//

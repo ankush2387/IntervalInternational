@@ -202,6 +202,7 @@ class VacationSearchResultIPadController: UIViewController {
         searchedDateCollectionView.scrollToItem(at: indexpath, at: .centeredHorizontally, animated: true)
     }
     
+    @IBAction func unwindToAvailabiity(_ segue: UIStoryboardSegue) {}
     // Function called to dismiss current controller when back button pressed.
     func menuBackButtonPressed(_ sender: UIBarButtonItem) {
         _ = self.navigationController?.popViewController(animated: true)

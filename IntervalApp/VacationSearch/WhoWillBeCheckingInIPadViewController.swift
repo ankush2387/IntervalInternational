@@ -41,7 +41,8 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.isHidden = false
-        NotificationCenter.default.addObserver(self, selector: #selector(showAlertForTimer), name: NSNotification.Name(rawValue: "showAlert"), object: nil)
+         resortHoldingTimeLabel.text = "We are holding this unit for \(Constant.holdingTime) minutes".localized()
+        NotificationCenter.default.addObserver(self, selector: #selector(updateResortHoldingTime), name: NSNotification.Name(rawValue: Constant.notificationNames.updateResortHoldingTime), object: nil)
     }
     
     override func viewDidLoad() {
@@ -75,12 +76,24 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
         ADBMobile.trackAction(Constant.omnitureEvents.event37, data: userInfo)
         
     }
-    
-    //Function to display alert on timer time over
-    
-    func showAlertForTimer() {
-        self.presentAlert(with: "Holding time lost".localized(), message: "Oops You have lost your holding time for this resort!. Please try again".localized())
+
+    //***** Notification for update timer.*****//
+    func updateResortHoldingTime() {
+        if Constant.holdingTime != 0 {
+            resortHoldingTimeLabel.text = "We are holding this unit for \(Constant.holdingTime) minutes".localized()
+        } else {
+            Constant.holdingTimer?.invalidate()
+            let alertController = UIAlertController(title: Constant.AlertMessages.holdingTimeLostTitle, message: Constant.AlertMessages.holdingTimeLostMessage, preferredStyle: .alert)
+            let Ok = UIAlertAction(title: Constant.AlertPromtMessages.ok, style: .default) { (_:UIAlertAction)  in
+                
+                self.performSegue(withIdentifier: "unwindToAvailabiity", sender: self)
+            }
+            alertController.addAction(Ok)
+            present(alertController, animated: true, completion:nil)
+        }
+        
     }
+
     
     func isValidEmail(testStr: String) -> Bool {
         
@@ -102,7 +115,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
     }
     
     func addDoneButtonOnNumpad(textField: UITextField) {
-        
+
         let keypadToolbar: UIToolbar = UIToolbar()
         
         // add a done button to the numberpad
@@ -182,20 +195,6 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
             proceedToCheckoutButton.isEnabled = false
             proceedToCheckoutButton.alpha = 0.5
         }
-    }
-    
-    //***** Notification for update timer.*****//
-    func updateResortHoldingTime() {
-        
-        if Constant.holdingTime != 0 {
-            self.resortHoldingTimeLabel.text = "We are holding this unit for \(Constant.holdingTime) minutes".localized()
-        } else {
-            Constant.holdingTimer?.invalidate()
-            self.presentAlert(with: Constant.AlertMessages.holdingTimeLostTitle, message: Constant.AlertMessages.holdingTimeLostMessage, hideCancelButton: false, cancelButtonTitle: "Cancel".localized(), acceptButtonTitle: "Ok".localized(), acceptButtonStyle: .default, cancelHandler: nil, acceptHandler: {
-                self.navigationController?.popViewController(animated: true)
-            })
-        }
-        
     }
     
     override func didReceiveMemoryWarning() {
