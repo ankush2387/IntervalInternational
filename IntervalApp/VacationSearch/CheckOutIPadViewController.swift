@@ -1175,10 +1175,28 @@ extension CheckOutIPadViewController: UITableViewDataSource {
                     cell.resortImageView?.image = UIImage(named: Constant.assetImageNames.resortImage)
                     cell.resortName?.text = Constant.MyClassConstants.selectedResort.resortName
                 } else {
-                    cell.lblHeading.text = Constant.MyClassConstants.relinquishment
-                    cell.labelFirstHeading?.text = "Relinquishment"
+                    if Constant.MyClassConstants.isCIGAvailable {
+                        cell.resortDetailsButton.isHidden = true
+                        cell.lblHeading.text = "CIG Points".localized()
+                        let availablePointsNumber = Constant.MyClassConstants.selectedExchangeCigPoints as NSNumber
+                        let numberFormatter = NumberFormatter()
+                        numberFormatter.numberStyle = .decimal
+                        if let availablePoints = numberFormatter.string(from: availablePointsNumber) {
+                            cell.resortName?.text = "\(availablePoints)".localized()
+                        } else { cell.resortName?.text = "\(0)".localized() }
+                        
+                    } else {
+                        cell.resortDetailsButton.addTarget(self, action: #selector(WhoWillBeCheckingInViewController.resortDetailsClicked(_:)), for: .touchUpInside)
+                        if let clubPoint = filterRelinquishments.clubPoints {
+                            cell.resortName?.text = clubPoint.resort?.resortName
+                        } else if let openWeek = filterRelinquishments.openWeek {
+                            cell.resortName?.text = openWeek.resort?.resortName
+                        } else if let deposits = filterRelinquishments.deposit {
+                            cell.resortName?.text = deposits.resort?.resortName
+                        }
+                        cell.lblHeading.text = Constant.MyClassConstants.relinquishment
+                    }
                     cell.resortImageView?.image = UIImage(named: Constant.assetImageNames.relinquishmentImage)
-                    cell.resortName?.text = filterRelinquishments.openWeek?.resort?.resortName
                 }
                 
                 return cell
