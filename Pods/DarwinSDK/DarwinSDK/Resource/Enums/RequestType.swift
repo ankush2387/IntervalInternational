@@ -24,6 +24,11 @@ public enum RequestType : String {
     var name: String {
         return self.rawValue
     }
+
+    public func friendlyName() -> String {
+        let name = self.rawValue.lowercased().replacingOccurrences(of: "_", with: " ")
+        return name.capitalized
+    }
     
     // Helper methods for UI
     public func isThis(name : String) -> Bool {
