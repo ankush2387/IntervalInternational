@@ -59,6 +59,11 @@ final class RelinquishmentViewModel {
     }
     
     func title(for section: Int) -> String? {
+        guard let sectionIdentifier = Section(rawValue: section) else { return nil }
+        if let cigProgramCount = simpleCellViewModels[.cigProgram]?.count, cigProgramCount < 1, sectionIdentifier == .cigWeeks {
+            return sectionTitle.first as? String
+        }
+
         return sectionTitle[section]
     }
     
@@ -150,7 +155,10 @@ final class RelinquishmentViewModel {
         return Promise { [unowned self] resolve, reject in
             
             let relinquishmentGroups = self.relinquishmentManager.getRelinquishmentGroups(myUnits: myUnits)
-            self.simpleCellViewModels[.cigProgram] = self.processCIGProgram(for: relinquishmentGroups)
+            
+            self.processCIGProgram(for: relinquishmentGroups).then {
+                self.simpleCellViewModels[.cigProgram] = $0
+            }.onError(reject)
             
             self.filterStored(relinquishmentGroups.cigPointsWeeks).then {
                 self.relinquishments[.cigWeeks] = $0
@@ -195,17 +203,36 @@ final class RelinquishmentViewModel {
         }
     }
     
-    private func processCIGProgram(for relinquishmentGroups: RelinquishmentGroups) -> [SimpleCellViewModel] {
-        guard relinquishmentGroups.hasCIGPointsProgram() else { return [] }
-        let availablePoints = relinquishmentGroups.cigPointsProgram?.availablePoints ?? 0
-        let numberFormatter = NumberFormatter()
-        numberFormatter.numberStyle = .decimal
-        return [SimpleAvailableRelinquishmentPointsCellViewModel(cigImage:  #imageLiteral(resourceName: "CIG"),
-                                                                 actionButtonImage: #imageLiteral(resourceName: "VS_List-Plus_ORNG"),
-                                                                 numberOfPoints: numberFormatter.string(from: availablePoints as NSNumber),
-                                                                 availablePointsButtonText: "Available Points Tool".localized(),
-                                                                 goldPointsHeadingLabelText: "Club Interval Gold Points".localized(),
-                                                                 goldPointsSubHeadingLabel: "Available Points as of Today".localized())]
+    private func processCIGProgram(for relinquishmentGroups: RelinquishmentGroups) -> Promise<[SimpleCellViewModel]> {
+        return Promise { [unowned self] resolve, reject in
+            guard relinquishmentGroups.hasCIGPointsProgram() else {
+                resolve([])
+                return
+            }
+            
+            self.entityDataStore.readObjectsFromDisk(type: OpenWeeksStorage.self,
+                                                     predicate: "membeshipNumber == '\(self.sessionStore.selectedMembership?.memberNumber ?? "")'",
+                                                     encoding: .decrypted)
+                
+                .then { openWeeksStorage in
+                    
+                    let depositedPoints = openWeeksStorage.first?.openWeeks.first?.pProgram.first?.availablePoints
+                    if case .some = depositedPoints {
+                        resolve([])
+                    } else {
+                        let availablePoints = relinquishmentGroups.cigPointsProgram?.availablePoints ?? 0
+                        let numberFormatter = NumberFormatter()
+                        numberFormatter.numberStyle = .decimal
+                        resolve([SimpleAvailableRelinquishmentPointsCellViewModel(cigImage:  #imageLiteral(resourceName: "CIG"),
+                                                                                  actionButtonImage: #imageLiteral(resourceName: "VS_List-Plus_ORNG"),
+                                                                                  numberOfPoints: numberFormatter.string(from: availablePoints as NSNumber),
+                                                                                  availablePointsButtonText: "Available Points Tool".localized(),
+                                                                                  goldPointsHeadingLabelText: "Club Interval Gold Points".localized(),
+                                                                                  goldPointsSubHeadingLabel: "Available Points as of Today".localized())])
+                    }
+            
+                }.onError(reject)
+        }
     }
     
     private func process(relinquishment: Relinquishment) -> SimpleCellViewModel {
