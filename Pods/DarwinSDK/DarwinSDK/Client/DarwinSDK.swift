@@ -111,16 +111,22 @@ open class DarwinSDK {
         var userInfo: [String:Any] = [
             NSLocalizedDescriptionKey: friendlyErrorMsg as Any,
             "apiErrorCode": "" as Any,
-            "apiErrorDescription": "" as Any
+            "apiErrorDescription": "" as Any,
+            "splunkLink": "" as Any
         ]
         
         if let errorCode = json["error"].string {
             userInfo["apiErrorCode"] = errorCode as Any
+        } else if let errorCode = json["code"].string {
+            userInfo["apiErrorCode"] = errorCode as Any
         }
         
         if let errorDesc = json["error_description"].string {
+            userInfo[NSLocalizedDescriptionKey] = errorDesc as Any
             userInfo["apiErrorDescription"] = errorDesc as Any
-            
+        } else if let errorDesc = json["description"].string {
+            userInfo[NSLocalizedDescriptionKey] = errorDesc as Any
+            userInfo["apiErrorDescription"] = errorDesc as Any
         }
 
         // Process errors have a different payload =>
@@ -128,18 +134,17 @@ open class DarwinSDK {
         if let errorsArray = json["errors"].array {
             let errorsJsonArray:[JSON] = errorsArray
             if !errorsJsonArray.isEmpty {
-                let authErrorMsg = "We’re sorry, we are unable to log you in at this time. Please contact your local servicing office for assistance"
-                userInfo[NSLocalizedDescriptionKey] = authErrorMsg as Any
-                userInfo["errorCode"] = errorsJsonArray.map { $0.string! }.flatMap({$0}).joined() as Any
+                // FIXME: Resolve 'code' and 'description'
+                //userInfo["apiErrorCode"] = errorsJsonArray.map { $0.string! }.flatMap({$0}).joined() as Any
+                //userInfo[NSLocalizedDescriptionKey] = errorDesc as Any
+                //userInfo["apiErrorDescription"] = errorDesc as Any
             }
         }
         
-        if let reasonsArray = json["errors"].array {
-            let reasonsJsonArray:[JSON] = reasonsArray
-            if !reasonsJsonArray.isEmpty, let firstError = reasonsJsonArray.first {
-                userInfo["apiErrorCode"] = firstError["code"].string as Any
-                userInfo["apiErrorDescription"] = firstError["description"].string as Any
-            }
+        if let _ = json["support"].dictionary, let _ = json["support"]["cause"].dictionary,
+            let _ = json["support"]["cause"]["splunk"].dictionary,
+            let link = json["support"]["cause"]["splunk"]["link"].string {
+            userInfo["splunkLink"] = link as Any
         }
 
         let error = NSError(domain: "com.intervalintl.darwin", code: statusCode, userInfo: userInfo)
@@ -153,7 +158,8 @@ open class DarwinSDK {
         var userInfo: [String:Any] = [
             NSLocalizedDescriptionKey: friendlyErrorMsg as Any,
             "apiErrorCode": "" as Any,
-            "apiErrorDescription": "" as Any
+            "apiErrorDescription": "" as Any,
+            "splunkLink": "" as Any
         ]
 
         if let errorCode = json["error"].string {
@@ -179,6 +185,12 @@ open class DarwinSDK {
                 let reasons = reasonsJsonArray.map { $0.string! }.flatMap({$0}).joined() as Any
                 userInfo["apiErrorCode"] = reasons
             }
+        }
+        
+        if let _ = json["support"].dictionary, let _ = json["support"]["cause"].dictionary,
+            let _ = json["support"]["cause"]["splunk"].dictionary,
+            let link = json["support"]["cause"]["splunk"]["link"].string {
+            userInfo["splunkLink"] = link as Any
         }
         
         let error = NSError(domain: "com.intervalintl.darwin", code: statusCode, userInfo: userInfo)

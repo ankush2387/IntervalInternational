@@ -125,7 +125,7 @@ open class ExchangeClient {
         
         DarwinSDK.logger.debug("About to try \(endpoint) with token=\(accessToken.token!) and request payload=\(params)")
         
-        IntervalAlamofireManager.sharedInstance.defaultManager.request(endpoint, method: .put, encoding: JSONEncoding.default, headers: headers)
+        IntervalAlamofireManager.sharedInstance.defaultManager.request(endpoint, method: .put, parameters: params, encoding: JSONEncoding.default, headers: headers)
             //.validate(statusCode: 200...201)
             .responseJSON { response in
                 let statusCode = response.response?.statusCode ?? 200
@@ -159,7 +159,7 @@ open class ExchangeClient {
         
         DarwinSDK.logger.debug("About to try \(endpoint) with token=\(accessToken.token!) and request payload=\(params)")
         
-        IntervalAlamofireManager.sharedInstance.defaultManager.request(endpoint, method: .put, encoding: JSONEncoding.default, headers: headers)
+        IntervalAlamofireManager.sharedInstance.defaultManager.request(endpoint, method: .put, parameters: params, encoding: JSONEncoding.default, headers: headers)
             //.validate(statusCode: 200...201)
             .responseJSON { response in
                 let statusCode = response.response?.statusCode ?? 200
