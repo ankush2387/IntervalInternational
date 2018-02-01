@@ -92,14 +92,6 @@ final class AdditionalInformationViewModel {
                 self.checkInDateVM?.isTappableTextField.next(true)
 
                 }.dispose(in: self.disposeBag)
-            
-            self.unitNumberVM?.textFieldValue.observeNext { [unowned self] unitNumber in
-                self.relinquishment.fixWeekReservation?.unit?.unitNumber = unitNumber
-            }.dispose(in: self.disposeBag)
-            
-            self.numberOfBedroomsVM?.textFieldValue.observeNext { [unowned self] numberOfBedrooms in
-                self.relinquishment.fixWeekReservation?.unit?.unitSize = numberOfBedrooms
-            }.dispose(in: self.disposeBag)
 
             self.directoryClientAPIStore.readResort(for: accessToken, and: resortCode)
                 .then(self.updateResortInRelinquishment)
@@ -352,6 +344,16 @@ final class AdditionalInformationViewModel {
             checkInDateVM?.cellHeight.next(0)
             checkInDateVM?.placeholderText.next(nil)
         }
+        
+        self.unitNumberVM?.textFieldValue.observeNext { [unowned self] unitNumber in
+            let unit = InventoryUnit()
+            unit.unitNumber = unitNumber
+            self.relinquishment.fixWeekReservation?.unit = unit
+            }.dispose(in: self.disposeBag)
+        
+        self.numberOfBedroomsVM?.textFieldValue.observeNext { [unowned self] numberOfBedrooms in
+            self.relinquishment.fixWeekReservation?.unit?.unitSize = numberOfBedrooms
+            }.dispose(in: self.disposeBag)
 
         simpleCellViewModels[.reservationDetails] = [reservationNumberVM, unitNumberVM, numberOfBedroomsVM, checkInDateVM]
         return Promise.resolve()

@@ -109,7 +109,7 @@ extension String {
         return self
     }
     
-    func dateFromString(for format: String = "yyyy-MM-dd'T'HH:mm:ss.SSSZ") -> Date? {
+    func dateFromString(for format: String = Date.intervalShortDateFormat) -> Date? {
         
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")

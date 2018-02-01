@@ -226,12 +226,34 @@ final class RelinquishmentViewModel {
                                             resortNameLabelText: resortName,
                                             unitDetailsLabelText: processUnitDetails(for: relinquishment),
                                             unitCapacityLabelText: processUnitCapacity(for: relinquishment),
-                                            statusLabelText: nil,
-                                            expirationDateLabelText: nil,
+                                            statusLabelText: processStatus(for: relinquishment),
+                                            expirationDateLabelText: processExpirationDate(for: relinquishment),
                                             flagsLabelText: processFormattedFlagsMessage(for: relinquishment),
                                             relinquishmentPromotionImage: nil,
                                             relinquishmentPromotionLabelText: nil,
                                             actionButton: processActionButton(for: relinquishment))
+    }
+    
+    private func processStatus(for relinquishment: Relinquishment) -> String? {
+        guard relinquishment.isDeposit() else { return nil }
+        guard let requestType = RequestType(rawValue: relinquishment.requestType.unwrappedString) else { return nil }
+        if case .LATE_DEPOSIT = requestType {
+            return requestType.friendlyName()
+        } else {
+            return ExchangeStatus(rawValue: relinquishment.exchangeStatus.unwrappedString)?.friendlyNameForRelinquishment(isDeposit: true)
+        }
+    }
+    
+    private func processExpirationDate(for relinquishment: Relinquishment) -> String? {
+        guard relinquishment.isDeposit() else { return nil }
+        guard let expirationDate = relinquishment.expirationDate?.dateFromString() else { return nil }
+        guard expirationDate.numberOfDaysToToday() > 0 else { return "Expired".localized() }
+        if expirationDate.numberOfDaysToToday() > 30 {
+            return "Expires: \(expirationDate.shortDateFormat())".localized()
+        } else {
+            let days = expirationDate.numberOfDaysToToday() > 1 ? "days" : "day"
+            return "Expires in: \(expirationDate.numberOfDaysToToday()) \(days)".localized()
+        }
     }
     
     private func processActionButton(for relinquishment: Relinquishment) -> UIImage? {

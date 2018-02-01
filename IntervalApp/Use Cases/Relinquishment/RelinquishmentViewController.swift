@@ -84,7 +84,7 @@ final class RelinquishmentViewController: UIViewController {
     fileprivate func processNavigationAction(for relinquishment: Relinquishment) {
 
         showHudAsync()
-
+        
         if (relinquishment.memberUnitLocked || relinquishment.bulkAssignment)
             && !relinquishment.hasActions() && relinquishment.hasResortPhoneNumber() {
             defer { hideHudAsync() }
@@ -98,12 +98,12 @@ final class RelinquishmentViewController: UIViewController {
             NetworkHelper.open(url)
         } else if relinquishment.pointsMatrix {
 
-//            showHudAsync()
-//            viewModel.readResortClubPointChart(for: relinquishment)
-//                .then(performHorribleSingletonCode)
-//                .then(pushClubPointSelectionView)
-//                .onViewError(presentErrorAlert)
-//                .finally(hideHudAsync)
+            Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId = relinquishment.relinquishmentId
+            viewModel.readResortClubPointChart(for: relinquishment)
+                .then(performHorribleSingletonCode)
+                .then(pushClubPointSelectionView)
+                .onViewError(presentErrorAlert)
+                .finally(hideHudAsync)
 
         } else if relinquishment.requireAdditionalInfo() {
             defer { hideHudAsync() }
@@ -128,11 +128,10 @@ final class RelinquishmentViewController: UIViewController {
     }
     
     private func performHorribleSingletonCode(for clubPointsChart: ClubPointsChart) -> Promise<Void> {
-        return Promise { resolve, reject in
+        return Promise { resolve, _ in
 
             // Not my code...
             // Old code to keep existing behavior...
-            // Code not currently working...
 
             Constant.MyClassConstants.matrixDataArray.removeAllObjects()
             Constant.MyClassConstants.selectionType = 1

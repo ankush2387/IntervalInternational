@@ -47,6 +47,10 @@ extension Date {
     var intervalShortDateFormat: String {
         return "yyyy-MM-dd"
     }
+
+    static var intervalShortDateFormat: String {
+        return "yyyy-MM-dd"
+    }
     
     func intervalShortDate() -> String {
         return self.formatDateAs(intervalShortDateFormat)
@@ -84,7 +88,7 @@ extension Date {
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")
         dateFormatter.timeZone = TimeZone(identifier: "UTC")
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+        dateFormatter.dateFormat = intervalShortDateFormat
         return dateFormatter.date(from: dateString)
     }
 }
