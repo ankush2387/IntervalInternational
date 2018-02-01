@@ -554,21 +554,18 @@ extension WhatToUseViewController: UITableViewDataSource {
                 
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: "ExchangeCell0", for: indexPath) as? AvailablePointCell else { return UITableViewCell() }
                 
-                cell.pointsInfoLabel.text = "Use Club Interval Gold Points"
+                cell.pointsInfoLabel.text = "Use Club Interval Gold Points".localized()
                 cell.tag = indexPath.row
                 cell.checkBOx.tag = indexPath.row
                 cell.checkBOx.isUserInteractionEnabled = false
                 cell.checkBOx.accessibilityElements = [indexPath.section]
                 
-                if let points = exchange.pointsProgram?.availablePoints {
-                    let availablePointsNumber = points as NSNumber
-                    let numberFormatter = NumberFormatter()
-                    numberFormatter.numberStyle = .decimal
-                    
-                    if let availablePoints = numberFormatter.string(from: availablePointsNumber) {
-                        cell.availablePointValueLabel.text = "\(availablePoints)".localized()
-                    } else {  cell.availablePointValueLabel.text = "\(0)".localized() }
-                }
+                let availablePointsNumber = Constant.MyClassConstants.selectedExchangeCigPoints as NSNumber
+                let numberFormatter = NumberFormatter()
+                numberFormatter.numberStyle = .decimal
+                if let availablePoints = numberFormatter.string(from: availablePointsNumber) {
+                    cell.availablePointValueLabel.text = "\(availablePoints)".localized()
+                } else { cell.availablePointValueLabel.text = "\(0)".localized() }
                 
                 if showInfoIcon {
                     cell.infoButton.isHidden = false
