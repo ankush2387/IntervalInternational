@@ -111,16 +111,24 @@ final class RelinquishmentViewController: UIViewController {
             // Must find out how this data must be stored... to make changes in viewModel
             let viewModel = AdditionalInformationViewModel(relinquishment: relinquishment)
             let additionalInformationViewController = AdditionalInformationViewController(viewModel: viewModel)
+            additionalInformationViewController.didUpdateFixWeekReservation = { [weak self] in
+                guard let strongSelf = self else { return }
+                strongSelf.navigationController?.popViewController(animated: false)
+                strongSelf.relinquish(relinquishment)
+            }
             navigationController?.pushViewController(additionalInformationViewController, animated: true)
         } else if relinquishment.lockOff {
             // Do nothing...
         } else {
-            
-            viewModel.relinquish(relinquishment)
-                .then(popViewController)
-                .onViewError(presentErrorAlert)
-                .finally(hideHudAsync)
+            relinquish(relinquishment)
         }
+    }
+    
+    private func relinquish(_ relinquishment: Relinquishment) {
+        viewModel.relinquish(relinquishment)
+            .then(popViewController)
+            .onViewError(presentErrorAlert)
+            .finally(hideHudAsync)
     }
     
     private func popViewController() {

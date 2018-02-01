@@ -22,6 +22,9 @@ final class AdditionalInformationViewController: UIViewController {
     @IBOutlet private weak var buttonBackgroundView: UIView!
     @IBOutlet private weak var saveButton: UIButton!
     
+    // MARK: - Public properties
+    var didUpdateFixWeekReservation: CallBack?
+    
     // MARK: - Private properties
     fileprivate let viewModel: AdditionalInformationViewModel
     private var previousSelectionCell: SelectionCell?
@@ -54,9 +57,10 @@ final class AdditionalInformationViewController: UIViewController {
 
     // MARK: - IBActions
     @IBAction func saveButtonTapped(_ sender: Any) {
+        guard let completionBlock = didUpdateFixWeekReservation else { return }
         showHudAsync()
-        // FIX MUST SAVE TO DISK AND POP BACK TO VACATION SEARCH
         viewModel.updateFixWeekReservation()
+            .then(completionBlock)
             .onViewError(presentErrorAlert)
             .finally(hideHudAsync)
     }
