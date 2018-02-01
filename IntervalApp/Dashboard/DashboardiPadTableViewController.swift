@@ -724,8 +724,15 @@ extension DashboardIPadTableViewController: UICollectionViewDataSource {
             centerView.addSubview(unitLabel)
             
             let priceLabel = UILabel(frame: CGRect(x: 10, y: 35, width: centerView.frame.size.width - 20, height: 20))
-            if let price = topTenDeals.price {
-                priceLabel.text = "From $" + String(price.fromPrice) + " Wk.".localized()
+            if let price = topTenDeals.price?.fromPrice, let currencyCode = topTenDeals.price?.currencySymbol {
+                priceLabel.text = "From $" + String(price) + " Wk.".localized()
+                if let attributedAmount = price.currencyFormatter(for: "From \(currencyCode) Wk.", baseLineOffSet: 0) {
+                    let fromAttributedString = NSMutableAttributedString(string: "From ", attributes: nil)
+                    let wkAttributedString = NSAttributedString(string: " Wk.", attributes: nil)
+                    fromAttributedString.append(attributedAmount)
+                    fromAttributedString.append(wkAttributedString)
+                    priceLabel.attributedText = fromAttributedString
+                }
             }
             priceLabel.numberOfLines = 2
             priceLabel.textAlignment = NSTextAlignment.center
