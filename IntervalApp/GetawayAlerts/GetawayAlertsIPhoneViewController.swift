@@ -14,9 +14,6 @@ class GetawayAlertsIPhoneViewController: UIViewController {
     
     //***** Outlets *****//
     @IBOutlet weak var alertDisplayTableView: UITableView!
-    fileprivate var alertsDictionary: NSMutableDictionary = [:]
-    var alertsSearchDates: NSMutableDictionary = [:]
-    private var alertsResortCodeDictionary: NSMutableDictionary = [:]
     var alertStatusId = 0
     var alertFilterOptionsArray = [Constant.AlertResortDestination]()
     var individualActivityIndicatorNeedToShow = false
@@ -132,6 +129,7 @@ class GetawayAlertsIPhoneViewController: UIViewController {
     }
     
     func needToReloadAlerts() {
+        Constant.MyClassConstants.searchDateResponse.removeAll()
         individualActivityIndicatorNeedToShow = true
         self.alertDisplayTableView.reloadData()
         if let accessToken = Session.sharedSession.userAccessToken {
@@ -141,6 +139,7 @@ class GetawayAlertsIPhoneViewController: UIViewController {
     
     // MARK: - Getaway Alerts
     func readAllRentalAlerts(accessToken: DarwinAccessToken) {
+        showHudAsync()
         ClientAPI.sharedInstance.readAllRentalAlerts(for: accessToken)
             .then { rentalAlertArray in
                 
@@ -179,20 +178,22 @@ class GetawayAlertsIPhoneViewController: UIViewController {
                 self.readDates(accessToken: accessToken, request: rentalSearchDatesRequest, rentalAlert: rentalAlert)
             }
             .onError { [weak self] error in
-                self?.presentErrorAlert(UserFacingCommonError.handleError(error as NSError))
+                self?.presentErrorAlert(UserFacingCommonError.handleError(error))
         }
     }
     
     func readDates(accessToken: DarwinAccessToken, request: RentalSearchDatesRequest, rentalAlert: RentalAlert) {
         ClientAPI.sharedInstance.readDates(for: accessToken, and: request)
             .then { rentalSearchDatesResponse in
+                self.hideHudAsync()
                 intervalPrint("____-->\(rentalSearchDatesResponse)")
                 Constant.MyClassConstants.searchDateResponse.append(rentalAlert, rentalSearchDatesResponse)
                 Helper.performSortingForMemberNumberWithViewResultAndNothingYet()
                 
             }
             .onError { [weak self] error in
-                self?.presentErrorAlert(UserFacingCommonError.handleError(error as NSError))
+                self?.hideHudAsync()
+                self?.presentErrorAlert(UserFacingCommonError.handleError(error))
         }
     }
     
@@ -200,6 +201,8 @@ class GetawayAlertsIPhoneViewController: UIViewController {
     @IBAction func createNewAlertButtonPressed(_ sender: AnyObject) {
         self.alertDisplayTableView.setEditing(false, animated: true)
         Constant.MyClassConstants.bedRoomSizeSelectedIndexArray.removeAllObjects()
+        Constant.MyClassConstants.selectedGetawayAlertDestinationArray.removeAll()
+        Constant.MyClassConstants.alertSelectedDestination.removeAll()
         Constant.MyClassConstants.alertSelectedBedroom = []
         Constant.MyClassConstants.realmStoredDestIdOrCodeArray.removeAllObjects()
         self.performSegue(withIdentifier: Constant.segueIdentifiers.createAlertSegue, sender: self)
@@ -440,6 +443,7 @@ extension GetawayAlertsIPhoneViewController: UITableViewDelegate {
                 
                 Constant.selectedAlertToEdit = Constant.MyClassConstants.searchDateResponse[indexPath.row].0
                 Constant.MyClassConstants.bedRoomSizeSelectedIndexArray.removeAllObjects()
+                Constant.MyClassConstants.selectedGetawayAlertDestinationArray.removeAll()
                 guard let alertToEdit = Constant.selectedAlertToEdit else { return }
                 
                 for destination in alertToEdit.destinations {

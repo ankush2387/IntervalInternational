@@ -54,6 +54,6 @@ class CommonMembership: NSObject, UITableViewDataSource, UITableViewDelegate {
         let contact = Session.sharedSession.contact
         let membership = contact?.memberships![indexPath.row]
         Session.sharedSession.selectedMembership = membership
-        CreateActionSheet().membershipWasSelected()
+        CreateActionSheet().membershipWasSelected(isForSearchVacation: false)
     }
 }

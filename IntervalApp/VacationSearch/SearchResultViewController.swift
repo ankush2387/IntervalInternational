@@ -60,15 +60,6 @@ class SearchResultViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        if !Constant.MyClassConstants.resortsArray.isEmpty {
-
-           guard let currencycode = Constant.MyClassConstants.resortsArray[0].inventory?.currencyCode else { return }
-           let currencyHelper = CurrencyHelper()
-           let currency = currencyHelper.getCurrency(currencyCode: currencycode )
-           currencyCode = ("\(currencyHelper.getCurrencyFriendlySymbol(currencyCode: currency.code))")
-
-        }
         navigationController?.navigationBar.isHidden = false
         createSections()
         self.searchResultTableView.reloadData()
@@ -78,6 +69,16 @@ class SearchResultViewController: UIViewController {
     @IBAction func unwindToAvailabiity(_ segue: UIStoryboardSegue) {}
     
     func createSections() {
+        
+        if !Constant.MyClassConstants.resortsArray.isEmpty {
+            
+            let currencycode = Constant.MyClassConstants.initialVacationSearch.rentalSearch?.inventory?[0].inventory?.currencyCode ?? ""
+            let currencyHelper = CurrencyHelper()
+            let currency = currencyHelper.getCurrency(currencyCode: currencycode )
+            currencyCode = ("\(currencyHelper.getCurrencyFriendlySymbol(currencyCode: currency.code))")
+            
+        }
+        
         let sections = Constant.MyClassConstants.initialVacationSearch.createSections()
         
         if sections.isEmpty {
@@ -96,9 +97,8 @@ class SearchResultViewController: UIViewController {
         
         if Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.EXCHANGE {
             for section in sections {
-                if section.exactMatch == true {
+                if section.exactMatch {
                     dateCellSelectionColor = Constant.CommonColor.blueColor
-                    // guard let items = section.items else { return }
                     for exactResorts in section.items {
                         if let resortsExact = exactResorts.exchangeAvailability {
                             exactMatchResortsArrayExchange.append(resortsExact)
@@ -119,7 +119,8 @@ class SearchResultViewController: UIViewController {
         } else if Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.RENTAL {
             
             for section in sections {
-                if section.exactMatch == true {
+                if section.exactMatch {
+                    dateCellSelectionColor = Constant.CommonColor.blueColor
                     for exactResorts in section.items {
                         if let resortsExact = exactResorts.rentalAvailability {
                             exactMatchResortsArray.append(resortsExact)
@@ -138,8 +139,7 @@ class SearchResultViewController: UIViewController {
             }
         } else {
             for section in sections {
-                // guard let items = section.items else { return }
-                if section.exactMatch == true {
+                if section.exactMatch {
                     combinedExactSearchItems = section.items
                 } else {
                     if sections.count == 1 {
@@ -151,6 +151,18 @@ class SearchResultViewController: UIViewController {
         }
         
         checkExactSurroundingSections()
+        
+        var index = 0
+        for (Index, calendarItem) in Constant.MyClassConstants.calendarDatesArray.enumerated() {
+            if calendarItem.checkInDate == Constant.MyClassConstants.initialVacationSearch.searchCheckInDate {
+                index = Index
+                break
+            }
+        }
+        let indexpath = IndexPath(item: index, section: 0)
+        searchResultColelctionView.scrollToItem(at: indexpath, at: .centeredHorizontally, animated: true)
+        searchResultColelctionView.reloadData()
+      
     }
     
     func checkExactSurroundingSections() {
@@ -211,7 +223,7 @@ class SearchResultViewController: UIViewController {
                 for item in [response][0] {
                     if let resort = item.resort {
                         if let code = resort.resortCode {
-                            Constant.MyClassConstants.favoritesResortCodeArray.add(code)
+                            Constant.MyClassConstants.favoritesResortCodeArray.append(code)
                             Constant.MyClassConstants.favoritesResortArray.append(resort)
                         }
                     }
@@ -223,15 +235,6 @@ class SearchResultViewController: UIViewController {
                 self?.presentErrorAlert(UserFacingCommonError.handleError(error))
             }
         }
-        var index = 0
-        for (Index, calendarItem) in Constant.MyClassConstants.calendarDatesArray.enumerated() {
-            if calendarItem.checkInDate == Constant.MyClassConstants.initialVacationSearch.searchCheckInDate {
-                index = Index
-                break
-            }
-        }
-        let indexpath = IndexPath(item: index, section: 0)
-        self.searchResultColelctionView.scrollToItem(at: indexpath, at: .right, animated: true)
     }
     
     override func didReceiveMemoryWarning() {
@@ -780,7 +783,7 @@ class SearchResultViewController: UIViewController {
                     
                     self.hideHudAsync()
                     sender.isSelected = true
-                    Constant.MyClassConstants.favoritesResortCodeArray.add(resortCode)
+                    Constant.MyClassConstants.favoritesResortCodeArray.append(resortCode)
                     let indexpath = IndexPath(row: sender.tag, section: Int(section ?? "0") ?? 0)
                     self.searchResultTableView.reloadRows(at: [indexpath], with: .automatic)
                     
@@ -794,7 +797,7 @@ class SearchResultViewController: UIViewController {
                     
                     sender.isSelected = false
                     self.hideHudAsync()
-                    Constant.MyClassConstants.favoritesResortCodeArray.remove(resortCode)
+                    Constant.MyClassConstants.favoritesResortCodeArray = Constant.MyClassConstants.favoritesResortCodeArray.filter{ $0 != resortCode }
                     let indexpath = IndexPath(row: sender.tag, section: Int(section ?? "0") ?? 0)
                     self.searchResultTableView.reloadRows(at: [indexpath], with: .automatic)
                     
@@ -968,7 +971,7 @@ extension SearchResultViewController: UICollectionViewDelegate {
                     }
                     processRequest.unit = units[indexPath.item]
                     
-                    if let checkInDate = inventory?.checkInDate, let checkOutDate = inventory?.checkOutDate, let unitSize = inventory?.units[indexPath.item].unitSize, let kitchenType = inventory?.units[indexPath.item].kitchenType {
+                    if let checkInDate = inventory?.checkInDate, let checkOutDate = inventory?.checkOutDate, let unitSize =  inventory?.units[indexPath.item].unitSize, let kitchenType = inventory?.units[indexPath.item].kitchenType {
                         
                         let processRequest1 = RentalProcessStartRequest(resortCode: Constant.MyClassConstants.selectedResort.resortCode,
                                                                         checkInDate: checkInDate,
@@ -1249,11 +1252,11 @@ extension SearchResultViewController: UICollectionViewDataSource {
         
         if collectionView.tag == -1 {
             
-            if Constant.MyClassConstants.calendarDatesArray[indexPath.item].isInterval ?? false {
+            if Constant.MyClassConstants.calendarDatesArray[indexPath.item].isInterval {
                 
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.vacationSearchScreenReusableIdentifiers.moreCell, for: indexPath) as? MoreCell else { return UICollectionViewCell() }
                 
-                if Constant.MyClassConstants.calendarDatesArray[indexPath.item].isIntervalAvailable ?? false {
+                if Constant.MyClassConstants.calendarDatesArray[indexPath.item].isIntervalAvailable {
                     cell.isUserInteractionEnabled = true
                     cell.backgroundColor = UIColor.white
                 } else {
@@ -1802,7 +1805,7 @@ extension SearchResultViewController: SearchResultContentTableCellDelegate {
                     
                     self.hideHudAsync()
                     sender.isSelected = true
-                    Constant.MyClassConstants.favoritesResortCodeArray.add(resortCode)
+                    Constant.MyClassConstants.favoritesResortCodeArray.append(resortCode)
                     self.searchResultTableView.reloadData()
                     
                 }, onError: {[unowned self](_) in
@@ -1816,7 +1819,7 @@ extension SearchResultViewController: SearchResultContentTableCellDelegate {
                     intervalPrint(response)
                     sender.isSelected = false
                     self.hideHudAsync()
-                    Constant.MyClassConstants.favoritesResortCodeArray.remove(resortCode)
+                    Constant.MyClassConstants.favoritesResortCodeArray = Constant.MyClassConstants.favoritesResortCodeArray.filter{ $0 != resortCode }
                     self.update()
                 }, onError: {[unowned self](_) in
                     self.hideHudAsync()
@@ -1828,9 +1831,6 @@ extension SearchResultViewController: SearchResultContentTableCellDelegate {
             self.performSegue(withIdentifier: Constant.segueIdentifiers.preLoginSegue, sender: self)
         }
         
-    }
-    func unfavoriteButtonClicked(_ sender: UIButton) {
-        sender.isSelected = false
     }
 }
 

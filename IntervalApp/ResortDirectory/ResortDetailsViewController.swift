@@ -52,6 +52,7 @@ class ResortDetailsViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        self.hideHudAsync()
         if Constant.RunningDevice.deviceIdiom == .phone {
             navigationController?.navigationBar.isHidden = true
         } else {
@@ -111,8 +112,8 @@ class ResortDetailsViewController: UIViewController {
                 Constant.MyClassConstants.amenitiesDictionary.setValue(onsiteArray, forKey: Constant.MyClassConstants.onsiteDictKey)
             }
             
+            tableViewResorts.estimatedRowHeight = 100
             tableViewResorts.reloadData()
-
         }
     }
     
@@ -357,16 +358,18 @@ class ResortDetailsViewController: UIViewController {
             
         } else {
             var storyboard = UIStoryboard()
-            var viewController = UIViewController()
             if Constant.RunningDevice.deviceIdiom == .pad {
                 storyboard = UIStoryboard(name: Constant.storyboardNames.resortDirectoryIpad, bundle: nil)
-                viewController = storyboard.instantiateViewController(withIdentifier: Constant.storyboardNames.signInPreLoginViewControlleriPad)
+                if let viewController = storyboard.instantiateViewController(withIdentifier: Constant.storyboardNames.signInPreLoginViewControlleriPad) as? SignInPreLoginViewController {
+                    navigationController?.pushViewController(viewController, animated: true)
+                }
             } else {
                 storyboard = UIStoryboard(name: Constant.storyboardNames.iphone, bundle: nil)
-                viewController = storyboard.instantiateViewController(withIdentifier: Constant.storyboardNames.signInPreLoginController)
+                if let viewController = storyboard.instantiateViewController(withIdentifier: Constant.storyboardNames.signInPreLoginController) as? SignInPreLoginViewController {
+                    viewController.isForSearchVacation = true
+                    navigationController?.pushViewController(viewController, animated: true)
+                }
             }
-         navigationController?.view.layer.add(Helper.bottomToTopTransition(), forKey: nil)
-         navigationController?.pushViewController(viewController, animated: true)
         }
     }
     //***** Function call for More button *****//
@@ -484,31 +487,7 @@ extension ResortDetailsViewController: UITableViewDelegate {
             case 0:
                 return tableView.frame.size.width / 2 + 100
             case 1:
-                
-                if let description = Constant.MyClassConstants.resortsDescriptionArray.description {
-                    if !description.isEmpty {
-                        
-                        var height: CGFloat = 0.0
-                        if Constant.RunningDevice.deviceIdiom == .pad {
-                            guard let font = UIFont(name: Constant.fontName.helveticaNeue, size: 15.0) else { return 0 }
-                                height = heightForView(description, font: font, width: (view.frame.size.width) - 40)
-                            return height + 40
-
-                        } else {
-                            guard let font = UIFont(name: Constant.fontName.helveticaNeue, size: 14.0) else { return 0 }
-                            if let description = Constant.MyClassConstants.resortsDescriptionArray.description {
-                                height = heightForView(description, font: font, width: view.frame.size.width - 40)
-                            }
-
-                            return height + 90
-
-                        }
-                    } else {
-                        return 60
-                    }
-                } else {
-                    return 0
-                }
+                return UITableViewAutomaticDimension
             case 2:
                 if Constant.RunningDevice.deviceIdiom == .pad {
                     return 0
@@ -892,17 +871,17 @@ extension ResortDetailsViewController: UITableViewDataSource {
                                     airportArray.append(airportCode)
                                 }
                                 if let miles = Constant.MyClassConstants.resortsDescriptionArray.nearestAiport?.distanceInMiles {
-                                    airportArray.append("\(miles) Miles")
+                                    airportArray.append(" \(miles) Miles")
                                 }
                                 if let kms = Constant.MyClassConstants.resortsDescriptionArray.nearestAiport?.distanceInKilometers {
-                                    airportArray.append("\(kms) KM")
+                                    airportArray.append(" \(kms) KM")
                                 }
                                
                             }
                             var completeAddress = ""
                             if let address = Constant.MyClassConstants.resortsDescriptionArray.address {
                                 let addressLine = address.addressLines[0]
-                                completeAddress = "\n\n Contact Information\n\n \(addressLine)\n \(address.cityName ?? ""),  \(address.territoryCode ?? "") \(address.postalCode ?? "")\n\n \(Constant.MyClassConstants.resortsDescriptionArray.phone ?? "")\n \(Constant.MyClassConstants.resortsDescriptionArray.webUrl ?? "")".localized()
+                                completeAddress = "\n\nContact Information\n\(addressLine)\n\(address.cityName ?? ""),  \(address.territoryCode ?? "") \(address.postalCode ?? "")\n\n\(Constant.MyClassConstants.resortsDescriptionArray.phone ?? "")\n\(Constant.MyClassConstants.resortsDescriptionArray.webUrl ?? "")".localized()
                                 airportArray.append(completeAddress)
                             }
                             
@@ -935,8 +914,8 @@ extension ResortDetailsViewController: UITableViewDataSource {
                                 
                                 let resortRating = "\(resortCategory[indexPath.row - 1].rating)"
                                 let ratingArray = resortRating.components(separatedBy: "")
-                                var image_X: CGFloat = 35.0
-                                var image_X1: CGFloat = 35.0
+                                var image_X: CGFloat = 25.0
+                                var image_X1: CGFloat = 25.0
                                 
                                 // to show empty circle image
                                 for _ in 0..<5 {
@@ -1027,7 +1006,7 @@ extension ResortDetailsViewController: UITableViewDataSource {
                 UserClient.addFavoriteResort(Session.sharedSession.userAccessToken, resortCode: resortCode, onSuccess: { _ in
                     self.hideHudAsync()
                     sender.isSelected = true
-                    Constant.MyClassConstants.favoritesResortCodeArray.add(resortCode)
+                    Constant.MyClassConstants.favoritesResortCodeArray.append(resortCode)
                     self.tableViewResorts.reloadData()
                     ADBMobile.trackAction(Constant.omnitureEvents.event48, data: nil)
                     
@@ -1041,7 +1020,7 @@ extension ResortDetailsViewController: UITableViewDataSource {
                 UserClient.removeFavoriteResort(Session.sharedSession.userAccessToken, resortCode: resortCode, onSuccess: { _ in
                     sender.isSelected = false
                     self.hideHudAsync()
-                    Constant.MyClassConstants.favoritesResortCodeArray.remove(resortCode)
+                    Constant.MyClassConstants.favoritesResortCodeArray = Constant.MyClassConstants.favoritesResortCodeArray.filter { $0 != resortCode }
                     self.tableViewResorts.reloadData()
                     ADBMobile.trackAction(Constant.omnitureEvents.event51, data: nil)
                     NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.notificationNames.reloadFavoritesTabNotification), object: sender)

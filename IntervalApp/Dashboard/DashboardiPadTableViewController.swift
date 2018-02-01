@@ -391,7 +391,7 @@ class DashboardIPadTableViewController: UITableViewController {
         switch dashboardArray[section] {
             
         case Constant.dashboardTableScreenReusableIdentifiers.alert:
-            return Constant.MyClassConstants.getawayAlertsArray.isEmpty ? 0 : 1
+            return Constant.MyClassConstants.searchDateResponse.isEmpty ? 0 : 1
         case Constant.dashboardTableScreenReusableIdentifiers.exchange:
            return Constant.MyClassConstants.flexExchangeDeals.isEmpty ? 0 : 1
         case Constant.dashboardTableScreenReusableIdentifiers.getaway:

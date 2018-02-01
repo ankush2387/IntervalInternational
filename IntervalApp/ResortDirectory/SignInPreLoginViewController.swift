@@ -54,6 +54,7 @@ class SignInPreLoginViewController: UIViewController {
     var touchIdEnabled = false
     var activeTF: UITextField!
     var scrollView = UIScrollView()
+    var isForSearchVacation = false
     
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.isNavigationBarHidden = true
@@ -181,7 +182,7 @@ class SignInPreLoginViewController: UIViewController {
             Helper.loginButtonPressed(sender: self, userName: userId, password: password, completionHandler: { [weak self] _ in
                 guard let strongSelf = self else { return }
                 Constant.MyClassConstants.loginOriginationPoint = "Resort Directory - Sign In Modal"
-                Helper.accessTokenDidChange(sender: strongSelf)
+                Helper.accessTokenDidChange(sender: strongSelf, isForSearch: (self?.isForSearchVacation)!)
             })
         } else {
             if userId.isEmpty {
@@ -286,7 +287,7 @@ extension SignInPreLoginViewController: UITableViewDelegate {
         let contact = Session.sharedSession.contact
         let membership = contact?.memberships![indexPath.row]
         Session.sharedSession.selectedMembership = membership
-        CreateActionSheet().membershipWasSelected()
+        CreateActionSheet().membershipWasSelected(isForSearchVacation: self.isForSearchVacation)
         
     }
     
