@@ -17,11 +17,11 @@ final class SelectionTableViewCell: UITableViewCell {
 
     // MARK: - Public properties
     static let cellHeight: CGFloat = 70
-    static let identifier = "SelectionTableViewCell"
+    static let identifier = String(describing: SelectionTableViewCell.self)
     static let xib = UINib(nibName: identifier, bundle: nil)
     public var tapped: (() -> Void)?
 
-    // MARK: Public functions
+    // MARK: - Public functions
     func setCell(labelText: String?, isSelected: Bool) {
         cellLabel.text = labelText
         cellImageView.image = isSelected ? #imageLiteral(resourceName: "Select-On") : #imageLiteral(resourceName: "Select-Off")

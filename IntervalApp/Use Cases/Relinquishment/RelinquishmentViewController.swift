@@ -77,7 +77,7 @@ final class RelinquishmentViewController: UIViewController {
         Constant.MyClassConstants.relinquishmentIdArray.append(relinquishmentID.unwrappedString)
         
         viewModel.relinquish(availablePoints, for: code, and: relinquishmentID)
-            .then(popViewController)
+            .then(popViewControllerAnimated)
             .onViewError(presentErrorAlert)
     }
     
@@ -118,7 +118,29 @@ final class RelinquishmentViewController: UIViewController {
             }
             navigationController?.pushViewController(additionalInformationViewController, animated: true)
         } else if relinquishment.lockOff {
-            // Do nothing...
+
+            viewModel.fetchLockedOffUnits(for: relinquishment).then { [weak self] lockedOffUnits in
+                guard let strongSelf = self, let units = relinquishment.unit?.lockOffUnits else { return }
+                let multipleSelectionViewModel = MultipleSelectionTableViewModel<InventoryUnit>(viewTitle: "Select all or any lock-off portion".localized(),
+                                                                                                dataSet: units,
+                                                                                                previouslySelectedDataSet: lockedOffUnits)
+
+                let multipleSelectionViewController = MultipleSelectionTableViewController(viewModel: multipleSelectionViewModel)
+                multipleSelectionViewController.didFinish = { [weak self] lockedOffUnits in
+                    guard let strongSelf = self else { return }
+                    strongSelf.showHudAsync()
+                    strongSelf.viewModel.relinquish(relinquishment, with: lockedOffUnits)
+                        .then(strongSelf.popViewControllerNonAnimated)
+                        .then(strongSelf.popViewControllerAnimated)
+                        .onViewError(strongSelf.presentErrorAlert)
+                        .finally(strongSelf.hideHudAsync)
+                }
+
+                strongSelf.navigationController?.pushViewController(multipleSelectionViewController, animated: true)
+            }
+                .onViewError(presentErrorAlert)
+                .finally(hideHudAsync)
+
         } else {
             relinquish(relinquishment)
         }
@@ -126,12 +148,16 @@ final class RelinquishmentViewController: UIViewController {
     
     private func relinquish(_ relinquishment: Relinquishment) {
         viewModel.relinquish(relinquishment)
-            .then(popViewController)
+            .then(popViewControllerAnimated)
             .onViewError(presentErrorAlert)
             .finally(hideHudAsync)
     }
-    
-    private func popViewController() {
+
+    private func popViewControllerNonAnimated() {
+        navigationController?.popViewController(animated: false)
+    }
+
+    private func popViewControllerAnimated() {
         navigationController?.popViewController(animated: true)
     }
     
@@ -188,10 +214,8 @@ final class RelinquishmentViewController: UIViewController {
                 clubPoints.relinquishmentYear = relinquishment.relinquishmentYear ?? 0
                 
                 strongSelf.viewModel.relinquish(clubPoints)
-                    .then {
-                        strongSelf.navigationController?.popViewController(animated: false)
-                        strongSelf.popViewController()
-                    }
+                    .then(strongSelf.popViewControllerNonAnimated)
+                    .then(strongSelf.popViewControllerAnimated)
                     .onViewError(strongSelf.presentErrorAlert)
             }
 
@@ -253,6 +277,11 @@ extension RelinquishmentViewController: UITableViewDataSource, SimpleViewModelBi
         
         return cell
     }
+}
+
+extension InventoryUnit: MultipleSelectionElement {
+    var cellTitle: String { return unitDetailsUIFormatted }
+    var cellSubtitle: String { return unitCapacityUIFormatted }
 }
 
 // Temporary code, to not change model across application

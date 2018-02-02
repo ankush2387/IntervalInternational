@@ -95,6 +95,20 @@ open class RelinquishmentManager {
         //  OpenWeeks without actions
         //  Deposits without actions
         //
+        
+        // Relinquishment Year (alphabetical: A -> Z)
+        gropus.cigPointsWeeks.sort(by: {$0.relinquishmentYear! < $1.relinquishmentYear!})
+        gropus.pointsWeeks.sort(by: {$0.relinquishmentYear! < $1.relinquishmentYear!})
+        gropus.intervalWeeks.sort(by: {$0.relinquishmentYear! < $1.relinquishmentYear!})
+        
+        // Resort Name (ASC - alphabetical: A -> Z)
+        gropus.cigPointsWeeks.sort(by: {$0.resort?.resortName?.localizedCaseInsensitiveCompare(
+            ($1.resort?.resortName!)!) == ComparisonResult.orderedAscending})
+        gropus.pointsWeeks.sort(by: {$0.resort?.resortName?.localizedCaseInsensitiveCompare(
+            ($1.resort?.resortName!)!) == ComparisonResult.orderedAscending})
+        gropus.intervalWeeks.sort(by: {$0.resort?.resortName?.localizedCaseInsensitiveCompare(
+            ($1.resort?.resortName!)!) == ComparisonResult.orderedAscending})
+        
         return gropus
     }
     
