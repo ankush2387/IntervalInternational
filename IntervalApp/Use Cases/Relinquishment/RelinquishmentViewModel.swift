@@ -107,6 +107,32 @@ final class RelinquishmentViewModel {
         // Will later handle `pending`
         return relinquishment.isDeposit() ? depositDepositedWeek(for: relinquishment) : depositOpenWeek(for: relinquishment)
     }
+
+    func relinquish(_ clubPoints: ClubPoints) -> Promise<Void> {
+        return Promise { resolve, reject in
+
+            guard let membershipNumber = self.sessionStore.selectedMembership?.memberNumber else {
+                reject(UserFacingCommonError.invalidSession)
+                return
+            }
+
+            let openWeeksEntity = OpenWeeksStorage()
+            let tradeLocalDataEntity = TradeLocalData()
+            let pointsEntity = rlmPointsProgram()
+
+            pointsEntity.relinquishmentId = clubPoints.relinquishmentId
+            tradeLocalDataEntity.clubPoints.append(clubPoints)
+            
+//            pointsEntity.availablePoints = clubPoints.pointsSpent
+//            tradeLocalDataEntity.pProgram.append(pointsEntity)
+            openWeeksEntity.openWeeks.append(tradeLocalDataEntity)
+            openWeeksEntity.membeshipNumber = membershipNumber
+            
+            self.entityDataStore.writeToDisk(openWeeksEntity, encoding: .decrypted)
+                .then(resolve)
+                .onError { _ in reject(UserFacingCommonError.generic) }
+        }
+    }
     
     func relinquish(_ availablePoints: Int?, for code: String?, and relinquishmentID: String?) -> Promise<Void> {
         return Promise { [unowned self] resolve, reject in
@@ -195,8 +221,14 @@ final class RelinquishmentViewModel {
                         .flatMap { $0.openWeeks }
                         .flatMap { $0.relinquishmentID }
                     
-                    let relinquishmentIDs = depositedWeeksRelinquishmentIDs + depositedOpenWeeksRelinquishmentIDs
+                    let depositedClubPointsRelinquishmentIDs = openWeeksStore
+                        .flatMap { $0.openWeeks }
+                        .flatMap { $0.clubPoints }
+                        .flatMap { $0.relinquishmentId }
+                    
+                    let relinquishmentIDs = depositedWeeksRelinquishmentIDs + depositedOpenWeeksRelinquishmentIDs + depositedClubPointsRelinquishmentIDs
                     let filteredRelinquishments = relinquishments.filter { !relinquishmentIDs.contains($0.relinquishmentId.unwrappedString) }
+                    
                     resolve(filteredRelinquishments)
                     
                 }.onError(reject)

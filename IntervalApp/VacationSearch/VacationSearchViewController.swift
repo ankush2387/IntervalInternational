@@ -909,7 +909,7 @@ extension VacationSearchViewController: UITableViewDataSource {
                                 cell.whereTogoTextLabel.text = "\(resortNameWithYear)"
                             } else {
                                 let pointsSpent = clubPoints[0].pointsSpent
-                                cell.whereTogoTextLabel.text = "Club Points upto \(String(describing: pointsSpent))".localized()
+                                cell.whereTogoTextLabel.text = "Club Points up to \(String(describing: pointsSpent))".localized()
                             }
                             cell.bedroomLabel.isHidden = true
                             return cell

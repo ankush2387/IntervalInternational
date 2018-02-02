@@ -101,7 +101,7 @@ final class RelinquishmentViewController: UIViewController {
             Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId = relinquishment.relinquishmentId
             viewModel.readResortClubPointChart(for: relinquishment)
                 .then(performHorribleSingletonCode)
-                .then(pushClubPointSelectionView)
+                .then(pushClubPointSelectionView(for: relinquishment))
                 .onViewError(presentErrorAlert)
                 .finally(hideHudAsync)
 
@@ -173,8 +173,9 @@ final class RelinquishmentViewController: UIViewController {
         }
     }
 
-    private func pushClubPointSelectionView() -> Promise<Void> {
+    private func pushClubPointSelectionView(for relinquishment: Relinquishment) -> Promise<Void> {
         return Promise { [weak self] resolve, reject in
+            guard let strongSelf = self else { return }
             guard let viewController = UIStoryboard(name: Constant.storyboardNames.ownershipIphone, bundle: nil)
                 .instantiateViewController(withIdentifier: Constant.storyboardControllerID.clubPointSelectionViewController)
                 as? ClubPointSelectionViewController else {
@@ -182,7 +183,19 @@ final class RelinquishmentViewController: UIViewController {
                     return
             }
 
-            self?.navigationController?.pushViewController(viewController, animated: true)
+            viewController.didSave = { clubPoints in
+                clubPoints.relinquishmentId = relinquishment.relinquishmentId.unwrappedString
+                clubPoints.relinquishmentYear = relinquishment.relinquishmentYear ?? 0
+                
+                strongSelf.viewModel.relinquish(clubPoints)
+                    .then {
+                        strongSelf.navigationController?.popViewController(animated: false)
+                        strongSelf.popViewController()
+                    }
+                    .onViewError(strongSelf.presentErrorAlert)
+            }
+
+            strongSelf.navigationController?.pushViewController(viewController, animated: true)
             resolve()
         }
     }

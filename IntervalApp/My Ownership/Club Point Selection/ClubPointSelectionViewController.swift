@@ -45,13 +45,15 @@ class ClubPointSelectionViewController: UIViewController {
     @IBOutlet private weak var indisefirstview: UIView!
     
     @IBOutlet private weak var insidesecondview: UIView!
-    
+
+    var didSave: ((ClubPoints) -> Void)?
+
     let infoImageView = UIImageView()
     var labelsCollectionView: UICollectionView!
     var clublabel = ""
     var clubIntervalValuesCollectionView: UICollectionView!
     var clubPointsValue = "0"
-   
+    var selectedIndexPath: IndexPath?
     var testArr = [1]
     var firstCheckedCheckBoxTag = 0
     var secondCheckedCheckBoxTag = 0
@@ -111,10 +113,14 @@ class ClubPointSelectionViewController: UIViewController {
     
     // MARK: - Function for done button click
     @IBAction func doneButtonClicked(_ sender: IUIKButton) {
-        
-        guard let relinquishmentID = Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId else {
-         return }
-        
+        showHudAsync()
+        guard let relinquishmentID = Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId,
+            let indexPath = selectedIndexPath,
+            let unitSize = processUnitSize(for: indexPath) else {
+                hideHudAsync()
+                return
+        }
+
         let pointMatrixType = PointsMatrixReservation()
         pointMatrixType.clubPointsMatrixType = Constant.MyClassConstants.matrixType
         pointMatrixType.clubPointsMatrixDescription = Constant.MyClassConstants.matrixDescription
@@ -122,7 +128,7 @@ class ClubPointSelectionViewController: UIViewController {
         intervalPrint(Constant.MyClassConstants.fromdatearray[0])
         pointMatrixType.fromDate = Constant.MyClassConstants.fromdatearray[0] as? String
         pointMatrixType.toDate = Constant.MyClassConstants.todatearray[0] as? String
-        
+        pointMatrixType.clubPointsMatrixGridRowLabel = processClubPointMatrixRowLable(for: indexPath)
         _ = Constant.MyClassConstants.relinquishmentSelectedWeek.unit
         intervalPrint(Constant.MyClassConstants.matrixDataArray)
         intervalPrint(segmentSelectedString)
@@ -130,23 +136,60 @@ class ClubPointSelectionViewController: UIViewController {
         dictionaryForSegmentCheckBox.value(forKey: segmentSelectedString)
         
            let invenUnit = InventoryUnit()
-           invenUnit.unitSize = "STUDIO"
+           invenUnit.unitSize = unitSize
            let clubPoints = clubPointsValue.replacingOccurrences(of: ",", with: "")
            invenUnit.clubPoints = Int(clubPoints) ?? 0
         
                 pointMatrixType.unit = invenUnit
-         ExchangeClient.updatePointsMatrixReservation(Session.sharedSession.userAccessToken, relinquishmentId: relinquishmentID, reservation: pointMatrixType, onSuccess: {(response) in
-            intervalPrint(response)
-            
-         }, onError: { error in
-            self.presentErrorAlert(UserFacingCommonError.handleError(error))
+         ExchangeClient.updatePointsMatrixReservation(Session.sharedSession.userAccessToken, relinquishmentId: relinquishmentID, reservation: pointMatrixType, onSuccess: { [weak self] (response) in
+            let clubPoints = ClubPoints()
+            clubPoints.isPointsMatrix = true
+            clubPoints.pointsSpent = invenUnit.clubPoints
+            self?.hideHudAsync()
+            self?.didSave?(clubPoints)
+         }, onError: { [weak self] error in
+            self?.hideHudAsync()
+            self?.presentErrorAlert(UserFacingCommonError.handleError(error))
         })
         
     }
-    
+
+    private func processClubPointMatrixRowLable(for indexPath: IndexPath) -> String? {
+        return Constant.MyClassConstants.labelarray[indexPath.row - 1] as? String
+    }
+
+    private func processUnitSize(for indexPath: IndexPath) -> String? {
+
+        // This is not right..
+        // This class needs to be rewritten...
+        // This will break in other languages since its driven by UI and localization will change these values...
+        let selectedSize = Constant.MyClassConstants.clubPointMatrixHeaderArray[indexPath.section] as? String
+
+        switch selectedSize.unwrappedString {
+
+        case "Studio":
+            return UnitSize.STUDIO.rawValue
+
+        case "1 Bedroom":
+            return UnitSize.ONE_BEDROOM.rawValue
+
+        case "2 Bedroom":
+            return UnitSize.TWO_BEDROOM.rawValue
+
+        case "3 Bedroom":
+            return UnitSize.THREE_BEDROOM.rawValue
+
+        case "4 Bedroom":
+            return UnitSize.FOUR_BEDROOM.rawValue
+
+        default:
+            return nil
+        }
+    }
+
     // MARK: - Save Club points to database
     func saveSelectedClubPoints() {
-        
+
     }
     
     //*** Change frame layout while change iPad in Portrait and Landscape mode.***//
@@ -439,6 +482,7 @@ class ClubPointSelectionViewController: UIViewController {
     @IBAction func checkBoxClicked(_ sender: UIButton) {
         doneButton.isHidden = false
         let indexPath = IndexPath(item: sender.tag % 10, section: sender.tag / 10)
+        selectedIndexPath = indexPath
         Constant.MyClassConstants.checkBoxTag = sender.tag % 10
         guard let collectionVwCell = clubIntervalValuesCollectionView.cellForItem(at: indexPath) else { return }
 
@@ -544,7 +588,7 @@ extension ClubPointSelectionViewController: UICollectionViewDataSource {
         
         if collectionView.tag == 70 {
             if indexPath.row == 0 {
-                guard let dateCell = collectionView .dequeueReusableCell(withReuseIdentifier: "HeaderCell", for: indexPath) as? TdiCollectionViewCell else { return UICollectionViewCell() }
+                guard let dateCell = collectionView.dequeueReusableCell(withReuseIdentifier: "HeaderCell", for: indexPath) as? TdiCollectionViewCell else { return UICollectionViewCell() }
                 dateCell.backgroundColor = IUIKColorPalette.titleBackdrop.color
                 dateCell.contentLabel.textColor = UIColor.black
                 
