@@ -172,8 +172,8 @@ class GoogleMapViewController: UIViewController {
         super.viewDidLoad()
         
        //hide map current location button
-        self.mapView.settings.myLocationButton = false
-        self.mapView.isMyLocationEnabled = false
+        mapView.settings.myLocationButton = false
+        mapView.isMyLocationEnabled = false
     
         // condition check to send resort directory
         if Constant.MyClassConstants.runningFunctionality == Constant.MyClassConstants.resortFunctionalityCheck {
@@ -207,7 +207,7 @@ class GoogleMapViewController: UIViewController {
             navigationItem.rightBarButtonItem = applyButton
         }
 
-        if mapSideView != nil && self.containerView != nil {
+        if mapSideView != nil && containerView != nil {
             containerView.tag = 100
             containerView.isHidden = true
             view.bringSubview(toFront: mapSideView)
@@ -990,7 +990,6 @@ class GoogleMapViewController: UIViewController {
             let selectButton = UIButton(type: UIButtonType.system) as UIButton
             let bounds = CGRect(x: view.bounds.width - 68, y: 0, width: 60, height: 40)
             selectButton.frame = bounds
-            //selectButton.imageView?.contentMode = .scaleAspectFit
             selectButton.setImage(UIImage(named: Constant.assetImageNames.plusIcon), for: .normal)
             selectButton.setTitleColor(UIColor.white, for: UIControlState.normal)
             selectButton.layer.cornerRadius = 5
@@ -1002,12 +1001,12 @@ class GoogleMapViewController: UIViewController {
             } else {
                 selectButton.isEnabled = true
             }
-            searchDisplayTableView.tableHeaderView = headerView
+               searchDisplayTableView.tableHeaderView = headerView
         }
         
         UIView.animate (withDuration: 0.5, delay: 0.1, options: UIViewAnimationOptions.curveEaseIn, animations: {
-            self.searchDisplayTableView.frame = CGRect(x: 0, y: 108, width: self.view.frame.width, height: UIScreen.main.bounds.height - 152)
-            
+        
+            self.searchDisplayTableView.frame = CGRect(x: 0, y: self.mapView.frame.minY, width: self.view.frame.width, height: self.mapView.frame.height)
             if Constant.RunningDevice.deviceIdiom == .pad && self.containerView != nil {
                 if self.containerView.frame.origin.x == 0 {
                     self.containerView.frame = CGRect(x: -self.containerView.frame.size.width, y: self.containerView.frame.origin.y, width: self.containerView.frame.size.width, height: self.containerView.frame.size.height)
@@ -1292,11 +1291,9 @@ extension GoogleMapViewController: UICollectionViewDataSource {
         if resort.images.count > 1 {
             var url = URL(string: "")
             let imagesArray = resort.images
-            for imgStr in imagesArray {
-                if imgStr.size == Constant.MyClassConstants.imageSize {
+            for imgStr in imagesArray where imgStr.size == Constant.MyClassConstants.imageSize {
                     url = URL(string: imgStr.url ?? "")
                     break
-                }
             }
             
             resortImageView.setImageWith(url, completed: { (image:UIImage?, error:Swift.Error?, _:SDImageCacheType, _:URL?) in
@@ -1458,8 +1455,6 @@ extension GoogleMapViewController: UITableViewDelegate {
                         }
                         self.apiCallWithRectangleRequest(request: geoArea)
                     }
-
-                    
                     hidePopUpView()
                 }
             } else {
@@ -1643,7 +1638,6 @@ extension GoogleMapViewController: UITableViewDataSource {
                 cell.favoriteButton.addTarget(self, action: #selector(addResortPressedAtIndex(sender:)), for: .touchUpInside)
                 
                 if Constant.MyClassConstants.addResortSelectedIndex.contains(indexPath.row) {
-                    //cell.favoriteButton.isSelected = false
                     cell.favoriteButton.isSelected = true
                 } else {
                     cell.favoriteButton.isSelected = false
@@ -1652,7 +1646,6 @@ extension GoogleMapViewController: UITableViewDataSource {
                 
                 let status = Helper.isResrotFavorite(resortCode: resortDetails.resortCode ?? "")
                 if status {
-                    //cell.favoriteButton.isSelected = false
                     cell.favoriteButton.isSelected = true
                 } else {
                     cell.favoriteButton.isSelected = false
@@ -1668,7 +1661,7 @@ extension GoogleMapViewController: UITableViewDataSource {
             }
             cell.resortName.text = resortDetails.resortName
             let resortAddress = resortDetails.address
-            cell.resortCountry.text = resortAddress?.cityName //resortAddress.country?.countryName
+            cell.resortCountry.text = resortAddress?.cityName
             cell.resortCode.text = resortDetails.resortCode
             cell.delegate = self
             
@@ -1715,21 +1708,21 @@ extension GoogleMapViewController: UISearchBarDelegate {
         if Constant.RunningDevice.deviceIdiom == .pad {
             hideMapSideView(flag: true)
         }
-        if searchBar.text!.characters.count >= 3 {
-            
-            DirectoryClient.searchDestinations(Constant.MyClassConstants.systemAccessToken, request: SearchDestinationsRequest(query: searchBar.text), onSuccess: { [weak self] response in
-                if !response.resorts.isEmpty {
-                    Constant.MyClassConstants.resorts = response.resorts
-                    Constant.MyClassConstants.resortsArray = response.resorts
+        if let searchBarText = searchBar.text, searchBarText.count >= 3 {
+
+                DirectoryClient.searchDestinations(Constant.MyClassConstants.systemAccessToken, request: SearchDestinationsRequest(query: searchBar.text), onSuccess: { [weak self] response in
+                    if !response.resorts.isEmpty {
+                        Constant.MyClassConstants.resorts = response.resorts
+                        Constant.MyClassConstants.resortsArray = response.resorts
+                    }
+                    
+                    Constant.MyClassConstants.destinations = response.destinations
+                    self?.showPopUpView()
+                    self?.searchDisplayTableView.reloadData()
+                    
+                }) { [weak self] error in
+                    self?.presentErrorAlert(UserFacingCommonError.handleError(error))
                 }
-                
-                Constant.MyClassConstants.destinations = response.destinations
-                self?.showPopUpView()
-                self?.searchDisplayTableView.reloadData()
-                
-            }) { [weak self] error in
-                self?.presentErrorAlert(UserFacingCommonError.handleError(error))
-            }
         }
     }
     
