@@ -1055,7 +1055,15 @@ extension VacationSearchIPadViewController: UICollectionViewDataSource {
             centerView.addSubview(unitLabel)
             
             let priceLabel = UILabel(frame: CGRect(x: 10, y: 35, width: centerView.frame.size.width - 20, height: 20))
-            priceLabel.text = "From $" + String(describing: topTenDeals.price!.fromPrice) + " Wk."
+            if let pricefrom = topTenDeals.price?.fromPrice, let currencyCode = topTenDeals.price?.currencySymbol {
+                if let attributedAmount = pricefrom.currencyFormatter(for: currencyCode, baseLineOffSet: 0) {
+                    let fromAttributedString = NSMutableAttributedString(string: "From ", attributes: nil)
+                    let wkAttributedString = NSAttributedString(string: " Wk.", attributes: nil)
+                    fromAttributedString.append(attributedAmount)
+                    fromAttributedString.append(wkAttributedString)
+                    priceLabel.attributedText = fromAttributedString
+                }
+            }
             priceLabel.numberOfLines = 2
             priceLabel.textAlignment = NSTextAlignment.center
             priceLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: 15)

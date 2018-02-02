@@ -794,8 +794,14 @@ extension DashboardTableViewController: UICollectionViewDataSource {
             centerView.addSubview(unitLabel)
             
             let priceLabel = UILabel(frame: CGRect(x: 10, y: 35, width: centerView.frame.size.width - 20, height: 20))
-            if let pricefrom = topTenDeals.price?.fromPrice {
-                priceLabel.text = "From $ \(pricefrom) Wk."
+            if let pricefrom = topTenDeals.price?.fromPrice, let currencyCode = topTenDeals.price?.currencySymbol {
+                if let attributedAmount = pricefrom.currencyFormatter(for: currencyCode, baseLineOffSet: 0) {
+                    let fromAttributedString = NSMutableAttributedString(string: "From ", attributes: nil)
+                    let wkAttributedString = NSAttributedString(string: " Wk.", attributes: nil)
+                    fromAttributedString.append(attributedAmount)
+                    fromAttributedString.append(wkAttributedString)
+                    priceLabel.attributedText = fromAttributedString
+                }
             }
             
             priceLabel.numberOfLines = 2
@@ -923,7 +929,7 @@ extension UIViewController {
                 Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.response = response
                 
                 // Get activeInterval
-                let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval()
+                guard let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval() else { return }
                 
                 // Update active interval
                 Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
@@ -935,12 +941,7 @@ extension UIViewController {
                 
                 // Check not available checkIn dates for the active interval
                 
-                if activeInterval?.fetchedBefore != nil && activeInterval?.hasCheckInDates() != nil {
-                    Helper.showNotAvailabilityResults()
-                    self.navigateToSearchResultsScreen()
-                    
-                } else {
-                    
+                if activeInterval.hasCheckInDates() {
                     Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
                     let initialSearchCheckInDate = Helper.convertStringToDate(dateString:Constant.MyClassConstants.initialVacationSearch.searchCheckInDate!, format:Constant.MyClassConstants.dateFormat)
                     Constant.MyClassConstants.checkInDates = response.checkInDates
@@ -948,6 +949,9 @@ extension UIViewController {
                     Helper.helperDelegate = self as? HelperDelegate
                     self.hideHudAsync()
                     Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: initialSearchCheckInDate, senderViewController: self)
+                } else {
+                    Helper.showNotAvailabilityResults()
+                    self.navigateToSearchResultsScreen()
                 }
             }) {[unowned self] error in
                 self.hideHudAsync()

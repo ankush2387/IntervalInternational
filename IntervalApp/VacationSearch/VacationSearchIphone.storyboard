@@ -3039,7 +3039,7 @@ transaction.</string>
         <!--Relinquishment View Controller-->
         <scene sceneID="g9f-bm-pPN">
             <objects>
-                <viewController storyboardIdentifier="RelinquishmentSelectionViewController" automaticallyAdjustsScrollViewInsets="NO" id="Gf2-qV-Yg5" customClass="RelinquishmentViewController" customModule="IntervalApp" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="RelinquishmentViewController" automaticallyAdjustsScrollViewInsets="NO" id="Gf2-qV-Yg5" customClass="RelinquishmentViewController" customModule="IntervalApp" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="If9-mo-Awp"/>
                         <viewControllerLayoutGuide type="bottom" id="x0D-2s-uyi"/>
