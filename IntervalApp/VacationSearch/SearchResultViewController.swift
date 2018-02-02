@@ -1515,14 +1515,14 @@ extension SearchResultViewController: UITableViewDelegate {
                     case VacationSearchType.EXCHANGE:
                         if !exactMatchResortsArrayExchange.isEmpty {
                             if let totalUnits = exactMatchResortsArrayExchange[index].inventory?.buckets.count {
-                                return CGFloat(totalUnits * 80 + 270 + 10)
+                                return CGFloat(totalUnits * 80 + 310 + 10)
                             } else {
                                 return 0
                             }
                             
                         } else {
                             if let totalUnits = self.surroundingMatchResortsArrayExchange[index].inventory?.buckets.count {
-                                return CGFloat(totalUnits * 80 + 270 + 10)
+                                return CGFloat(totalUnits * 80 + 310 + 10)
                             } else {
                                 return 0
                             }
@@ -1531,13 +1531,13 @@ extension SearchResultViewController: UITableViewDelegate {
                     case VacationSearchType.RENTAL:
                         if !exactMatchResortsArray.isEmpty {
                             if let totalUnits = self.exactMatchResortsArray[index].inventory?.units.count {
-                                return CGFloat(totalUnits * 80 + 270 + 10)
+                                return CGFloat(totalUnits * 80 + 310 + 10)
                             } else {
                                 return 0
                             }
                         } else {
                             if let totalUnits = self.surroundingMatchResortsArray[index].inventory?.units.count {
-                                return CGFloat(totalUnits * 80 + 270 + 10)
+                                return CGFloat(totalUnits * 80 + 310 + 10)
                             } else {
                                 return 0
                             }
@@ -1548,14 +1548,14 @@ extension SearchResultViewController: UITableViewDelegate {
                             if combinedExactSearchItems[index].rentalAvailability != nil {
                                 let rentalInventory = combinedExactSearchItems[index].rentalAvailability
                                 if let totalUnits = rentalInventory?.inventory?.units.count {
-                                    return CGFloat(totalUnits * 80 + 270 + 10)
+                                    return CGFloat(totalUnits * 80 + 310 + 10)
                                 } else {
                                     return 0
                                 }
                             } else {
                                 let exchangeInventory = combinedExactSearchItems[index].exchangeAvailability
                                 if let totalUnits = exchangeInventory?.inventory?.buckets.count {
-                                    return CGFloat(totalUnits * 80 + 270 + 10)
+                                    return CGFloat(totalUnits * 80 + 310 + 10)
                                 } else {
                                     return 0
                                 }
@@ -1564,14 +1564,14 @@ extension SearchResultViewController: UITableViewDelegate {
                             if combinedSurroundingSearchItems[index].rentalAvailability != nil {
                                 let rentalInventory = combinedSurroundingSearchItems[index].rentalAvailability
                                 if let totalUnits = rentalInventory?.inventory?.units.count {
-                                    return CGFloat(totalUnits * 80 + 270 + 10)
+                                    return CGFloat(totalUnits * 80 + 310 + 10)
                                 } else {
                                     return 0
                                 }
                             } else {
                                 let exchangeInventory = combinedSurroundingSearchItems[index].exchangeAvailability
                                 if let totalUnits = exchangeInventory?.inventory?.buckets.count {
-                                    return CGFloat(totalUnits * 80 + 270 + 10)
+                                    return CGFloat(totalUnits * 80 + 310 + 10)
                                 } else {
                                     return 0
                                 }

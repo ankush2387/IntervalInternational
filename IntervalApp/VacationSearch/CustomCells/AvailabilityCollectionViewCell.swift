@@ -20,6 +20,15 @@ class AvailabilityCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var resortAddress: UILabel!
     @IBOutlet weak var viewGradient: UIView!
     @IBOutlet weak var tierImage: UIImageView!
+    
+    @IBOutlet weak var lblRating: UILabel!
+    @IBOutlet weak var lblRatingReviews: UILabel!
+    @IBOutlet weak var ratingImgView1: UIImageView!
+    @IBOutlet weak var ratingImgView2: UIImageView!
+    @IBOutlet weak var ratingImgView3: UIImageView!
+    @IBOutlet weak var ratingImgView4: UIImageView!
+    @IBOutlet weak var ratingImgView5: UIImageView!
+    
     //***** class variables *****//
     //var delegate:ResortDirectoryCollectionViewCellDelegate?
     
@@ -51,6 +60,10 @@ class AvailabilityCollectionViewCell: UICollectionViewCell {
         if let tierImageName = inventoryItem.tier {
              let tier = Helper.getTierImageName(tier: tierImageName.uppercased())
             self.tierImage.image = UIImage(named: tier)
+        }
+        
+        if let reviews = inventoryItem.rating?.totalResponses {
+            self.lblRatingReviews.text = "\(reviews) Member Reviews"
         }
         
     }
