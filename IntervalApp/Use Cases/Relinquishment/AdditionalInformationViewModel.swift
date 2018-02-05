@@ -247,6 +247,23 @@ final class AdditionalInformationViewModel {
                 return
             }
             
+            if !self.relinquishment.requireUnitNumberAndUnitSize() {
+                fixWeekReservation.unit = nil
+            }
+            
+            if !self.relinquishment.requireCheckInDateAndWeekNumber() {
+                fixWeekReservation.checkInDate = nil
+                fixWeekReservation.weekNumber = nil
+            }
+            
+            if !self.relinquishment.requireReservationNumber() {
+                fixWeekReservation.reservationNumber = nil
+            }
+            
+            if !self.relinquishment.requireClubResort() {
+                fixWeekReservation.resort = nil
+            }
+            
             self.exchangeClientAPIStore.writeFixWeekReservation(for: accessToken,
                                                                 relinquishmentID: relinquishmentID,
                                                                 reservation: fixWeekReservation)

@@ -217,14 +217,22 @@ final class AdditionalInformationViewController: UIViewController {
             let format = "yyyy/MM/dd"
             var resortCalendars: [ResortCalendar]?
             
-            viewController.didSelectDate = { date in
+            viewController.didSelectDate = { [weak self] date in
+                guard let strongSelf = self else { return }
                 
-                let selectedResortCalendar = resortCalendars?.first {
+                var selectedResortCalendar = resortCalendars?.first {
                     let resortDate = $0.checkInDate.unwrappedString.dateFromString(for: format)
                     return resortDate?.intervalShortDate() == date?.intervalShortDate()
                 }
 
-                self.viewModel.updateDate(with: selectedResortCalendar)
+                if case .none = selectedResortCalendar {
+                    // If server did not send resort calendar, or failed to find match just pass in allowed date
+                    let resortCalendar = ResortCalendar()
+                    resortCalendar.checkInDate = date?.intervalShortDate()
+                    selectedResortCalendar = resortCalendar
+                }
+                
+                strongSelf.viewModel.updateDate(with: selectedResortCalendar)
                 let dateFormattedForUI = selectedResortCalendar?.checkInDate?.dateFromString(for: format)
                 viewModel.textFieldValue.next(dateFormattedForUI?.shortDateFormat())
             }
