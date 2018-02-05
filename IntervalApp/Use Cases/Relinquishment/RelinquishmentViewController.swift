@@ -36,6 +36,8 @@ final class RelinquishmentViewController: UIViewController {
     private func setUI() {
         title = "Relinquishment Selection".localized()
         registerSimpleCellViews(withTableView: tableView)
+        tableView.estimatedRowHeight = 100
+        tableView.rowHeight = UITableViewAutomaticDimension
     }
     
     private func reloadData() {
@@ -251,10 +253,6 @@ extension RelinquishmentViewController: UITableViewDataSource, SimpleViewModelBi
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel.numberOfRows(for: section)
-    }
-
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return viewModel.heightOfCell(for: indexPath)
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
