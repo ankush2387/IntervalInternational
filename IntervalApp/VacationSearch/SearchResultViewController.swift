@@ -560,34 +560,25 @@ class SearchResultViewController: UIViewController {
                     }
                 }
             }
-            UserClient.updateSessionAndGetCurrentMembership(Session.sharedSession.userAccessToken, membershipNumber: Session.sharedSession.selectedMembership?.memberNumber ?? "", onSuccess: { membership in
-                Session.sharedSession.selectedMembership = membership
-                
-                // Got an access token!  Save it for later use.
-                self.hideHudAsync()
-                if let contacts = membership.contacts {
-                    Constant.MyClassConstants.membershipContactArray = contacts
-                }
-                
-                let mainStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
-                if response.view?.forceRenewals != nil {
-                    // Navigate to Renewals Screen
-                    guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.RenewelViewController) as? RenewelViewController else { return }
-                    viewController.delegate = self
-                    self.present(viewController, animated: true)
-                    
-                } else {
-                    guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInViewController) as? WhoWillBeCheckingInViewController else { return }
-                    viewController.filterRelinquishments = Constant.MyClassConstants.filterRelinquishments[0]
-                    self.navigationController?.pushViewController(viewController, animated: true)
-                    
-                }
-            }, onError: { [weak self] error in
-                self?.hideHudAsync()
-                self?.presentErrorAlert(UserFacingCommonError.handleError(error))
-                
-            })
             
+            // Got an access token!  Save it for later use.
+            self.hideHudAsync()
+            if let membership = Session.sharedSession.selectedMembership, let contacts = membership.contacts {
+                Constant.MyClassConstants.membershipContactArray = contacts
+            }
+            
+            let mainStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+            if response.view?.forceRenewals != nil {
+                // Navigate to Renewals Screen
+                guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.RenewelViewController) as? RenewelViewController else { return }
+                viewController.delegate = self
+                self.present(viewController, animated: true)
+            } else {
+                guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInViewController) as? WhoWillBeCheckingInViewController else { return }
+                viewController.filterRelinquishments = Constant.MyClassConstants.filterRelinquishments[0]
+                self.navigationController?.pushViewController(viewController, animated: true)
+            }
+
         }, onError: { [weak self] error in
             self?.hideHudAsync()
             self?.presentErrorAlert(UserFacingCommonError.handleError(error))

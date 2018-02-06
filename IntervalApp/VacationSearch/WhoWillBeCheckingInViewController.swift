@@ -41,7 +41,7 @@ class WhoWillBeCheckingInViewController: UIViewController {
     var holdingTime = 2
     var decreaseValue = 1
     var selectedCountryIndex: Int?
-    var renewalsArray = [Renewal()]
+    var renewalsArray: [Renewal] = []
     var noThanksSelected = false
     var isFromRenewals = false
     
@@ -494,9 +494,11 @@ class WhoWillBeCheckingInViewController: UIViewController {
                 } else {
                     Constant.MyClassConstants.enableGuestCertificate = false
                 }
+                
                 if !renewalsArray.isEmpty {
                     exchangeProcessRequest.renewals = renewalsArray
                 }
+                
                 let processResort = ExchangeProcess()
                 processResort.holdUnitStartTimeInMillis = Constant.holdingTime
                 processResort.processId = Constant.MyClassConstants.exchangeProcessStartResponse.processId

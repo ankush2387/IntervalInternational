@@ -23,16 +23,13 @@ open class FixWeekReservation {
     open func toDictionary() -> Dictionary<String, AnyObject> {
         var dictionary = Dictionary<String, AnyObject>()
 
-        if let reservationNumber = self.reservationNumber, !(self.reservationNumber?.isEmpty)! {
+        if let reservationNumber = self.reservationNumber, !reservationNumber.isEmpty {
             dictionary["reservationNumber"] = reservationNumber as AnyObject?
         }
-        if let checkInDate = self.checkInDate, !(self.checkInDate?.isEmpty)! {
+        if let checkInDate = self.checkInDate, !checkInDate.isEmpty {
             dictionary["checkInDate"] = checkInDate as AnyObject?
         }
-        if let weekNumber = self.weekNumber, !(self.weekNumber?.isEmpty)! {
-            dictionary["weekNumber"] = weekNumber as AnyObject?
-        }
-        if let weekNumber = self.weekNumber, !(self.weekNumber?.isEmpty)! {
+        if let weekNumber = self.weekNumber, !weekNumber.isEmpty {
             dictionary["weekNumber"] = weekNumber as AnyObject?
         }
         if let resort = self.resort {
