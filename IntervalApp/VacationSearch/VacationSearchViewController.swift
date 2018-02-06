@@ -535,7 +535,10 @@ extension VacationSearchViewController: UITableViewDelegate {
                     do {
                         let realm = try Realm()
                         if self.destinationOrResort.count > 0 {
-                            
+
+                            let distinationID = self.destinationOrResort[indexPath.row].destinations.first?.destinationId ?? ""
+                            Constant.MyClassConstants.realmStoredDestIdOrCodeArray.remove(distinationID)
+
                             try realm.write {
                                 realm.delete(self.destinationOrResort[indexPath.row])
                             }
@@ -545,6 +548,7 @@ extension VacationSearchViewController: UITableViewDelegate {
                         if Constant.MyClassConstants.whereTogoContentArray.count > 0 {
                             ADBMobile.trackAction(Constant.omnitureEvents.event7, data: nil)
                             Constant.MyClassConstants.whereTogoContentArray.removeObject(at: indexPath.row)
+
                         }
                         tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
 

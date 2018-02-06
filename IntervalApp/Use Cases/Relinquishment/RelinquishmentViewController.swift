@@ -38,6 +38,7 @@ final class RelinquishmentViewController: UIViewController {
         registerSimpleCellViews(withTableView: tableView)
         tableView.estimatedRowHeight = 100
         tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.tableFooterView = UIView()
     }
     
     private func reloadData() {
