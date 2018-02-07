@@ -108,7 +108,7 @@ final class RelinquishmentViewModel {
         return relinquishment.isDeposit() ? depositDepositedWeek(for: relinquishment) : depositOpenWeek(for: relinquishment)
     }
 
-    func fetchLockedOffUnits(for relinquishment: Relinquishment) -> Promise<[LockedOffUnit]> {
+    func fetchSelectedLockOffUnits(for relinquishment: Relinquishment) -> Promise<[LockedOffUnit]> {
         return Promise { [unowned self] resolve, reject in
             self.entityDataStore.readObjectsFromDisk(type: OpenWeeksStorage.self, predicate: nil, encoding: .decrypted)
                 .then { openWeeksEntity in
@@ -273,15 +273,35 @@ final class RelinquishmentViewModel {
                         .flatMap { $0.relinquishmentId }
                     
                     let relinquishmentIDs = depositedWeeksRelinquishmentIDs + depositedOpenWeeksRelinquishmentIDs + depositedClubPointsRelinquishmentIDs
+                    let hasNonSelectedLockOffUnits = { (relinquishment: Relinquishment) -> Bool in
+                        
+                        if let lockOffUnits = relinquishment.unit?.lockOffUnits {
+                         
+                            let lockedOffUnits: [String] = openWeeksStore
+                                .flatMap { $0.openWeeks }
+                                .flatMap { $0.openWeeks }
+                                .filter { $0.relinquishmentID == relinquishment.relinquishmentId.unwrappedString }
+                                .flatMap { $0.unitDetails }
+                                .flatMap { $0.kitchenType }
+                            
+                            let lockOffUnitSet = Set(lockOffUnits.flatMap { $0.unitDetailsUIFormatted })
+                            let lockedOffUnitSet = Set(lockedOffUnits)
+                            return lockOffUnitSet.subtracting(lockedOffUnitSet).count > 0
+                        }
+                        
+                        return false
+                    }
 
-                    let filteredRelinquishmentWithLockOff = relinquishments.filter { $0.lockOff }
-                    let filteredRelinquishments = relinquishments.filter { !relinquishmentIDs.contains($0.relinquishmentId.unwrappedString) }
-
-                    // TODO: Need to ensure that if all elements have been selected to not show the
-                    // relinquishment
-                    resolve(filteredRelinquishments + filteredRelinquishmentWithLockOff)
-                    resolve(relinquishments)
-
+                    let filteredRelinquishments = relinquishments.filter {
+                        if $0.lockOff {
+                            return hasNonSelectedLockOffUnits($0)
+                        } else {
+                            return !relinquishmentIDs.contains($0.relinquishmentId.unwrappedString)
+                        }
+                    }
+                    
+                    resolve(filteredRelinquishments)
+                    
                 }.onError(reject)
         }
     }
@@ -370,10 +390,10 @@ final class RelinquishmentViewModel {
         
         // TODO: Temporary code to be removed
         // Done in order to reduce bugs being opened
-        if relinquishment.lockOff {
-            return nil
-        }
-        
+//        if relinquishment.lockOff {
+//            return nil
+//        }
+//
         if relinquishment.hasActions() && (relinquishment.actions.map { $0.uppercased() }.contains("SHOP")) {
             return #imageLiteral(resourceName: "VS_List-Plus_ORNG")
         }

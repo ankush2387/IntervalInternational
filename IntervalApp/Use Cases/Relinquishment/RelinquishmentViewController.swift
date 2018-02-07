@@ -122,7 +122,7 @@ final class RelinquishmentViewController: UIViewController {
             navigationController?.pushViewController(additionalInformationViewController, animated: true)
         } else if relinquishment.lockOff {
 
-            viewModel.fetchLockedOffUnits(for: relinquishment).then { [weak self] lockedOffUnits in
+            viewModel.fetchSelectedLockOffUnits(for: relinquishment).then { [weak self] lockedOffUnits in
                 guard let strongSelf = self, let units = relinquishment.unit?.lockOffUnits else { return }
                 let multipleSelectionViewModel = MultipleSelectionTableViewModel<InventoryUnit>(viewTitle: "Select all or any lock-off portion".localized(),
                                                                                                 dataSet: units,
