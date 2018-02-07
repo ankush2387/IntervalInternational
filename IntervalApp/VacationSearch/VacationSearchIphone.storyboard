@@ -2138,10 +2138,10 @@ transaction.</string>
                                 </connections>
                             </tableView>
                             <view alpha="0.84999999999999998" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="08j-o8-ksJ">
-                                <rect key="frame" x="0.0" y="901" width="376" height="49"/>
+                                <rect key="frame" x="0.0" y="901" width="376" height="57"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3vH-OR-RMt" customClass="IUIKButton" customModule="IntervalUIKit">
-                                        <rect key="frame" x="0.0" y="5" width="124" height="40"/>
+                                        <rect key="frame" x="0.0" y="8" width="124" height="40"/>
                                         <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.96078431372549022" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="40" id="Bnx-7C-0e4"/>
@@ -2154,7 +2154,7 @@ transaction.</string>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Vz-2i-41i" customClass="IUIKButton" customModule="IntervalUIKit">
-                                        <rect key="frame" x="126" y="4" width="124" height="40"/>
+                                        <rect key="frame" x="126" y="7" width="124" height="40"/>
                                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.96078431369999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <state key="normal" image="FilterDesIcon">
                                             <color key="titleColor" red="0.0" green="0.46666666670000001" blue="0.74509803919999995" alpha="1" colorSpace="calibratedRGB"/>
@@ -2164,7 +2164,7 @@ transaction.</string>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EkZ-f2-ZRl">
-                                        <rect key="frame" x="252" y="5" width="124" height="40"/>
+                                        <rect key="frame" x="252" y="8" width="124" height="40"/>
                                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.96078431369999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <state key="normal" image="SortIcon">
                                             <color key="titleColor" red="0.0" green="0.46666666670000001" blue="0.74509803919999995" alpha="1" colorSpace="calibratedRGB"/>
@@ -2177,18 +2177,17 @@ transaction.</string>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstItem="0Vz-2i-41i" firstAttribute="width" secondItem="3vH-OR-RMt" secondAttribute="width" id="2wf-Aj-PFw"/>
-                                    <constraint firstItem="3vH-OR-RMt" firstAttribute="top" secondItem="08j-o8-ksJ" secondAttribute="top" constant="5" id="63A-Ug-AuY"/>
-                                    <constraint firstAttribute="height" constant="49" id="J8c-fz-25o"/>
+                                    <constraint firstItem="3vH-OR-RMt" firstAttribute="top" secondItem="08j-o8-ksJ" secondAttribute="top" constant="8" id="63A-Ug-AuY"/>
                                     <constraint firstItem="3vH-OR-RMt" firstAttribute="width" secondItem="08j-o8-ksJ" secondAttribute="width" multiplier="0.33" id="Nhe-ni-sEx"/>
-                                    <constraint firstItem="0Vz-2i-41i" firstAttribute="top" secondItem="08j-o8-ksJ" secondAttribute="top" constant="4" id="Qsr-SN-0Wf"/>
+                                    <constraint firstItem="0Vz-2i-41i" firstAttribute="top" secondItem="08j-o8-ksJ" secondAttribute="top" constant="7" id="Qsr-SN-0Wf"/>
                                     <constraint firstItem="0Vz-2i-41i" firstAttribute="height" secondItem="3vH-OR-RMt" secondAttribute="height" id="Rid-GW-YR3"/>
-                                    <constraint firstAttribute="bottom" secondItem="EkZ-f2-ZRl" secondAttribute="bottom" constant="4" id="TUF-cA-Q0M"/>
+                                    <constraint firstAttribute="bottom" secondItem="EkZ-f2-ZRl" secondAttribute="bottom" constant="9" id="TUF-cA-Q0M"/>
                                     <constraint firstItem="0Vz-2i-41i" firstAttribute="leading" secondItem="3vH-OR-RMt" secondAttribute="trailing" constant="2" id="ef2-Ny-Dk1"/>
                                     <constraint firstItem="EkZ-f2-ZRl" firstAttribute="width" secondItem="3vH-OR-RMt" secondAttribute="width" id="h4v-Wu-3B1"/>
                                     <constraint firstItem="EkZ-f2-ZRl" firstAttribute="height" secondItem="3vH-OR-RMt" secondAttribute="height" id="i92-Fl-m2l"/>
-                                    <constraint firstAttribute="bottom" secondItem="0Vz-2i-41i" secondAttribute="bottom" constant="5" id="qQs-h1-EQA"/>
-                                    <constraint firstAttribute="bottom" secondItem="3vH-OR-RMt" secondAttribute="bottom" constant="4" id="tKC-zC-9U5"/>
-                                    <constraint firstItem="EkZ-f2-ZRl" firstAttribute="top" secondItem="08j-o8-ksJ" secondAttribute="top" constant="5" id="uwm-Ev-FPZ"/>
+                                    <constraint firstAttribute="bottom" secondItem="0Vz-2i-41i" secondAttribute="bottom" constant="10" id="qQs-h1-EQA"/>
+                                    <constraint firstAttribute="bottom" secondItem="3vH-OR-RMt" secondAttribute="bottom" constant="9" id="tKC-zC-9U5"/>
+                                    <constraint firstItem="EkZ-f2-ZRl" firstAttribute="top" secondItem="08j-o8-ksJ" secondAttribute="top" constant="8" id="uwm-Ev-FPZ"/>
                                     <constraint firstItem="EkZ-f2-ZRl" firstAttribute="leading" secondItem="0Vz-2i-41i" secondAttribute="trailing" constant="2" id="wmw-nR-kpn"/>
                                     <constraint firstItem="3vH-OR-RMt" firstAttribute="leading" secondItem="08j-o8-ksJ" secondAttribute="leading" id="xaC-2S-NBo"/>
                                 </constraints>
@@ -2201,7 +2200,7 @@ transaction.</string>
                             <constraint firstItem="1aP-fE-BC0" firstAttribute="top" secondItem="t2M-98-VTi" secondAttribute="bottom" id="Ab4-Fj-IbX"/>
                             <constraint firstItem="l8b-fw-PuL" firstAttribute="top" secondItem="1aP-fE-BC0" secondAttribute="bottom" id="LDK-MV-V3E"/>
                             <constraint firstItem="aqg-gh-21n" firstAttribute="top" secondItem="l8b-fw-PuL" secondAttribute="bottom" constant="-8" id="TVK-Zj-rOl"/>
-                            <constraint firstItem="aqg-gh-21n" firstAttribute="top" secondItem="08j-o8-ksJ" secondAttribute="bottom" id="UXc-MV-Sss"/>
+                            <constraint firstItem="aqg-gh-21n" firstAttribute="top" secondItem="08j-o8-ksJ" secondAttribute="bottom" constant="-8" id="UXc-MV-Sss"/>
                             <constraint firstAttribute="trailingMargin" secondItem="08j-o8-ksJ" secondAttribute="trailing" constant="-17" id="Wb0-bs-Ffk"/>
                             <constraint firstAttribute="trailingMargin" secondItem="1aP-fE-BC0" secondAttribute="trailing" constant="-17" id="fYu-0f-dT8"/>
                             <constraint firstAttribute="trailing" secondItem="l8b-fw-PuL" secondAttribute="trailing" id="nNT-L2-JVY"/>
@@ -7033,7 +7032,7 @@ to confirm a larger unit.</string>
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="64"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GkO-0K-SaH">
-                                        <rect key="frame" x="295" y="12" width="60" height="40"/>
+                                        <rect key="frame" x="295" y="25" width="60" height="40"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="60" id="23T-dw-isw"/>
                                             <constraint firstAttribute="height" constant="40" id="LZO-wC-XIf"/>
@@ -7049,7 +7048,7 @@ to confirm a larger unit.</string>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="64" id="SE3-CE-H3Q"/>
-                                    <constraint firstItem="GkO-0K-SaH" firstAttribute="centerY" secondItem="d8B-T5-YHa" secondAttribute="centerY" id="knM-UA-50a"/>
+                                    <constraint firstItem="GkO-0K-SaH" firstAttribute="centerY" secondItem="d8B-T5-YHa" secondAttribute="centerY" constant="13" id="knM-UA-50a"/>
                                     <constraint firstAttribute="trailing" secondItem="GkO-0K-SaH" secondAttribute="trailing" constant="20" id="lAB-Wl-2bS"/>
                                 </constraints>
                             </view>
