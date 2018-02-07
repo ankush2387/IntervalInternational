@@ -86,7 +86,6 @@ open class RelinquishmentManager {
     // Sort Relinquishment Groups
     //
     fileprivate func sort(gropus: RelinquishmentGroups) -> RelinquishmentGroups {
-        
         // Sort by:
         //  Relinquishment Year (ASC)
         //  Resort Name (ASC)
@@ -96,11 +95,6 @@ open class RelinquishmentManager {
         //  Deposits without actions
         //
         
-        // Relinquishment Year (alphabetical: A -> Z)
-        gropus.cigPointsWeeks.sort(by: {$0.relinquishmentYear! < $1.relinquishmentYear!})
-        gropus.pointsWeeks.sort(by: {$0.relinquishmentYear! < $1.relinquishmentYear!})
-        gropus.intervalWeeks.sort(by: {$0.relinquishmentYear! < $1.relinquishmentYear!})
-        
         // Resort Name (ASC - alphabetical: A -> Z)
         gropus.cigPointsWeeks.sort(by: {$0.resort?.resortName?.localizedCaseInsensitiveCompare(
             ($1.resort?.resortName!)!) == ComparisonResult.orderedAscending})
@@ -109,6 +103,11 @@ open class RelinquishmentManager {
         gropus.intervalWeeks.sort(by: {$0.resort?.resortName?.localizedCaseInsensitiveCompare(
             ($1.resort?.resortName!)!) == ComparisonResult.orderedAscending})
         
+        // Relinquishment Year (alphabetical: A -> Z)
+        gropus.cigPointsWeeks.sort(by: {$0.relinquishmentYear! < $1.relinquishmentYear!})
+        gropus.pointsWeeks.sort(by: {$0.relinquishmentYear! < $1.relinquishmentYear!})
+        gropus.intervalWeeks.sort(by: {$0.relinquishmentYear! < $1.relinquishmentYear!})
+       
         return gropus
     }
     
