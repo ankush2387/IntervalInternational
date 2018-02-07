@@ -41,7 +41,7 @@ class CheckOutViewController: UIViewController {
     var recapFeesTotal: Float?
     var filterRelinquishments = ExchangeRelinquishment()
     var isDepositPromotionAvailable = false
-    var renewalsArray = [Renewal]()
+    var renewalsArray: [Renewal] = []
     var totalRowsInCost = 0
     var totalFeesArray = NSMutableArray()
     var currencyCode: String = ""
@@ -1221,7 +1221,7 @@ extension CheckOutViewController: UITableViewDataSource {
                         cell.priceLabel.text = "\(String(describing: renewalsArray[renewalIndex].displayName?.capitalized ?? "")) Package".localized()
                         let packagePrice = renewalsArray[renewalIndex].price + renewalsArray[0].price
                         cell.setTotalPrice(with: currencyCode, and: packagePrice)
-                    } else {
+                    } else if renewalsArray.count == 1 {
                         if let displayName = renewalsArray[renewalIndex].displayName {
                             
                             if displayName.caseInsensitiveCompare("INTERVAL") == ComparisonResult.orderedSame {
