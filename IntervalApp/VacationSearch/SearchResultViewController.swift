@@ -152,17 +152,15 @@ class SearchResultViewController: UIViewController {
         
         checkExactSurroundingSections()
         
+        searchResultColelctionView.reloadData()
         var index = 0
-        for (Index, calendarItem) in Constant.MyClassConstants.calendarDatesArray.enumerated() {
-            if calendarItem.checkInDate == Constant.MyClassConstants.initialVacationSearch.searchCheckInDate {
+        intervalPrint(Constant.MyClassConstants.calendarDatesArray)
+        for (Index, calendarItem) in Constant.MyClassConstants.calendarDatesArray.enumerated() where calendarItem.checkInDate == Constant.MyClassConstants.initialVacationSearch.searchCheckInDate {
                 index = Index
                 break
-            }
         }
         let indexpath = IndexPath(item: index, section: 0)
         searchResultColelctionView.scrollToItem(at: indexpath, at: .centeredHorizontally, animated: true)
-        searchResultColelctionView.reloadData()
-      
     }
     
     func checkExactSurroundingSections() {
