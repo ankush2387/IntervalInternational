@@ -12,6 +12,7 @@ import Foundation
 
 enum Encoding { case encrypted, decrypted }
 protocol EntityDataStore {
+    var decryptedRealmOnDiskGlobal: Realm? { get }
     func writeToDisk(_ object: Object, encoding: Encoding) -> Promise<Void>
     func writeToMemory(_ object: Object) -> Promise<Void>
     func writeToDisk(_ objects: [Object], encoding: Encoding) -> Promise<Void>

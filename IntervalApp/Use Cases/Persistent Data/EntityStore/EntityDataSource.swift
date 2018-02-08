@@ -23,7 +23,7 @@ final class EntityDataSource {
     // Realm read transaction lifetimes are tied to the memory lifetime of Realm instances
     // The computed variables below will create new instances for safe concurrency access to the data
 
-    fileprivate var decryptedRealmOnDiskGlobal: Realm? {
+    var decryptedRealmOnDiskGlobal: Realm? {
         return try? Realm()
     }
 

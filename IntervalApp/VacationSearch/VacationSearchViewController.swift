@@ -633,7 +633,17 @@ extension VacationSearchViewController: UITableViewDelegate {
                                         }
                                     } else {
                                         Constant.MyClassConstants.whatToTradeArray.removeObject(at: indexPath.row)
-                                        Constant.MyClassConstants.relinquishmentIdArray.remove(at: indexPath.row)
+                                        
+                                        if dataSelected.isLockOff {
+                                            if let index = Constant.MyClassConstants.relinquishmentIdArray.index(of: dataSelected.relinquishmentID),
+                                                dataSelected.unitDetails.count < 1 {
+                                                Constant.MyClassConstants.relinquishmentIdArray.remove(at: index)
+                                            }
+                                            
+                                        } else {
+                                            Constant.MyClassConstants.relinquishmentIdArray.remove(at: indexPath.row)
+                                        }
+                                    
                                         realm.delete(storedData[indexPath.row])
                                     }
                                 } else {

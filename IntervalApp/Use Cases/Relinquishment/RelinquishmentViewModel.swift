@@ -110,48 +110,46 @@ final class RelinquishmentViewModel {
 
     func fetchSelectedLockOffUnits(for relinquishment: Relinquishment) -> Promise<[LockedOffUnit]> {
         return Promise { [unowned self] resolve, reject in
-            self.entityDataStore.readObjectsFromDisk(type: OpenWeeksStorage.self, predicate: nil, encoding: .decrypted)
-                .then { openWeeksEntity in
 
-                    let lockedOffUnits: [LockedOffUnit] = openWeeksEntity
-                        .flatMap { $0.openWeeks }
-                        .flatMap { $0.openWeeks }
-                        .filter { $0.relinquishmentID == relinquishment.relinquishmentId.unwrappedString }
-                        .flatMap { $0.unitDetails }
-                        .flatMap { LockedOffUnit(unitDetails: $0.kitchenType, unitCapacity: $0.unitSize) }
+            let convertToLockedOffUnits = { (openWeeks: [OpenWeeks]) in
+                let lockedOffUnits = openWeeks.flatMap { $0.unitDetails }
+                    .flatMap { LockedOffUnit(unitDetails: $0.kitchenType, unitCapacity: $0.unitSize) }
+                resolve(lockedOffUnits)
+            }
 
-                    resolve(lockedOffUnits)
-
-                }.onError(reject)
+            self.readLockOffUnitsFromDisk(for: relinquishment)
+                .then(convertToLockedOffUnits)
+                .onError(reject)
         }
     }
 
     func relinquish(_ relinquishment: Relinquishment, with lockOffUnits: [InventoryUnit]) -> Promise<Void> {
-        // TODO: Need to add reset to viewModel for lock off units before saving again to ensure data integrity
-
+        
         return Promise { [unowned self] resolve, reject in
-            lockOffUnits.forEach {
-                let resort = ResortList()
-                let storedata = OpenWeeksStorage()
-                let selectedOpenWeek = OpenWeeks()
-                let relinquishmentList = TradeLocalData()
-                selectedOpenWeek.isLockOff = true
-                selectedOpenWeek.weekNumber = relinquishment.weekNumber.unwrappedString
-                selectedOpenWeek.relinquishmentID = relinquishment.relinquishmentId.unwrappedString
-                selectedOpenWeek.relinquishmentYear = relinquishment.relinquishmentYear ?? 0
-                let unitDetails = ResortUnitDetails()
-                unitDetails.kitchenType = $0.unitDetailsUIFormatted
-                unitDetails.unitSize = $0.unitCapacityUIFormatted
-                selectedOpenWeek.unitDetails.append(unitDetails)
-                resort.resortName = relinquishment.resort?.resortName ?? ""
-                selectedOpenWeek.resort.append(resort)
-                relinquishmentList.openWeeks.append(selectedOpenWeek)
-                storedata.openWeeks.append(relinquishmentList)
-                storedata.membeshipNumber = self.sessionStore.selectedMembership?.memberNumber ?? ""
-                self.entityDataStore.writeToDisk(storedata, encoding: .decrypted)
-                    .onError { _ in reject(UserFacingCommonError.generic) }
-            }
-
+            self.resetLockOffUnitsInDisk(for: relinquishment).then {
+                lockOffUnits.forEach {
+                    let resort = ResortList()
+                    let storedata = OpenWeeksStorage()
+                    let selectedOpenWeek = OpenWeeks()
+                    let relinquishmentList = TradeLocalData()
+                    selectedOpenWeek.isLockOff = true
+                    selectedOpenWeek.weekNumber = relinquishment.weekNumber.unwrappedString
+                    selectedOpenWeek.relinquishmentID = relinquishment.relinquishmentId.unwrappedString
+                    selectedOpenWeek.relinquishmentYear = relinquishment.relinquishmentYear ?? 0
+                    let unitDetails = ResortUnitDetails()
+                    unitDetails.kitchenType = $0.unitDetailsUIFormatted
+                    unitDetails.unitSize = $0.unitCapacityUIFormatted
+                    selectedOpenWeek.unitDetails.append(unitDetails)
+                    resort.resortName = relinquishment.resort?.resortName ?? ""
+                    selectedOpenWeek.resort.append(resort)
+                    relinquishmentList.openWeeks.append(selectedOpenWeek)
+                    storedata.openWeeks.append(relinquishmentList)
+                    storedata.membeshipNumber = self.sessionStore.selectedMembership?.memberNumber ?? ""
+                    self.entityDataStore.writeToDisk(storedata, encoding: .decrypted).onError(reject)
+                }
+                
+                }.onError(reject)
+            
             resolve()
         }
     }
@@ -248,6 +246,44 @@ final class RelinquishmentViewModel {
                 }.onError(reject)
             
             resolve()
+        }
+    }
+
+    private func resetLockOffUnitsInDisk(for relinquishment: Relinquishment) -> Promise<Void> {
+        return Promise { [unowned self] resolve, reject in
+            self.readLockOffUnitsFromDisk(for: relinquishment)
+                .then { lockOffUnitsInDisk in
+                    guard let realm = self.entityDataStore.decryptedRealmOnDiskGlobal else {
+                        reject(CommonErrors.parsingError)
+                        return
+                    }
+
+                    do {
+                        try realm.write {
+                            lockOffUnitsInDisk.forEach { $0.isFloatRemoved = true }
+                            resolve()
+                        }
+
+                    } catch {
+                        reject(error)
+                    }
+
+                }.onError(reject)
+        }
+    }
+
+    private func readLockOffUnitsFromDisk(for relinquishment: Relinquishment) -> Promise<[OpenWeeks]> {
+        return Promise { resolve, reject in
+            self.entityDataStore.readObjectsFromDisk(type: OpenWeeksStorage.self, predicate: nil, encoding: .decrypted)
+                .then { openWeeksStorage in
+                    let lockedOffUnits: [OpenWeeks] = openWeeksStorage
+                        .flatMap { $0.openWeeks }
+                        .flatMap { $0.openWeeks }
+                        .filter { $0.relinquishmentID == relinquishment.relinquishmentId.unwrappedString }
+
+                    resolve(lockedOffUnits)
+                }
+                .onError(reject)
         }
     }
     
@@ -388,12 +424,6 @@ final class RelinquishmentViewModel {
     
     private func processActionButton(for relinquishment: Relinquishment) -> UIImage? {
         
-        // TODO: Temporary code to be removed
-        // Done in order to reduce bugs being opened
-//        if relinquishment.lockOff {
-//            return nil
-//        }
-//
         if relinquishment.hasActions() && (relinquishment.actions.map { $0.uppercased() }.contains("SHOP")) {
             return #imageLiteral(resourceName: "VS_List-Plus_ORNG")
         }

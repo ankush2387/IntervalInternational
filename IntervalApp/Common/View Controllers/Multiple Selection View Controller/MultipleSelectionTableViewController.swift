@@ -35,10 +35,11 @@ final class MultipleSelectionTableViewController<T>: UITableViewController where
     // MARK: - Private functions
     private func setUI() {
         title = viewModel.viewTitle
-        tableView.estimatedRowHeight = 50
+        tableView.estimatedRowHeight = 100
+        tableView.tableFooterView = UIView()
+        tableView.rowHeight = UITableViewAutomaticDimension
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done".localized(), style: .plain, target: self, action: #selector(doneButtonTapped))
         tableView.register(MultipleSelectionTableViewCell.xib, forCellReuseIdentifier: MultipleSelectionTableViewCell.identifier)
-        tableView.tableFooterView = UIView()
     }
 
     private func dataSetPreviouslySelected(for indexPath: IndexPath) -> Bool {

@@ -124,7 +124,7 @@ final class RelinquishmentViewController: UIViewController {
 
             viewModel.fetchSelectedLockOffUnits(for: relinquishment).then { [weak self] lockedOffUnits in
                 guard let strongSelf = self, let units = relinquishment.unit?.lockOffUnits else { return }
-                let multipleSelectionViewModel = MultipleSelectionTableViewModel<InventoryUnit>(viewTitle: "Select all or any lock-off portion".localized(),
+                let multipleSelectionViewModel = MultipleSelectionTableViewModel<InventoryUnit>(viewTitle: "Select lock-off portion".localized(),
                                                                                                 dataSet: units,
                                                                                                 previouslySelectedDataSet: lockedOffUnits)
 
