@@ -641,13 +641,6 @@ class SearchResultViewController: UIViewController {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         
         let firstVisibleIndexPath = searchResultTableView.indexPathsForVisibleRows?.first
-        var index = 0
-        for (Index, calendarItem) in Constant.MyClassConstants.calendarDatesArray.enumerated() {
-            if calendarItem.checkInDate == Constant.MyClassConstants.initialVacationSearch.searchCheckInDate {
-                index = Index
-            }
-        }
-        let indexPath = IndexPath(item: index, section: 0)
         if firstVisibleIndexPath?.section == 1 {
             dateCellSelectionColor = Constant.CommonColor.greenColor
         } else {
@@ -656,12 +649,6 @@ class SearchResultViewController: UIViewController {
                 dateCellSelectionColor = Constant.CommonColor.greenColor
             } else {
                 dateCellSelectionColor = Constant.CommonColor.blueColor
-            }
-        }
-        if indexPath.row <= Constant.MyClassConstants.calendarDatesArray.count {
-            if searchResultColelctionView != nil {
-                
-                searchResultColelctionView.reloadItems(at: [indexPath])
             }
         }
     }

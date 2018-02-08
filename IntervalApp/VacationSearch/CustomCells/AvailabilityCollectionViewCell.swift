@@ -20,6 +20,7 @@ class AvailabilityCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var resortAddress: UILabel!
     @IBOutlet weak var viewGradient: UIView!
     @IBOutlet weak var tierImage: UIImageView!
+    @IBOutlet weak var allIncImageView: UIImageView!
     //***** class variables *****//
     //var delegate:ResortDirectoryCollectionViewCellDelegate?
     
@@ -39,19 +40,28 @@ class AvailabilityCollectionViewCell: UICollectionViewCell {
         }
         Helper.addLinearGradientToView(view: self.viewGradient, colour: UIColor.white, transparntToOpaque: true, vertical: false)
         if url == nil {
-            self.resortImageView?.image = UIImage(named: Constant.MyClassConstants.noImage)
-            self.resortImageView.contentMode = .scaleAspectFit
+            resortImageView?.image = UIImage(named: Constant.MyClassConstants.noImage)
+            resortImageView.contentMode = .scaleAspectFit
         } else {
-            self.resortImageView.contentMode = .scaleToFill
-            self.resortImageView?.setImageWith(url, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
+            resortImageView.contentMode = .scaleToFill
+            resortImageView?.setImageWith(url, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
         }
-        self.resortName.text = inventoryItem.resortName
-        self.resortAddress.text = inventoryItem.address?.cityName
-        self.resortCode.text = inventoryItem.resortCode
+        resortName.text = inventoryItem.resortName
+        resortAddress.text = inventoryItem.address?.cityName
+        resortCode.text = inventoryItem.resortCode
         if let tierImageName = inventoryItem.tier {
-             let tier = Helper.getTierImageName(tier: tierImageName.uppercased())
-            self.tierImage.image = UIImage(named: tier)
+            tierImage.isHidden = false
+            let tier = Helper.getTierImageName(tier: tierImageName.uppercased())
+            if tier == "" {
+                tierImage.isHidden = true
+            } else {
+                tierImage.image = UIImage(named: tier)
+            }
+        } else {
+            tierImage.isHidden = true
         }
+            allIncImageView.image = #imageLiteral(resourceName: "Resort_All_Inclusive")
+            allIncImageView.isHidden = !inventoryItem.allInclusive
         
     }
     

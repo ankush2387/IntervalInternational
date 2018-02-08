@@ -792,8 +792,16 @@ extension ResortDetailsViewController: UITableViewDataSource {
                 cell.resortCode.text = Constant.MyClassConstants.resortsDescriptionArray.resortCode
                 if let tier = Constant.MyClassConstants.resortsDescriptionArray.tier {
                     let imageStr = Helper.getTierImageName(tier:tier.uppercased())
-                    cell.tierImageView.image = UIImage(named: imageStr)
+                    if imageStr == "" {
+                        cell.tierImageView.isHidden = true
+                    } else {
+                        cell.tierImageView.image = UIImage(named: imageStr)
+                    }
+                } else {
+                    cell.tierImageView.isHidden = true
                 }
+                cell.allInclusiveImageView.image = #imageLiteral(resourceName: "Resort_All_Inclusive")
+                cell.allInclusiveImageView.isHidden = !Constant.MyClassConstants.resortsDescriptionArray.allInclusive
                 cell.favoriteButton.addTarget(self, action: #selector(favoritesButtonClicked(_:)), for: .touchUpInside)
                 cell.backgroundColor = UIColor.clear
                 cell.showResortWeatherbutton?.addTarget(self, action: #selector(showWeatherButtonPressed), for: .touchUpInside)
