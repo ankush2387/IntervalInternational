@@ -70,13 +70,14 @@ class SearchResultViewController: UIViewController {
     
     func createSections() {
         
-        if !Constant.MyClassConstants.resortsArray.isEmpty {
-            
-            let currencycode = Constant.MyClassConstants.initialVacationSearch.rentalSearch?.inventory?[0].inventory?.currencyCode ?? ""
-            let currencyHelper = CurrencyHelper()
-            let currency = currencyHelper.getCurrency(currencyCode: currencycode )
-            currencyCode = ("\(currencyHelper.getCurrencyFriendlySymbol(currencyCode: currency.code))")
-            
+        if let inventory = Constant.MyClassConstants.initialVacationSearch.rentalSearch?.inventory {
+            if !inventory.isEmpty {
+                let currencycode = inventory[0].inventory?.currencyCode ?? ""
+                let currencyHelper = CurrencyHelper()
+                let currency = currencyHelper.getCurrency(currencyCode: currencycode )
+                currencyCode = ("\(currencyHelper.getCurrencyFriendlySymbol(currencyCode: currency.code))")
+                
+            }
         }
         
         let sections = Constant.MyClassConstants.initialVacationSearch.createSections()
