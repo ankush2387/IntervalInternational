@@ -23,6 +23,36 @@ class UpComingTripDetailController: UIViewController {
     var unitDetialsCellHeight = 50
     var detailsView: UIView?
     
+    @IBAction func modifyUpcomingTripButtonClicked(_ sender: UIButton) {
+        
+        let title = """
+        in order to purchase Trip Protection you
+        may contact us we will gladly help
+        you add trip protection to your vacation.
+        Please reference
+        conference number:5264856
+"""
+        
+       let stringToChangeFont = "Please reference conference"
+        
+        var range = (title as NSString).range(of: stringToChangeFont)
+        
+        var attributedString = NSMutableAttributedString(string:title)
+        
+        attributedString.addAttribute(NSForegroundColorAttributeName, value: UIColor.black, range: range)
+        
+        attributedString.addAttribute(NSFontAttributeName,
+                                     value: UIFont(name: "Georgia",size: 17.0)!,range: range)
+        
+        
+        
+        
+        
+        self.presentAlertInUpcomingTripDetails(with: "Purchase trip Protection".localized(), message: title, cancelButtonTitle: "Close", acceptButtonTitle: "Call")
+    }
+    
+    
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         NotificationCenter.default.addObserver(self, selector: #selector(reloadDetailsTable), name: NSNotification.Name(rawValue: Constant.notificationNames.reloadTripDetailsNotification), object: nil)

@@ -87,7 +87,6 @@ class IntervalHDPlayerViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
         UIApplication.shared.statusBarOrientation = .landscapeLeft
     
         if UIDevice.current.userInterfaceIdiom == .phone {
@@ -143,9 +142,10 @@ class IntervalHDPlayerViewController: UIViewController {
         
     }
     func doneButtonPressed(sender: IUIKButton) {
-        self.navigationController?.isNavigationBarHidden = false
-        self.dismiss(animated: true, completion: nil)
+        self.navigationController?.navigationBar.isHidden = false
+        self.dismiss(animated: false)
     }
+    
     func showDoneButton() {
         
         UIView.animate (withDuration: 0.2, delay: 0.1, options: UIViewAnimationOptions.curveEaseIn, animations: {

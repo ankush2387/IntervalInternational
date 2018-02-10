@@ -48,7 +48,6 @@ class IntervalHDTabController: UITabBarController {
             self.navigationItem.leftBarButtonItem = menuButton
             
         }
-
     }
     override func viewWillAppear(_ animated: Bool) {
         
@@ -70,4 +69,18 @@ class IntervalHDTabController: UITabBarController {
         // Dispose of any resources that can be recreated.
     }
     
+}
+
+//***** Extension class for implementing tabbar delegate methods *****//
+extension IntervalHDTabController: UITabBarControllerDelegate {
+    
+    override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
+        if item.tag == 0 {
+            
+        } else if item.tag == 1 {
+            
+        } else {
+            
+        }
+    }
 }

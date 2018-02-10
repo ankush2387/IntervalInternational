@@ -17,10 +17,14 @@ class IntervalHDCommonControllerForTabs: UIViewController {
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var videoTBLView: UITableView!
     
+    @IBOutlet weak var searhBarTopSpaceConstraint: NSLayoutConstraint!
     var searchResultArray = [Video]()
     
     override func viewWillAppear(_ animated: Bool) {
-        
+            super.viewWillAppear(animated)
+        if UIScreen.main.bounds.size.height == 812 {
+            searhBarTopSpaceConstraint.constant = 88
+        }
     // Handle hamburgur menu button for prelogin and post login case
         if Session.sharedSession.userAccessToken != nil && Constant.MyClassConstants.isLoginSuccessfull {
             
@@ -46,10 +50,8 @@ class IntervalHDCommonControllerForTabs: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        
-        self.searchBar.frame = CGRect(x: 0, y: 64, width: self.view.frame.width, height: 44)
-        self.videoTBLView.frame = CGRect(x: videoTBLView.frame.origin.x, y: 108, width: videoTBLView.frame.width, height: self.videoTBLView.frame.height)
-      
+        super.viewDidAppear(animated)
+        videoTBLView.reloadData()
     }
     
     //***** Method for back button *****//
@@ -73,6 +75,7 @@ class IntervalHDCommonControllerForTabs: UIViewController {
     
     //**** Remove added observers ****//
     override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.reloadVideosNotification), object: nil)
     }
     
@@ -88,9 +91,10 @@ class IntervalHDCommonControllerForTabs: UIViewController {
     func playButtonPressedAtIndex(sender: IUIKButton) {
         let video = searchResultArray[sender.tag]
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.intervalHDIphone, bundle: nil)
-        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.intervalHDPlayerViewController) as! IntervalHDPlayerViewController
-        viewController.video = video
-        self.present(viewController, animated: true, completion: nil)
+        if let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.intervalHDPlayerViewController) as? IntervalHDPlayerViewController {
+            viewController.video = video
+            self.present(viewController, animated: true, completion: nil)
+        }
     }
     
     //***** Notification to hit API when system access token gets available. *****//
@@ -163,6 +167,7 @@ extension IntervalHDCommonControllerForTabs: UITableViewDataSource {
         let shadowFrame: CGRect = (cell.layer.bounds)
         let shadowPath: CGPath = UIBezierPath(rect: shadowFrame).cgPath
         cell.shadowView.layer.shadowPath = shadowPath
+        
         cell.playButton.tag = indexPath.section
         cell.playButton.addTarget(self, action: #selector(playButtonPressedAtIndex), for: .touchUpInside)
         var video = Video()
