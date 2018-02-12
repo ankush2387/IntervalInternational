@@ -503,6 +503,7 @@ extension AddDebitOrCreditCardViewController: UITableViewDataSource {
                 cell.nameTF.text = ""
                 if indexPath.row == 0 {
                     cell.acceptedCardsMSG.text = "Interval accepts all major credit and debit cards.".localized()
+                    cell.nameTF.placeholder = Constant.textFieldTitles.nameOnCard
                     if Constant.GetawaySearchResultCardFormDetailData.nameOnCard.isEmpty {
                         cell.nameTF.placeholder = Constant.textFieldTitles.nameOnCard
                     } else {
