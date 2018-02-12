@@ -316,8 +316,8 @@ extension PaymentSelectionViewController: UITableViewDelegate {
             let storyboardName = isRunningOnIphone ? Constant.storyboardNames.vacationSearchIphone : Constant.storyboardNames.vacationSearchIPad
             let storyboard = UIStoryboard(name: storyboardName, bundle: nil)
             if let addCardController = storyboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.addDebitOrCreditCardViewController) as? AddDebitOrCreditCardViewController {
-                navigationController?.pushViewController(addCardController, animated: true)
-               
+                addCardController.modalTransitionStyle = UIModalTransitionStyle.flipHorizontal
+                navigationController?.present(addCardController, animated: true)
             }
         }
     }

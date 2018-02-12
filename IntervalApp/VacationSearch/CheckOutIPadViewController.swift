@@ -488,7 +488,7 @@ class CheckOutIPadViewController: UIViewController {
         Helper.getRelinquishmentDetails(resortCode: resortCode, successCompletionBlock: {
             self.hideHudAsync()
             self.performSegue(withIdentifier: Constant.segueIdentifiers.showRelinguishmentsDetailsSegue, sender: self)
-        }(), errorCompletionBlock: { [unowned self] error  in
+        }, errorCompletionBlock: { [unowned self] error  in
             self.hideHudAsync()
             self.presentErrorAlert(UserFacingCommonError.handleError(error))
         })
@@ -1048,6 +1048,12 @@ extension CheckOutIPadViewController: UITableViewDataSource {
                         }
                         
                         cell.setCell(callBack: cellTapped)
+                        
+                    case Constant.MyClassConstants.upgradeCost:
+                        if let upgradeCost = Constant.MyClassConstants.exchangeFees[0].unitSizeUpgrade?.price {
+                            cell.setTotalPrice(with: currencyCode, and: upgradeCost)
+                        }
+                        cell.priceLabel.text = Constant.MyClassConstants.upgradeCost
                         
                     default:
                         

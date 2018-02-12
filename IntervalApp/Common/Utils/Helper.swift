@@ -395,7 +395,7 @@ public class Helper {
     }
     
     //Relinquishment details
-    static func getRelinquishmentDetails(resortCode: String, successCompletionBlock: (()), errorCompletionBlock: @escaping ((NSError) -> Void)) {
+    static func getRelinquishmentDetails(resortCode: String, successCompletionBlock: @escaping (() -> Void), errorCompletionBlock: @escaping ((NSError) -> Void)) {
         DirectoryClient.getResortDetails(Constant.MyClassConstants.systemAccessToken, resortCode: resortCode, onSuccess: { response in
             
             Constant.MyClassConstants.resortsDescriptionArray = response
@@ -407,7 +407,7 @@ public class Helper {
                     Constant.MyClassConstants.imagesArray.append(url)
                 }
             }
-            successCompletionBlock
+            successCompletionBlock()
         }) { error in
             errorCompletionBlock(error)
         }

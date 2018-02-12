@@ -207,7 +207,7 @@ class EditMyAlertIpadViewController: UIViewController {
         }
     }
     
-    @IBAction func SaveMyAlertButtonPressed(_ sender: AnyObject) {
+    @IBAction func updateAlertPressed(_ sender: UIButton) {
         
         guard let trimmedUsername = self.nameTextField.text?.trimmingCharacters(in: NSCharacterSet.whitespacesAndNewlines) else {
             presentAlert(with: Constant.AlertPromtMessages.editAlertTitle, message: Constant.AlertMessages.editAlertEmptyNameMessage)
@@ -228,8 +228,17 @@ class EditMyAlertIpadViewController: UIViewController {
             rentalAlert.name = trimmedUsername
             rentalAlert.enabled = alertStatusButton.isOn
             
-            rentalAlert.resorts = Constant.MyClassConstants.alertSelectedResorts
-            rentalAlert.destinations = Constant.MyClassConstants.alertSelectedDestination
+            for destination in Constant.MyClassConstants.selectedGetawayAlertDestinationArray {
+                switch destination {
+            case .resort(let resort):
+                rentalAlert.resorts.append(resort)
+            case .destination(let destination):
+                rentalAlert.destinations.append(destination)
+            case .resorts(let resorts):
+                print(resorts)
+            }
+            }
+            
             rentalAlert.selections = []
             
             var unitsizearray = [UnitSize]()

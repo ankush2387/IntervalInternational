@@ -1199,7 +1199,7 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
-                                            <action selector="SaveMyAlertButtonPressed:" destination="rM7-2R-QSW" eventType="touchUpInside" id="jr5-fW-O3W"/>
+                                            <action selector="updateAlertPressed:" destination="rM7-2R-QSW" eventType="touchUpInside" id="MrV-1d-hAD"/>
                                         </connections>
                                     </button>
                                 </subviews>

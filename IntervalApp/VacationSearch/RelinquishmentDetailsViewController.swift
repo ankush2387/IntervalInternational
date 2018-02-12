@@ -24,6 +24,7 @@ class RelinquishmentDetailsViewController: UIViewController {
         self.tableView.layer.borderColor = UIColor.lightGray.cgColor
         
         resort = Constant.MyClassConstants.resortsDescriptionArray
+        tableView.reloadData()
     }
 
     override func didReceiveMemoryWarning() {
@@ -55,15 +56,18 @@ extension RelinquishmentDetailsViewController: UITableViewDataSource, UITableVie
             
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "RelinquishmentDetailsCell", for: indexPath) as? RelinquishmentDetailsCell else { return UITableViewCell() }
             
-                if let resortImages = resort?.images {
-                    if resortImages.isEmpty == false {
-                    if let urlString = resortImages[indexPath.row].url {
+            if let resortImages = resort?.images {
+                for largeResortImage in resortImages where largeResortImage.size == Constant.MyClassConstants.imageSizeXL {
+                    if let urlString = largeResortImage.url {
                         cell.resortImage.setImageWith(URL(string: urlString), usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
+                    } else {
+                        cell.resortImage.image = #imageLiteral(resourceName: "NoImageIcon")
                     }
-                  }
-                } else {
-                    cell.resortImage.image = #imageLiteral(resourceName: "NoImageIcon")
                 }
+            } else {
+                cell.resortImage.image = #imageLiteral(resourceName: "NoImageIcon")
+            }
+            
             cell.resortName.text = resort?.resortName
             
             if let city = resort?.address?.cityName {
@@ -100,19 +104,13 @@ extension RelinquishmentDetailsViewController: UITableViewDataSource, UITableVie
                 cell.totalSleepAndPrivate.text = ""
             } else if let openWeek = objRelinquishment.openWeek {
                 
-                let dateString = openWeek.checkInDate
-                let date = Helper.convertStringToDate(dateString: dateString!, format: "yyyy-MM-dd")
+                guard let date = openWeek.checkInDate?.dateFromString() else { return cell }
                 let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
                 let myComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: date)
-                let day = myComponents.day!
-                var month = ""
-                if day < 10 {
-                    month = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month!)) 0\(day)"
-                } else {
-                    month = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month!)) \(day)"
+                if let day = myComponents.day, let month = myComponents.month {
+                    let monthName = Helper.getMonthnameFromInt(monthNumber: month).uppercased()
+                    cell.dayAndDateLabel.text = "\(monthName) \(String(format: "%02d", arguments: [day]))"
                 }
-                
-                cell.dayAndDateLabel.text = month.uppercased()
                 
                 if let relinquishmentYear = openWeek.relinquishmentYear {
                     cell.yearLabel.text = "\(relinquishmentYear)"
@@ -125,9 +123,13 @@ extension RelinquishmentDetailsViewController: UITableViewDataSource, UITableVie
                 if let resortName = openWeek.resort?.resortName {
                     cell.resortName.text = resortName
                 }
+                if let unitSize = objRelinquishment.openWeek?.unit?.unitSize, let kitchenType = objRelinquishment.openWeek?.unit?.kitchenType {
+                    cell.bedroomSizeAndKitchenClient.text = "\(Helper.getBedroomNumbers(bedroomType:unitSize)), \(Helper.getKitchenEnums(kitchenType: kitchenType))"
+                }
                 
-                cell.bedroomSizeAndKitchenClient.text = "\(String(describing: Helper.getBedroomNumbers(bedroomType: (objRelinquishment.openWeek?.unit!.unitSize!)!))), \(Helper.getKitchenEnums(kitchenType: (objRelinquishment.openWeek?.unit!.kitchenType!)!))"
-                cell.totalSleepAndPrivate.text = "Sleeps \(String(describing: objRelinquishment.openWeek!.unit!.publicSleepCapacity)), \(String(describing: objRelinquishment.openWeek!.unit!.privateSleepCapacity)) Private"
+                if let publicSleeps = objRelinquishment.openWeek?.unit?.publicSleepCapacity, let privateSleeps = objRelinquishment.openWeek?.unit?.privateSleepCapacity {
+                   cell.totalSleepAndPrivate.text = "Sleeps \(publicSleeps), \(privateSleeps) Private"
+                }
                 
             } else if let deposits = objRelinquishment.deposit {
                 if let relinquishmentYear = deposits.relinquishmentYear {
