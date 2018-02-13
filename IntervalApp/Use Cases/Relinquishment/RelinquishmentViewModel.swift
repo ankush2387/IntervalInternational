@@ -220,11 +220,25 @@ final class RelinquishmentViewModel {
         }
     }
     
+    func processLockOffUnits(for relinquishment: Relinquishment) -> [InventoryUnit]? {
+        guard relinquishment.hasLockOffUnits else { return nil }
+        var units: [InventoryUnit] = []
+        if let masterUnit = relinquishment.unit {
+            units.append(masterUnit)
+        }
+        
+        if let lockedOffUnits = relinquishment.unit?.lockOffUnits {
+            units += lockedOffUnits
+        }
+        
+        return units
+    }
+    
     // MARK: - Private functions
     private func processRelinquishmentGroups(myUnits: MyUnits) -> Promise<Void> {
         return Promise { [unowned self] resolve, reject in
             
-            let relinquishmentGroups = self.relinquishmentManager.getRelinquishmentGroups(myUnits: myUnits)
+            let relinquishmentGroups = self.relinquishmentManager.getRelinquishmentSections(myUnits: myUnits)
             
             self.processCIGProgram(for: relinquishmentGroups).then {
                 self.simpleCellViewModels[.cigProgram] = $0
@@ -329,7 +343,7 @@ final class RelinquishmentViewModel {
                     }
 
                     let filteredRelinquishments = relinquishments.filter {
-                        if $0.lockOff {
+                        if $0.hasLockOffUnits {
                             return hasNonSelectedLockOffUnits($0)
                         } else {
                             return !relinquishmentIDs.contains($0.relinquishmentId.unwrappedString)
@@ -342,7 +356,7 @@ final class RelinquishmentViewModel {
         }
     }
     
-    private func processCIGProgram(for relinquishmentGroups: RelinquishmentGroups) -> Promise<[SimpleCellViewModel]> {
+    private func processCIGProgram(for relinquishmentGroups: RelinquishmentSections) -> Promise<[SimpleCellViewModel]> {
         return Promise { [unowned self] resolve, reject in
             guard relinquishmentGroups.hasCIGPointsProgram() else {
                 resolve([])
@@ -463,7 +477,7 @@ final class RelinquishmentViewModel {
         
         guard let unit = relinquishment.unit, relinquishment.weekNumber != "POINTS_WEEK" else { return nil }
         
-        guard !relinquishment.lockOff else {
+        guard !relinquishment.hasLockOffUnits else {
             return "Lock Off Capable".localized()
         }
         
@@ -472,7 +486,7 @@ final class RelinquishmentViewModel {
     
     private func processUnitCapacity(for relinquishment: Relinquishment) -> String? {
         guard relinquishment.weekNumber != "POINTS_WEEK" else { return nil }
-        guard let unit = relinquishment.unit, !relinquishment.lockOff else { return nil }
+        guard let unit = relinquishment.unit, !relinquishment.hasLockOffUnits else { return nil }
         return "Sleeps \(unit.tradeOutCapacity)".localized()
     }
     
@@ -576,6 +590,7 @@ final class RelinquishmentViewModel {
     }
 }
 
+// MARK: - Convience SDK Extensions
 extension InventoryUnit {
     var unitDetailsUIFormatted: String {
         var unitDetails = ""
@@ -596,6 +611,45 @@ extension InventoryUnit {
     }
     
     var unitCapacityUIFormatted: String {
-        return "Sleeps \(tradeOutCapacity)".localized()
+        return "Sleeps \(tradeOutCapacity) total".localized()
+    }
+}
+
+extension Relinquishment {
+    var hasLockOffUnits: Bool {
+        return lockOffUnits?.isEmpty == false
+    }
+}
+
+extension InventoryUnit: MultipleSelectionElement {
+    var cellTitle: String { return unitDetailsUIFormatted }
+    var cellSubtitle: String { return unitCapacityUIFormatted }
+}
+
+// Temporary code, to not change model across application
+
+extension OpenWeek {
+    public convenience init(relinquishment: Relinquishment) {
+        self.init()
+        relinquishmentId = relinquishment.relinquishmentId
+        actions = relinquishment.actions
+        relinquishmentYear = relinquishment.relinquishmentYear
+        exchangeStatus = relinquishment.exchangeStatus
+        weekNumber = relinquishment.exchangeStatus
+        masterUnitNumber = relinquishment.masterUnitNumber
+        checkInDates = relinquishment.checkInDates
+        checkInDate = relinquishment.checkInDate
+        checkOutDate = relinquishment.checkOutDate
+        pointsProgramCode = relinquishment.pointsProgramCode
+        resort = relinquishment.resort
+        unit = relinquishment.unit
+        pointsMatrix = relinquishment.pointsMatrix
+        blackedOut = relinquishment.blackedOut
+        bulkAssignment = relinquishment.bulkAssignment
+        memberUnitLocked = relinquishment.memberUnitLocked
+        payback = relinquishment.payback
+        reservationAttributes = relinquishment.reservationAttributes
+        virtualWeekActions = relinquishment.virtualWeekActions
+        promotion = relinquishment.promotion
     }
 }

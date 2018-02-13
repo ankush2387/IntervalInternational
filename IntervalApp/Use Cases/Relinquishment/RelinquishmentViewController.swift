@@ -120,10 +120,14 @@ final class RelinquishmentViewController: UIViewController {
                 strongSelf.relinquish(relinquishment)
             }
             navigationController?.pushViewController(additionalInformationViewController, animated: true)
-        } else if relinquishment.lockOff {
+        } else if relinquishment.hasLockOffUnits {
 
             viewModel.fetchSelectedLockOffUnits(for: relinquishment).then { [weak self] lockedOffUnits in
-                guard let strongSelf = self, let units = relinquishment.unit?.lockOffUnits else { return }
+                guard let strongSelf = self, let units = strongSelf.viewModel.processLockOffUnits(for: relinquishment) else {
+                    self?.presentErrorAlert(UserFacingCommonError.generic)
+                    return
+                }
+                
                 let multipleSelectionViewModel = MultipleSelectionTableViewModel<InventoryUnit>(viewTitle: "Select lock-off portion".localized(),
                                                                                                 dataSet: units,
                                                                                                 previouslySelectedDataSet: lockedOffUnits)
@@ -275,38 +279,5 @@ extension RelinquishmentViewController: UITableViewDataSource, SimpleViewModelBi
         }
         
         return cell
-    }
-}
-
-extension InventoryUnit: MultipleSelectionElement {
-    var cellTitle: String { return unitDetailsUIFormatted }
-    var cellSubtitle: String { return unitCapacityUIFormatted }
-}
-
-// Temporary code, to not change model across application
-
-extension OpenWeek {
-    public convenience init(relinquishment: Relinquishment) {
-        self.init()
-        relinquishmentId = relinquishment.relinquishmentId
-        actions = relinquishment.actions
-        relinquishmentYear = relinquishment.relinquishmentYear
-        exchangeStatus = relinquishment.exchangeStatus
-        weekNumber = relinquishment.exchangeStatus
-        masterUnitNumber = relinquishment.masterUnitNumber
-        checkInDates = relinquishment.checkInDates
-        checkInDate = relinquishment.checkInDate
-        checkOutDate = relinquishment.checkOutDate
-        pointsProgramCode = relinquishment.pointsProgramCode
-        resort = relinquishment.resort
-        unit = relinquishment.unit
-        pointsMatrix = relinquishment.pointsMatrix
-        blackedOut = relinquishment.blackedOut
-        bulkAssignment = relinquishment.bulkAssignment
-        memberUnitLocked = relinquishment.memberUnitLocked
-        payback = relinquishment.payback
-        reservationAttributes = relinquishment.reservationAttributes
-        virtualWeekActions = relinquishment.virtualWeekActions
-        promotion = relinquishment.promotion
     }
 }
