@@ -63,7 +63,11 @@ class ResortDetails: NSObject, UITableViewDataSource, UITableViewDelegate {
         if let tier = resortDetails.tier {
             let tierImageName = Helper.getTierImageName(tier: tier.uppercased())
             cell.tierImageView.image = UIImage(named: tierImageName)
+        } else {
+            cell.tierImageView.isHidden = true
         }
+        cell.allIncImageView.image = #imageLiteral(resourceName: "Resort_All_Inclusive")
+        cell.allIncImageView.isHidden = !resortDetails.allInclusive
         cell.selectionStyle = UITableViewCellSelectionStyle.none
         cell.delegate = self
         

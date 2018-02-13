@@ -1373,11 +1373,21 @@ extension GoogleMapViewController: UICollectionViewDataSource {
         resortCodeLabel.font = UIFont(name: Constant.fontName.helveticaNeue, size: 14)
         resortNameGradientView.addSubview(resortCodeLabel)
         
+        var allInclusive_X = 55
         if resort.tier != nil {
-            let tearImageView = UIImageView(frame: CGRect(x: 55, y: 42, width: 16, height: 16))
+            let tierImageView = UIImageView(frame: CGRect(x: 55, y: 42, width: 16, height: 16))
             let tierImageName = Helper.getTierImageName(tier: resort.tier!.uppercased())
-            tearImageView.image = UIImage(named: tierImageName)
-            resortNameGradientView.addSubview(tearImageView)
+            if tierImageName != "" {
+                tierImageView.image = UIImage(named: tierImageName)
+                resortNameGradientView.addSubview(tierImageView)
+                allInclusive_X = allInclusive_X + 19
+            }
+        }
+        
+        if resort.allInclusive {
+            let allInclusiveImageView = UIImageView(frame: CGRect(x: allInclusive_X, y: 42, width: 16, height: 16))
+            allInclusiveImageView.image = #imageLiteral(resourceName: "Resort_All_Inclusive")
+            resortNameGradientView.addSubview(allInclusiveImageView)
         }
         
         return cell
@@ -1667,8 +1677,15 @@ extension GoogleMapViewController: UITableViewDataSource {
             
             if let tier = resortDetails.tier {
                 let tierImageName = Helper.getTierImageName(tier: tier.uppercased())
-                cell.tierImageView.image = UIImage(named: tierImageName)
+                if tierImageName != "" {
+                    cell.tierImageView.image = UIImage(named: tierImageName)
+                } else {
+                    cell.tierImageView.isHidden = true
+                }
             }
+            
+            cell.allIncImageView.image = #imageLiteral(resourceName: "Resort_All_Inclusive")
+            cell.allIncImageView.isHidden = !resortDetails.allInclusive
             return cell
         }
     }
