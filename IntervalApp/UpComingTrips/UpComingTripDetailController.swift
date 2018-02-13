@@ -170,9 +170,12 @@ class UpComingTripDetailController: UIViewController {
         if let phoneCallURL = URL(string: "tel://\(8442429977)") {
             let application: UIApplication = UIApplication.shared
             if application.canOpenURL(phoneCallURL) {
-                application.open(phoneCallURL, options: [:], completionHandler: nil)
+                NetworkHelper.open(phoneCallURL)
+            } else {
+                presentErrorAlert(UserFacingCommonError.noData)
             }
         }
+
     }
     
     //***** Function to get dynamic rows for additional products section. ******//
