@@ -503,9 +503,9 @@ extension AddDebitOrCreditCardViewController: UITableViewDataSource {
                 cell.nameTF.text = ""
                 if indexPath.row == 0 {
                     cell.acceptedCardsMSG.text = "Interval accepts all major credit and debit cards.".localized()
-                    cell.nameTF.placeholder = Constant.textFieldTitles.nameOnCard
+                    cell.nameTF.placeholder = "Name on Card".localized()
                     if Constant.GetawaySearchResultCardFormDetailData.nameOnCard.isEmpty {
-                        cell.nameTF.placeholder = Constant.textFieldTitles.nameOnCard
+                        cell.nameTF.placeholder = "Name on Card".localized()
                     } else {
                         cell.nameTF.text = Constant.GetawaySearchResultCardFormDetailData.nameOnCard
                     }
@@ -514,7 +514,7 @@ extension AddDebitOrCreditCardViewController: UITableViewDataSource {
                 } else if indexPath.row == 1 {
                     
                      if Constant.GetawaySearchResultCardFormDetailData.cardNumber.isEmpty {
-                        cell.nameTF.placeholder = Constant.textFieldTitles.cardNumber
+                        cell.nameTF.placeholder = "Card Number".localized()
                      } else {
                         cell.nameTF.text = Constant.GetawaySearchResultCardFormDetailData.cardNumber
                     }
