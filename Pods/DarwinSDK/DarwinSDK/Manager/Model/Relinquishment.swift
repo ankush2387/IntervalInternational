@@ -39,6 +39,7 @@ open class Relinquishment {
     open lazy var reservationAttributes = [String]() // ReservationAttribute
     
     // OpenWeek: More
+    open var lockOffUnits : [InventoryUnit]?
     open lazy var checkInDates = [String]()
     open var masterUnitNumber : String?
   
@@ -50,7 +51,6 @@ open class Relinquishment {
     open var insurancePurchase : String?
     
     // Extra
-    open var lockOff : Bool = false
     open var saved : Bool = false
 
     public init(openWeek:OpenWeek) {
@@ -94,13 +94,17 @@ open class Relinquishment {
         }
         
         // OpenWeek: More
+        if let value = unit {
+            if !value.lockOffUnits.isEmpty {
+                lockOffUnits = value.lockOffUnits
+            }
+            // Clean unit if only comes lock-offs
+            if value.unitNumber == nil {
+                unit = nil
+            }
+        }
         checkInDates = filterOutChechInDatesWithLessThan14DaysFromToday(checkInDates: openWeek.checkInDates)
         masterUnitNumber = openWeek.masterUnitNumber
-        
-        // Extra
-        if let value = openWeek.unit {
-            lockOff = !value.lockOffUnits.isEmpty
-        }
     }
     
     public init(deposit:Deposit) {

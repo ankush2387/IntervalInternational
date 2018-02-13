@@ -1,5 +1,5 @@
 //
-//  RelinquishmentGroups.swift
+//  RelinquishmentSections.swift
 //  DarwinSDK
 //
 //  Created by Frank Nogueiras on 1/12/18.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-open class RelinquishmentGroups {
+open class RelinquishmentSections {
 
     //
     // Group Name: Club Interval Gold Weeks
