@@ -112,7 +112,7 @@
                             <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="MFk-sp-O0E">
                                 <rect key="frame" x="-4" y="64" width="383" height="56"/>
                                 <color key="barTintColor" red="0.9137254901960784" green="0.9137254901960784" blue="0.92156862745098034" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" returnKeyType="done"/>
                             </searchBar>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="va3-wS-akl" customClass="GMSMapView">
                                 <rect key="frame" x="0.0" y="120" width="375" height="547"/>
@@ -1550,6 +1550,6 @@
         <segue reference="LB4-mY-QYy"/>
         <segue reference="KTW-Os-bqS"/>
         <segue reference="ff5-xu-9jj"/>
-        <segue reference="VDv-Ib-XnN"/>
+        <segue reference="fTF-me-bqG"/>
     </inferredMetricsTieBreakers>
 </document>
