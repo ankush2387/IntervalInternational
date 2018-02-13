@@ -70,17 +70,3 @@ class IntervalHDTabController: UITabBarController {
     }
     
 }
-
-//***** Extension class for implementing tabbar delegate methods *****//
-extension IntervalHDTabController: UITabBarControllerDelegate {
-    
-    override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
-        if item.tag == 0 {
-            
-        } else if item.tag == 1 {
-            
-        } else {
-            
-        }
-    }
-}

@@ -17,7 +17,7 @@ class IntervalHDCommonControllerForTabs: UIViewController {
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var videoTBLView: UITableView!
     
-    @IBOutlet weak var searhBarTopSpaceConstraint: NSLayoutConstraint!
+    @IBOutlet weak fileprivate var searhBarTopSpaceConstraint: NSLayoutConstraint!
     var searchResultArray = [Video]()
     
     override func viewWillAppear(_ animated: Bool) {
@@ -44,7 +44,7 @@ class IntervalHDCommonControllerForTabs: UIViewController {
             
             let menuButton = UIBarButtonItem(image: UIImage(named: Constant.assetImageNames.backArrowNav), style: .plain, target: self, action: #selector(menuBackButtonPressed))
             menuButton.tintColor = UIColor.white
-            self.navigationItem.leftBarButtonItem = menuButton
+            navigationItem.leftBarButtonItem = menuButton
             
         }
     }
@@ -57,13 +57,13 @@ class IntervalHDCommonControllerForTabs: UIViewController {
     //***** Method for back button *****//
     func menuBackButtonPressed() {
         
-        self.navigationController?.dismiss(animated: true, completion: nil)
+        navigationController?.dismiss(animated: true, completion: nil)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.searchBar.delegate = self
-        self.searchBar.placeholder = Constant.MyClassConstants.searchPlaceHolder
+        searchBar.delegate = self
+        searchBar.placeholder = "Search".localized()
         showHudAsync()
         if Constant.MyClassConstants.runningFunctionality != Constant.MyClassConstants.magazinesFunctionalityCheck {
             Helper.getVideos(searchBy: Constant.MyClassConstants.areaString, senderViewcontroller: self)
@@ -93,7 +93,7 @@ class IntervalHDCommonControllerForTabs: UIViewController {
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.intervalHDIphone, bundle: nil)
         if let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.intervalHDPlayerViewController) as? IntervalHDPlayerViewController {
             viewController.video = video
-            self.present(viewController, animated: true, completion: nil)
+            present(viewController, animated: true, completion: nil)
         }
     }
     
@@ -125,8 +125,8 @@ extension IntervalHDCommonControllerForTabs: UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         
-        if self.searchResultArray.count > 0 {
-            return self.searchResultArray.count
+        if searchResultArray.count > 0 {
+            return searchResultArray.count
         } else {
             var searchBarText = ""
             if let text = searchBar.text {
@@ -172,7 +172,7 @@ extension IntervalHDCommonControllerForTabs: UITableViewDataSource {
         cell.playButton.addTarget(self, action: #selector(playButtonPressedAtIndex), for: .touchUpInside)
         var video = Video()
         if !searchResultArray.isEmpty {
-            video = self.searchResultArray[indexPath.section]
+            video = searchResultArray[indexPath.section]
         } else {
             switch tableView.tag {
             case 1:
@@ -214,12 +214,12 @@ extension IntervalHDCommonControllerForTabs: UISearchBarDelegate {
     
     //**** Search bar controller delegate ****//
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        self.searchBar.resignFirstResponder()
+        searchBar.resignFirstResponder()
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        self.searchBar.resignFirstResponder()
-        self.searchBar.showsCancelButton = false
+        searchBar.resignFirstResponder()
+        searchBar.showsCancelButton = false
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
@@ -237,8 +237,7 @@ extension IntervalHDCommonControllerForTabs: UISearchBarDelegate {
         default:
              videos = Constant.MyClassConstants.intervalHDTutorials
         }
-        self.searchResultArray = LookupClient.filterVideos(videos, searchText: searchBar.text!)
-        self.videoTBLView.reloadData()
-        
+        searchResultArray = LookupClient.filterVideos(videos, searchText: searchBar.text ?? "")
+        videoTBLView.reloadData()
     }
 }

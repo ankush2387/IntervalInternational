@@ -24,7 +24,7 @@ class IntervalHDIpadController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
        
         self.videoSeaarchBar.delegate = self
-        self.videoSeaarchBar.placeholder = Constant.MyClassConstants.searchPlaceHolder
+        self.videoSeaarchBar.placeholder = "Search".localized()
         
       //***** handle hamberger menu button for prelogin and post login case *****//
     if Session.sharedSession.userAccessToken != nil && Constant.MyClassConstants.isLoginSuccessfull {

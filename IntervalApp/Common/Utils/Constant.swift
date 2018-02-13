@@ -381,8 +381,10 @@ class Constant: NSObject {
         static var destinationResortDetail = "DestinationResortViewController"
         static var resortsString = "Resort".localized()
         static var tutorialsString = "Tutorial".localized()
+
         static var areaString = "Area".localized()
         static var searchPlaceHolder = "Search".localized()
+
         static var getawayAlerts = "GetawayAlerts"
         
         static var surroundingAreaString = "Resorts in surrounding areas.".localized()
