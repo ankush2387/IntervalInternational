@@ -70,13 +70,14 @@ class SearchResultViewController: UIViewController {
     
     func createSections() {
         
-        if !Constant.MyClassConstants.resortsArray.isEmpty {
-            
-            let currencycode = Constant.MyClassConstants.initialVacationSearch.rentalSearch?.inventory?[0].inventory?.currencyCode ?? ""
-            let currencyHelper = CurrencyHelper()
-            let currency = currencyHelper.getCurrency(currencyCode: currencycode )
-            currencyCode = ("\(currencyHelper.getCurrencyFriendlySymbol(currencyCode: currency.code))")
-            
+        if let inventory = Constant.MyClassConstants.initialVacationSearch.rentalSearch?.inventory {
+            if !inventory.isEmpty {
+                let currencycode = inventory[0].inventory?.currencyCode ?? ""
+                let currencyHelper = CurrencyHelper()
+                let currency = currencyHelper.getCurrency(currencyCode: currencycode )
+                currencyCode = ("\(currencyHelper.getCurrencyFriendlySymbol(currencyCode: currency.code))")
+                
+            }
         }
         
         let sections = Constant.MyClassConstants.initialVacationSearch.createSections()
@@ -152,17 +153,15 @@ class SearchResultViewController: UIViewController {
         
         checkExactSurroundingSections()
         
+        searchResultColelctionView.reloadData()
         var index = 0
-        for (Index, calendarItem) in Constant.MyClassConstants.calendarDatesArray.enumerated() {
-            if calendarItem.checkInDate == Constant.MyClassConstants.initialVacationSearch.searchCheckInDate {
+        intervalPrint(Constant.MyClassConstants.calendarDatesArray)
+        for (Index, calendarItem) in Constant.MyClassConstants.calendarDatesArray.enumerated() where calendarItem.checkInDate == Constant.MyClassConstants.initialVacationSearch.searchCheckInDate {
                 index = Index
                 break
-            }
         }
         let indexpath = IndexPath(item: index, section: 0)
         searchResultColelctionView.scrollToItem(at: indexpath, at: .centeredHorizontally, animated: true)
-        searchResultColelctionView.reloadData()
-      
     }
     
     func checkExactSurroundingSections() {
@@ -632,13 +631,6 @@ class SearchResultViewController: UIViewController {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         
         let firstVisibleIndexPath = searchResultTableView.indexPathsForVisibleRows?.first
-        var index = 0
-        for (Index, calendarItem) in Constant.MyClassConstants.calendarDatesArray.enumerated() {
-            if calendarItem.checkInDate == Constant.MyClassConstants.initialVacationSearch.searchCheckInDate {
-                index = Index
-            }
-        }
-        let indexPath = IndexPath(item: index, section: 0)
         if firstVisibleIndexPath?.section == 1 {
             dateCellSelectionColor = Constant.CommonColor.greenColor
         } else {
@@ -647,12 +639,6 @@ class SearchResultViewController: UIViewController {
                 dateCellSelectionColor = Constant.CommonColor.greenColor
             } else {
                 dateCellSelectionColor = Constant.CommonColor.blueColor
-            }
-        }
-        if indexPath.row <= Constant.MyClassConstants.calendarDatesArray.count {
-            if searchResultColelctionView != nil {
-                
-                searchResultColelctionView.reloadItems(at: [indexPath])
             }
         }
     }
