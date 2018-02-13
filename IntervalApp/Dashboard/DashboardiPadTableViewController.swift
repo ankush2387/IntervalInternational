@@ -74,6 +74,15 @@ class DashboardIPadTableViewController: UITableViewController {
             
         }
         
+        Helper.getUpcomingTripsForUser(CompletionBlock: { result in
+            switch result {
+            case .Success():
+                self.homeTableView.reloadData()
+            case.error(let error):
+                self.presentAlert(with: "UPComingTrips".localized(), message: error.description.localized())
+            }
+        })
+        
         //***** Setup the hamburger menu.  This will reveal the side menu. *****//
         if let rvc = self.revealViewController() {
             //set SWRevealViewController's Delegate
@@ -612,9 +621,10 @@ extension DashboardIPadTableViewController: UICollectionViewDelegate {
             homeAlertSelected(indexPath: indexPath)
             
         case 4:
-            if let exchangeNumber = Constant.MyClassConstants.upcomingTripsArray[indexPath.row].exchangeNumber {
-                Constant.MyClassConstants.transactionNumber = "\(exchangeNumber)"
-                Helper.getTripDetails(senderViewController: self)
+            Constant.MyClassConstants.upcomingOriginationPoint = "dashboard"
+            let storyboardName = Constant.storyboardNames.myUpcomingTripIpad
+            if let initialViewController = UIStoryboard(name: storyboardName, bundle: nil).instantiateInitialViewController() {
+                navigationController?.pushViewController(initialViewController, animated: true)
             }
             
         default:

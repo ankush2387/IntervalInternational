@@ -33,6 +33,9 @@ class UpComingTripDetailController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+        
+        
         //***** register UnitDetailCell xib cells  with table *****//
         let cellNib = UINib(nibName: Constant.customCellNibNames.unitDetailCell, bundle: nil)
         upcomingTripDetailTbleview?.register(cellNib, forCellReuseIdentifier: Constant.upComingTripDetailControllerReusableIdentifiers.unitDetailCell)
@@ -206,8 +209,7 @@ class UpComingTripDetailController: UIViewController {
         } else {
             isOpen = true
         }
-        
-        upcomingTripDetailTbleview.reloadSections(IndexSet(integer: 1), with: .automatic)
+        upcomingTripDetailTbleview.reloadData()
     }
     
     func showMapDetail() {
@@ -458,15 +460,19 @@ extension UpComingTripDetailController: UITableViewDataSource {
             
             //***** Configuring prototype cell for unit details with dynamic button to shwo unit details *****//
             
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.upComingTripDetailControllerReusableIdentifiers.customTableViewCell, for: indexPath) as? UpComingTripCell else {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.upComingTripDetailControllerReusableIdentifiers.customTableViewCell, for: indexPath) as? CustomTableViewCell else {
                 
                 return UITableViewCell()
             }
             if isOpen == true {
+                cell.dropDown.image = #imageLiteral(resourceName: "up_arrow_icon")
+                
                 if detailsView == nil {
                     cell.addSubview(getDetails())
-                    upcomingTripDetailTbleview.reloadData()
+                    upcomingTripDetailTbleview.reloadSections(IndexSet(integer: 1), with: .automatic)
                 }
+            } else {
+               cell.dropDown.image = #imageLiteral(resourceName: "DropArrowIcon")
             }
             cell.backgroundColor = IUIKColorPalette.contentBackground.color
             let horizontalSeprator = UIView(frame: CGRect(x: 0, y: 49, width: cell.contentView.frame.size.width, height: 1))

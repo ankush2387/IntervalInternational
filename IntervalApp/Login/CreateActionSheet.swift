@@ -149,11 +149,7 @@ class CreateActionSheet: UITableViewController {
                                             }
                                         }
                                         //***** Get upcoming trips for user API call after successfull call *****//
-                                        Helper.getUpcomingTripsForUser {[weak self] error in
-                                            if case .some = error {
-                                                self?.presentAlert(with: "Error".localized(), message: error?.localizedDescription ?? "")
-                                            }
-                                        }
+               
                                         
                 },
                                        onError: {_ in

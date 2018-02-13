@@ -174,6 +174,8 @@ extension SideMenuiPadTableViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch indexPath.row {
+        case 4:
+            Constant.MyClassConstants.upcomingOriginationPoint = "sideMenu"
         case 6 :
             Constant.MyClassConstants.sideMenuOptionSelected = Constant.MyClassConstants.favoritesFunctionalityCheck
             Constant.MyClassConstants.runningFunctionality = Constant.MyClassConstants.favoritesFunctionalityCheck
