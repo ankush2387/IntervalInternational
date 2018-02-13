@@ -1709,13 +1709,15 @@ public class Helper {
             if activeInterval.fetchedBefore  && !activeInterval.hasCheckInDates()  {
                senderVC.hideHudAsync()
                 Helper.showNotAvailabilityResults()
+                helperDelegate?.resortSearchComplete()
                 
             } else {
                 Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
                 executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: Constant.MyClassConstants.initialVacationSearch.searchCheckInDate ?? "", format: Constant.MyClassConstants.dateFormat), senderViewController: senderVC) }
         },
-           onError: { _ in
-            senderVC.presentErrorAlert(UserFacingCommonError.generic)
+           onError: { error in
+            senderVC.hideHudAsync()
+            senderVC.presentErrorAlert(UserFacingCommonError.handleError(error))
     })
 }
     /*
