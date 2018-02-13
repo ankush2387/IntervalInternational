@@ -606,10 +606,18 @@ extension ResortDirectoryViewController: UITableViewDataSource {
                 cell.favoriteButton.isSelected = false
             }
             cell.favoriteButton.tag = indexPath.row
-            let tierImageName = Helper.getTierImageName(tier: resort.tier!.uppercased())
-            cell.tierImageView.image = UIImage(named: tierImageName)
+            if let tierImageName = resort.tier {
+                var tierName = Helper.getTierImageName(tier: tierImageName.uppercased())
+                if tierName == "" {
+                     cell.tierImageView.isHidden = true
+                } else {
+                     cell.tierImageView.image = UIImage(named: tierName)
+                }
+            } else {
+                cell.tierImageView.isHidden = true
+            }
             
-            if resort.images.count > 0 {
+            if !resort.images.isEmpty {
                 
                 if let stirngUrl = resort.images[2].url {
                     let url = URL(string: stirngUrl)

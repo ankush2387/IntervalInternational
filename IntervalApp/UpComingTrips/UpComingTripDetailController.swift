@@ -24,10 +24,16 @@ class UpComingTripDetailController: UIViewController {
     var detailsView: UIView?
     
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         NotificationCenter.default.addObserver(self, selector: #selector(reloadDetailsTable), name: NSNotification.Name(rawValue: Constant.notificationNames.reloadTripDetailsNotification), object: nil)
         requiredRowsForAdditionalProducts()
         requiredRowsForRelinquishment()
         navigationController?.navigationBar.isHidden = false
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        NotificationCenter.default
+            .removeObserver(self, name: NSNotification.Name(rawValue:Constant.notificationNames.reloadTripDetailsNotification), object: nil)
     }
     
     override func viewDidLoad() {
@@ -454,7 +460,7 @@ extension UpComingTripDetailController: UITableViewDataSource {
             if let countryCode = addressDetails.countryCode {
                 resortAddress.append(countryCode)
             }
-            cell.resortLocationLabel.text = resortAddress.joined(separator: ",")
+            cell.resortLocationLabel.text = resortAddress.joined(separator: ", ")
             return cell
         } else if indexPath.section == 1 {
             

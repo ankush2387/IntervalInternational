@@ -54,6 +54,8 @@ class DashboardTableViewController: UITableViewController {
             .removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.getawayAlertsNotification), object: nil)
         NotificationCenter.default
             .removeObserver(self, name: NSNotification.Name(rawValue:Constant.notificationNames.refreshTableNotification), object: nil)
+        NotificationCenter.default
+            .removeObserver(self, name: NSNotification.Name(rawValue:Constant.notificationNames.reloadTripDetailsNotification), object: nil)
     }
     
     override func viewDidLoad() {
@@ -142,6 +144,7 @@ class DashboardTableViewController: UITableViewController {
                 }
             }
             .onError { [weak self] error in
+                self?.hideHudAsync()
                 self?.presentErrorAlert(UserFacingCommonError.handleError(error as NSError))
         }
     }
@@ -326,7 +329,6 @@ class DashboardTableViewController: UITableViewController {
         
         let cell = getTableViewContents(indexPath, type: dashboardArray[indexPath.section])
         return cell
-        
     }
     
     func getTableViewContents(_ indexPath: IndexPath, type: String) -> UITableViewCell {
@@ -866,7 +868,6 @@ extension DashboardTableViewController: UICollectionViewDataSource {
                         cell.backgroundColor = UIColor(red: 167.0 / 255.0, green: 167.0 / 255.0, blue: 170.0 / 255.0, alpha: 1.0)
                     }
                 }
-                
                 cell.layer.borderWidth = 2.0
                 cell.layer.cornerRadius = 3
                 cell.layer.masksToBounds = true
@@ -877,7 +878,6 @@ extension DashboardTableViewController: UICollectionViewDataSource {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.dashboardTableScreenReusableIdentifiers.cell, for: indexPath)
             return cell
         }
-        
     }
 }
 
@@ -976,7 +976,6 @@ extension UIViewController {
         
         //Present no filter options
         Constant.MyClassConstants.noFilterOptions = true
-        
         let storyboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
         if let viewController = storyboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.flexchangeViewController) as? FlexchangeSearchViewController {
             viewController.selectedFlexchange = Constant.MyClassConstants.flexExchangeDeals[selectedIndexPath.row]

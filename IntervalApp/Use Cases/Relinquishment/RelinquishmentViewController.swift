@@ -34,7 +34,7 @@ final class RelinquishmentViewController: UIViewController {
     
     // MARK: - Private functions
     private func setUI() {
-        title = "Relinquishment Selection".localized()
+        title = "Select Relinquishment".localized()
         registerSimpleCellViews(withTableView: tableView)
         tableView.estimatedRowHeight = 100
         tableView.rowHeight = UITableViewAutomaticDimension

@@ -174,8 +174,8 @@ class PaymentSelectionViewController: UIViewController {
                     return
                 }
                 let letters = CharacterSet.letters
-                let range =  expDate.rangeOfCharacter(from: letters)
-                if expDate.isEmpty || !(range?.isEmpty ?? false) {
+                let range = expDate.rangeOfCharacter(from: letters)
+                if expDate.isEmpty || range != nil {
                     self.selectedCardIndex = -1
                     self.paymentSelectionTBLview.reloadData()
                     let alertController = UIAlertController(title: "Alert".localized(), message: "Exp Date can not be empty or Alphabet!".localized(), preferredStyle: .alert)

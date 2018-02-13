@@ -715,7 +715,7 @@ extension WhatToUseViewController: UITableViewDataSource {
                     //display Promotion
                     if let promotion = exchange.openWeek?.promotion {
                         cell.promLabel.text = promotion.offerName
-                        cell.promImgView.image = UIImage(named: "PromoImoge")
+                        cell.promImgView.image = UIImage(named: "PromoImage")
                     } else {
                         cell.promLabel.text = ""
                         cell.promImgView.image = nil

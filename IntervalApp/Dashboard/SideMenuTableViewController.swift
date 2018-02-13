@@ -35,8 +35,8 @@ class SideMenuTableViewController: UIViewController {
     //***** Define a global list os side menu items *****//
     static let SideMenuItems: [SideMenuItem] = [
         
-        SideMenuItem(title: "", image: #imageLiteral(resourceName: "IntHD"), storyboardid: ""),
-        SideMenuItem(title: "", image: #imageLiteral(resourceName: "Member"), storyboardid: Constant.storyboardNames.membershipIphone),
+        SideMenuItem(title: "", image:  #imageLiteral(resourceName: "IntHD"), storyboardid: ""),
+        SideMenuItem(title: "", image:  #imageLiteral(resourceName: "Member"), storyboardid: Constant.storyboardNames.membershipIphone),
         SideMenuItem(title: Constant.sideMenuTitles.home, image: #imageLiteral(resourceName: "Home"), storyboardid: Constant.storyboardNames.dashboardIPhone),
         SideMenuItem(title: Constant.sideMenuTitles.searchVacation, image: #imageLiteral(resourceName: "Search"), storyboardid: Constant.storyboardNames.vacationSearchIphone),
         SideMenuItem(title: Constant.sideMenuTitles.upcomingTrips, image: #imageLiteral(resourceName: "Trips"), storyboardid: Constant.storyboardNames.myUpcomingTripIphone),
@@ -52,7 +52,10 @@ class SideMenuTableViewController: UIViewController {
         // Forces storyboard
         SideMenuItem(title: "Settings".localized(),
                      image: #imageLiteral(resourceName: "Settings Icon"),
-                     storyboardid: "Settings")
+                     storyboardid: "Settings"),
+        SideMenuItem(title: "Logout".localized(),
+                     image: UIImage(),
+                     storyboardid: "")
     ]
     
     var memberId = ""
@@ -115,6 +118,10 @@ extension SideMenuTableViewController: UITableViewDelegate {
             Constant.MyClassConstants.sideMenuOptionSelected = Constant.MyClassConstants.resortFunctionalityCheck
         }
         
+        if indexPath.row == SideMenuTableViewController.SideMenuItems.count - 1 {
+            signOut()
+        }
+        
         guard let storyboardName = smi.storyboardId, !storyboardName.isEmpty else { return }
         
         if let initialViewController = UIStoryboard(name: storyboardName, bundle: nil).instantiateInitialViewController() {
@@ -128,6 +135,22 @@ extension SideMenuTableViewController: UITableViewDelegate {
         var height = 0
         (indexPath.row == 0) ? (height = 100) : (height = 50)
         return CGFloat(height)
+    }
+    
+    fileprivate func signOut() {
+        Session.sharedSession.signOut()
+        //Remove all favorites for a user.
+        Constant.MyClassConstants.favoritesResortArray.removeAll()
+        Constant.MyClassConstants.favoritesResortCodeArray.removeAll()
+        //Remove available points for relinquishment program
+        Constant.MyClassConstants.relinquishmentProgram = PointsProgram()
+        //Remove all saved alerts for a user.
+        Constant.MyClassConstants.getawayAlertsArray.removeAll()
+        Constant.MyClassConstants.isLoginSuccessfull = false
+        Constant.MyClassConstants.sideMenuOptionSelected = Constant.MyClassConstants.resortFunctionalityCheck
+        Constant.MyClassConstants.topDeals.removeAll()
+        Constant.MyClassConstants.flexExchangeDeals.removeAll()
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.MyClassConstants.popToLoginView), object: nil)
     }
 }
 
@@ -188,9 +211,9 @@ extension SideMenuTableViewController: UITableViewDataSource {
             if indexPath.row == 5 {
                 
                 let alertCounterLabel = UILabel()
-               
+                
                 if Constant.activeAlertCount > 0 {
-                   alertCounterLabel.text = "\(Constant.activeAlertCount)"
+                    alertCounterLabel.text = "\(Constant.activeAlertCount)"
                     alertCounterLabel.isHidden = false
                 } else {
                     alertCounterLabel.isHidden = true
@@ -211,3 +234,4 @@ extension SideMenuTableViewController: UITableViewDataSource {
         }
     }
 }
+
