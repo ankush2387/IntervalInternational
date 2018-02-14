@@ -114,9 +114,7 @@ extension SideMenuTableViewController: UITableViewDelegate {
             Constant.MyClassConstants.sideMenuOptionSelected = Constant.MyClassConstants.resortFunctionalityCheck
         }
         
-        if indexPath.row == SideMenuTableViewController.SideMenuItems.count - 1 {
-            signOut()
-        }
+       
         
         guard let storyboardName = smi.storyboardId, !storyboardName.isEmpty else { return }
         
@@ -133,21 +131,7 @@ extension SideMenuTableViewController: UITableViewDelegate {
         return CGFloat(height)
     }
     
-    fileprivate func signOut() {
-        Session.sharedSession.signOut()
-        //Remove all favorites for a user.
-        Constant.MyClassConstants.favoritesResortArray.removeAll()
-        Constant.MyClassConstants.favoritesResortCodeArray.removeAll()
-        //Remove available points for relinquishment program
-        Constant.MyClassConstants.relinquishmentProgram = PointsProgram()
-        //Remove all saved alerts for a user.
-        Constant.MyClassConstants.getawayAlertsArray.removeAll()
-        Constant.MyClassConstants.isLoginSuccessfull = false
-        Constant.MyClassConstants.sideMenuOptionSelected = Constant.MyClassConstants.resortFunctionalityCheck
-        Constant.MyClassConstants.topDeals.removeAll()
-        Constant.MyClassConstants.flexExchangeDeals.removeAll()
-        NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.MyClassConstants.popToLoginView), object: nil)
-    }
+    
 }
 
 extension SideMenuTableViewController: UITableViewDataSource {
