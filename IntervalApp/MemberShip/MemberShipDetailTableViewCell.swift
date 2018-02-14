@@ -62,9 +62,11 @@ class MemberShipDetailTableViewCell: UITableViewCell {
             emailAddress = email
         }
         
-        if let memberStatus = contactInfo.status {
-            status = memberStatus
-            
+        if let primaryMember = contactInfo.isPrimary {
+            if primaryMember {
+                let memberStatus = "Primary Owner"
+                status = memberStatus
+            }
         }
         
         if let memberSinceDate = contactInfo.lastVerifiedDate {
