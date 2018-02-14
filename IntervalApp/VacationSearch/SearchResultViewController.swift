@@ -507,6 +507,11 @@ class SearchResultViewController: UIViewController {
         let processRequest = ExchangeProcessStartRequest()
         
         processRequest.destination = Constant.MyClassConstants.exchangeDestination
+        
+        if let pointsCost = Constant.MyClassConstants.selectedExchangePointsCost {
+            processRequest.destination?.pointsCost = pointsCost.intValue
+        }
+        
         // Note: constant has value obtained from vacation search screen
         processRequest.travelParty = Constant.MyClassConstants.travelPartyInfo
         
@@ -907,7 +912,7 @@ extension SearchResultViewController: UICollectionViewDelegate {
                         }
                         if let inventory = exactMatchResortsArrayExchange[collectionView.tag].inventory {
                             self.getFilterRelinquishments(selectedInventoryUnit: Inventory(), selectedIndex: indexPath.item, selectedExchangeInventory: inventory, hasSearchAllAvailability: false)
-                            Constant.MyClassConstants.selectedExchangeCigPoints = inventory.buckets[indexPath.row].pointsCost
+                            Constant.MyClassConstants.selectedExchangePointsCost = inventory.buckets[indexPath.row].pointsCost as NSNumber
                         }
                     } else {
                         if let resort = surroundingMatchResortsArrayExchange[collectionView.tag].resort {
@@ -915,7 +920,7 @@ extension SearchResultViewController: UICollectionViewDelegate {
                         }
                         if let inventory = surroundingMatchResortsArrayExchange[collectionView.tag].inventory {
                             self.getFilterRelinquishments(selectedInventoryUnit: Inventory(), selectedIndex: indexPath.item, selectedExchangeInventory: inventory, hasSearchAllAvailability: false)
-                            Constant.MyClassConstants.selectedExchangeCigPoints = inventory.buckets[indexPath.row].pointsCost
+                            Constant.MyClassConstants.selectedExchangePointsCost = inventory.buckets[indexPath.row].pointsCost as NSNumber
                         }
                     }
                     
@@ -1010,7 +1015,7 @@ extension SearchResultViewController: UICollectionViewDelegate {
                             if let exchangeAvailability = combinedExactSearchItems[collectionView.tag].exchangeAvailability {
                                 
                                 if let bucket = combinedExactSearchItems[collectionView.tag].exchangeAvailability?.inventory?.buckets[indexPath.row] {
-                                    Constant.MyClassConstants.selectedExchangeCigPoints = bucket.pointsCost
+                                    Constant.MyClassConstants.selectedExchangePointsCost = bucket.pointsCost as NSNumber
                                     if bucket.pointsCost != bucket.memberPointsRequired {
                                         showInfoIcon = true
                                     }
@@ -1029,7 +1034,7 @@ extension SearchResultViewController: UICollectionViewDelegate {
                         } else {
                             if let exchangeAvailability = combinedSurroundingSearchItems[collectionView.tag].exchangeAvailability {
                                 if let bucket = exchangeAvailability.inventory?.buckets[indexPath.row] {
-                                    Constant.MyClassConstants.selectedExchangeCigPoints = bucket.pointsCost
+                                    Constant.MyClassConstants.selectedExchangePointsCost = bucket.pointsCost as NSNumber
                                     if bucket.pointsCost != bucket.memberPointsRequired {
                                         showInfoIcon = true
                                     }

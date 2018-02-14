@@ -770,12 +770,13 @@ extension WhoWillBeCheckingInViewController: UITableViewDataSource {
                     if Constant.MyClassConstants.isCIGAvailable {
                         cell.resortDetailsButton.isHidden = true
                         cell.lblHeading.text = "CIG Points"
-                        let availablePointsNumber = Constant.MyClassConstants.selectedExchangeCigPoints as NSNumber
                         let numberFormatter = NumberFormatter()
                         numberFormatter.numberStyle = .decimal
-                        if let availablePoints = numberFormatter.string(from: availablePointsNumber) {
+                        if let pointsCost = Constant.MyClassConstants.selectedExchangePointsCost, let availablePoints = numberFormatter.string(from: pointsCost) {
                             cell.resortName?.text = "\(availablePoints)".localized()
-                        } else { cell.resortName?.text = "\(0)".localized() }
+                        } else {
+                            cell.resortName?.text = "\(0)".localized()
+                        }
                     }
                 }
                 cell.resortDetailsButton.addTarget(self, action: #selector(WhoWillBeCheckingInViewController.resortDetailsClicked(_:)), for: .touchUpInside)

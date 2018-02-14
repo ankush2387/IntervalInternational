@@ -560,12 +560,15 @@ extension WhatToUseViewController: UITableViewDataSource {
                 cell.checkBOx.isUserInteractionEnabled = false
                 cell.checkBOx.accessibilityElements = [indexPath.section]
                 
-                let availablePointsNumber = Constant.MyClassConstants.selectedExchangeCigPoints as NSNumber
                 let numberFormatter = NumberFormatter()
                 numberFormatter.numberStyle = .decimal
-                if let availablePoints = numberFormatter.string(from: availablePointsNumber) {
+                
+                //let availablePointsNumber = Constant.MyClassConstants.selectedExchangeCigPoints as NSNumber
+                if let pointsCost = Constant.MyClassConstants.selectedExchangePointsCost, let availablePoints = numberFormatter.string(from: pointsCost) {
                     cell.availablePointValueLabel.text = "\(availablePoints)".localized()
-                } else { cell.availablePointValueLabel.text = "\(0)".localized() }
+                } else {
+                    cell.availablePointValueLabel.text = "\(0)".localized()
+                }
                 
                 if showInfoIcon {
                     cell.infoButton.isHidden = false

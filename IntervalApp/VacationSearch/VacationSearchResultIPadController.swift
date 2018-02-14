@@ -597,7 +597,7 @@ extension VacationSearchResultIPadController: UICollectionViewDelegate {
                             Constant.MyClassConstants.selectedResort = resort
                             
                             getFilterRelinquishments(selectedInventoryUnit: Inventory(), selectedIndex: indexPath.item, selectedExchangeInventory: inventory, hasSearchAllAvailability: false)
-                            Constant.MyClassConstants.selectedExchangeCigPoints = inventory.buckets[indexPath.row].pointsCost
+                            Constant.MyClassConstants.selectedExchangePointsCost = inventory.buckets[indexPath.row].pointsCost as NSNumber
                         }
                         
                     } else {
@@ -605,7 +605,7 @@ extension VacationSearchResultIPadController: UICollectionViewDelegate {
                         if let resort = exchangeSurroundingMatchResortsArray[collectionView.tag].resort, let inventory = exchangeSurroundingMatchResortsArray[collectionView.tag].inventory {
                             Constant.MyClassConstants.selectedResort = resort
                             getFilterRelinquishments(selectedInventoryUnit: Inventory(), selectedIndex: indexPath.item, selectedExchangeInventory: inventory, hasSearchAllAvailability: false)
-                            Constant.MyClassConstants.selectedExchangeCigPoints = inventory.buckets[indexPath.row].pointsCost
+                            Constant.MyClassConstants.selectedExchangePointsCost = inventory.buckets[indexPath.row].pointsCost as NSNumber
                         }
                     }
                     
@@ -720,7 +720,7 @@ extension VacationSearchResultIPadController: UICollectionViewDelegate {
                             }
                             
                             if let bucket = combinedExactSearchItems[collectionView.tag].exchangeAvailability?.inventory?.buckets[indexPath.row] {
-                                Constant.MyClassConstants.selectedExchangeCigPoints = bucket.pointsCost
+                                Constant.MyClassConstants.selectedExchangePointsCost = bucket.pointsCost as NSNumber
                                 if bucket.pointsCost != bucket.memberPointsRequired {
                                     showInfoIcon = true
                                 }
@@ -752,7 +752,7 @@ extension VacationSearchResultIPadController: UICollectionViewDelegate {
                                 Constant.MyClassConstants.filterRelinquishments.removeAll()
                                 if let inventory = combinedExactSearchItems[collectionView.tag].exchangeAvailability?.inventory {
                                     getFilterRelinquishments(selectedInventoryUnit: Inventory(), selectedIndex: indexPath.item, selectedExchangeInventory: inventory, hasSearchAllAvailability: false)
-                                     Constant.MyClassConstants.selectedExchangeCigPoints = inventory.buckets[indexPath.row].pointsCost
+                                    Constant.MyClassConstants.selectedExchangePointsCost = inventory.buckets[indexPath.row].pointsCost as NSNumber
                                 }
                             }
                             
