@@ -206,10 +206,6 @@ final class AdditionalInformationViewModel {
         }
     }
     
-    func update(inventoryUnit: InventoryUnit?) {
-        relinquishment.unit = inventoryUnit
-    }
-    
     func updateDate(with resortCalendar: ResortCalendar?) {
         relinquishment.fixWeekReservation?.checkInDate = resortCalendar?.checkInDate
         if let weekNumber = resortCalendar?.weekNumber {

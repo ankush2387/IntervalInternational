@@ -8,14 +8,14 @@
 
 import UIKit
 
-final class MultipleSelectionTableViewController<T>: UITableViewController where T: MultipleSelectionElement {
+final class MultipleSelectionTableViewController: UITableViewController {
 
     // MARK: - Public properties
-    var didFinish: (([T]) -> Void)?
+    var didFinish: (([MultipleSelectionCellModel]) -> Void)?
     
     // MARK: - Private properties
-    private let viewModel: MultipleSelectionTableViewModel<T>
-    private var selectedElements: [IndexPath: T] = [:]
+    private let viewModel: MultipleSelectionTableViewModel
+    private var selectedElements: [IndexPath: MultipleSelectionCellModel] = [:]
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -23,7 +23,7 @@ final class MultipleSelectionTableViewController<T>: UITableViewController where
         setUI()
     }
     
-    init(viewModel: MultipleSelectionTableViewModel<T>) {
+    init(viewModel: MultipleSelectionTableViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }

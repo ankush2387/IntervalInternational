@@ -27,7 +27,7 @@ final class AdditionalInformationViewController: UIViewController {
     
     // MARK: - Private properties
     fileprivate let viewModel: AdditionalInformationViewModel
-    private var previousSelectionCell: SelectionCell?
+    private var previouslySelectedCellModel: SingleSelectionCellModel?
     
     // MARK: - Lifecycle
     init(viewModel: AdditionalInformationViewModel) {
@@ -85,6 +85,15 @@ final class AdditionalInformationViewController: UIViewController {
             self.tableView.reloadData()
         }
     }
+    
+    private func createModels(for resort: Resort) -> SingleSelectionCellModel {
+        return SingleSelectionCellModel(cellTitle: resort.resortName.unwrappedString)
+    }
+    
+    private func createModels(for inventoryUnit: InventoryUnit) -> SingleSelectionCellModel {
+        let text = selectedType == .unitNumber ? inventoryUnit.unitNumber : inventoryUnit.unitSize
+        return SingleSelectionCellModel(cellTitle: text.unwrappedString)
+    }
 
     @objc fileprivate func dismissKeyboard() {
         view.endEditing(true)
@@ -98,24 +107,29 @@ final class AdditionalInformationViewController: UIViewController {
             selectedType = strongSelf.viewModel.unitNumberVM === viewModel ? .unitNumber : .unitSize
 
             if !(units.flatMap { $0.unitNumber }).isEmpty {
-                strongSelf.pushPickerViewController(elements: units)
-                    .then {
-                        strongSelf.previousSelectionCell = $0
-                        strongSelf.viewModel.unitNumberVM?.textFieldValue.next($0?.unitNumber)
-                        strongSelf.viewModel.numberOfBedroomsVM?.textFieldValue.next($0?.unitSize)
-                    }
-                    .finally(strongSelf.hideHudAsync)
+                let cellModels = units.map(strongSelf.createModels)
+                strongSelf.pushPickerViewController(with: cellModels) { selectedIndex in
+                    let selectedInventoryUnit = units[selectedIndex]
+                    strongSelf.previouslySelectedCellModel = cellModels[selectedIndex]
+                    strongSelf.viewModel.unitNumberVM?.textFieldValue.next(selectedInventoryUnit.unitNumber)
+                    strongSelf.viewModel.numberOfBedroomsVM?.textFieldValue.next(selectedInventoryUnit.unitSize)
+                    strongSelf.tableView.reloadData()
+                    strongSelf.navigationController?.popViewController(animated: true)
+                }
 
             } else {
                 strongSelf.viewModel.getResortUnitSizes().then { unitSizes in
                     if !(units.flatMap { $0.unitSize }).isEmpty {
-                        strongSelf.pushPickerViewController(elements: unitSizes)
-                            .then {
-                                strongSelf.previousSelectionCell = $0
-                                strongSelf.viewModel.unitNumberVM?.textFieldValue.next($0?.unitNumber)
-                                strongSelf.viewModel.numberOfBedroomsVM?.textFieldValue.next($0?.unitSize)
-                            }
-                            .finally(strongSelf.hideHudAsync)
+                        let cellModels = unitSizes.map(strongSelf.createModels)
+                        strongSelf.pushPickerViewController(with: cellModels) { selectedIndex in
+                            let selectedInventoryUnit = unitSizes[selectedIndex]
+                            strongSelf.previouslySelectedCellModel = cellModels[selectedIndex]
+                            strongSelf.viewModel.unitNumberVM?.textFieldValue.next(selectedInventoryUnit.unitNumber)
+                            strongSelf.viewModel.numberOfBedroomsVM?.textFieldValue.next(selectedInventoryUnit.unitSize)
+                            strongSelf.tableView.reloadData()
+                            strongSelf.navigationController?.popViewController(animated: true)
+                        }
+                        
                     } else {
                         // Perform fallback...
                     }
@@ -135,8 +149,13 @@ final class AdditionalInformationViewController: UIViewController {
 
         let pushSelectorView = { [weak self] (resorts: [Resort]) in
             guard let strongSelf = self else { return }
-            strongSelf.pushPickerViewController(elements: resorts)
-                .then { strongSelf.viewModel.resort.next($0) }
+            let cellModels = resorts.map(strongSelf.createModels)
+            strongSelf.pushPickerViewController(with: cellModels) { selectedIndex in
+                strongSelf.previouslySelectedCellModel = cellModels[selectedIndex]
+                strongSelf.viewModel.resort.next(resorts[selectedIndex])
+                strongSelf.tableView.reloadData()
+                strongSelf.navigationController?.popViewController(animated: true)
+            }
         }
 
         viewModel.getResortsForClub()
@@ -145,22 +164,11 @@ final class AdditionalInformationViewController: UIViewController {
             .finally(hideHudAsync)
     }
 
-    fileprivate func pushPickerViewController<T: SelectionCell>(elements: [T]) -> Promise<T?> {
-
-        return Promise { [weak self] resolve, _ in
-            guard let strongSelf = self else { return }
-            let selectionViewModel = SelectionTableViewModel(cellTexts: elements,
-                                                             currentSelection: strongSelf.previousSelectionCell)
-            let viewController = SelectionTableViewController(viewModel: selectionViewModel)
-            viewController.didSelectRow = { index in
-                strongSelf.previousSelectionCell = elements[index]
-                resolve(elements[index])
-                strongSelf.tableView.reloadData()
-                strongSelf.navigationController?.popViewController(animated: true)
-            }
-
-            strongSelf.navigationController?.pushViewController(viewController, animated: true)
-        }
+    fileprivate func pushPickerViewController(with models: [SingleSelectionCellModel], didSelect: @escaping (Int) -> Void) {
+        let selectionViewModel = SingleSelectionViewModel(cellModels: models, currentSelectionCellModel: previouslySelectedCellModel)
+        let viewController = SingleSelectionViewController(viewModel: selectionViewModel)
+        viewController.didSelectRow = didSelect
+        navigationController?.pushViewController(viewController, animated: true)
     }
 
     @objc private func processNavigation() {
@@ -312,22 +320,5 @@ extension AdditionalInformationViewController: UITableViewDataSource, SimpleView
         }
         
         return cell
-    }
-}
-
-extension Resort: SelectionCell {
-    var labelText: String? { return resortName }
-}
-
-extension InventoryUnit: SelectionCell {
-    var labelText: String? {
-
-        switch selectedType {
-        case .unitNumber:
-            return unitNumber
-
-        case .unitSize:
-            return unitSize
-        }
     }
 }

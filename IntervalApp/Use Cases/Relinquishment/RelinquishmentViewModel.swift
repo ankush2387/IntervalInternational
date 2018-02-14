@@ -108,17 +108,17 @@ final class RelinquishmentViewModel {
         return relinquishment.isDeposit() ? depositDepositedWeek(for: relinquishment) : depositOpenWeek(for: relinquishment)
     }
 
-    func fetchSelectedLockOffUnits(for relinquishment: Relinquishment) -> Promise<[LockedOffUnit]> {
-        return Promise { [unowned self] resolve, reject in
+    func readPreviouslySelectedLockOffUnits(for relinquishment: Relinquishment) -> Promise<[OpenWeeks]> {
+        return Promise { resolve, reject in
+            self.entityDataStore.readObjectsFromDisk(type: OpenWeeksStorage.self, predicate: nil, encoding: .decrypted)
+                .then { openWeeksStorage in
+                    let lockedOffUnits: [OpenWeeks] = openWeeksStorage
+                        .flatMap { $0.openWeeks }
+                        .flatMap { $0.openWeeks }
+                        .filter { $0.relinquishmentID == relinquishment.relinquishmentId.unwrappedString }
 
-            let convertToLockedOffUnits = { (openWeeks: [OpenWeeks]) in
-                let lockedOffUnits = openWeeks.flatMap { $0.unitDetails }
-                    .flatMap { LockedOffUnit(unitDetails: $0.kitchenType, unitCapacity: $0.unitSize) }
-                resolve(lockedOffUnits)
-            }
-
-            self.readLockOffUnitsFromDisk(for: relinquishment)
-                .then(convertToLockedOffUnits)
+                    resolve(lockedOffUnits)
+                }
                 .onError(reject)
         }
     }
@@ -265,7 +265,7 @@ final class RelinquishmentViewModel {
 
     private func resetLockOffUnitsInDisk(for relinquishment: Relinquishment) -> Promise<Void> {
         return Promise { [unowned self] resolve, reject in
-            self.readLockOffUnitsFromDisk(for: relinquishment)
+            self.readPreviouslySelectedLockOffUnits(for: relinquishment)
                 .then { lockOffUnitsInDisk in
                     guard let realm = self.entityDataStore.decryptedRealmOnDiskGlobal else {
                         reject(CommonErrors.parsingError)
@@ -283,21 +283,6 @@ final class RelinquishmentViewModel {
                     }
 
                 }.onError(reject)
-        }
-    }
-
-    private func readLockOffUnitsFromDisk(for relinquishment: Relinquishment) -> Promise<[OpenWeeks]> {
-        return Promise { resolve, reject in
-            self.entityDataStore.readObjectsFromDisk(type: OpenWeeksStorage.self, predicate: nil, encoding: .decrypted)
-                .then { openWeeksStorage in
-                    let lockedOffUnits: [OpenWeeks] = openWeeksStorage
-                        .flatMap { $0.openWeeks }
-                        .flatMap { $0.openWeeks }
-                        .filter { $0.relinquishmentID == relinquishment.relinquishmentId.unwrappedString }
-
-                    resolve(lockedOffUnits)
-                }
-                .onError(reject)
         }
     }
     
@@ -619,11 +604,6 @@ extension Relinquishment {
     var hasLockOffUnits: Bool {
         return lockOffUnits?.isEmpty == false
     }
-}
-
-extension InventoryUnit: MultipleSelectionElement {
-    var cellTitle: String { return unitDetailsUIFormatted }
-    var cellSubtitle: String { return unitCapacityUIFormatted }
 }
 
 // Temporary code, to not change model across application

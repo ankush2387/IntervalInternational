@@ -8,15 +8,15 @@
 
 import Foundation
 
-final class MultipleSelectionTableViewModel<T> where T: MultipleSelectionElement {
+final class MultipleSelectionTableViewModel {
     
     // MARK: - Public properties
     let viewTitle: String?
-    let dataSet: [T]
-    let previouslySelectedDataSet: [MultipleSelectionElement]
+    let dataSet: [MultipleSelectionCellModel]
+    let previouslySelectedDataSet: [MultipleSelectionCellModel]
 
     // MARK: - Lifecycle
-    init(viewTitle: String? = nil, dataSet: [T], previouslySelectedDataSet: [MultipleSelectionElement] = []) {
+    init(viewTitle: String? = nil, dataSet: [MultipleSelectionCellModel], previouslySelectedDataSet: [MultipleSelectionCellModel] = []) {
         self.viewTitle = viewTitle
         self.dataSet = dataSet
         self.previouslySelectedDataSet = previouslySelectedDataSet

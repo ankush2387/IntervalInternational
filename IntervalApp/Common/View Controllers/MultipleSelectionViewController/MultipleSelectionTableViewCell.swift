@@ -23,7 +23,7 @@ final class MultipleSelectionTableViewCell: UITableViewCell {
     public var didSelect: ((Bool) -> Void)?
 
     // MARK: - Public functions
-    func setCell(element: MultipleSelectionElement, isSelected: Bool) {
+    func setCell(element: MultipleSelectionCellModel, isSelected: Bool) {
         headerLabel.text = element.cellTitle
         subtitleLabel.text = element.cellSubtitle
         cellImageView.image = isSelected ? #imageLiteral(resourceName: "Checkmark-On") : #imageLiteral(resourceName: "Checkmark-Off")
