@@ -52,10 +52,7 @@ class SideMenuTableViewController: UIViewController {
         // Forces storyboard
         SideMenuItem(title: "Settings".localized(),
                      image: #imageLiteral(resourceName: "Settings Icon"),
-                     storyboardid: "Settings"),
-        SideMenuItem(title: "Logout".localized(),
-                     image: UIImage(),
-                     storyboardid: "")
+                     storyboardid: "Settings")
     ]
     
     var memberId = ""
