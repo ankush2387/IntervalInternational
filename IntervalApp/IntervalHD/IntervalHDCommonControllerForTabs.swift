@@ -28,16 +28,16 @@ class IntervalHDCommonControllerForTabs: UIViewController {
     // Handle hamburgur menu button for prelogin and post login case
         if Session.sharedSession.userAccessToken != nil && Constant.MyClassConstants.isLoginSuccessfull {
             
-            if let rvc = self.revealViewController() {
+            if let rvc = revealViewController() {
                 //set SWRevealViewController's Delegate
                 rvc.delegate = self
                 //***** Add the hamburger menu *****//
                 let menuButton = UIBarButtonItem(image: UIImage(named: Constant.assetImageNames.ic_menu), style: .plain, target: rvc, action: #selector(SWRevealViewController.revealToggle(_:)))
                 menuButton.tintColor = UIColor.white
-                self.navigationItem.leftBarButtonItem = menuButton
+                navigationItem.leftBarButtonItem = menuButton
                 
                 //***** This line allows the user to swipe left-to-right to reveal the menu. We might want to comment this out if it becomes confusing. *****//
-                self.view.addGestureRecognizer( rvc.panGestureRecognizer())
+                view.addGestureRecognizer( rvc.panGestureRecognizer())
             }
             
         } else {
@@ -125,7 +125,7 @@ extension IntervalHDCommonControllerForTabs: UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         
-        if searchResultArray.count > 0 {
+        if !searchResultArray.isEmpty {
             return searchResultArray.count
         } else {
             var searchBarText = ""
@@ -158,8 +158,10 @@ extension IntervalHDCommonControllerForTabs: UITableViewDataSource {
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: Constant.IntervalHDReusableIdentifiers.videoTBLCell, for: indexPath) as! VideoTBLCell
-        
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.IntervalHDReusableIdentifiers.videoTBLCell, for: indexPath) as? VideoTBLCell else {
+            
+            return UITableViewCell()
+        }
         cell.shadowView.layer.shadowOffset = CGSize(width: 0, height: 0)
         cell.shadowView.layer.shadowColor = IUIKColorPalette.altState.color.cgColor
         cell.shadowView.layer.shadowRadius = 0.5

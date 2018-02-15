@@ -22,9 +22,9 @@ class IntervalHDIpadController: UIViewController {
     var videoSegmentIndex = 0
     
     override func viewWillAppear(_ animated: Bool) {
-       
-        self.videoSeaarchBar.delegate = self
-        self.videoSeaarchBar.placeholder = "Search".localized()
+        super.viewWillAppear(animated)
+        videoSeaarchBar.delegate = self
+        videoSeaarchBar.placeholder = "Search".localized()
         
       //***** handle hamberger menu button for prelogin and post login case *****//
     if Session.sharedSession.userAccessToken != nil && Constant.MyClassConstants.isLoginSuccessfull {
@@ -36,10 +36,10 @@ class IntervalHDIpadController: UIViewController {
                 //***** Add the hamburger menu *****//
                 let menuButton = UIBarButtonItem(image: UIImage(named: Constant.assetImageNames.ic_menu), style: .plain, target: rvc, action: #selector(SWRevealViewController.revealToggle(_:)))
                 menuButton.tintColor = UIColor.white
-                self.navigationItem.leftBarButtonItem = menuButton
+                navigationItem.leftBarButtonItem = menuButton
                 
                 //***** This line allows the user to swipe left-to-right to reveal the menu. We might want to comment this out if it becomes confusing. *****//
-                self.view.addGestureRecognizer( rvc.panGestureRecognizer())
+                view.addGestureRecognizer( rvc.panGestureRecognizer())
             }
             
         } else {
@@ -49,7 +49,7 @@ class IntervalHDIpadController: UIViewController {
             self.navigationItem.leftBarButtonItem = menuButton
             
         }
-        self.videoCollectionView.reloadData()
+            videoCollectionView.reloadData()
     }
     
     override func viewDidLoad() {
@@ -64,6 +64,7 @@ class IntervalHDIpadController: UIViewController {
     
     //**** Remove added observers ****//
     override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.reloadVideosNotification), object: nil)
     }
     
@@ -190,12 +191,12 @@ extension IntervalHDIpadController: UISearchBarDelegate {
     
     //**** Search bar controller delegate ****//
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        self.videoSeaarchBar.resignFirstResponder()
+        videoSeaarchBar.resignFirstResponder()
     }
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         
-        self.videoSeaarchBar.resignFirstResponder()
-        self.videoSeaarchBar.showsCancelButton = false
+        videoSeaarchBar.resignFirstResponder()
+        videoSeaarchBar.showsCancelButton = false
     }
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         
@@ -212,8 +213,8 @@ extension IntervalHDIpadController: UISearchBarDelegate {
         default:
              videos = Constant.MyClassConstants.intervalHDTutorials
         }
-        self.searchResutlArray = LookupClient.filterVideos(videos, searchText: searchBar.text!)
-        self.videoCollectionView.reloadData()
+        searchResutlArray = LookupClient.filterVideos(videos, searchText: searchBar.text ?? "")
+        videoCollectionView.reloadData()
         
     }
 }
