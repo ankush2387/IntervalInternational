@@ -440,7 +440,11 @@ final class RelinquishmentViewModel {
         var extraInformationText: String?
         
         if relinquishment.blackedOut {
-            extraInformationText = "Blackout Copy TBD.".localized()
+            var extra = ""
+            if relinquishment.hasResortPhoneNumber() {
+                extra = " at " + relinquishment.resort!.phone!
+            }
+            extraInformationText = "Unit not available for deposit at this time. Please contact resort/club"+extra+".".localized()
         }
         
         if relinquishment.memberUnitLocked && !relinquishment.hasActions() && relinquishment.hasResortPhoneNumber() {
@@ -450,7 +454,7 @@ final class RelinquishmentViewModel {
         }
         
         if relinquishment.bulkAssignment && !relinquishment.hasActions() && relinquishment.hasResortPhoneNumber() {
-            let message = "Bulk Week Copy TBD".localized()
+            let message = "Contact resort/club for reservation or assignment "+relinquishment.resort!.phone!+".".localized()
             extraInformationText = extraInformationText.unwrappedString.isEmpty ?
                 message : extraInformationText.unwrappedString + "\n" + message
         }
