@@ -174,13 +174,19 @@ class WhoWillBeCheckingInViewController: UIViewController {
     }
     
     func guestFormCheckForDetails() -> Bool {
-        
-        if Constant.GetawaySearchResultGuestFormDetailData.firstName != "" && Constant.GetawaySearchResultGuestFormDetailData.lastName != "" && Constant.GetawaySearchResultGuestFormDetailData.country != "" && Constant.GetawaySearchResultGuestFormDetailData.address1 != "" &&  Constant.GetawaySearchResultGuestFormDetailData.city != "" && Constant.GetawaySearchResultGuestFormDetailData.state != "" && Constant.GetawaySearchResultGuestFormDetailData.pinCode != "" && Constant.GetawaySearchResultGuestFormDetailData.email != "" && Constant.GetawaySearchResultGuestFormDetailData.homePhoneNumber != "" {
+        if Constant.GetawaySearchResultGuestFormDetailData.firstName != ""
+            && Constant.GetawaySearchResultGuestFormDetailData.lastName != ""
+            && Constant.GetawaySearchResultGuestFormDetailData.country != ""
+            && Constant.GetawaySearchResultGuestFormDetailData.address1 != ""
+            && Constant.GetawaySearchResultGuestFormDetailData.city != ""
+            && Constant.GetawaySearchResultGuestFormDetailData.state != ""
+            && Constant.GetawaySearchResultGuestFormDetailData.pinCode != ""
+            && Constant.GetawaySearchResultGuestFormDetailData.email != ""
+            && Constant.GetawaySearchResultGuestFormDetailData.homePhoneNumber != "" {
             proceedStatus = true
         } else {
             proceedStatus = false
         }
-        
         return proceedStatus
     }
     
