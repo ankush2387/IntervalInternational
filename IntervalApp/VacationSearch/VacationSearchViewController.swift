@@ -119,6 +119,7 @@ class VacationSearchViewController: UIViewController {
         
         var isPrePopulatedData = Constant.AlertPromtMessages.no
         searchVacationTableView.estimatedRowHeight = 100
+        searchVacationTableView.rowHeight = UITableViewAutomaticDimension
         
         if Constant.MyClassConstants.whereTogoContentArray.count > 0 || Constant.MyClassConstants.whatToTradeArray.count > 0 {
             isPrePopulatedData = Constant.AlertPromtMessages.yes
@@ -872,6 +873,8 @@ extension VacationSearchViewController: UITableViewDataSource {
                             cell.bedroomLabel.isHidden = true
                         } else if object.isKind(of: OpenWeeks.self) {
                             guard let openWk = object as? OpenWeeks else { return cell }
+                            cell.bedroomLabel.numberOfLines = 0
+                            cell.bedroomLabel.lineBreakMode = .byWordWrapping
                             let weekNumber = Constant.getWeekNumber(weekType: (openWk.weekNumber))
                             if  openWk.isLockOff || openWk.isFloat {
                                 cell.bedroomLabel.isHidden = false
@@ -880,18 +883,18 @@ extension VacationSearchViewController: UITableViewDataSource {
                                 if openWk.isFloat {
                                     let floatDetails = openWk.floatDetails
                                     if floatDetails[0].showUnitNumber {
-                                        cell.bedroomLabel.text = "\(floatDetails[0].unitSize), \(floatDetails[0].unitNumber), \(resortList[0].kitchenType)"
+                                        cell.bedroomLabel.text = "\(floatDetails[0].unitNumber), \(resortList[0].kitchenType), \(floatDetails[0].unitSize)"
                                     } else {
-                                        cell.bedroomLabel.text = "\(floatDetails[0].unitSize), \(resortList[0].kitchenType)"
+                                        cell.bedroomLabel.text = "\(resortList[0].kitchenType)\n\(floatDetails[0].unitSize)"
                                     }
                                 } else {
-                                    cell.bedroomLabel.text = "\(resortList[0].unitSize), \(resortList[0].kitchenType)"
+                                    cell.bedroomLabel.text = "\(resortList[0].kitchenType)\n\(resortList[0].unitSize)"
                                 }
                             } else {
                                 cell.bedroomLabel.isHidden = true
                             }
                             if weekNumber != "" {
-                                cell.whereTogoTextLabel.text = "\(openWk.resort[0].resortName)/ \(openWk.relinquishmentYear), Wk\(weekNumber)".localized()
+                                cell.whereTogoTextLabel.text = "\(openWk.resort[0].resortName), \(openWk.resort[0].resortCode)\n\(openWk.relinquishmentYear) Week \(weekNumber)".localized()
                             } else {
                                 cell.whereTogoTextLabel.text = "\(openWk.resort[0].resortName)/ \(openWk.relinquishmentYear)"
                             }

@@ -141,6 +141,7 @@ final class RelinquishmentViewModel {
                     unitDetails.unitSize = $0.unitCapacityUIFormatted
                     selectedOpenWeek.unitDetails.append(unitDetails)
                     resort.resortName = relinquishment.resort?.resortName ?? ""
+                    resort.resortCode = relinquishment.resort?.resortCode ?? ""
                     selectedOpenWeek.resort.append(resort)
                     relinquishmentList.openWeeks.append(selectedOpenWeek)
                     storedata.openWeeks.append(relinquishmentList)
@@ -375,7 +376,7 @@ final class RelinquishmentViewModel {
     
     private func process(relinquishment: Relinquishment) -> SimpleCellViewModel {
         
-        let resortName = "\((relinquishment.resort?.resortName).unwrappedString) / \((relinquishment.resort?.resortCode).unwrappedString)"
+        let resortName = "\((relinquishment.resort?.resortName).unwrappedString), \((relinquishment.resort?.resortCode).unwrappedString)"
         let relinquishmentYear = relinquishment.relinquishmentYear == nil ? nil : String(relinquishment.relinquishmentYear ?? 0)
         let weekNumber = relinquishment.supressWeekNumber() ? nil : processWeek(for: relinquishment.weekNumber)
         let ownershipState = relinquishment.isDeposit() ? "Deposited".localized() : nil
@@ -544,6 +545,7 @@ final class RelinquishmentViewModel {
             selectedOpenWeek.relinquishmentYear = relinquishment.relinquishmentYear ?? 0
             selectedOpenWeek.relinquishmentID = relinquishment.relinquishmentId.unwrappedString
             resort.resortName = relinquishment.resort?.resortName ?? ""
+            resort.resortCode = relinquishment.resort?.resortCode ?? ""
             selectedOpenWeek.resort.append(resort)
             relinquishmentList.deposits.append(selectedOpenWeek)
             storedata.openWeeks.append(relinquishmentList)
@@ -564,6 +566,7 @@ final class RelinquishmentViewModel {
             selectedOpenWeek.relinquishmentID = relinquishment.relinquishmentId.unwrappedString
             selectedOpenWeek.relinquishmentYear = relinquishment.relinquishmentYear ?? 0
             resort.resortName = relinquishment.resort?.resortName ?? ""
+            resort.resortCode = relinquishment.resort?.resortCode ?? ""
             selectedOpenWeek.resort.append(resort)
             relinquishmentList.openWeeks.append(selectedOpenWeek)
             storedata.openWeeks.append(relinquishmentList)
@@ -596,7 +599,7 @@ extension InventoryUnit {
     }
     
     var unitCapacityUIFormatted: String {
-        return "Sleeps \(tradeOutCapacity) total".localized()
+        return "Sleeps \(tradeOutCapacity)".localized()
     }
 }
 

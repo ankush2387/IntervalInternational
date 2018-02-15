@@ -113,9 +113,10 @@ final class RelinquishmentViewController: UIViewController {
     fileprivate func processNavigationAction(for relinquishment: Relinquishment) {
 
         showHudAsync()
-        
         if (relinquishment.memberUnitLocked || relinquishment.bulkAssignment)
             && !relinquishment.hasActions() && relinquishment.hasResortPhoneNumber() {
+            // Does not have actions
+            // User can only call resort
             defer { hideHudAsync() }
             guard let resortPhoneNumber = relinquishment.resort?.phone,
                 let url = URL(string: "tel://\(resortPhoneNumber)"),
