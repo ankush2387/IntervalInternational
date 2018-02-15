@@ -80,14 +80,16 @@ class DashboardTableViewController: UITableViewController {
                     strongSelf.readFlexExchangeDeals(accessToken: accessToken)
             }
         }
-        Helper.getUpcomingTripsForUser(CompletionBlock: { result in
-            switch result {
-            case .Success():
-                self.homeTableView.reloadData()
-            case.error(let error):
-                self.presentAlert(with: "UPComingTrips".localized(), message: error.description.localized())
+        Helper.getUpcomingTripsForUser {[weak self] error in
+            if error != nil {
+                self?.presentAlert(with: "Error".localized(), message: error?.localizedDescription ?? "")
+            } else {
+                self?.getNumberOfSections()
+                self?.homeTableView.reloadData()
+                
             }
-        })
+        }
+        
         // omniture tracking with event40
         let userInfo: [String: String] = [
             Constant.omnitureEvars.eVar44: Constant.omnitureCommonString.homeDashboard

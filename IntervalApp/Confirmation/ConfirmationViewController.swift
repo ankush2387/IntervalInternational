@@ -23,7 +23,7 @@ class ConfirmationViewController: UIViewController {
     
     //Class variables
     var moreButton: UIBarButtonItem?
-    var exchangeNum = ""
+    var exchangeNum: String = ""
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
@@ -123,25 +123,25 @@ class ConfirmationViewController: UIViewController {
     
     //***** Function called when view trip details button is pressed. ******//
     @IBAction func viewTripDetailsPressed(_ sender: IUIKButton) {
-        Helper.getUpcomingTripsForUser(CompletionBlock: { result in
-            switch result {
-            case .Success():
-                 let excNumber = Int64(self.exchangeNum)
-                 if let index = Constant.MyClassConstants.upcomingTripsArray.index(where: { $0.exchangeNumber == excNumber }) {
+        showHudAsync()
+        Helper.getUpcomingTripsForUser {[weak self] error in
+            if error != nil {
+                self?.hideHudAsync()
+                self?.presentAlert(with: "Error".localized(), message: error?.localizedDescription ?? "")
+            } else {
+                let excNumber = Int64(self?.exchangeNum ?? "")
+                if let index = Constant.MyClassConstants.upcomingTripsArray.index(where: { $0.exchangeNumber == excNumber }) {
                     Constant.MyClassConstants.dashbaordUpcomingSelectedIndex = index
-                 }
-                 
-                 Constant.MyClassConstants.upcomingOriginationPoint = "confirmation"
-                 let isRunningOnIphone = UIDevice.current.userInterfaceIdiom == .phone
-                 let storyboardName = isRunningOnIphone ? Constant.storyboardNames.myUpcomingTripIphone : Constant.storyboardNames.myUpcomingTripIpad
-                 if let initialViewController = UIStoryboard(name: storyboardName, bundle: nil).instantiateInitialViewController() {
-                    self.navigationController?.pushViewController(initialViewController, animated: true)
-                 }
-            case.error(let error):
-                self.presentAlert(with: "UPComingTrips".localized(), message: error.description.localized())
+                }
+                self?.hideHudAsync()
+                Constant.MyClassConstants.upcomingOriginationPoint = "confirmation"
+                let isRunningOnIphone = UIDevice.current.userInterfaceIdiom == .phone
+                let storyboardName = isRunningOnIphone ? Constant.storyboardNames.myUpcomingTripIphone : Constant.storyboardNames.myUpcomingTripIpad
+                if let initialViewController = UIStoryboard(name: storyboardName, bundle: nil).instantiateInitialViewController() {
+                    self?.navigationController?.pushViewController(initialViewController, animated: true)
+                }
             }
-        })
-      
+        }
     }
     
     //***** Function called when upcoming trip details button is pressed. *****//

@@ -74,14 +74,11 @@ class DashboardIPadTableViewController: UITableViewController {
             
         }
         
-        Helper.getUpcomingTripsForUser(CompletionBlock: { result in
-            switch result {
-            case .Success():
-                self.homeTableView.reloadData()
-            case.error(let error):
-                self.presentAlert(with: "UPComingTrips".localized(), message: error.description.localized())
-            }
-        })
+        Helper.getUpcomingTripsForUser {[weak self] error in
+            if error != nil {
+                self?.presentAlert(with: "Error".localized(), message: error?.localizedDescription ?? "")
+            } else { self?.homeTableView.reloadData() }
+        }
         
         //***** Setup the hamburger menu.  This will reveal the side menu. *****//
         if let rvc = self.revealViewController() {

@@ -342,7 +342,7 @@ public class Helper {
     }
     
     //**** Common function to get upcoming trips. ****//
-    static func getUpcomingTripsForUser(CompletionBlock: @escaping ((Result<[UpcomingTrip]>) -> ())) {
+    static func getUpcomingTripsForUser(CompletionBlock: @escaping ((Error?) -> Void)) {
         UserClient.getUpcomingTrips(Session.sharedSession.userAccessToken, onSuccess: {(upComingTrips) in
             Constant.MyClassConstants.upcomingTripsArray.removeAll()
             Constant.MyClassConstants.upcomingTripsArray = upComingTrips
@@ -351,14 +351,14 @@ public class Helper {
             if Constant.MyClassConstants.isEvent2Ready > 1 {
                 sendOmnitureTrackCallForEvent2()
             }
-            CompletionBlock(.Success())
+            CompletionBlock(nil)
         }, onError: { error in
             
             Constant.MyClassConstants.isEvent2Ready += 1
             if Constant.MyClassConstants.isEvent2Ready > 1 {
                 sendOmnitureTrackCallForEvent2()
             }
-            CompletionBlock(.error(error))
+            CompletionBlock(error)
         })
     }
     
