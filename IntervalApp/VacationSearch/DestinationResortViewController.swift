@@ -67,7 +67,7 @@ class DestinationResortViewController: UIViewController {
         } else {
             tappedButtonDictionary.updateValue(true, forKey: sender.tag)
         }
-        self.tableViewDestinations.reloadSections(IndexSet(integer: sender.tag), with: .automatic)
+        self.tableViewDestinations.reloadData()
     }
     
     //***** Function to calculate dynamic height. ******//
@@ -203,13 +203,13 @@ extension DestinationResortViewController: UITableViewDataSource {
                 }
                 
             } else {
-                return 80
+                return 50
             }
         default :
             if Constant.RunningDevice.deviceIdiom == .pad {
                 return 200
             } else {
-                return 80
+                return 50
             }
         }
         
@@ -352,6 +352,16 @@ extension DestinationResortViewController: UITableViewDataSource {
                 
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.unitsDetailCell, for: indexPath) as? AvailableDestinationCountryOrContinentsTableViewCell else { return UITableViewCell() }
                 cell.tooglebutton.tag = indexPath.section
+                if let isOpen = tappedButtonDictionary[indexPath.section] {
+                    if isOpen {
+                        cell.dropDownArrowImage.image = #imageLiteral(resourceName: "up_arrow_icon")
+                    } else {
+                        cell.dropDownArrowImage.image = #imageLiteral(resourceName: "DropArrowIcon")
+                    }
+                    
+                } else {
+                    cell.dropDownArrowImage.image = #imageLiteral(resourceName: "DropArrowIcon")
+                }
                 if indexPath.section == 4 {
                     cell.countryOrContinentLabel.text = Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.textUnitDetails
                 } else {

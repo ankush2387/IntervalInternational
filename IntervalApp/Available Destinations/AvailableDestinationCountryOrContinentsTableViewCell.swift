@@ -11,15 +11,12 @@ import IntervalUIKit
 class AvailableDestinationCountryOrContinentsTableViewCell: UITableViewCell {
 
     @IBOutlet weak var tooglebutton: UIButton!
-    
     @IBOutlet weak var countryOrContinentLabel: UILabel!
-    
     @IBOutlet weak var selectdDestinationCountLabel: UILabel?
-    
     @IBOutlet weak var expandRegionButton: UIButton!
-   
     @IBOutlet weak var imgIconPlus: UIImageView?
-
+    @IBOutlet weak var dropDownArrowImage: UIImageView!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         
