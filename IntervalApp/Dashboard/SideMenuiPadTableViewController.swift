@@ -45,11 +45,8 @@ class SideMenuiPadTableViewController: UIViewController, UITableViewDataSource {
         SideMenuItemIPad(title: Constant.sideMenuTitles.intervalHD, image: #imageLiteral(resourceName: "IntHD"), storyboardid: Constant.storyboardNames.intervalHDIpad),
         SideMenuItemIPad(title: Constant.sideMenuTitles.magazines, image: #imageLiteral(resourceName: "Magazines"), storyboardid: Constant.storyboardNames.magazinesIpad),
         SideMenuItemIPad(title: "Settings".localized(),
-                     image: #imageLiteral(resourceName: "Settings Icon"),
-                     storyboardid: "SettingsiPad"),
-        SideMenuItemIPad(title: "Logout".localized(),
-                     image: UIImage(),
-                     storyboardid: "")
+                         image: #imageLiteral(resourceName: "Settings Icon"),
+                         storyboardid: "SettingsiPad")
     ]
     
     var memberId = ""
@@ -79,26 +76,10 @@ class SideMenuiPadTableViewController: UIViewController, UITableViewDataSource {
         super.viewDidDisappear(true)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.getawayAlertsNotification), object: nil)
     }
-
+    
     //***** Function called when notification for getaway alerts is fired. *****//
     func reloadBadgeView() {
         sideMenuTable.reloadData()
-    }
-    
-    fileprivate func signOut() {
-        Session.sharedSession.signOut()
-        //Remove all favorites for a user.
-        Constant.MyClassConstants.favoritesResortArray.removeAll()
-        Constant.MyClassConstants.favoritesResortCodeArray.removeAll()
-        //Remove available points for relinquishment program
-        Constant.MyClassConstants.relinquishmentProgram = PointsProgram()
-        //Remove all saved alerts for a user.
-        Constant.MyClassConstants.getawayAlertsArray.removeAll()
-        Constant.MyClassConstants.isLoginSuccessfull = false
-        Constant.MyClassConstants.sideMenuOptionSelected = Constant.MyClassConstants.resortFunctionalityCheck
-        Constant.MyClassConstants.topDeals.removeAll()
-        Constant.MyClassConstants.flexExchangeDeals.removeAll()
-        NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.MyClassConstants.popToLoginView), object: nil)
     }
     
     override func didReceiveMemoryWarning() {
@@ -159,40 +140,39 @@ class SideMenuiPadTableViewController: UIViewController, UITableViewDataSource {
             return cell
             
         default :
-                let smi = SideMenuTableViewController.SideMenuItems[indexPath.row]
-                
-              guard let cell = tableView.dequeueReusableCell( withIdentifier: Constant.customCellNibNames.sideMenuBackgroundTableCell, for: indexPath) as? SideMenuBackgroundTableCell else { return UITableViewCell() }
-                
-                cell.iconImageView.image = smi.image
-                cell.customTextLabel.text = smi.menuTitle
-                
-                if indexPath.row == 5 {
-                    let alertCounterLabel = UILabel()
-                    if Constant.activeAlertCount > 0 {
-                        alertCounterLabel.text = "\(Constant.activeAlertCount)"
-                        alertCounterLabel.isHidden = false
-                    } else {
-                        alertCounterLabel.isHidden = true
-                    }
-                    alertCounterLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: 10)
-                    alertCounterLabel.sizeToFit()
-                    alertCounterLabel.textColor = UIColor.white
-                    alertCounterLabel.backgroundColor = IUIKColorPalette.alert.color
-                    alertCounterLabel.frame = CGRect(x: 35, y: cell.contentView.frame.height / 2 - 18, width: alertCounterLabel.frame.width + 10, height: alertCounterLabel.frame.width + 10)
-                    alertCounterLabel.layer.cornerRadius = alertCounterLabel.frame.width / 2
-                    alertCounterLabel.layer.masksToBounds = true
-                    alertCounterLabel.textAlignment = NSTextAlignment.center
-                    cell.addSubview(alertCounterLabel)
+            let smi = SideMenuTableViewController.SideMenuItems[indexPath.row]
+            
+            guard let cell = tableView.dequeueReusableCell( withIdentifier: Constant.customCellNibNames.sideMenuBackgroundTableCell, for: indexPath) as? SideMenuBackgroundTableCell else { return UITableViewCell() }
+            
+            cell.iconImageView.image = smi.image
+            cell.customTextLabel.text = smi.menuTitle
+            
+            if indexPath.row == 5 {
+                let alertCounterLabel = UILabel()
+                if Constant.activeAlertCount > 0 {
+                    alertCounterLabel.text = "\(Constant.activeAlertCount)"
+                    alertCounterLabel.isHidden = false
+                } else {
+                    alertCounterLabel.isHidden = true
                 }
-                cell.selectionStyle = UITableViewCellSelectionStyle.none
-                return cell
+                alertCounterLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: 10)
+                alertCounterLabel.sizeToFit()
+                alertCounterLabel.textColor = UIColor.white
+                alertCounterLabel.backgroundColor = IUIKColorPalette.alert.color
+                alertCounterLabel.frame = CGRect(x: 35, y: cell.contentView.frame.height / 2 - 18, width: alertCounterLabel.frame.width + 10, height: alertCounterLabel.frame.width + 10)
+                alertCounterLabel.layer.cornerRadius = alertCounterLabel.frame.width / 2
+                alertCounterLabel.layer.masksToBounds = true
+                alertCounterLabel.textAlignment = NSTextAlignment.center
+                cell.addSubview(alertCounterLabel)
+            }
+            cell.selectionStyle = UITableViewCellSelectionStyle.none
+            return cell
         }
     }
 }
 extension SideMenuiPadTableViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let smi = SideMenuiPadTableViewController.SideMenuItems[indexPath.row ]
         switch indexPath.row {
         case 6 :
             Constant.MyClassConstants.sideMenuOptionSelected = Constant.MyClassConstants.favoritesFunctionalityCheck
@@ -207,13 +187,9 @@ extension SideMenuiPadTableViewController: UITableViewDelegate {
             Constant.MyClassConstants.runningFunctionality = ""
             Constant.MyClassConstants.sideMenuOptionSelected = Constant.MyClassConstants.resortFunctionalityCheck
         }
+        let smi = SideMenuiPadTableViewController.SideMenuItems[indexPath.row]
+        guard let storyboardName = smi.storyboardId else { return }
         
-        if indexPath.row == SideMenuTableViewController.SideMenuItems.count - 1 {
-            signOut()
-        }
-        
-        guard let storyboardName = smi.storyboardId, !storyboardName.isEmpty else { return }
-    
         if let initialViewController = UIStoryboard(name: storyboardName, bundle: nil).instantiateInitialViewController() {
             navigationController?.pushViewController(initialViewController, animated: true)
         }
