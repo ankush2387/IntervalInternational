@@ -602,6 +602,8 @@ class Constant: NSObject {
         
         static var popToLoginView =  "PopToLoginView"
         
+        static var textViewStr =  "If arriving after the scheduled check-in date/time indicated, contact the resort for instructions. For an explanatin of the Cancellation Policy, see the Terms and Conditions. This Purchase is final and non-refundable.".localized()
+        
         static var certifcateCount = 0
         static var certificateArray = [AccommodationCertificate]()
         static var noFilterOptions = false
@@ -1343,6 +1345,7 @@ class Constant: NSObject {
         static var helveticaNeue = "HelveticaNeue"
         static var helveticaNeueMedium = "HelveticaNeue-Medium"
         static var helveticaNeueBold = "Helvetica-Bold"
+        static var helveticaNeueItalic = "HelveticaNeue-Italic"
     }
     
     //***** common  structure to provide all enableTouchId messages and titles *****//

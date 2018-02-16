@@ -13,7 +13,7 @@ import DarwinSDK
 import MessageUI
 import SVProgressHUD
 
-class UpComingTripDetailController: UIViewController {
+class UpComingTripDetailController: UIViewController, UITextViewDelegate {
     
     //***** Outlets *****//
     @IBOutlet weak var upcomingTripDetailTbleview: UITableView!
@@ -271,13 +271,13 @@ extension UpComingTripDetailController: UITableViewDelegate {
                 return 280
             }
         case 4:
-            return 176
+            return 240
             
         default:
             break
             
         }
-        return 216
+        return 240
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -653,12 +653,40 @@ extension UpComingTripDetailController: UITableViewDataSource {
             } else {
                 cell.purchasePolicyButton.isHidden = true
             }
+            cell.selectionStyle = .none
+            cell.isUserInteractionEnabled = true
             cell.backgroundColor = IUIKColorPalette.contentBackground.color
-            return cell
+            cell.textView.delegate = self
+            cell.textView.isSelectable = true
+            cell.textView.isEditable = false
+            cell.textView.isUserInteractionEnabled = true
+            cell.textView.isScrollEnabled = false
+            let strToChange = "Terms and Conditions.".localized()
+            let strToChangeFont = "This Purchase is final and non-refundable.".localized()
+            let strRange = (Constant.MyClassConstants.textViewStr as NSString).range(of: strToChange)
             
+            let strRangeFontChange = (Constant.MyClassConstants.textViewStr as NSString).range(of: strToChangeFont)
+            
+            let attributedString1 = NSMutableAttributedString(string: Constant.MyClassConstants.textViewStr, attributes: [NSFontAttributeName: UIFont(name: Constant.fontName.helveticaNeue, size: 15.0) ?? ""])
+            
+            attributedString1.addAttribute(NSLinkAttributeName, value: "", range: strRange)
+            
+            let linkAttributes: [String : AnyObject] = [NSForegroundColorAttributeName: UIColor.blue, NSUnderlineColorAttributeName: UIColor.blue as AnyObject]
+            
+            attributedString1.addAttribute(NSFontAttributeName, value: UIFont(name: Constant.fontName.helveticaNeueItalic, size: 15.0) ?? "", range: strRangeFontChange)
+        
+            cell.textView.linkTextAttributes = linkAttributes
+            cell.textView.attributedText = attributedString1
+            return cell
         }
     }
     
+    func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
+        //TODO:- will update once when we get the url
+        return true
+        
+    }
+
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
         let headerView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 40))
