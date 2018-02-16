@@ -287,7 +287,7 @@ extension RenewelViewController: UITableViewDataSource {
         cell.selectionStyle = .none
         cell.selectButton?.tag = indexPath.section
         
-        let term = "1-year"
+        var term = "1-year"
         
         var priceAndCurrency = ""
         
@@ -296,6 +296,7 @@ extension RenewelViewController: UITableViewDataSource {
     
              if lblHeaderTitle?.text == Constant.MyClassConstants.freeGuestCertificateTitle || Constant.MyClassConstants.renewalsHeaderTitle == Constant.MyClassConstants.freeGuestCertificateTitle {
                 let lowestTerm = forceRenewals.crossSelling[0].term
+                term = "\( (lowestTerm ?? 12) / 12)-year"
                 for crossSelling in forceRenewals.crossSelling where crossSelling.term == lowestTerm {
                     if let productCode = crossSelling.productCode {
                         cell.renewelImageView?.image = UIImage(named: productCode )
@@ -331,9 +332,9 @@ extension RenewelViewController: UITableViewDataSource {
                 }
                 
             } else {
-                
+                let comboLowestTerm = forceRenewals.comboProducts[0].renewalComboProducts[0].term
+                term = "\((comboLowestTerm ?? 12)/12)-year"
                 for comboProduct in (forceRenewals.comboProducts) {
-                    let comboLowestTerm = comboProduct.renewalComboProducts[0].term
                     for renewalComboProduct in comboProduct.renewalComboProducts where renewalComboProduct.term == comboLowestTerm {
                             //hide renewal image here
                             cell.renewelImageView?.isHidden = true
@@ -348,7 +349,7 @@ extension RenewelViewController: UITableViewDataSource {
                             
                             let currencyCodeWithSymbol = Helper.currencyCodeToSymbol(code: currencyCode)
 
-                            if (renewalComboProduct.isCoreProduct) {
+                            if renewalComboProduct.isCoreProduct {
                                 if let productCode = renewalComboProduct.productCode {
                                     cell.renewelCoreImageView?.image = UIImage(named: productCode)
                                 }
@@ -454,6 +455,7 @@ extension RenewelViewController: UITableViewDataSource {
                 
             } else {
                 let lowestTerm = forceRenewals.products[0].term
+                term = "\((lowestTerm ?? 12)/12)-year"
                 for product in (forceRenewals.products) where product.term == lowestTerm {
                     
                     if let productCode = product.productCode {
@@ -491,6 +493,7 @@ extension RenewelViewController: UITableViewDataSource {
                 isCore = false
                 isNonCombo = true
                 let lowestTerm = forceRenewals.crossSelling[0].term
+                term = "\(lowestTerm)-year"
                 for nonCoreProduct in (forceRenewals.crossSelling) where nonCoreProduct.term == lowestTerm {
                     // hide renewel image  here
                     cell.renewelImageView?.isHidden = true

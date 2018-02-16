@@ -1938,9 +1938,8 @@ extension SearchResultViewController: RenewalOtherOptionsVCDelegate {
             }
         } else if selectedRenewal == Helper.renewalType(type: 2) {
             // Selected combo renewal
-            
+            let comboLowestTerm = forceRenewals.comboProducts[0].renewalComboProducts[0].term
             for comboProduct in (forceRenewals.comboProducts) {
-                let comboLowestTerm = comboProduct.renewalComboProducts[0].term
                 for renewalComboProduct in comboProduct.renewalComboProducts where renewalComboProduct.term == comboLowestTerm {
                     let renewalItem = Renewal()
                     renewalItem.id = renewalComboProduct.id
