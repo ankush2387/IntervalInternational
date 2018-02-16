@@ -1069,34 +1069,34 @@ public class Helper {
     }
     /***** common function for adding uivew as a pop up with some mesage *****/
     static func noResortView(senderView: UIView) -> UIView {
-        
         let noResortView = UIView()
         let titleView = UIView()
         let titleLabel = UILabel()
         let detailView = UIView()
         let detailLabel = UILabel()
-        
-        noResortView.frame = CGRect(x: 0, y: 150, width: UIScreen.main.bounds.height, height: UIScreen.main.bounds.width / 3)
+
+        noResortView.frame = CGRect(x: 0, y: 150, width: UIScreen.main.bounds.width, height: 140)
         noResortView.backgroundColor = UIColor(red: 209.0 / 255.0, green: 226.0 / 255.0, blue: 237.0 / 255.0, alpha: 1.0)
         senderView.addSubview(noResortView)
-        
-        titleView.frame = CGRect(x: 0, y: 0, width: noResortView.frame.size.width, height: noResortView.frame.size.height / 5)
+
+        titleView.frame = CGRect(x: 0, y: 0, width: noResortView.frame.size.width, height: 40)
         titleView.backgroundColor = UIColor.darkGray
         noResortView.addSubview(titleView)
         
-        titleLabel.frame = CGRect(x: 5, y: 0, width: noResortView.frame.size.width, height: noResortView.frame.size.height / 5)
+        titleLabel.frame = CGRect(x: 5, y: 0, width: noResortView.frame.size.width - 10, height: 40)
         titleLabel.text = "No match found. Please select another date.".localized()
         titleLabel.textAlignment = .center
         titleLabel.textColor = UIColor.white
         titleLabel.font = UIFont(name: "Helvetica", size: 12)
         noResortView.addSubview(titleLabel)
         
-        detailView.frame = CGRect(x: 0, y: noResortView.frame.size.height / 4, width: noResortView.frame.size.width, height: 3 * (noResortView.frame.size.height / 4))
+        detailView.frame = CGRect(x: 0, y: titleLabel.frame.maxY, width: noResortView.frame.size.width, height: 100)
+        
         detailView.backgroundColor = UIColor(red: 209.0 / 255.0, green: 226.0 / 255.0, blue: 237.0 / 255.0, alpha: 1.0)
         
         noResortView.addSubview(detailView)
         
-        detailLabel.frame = CGRect(x: 10, y: noResortView.frame.size.height / 4, width: noResortView.frame.size.width - 20, height: 3 * (noResortView.frame.size.height / 4))
+        detailLabel.frame = CGRect(x: 10, y: titleLabel.frame.maxY, width: noResortView.frame.size.width - 20, height: detailView.frame.size.height)
         detailLabel.numberOfLines = 0
         detailLabel.text = "We were unable to find any availability for the travel dates you requested. Please check other available dates by scrolling above."
         detailLabel.textColor = UIColor.gray
@@ -1107,7 +1107,6 @@ public class Helper {
             detailLabel.font = UIFont(name: "Helvetica", size:30)
             titleLabel.font = UIFont(name: "Helvetica", size:30)
         }
-        
         return noResortView
     }
     
