@@ -124,6 +124,10 @@ final class LoginViewController: UIViewController {
         resortDirectoryButton.reactive.tap.observeNext(with: resortDirectoryButtonTapped).dispose(in: disposeBag)
     }
     
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
+    
     @objc private func handleTap(_ sender: UITapGestureRecognizer) {
         performTouchIDLoginIfEnabled()
     }
