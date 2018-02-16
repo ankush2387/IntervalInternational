@@ -9,7 +9,7 @@
 import Foundation
 
 public enum VideoCategory : String {
+    case Destination = "DESTINATION"
     case Resort = "RESORT"
-    case Area = "AREA"
     case Tutorial = "TUTORIAL"
 }

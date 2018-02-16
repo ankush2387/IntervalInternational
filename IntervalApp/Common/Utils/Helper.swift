@@ -1259,7 +1259,7 @@ public class Helper {
         case Constant.MyClassConstants.tutorialsString:
             categoryString = VideoCategory.Tutorial
         default:
-            categoryString = VideoCategory.Area
+            categoryString = VideoCategory.Destination
         }
         
         if Constant.MyClassConstants.systemAccessToken?.token != nil {

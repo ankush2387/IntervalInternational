@@ -47,15 +47,15 @@ open class Phone {
         var sep = false
         var s = ""
         
-        if (self.areaCode?.characters.count)! > 0 {
+        if (self.areaCode?.count)! > 0 {
             s += ("(" + self.areaCode! + ")")
             sep = true
         }
         
-        if (self.phoneNumber?.characters.count)! > 0 {
+        if (self.phoneNumber?.count)! > 0 {
             s += (sep == true ? " " : "")
             
-            if (self.phoneNumber?.characters.count)! > 6 {
+            if (self.phoneNumber?.count)! > 6 {
                 let p = self.phoneNumber!
 				
 				s += p.substring(to: s.index(s.startIndex, offsetBy: 3) )
@@ -70,7 +70,7 @@ open class Phone {
             sep = true
         }
         
-        if (self.extensionNumber?.characters.count)! > 0 && self.extensionNumber != "0" {
+        if (self.extensionNumber?.count)! > 0 && self.extensionNumber != "0" {
             s += (sep == true ? " x" : "x")
             s += self.extensionNumber!
             sep = true

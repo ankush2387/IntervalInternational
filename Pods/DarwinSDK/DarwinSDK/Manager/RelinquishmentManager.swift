@@ -42,6 +42,34 @@ open class RelinquishmentManager {
 
         return sort(sections: sections)
     }
+    
+    open func groupRelinquishmentsByResort(relinquishments: [Relinquishment]) -> [RelinquishmentGroup] {
+        var groups = [RelinquishmentGroup]()
+        
+        if !relinquishments.isEmpty {
+            var groupByResortDic = [String: [Relinquishment]]()
+            for relinq in relinquishments {
+                if let resort = relinq.resort, let resortCode = resort.resortCode {
+                    if var list = groupByResortDic[resortCode] {
+                        list.append(relinq)
+                    } else {
+                        var list = [Relinquishment]()
+                        list.append(relinq)
+                        groupByResortDic[resortCode] = list
+                    }
+                }
+            }
+            
+            for list in groupByResortDic.values {
+                let group = RelinquishmentGroup()
+                group.resort = list.first?.resort
+                group.relinquishments = list
+                groups.append(group)
+            }
+        }
+        
+        return groups
+    }
 
     //
     // Filter Deposits
