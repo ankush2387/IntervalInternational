@@ -49,7 +49,6 @@ class GoogleMapViewController: UIViewController {
     var needCameraChange = false
     var selectedDestination = AreaOfInfluenceDestination()
     
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
@@ -923,7 +922,11 @@ class GoogleMapViewController: UIViewController {
     func selectAllDestinations() {
         if Constant.MyClassConstants.whereTogoContentArray.count > 0 {
             
-            presentAlert(with: Constant.AlertMessages.searchAlertTitle, message: Constant.AlertMessages.searchAlertMessage)
+            presentAlert(with: "Search All Available Destinations".localized(),
+                         message: "Selecting this option will remove all other currently selected destinations/resorts . Are you sure you want to do this?".localized(),
+                         hideCancelButton: false,
+                         acceptButtonTitle: "Ok".localized(),
+                         acceptHandler: searchYesClicked)
         } else {
             
             Helper.deleteObjectFromAllDest()
@@ -945,7 +948,7 @@ class GoogleMapViewController: UIViewController {
     }
     
     //***** Function for alert controller yes button click *****//
-    func searchYesClicked() {
+   func searchYesClicked() {
         
         let realm = try! Realm()
         
