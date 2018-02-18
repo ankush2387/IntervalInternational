@@ -908,17 +908,18 @@ extension VacationSearchViewController: UITableViewDataSource {
                                 cell.bedroomLabel.isHidden = false
                                 
                                 let resortList = deposits.unitDetails
-                                if deposits.isFloat {
-                                    let floatDetails = deposits.floatDetails
-                                    cell.bedroomLabel.text = "\(resortList[0].unitSize), \(floatDetails[0].unitNumber), \(resortList[0].kitchenType)"
+                                let floatDetails = deposits.floatDetails
+                                if floatDetails[0].showUnitNumber {
+                                    cell.bedroomLabel.text = "\(floatDetails[0].unitNumber), \(resortList[0].kitchenType), \(floatDetails[0].unitSize)"
                                 } else {
-                                    cell.bedroomLabel.text = "\(resortList[0].unitSize), \(resortList[0].kitchenType)"
+                                    cell.bedroomLabel.text = "\(resortList[0].kitchenType)\n\(floatDetails[0].unitSize)"
                                 }
+
                             } else {
                                 cell.bedroomLabel.isHidden = true
                             }
                             if weekNumber != "" {
-                                cell.whereTogoTextLabel.text = "\(deposits.resort[0].resortName)/ \(deposits.relinquishmentYear), Wk\(weekNumber)".localized()
+                                cell.whereTogoTextLabel.text = "\(deposits.resort[0].resortName), \(deposits.resort[0].resortCode)\n\(deposits.relinquishmentYear) Week \(weekNumber)".localized()
                             } else {
                                 cell.whereTogoTextLabel.text = "\(deposits.resort[0].resortName)/ \(deposits.relinquishmentYear)"
                             }
