@@ -279,9 +279,11 @@ final class AdditionalInformationViewModel {
 
             let createResortDetailViewModel = { (image: UIImage) in
                 let resort = self.relinquishment.resort
+                let resortLocationText = [resort?.address?.cityName, resort?.address?.territoryCode].flatMap { $0 }.joined(separator: ", ")
+                
                 self.simpleCellViewModels[.resortDetails] = [SimpleSeperatorCellViewModel(),
                                                              SimpleResortDetailViewModel(resortNameLabelText: resort?.resortName,
-                                                                                         resortLocationLabelText: resort?.address?.cityName,
+                                                                                         resortLocationLabelText: resortLocationText,
                                                                                          resortCodeLabelText: resort?.resortCode,
                                                                                          resortImage: image)]
             }
