@@ -440,26 +440,31 @@ final class RelinquishmentViewModel {
         var extraInformationText: String?
         
         if relinquishment.blackedOut {
-            var extra = ""
-            if relinquishment.hasResortPhoneNumber() {
-                extra = " at " + relinquishment.resort!.phone!
+            extraInformationText = "Unit not available for deposit at this time. Please contact resort/club."
+            if let resortPhoneNumber = relinquishment.resort?.phone {
+                extraInformationText?.removeLast()
+                extraInformationText = extraInformationText.unwrappedString+" at \(resortPhoneNumber)."
             }
-            extraInformationText = "Unit not available for deposit at this time. Please contact resort/club"+extra+".".localized()
+            
         }
         
         if relinquishment.memberUnitLocked && !relinquishment.hasActions() && relinquishment.hasResortPhoneNumber() {
-            let message = "Unit not available due to resort lock. Please contact resort/club.".localized()
+            let message = "Unit not available due to resort lock. Please contact resort/club."
             extraInformationText = extraInformationText.unwrappedString.isEmpty ?
                 message : extraInformationText.unwrappedString + "\n" + message
         }
         
         if relinquishment.bulkAssignment && !relinquishment.hasActions() && relinquishment.hasResortPhoneNumber() {
-            let message = "Contact resort/club for reservation or assignment "+relinquishment.resort!.phone!+".".localized()
+            var message = "Contact resort/club for reservation or assignment."
+            if let resortPhoneNumber = relinquishment.resort?.phone {
+                message.removeLast()
+                message += " at \(resortPhoneNumber)."
+            }
             extraInformationText = extraInformationText.unwrappedString.isEmpty ?
                 message : extraInformationText.unwrappedString + "\n" + message
         }
         
-        return extraInformationText
+        return extraInformationText?.localized()
     }
     
     private func processUnitDetails(for relinquishment: Relinquishment) -> String? {
