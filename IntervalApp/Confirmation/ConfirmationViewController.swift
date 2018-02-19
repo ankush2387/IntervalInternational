@@ -125,9 +125,9 @@ class ConfirmationViewController: UIViewController {
     @IBAction func viewTripDetailsPressed(_ sender: IUIKButton) {
         showHudAsync()
         Helper.getUpcomingTripsForUser {[weak self] error in
-            if error != nil {
+            if let Error = error {
                 self?.hideHudAsync()
-                self?.presentAlert(with: "Error".localized(), message: error?.localizedDescription ?? "")
+                self?.presentErrorAlert(UserFacingCommonError.handleError(Error))
             } else {
                 let excNumber = Int64(self?.exchangeNum ?? "")
                 if let index = Constant.MyClassConstants.upcomingTripsArray.index(where: { $0.exchangeNumber == excNumber }) {

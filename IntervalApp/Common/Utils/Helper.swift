@@ -20,11 +20,6 @@ import RealmSwift
     func resortSearchComplete()
 }
 
-enum Result<T> {
-    case Success()
-    case error(NSError)
-}
-
 public class Helper {
     
     static var window: UIWindow?
