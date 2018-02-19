@@ -102,13 +102,14 @@ extension RenewalOtherOptionsVC: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.renewelCell) as!
         RenewelCell
         
-        let term = "1-year"
+        var term = "1-year"
         
         var priceAndCurrency = ""
         
         if indexPath.section == 0 {
+            let lowestTerm = forceRenewals.comboProducts[0].renewalComboProducts[0].term
+            term = "\( (lowestTerm ?? 12) / 12)-year"
             for comboProduct in (forceRenewals.comboProducts) {
-                let lowestTerm = comboProduct.renewalComboProducts[0].term
                 for renewalComboProduct in comboProduct.renewalComboProducts where renewalComboProduct.term == lowestTerm {
                         //hide renewal image here
                         cell.renewelImageView?.isHidden = true
@@ -183,6 +184,7 @@ extension RenewalOtherOptionsVC: UITableViewDataSource {
         } else {
             
             let lowestTerm = forceRenewals.products[0].term
+            term = "\((lowestTerm ?? 12) / 12)-year"
             for coreProduct in forceRenewals.products where coreProduct.term == lowestTerm {
                 
                     // hide core and non core image here
