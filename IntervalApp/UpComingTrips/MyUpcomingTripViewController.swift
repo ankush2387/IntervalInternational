@@ -23,6 +23,13 @@ class MyUpcomingTripViewController: UIViewController {
         
         title = Constant.ControllerTitles.myUpcomingTripViewController
         
+        if Constant.MyClassConstants.upcomingOriginationPoint == "dashboard" || Constant.MyClassConstants.upcomingOriginationPoint == "confirmation"{
+            showHudAsync()
+            let button = UIButton()
+            button.tag = Constant.MyClassConstants.dashbaordUpcomingSelectedIndex
+            viewTripDetailsClicked(button)
+        }
+        
         //***** Setup the hamburger menu.  This will reveal the side menu. *****//
         if let rvc = revealViewController() {
             //set SWRevealViewController's Delegate

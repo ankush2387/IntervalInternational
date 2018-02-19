@@ -356,5 +356,5 @@ open class RentalClient {
                 DarwinSDK.logger.debug("Got \(response.response?.statusCode ?? 0) - \(response)")
         }
     }
-    
+
 }

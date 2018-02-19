@@ -93,14 +93,14 @@ class CreateActionSheet: UITableViewController {
     func membershipWasSelected(isForSearchVacation: Bool) {
         
         showHudAsync()
-        UserClient.updateSessionAndGetCurrentMembership(Session.sharedSession.userAccessToken, membershipNumber: Session.sharedSession.selectedMembership?.memberNumber ?? "", onSuccess: { [unowned self] membership in
+        UserClient.updateSessionAndGetCurrentMembership(Session.sharedSession.userAccessToken, membershipNumber: Session.sharedSession.selectedMembership?.memberNumber ?? "", onSuccess: { [weak self] membership in
                 
             Session.sharedSession.selectedMembership = membership
             if let memberContacts = membership.contacts {
                 Constant.MyClassConstants.membershipContactArray = memberContacts
             } else { Constant.MyClassConstants.membershipContactArray.removeAll() }
                 
-            self.hideHudAsync()
+            self?.hideHudAsync()
             Constant.MyClassConstants.isLoginSuccessfull = true
             let Product = Session.sharedSession.selectedMembership?.getProductWithHighestTier()
                 
@@ -142,19 +142,21 @@ class CreateActionSheet: UITableViewController {
                 
                 //***** Favorites resort API call after successfull call *****//
                 Helper.getUserFavorites {[weak self] error in
-                    if case .some = error {
-                        self?.presentAlert(with: "Error".localized(), message: error?.localizedDescription ?? "")
+                    if let Error = error {
+                        self?.hideHudAsync()
+                        self?.presentErrorAlert(UserFacingCommonError.handleError(Error))
                     }
                 }
                 //***** Get upcoming trips for user API call after successfull call *****//
                 Helper.getUpcomingTripsForUser {[weak self] error in
-                    if case .some = error {
-                        self?.presentAlert(with: "Error".localized(), message: error?.localizedDescription ?? "")
+                    if let Error = error {
+                        self?.hideHudAsync()
+                        self?.presentErrorAlert(UserFacingCommonError.handleError(Error))
                     }
                 }
             
             },
-           onError: {_ in
+           onError: {[unowned self] _ in
             self.hideHudAsync()
             if let controller = Constant.MyClassConstants.signInRequestedController {
                 controller.dismiss(animated: true, completion: nil)

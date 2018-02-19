@@ -39,7 +39,6 @@ class DashboardTableViewController: UITableViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(reloadAlertCollectionView), name: NSNotification.Name(rawValue: Constant.notificationNames.getawayAlertsNotification), object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(reloadTopDestinations), name: NSNotification.Name(rawValue:Constant.notificationNames.refreshTableNotification), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(reloadUpcomingTrip), name: NSNotification.Name(rawValue:Constant.notificationNames.reloadTripDetailsNotification), object: nil)
         getNumberOfSections()
         Helper.InitializeOpenWeeksFromLocalStorage()
         
@@ -81,6 +80,16 @@ class DashboardTableViewController: UITableViewController {
                     strongSelf.readFlexExchangeDeals(accessToken: accessToken)
             }
         }
+        Helper.getUpcomingTripsForUser {[weak self] error in
+            if error != nil {
+                self?.presentAlert(with: "Error".localized(), message: error?.localizedDescription ?? "")
+            } else {
+                self?.getNumberOfSections()
+                self?.homeTableView.reloadData()
+                
+            }
+        }
+        
         // omniture tracking with event40
         let userInfo: [String: String] = [
             Constant.omnitureEvars.eVar44: Constant.omnitureCommonString.homeDashboard
@@ -228,11 +237,13 @@ class DashboardTableViewController: UITableViewController {
     //***** MARK: - Table view delegate methods *****//
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if dashboardArray[indexPath.section] == Constant.dashboardTableScreenReusableIdentifiers.upcoming {
-            if let exchaneNumber = Constant.MyClassConstants.upcomingTripsArray[indexPath.row].exchangeNumber {
-                Constant.MyClassConstants.transactionNumber = "\(exchaneNumber)"
+            Constant.MyClassConstants.dashbaordUpcomingSelectedIndex = indexPath.row
+            Constant.MyClassConstants.upcomingOriginationPoint = "dashboard"
+            let isRunningOnIphone = UIDevice.current.userInterfaceIdiom == .phone
+            let storyboardName = isRunningOnIphone ? Constant.storyboardNames.myUpcomingTripIphone : Constant.storyboardNames.myUpcomingTripIpad
+            if let initialViewController = UIStoryboard(name: storyboardName, bundle: nil).instantiateInitialViewController() {
+                navigationController?.pushViewController(initialViewController, animated: true)
             }
-            
-            Helper.getTripDetails(senderViewController: self)
         }
     }
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
