@@ -49,7 +49,6 @@ class GoogleMapViewController: UIViewController {
     var needCameraChange = false
     var selectedDestination = AreaOfInfluenceDestination()
     
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
@@ -923,7 +922,11 @@ class GoogleMapViewController: UIViewController {
     func selectAllDestinations() {
         if Constant.MyClassConstants.whereTogoContentArray.count > 0 {
             
-            presentAlert(with: Constant.AlertMessages.searchAlertTitle, message: Constant.AlertMessages.searchAlertMessage)
+            presentAlert(with: "Search All Available Destinations".localized(),
+                         message: "Selecting this option will remove all other currently selected destinations/resorts . Are you sure you want to do this?".localized(),
+                         hideCancelButton: false,
+                         acceptButtonTitle: "OK".localized(),
+                         acceptHandler: searchYesClicked)
         } else {
             
             Helper.deleteObjectFromAllDest()
@@ -945,7 +948,7 @@ class GoogleMapViewController: UIViewController {
     }
     
     //***** Function for alert controller yes button click *****//
-    func searchYesClicked() {
+   func searchYesClicked() {
         
         let realm = try! Realm()
         
@@ -983,7 +986,7 @@ class GoogleMapViewController: UIViewController {
             var  headerView = UIView(frame: CGRect(x: 0, y: 0, width: searchDisplayTableView.bounds.width, height: 40))
             let nameLabel = UILabel(frame: CGRect(x: 15, y: 5, width: searchDisplayTableView.bounds.width - 130, height: 30))
             
-            nameLabel.text = Constant.HeaderViewConstantStrings.search
+            nameLabel.text = "All Available Destinations".localized()
             nameLabel.font = UIFont(name: Constant.fontName.helveticaNeue, size: 15)
             headerView.addSubview(nameLabel)
             
@@ -1209,7 +1212,7 @@ extension GoogleMapViewController: GMSMapViewDelegate {
                             selectedMarker.icon = UIImage(named: Constant.assetImageNames.pinFocusImage)
                         } else {
                             
-                            selectedMarker.icon = UIImage(named: Constant.assetImageNames.pinActiveImage)
+                             selectedMarker.icon = UIImage(named: Constant.assetImageNames.pinActiveImage)
                             selectedMarker.isFlat = false
                         }
                     }
