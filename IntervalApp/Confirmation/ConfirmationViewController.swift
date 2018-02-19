@@ -23,6 +23,7 @@ class ConfirmationViewController: UIViewController {
     
     //Class variables
     var moreButton: UIBarButtonItem?
+    var exchangeNum: String = ""
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
@@ -64,8 +65,15 @@ class ConfirmationViewController: UIViewController {
         }
         if Constant.MyClassConstants.isFromExchange {
             confirmationNumber.text = Constant.MyClassConstants.exchangeContinueToPayResponse.view?.fees?.shopExchange?.confirmationNumber
+            if let number = Constant.MyClassConstants.exchangeContinueToPayResponse.view?.fees?.shopExchange?.confirmationNumber {
+                exchangeNum = number
+            }
+            
         } else {
           confirmationNumber.text = Constant.MyClassConstants.continueToPayResponse.view?.fees?.rental?.confirmationNumber
+            if let number = Constant.MyClassConstants.continueToPayResponse.view?.fees?.rental?.confirmationNumber {
+                exchangeNum = number
+            }
         }
         
         memberNumber.text = Session.sharedSession.selectedMembership?.memberNumber
@@ -115,7 +123,25 @@ class ConfirmationViewController: UIViewController {
     
     //***** Function called when view trip details button is pressed. ******//
     @IBAction func viewTripDetailsPressed(_ sender: IUIKButton) {
-       Helper.getTripDetails(senderViewController: self)
+        showHudAsync()
+        Helper.getUpcomingTripsForUser {[weak self] error in
+            if let Error = error {
+                self?.hideHudAsync()
+                self?.presentErrorAlert(UserFacingCommonError.handleError(Error))
+            } else {
+                let excNumber = Int64(self?.exchangeNum ?? "")
+                if let index = Constant.MyClassConstants.upcomingTripsArray.index(where: { $0.exchangeNumber == excNumber }) {
+                    Constant.MyClassConstants.dashbaordUpcomingSelectedIndex = index
+                }
+                self?.hideHudAsync()
+                Constant.MyClassConstants.upcomingOriginationPoint = "confirmation"
+                let isRunningOnIphone = UIDevice.current.userInterfaceIdiom == .phone
+                let storyboardName = isRunningOnIphone ? Constant.storyboardNames.myUpcomingTripIphone : Constant.storyboardNames.myUpcomingTripIpad
+                if let initialViewController = UIStoryboard(name: storyboardName, bundle: nil).instantiateInitialViewController() {
+                    self?.navigationController?.pushViewController(initialViewController, animated: true)
+                }
+            }
+        }
     }
     
     //***** Function called when upcoming trip details button is pressed. *****//

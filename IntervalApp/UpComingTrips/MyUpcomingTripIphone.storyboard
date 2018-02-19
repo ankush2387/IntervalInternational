@@ -62,7 +62,7 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="435"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="FN4-cf-ESx" id="KBx-xX-hSV">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="434.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="435"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="I1K-04-MWX" userLabel="HeaderView">
@@ -269,7 +269,7 @@
                                         <rect key="frame" x="0.0" y="463" width="375" height="273"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="NNC-JV-Jgo" id="2yv-U1-jKm">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="272.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="273"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bQN-Dc-geg">
@@ -400,7 +400,9 @@
                                         <rect key="frame" x="0.0" y="118" width="375" height="60"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="d31-h5-zZj" id="yEh-Le-WK2">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="59.5"/>
+
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
+
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -805,6 +807,9 @@
                                                 <constraint firstItem="Bm1-bd-q5c" firstAttribute="leading" secondItem="SQg-R4-34h" secondAttribute="leadingMargin" constant="7" id="qnO-wr-Hmo"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="dropDown" destination="ICf-xo-Eqg" id="btL-eH-hVb"/>
+                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="Deposit" rowHeight="72" id="JIK-Hb-W2d" customClass="UpComingTripCell" customModule="IntervalApp" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="610" width="375" height="72"/>

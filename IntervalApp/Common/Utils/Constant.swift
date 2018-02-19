@@ -104,6 +104,7 @@ class Constant: NSObject {
         static var loginOriginationPoint: String = ""
         static var vacationSearchResultHeaderLabel: String = ""
         static var upcomingOriginationPoint: String = ""
+        static var dashbaordUpcomingSelectedIndex = 0
         static var loginType: String = ""
         static var selectedDestinationNames: String = ""
         static var addressStringForCardDetailSection = "Address"
@@ -293,7 +294,7 @@ class Constant: NSObject {
         // Pick destinations array
         static var resorts: [Resort]? = []
         static var destinations: [AreaOfInfluenceDestination]? = []
-        static var allDestinations = "All Available Destinations".localized()
+        static var allDestinations = "All Available Destinations"
         
         static var redirect: (alertID: Int?, rentalAlert: RentalAlert?) = (nil, nil)
         static var searchDateResponse: [(RentalAlert, RentalSearchDatesResponse)]  = []

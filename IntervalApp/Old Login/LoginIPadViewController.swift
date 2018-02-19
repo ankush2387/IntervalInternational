@@ -412,23 +412,18 @@ class LoginIPadViewController: UIViewController {
         
         UserClient.updateSessionAndGetCurrentMembership(Session.sharedSession.userAccessToken, membershipNumber: Session.sharedSession.selectedMembership?.memberNumber ?? "", onSuccess: { membership in
             Session.sharedSession.selectedMembership = membership
-                                    //***** Favorites resort API call after successfull call *****//
-                                    Helper.getUserFavorites {[unowned self] error in
-                                        if case .some = error {
-                                            self.presentAlert(with: "Error".localized(), message: error?.localizedDescription ?? "")
-                                        }
-                                    }
-                                    //***** Get upcoming trips for user API call after successfull call *****//
-                                    Helper.getUpcomingTripsForUser {[unowned self] error in
-                                        if case .some = error {
-                                            self.presentAlert(with: "Error".localized(), message: error?.localizedDescription ?? "")
-                                        }
-                                    }
-                                    Constant.MyClassConstants.isLoginSuccessfull = true
-                                    self.performSegue(withIdentifier: Constant.segueIdentifiers.dashboradSegueIdentifier, sender: nil)
+            //***** Favorites resort API call after successfull call *****//
+            Helper.getUserFavorites {[unowned self] error in
+                if case .some = error {
+                    self.presentAlert(with: "Error".localized(), message: error?.localizedDescription ?? "")
+                }
+            }
+        
+            Constant.MyClassConstants.isLoginSuccessfull = true
+            self.performSegue(withIdentifier: Constant.segueIdentifiers.dashboradSegueIdentifier, sender: nil)
         },
-                                   onError: {[unowned self](_) in
-                                    self.presentErrorAlert(UserFacingCommonError.generic)
+           onError: {[unowned self](_) in
+            self.presentErrorAlert(UserFacingCommonError.generic)
             }
         )
     }

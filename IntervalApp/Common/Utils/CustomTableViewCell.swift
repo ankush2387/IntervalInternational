@@ -13,6 +13,8 @@ class CustomTableViewCell: UITableViewCell {
     @IBOutlet weak var modifyInsuranceButton: UIButton!
     @IBOutlet weak var accomodationCertificateNumber: UILabel!
 
+    @IBOutlet weak var dropDown: UIImageView!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
