@@ -235,7 +235,9 @@ class CheckOutViewController: UIViewController {
                     continueToPayRequest.acknowledgeAndAgreeResortFees = true
                     
                     RentalProcessClient.continueToPay(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.getawayBookingLastStartedProcess, request: continueToPayRequest, onSuccess: { response in
-                        
+                        if let updatedFees = response.view?.fees {
+                            Constant.MyClassConstants.rentalFees[0] = updatedFees
+                        }
                         Constant.MyClassConstants.getawayBookingLastStartedProcess = nil
                         Constant.MyClassConstants.continueToPayResponse = response
                         let selectedCard = Constant.MyClassConstants.selectedCreditCard
@@ -299,7 +301,7 @@ class CheckOutViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
+        
         remainingResortHoldingTimeLable.text = "We are holding this unit for \(Constant.holdingTime) minutes".localized()
         navigationController?.navigationBar.isHidden = false
         emailTextToEnter = Session.sharedSession.contact?.emailAddress ?? ""
@@ -497,12 +499,20 @@ class CheckOutViewController: UIViewController {
                 }
                 
                 let fees = RentalFees()
+                if let offerName = Constant.MyClassConstants.rentalFees[0].rental?.selectedOfferName {
+                    fees.rental?.selectedOfferName = offerName
+                }
+                let tripProtection = Insurance()
+                tripProtection.selected = Constant.MyClassConstants.rentalFees[0].insurance?.selected
+                fees.insurance = tripProtection
                 fees.rental = rental
                 
                 let processRequest = RentalProcessRecapRecalculateRequest()
                 processRequest.fees = fees
-                
                 RentalProcessClient.addCartPromotion(Session.sharedSession.userAccessToken, process: processResort, request: processRequest, onSuccess: { response in
+                    if let updatedFees = response.view?.fees {
+                        Constant.MyClassConstants.rentalFees[0] = updatedFees
+                    }
                     Constant.MyClassConstants.recapPromotionsArray.removeAll()
                     if let promotions = response.view?.fees?.rental?.promotions {
                         Constant.MyClassConstants.recapPromotionsArray = promotions
@@ -600,11 +610,9 @@ class CheckOutViewController: UIViewController {
                                                        onSuccess: onSuccess,
                                                        onError: onError)
             
-            ExchangeProcessClient.backToChooseExchange(accessToken,
-                                                       process: lastProcessStarted,
-                                                       onSuccess: onSuccess,
-                                                       onError: onError)
         } else {
+            let fees = Constant.MyClassConstants.rentalFees[0]
+            intervalPrint(fees)
             
             RentalProcessClient.backToWhoIsChecking(accessToken,
                                                     process: lastRentalProcess,
@@ -636,7 +644,6 @@ class CheckOutViewController: UIViewController {
                 Constant.MyClassConstants.checkoutInsurencePurchased = Constant.AlertPromtMessages.no
                 self.addTripProtection(shouldAddTripProtection: false)
             }
-            self.checkoutOptionTBLview.reloadSections(IndexSet(integer: 6), with:.automatic)
         }
         
     }
@@ -656,6 +663,7 @@ class CheckOutViewController: UIViewController {
                 Constant.MyClassConstants.exchangeContinueToCheckoutResponse = response
                 if let exchangeTotalFees = response.view?.fees?.total {
                     Constant.MyClassConstants.exchangeFees[0].total = exchangeTotalFees
+                    self.recapFeesTotal = exchangeTotalFees
                 }
                 self.checkoutOptionTBLview.reloadData()
                 self.hideHudAsync()
@@ -671,17 +679,27 @@ class CheckOutViewController: UIViewController {
         } else {
             
             guard let rentalFees = Constant.MyClassConstants.rentalFees.last else { return }
-            rentalFees.insurance?.selected = shouldAddTripProtection
+            let addTripProtection = Insurance()
+            addTripProtection.selected = shouldAddTripProtection
+            rentalFees.insurance = addTripProtection
+            
+            let rental = Rental()
+            rental.selectedOfferName = Constant.MyClassConstants.rentalFees[0].rental?.selectedOfferName
+            rentalFees.rental = rental
             let rentalRecalculateRequest = RentalProcessRecapRecalculateRequest()
             rentalRecalculateRequest.fees = rentalFees
             showHudAsync()
             RentalProcessClient.addTripProtection(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.getawayBookingLastStartedProcess, request: rentalRecalculateRequest, onSuccess: { response in
+                if let updatedFees = response.view?.fees {
+                    Constant.MyClassConstants.rentalFees[0] = updatedFees
+                }
                 self.tripRequestInProcess = false
                 Constant.MyClassConstants.continueToCheckoutResponse = response
                 if let rentalFeesTotal = response.view?.fees?.total {
                     Constant.MyClassConstants.rentalFees[0].total = rentalFeesTotal
+                    self.recapFeesTotal = rentalFeesTotal
                 }
-                self.checkoutOptionTBLview.reloadSections(IndexSet(integer: 8), with:.automatic)
+                self.checkoutOptionTBLview.reloadSections([6, 8], with:.automatic)
                 self.hideHudAsync()
             }, onError: { [weak self] error in
                 "document.getElementById('WASCInsuranceOfferOption0').checked = false;"
@@ -959,20 +977,10 @@ extension CheckOutViewController: UITableViewDataSource {
                 return 0
             }
         case 4 :
-            if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
-                guard let _ = Constant.MyClassConstants.exchangeFees[0].insurance?.insuranceOfferHTML else {
-                    showInsurance = false
-                    return 0
-                }
-                showInsurance = true
-                return 420
+            if showInsurance {
+                return cellWebView.scrollView.contentSize.height
             } else {
-                guard let _ = Constant.MyClassConstants.rentalFees[0].insurance?.insuranceOfferHTML else {
-                    showInsurance = false
-                    return 0
-                }
-                showInsurance = true
-                return 420
+                return 0
             }
         case 5 :
             if !Constant.MyClassConstants.isFromExchange && Constant.MyClassConstants.isFromExchange && !Constant.MyClassConstants.enableTaxes && !eplusAdded {
@@ -1138,6 +1146,8 @@ extension CheckOutViewController: UITableViewDataSource {
                 if showInsurance && !Constant.MyClassConstants.isFromExchange {
                     guard let str = Constant.MyClassConstants.rentalFees[indexPath.row].insurance?.insuranceOfferHTML else { return cell }
                     cellWebView.loadHTMLString(str, baseURL: nil)
+                    //let noRadioValue = "document.getElementById('WASCInsuranceOfferOption1').value = true;"
+                    //cellWebView.reload()
                 } else {
                     guard let str = Constant.MyClassConstants.exchangeFees[indexPath.row].insurance?.insuranceOfferHTML else { return cell }
                     cellWebView.loadHTMLString(str, baseURL: nil)
@@ -1467,9 +1477,12 @@ extension CheckOutViewController: UIWebViewDelegate {
     }
     
     func webViewDidFinishLoad(_ webView: UIWebView) {
+        webView.frame.size.height = 1
+        webView.frame.size = webView.sizeThatFits(.zero)
         self.hideHudAsync()
+        checkoutOptionTBLview.beginUpdates()
+        checkoutOptionTBLview.endUpdates()
     }
-    
     func webView(_ webView: UIWebView, didFailLoadWithError error: Error) {
         self.hideHudAsync()
     }
@@ -1494,3 +1507,4 @@ extension CheckOutViewController: UITextFieldDelegate {
         
     }
 }
+
