@@ -346,7 +346,7 @@ public class Helper {
             if Constant.MyClassConstants.isEvent2Ready > 1 {
                 sendOmnitureTrackCallForEvent2()
             }
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue:Constant.notificationNames.refreshTableNotification), object: self)
+            CompletionBlock(nil)
         }, onError: { error in
             
             Constant.MyClassConstants.isEvent2Ready += 1
@@ -1410,23 +1410,6 @@ public class Helper {
         let date = dateFormatter.date(from: dateString)
         return date ?? Date()
     }
-    // Function to get trip details
-    static func getTripDetails(senderViewController: UIViewController) {
-        senderViewController.showHudAsync()
-        ExchangeClient.getExchangeTripDetails(Session.sharedSession.userAccessToken, confirmationNumber: Constant.MyClassConstants.transactionNumber, onSuccess: { exchangeResponse in
-            senderViewController.hideHudAsync()
-            Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails = exchangeResponse
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.notificationNames.reloadTripDetailsNotification), object: nil)
-            
-        }) { _ in
-            senderViewController.hideHudAsync()
-            senderViewController.presentErrorAlert(UserFacingCommonError.generic)
-        }
-    }
-    //Common function to add notifications.
-    static func addNotifications(notificationNames: NSArray, senderVC: UIViewController) {
-        
-    }
     
     // mapping function to return unit details header string with space
     static func getMappedStringForDetailedHeaderSection(sectonHeader: String) -> String {
@@ -1781,21 +1764,6 @@ public class Helper {
             Constant.MyClassConstants.calendarDatesArray.append(calendarItem)
         }
     }
-    
-    // FIXME (Frank): Remove this helper method
-    /*
-    static func createSettings() -> Settings {
-        let vacationSearchSettings = VacationSearchSettings()
-        vacationSearchSettings.bookingIntervalDateStrategy = BookingIntervalDateStrategy.FIRST.rawValue
-        vacationSearchSettings.collapseBookingIntervalsOnChange = true
-        vacationSearchSettings.vacationSearchTypes = [String] (arrayLiteral: VacationSearchType.COMBINED.rawValue, VacationSearchType.EXCHANGE.rawValue, VacationSearchType.RENTAL.rawValue)
-        
-        let settings = Settings()
-        settings.vacationSearch = vacationSearchSettings
-        
-        return settings
-    }
-    */
 
     static func showNearestCheckInDateSelectedMessage() {
         Constant.MyClassConstants.isShowAvailability = true

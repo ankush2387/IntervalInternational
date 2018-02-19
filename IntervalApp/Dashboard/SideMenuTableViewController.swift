@@ -102,8 +102,9 @@ extension SideMenuTableViewController: UITableViewDelegate {
         Constant.MyClassConstants.googleMarkerArray.removeAll()
         let smi = SideMenuTableViewController.SideMenuItems[indexPath.row ]
         switch indexPath.row {
+        case 4:
+            Constant.MyClassConstants.upcomingOriginationPoint = "sideMenu"
         case 6 :
-            
             Constant.MyClassConstants.sideMenuOptionSelected = Constant.MyClassConstants.favoritesFunctionalityCheck
         case 8 :
             Constant.MyClassConstants.runningFunctionality = Constant.MyClassConstants.resortFunctionalityCheck
