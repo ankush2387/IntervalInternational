@@ -163,7 +163,7 @@ class CheckOutViewController: UIViewController {
     //**** Remove added observers ****//
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        navigationController?.navigationBar.isHidden = true
+        //navigationController?.navigationBar.isHidden = true
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.updateResortHoldingTime), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.changeSliderStatus), object: nil)
     }
@@ -215,6 +215,7 @@ class CheckOutViewController: UIViewController {
                         if let confirmationNumber = response.view?.fees?.shopExchange?.confirmationNumber {
                             Constant.MyClassConstants.transactionNumber = confirmationNumber
                         }
+                        self.navigationController?.navigationBar.isHidden = true
                         self.performSegue(withIdentifier: Constant.segueIdentifiers.confirmationScreenSegue, sender: nil)
                         
                     }, onError: { [weak self] error in
@@ -248,6 +249,7 @@ class CheckOutViewController: UIViewController {
                         self.hideHudAsync()
                         Constant.MyClassConstants.transactionNumber = response.view?.fees?.rental?.confirmationNumber ?? ""
                         self.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
+                        self.navigationController?.navigationBar.isHidden = true
                         self.performSegue(withIdentifier: Constant.segueIdentifiers.confirmationScreenSegue, sender: nil)
                     }, onError: { [weak self] error in
                         self?.hideHudAsync()
@@ -1404,6 +1406,29 @@ extension CheckOutViewController: UITableViewDataSource {
             cell.agreeButton?.tag = indexPath.section
             cell.allInclusiveSelectedCheckBox.isHidden = true
             cell.isUserInteractionEnabled = true
+            cell.callback = { _ in
+                let optionMenu = UIAlertController(title: nil, message: "View Legal Information".localized(), preferredStyle: .actionSheet)
+                
+                let tcAction = UIAlertAction(title: "Terms & Conditions".localized(), style: .default) { _ in
+                    let webView = SimpleFileViewController(load: "https://www.intervalworld.com/web/iicontent/ii/mobile-terms-getaways.html")
+                    self.navigationController?.isNavigationBarHidden = false
+                    self.navigationController?.pushViewController(webView, animated: true)
+                    
+                }
+                let ppAction = UIAlertAction(title: "Privacy Policy".localized(), style: .default) { _ in
+                    let webView = SimpleFileViewController(load: "https://www.intervalworld.com/web/cs?a=60&p=privacy-policy")
+                    self.navigationController?.isNavigationBarHidden = false
+                    self.navigationController?.pushViewController(webView, animated: true)
+                }
+                
+                let cancelAction = UIAlertAction(title: "Cancel".localized(), style: .cancel)
+                
+                optionMenu.addAction(tcAction)
+                optionMenu.addAction(ppAction)
+                optionMenu.addAction(cancelAction)
+                
+                self.present(optionMenu, animated: true, completion: nil)
+            }
             if isAgreed {
                 cell.agreeLabel.backgroundColor = #colorLiteral(red: 0.6666666667, green: 0.7921568627, blue: 0.3607843137, alpha: 1)
                 cell.agreeLabel.layer.borderColor = #colorLiteral(red: 0.6666666667, green: 0.7921568627, blue: 0.3607843137, alpha: 1).cgColor
