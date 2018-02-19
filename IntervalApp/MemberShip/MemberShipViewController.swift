@@ -100,7 +100,9 @@ class MemberShipViewController: UIViewController {
         let context = Session.sharedSession
         UserClient.updateSessionAndGetCurrentMembership(Session.sharedSession.userAccessToken, membershipNumber: Session.sharedSession.selectedMembership?.memberNumber ?? "", onSuccess: { membership in
             Session.sharedSession.selectedMembership = membership
-                                        
+            if let membershipContacts = membership.contacts {
+                Constant.MyClassConstants.membershipContactArray = membershipContacts
+            } else { Constant.MyClassConstants.membershipContactArray.removeAll() }
             //***** Done!  Segue to the Home page *****//
             self.dismiss(animated: true, completion: nil)
             self.getContactMembershipInfo()
