@@ -441,22 +441,31 @@ final class RelinquishmentViewModel {
         var extraInformationText: String?
         
         if relinquishment.blackedOut {
-            extraInformationText = "Blackout Copy TBD.".localized()
+            extraInformationText = "Unit not available for deposit at this time. Please contact resort/club."
+            if let resortPhoneNumber = relinquishment.resort?.phone {
+                extraInformationText?.removeLast()
+                extraInformationText = extraInformationText.unwrappedString+" at \(resortPhoneNumber)."
+            }
+            
         }
         
         if relinquishment.memberUnitLocked && !relinquishment.hasActions() && relinquishment.hasResortPhoneNumber() {
-            let message = "Unit not available due to resort lock. Please contact resort/club.".localized()
+            let message = "Unit not available due to resort lock. Please contact resort/club."
             extraInformationText = extraInformationText.unwrappedString.isEmpty ?
                 message : extraInformationText.unwrappedString + "\n" + message
         }
         
         if relinquishment.bulkAssignment && !relinquishment.hasActions() && relinquishment.hasResortPhoneNumber() {
-            let message = "Bulk Week Copy TBD".localized()
+            var message = "Contact resort/club for reservation or assignment."
+            if let resortPhoneNumber = relinquishment.resort?.phone {
+                message.removeLast()
+                message += " at \(resortPhoneNumber)."
+            }
             extraInformationText = extraInformationText.unwrappedString.isEmpty ?
                 message : extraInformationText.unwrappedString + "\n" + message
         }
         
-        return extraInformationText
+        return extraInformationText?.localized()
     }
     
     private func processUnitDetails(for relinquishment: Relinquishment) -> String? {
