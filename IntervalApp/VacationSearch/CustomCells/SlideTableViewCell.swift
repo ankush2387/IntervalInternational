@@ -17,7 +17,7 @@ class SlideTableViewCell: UITableViewCell {
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var allInclusiveSelectedCheckBox: UIImageView!
     
-    var callback : (() -> Void)?
+    var callback: CallBack?
     
     override func awakeFromNib() {
         super.awakeFromNib()
