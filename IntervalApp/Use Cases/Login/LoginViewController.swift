@@ -125,7 +125,7 @@ final class LoginViewController: UIViewController {
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.view.endEditing(true)
+        view.endEditing(true)
     }
     
     @objc private func handleTap(_ sender: UITapGestureRecognizer) {
