@@ -953,7 +953,7 @@ extension SearchResultViewController: UICollectionViewDelegate {
                                                                         unitSize: UnitSize(rawValue: unitSize.unwrappedString),
                                                                         kitchenType: KitchenType(rawValue:kitchenType.unwrappedString))
                         
-                        RentalProcessClient.start(Session.sharedSession.userAccessToken, process: processResort, request: processRequest1, onSuccess: { response in
+                        RentalProcessClient.start(Session.sharedSession.userAccessToken, process: processResort, request: processRequest1, onSuccess: {[unowned self] response in
                             
                             let processResort = RentalProcess()
                             processResort.processId = response.processId
