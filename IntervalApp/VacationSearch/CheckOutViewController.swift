@@ -163,7 +163,7 @@ class CheckOutViewController: UIViewController {
     //**** Remove added observers ****//
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        //navigationController?.navigationBar.isHidden = true
+        navigationController?.navigationBar.isHidden = true
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.updateResortHoldingTime), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.changeSliderStatus), object: nil)
     }
