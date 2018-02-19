@@ -170,7 +170,7 @@ class UpComingTripDetailController: UIViewController {
 
     func tapCallButton(button: UIButton) {
 
-        if let phoneCallURL = URL(string: "tel://\(8442429977)") {
+        if let phoneCallURL = URL(string: "tel://8442429977") {
             let application: UIApplication = UIApplication.shared
             if application.canOpenURL(phoneCallURL) {
                 NetworkHelper.open(phoneCallURL)
