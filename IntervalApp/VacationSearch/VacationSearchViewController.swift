@@ -820,7 +820,8 @@ extension VacationSearchViewController: UITableViewDataSource {
                             
                             cell.whereTogoTextLabel.text = resortNameString
                         } else {
-                            cell.whereTogoTextLabel.text = Constant.MyClassConstants.whereTogoContentArray[indexPath.row] as? String
+                            let whereToGoText = Constant.MyClassConstants.whereTogoContentArray[indexPath.row] as? String
+                            cell.whereTogoTextLabel.text = whereToGoText?.localized()
                         }
                         cell.selectionStyle = UITableViewCellSelectionStyle.none
                         cell.backgroundColor = UIColor.clear
