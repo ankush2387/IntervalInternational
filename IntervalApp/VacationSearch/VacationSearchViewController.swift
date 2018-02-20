@@ -854,6 +854,9 @@ extension VacationSearchViewController: UITableViewDataSource {
                         
                         guard let cell = tableView.dequeueReusableCell(withIdentifier: "WhereToGoContentCell", for: indexPath) as? WhereToGoContentCell else { return UITableViewCell() }
                         
+                        cell.bedroomLabel.numberOfLines = 0
+                        cell.bedroomLabel.lineBreakMode = .byWordWrapping
+                        
                         if indexPath.row == Constant.MyClassConstants.whatToTradeArray.count - 1 {
                             cell.sepratorOr.isHidden = true
                         } else {
@@ -862,20 +865,23 @@ extension VacationSearchViewController: UITableViewDataSource {
                         let object = Constant.MyClassConstants.whatToTradeArray[indexPath.row] as AnyObject
                         if object.isKind(of: OpenWeek.self) {
                             guard let openWk = object as? OpenWeek else { return cell }
-                            if let resortName = openWk.resort?.resortName {
-                                cell.whereTogoTextLabel.text = "\(resortName)"
+                            let attributedTitle = NSMutableAttributedString()
+                            if let resort = openWk.resort {
+                                attributedTitle
+                                    .bold("\(resort.resortName.unwrappedString), \(resort.resortCode.unwrappedString)")
+                                    .normal("\n")
                             }
                             if let relinquishmentYear = openWk.relinquishmentYear {
-                                cell.whereTogoTextLabel.text = "\(String(describing: cell.whereTogoTextLabel.text)), \(relinquishmentYear)"
+                                attributedTitle.normal("\(relinquishmentYear)")
                             }
                             if let weekNumber = openWk.weekNumber {
-                                cell.whereTogoTextLabel.text = "\(String(describing: cell.whereTogoTextLabel.text)), Week \(weekNumber)".localized()
+                                let formattedWeekNumber = Constant.getWeekNumber(weekType: weekNumber)
+                                attributedTitle.normal("Week \(formattedWeekNumber)".localized())
                             }
+                            cell.whereTogoTextLabel.attributedText = attributedTitle
                             cell.bedroomLabel.isHidden = true
                         } else if object.isKind(of: OpenWeeks.self) {
                             guard let openWk = object as? OpenWeeks else { return cell }
-                            cell.bedroomLabel.numberOfLines = 0
-                            cell.bedroomLabel.lineBreakMode = .byWordWrapping
                             let weekNumber = Constant.getWeekNumber(weekType: (openWk.weekNumber))
                             if  openWk.isLockOff || openWk.isFloat {
                                 cell.bedroomLabel.isHidden = false
@@ -895,9 +901,19 @@ extension VacationSearchViewController: UITableViewDataSource {
                                 cell.bedroomLabel.isHidden = true
                             }
                             if weekNumber != "" {
-                                cell.whereTogoTextLabel.text = "\(openWk.resort[0].resortName), \(openWk.resort[0].resortCode)\n\(openWk.relinquishmentYear) Week \(weekNumber)".localized()
+                                let attributedTitle = NSMutableAttributedString()
+                                attributedTitle
+                                    .bold("\(openWk.resort[0].resortName), \(openWk.resort[0].resortCode)")
+                                    .normal("\n")
+                                    .normal("\(openWk.relinquishmentYear) Week \(weekNumber)".localized())
+                                cell.whereTogoTextLabel.attributedText = attributedTitle
                             } else {
-                                cell.whereTogoTextLabel.text = "\(openWk.resort[0].resortName)/ \(openWk.relinquishmentYear)"
+                                let attributedTitle = NSMutableAttributedString()
+                                attributedTitle
+                                    .bold("\(openWk.resort[0].resortName), \(openWk.resort[0].resortCode)")
+                                    .normal("\n")
+                                    .normal("\(openWk.relinquishmentYear)")
+                                cell.whereTogoTextLabel.attributedText = attributedTitle
                             }
                         } else if object.isKind(of: Deposits.self) {
                             guard let deposits = object as? Deposits else { return cell }
@@ -920,9 +936,19 @@ extension VacationSearchViewController: UITableViewDataSource {
                                 cell.bedroomLabel.isHidden = true
                             }
                             if weekNumber != "" {
-                                cell.whereTogoTextLabel.text = "\(deposits.resort[0].resortName), \(deposits.resort[0].resortCode)\n\(deposits.relinquishmentYear) Week \(weekNumber)".localized()
+                                let attributedTitle = NSMutableAttributedString()
+                                attributedTitle
+                                    .bold("\(deposits.resort[0].resortName), \(deposits.resort[0].resortCode)")
+                                    .normal("\n")
+                                    .normal("\(deposits.relinquishmentYear) Week \(weekNumber)".localized())
+                                cell.whereTogoTextLabel.attributedText = attributedTitle
                             } else {
-                                cell.whereTogoTextLabel.text = "\(deposits.resort[0].resortName)/ \(deposits.relinquishmentYear)"
+                                let attributedTitle = NSMutableAttributedString()
+                                attributedTitle
+                                    .bold("\(deposits.resort[0].resortName), \(deposits.resort[0].resortCode)")
+                                    .normal("\n")
+                                    .normal("\(deposits.relinquishmentYear)")
+                                cell.whereTogoTextLabel.attributedText = attributedTitle
                             }
                             
                         } else if object.isKind(of: List<ClubPoints>.self) {
