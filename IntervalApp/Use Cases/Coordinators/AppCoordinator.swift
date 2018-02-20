@@ -117,6 +117,8 @@ final class AppCoordinator {
         Constant.MyClassConstants.isLoginSuccessfull = false
         Constant.MyClassConstants.sideMenuOptionSelected = Constant.MyClassConstants.resortFunctionalityCheck
         
+        Constant.MyClassConstants.memberCreditCardList.removeAll()
+        
         // TODO: - Need to refactor code/calls above
         
         logoutDidFinish()
