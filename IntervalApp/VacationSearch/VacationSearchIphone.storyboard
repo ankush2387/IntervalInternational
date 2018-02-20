@@ -354,7 +354,7 @@ transaction.</string>
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Z7H-la-zBu">
-                                <rect key="frame" x="0.0" y="108" width="375" height="510"/>
+                                <rect key="frame" x="0.0" y="108" width="375" height="559"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="536" id="xAh-Ay-Djq"/>
@@ -671,7 +671,7 @@ transaction.</string>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="qVN-Ng-HPx">
-                                                    <rect key="frame" x="0.0" y="3" width="375" height="36"/>
+                                                    <rect key="frame" x="7" y="3" width="361" height="36"/>
                                                 </imageView>
                                             </subviews>
                                             <constraints>
@@ -1590,7 +1590,7 @@ transaction.</string>
                                             <subviews>
                                                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Wc9-EG-cMN">
                                                     <rect key="frame" x="0.0" y="0.0" width="375" height="521"/>
-                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="GFA-la-EPr">
                                                         <size key="itemSize" width="699" height="282"/>
                                                         <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -1608,27 +1608,24 @@ transaction.</string>
                                                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="NoImageIcon" translatesAutoresizingMaskIntoConstraints="NO" id="3j7-jS-zrs">
                                                                         <rect key="frame" x="0.0" y="0.0" width="375" height="193"/>
                                                                         <color key="backgroundColor" red="0.65490196079999996" green="0.65490196079999996" blue="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                        <constraints>
-                                                                            <constraint firstAttribute="height" constant="193" id="d9O-L3-d6o"/>
-                                                                        </constraints>
                                                                     </imageView>
                                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Nkh-8I-zv1">
-                                                                        <rect key="frame" x="0.0" y="155" width="375" height="66"/>
+                                                                        <rect key="frame" x="0.0" y="155" width="375" height="70"/>
                                                                         <subviews>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Sheraton Vistana Village" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ko0-QF-n5p" userLabel="ResortName">
-                                                                                <rect key="frame" x="10" y="4" width="355" height="24.5"/>
+                                                                                <rect key="frame" x="10" y="4" width="355" height="25.5"/>
                                                                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
                                                                                 <color key="textColor" red="0.0" green="0.46666666670000001" blue="0.74509803919999995" alpha="1" colorSpace="calibratedRGB"/>
                                                                                 <nil key="highlightedColor"/>
                                                                             </label>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Orlando, Florida" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DAJ-ZN-dgN" userLabel="ResortAddress">
-                                                                                <rect key="frame" x="10" y="29.5" width="355" height="17.5"/>
+                                                                                <rect key="frame" x="10" y="30.5" width="355" height="17.5"/>
                                                                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                                                                                 <nil key="textColor"/>
                                                                                 <nil key="highlightedColor"/>
                                                                             </label>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SVV" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lvn-cr-yW7">
-                                                                                <rect key="frame" x="12" y="51" width="29" height="18"/>
+                                                                                <rect key="frame" x="12" y="52" width="29" height="18"/>
                                                                                 <constraints>
                                                                                     <constraint firstAttribute="height" constant="18" id="7XS-tY-MNe"/>
                                                                                 </constraints>
@@ -1637,7 +1634,7 @@ transaction.</string>
                                                                                 <nil key="highlightedColor"/>
                                                                             </label>
                                                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="Uv3-Pq-VmV">
-                                                                                <rect key="frame" x="51" y="51" width="45" height="20"/>
+                                                                                <rect key="frame" x="51" y="50" width="45" height="20"/>
                                                                                 <subviews>
                                                                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="x9h-5i-kZi">
                                                                                         <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
@@ -1656,19 +1653,22 @@ transaction.</string>
                                                                                         </constraints>
                                                                                     </imageView>
                                                                                 </subviews>
+                                                                                <constraints>
+                                                                                    <constraint firstItem="jYU-r2-5ma" firstAttribute="leading" secondItem="x9h-5i-kZi" secondAttribute="trailing" constant="5" id="gUR-79-LBn"/>
+                                                                                </constraints>
                                                                             </stackView>
                                                                         </subviews>
                                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                                         <constraints>
-                                                                            <constraint firstAttribute="bottom" secondItem="Lvn-cr-yW7" secondAttribute="bottom" constant="-3" id="04N-oF-Lsq"/>
                                                                             <constraint firstItem="ko0-QF-n5p" firstAttribute="leading" secondItem="Nkh-8I-zv1" secondAttribute="leading" constant="10" id="1hN-S0-iQU"/>
                                                                             <constraint firstItem="Lvn-cr-yW7" firstAttribute="top" secondItem="DAJ-ZN-dgN" secondAttribute="bottom" constant="4" id="5U2-O4-Knu"/>
-                                                                            <constraint firstAttribute="height" constant="66" id="91N-TU-djY"/>
+                                                                            <constraint firstAttribute="height" constant="70" id="91N-TU-djY"/>
                                                                             <constraint firstAttribute="trailing" secondItem="DAJ-ZN-dgN" secondAttribute="trailing" constant="10" id="FfY-As-yqp"/>
                                                                             <constraint firstItem="DAJ-ZN-dgN" firstAttribute="top" secondItem="ko0-QF-n5p" secondAttribute="bottom" constant="1" id="Fgv-JH-CnF"/>
+                                                                            <constraint firstAttribute="bottom" secondItem="Lvn-cr-yW7" secondAttribute="bottom" id="RXS-dh-Q6N"/>
                                                                             <constraint firstItem="DAJ-ZN-dgN" firstAttribute="leading" secondItem="Nkh-8I-zv1" secondAttribute="leading" constant="10" id="XTH-Do-Iad"/>
                                                                             <constraint firstAttribute="trailing" secondItem="ko0-QF-n5p" secondAttribute="trailing" constant="10" id="bbh-8V-glm"/>
-                                                                            <constraint firstItem="Uv3-Pq-VmV" firstAttribute="top" secondItem="DAJ-ZN-dgN" secondAttribute="bottom" constant="4" id="cTY-pe-SLi"/>
+                                                                            <constraint firstAttribute="bottom" secondItem="Uv3-Pq-VmV" secondAttribute="bottom" id="eOD-UV-NKZ"/>
                                                                             <constraint firstItem="ko0-QF-n5p" firstAttribute="top" secondItem="Nkh-8I-zv1" secondAttribute="top" constant="4" id="fWd-9o-9E8"/>
                                                                             <constraint firstItem="Uv3-Pq-VmV" firstAttribute="leading" secondItem="Lvn-cr-yW7" secondAttribute="trailing" constant="10" id="ytu-Yn-xgp"/>
                                                                             <constraint firstItem="Lvn-cr-yW7" firstAttribute="leading" secondItem="Nkh-8I-zv1" secondAttribute="leading" constant="12" id="zAw-Aw-k1p"/>
@@ -1689,7 +1689,8 @@ transaction.</string>
                                                                 <constraint firstAttribute="trailingMargin" secondItem="Nkh-8I-zv1" secondAttribute="trailing" constant="-8" id="Jm5-TI-iaU"/>
                                                                 <constraint firstItem="Nkh-8I-zv1" firstAttribute="leading" secondItem="iVh-tG-H2p" secondAttribute="leadingMargin" constant="-8" id="NL1-63-O4v"/>
                                                                 <constraint firstItem="Tmo-2Z-5so" firstAttribute="top" secondItem="iVh-tG-H2p" secondAttribute="topMargin" constant="-6" id="VJD-l5-cqk"/>
-                                                                <constraint firstAttribute="bottomMargin" secondItem="Nkh-8I-zv1" secondAttribute="bottom" constant="4" id="fn0-YU-xBQ"/>
+                                                                <constraint firstAttribute="bottomMargin" secondItem="Nkh-8I-zv1" secondAttribute="bottom" id="fn0-YU-xBQ"/>
+                                                                <constraint firstAttribute="bottom" secondItem="3j7-jS-zrs" secondAttribute="bottom" constant="40" id="gZD-wt-fVz"/>
                                                                 <constraint firstItem="3j7-jS-zrs" firstAttribute="top" secondItem="iVh-tG-H2p" secondAttribute="topMargin" constant="-8" id="l6E-vU-zjX"/>
                                                                 <constraint firstAttribute="trailingMargin" secondItem="3j7-jS-zrs" secondAttribute="trailing" constant="-8" id="qXW-rF-gEj"/>
                                                                 <constraint firstItem="3j7-jS-zrs" firstAttribute="leading" secondItem="iVh-tG-H2p" secondAttribute="leadingMargin" constant="-8" id="tNO-jT-Axm"/>
@@ -5665,6 +5666,7 @@ to confirm a larger unit.</string>
                                                     <subviews>
                                                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="G9n-JQ-bOq">
                                                             <rect key="frame" x="10" y="5" width="298" height="24"/>
+                                                            <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                             <color key="textColor" red="0.65490196079999996" green="0.65490196079999996" blue="0.66666666669999997" alpha="1" colorSpace="calibratedRGB"/>
                                                             <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="17"/>
                                                             <textInputTraits key="textInputTraits"/>
@@ -7554,9 +7556,9 @@ transaction.</string>
         <segue reference="4Eo-F1-CbC"/>
         <segue reference="kmp-5Q-mdc"/>
         <segue reference="0uV-Eo-2bn"/>
-        <segue reference="jTg-f9-AVL"/>
-        <segue reference="ryk-nj-17Y"/>
-        <segue reference="sGp-zH-9TZ"/>
+        <segue reference="KRw-si-7MT"/>
+        <segue reference="u0k-hc-uRI"/>
+        <segue reference="4gU-cx-AAf"/>
         <segue reference="Uce-OZ-bfJ"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>

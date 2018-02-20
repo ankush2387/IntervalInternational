@@ -114,8 +114,11 @@ final class AppCoordinator {
         Constant.MyClassConstants.favoritesResortCodeArray.removeAll()
         //Remove all saved alerts for a user.
         Constant.MyClassConstants.getawayAlertsArray.removeAll()
+        Constant.MyClassConstants.searchDateResponse.removeAll()
         Constant.MyClassConstants.isLoginSuccessfull = false
         Constant.MyClassConstants.sideMenuOptionSelected = Constant.MyClassConstants.resortFunctionalityCheck
+        
+        Constant.MyClassConstants.memberCreditCardList.removeAll()
         
         // TODO: - Need to refactor code/calls above
         

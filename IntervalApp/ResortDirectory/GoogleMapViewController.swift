@@ -310,7 +310,7 @@ class GoogleMapViewController: UIViewController {
                         let storedata = RealmLocalStorage()
                         let Membership = Session.sharedSession.selectedMembership
                         let desList = DestinationList()
-                        desList.aoid = dictValue.aoiId
+                        desList.aoid = dictValue.aoiId ?? ""
                         desList.countryCode = dictValue.address?.countryCode ?? ""
                         desList.destinationId = dictValue.destinationId
                         desList.destinationName = dictValue.destinationName

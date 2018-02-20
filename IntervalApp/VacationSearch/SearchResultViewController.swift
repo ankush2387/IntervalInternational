@@ -697,32 +697,21 @@ class SearchResultViewController: UIViewController {
     }
     
     // MARK: - Call for membership
-    func checkUserMembership(response: RentalProcessPrepareResponse) {
-        UserClient.updateSessionAndGetCurrentMembership(Session.sharedSession.userAccessToken, membershipNumber: Session.sharedSession.selectedMembership?.memberNumber ?? "", onSuccess: { membership in
-            Session.sharedSession.selectedMembership = membership
-            
-            // Got an access token!  Save it for later use.
-            self.hideHudAsync()
-            if let contacts = membership.contacts {
-                Constant.MyClassConstants.membershipContactArray = contacts
-            }
-            let mainStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
-            
-            if response.view?.forceRenewals != nil {
-                // Navigate to Renewals Screen
-                guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.RenewelViewController) as? RenewelViewController else { return }
-                viewController.delegate = self
-                self.present(viewController, animated: true, completion: nil)
-            } else {
-                // Navigate to Who Will Be Checking in Screen
-                guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: SearchResultViewController.whoWillBeCheckingInViewController) as? WhoWillBeCheckingInViewController else { return }
-                self.navigationController?.pushViewController(viewController, animated: true)
-            }
-            
-        }, onError: { [weak self] error in
-            self?.hideHudAsync()
-            self?.presentErrorAlert(UserFacingCommonError.handleError(error))
-        })
+    func checkForceRenewals(response: RentalProcessPrepareResponse) {
+        
+        let mainStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+        if response.view?.forceRenewals != nil {
+            // Navigate to Renewals Screen
+            guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.RenewelViewController) as? RenewelViewController else { return hideHudAsync() }
+            viewController.delegate = self
+            hideHudAsync()
+            present(viewController, animated: true, completion: nil)
+        } else {
+            // Navigate to Who Will Be Checking in Screen
+            hideHudAsync()
+            guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: SearchResultViewController.whoWillBeCheckingInViewController) as? WhoWillBeCheckingInViewController else { return }
+            navigationController?.pushViewController(viewController, animated: true)
+        }
     }
     
     func favoriteButtonclicked(_ sender: UIButton) {
@@ -954,15 +943,18 @@ extension SearchResultViewController: UICollectionViewDelegate {
                     }
                     processRequest.unit = units[indexPath.item]
                     
-                    if let checkInDate = inventory?.checkInDate, let checkOutDate = inventory?.checkOutDate, let unitSize =  inventory?.units[indexPath.item].unitSize, let kitchenType = inventory?.units[indexPath.item].kitchenType {
-                        
-                        let processRequest1 = RentalProcessStartRequest(resortCode: Constant.MyClassConstants.selectedResort.resortCode,
+                    let checkInDate = inventory?.checkInDate ?? ""
+                    let checkOutDate = inventory?.checkOutDate ?? ""
+                    let unitSize = inventory?.units[indexPath.item].unitSize ?? ""
+                    let kitchenType = inventory?.units[indexPath.item].kitchenType ?? ""
+                    
+                    let processRequest1 = RentalProcessStartRequest(resortCode: Constant.MyClassConstants.selectedResort.resortCode,
                                                                         checkInDate: checkInDate,
                                                                         checkOutDate: checkOutDate,
                                                                         unitSize: UnitSize(rawValue: unitSize),
                                                                         kitchenType: KitchenType(rawValue:kitchenType))
                         
-                        RentalProcessClient.start(Session.sharedSession.userAccessToken, process: processResort, request: processRequest1, onSuccess: { response in
+                        RentalProcessClient.start(Session.sharedSession.userAccessToken, process: processResort, request: processRequest1, onSuccess: {[unowned self] response in
                             
                             let processResort = RentalProcess()
                             processResort.processId = response.processId
@@ -986,7 +978,6 @@ extension SearchResultViewController: UICollectionViewDelegate {
                                 if !amenity.nearby {
                                     
                                     Constant.MyClassConstants.onsiteArray.add(amenityName)
-                                    
                                     Constant.MyClassConstants.onsiteString = Constant.MyClassConstants.onsiteString.appending(amenityName)
                                     Constant.MyClassConstants.onsiteString = Constant.MyClassConstants.onsiteString.appending("\n")
                                     
@@ -997,13 +988,12 @@ extension SearchResultViewController: UICollectionViewDelegate {
                                 }
                             }
                             
-                            // MARK: - Check forced renewals before calling membership
-                            self.checkUserMembership(response: response)
+                            // MARK: - Check forced renewals and redirect user to what to user or who will be checking In
+                            self.checkForceRenewals(response: response)
                         }, onError: { [weak self] error in
                             self?.hideHudAsync()
                             self?.presentErrorAlert(UserFacingCommonError.handleError(error))
                         })
-                    }
                     
                 } else { // search both
                     selectedSection = collectionView.superview?.superview?.tag ?? 0

@@ -1862,6 +1862,7 @@
 				619F1F791F92EBA4003A797B /* Git Revision Update */,
 				3CA1FEB61F9A830400CE0387 /* Reveal */,
 				3C0F1CBE1FBB4C9800AACFDC /* Swiftlint */,
+				3CABE667203C97F700C8EC15 /* Bugsee */,
 			);
 			buildRules = (
 			);
@@ -2049,6 +2050,20 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "REVEAL_APP_PATH=$(mdfind kMDItemCFBundleIdentifier=\"com.ittybittyapps.Reveal2\" | head -n 1)\nBUILD_SCRIPT_PATH=\"${REVEAL_APP_PATH}/Contents/SharedSupport/Scripts/reveal_server_build_phase.sh\"\nif [ \"${REVEAL_APP_PATH}\" -a -e \"${BUILD_SCRIPT_PATH}\" ]; then\n\"${BUILD_SCRIPT_PATH}\"\nelse\necho \"Reveal Server not loaded: Cannot find a compatible Reveal app.\"\nfi";
+		};
+		3CABE667203C97F700C8EC15 /* Bugsee */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = Bugsee;
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "SCRIPT_SRC=$(find \"$PROJECT_DIR\" -name 'BugseeAgent' | head -1)\nif [ ! \"${SCRIPT_SRC}\" ]; then\necho \"Error: BugseeAgent script not found.\"\necho \"If you link Bugsee.framework from outside the project folder, please copy the script\"\necho \"into your main project directory or manually update SCRIPT_SRC variable with the right path\"\nexit 1\nfi\n/usr/bin/python \"${SCRIPT_SRC}\" 02c07b72-bc9d-4eb2-81e0-00618d14db8b\n";
 		};
 		425319106C440EA7C3FCA03A /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -2714,6 +2729,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 80;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 4CR2ZD7GRK;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -2753,6 +2769,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 80;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 4CR2ZD7GRK;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (

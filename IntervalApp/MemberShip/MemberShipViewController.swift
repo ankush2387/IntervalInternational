@@ -47,30 +47,41 @@ class MemberShipViewController: UIViewController {
         if let memberNo = Session.sharedSession.selectedMembership?.memberNumber {
             Constant.MyClassConstants.memberNumber = memberNo
         }
+        guard let accessToken = Session.sharedSession.userAccessToken else { return }
         
-        UserClient.updateSessionAndGetCurrentMembership(Session.sharedSession.userAccessToken, membershipNumber: Session.sharedSession.selectedMembership?.memberNumber ?? "", onSuccess: { membership in
-            Session.sharedSession.selectedMembership = membership
-            if let ownerships = membership.ownerships {
-                self.ownershipArray = ownerships
-            }
-            
-            if let products = membership.products {
-                self.membershipProductsArray = products
-            }
-            
-            self.membershipProductsArray.sort { $0.coreProduct && !$1.coreProduct } //sort Array coreProduct First Element
-            //arrange array elements highestTier in second position
-            if self.membershipProductsArray.count > 2 {
-                for (index, prod) in self.membershipProductsArray.enumerated()  where prod.highestTier == true {
-                    self.membershipProductsArray.remove(at: index)
-                    self.membershipProductsArray.insert(prod, at: 1)
+        ClientAPI.sharedInstance.readMembership(for: accessToken, and: Session.sharedSession.selectedMembership?.memberNumber ?? "")
+            .then { newMembership in
+                Session.sharedSession.selectedMembership = newMembership
+                if let membershipContacts = newMembership.contacts {
+                    let contact = membershipContacts.filter {
+                        $0.firstName == self.contactInfo.firstName && $0.lastName == self.contactInfo.lastName }.last
+                    Session.sharedSession.contact?.isPrimary = contact?.isPrimary
                 }
+                if let contact = Session.sharedSession.contact {
+                    self.contactInfo = contact
+                }
+                if let ownerships = newMembership.ownerships {
+                    self.ownershipArray = ownerships
+                }
+                
+                if let products = newMembership.products {
+                    self.membershipProductsArray = products
+                }
+                
+                self.membershipProductsArray.sort { $0.coreProduct && !$1.coreProduct } //sort Array coreProduct First Element
+                //arrange array elements highestTier in second position
+                if self.membershipProductsArray.count > 2 {
+                    for (index, prod) in self.membershipProductsArray.enumerated()  where prod.highestTier == true {
+                        self.membershipProductsArray.remove(at: index)
+                        self.membershipProductsArray.insert(prod, at: 1)
+                    }
+                }
+                self.tableView.reloadData()
+                self.hideHudAsync()
             }
-            self.tableView.reloadData()
-            self.hideHudAsync()
-        }) {[unowned self] error in
-            self.hideHudAsync()
-            self.presentErrorAlert(UserFacingCommonError.custom(title: "Error".localized(), body: error.localizedDescription))
+            .onError { [unowned self] error in
+                self.hideHudAsync()
+                self.presentErrorAlert(UserFacingCommonError.handleError(error))
         }
     }
     // MARK: Display menu button
@@ -100,7 +111,9 @@ class MemberShipViewController: UIViewController {
         let context = Session.sharedSession
         UserClient.updateSessionAndGetCurrentMembership(Session.sharedSession.userAccessToken, membershipNumber: Session.sharedSession.selectedMembership?.memberNumber ?? "", onSuccess: { membership in
             Session.sharedSession.selectedMembership = membership
-                                        
+            if let membershipContacts = membership.contacts {
+                Constant.MyClassConstants.membershipContactArray = membershipContacts
+            } else { Constant.MyClassConstants.membershipContactArray.removeAll() }
             //***** Done!  Segue to the Home page *****//
             self.dismiss(animated: true, completion: nil)
             self.getContactMembershipInfo()
@@ -309,7 +322,6 @@ extension MemberShipViewController: UITableViewDelegate {
                 self.present(alert, animated: true, completion: nil)
                 
             }
-            
         }
     }
     
