@@ -908,7 +908,7 @@ class Constant: NSObject {
         static var ownershipUnits = "Ownership/Units".localized()
         static var resortDirectory = "Resort Directory".localized()
         static var intervalHD = "Interval HD".localized()
-        static var magazines = "Magazines".localized()
+        static var magazines = "Magazine".localized()
         static var signOut = "Sign Out".localized()
         
     }
