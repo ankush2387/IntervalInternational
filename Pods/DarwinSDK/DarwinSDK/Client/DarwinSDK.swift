@@ -176,6 +176,9 @@ open class DarwinSDK {
             NSLocalizedDescriptionKey: friendlyErrorMsg as Any,
             "apiErrorCode": "" as Any,
             "apiErrorDescription": "" as Any,
+            "accountLocked": false as Any,
+            "loginAttempts": 1 as Any,
+            "lockedReasons": "" as Any,
             "correlationId": "" as Any
         ]
         
@@ -186,11 +189,14 @@ open class DarwinSDK {
             userInfo["apiErrorDescription"] = errorDesc as Any
             userInfo[NSLocalizedDescriptionKey] = errorDesc as Any
         }
-        if let accountLocked = json["accountLocked"].bool {
+        if let accountLocked = json["accountLocked"].string {
             userInfo["accountLocked"] = accountLocked
         }
-        if let loginAttemps = json["loginAttemps"].int {
-            userInfo["loginAttemps"] = loginAttemps
+        if let loginAttempts = json["loginAttempts"].int {
+            userInfo["loginAttempts"] = loginAttempts
+        }
+        if let lockedReasons = json["reasons"].array {
+            userInfo["lockedReasons"] = lockedReasons.map { $0.string! }
         }
         if let _ = json["support"].dictionary, let _ = json["support"]["cause"].dictionary,
             let correlationId = json["support"]["cause"]["correlationId"].string {

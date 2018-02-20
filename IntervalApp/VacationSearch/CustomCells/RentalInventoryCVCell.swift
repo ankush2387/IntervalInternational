@@ -29,10 +29,11 @@ class RentalInventoryCVCell: UICollectionViewCell {
                 imgViewGetaway.isHidden = false
                 getawayPrice.isHidden = true
             } else {
-                let price = Float(unit.prices[0].price)
-                if let attributedAmount = price.currencyFormatter(for:code) {
-                    getawayPrice.attributedText = attributedAmount
+                if let currentMembership = Session.sharedSession.selectedMembership, let bestRentalPrice = IntervalHelper.getBestRentalPrice(currentMembership, prices: unit.prices),
+                    let priceToDisplay = bestRentalPrice.price.currencyFormatter(for:code) {
+                    getawayPrice.attributedText = priceToDisplay
                 }
+                
                 getawayNameLabel.text = "Per Week"
                 imgViewGetaway.isHidden = true
             }

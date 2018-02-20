@@ -110,5 +110,29 @@ open class InventoryUnit {
         }
         return nil
     }
+
+    open func detailsAsString() -> String {
+        var s = ""
+        
+        if let unitSize = self.unitSize {
+            s += unitSize
+        }
+        
+        if let kitchenType = self.kitchenType {
+            if !s.isEmpty {
+                s += ", "
+            }
+            s += kitchenType
+        }
+        
+        if let unitNumber = self.unitNumber {
+            if !s.isEmpty {
+                s += ", "
+            }
+            s += unitNumber
+        }
+        
+        return s
+    }
     
 }

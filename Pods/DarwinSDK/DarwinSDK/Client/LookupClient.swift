@@ -39,8 +39,10 @@ open class LookupClient {
                         
                         // Clean up countries
                         for country in countryList {
-                            if country.countryCode!.trim()!.characters.count == 3 {
-                                countries.append(country)
+                            if let code = country.countryCode, let cleanCode = code.trim() {
+                                if cleanCode.count == 3 {
+                                    countries.append(country)
+                                }
                             }
                         }
                         
@@ -91,9 +93,12 @@ open class LookupClient {
                         let stateList = json.arrayValue.map { State(json: $0) }
                         var states = [State]()
                         
+                        // Clean up states
                         for state in stateList {
-                            if state.code!.trim()!.characters.count > 0 && state.code!.trim()!.characters.count > 0 {
-                                states.append(state)
+                            if let code = state.code, let cleanCode = code.trim(), let name = state.name, let cleanName = name.trim() {
+                                if cleanCode.count > 0 && cleanName.count > 0 {
+                                    states.append(state)
+                                }
                             }
                         }
                         
