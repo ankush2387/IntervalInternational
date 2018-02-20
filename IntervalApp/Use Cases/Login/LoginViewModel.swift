@@ -87,11 +87,14 @@ final class LoginViewModel {
     func normalLogin() -> Promise<Void> {
         isLoggingIn.next(true)
         return Promise { [unowned self] _, reject in
-            let loginError = UserFacingCommonError.custom(title: "Error".localized(),
-                                                          body: "It appears we are not able to log you in. If the problem persists, please contact Interval International.".localized())
+            
             self.saveCredentials()
                 .then(self.login(userName: self.username.value.unwrappedString, password: self.password.value.unwrappedString))
-                .onError { _ in reject(loginError) }
+                .onError { error in
+                    let message = (error as NSError).userInfo[NSLocalizedDescriptionKey]
+                    let loginError = UserFacingCommonError.custom(title: "Error".localized(), body: message.unwrappedString)
+                    reject(loginError)
+                }
         }
     }
     

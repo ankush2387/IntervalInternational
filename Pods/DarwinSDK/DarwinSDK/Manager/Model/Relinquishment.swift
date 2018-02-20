@@ -99,7 +99,7 @@ open class Relinquishment {
                 lockOffUnits = value.lockOffUnits
             }
             // Clean unit if only comes lock-offs
-            if value.unitNumber == nil {
+            if let unitNumber = value.unitNumber, unitNumber.isEmpty {
                 unit = nil
             }
         }

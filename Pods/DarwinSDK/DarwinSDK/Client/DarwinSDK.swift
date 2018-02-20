@@ -106,7 +106,7 @@ open class DarwinSDK {
     }
     
     open static func parseDarwinError(statusCode:Int, json:JSON) -> NSError {
-        let friendlyErrorMsg = "We’re sorry, we are unable to process your request at this time. Please contact your local servicing office for assistance"
+        let friendlyErrorMsg = "We’re sorry, we are unable to process your request at this time. Please contact your local servicing office for assistance."
         
         var userInfo: [String:Any] = [
             NSLocalizedDescriptionKey: friendlyErrorMsg as Any,
@@ -170,13 +170,13 @@ open class DarwinSDK {
     }
     
     open static func parseDarwinAuthError(statusCode:Int, json:JSON) -> NSError {
-        let friendlyErrorMsg = "We’re sorry, we are unable to log you in at this time. Please contact your local servicing office for assistance"
+        let friendlyGeneralErrorMsg = "We’re sorry, we are unable to log you in at this time. Please contact your local servicing office for assistance."
+        let friendlyAccountLockedErrorMsg = "Your account has been locked. Select from the Help menu for further assistance."
         
         var userInfo: [String:Any] = [
-            NSLocalizedDescriptionKey: friendlyErrorMsg as Any,
+            NSLocalizedDescriptionKey: friendlyGeneralErrorMsg as Any,
             "apiErrorCode": "" as Any,
             "apiErrorDescription": "" as Any,
-            "accountLocked": false as Any,
             "loginAttempts": 1 as Any,
             "lockedReasons": "" as Any,
             "correlationId": "" as Any
@@ -187,23 +187,30 @@ open class DarwinSDK {
         }
         if let errorDesc = json["error_description"].string {
             userInfo["apiErrorDescription"] = errorDesc as Any
-            userInfo[NSLocalizedDescriptionKey] = errorDesc as Any
-        }
-        if let accountLocked = json["accountLocked"].string {
-            userInfo["accountLocked"] = accountLocked
         }
         if let loginAttempts = json["loginAttempts"].int {
             userInfo["loginAttempts"] = loginAttempts
         }
         if let lockedReasons = json["reasons"].array {
-            userInfo["lockedReasons"] = lockedReasons.map { $0.string! }
+            let reasons = lockedReasons.map { $0.string! }
+            userInfo["lockedReasons"] = reasons
+            
+            // Overwrite the code based in Reasons
+            if !reasons.isEmpty {
+                userInfo["apiErrorCode"] = reasons[0] as Any
+                
+                // Overwrite the description based in Reasons if contains the value ACCOUNT_LOCKED
+                if reasons.contains("ACCOUNT_LOCKED") {
+                    userInfo[NSLocalizedDescriptionKey] = friendlyAccountLockedErrorMsg as Any
+                }
+            }
         }
         if let _ = json["support"].dictionary, let _ = json["support"]["cause"].dictionary,
             let correlationId = json["support"]["cause"]["correlationId"].string {
             userInfo["correlationId"] = correlationId as Any
         }
         
-        let error = NSError(domain: "com.intervalintl.darwin", code: statusCode, userInfo: userInfo)
+        let error = NSError(domain: "com.intervalintl.DarwinSDK", code: statusCode, userInfo: userInfo)
         DarwinSDK.logger.error("\(error.code): \(error.description)")
         return error
     }
