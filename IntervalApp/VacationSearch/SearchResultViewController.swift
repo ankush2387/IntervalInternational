@@ -74,10 +74,7 @@ class SearchResultViewController: UIViewController {
             if !inventory.isEmpty {
                 let currencycode = inventory[0].inventory?.currencyCode ?? ""
                 let currencyHelper = CurrencyHelper()
-                var countryCode = ""
-                if let addresses = Session.sharedSession.contact?.addresses {
-                    countryCode = addresses[0].countryCode.unwrappedString
-                }
+                let countryCode = Session.sharedSession.contact?.getCountryCode() ?? ""
                 
                 currencyCode = ("\(currencyHelper.getCurrencyFriendlySymbol(currencyCode: currencycode, countryCode: countryCode))")
                 

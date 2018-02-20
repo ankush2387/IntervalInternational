@@ -77,10 +77,7 @@ class VacationSearchResultIPadController: UIViewController {
             let inventoryData = Constant.MyClassConstants.resortsArray[0].inventory
             if let code = inventoryData?.currencyCode {
                 let currencyHelper = CurrencyHelper()
-                var countryCode = ""
-                if let addresses = Session.sharedSession.contact?.addresses {
-                    countryCode = addresses[0].countryCode.unwrappedString
-                }
+                let countryCode = Session.sharedSession.contact?.getCountryCode() ?? ""
                 
                 currencyCode = ("\(currencyHelper.getCurrencyFriendlySymbol(currencyCode: code, countryCode: countryCode))")
             }
