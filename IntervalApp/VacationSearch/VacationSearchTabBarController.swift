@@ -32,10 +32,10 @@ extension VacationSearchTabBarController: UITabBarControllerDelegate {
     override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
         guard let items = tabBar.items else { return }
         if items.index(of: item) == 0 {
-            self.title = Constant.ControllerTitles.vacationSearchTabBarController
+            title = Constant.ControllerTitles.vacationSearchTabBarController
         } else {
             self.navigationItem.rightBarButtonItem = nil
-            self.title = Constant.ControllerTitles.accomodationCertsDetailController
+            title = Constant.ControllerTitles.accomodationCertsDetailController
         }
     }
 }
