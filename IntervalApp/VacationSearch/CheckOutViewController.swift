@@ -111,8 +111,17 @@ class CheckOutViewController: UIViewController {
                 }
             }
             
-            if let _ = Constant.MyClassConstants.rentalFees[0].insurance?.insuranceOfferHTML {
+            if let insurance = Constant.MyClassConstants.rentalFees[0].insurance?.insuranceOfferHTML {
                 showInsurance = true
+                if let isInsuranceSelected = Constant.MyClassConstants.rentalFees[0].insurance?.selected {
+                    if isInsuranceSelected {
+                        showInsurance = true
+                        self.isTripProtectionEnabled = true
+                    } else {
+                        showInsurance = false
+                        self.isTripProtectionEnabled = false
+                    }
+                }
             } else {
                 showInsurance = false
             }
@@ -535,7 +544,7 @@ class CheckOutViewController: UIViewController {
                 })
             }
         }
-        self.present(promotionsNav, animated: true, completion: nil)
+        present(promotionsNav, animated: true)
     }
     
     //***** Function called when cross button is clicked in email text field. *****//
@@ -1146,8 +1155,9 @@ extension CheckOutViewController: UITableViewDataSource {
                 if showInsurance && !Constant.MyClassConstants.isFromExchange {
                     guard let str = Constant.MyClassConstants.rentalFees[indexPath.row].insurance?.insuranceOfferHTML else { return cell }
                     cellWebView.loadHTMLString(str, baseURL: nil)
-                    //let noRadioValue = "document.getElementById('WASCInsuranceOfferOption1').value = true;"
-                    //cellWebView.reload()
+                    let noRadioValue = "document.getElementById('WASCInsuranceOfferOption1').checked  = true;"
+                    checkoutOptionTBLview.beginUpdates()
+                    checkoutOptionTBLview.endUpdates()
                 } else {
                     guard let str = Constant.MyClassConstants.exchangeFees[indexPath.row].insurance?.insuranceOfferHTML else { return cell }
                     cellWebView.loadHTMLString(str, baseURL: nil)
