@@ -854,8 +854,10 @@ extension VacationSearchViewController: UITableViewDataSource {
                         
                         guard let cell = tableView.dequeueReusableCell(withIdentifier: "WhereToGoContentCell", for: indexPath) as? WhereToGoContentCell else { return UITableViewCell() }
                         
-                        cell.bedroomLabel.numberOfLines = 0
-                        cell.bedroomLabel.lineBreakMode = .byWordWrapping
+                        [cell.whereTogoTextLabel, cell.bedroomLabel].forEach {
+                            $0?.numberOfLines = 0
+                            $0?.lineBreakMode = .byWordWrapping
+                        }
                         
                         if indexPath.row == Constant.MyClassConstants.whatToTradeArray.count - 1 {
                             cell.sepratorOr.isHidden = true
