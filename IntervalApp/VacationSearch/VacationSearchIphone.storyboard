@@ -4587,19 +4587,13 @@ to confirm a larger unit.</string>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3EK-dq-PJe">
-                                                    <rect key="frame" x="20" y="10" width="335" height="20"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="20" id="47x-tL-1FA"/>
-                                                    </constraints>
+                                                    <rect key="frame" x="20" y="10" width="335" height="0.0"/>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IBN-4K-q23">
-                                                    <rect key="frame" x="27" y="30" width="321" height="18"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="18" id="cq6-LM-Gt6"/>
-                                                    </constraints>
+                                                    <rect key="frame" x="27" y="10" width="321" height="18"/>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                                                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
@@ -7557,7 +7551,7 @@ transaction.</string>
         <segue reference="kmp-5Q-mdc"/>
         <segue reference="0uV-Eo-2bn"/>
         <segue reference="KRw-si-7MT"/>
-        <segue reference="u0k-hc-uRI"/>
+        <segue reference="ryk-nj-17Y"/>
         <segue reference="4gU-cx-AAf"/>
         <segue reference="Uce-OZ-bfJ"/>
     </inferredMetricsTieBreakers>
