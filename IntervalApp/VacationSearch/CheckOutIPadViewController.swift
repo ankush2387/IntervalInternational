@@ -156,8 +156,12 @@ class CheckOutIPadViewController: UIViewController {
                 
                 guard let curCode = Constant.MyClassConstants.exchangeFees[0].currencyCode else { return }
                 let currencyHelper = CurrencyHelper()
-                let currency = currencyHelper.getCurrency(currencyCode: curCode)
-                currencyCode = ("\(currencyHelper.getCurrencyFriendlySymbol(currencyCode: currency.code))")
+                var countryCode = ""
+                if let addresses = Session.sharedSession.contact?.addresses {
+                    countryCode = addresses[0].countryCode.unwrappedString
+                }
+                
+                currencyCode = ("\(currencyHelper.getCurrencyFriendlySymbol(currencyCode: curCode, countryCode: countryCode))")
             }
         } else {
             for advisement in (Constant.MyClassConstants.viewResponse.resort?.advisements)! {
@@ -176,8 +180,12 @@ class CheckOutIPadViewController: UIViewController {
             
             guard let curCode = Constant.MyClassConstants.rentalFees[0].currencyCode else { return }
             let currencyHelper = CurrencyHelper()
-            let currency = currencyHelper.getCurrency(currencyCode: curCode)
-            currencyCode = ("\(currencyHelper.getCurrencyFriendlySymbol(currencyCode: currency.code))")
+            var countryCode = ""
+            if let addresses = Session.sharedSession.contact?.addresses {
+                countryCode = addresses[0].countryCode.unwrappedString
+            }
+            
+            currencyCode = ("\(currencyHelper.getCurrencyFriendlySymbol(currencyCode: curCode, countryCode: countryCode))")
             
         }
         
