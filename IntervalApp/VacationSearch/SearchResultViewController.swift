@@ -942,16 +942,16 @@ extension SearchResultViewController: UICollectionViewDelegate {
                     }
                     processRequest.unit = units[indexPath.item]
                     
-                    let checkInDate = inventory?.checkInDate.unwrappedString
-                    let checkOutDate = inventory?.checkOutDate.unwrappedString
-                    let unitSize =  inventory?.units[indexPath.item].unitSize.unwrappedString
-                    let kitchenType = inventory?.units[indexPath.item].kitchenType
+                    let checkInDate = inventory?.checkInDate ?? ""
+                    let checkOutDate = inventory?.checkOutDate ?? ""
+                    let unitSize = inventory?.units[indexPath.item].unitSize ?? ""
+                    let kitchenType = inventory?.units[indexPath.item].kitchenType ?? ""
                     
                     let processRequest1 = RentalProcessStartRequest(resortCode: Constant.MyClassConstants.selectedResort.resortCode,
                                                                         checkInDate: checkInDate,
                                                                         checkOutDate: checkOutDate,
-                                                                        unitSize: UnitSize(rawValue: unitSize.unwrappedString),
-                                                                        kitchenType: KitchenType(rawValue:kitchenType.unwrappedString))
+                                                                        unitSize: UnitSize(rawValue: unitSize),
+                                                                        kitchenType: KitchenType(rawValue:kitchenType))
                         
                         RentalProcessClient.start(Session.sharedSession.userAccessToken, process: processResort, request: processRequest1, onSuccess: {[unowned self] response in
                             
