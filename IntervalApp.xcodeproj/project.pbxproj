@@ -2732,7 +2732,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer: Aylwing Olivas (BK2HSFRB8Y)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 81;
+				CURRENT_PROJECT_VERSION = 82;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 4CR2ZD7GRK;
 				ENABLE_BITCODE = NO;
@@ -2772,7 +2772,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer: Aylwing Olivas (BK2HSFRB8Y)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 81;
+				CURRENT_PROJECT_VERSION = 82;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 4CR2ZD7GRK;
 				ENABLE_BITCODE = NO;
