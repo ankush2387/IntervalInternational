@@ -8,15 +8,15 @@
 
 import UIKit
 
-protocol onboardingDelegate: class {
-    
-    func dismisOnboarding()
-}
-
 class OnboardingContainerviewController: UIViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
     
-    weak var delegate: onboardingDelegate?
+    var OnboardingCompletionStatus: ((Bool) ->())?
     
+    var OnboardingCompleted = Bool () {
+        didSet {
+            OnboardingCompletionStatus?(OnboardingCompleted)
+        }
+    }
     var needToUpdatePageControl = true
     var pageViewController: UIPageViewController?
     var pageControl = UIPageControl()
@@ -25,12 +25,12 @@ class OnboardingContainerviewController: UIViewController, UIPageViewControllerD
     var handler: (Bool) -> Void = { _ in }
     let imageNames = ["Exchange Illustration", "EX+GA Illustration", "Usage Illustration", "Multi-Des Illustration", "Upcoming Trips Illustration", "TouchID Illustration"]
     let cardTitle = "What's New"
-    let cardTopicTitles = ["Exchange Like Never Before.",
-                           "Exchange + Getaways Combined",
-                           "Choose What To Use",
-                           "Search Multiple Destinations",
-                           "Upcoming Trips",
-                           "Fast Touch Login"]
+    let cardTopicTitles = ["Exchange Like Never Before.".localized(),
+                           "Exchange + Getaways Combined".localized(),
+                           "Choose What To Use".localized(),
+                           "Search Multiple Destinations".localized(),
+                           "Upcoming Trips".localized(),
+                           "Fast Touch Login".localized()]
     let cardTopicDescription = ["This is what we call a game changer. Exclusively on the App, you can search for an exchange using any of your available weeks or points.".localized(),
                                 "We've made it easier to see your vacation options! Search for both exchanges and Getaways together, or search each separately.".localized(),
                                 "Search first, then decide the best way to book your vacation. Exchange using any of your available weeks or points - the rest is up to you.".localized(),
@@ -51,13 +51,14 @@ class OnboardingContainerviewController: UIViewController, UIPageViewControllerD
             pageViewController = PageViewController
         }
         
-        let cardVC = viewControllerAtIndex(index: 0)
-        pageViewController?.setViewControllers([cardVC], direction: .forward, animated: true, completion: nil)
-        
+        if let cardVC = viewControllerAtIndex(index: 0) {
+             pageViewController?.setViewControllers([cardVC], direction: .forward, animated: true, completion: nil)
+        }
+       
         view.addSubview(doneButton)
         view.addSubview(pageControl)
         doneButton.translatesAutoresizingMaskIntoConstraints = false
-        doneButton.setTitle("Skip", for: .normal)
+        doneButton.setTitle("Skip".localized(), for: .normal)
         doneButton.setTitleColor( #colorLiteral(red: 0.6642427444, green: 0.6647043228, blue: 0.6783328652, alpha: 1), for: .normal)
         doneButton.addTarget(self, action: #selector(doneButtonPressed), for: .touchUpInside)
         self.view.addConstraint(NSLayoutConstraint(item: doneButton, attribute: .leadingMargin, relatedBy: .equal, toItem: self.view, attribute: .leadingMargin, multiplier: 1.0, constant: 30))
@@ -75,19 +76,19 @@ class OnboardingContainerviewController: UIViewController, UIPageViewControllerD
         pageControl.pageIndicatorTintColor = #colorLiteral(red: 0, green: 0.5465167761, blue: 0.7919967175, alpha: 0.4952108305)
         pageControl.transform = CGAffineTransform(scaleX: 1.5, y: 1.5)
         
-        self.view.addConstraint(NSLayoutConstraint(item: pageControl, attribute: .leadingMargin, relatedBy: .equal, toItem: self.view, attribute: .leadingMargin, multiplier: 1.0, constant: 30))
+        view.addConstraint(NSLayoutConstraint(item: pageControl, attribute: .leadingMargin, relatedBy: .equal, toItem: self.view, attribute: .leadingMargin, multiplier: 1.0, constant: 30))
         
-        self.view.addConstraint( NSLayoutConstraint(item: pageControl, attribute: .trailingMargin, relatedBy: .equal, toItem: self.view, attribute:.trailingMargin, multiplier: 1.0, constant: -20))
+        view.addConstraint( NSLayoutConstraint(item: pageControl, attribute: .trailingMargin, relatedBy: .equal, toItem: self.view, attribute:.trailingMargin, multiplier: 1.0, constant: -20))
         
-        self.view.addConstraint(NSLayoutConstraint(item: pageControl, attribute: .height, relatedBy: .equal, toItem: .none, attribute: .height, multiplier: 1.0, constant: 50))
-        self.view.addConstraint(NSLayoutConstraint(item: pageControl, attribute: .bottom, relatedBy: .equal, toItem: self.view, attribute: .bottom, multiplier: 1.0, constant: -80))
+        view.addConstraint(NSLayoutConstraint(item: pageControl, attribute: .height, relatedBy: .equal, toItem: .none, attribute: .height, multiplier: 1.0, constant: 50))
+        view.addConstraint(NSLayoutConstraint(item: pageControl, attribute: .bottom, relatedBy: .equal, toItem: self.view, attribute: .bottom, multiplier: 1.0, constant: -80))
         
-        self.view.bringSubview(toFront: doneButton)
-        self.view.bringSubview(toFront: pageControl)
+        view.bringSubview(toFront: doneButton)
+        view.bringSubview(toFront: pageControl)
     }
     
     func doneButtonPressed() {
-        delegate?.dismisOnboarding()
+        OnboardingCompleted = true
     }
 
     override func didReceiveMemoryWarning() {
@@ -114,12 +115,12 @@ class OnboardingContainerviewController: UIViewController, UIPageViewControllerD
         
     }
     
-    func viewControllerAtIndex(index: Int) -> OnboardingViewController {
+    func viewControllerAtIndex(index: Int) -> OnboardingViewController? {
         let storyboard: UIStoryboard = UIStoryboard(name: "LoginIPhone", bundle: nil)
-        let vc = storyboard.instantiateViewController(withIdentifier: "Onboarding1") as! OnboardingViewController
+        guard let vc = storyboard.instantiateViewController(withIdentifier: "Onboarding1") as? OnboardingViewController else { return nil }
         
-        vc.completionHandler = { response in
-            self.handler(true)
+        vc.completionHandler = {[weak self] response in
+            self?.handler(true)
         }
         vc.mainTitle = cardTitle
         vc.topicDescription = cardTopicDescription[index]

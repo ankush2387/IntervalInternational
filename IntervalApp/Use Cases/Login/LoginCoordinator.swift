@@ -86,6 +86,7 @@ final class LoginCoordinator: ComputationHelper {
     // MARK: - Public functions
     func loginView() -> UIViewController {
         
+        defer { newAppInstance = false }
         let viewModel = LoginViewModel(backgroundImage: backgroundImages[backgroundImageIndex],
                                        sessionStore: Session.sharedSession,
                                        userClientAPIStore: userClientAPIStore,
@@ -95,14 +96,9 @@ final class LoginCoordinator: ComputationHelper {
                                        configuration: Config.sharedInstance,
                                        appBundle: AppBundle())
         
-        let newInstance = newAppInstance
-        if newAppInstance {
-            defer { newAppInstance = false }
-        }
-        
         viewModel.didLogin = didLogin
         self.viewModel = viewModel
-        loginViewController = LoginViewController(viewModel: viewModel, newAppInstance: newInstance)
+        loginViewController = LoginViewController(viewModel: viewModel, newAppInstance: newAppInstance)
         
         return loginViewController
     }

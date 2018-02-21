@@ -57,6 +57,10 @@ final class LoginViewController: UIViewController {
         bindUI()
         showOnboardingIfNewAppInstance()
         setSplashScreenAnimation()
+        onboardingVC?.OnboardingCompletionStatus = {[weak self] _ in
+            self?.onboardingVC?.view.removeFromSuperview()
+            self?.blurEffectView?.removeFromSuperview()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -94,7 +98,6 @@ final class LoginViewController: UIViewController {
             onboardingVC?.view.frame = CGRect(x: 30, y: 40, width: view.bounds.width - 60, height: view.bounds.height - 100)
             onboardingVC?.view.backgroundColor = .white
             onboardingVC?.view.layer.cornerRadius = 7
-            onboardingVC?.delegate = self
             if let onboarding = onboardingVC {
                 view.addSubview(onboarding.view)
             }
@@ -222,6 +225,11 @@ final class LoginViewController: UIViewController {
             setLandscapeStackView()
         }
     }
+    
+   private func removeOnboardingView() {
+        onboardingVC?.view.removeFromSuperview()
+        blurEffectView?.removeFromSuperview()
+    }
 }
 
 extension LoginViewController: ComputationHelper {
@@ -313,13 +321,5 @@ extension LoginViewController {
         let storyboard = UIStoryboard(name: storyboardName, bundle: nil)
         let initialViewController = storyboard.instantiateViewController(withIdentifier: "PrivacyLegalViewController")
         navigationController?.pushViewController(initialViewController, animated: true)
-    }
-}
-
-extension LoginViewController: onboardingDelegate {
-    
-    func dismisOnboarding() {
-        onboardingVC?.view.removeFromSuperview()
-        blurEffectView?.removeFromSuperview()
     }
 }
