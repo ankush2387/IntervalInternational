@@ -1536,18 +1536,14 @@ extension CheckOutViewController: UITextFieldDelegate {
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
-        self.emailTextToEnter = "\(String(describing: textField.text))\(string)"
+        emailTextToEnter = "\(textField.text ?? "")\(string)"
         
         if emailTextToEnter == Session.sharedSession.contact?.emailAddress {
-            self.showUpdateEmail = false
+            showUpdateEmail = false
             let indexPath = IndexPath(row: 0, section: 10)
-            self.checkoutOptionTBLview.reloadRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
+            checkoutOptionTBLview.reloadRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
         }
         
         return true
     }
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        
-    }
 }
-
