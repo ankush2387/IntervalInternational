@@ -156,8 +156,9 @@ class CheckOutIPadViewController: UIViewController {
                 
                 guard let curCode = Constant.MyClassConstants.exchangeFees[0].currencyCode else { return }
                 let currencyHelper = CurrencyHelper()
-                let currency = currencyHelper.getCurrency(currencyCode: curCode)
-                currencyCode = ("\(currencyHelper.getCurrencyFriendlySymbol(currencyCode: currency.code))")
+                let countryCode = Session.sharedSession.contact?.getCountryCode() ?? ""
+                
+                currencyCode = ("\(currencyHelper.getCurrencyFriendlySymbol(currencyCode: curCode, countryCode: countryCode))")
             }
         } else {
             for advisement in (Constant.MyClassConstants.viewResponse.resort?.advisements)! {
@@ -176,8 +177,9 @@ class CheckOutIPadViewController: UIViewController {
             
             guard let curCode = Constant.MyClassConstants.rentalFees[0].currencyCode else { return }
             let currencyHelper = CurrencyHelper()
-            let currency = currencyHelper.getCurrency(currencyCode: curCode)
-            currencyCode = ("\(currencyHelper.getCurrencyFriendlySymbol(currencyCode: currency.code))")
+            let countryCode = Session.sharedSession.contact?.getCountryCode() ?? ""
+            
+            currencyCode = ("\(currencyHelper.getCurrencyFriendlySymbol(currencyCode: curCode, countryCode: countryCode))")
             
         }
         
@@ -488,7 +490,7 @@ class CheckOutIPadViewController: UIViewController {
         Helper.getRelinquishmentDetails(resortCode: resortCode, successCompletionBlock: {
             self.hideHudAsync()
             self.performSegue(withIdentifier: Constant.segueIdentifiers.showRelinguishmentsDetailsSegue, sender: self)
-        }(), errorCompletionBlock: { [unowned self] error  in
+        }, errorCompletionBlock: { [unowned self] error  in
             self.hideHudAsync()
             self.presentErrorAlert(UserFacingCommonError.handleError(error))
         })
@@ -1048,6 +1050,12 @@ extension CheckOutIPadViewController: UITableViewDataSource {
                         }
                         
                         cell.setCell(callBack: cellTapped)
+                        
+                    case Constant.MyClassConstants.upgradeCost:
+                        if let upgradeCost = Constant.MyClassConstants.exchangeFees[0].unitSizeUpgrade?.price {
+                            cell.setTotalPrice(with: currencyCode, and: upgradeCost)
+                        }
+                        cell.priceLabel.text = Constant.MyClassConstants.upgradeCost
                         
                     default:
                         

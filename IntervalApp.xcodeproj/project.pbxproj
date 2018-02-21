@@ -267,6 +267,7 @@
 		3CA5B8052012929B00399682 /* AdditionalInformationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3CA5B8022012929B00399682 /* AdditionalInformationViewController.xib */; };
 		3CA5B808201292F200399682 /* RelinquishmentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CA5B806201292F100399682 /* RelinquishmentViewController.swift */; };
 		3CA5B809201292F200399682 /* RelinquishmentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CA5B807201292F100399682 /* RelinquishmentViewModel.swift */; };
+		3CABE66B203CAE2300C8EC15 /* AttributedString+Bold.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CABE66A203CAE2300C8EC15 /* AttributedString+Bold.swift */; };
 		3CB870162017A7DA0078EDDD /* RelinquishmentSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB870152017A7D90078EDDD /* RelinquishmentSelectionViewController.swift */; };
 		3CBC6F2F2024CE2D00212B69 /* MultipleSelectionTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CBC6F2E2024CE2D00212B69 /* MultipleSelectionTableViewController.swift */; };
 		3CBC6F312024CE6500212B69 /* MultipleSelectionTableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CBC6F302024CE6500212B69 /* MultipleSelectionTableViewModel.swift */; };
@@ -696,6 +697,7 @@
 		3CA5B8022012929B00399682 /* AdditionalInformationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AdditionalInformationViewController.xib; sourceTree = "<group>"; };
 		3CA5B806201292F100399682 /* RelinquishmentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelinquishmentViewController.swift; sourceTree = "<group>"; };
 		3CA5B807201292F100399682 /* RelinquishmentViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelinquishmentViewModel.swift; sourceTree = "<group>"; };
+		3CABE66A203CAE2300C8EC15 /* AttributedString+Bold.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AttributedString+Bold.swift"; sourceTree = "<group>"; };
 		3CB870152017A7D90078EDDD /* RelinquishmentSelectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelinquishmentSelectionViewController.swift; sourceTree = "<group>"; };
 		3CBC6F2E2024CE2D00212B69 /* MultipleSelectionTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipleSelectionTableViewController.swift; sourceTree = "<group>"; };
 		3CBC6F302024CE6500212B69 /* MultipleSelectionTableViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipleSelectionTableViewModel.swift; sourceTree = "<group>"; };
@@ -1840,6 +1842,7 @@
 				3C584A221FBCA63A00584831 /* UIViewController+SimpleActionSheetPicker.swift */,
 				3C28D2BA200FD17700A08C68 /* String+DateFormat.swift */,
 				3C28D2BD200FD69300A08C68 /* Date+Format.swift */,
+				3CABE66A203CAE2300C8EC15 /* AttributedString+Bold.swift */,
 			);
 			name = Extensions;
 			path = Utils;
@@ -2540,6 +2543,7 @@
 				3A3A01301C99BD0B00B7EC37 /* CallYourResortTableViewCell.swift in Sources */,
 				612EFAB11F8D902C005010DE /* ComputationHelper.swift in Sources */,
 				DC7EF5081D709F8800E9E360 /* FevoritesResortController.swift in Sources */,
+				3CABE66B203CAE2300C8EC15 /* AttributedString+Bold.swift in Sources */,
 				DC7EF5121D709F8800E9E360 /* ResortDirectoryViewController.swift in Sources */,
 				DC7EF5131D709F8800E9E360 /* ResortFavoritesTableViewCell.swift in Sources */,
 				3AE1A6191F6AC5D50069A118 /* FlexChangeSearchIpadViewController.swift in Sources */,
@@ -2728,7 +2732,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer: Aylwing Olivas (BK2HSFRB8Y)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 80;
+				CURRENT_PROJECT_VERSION = 81;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 4CR2ZD7GRK;
 				ENABLE_BITCODE = NO;
@@ -2768,7 +2772,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer: Aylwing Olivas (BK2HSFRB8Y)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 80;
+				CURRENT_PROJECT_VERSION = 81;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 4CR2ZD7GRK;
 				ENABLE_BITCODE = NO;

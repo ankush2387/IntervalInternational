@@ -23,12 +23,17 @@ class FlexchangeSearchViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.navigationBar.isHidden = false
+        Helper.InitializeArrayFromLocalStorage()
+        Helper.InitializeOpenWeeksFromLocalStorage()
         _ = Helper.getLocalStorageWherewanttoTrade()
         flexChangeTableView.reloadData()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        flexChangeTableView.estimatedRowHeight = 100
+        flexChangeTableView.rowHeight = UITableViewAutomaticDimension
         
         // Adding navigation back button
         let menuButton = UIBarButtonItem(image: UIImage(named: Constant.assetImageNames.backArrowNav), style: .plain, target: self, action: #selector(FlexchangeSearchViewController.menuBackButtonPressed(_:)))
@@ -166,7 +171,7 @@ extension FlexchangeSearchViewController: UITableViewDelegate {
         //***** return height for  row in each section of tableview *****//
         switch indexPath.section {
         case 0, 1 :
-            return 80
+            return 100
         default :
             return 60
         }
@@ -344,6 +349,11 @@ extension FlexchangeSearchViewController: UITableViewDataSource {
                 
                 guard let cell: WhereToGoContentCell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.whereToGoContentCell, for: indexPath) as? WhereToGoContentCell else { return UITableViewCell() }
                 
+                [cell.whereTogoTextLabel, cell.bedroomLabel].forEach {
+                    $0?.numberOfLines = 0
+                    $0?.lineBreakMode = .byWordWrapping
+                }
+                
                 if indexPath.row == Constant.MyClassConstants.whatToTradeArray.count - 1 {
                     
                     cell.sepratorOr.isHidden = true
@@ -354,15 +364,23 @@ extension FlexchangeSearchViewController: UITableViewDataSource {
                 let object = Constant.MyClassConstants.whatToTradeArray[indexPath.row] as AnyObject
                 if object.isKind(of: OpenWeek.self) {
                     guard let openWk = object as? OpenWeek else { return cell }
-                    if let resortName = openWk.resort?.resortName {
-                        cell.whereTogoTextLabel.text = "\(resortName)"
+                    let attributedTitle = NSMutableAttributedString()
+
+                    if let resort = openWk.resort {
+                        attributedTitle
+                            .bold("\(resort.resortName.unwrappedString), \(resort.resortCode.unwrappedString)")
+                            .normal("\n")
                     }
+                    
                     if let relinquishmentYear = openWk.relinquishmentYear {
-                        cell.whereTogoTextLabel.text = "\(String(describing: cell.whereTogoTextLabel.text)), \(relinquishmentYear)"
+                        attributedTitle.normal("\(relinquishmentYear)")
                     }
                     if let weekNumber = openWk.weekNumber {
-                        cell.whereTogoTextLabel.text = "\(String(describing: cell.whereTogoTextLabel.text)), Week \(weekNumber)".localized()
+                        let formattedWeekNumber = Constant.getWeekNumber(weekType: weekNumber)
+                        attributedTitle.normal("Week \(formattedWeekNumber)".localized())
                     }
+                    
+                    cell.whereTogoTextLabel.attributedText = attributedTitle
                     cell.bedroomLabel.isHidden = true
                 } else if object.isKind(of: OpenWeeks.self) {
                     guard let openWk = object as? OpenWeeks else { return cell }
@@ -374,20 +392,30 @@ extension FlexchangeSearchViewController: UITableViewDataSource {
                         if openWk.isFloat {
                             let floatDetails = openWk.floatDetails
                             if floatDetails[0].showUnitNumber {
-                                cell.bedroomLabel.text = "\(floatDetails[0].unitSize), \(floatDetails[0].unitNumber), \(resortList[0].kitchenType)"
+                                cell.bedroomLabel.text = "\(floatDetails[0].unitNumber), \(resortList[0].kitchenType), \(floatDetails[0].unitSize)"
                             } else {
-                                cell.bedroomLabel.text = "\(floatDetails[0].unitSize), \(resortList[0].kitchenType)"
+                                cell.bedroomLabel.text = "\(resortList[0].kitchenType)\n\(floatDetails[0].unitSize)"
                             }
                         } else {
-                            cell.bedroomLabel.text = "\(resortList[0].unitSize), \(resortList[0].kitchenType)"
+                            cell.bedroomLabel.text = "\(resortList[0].kitchenType)\n\(resortList[0].unitSize)"
                         }
                     } else {
                         cell.bedroomLabel.isHidden = true
                     }
-                    if weekNumber != ""{
-                        cell.whereTogoTextLabel.text = "\(openWk.resort[0].resortName)/ \(openWk.relinquishmentYear), Wk\(weekNumber)".localized()
+                    if weekNumber != "" {
+                        let attributedTitle = NSMutableAttributedString()
+                        attributedTitle
+                            .bold("\(openWk.resort[0].resortName), \(openWk.resort[0].resortCode)")
+                            .normal("\n")
+                            .normal("\(openWk.relinquishmentYear) Week \(weekNumber)".localized())
+                        cell.whereTogoTextLabel.attributedText = attributedTitle
                     } else {
-                        cell.whereTogoTextLabel.text = "\(openWk.resort[0].resortName)/ \(openWk.relinquishmentYear)"
+                        let attributedTitle = NSMutableAttributedString()
+                        attributedTitle
+                            .bold("\(openWk.resort[0].resortName), \(openWk.resort[0].resortCode)")
+                            .normal("\n")
+                            .normal("\(openWk.relinquishmentYear)")
+                        cell.whereTogoTextLabel.attributedText = attributedTitle
                     }
                 } else if object.isKind(of: Deposits.self) {
                     guard let deposits = object as? Deposits else { return cell }
@@ -399,19 +427,30 @@ extension FlexchangeSearchViewController: UITableViewDataSource {
                         cell.bedroomLabel.isHidden = false
                         
                         let resortList = deposits.unitDetails
-                        if deposits.isFloat {
-                            let floatDetails = deposits.floatDetails
-                            cell.bedroomLabel.text = "\(resortList[0].unitSize), \(floatDetails[0].unitNumber), \(resortList[0].kitchenType)"
+                        let floatDetails = deposits.floatDetails
+                        if floatDetails[0].showUnitNumber {
+                            cell.bedroomLabel.text = "\(floatDetails[0].unitNumber), \(resortList[0].kitchenType), \(floatDetails[0].unitSize)"
                         } else {
-                            cell.bedroomLabel.text = "\(resortList[0].unitSize), \(resortList[0].kitchenType)"
+                            cell.bedroomLabel.text = "\(resortList[0].kitchenType)\n\(floatDetails[0].unitSize)"
                         }
+                        
                     } else {
                         cell.bedroomLabel.isHidden = true
                     }
                     if weekNumber != "" {
-                        cell.whereTogoTextLabel.text = "\(deposits.resort[0].resortName)/ \(deposits.relinquishmentYear), Wk\(weekNumber)".localized()
+                        let attributedTitle = NSMutableAttributedString()
+                        attributedTitle
+                            .bold("\(deposits.resort[0].resortName), \(deposits.resort[0].resortCode)")
+                            .normal("\n")
+                            .normal("\(deposits.relinquishmentYear) Week \(weekNumber)".localized())
+                        cell.whereTogoTextLabel.attributedText = attributedTitle
                     } else {
-                        cell.whereTogoTextLabel.text = "\(deposits.resort[0].resortName)/ \(deposits.relinquishmentYear)"
+                        let attributedTitle = NSMutableAttributedString()
+                        attributedTitle
+                            .bold("\(deposits.resort[0].resortName), \(deposits.resort[0].resortCode)")
+                            .normal("\n")
+                            .normal("\(deposits.relinquishmentYear)")
+                        cell.whereTogoTextLabel.attributedText = attributedTitle
                     }
                     
                 } else if object.isKind(of: List<ClubPoints>.self) {
