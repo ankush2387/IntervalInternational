@@ -732,8 +732,8 @@ extension AddDebitOrCreditCardViewController: UIPickerViewDelegate {
                 
                 let month = months[pickerView.selectedRow(inComponent: 0)]
                 let year = years[pickerView.selectedRow(inComponent: 1)]
-                let expiryDate = "\(year), \(month)"
-                expServerDate = "\(year)-\(Helper.getMonth(Helper.MonthType.number, for: month) ?? "")"
+                let expiryDate = "\(month), \(year)"
+                expServerDate = "\(Helper.getMonth(Helper.MonthType.number, for: month) ?? "")-\(year)"
                 Constant.GetawaySearchResultCardFormDetailData.expDate = expiryDate
                 
             } else if dropDownSelectionRow == 2 {
