@@ -1018,7 +1018,7 @@ class Constant: NSObject {
         static var revialViewController = "RevialViewController"
         static var accomodationCertsDetailController = "AccomodationCertsDetailController"
         static var certificateTabBarViewController = "VacationSearchTabBarController"
-        static var ownershipViewController = "OwnershipViewController"
+        static var ownershipViewController = "MyOwnershipViewController"
         static var floatViewController = "FloatDetailViewController"
         static var resortDirectoryViewController = "ResortDirectoryViewController"
         static var webViewController = "WebViewController"

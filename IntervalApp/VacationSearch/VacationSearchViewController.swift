@@ -238,29 +238,31 @@ class VacationSearchViewController: UIViewController {
     //***** Add location pressed action to show map screen with list of location to select *****//
     func addRelinquishmentSectionButtonPressed(_ sender: IUIKButton) {
         showHudAsync()
+
+        let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+        if let viewController = mainStoryboard.instantiateViewController(withIdentifier: "RelinquishmentViewController") as? RelinquishmentViewController {
+            self.navigationController?.pushViewController(viewController, animated: true)
+        }
         ExchangeClient.getMyUnits(Session.sharedSession.userAccessToken, onSuccess: { relinquishments in
-            
+
             Constant.MyClassConstants.relinquishmentDeposits = relinquishments.deposits
             Constant.MyClassConstants.relinquishmentOpenWeeks = relinquishments.openWeeks
-            
+
             if let pointsProgram = relinquishments.pointsProgram {
                 Constant.MyClassConstants.relinquishmentProgram = pointsProgram
                 if let availablePoints = pointsProgram.availablePoints {
                     Constant.MyClassConstants.relinquishmentAvailablePointsProgram = availablePoints
                 }
             }
-            
+
             self.hideHudAsync()
-            let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
-            if let viewController = mainStoryboard.instantiateViewController(withIdentifier: "RelinquishmentViewController") as? RelinquishmentViewController {
-                self.navigationController?.pushViewController(viewController, animated: true)
-            }
-                   
+
+
         }, onError: { [weak self] error in
             self?.hideHudAsync()
             self?.presentErrorAlert(UserFacingCommonError.handleError(error))
         })
-        
+
     }
     
     func refreshTableView() {

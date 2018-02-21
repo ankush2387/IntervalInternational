@@ -497,6 +497,18 @@ public class Helper {
         }
         
     }
+
+    static func storeInConstants(myUnits: MyUnits) {
+        Constant.MyClassConstants.relinquishmentDeposits = myUnits.deposits
+        Constant.MyClassConstants.relinquishmentOpenWeeks = myUnits.openWeeks
+
+        if let pointsProgram = myUnits.pointsProgram {
+            Constant.MyClassConstants.relinquishmentProgram = pointsProgram
+            if let availablePoints = pointsProgram.availablePoints {
+                Constant.MyClassConstants.relinquishmentAvailablePointsProgram = availablePoints
+            }
+        }
+    }
     
     //***** function to get all local storage object on the basis of selected membership number *****//
     static func getLocalStorageWherewanttoGo() -> Results <RealmLocalStorage> {

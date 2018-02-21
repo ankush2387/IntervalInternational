@@ -72,7 +72,7 @@
 		3A3A01421C99BD0B00B7EC37 /* OwnershipDetailWithFreeDepositTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3A01261C99BD0B00B7EC37 /* OwnershipDetailWithFreeDepositTableViewCell.swift */; };
 		3A3A01431C99BD0B00B7EC37 /* OwnershipFloatTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3A01271C99BD0B00B7EC37 /* OwnershipFloatTableViewCell.swift */; };
 		3A3A01441C99BD0B00B7EC37 /* OwnershipIphone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3A3A01281C99BD0B00B7EC37 /* OwnershipIphone.storyboard */; };
-		3A3A01461C99BD0B00B7EC37 /* OwnershipViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3A012A1C99BD0B00B7EC37 /* OwnershipViewController.swift */; };
+		3A3A01461C99BD0B00B7EC37 /* MyOwnershipViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3A012A1C99BD0B00B7EC37 /* MyOwnershipViewController.swift */; };
 		3A3A01471C99BD0B00B7EC37 /* VacationDetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3A012B1C99BD0B00B7EC37 /* VacationDetailTableViewCell.swift */; };
 		3A3A014E1C99BED600B7EC37 /* MemberShipDetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3A01491C99BED600B7EC37 /* MemberShipDetailTableViewCell.swift */; };
 		3A3A014F1C99BED600B7EC37 /* MembershipIphone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3A3A014A1C99BED600B7EC37 /* MembershipIphone.storyboard */; };
@@ -274,7 +274,6 @@
 		3CBC6F312024CE6500212B69 /* MultipleSelectionTableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CBC6F302024CE6500212B69 /* MultipleSelectionTableViewModel.swift */; };
 		3CBC6F362024E92800212B69 /* MultipleSelectionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CBC6F342024E92800212B69 /* MultipleSelectionTableViewCell.swift */; };
 		3CBC6F372024E92800212B69 /* MultipleSelectionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3CBC6F352024E92800212B69 /* MultipleSelectionTableViewCell.xib */; };
-		3CBD32771F992F7C004BE182 /* AppBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CBD32761F992F7C004BE182 /* AppBundle.swift */; };
 		3CC68CEE1FAA640F0024D15F /* EntityDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CC68CED1FAA640F0024D15F /* EntityDataStore.swift */; };
 		3CE4F4111F99519100B296B1 /* Date+ElapsedTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CE4F4101F99519100B296B1 /* Date+ElapsedTime.swift */; };
 		3CE90BDA1FA8C3C100C4354F /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CE90BD91FA8C3C100C4354F /* Keychain.swift */; };
@@ -323,6 +322,11 @@
 		61B9AF5820198AAA003C45C0 /* SingleSelectionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61B9AF5620198AAA003C45C0 /* SingleSelectionTableViewCell.swift */; };
 		61B9AF5920198AAA003C45C0 /* SingleSelectionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 61B9AF5720198AAA003C45C0 /* SingleSelectionTableViewCell.xib */; };
 		61C025091F929CFC003BFF55 /* PromiseErrorConversionSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C025081F929CFC003BFF55 /* PromiseErrorConversionSpec.swift */; };
+		61F1D4D7203E3DC400ECBEBB /* MyOwnershipViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F1D4D6203E3DC400ECBEBB /* MyOwnershipViewModel.swift */; };
+		61F1D4DA203E3E4900ECBEBB /* InventoryUnit+UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F1D4D9203E3E4900ECBEBB /* InventoryUnit+UI.swift */; };
+		61F1D4DC203E3E7E00ECBEBB /* Relinquishment+Flags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F1D4DB203E3E7E00ECBEBB /* Relinquishment+Flags.swift */; };
+		61F1D4DE203E3E9B00ECBEBB /* OpenWeek+Init.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F1D4DD203E3E9B00ECBEBB /* OpenWeek+Init.swift */; };
+		61F1D4E2203E3F7A00ECBEBB /* AppBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F1D4E1203E3F7900ECBEBB /* AppBundle.swift */; };
 		6DA84D4CB313A73FADEF918F /* Pods_IntervalAppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A1F9F039DD01C61F912475E /* Pods_IntervalAppTests.framework */; };
 		CE533D6620FB623EC9811046 /* Pods_IntervalApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2CBCD7E8490E488AB822061 /* Pods_IntervalApp.framework */; };
 		DC04BB3C1DB829F100227FF5 /* IntervalHDCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC04BB341DB829F100227FF5 /* IntervalHDCollectionViewCell.swift */; };
@@ -493,7 +497,7 @@
 		3A3A01261C99BD0B00B7EC37 /* OwnershipDetailWithFreeDepositTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OwnershipDetailWithFreeDepositTableViewCell.swift; sourceTree = "<group>"; };
 		3A3A01271C99BD0B00B7EC37 /* OwnershipFloatTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OwnershipFloatTableViewCell.swift; sourceTree = "<group>"; };
 		3A3A01281C99BD0B00B7EC37 /* OwnershipIphone.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = OwnershipIphone.storyboard; sourceTree = "<group>"; };
-		3A3A012A1C99BD0B00B7EC37 /* OwnershipViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OwnershipViewController.swift; sourceTree = "<group>"; };
+		3A3A012A1C99BD0B00B7EC37 /* MyOwnershipViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyOwnershipViewController.swift; sourceTree = "<group>"; };
 		3A3A012B1C99BD0B00B7EC37 /* VacationDetailTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VacationDetailTableViewCell.swift; sourceTree = "<group>"; };
 		3A3A01491C99BED600B7EC37 /* MemberShipDetailTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MemberShipDetailTableViewCell.swift; sourceTree = "<group>"; };
 		3A3A014A1C99BED600B7EC37 /* MembershipIphone.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MembershipIphone.storyboard; sourceTree = "<group>"; };
@@ -702,7 +706,6 @@
 		3CBC6F302024CE6500212B69 /* MultipleSelectionTableViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipleSelectionTableViewModel.swift; sourceTree = "<group>"; };
 		3CBC6F342024E92800212B69 /* MultipleSelectionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipleSelectionTableViewCell.swift; sourceTree = "<group>"; };
 		3CBC6F352024E92800212B69 /* MultipleSelectionTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MultipleSelectionTableViewCell.xib; sourceTree = "<group>"; };
-		3CBD32761F992F7C004BE182 /* AppBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppBundle.swift; sourceTree = "<group>"; };
 		3CC68CED1FAA640F0024D15F /* EntityDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntityDataStore.swift; sourceTree = "<group>"; };
 		3CE4F4101F99519100B296B1 /* Date+ElapsedTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+ElapsedTime.swift"; sourceTree = "<group>"; };
 		3CE90BD91FA8C3C100C4354F /* Keychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keychain.swift; sourceTree = "<group>"; };
@@ -751,6 +754,11 @@
 		61B9AF5620198AAA003C45C0 /* SingleSelectionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleSelectionTableViewCell.swift; sourceTree = "<group>"; };
 		61B9AF5720198AAA003C45C0 /* SingleSelectionTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SingleSelectionTableViewCell.xib; sourceTree = "<group>"; };
 		61C025081F929CFC003BFF55 /* PromiseErrorConversionSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromiseErrorConversionSpec.swift; sourceTree = "<group>"; };
+		61F1D4D6203E3DC400ECBEBB /* MyOwnershipViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyOwnershipViewModel.swift; sourceTree = "<group>"; };
+		61F1D4D9203E3E4900ECBEBB /* InventoryUnit+UI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InventoryUnit+UI.swift"; sourceTree = "<group>"; };
+		61F1D4DB203E3E7E00ECBEBB /* Relinquishment+Flags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Relinquishment+Flags.swift"; sourceTree = "<group>"; };
+		61F1D4DD203E3E9B00ECBEBB /* OpenWeek+Init.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OpenWeek+Init.swift"; sourceTree = "<group>"; };
+		61F1D4E1203E3F7900ECBEBB /* AppBundle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppBundle.swift; sourceTree = "<group>"; };
 		794DEBA45E109CB6B2912F1A /* Pods-IntervalApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IntervalApp.release.xcconfig"; path = "Pods/Target Support Files/Pods-IntervalApp/Pods-IntervalApp.release.xcconfig"; sourceTree = "<group>"; };
 		9A1F9F039DD01C61F912475E /* Pods_IntervalAppTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_IntervalAppTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B098726BF68C7F20B60FFCE5 /* Pods-IntervalAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IntervalAppTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-IntervalAppTests/Pods-IntervalAppTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -1002,7 +1010,6 @@
 				3A3A01271C99BD0B00B7EC37 /* OwnershipFloatTableViewCell.swift */,
 				3A3A01281C99BD0B00B7EC37 /* OwnershipIphone.storyboard */,
 				3A59DE1B1F0182D3005280D3 /* OwnershipIpad.storyboard */,
-				3A3A012A1C99BD0B00B7EC37 /* OwnershipViewController.swift */,
 				3A3A012B1C99BD0B00B7EC37 /* VacationDetailTableViewCell.swift */,
 			);
 			path = "My Ownership";
@@ -1378,6 +1385,7 @@
 		3C8BA6D51F8E82590024243A /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				61F1D4D8203E3E0A00ECBEBB /* Extensions */,
 				6163027B2014ECBF0067A9DC /* API */,
 				6133D6191F98256300E0387C /* Models */,
 				61066FD81F91AB9F000D33EB /* SessionStore.swift */,
@@ -1409,12 +1417,12 @@
 			isa = PBXGroup;
 			children = (
 				61698B341F997D98004BB6AF /* App State */,
-				3CBD32751F992F6F004BE182 /* Models */,
 				3C8BA6D51F8E82590024243A /* Network */,
 				3C58DD5D1F8D3121003C5791 /* Persistent Data */,
 				3C8BA6CF1F8E74E10024243A /* Coordinators */,
 				3C9FEF621F8BF046007F8FF0 /* Login */,
 				3CA5B7FF2012922F00399682 /* Relinquishment */,
+				6123C958203E393F00AA9F34 /* MyOwnership */,
 			);
 			path = "Use Cases";
 			sourceTree = "<group>";
@@ -1469,14 +1477,6 @@
 			path = MultipleSelectionViewController;
 			sourceTree = "<group>";
 		};
-		3CBD32751F992F6F004BE182 /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				3CBD32761F992F7C004BE182 /* AppBundle.swift */,
-			);
-			path = Models;
-			sourceTree = "<group>";
-		};
 		3CC68CEF1FAB6D550024D15F /* EntityStore */ = {
 			isa = PBXGroup;
 			children = (
@@ -1529,6 +1529,15 @@
 				611316BE1F9BBFD800B84A54 /* APNSCoordinator.swift */,
 			);
 			path = "APNS Coordinator";
+			sourceTree = "<group>";
+		};
+		6123C958203E393F00AA9F34 /* MyOwnership */ = {
+			isa = PBXGroup;
+			children = (
+				61F1D4D6203E3DC400ECBEBB /* MyOwnershipViewModel.swift */,
+				3A3A012A1C99BD0B00B7EC37 /* MyOwnershipViewController.swift */,
+			);
+			path = MyOwnership;
 			sourceTree = "<group>";
 		};
 		612EFAAF1F8D8FE2005010DE /* Helpers */ = {
@@ -1601,6 +1610,7 @@
 		61698B341F997D98004BB6AF /* App State */ = {
 			isa = PBXGroup;
 			children = (
+				61F1D4E1203E3F7900ECBEBB /* AppBundle.swift */,
 				61698B351F997DA4004BB6AF /* AppState.swift */,
 			);
 			path = "App State";
@@ -1670,6 +1680,16 @@
 				3C9186F71FA2697A00F484ED /* Charge Summary ViewController */,
 			);
 			path = "View Controllers";
+			sourceTree = "<group>";
+		};
+		61F1D4D8203E3E0A00ECBEBB /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				61F1D4D9203E3E4900ECBEBB /* InventoryUnit+UI.swift */,
+				61F1D4DB203E3E7E00ECBEBB /* Relinquishment+Flags.swift */,
+				61F1D4DD203E3E9B00ECBEBB /* OpenWeek+Init.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		6A82DD5366BF4F0E8FBF4A4F /* Frameworks */ = {
@@ -2277,6 +2297,7 @@
 				3AAA5A371C720F4500A5EA6D /* SideMenuTableViewController.swift in Sources */,
 				3C68B2B120339E45006BF970 /* SingleSelectionCellUIType.swift in Sources */,
 				3A623C6A1CF728BC00389708 /* UIImageView+UIActivityIndicatorForSDWebImage.m in Sources */,
+				61F1D4E2203E3F7A00ECBEBB /* AppBundle.swift in Sources */,
 				3C3D799720080ABE00F06527 /* OmnitureIdentifier.swift in Sources */,
 				3CB870162017A7DA0078EDDD /* RelinquishmentSelectionViewController.swift in Sources */,
 				6163027F2014ED0D0067A9DC /* SupportClientAPIStore.swift in Sources */,
@@ -2382,7 +2403,8 @@
 				3A892F441CD3902F00AE6F45 /* DateAndPassengerSelectionTableViewCell.swift in Sources */,
 				DC7EF50F1D709F8800E9E360 /* ResortDirectoryResortCell.swift in Sources */,
 				3A5BDCB31F34DD1800FDA672 /* FilterCell.swift in Sources */,
-				3A3A01461C99BD0B00B7EC37 /* OwnershipViewController.swift in Sources */,
+				3A3A01461C99BD0B00B7EC37 /* MyOwnershipViewController.swift in Sources */,
+				61F1D4DE203E3E9B00ECBEBB /* OpenWeek+Init.swift in Sources */,
 				3A968E0E1DD62ECD0004E0EB /* CheckOutViewController.swift in Sources */,
 				3ACC27931DDDBDA40057B809 /* PaymentSelectionViewController.swift in Sources */,
 				6106832B2004454900FBFBB6 /* ADBMobileConfigManager.swift in Sources */,
@@ -2397,12 +2419,12 @@
 				3A930BCF1F4D86300052BE2A /* SearchBothInventoryCVCell.swift in Sources */,
 				3AF1700F1E96A5840021F393 /* ClubPointsCollectionViewLayout.swift in Sources */,
 				DC7EF4DC1D709F0400E9E360 /* VacationSearchCollectionViewCell.swift in Sources */,
-				3CBD32771F992F7C004BE182 /* AppBundle.swift in Sources */,
 				DC27F7C21DB81B6F00AA374F /* AlertTableViewCell.swift in Sources */,
 				3CE90BDA1FA8C3C100C4354F /* Keychain.swift in Sources */,
 				DC7EF5061D709F8800E9E360 /* CustomTextField.swift in Sources */,
 				3C2EABEC1FB21DBE00BD2B2D /* SettingsViewController.swift in Sources */,
 				3A892F411CD3902F00AE6F45 /* CaledarDateCell.swift in Sources */,
+				61F1D4D7203E3DC400ECBEBB /* MyOwnershipViewModel.swift in Sources */,
 				DC7EF4D41D709EBF00E9E360 /* CommonMembership.swift in Sources */,
 				08A4D4321F69A51B00C63CDC /* FlexchangeSearchViewController.swift in Sources */,
 				E94C7E091EF84DDE003D0EB5 /* PromotionsViewController.swift in Sources */,
@@ -2477,6 +2499,7 @@
 				3A3A012E1C99BD0B00B7EC37 /* BedroomSizeTableViewCell.swift in Sources */,
 				3CFED38C1F910EAA0026A922 /* ItemDataStore.swift in Sources */,
 				3A3A01421C99BD0B00B7EC37 /* OwnershipDetailWithFreeDepositTableViewCell.swift in Sources */,
+				61F1D4DC203E3E7E00ECBEBB /* Relinquishment+Flags.swift in Sources */,
 				DC27F7C91DB81B6F00AA374F /* InfoDetailViewController.swift in Sources */,
 				DC7EF4E21D709F1200E9E360 /* CreateActionSheet.swift in Sources */,
 				DC7EF5151D709F8800E9E360 /* SignInPreLoginViewController.swift in Sources */,
@@ -2575,6 +2598,7 @@
 				3A892F4C1CD3902F00AE6F45 /* SearchResultContentTableCell.swift in Sources */,
 				3A3D56821DD339DE00922FA9 /* DropDownListCell.swift in Sources */,
 				3A892F4A1CD3902F00AE6F45 /* SearchResultCollectionCell.swift in Sources */,
+				61F1D4DA203E3E4900ECBEBB /* InventoryUnit+UI.swift in Sources */,
 				3A892F431CD3902F00AE6F45 /* CertificateCell.swift in Sources */,
 				3A892F4F1CD3902F00AE6F45 /* TravelWindowSelectionCell.swift in Sources */,
 				3A59DE161F013767005280D3 /* SearchResultMapviewController.swift in Sources */,
