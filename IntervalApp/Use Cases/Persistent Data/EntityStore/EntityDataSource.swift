@@ -109,6 +109,24 @@ final class EntityDataSource {
             return Promise.resolve(realm.objects(type))
         }
     }
+    
+    fileprivate func resetDatabase(for realm: Realm?) -> Promise<Void> {
+        return Promise { resolve, reject in
+            guard let realm = realm else {
+                reject(CommonErrors.emptyInstance)
+                return
+            }
+            
+            do {
+                try realm.write {
+                    realm.deleteAll()
+                    resolve()
+                }
+            } catch {
+                reject(error)
+            }
+        }
+    }
 }
 
 extension EntityDataSource: EntityDataStore {
@@ -155,5 +173,11 @@ extension EntityDataSource: EntityDataStore {
     func readObjectsFromDisk<T: Object>(type: T.Type, predicate: String?, encoding: Encoding) -> Promise<Results<T>> {
         let database = encoding == .encrypted ? encryptedRealmOnDisk : decryptedRealmOnDiskGlobal
         return readObjects(type, in: database, with: predicate)
+    }
+    
+    /// Reset database for realm in specified encoding
+    func resetDatabase(for encoding: Encoding) -> Promise<Void> {
+        let realm = encoding == .encrypted ? encryptedRealmOnDisk : decryptedRealmOnDiskGlobal
+        return resetDatabase(for: realm)
     }
 }

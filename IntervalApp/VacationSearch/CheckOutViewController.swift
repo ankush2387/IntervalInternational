@@ -48,6 +48,8 @@ class CheckOutViewController: UIViewController {
     static let checkoutPromotionCell = "CheckoutPromotionCell"
     var isPromotionApplied = false
     
+    private let entityStore: EntityDataStore = EntityDataSource.sharedInstance
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         checkPromotionsAvailable()
@@ -210,7 +212,7 @@ class CheckOutViewController: UIViewController {
                     continueToPayRequest.acknowledgeAndAgreeResortFees = true
                     
                     ExchangeProcessClient.continueToPay(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.exchangeBookingLastStartedProcess, request: continueToPayRequest, onSuccess: { [weak self] response in
-                        
+                        guard let strongSelf = self else { return }
                         Constant.MyClassConstants.exchangeBookingLastStartedProcess = nil
                         Constant.MyClassConstants.exchangeContinueToPayResponse = response
                         let selectedCard = Constant.MyClassConstants.selectedCreditCard
@@ -219,21 +221,24 @@ class CheckOutViewController: UIViewController {
                         }
                         Constant.MyClassConstants.selectedCreditCard.removeAll()
                         Helper.removeStoredGuestFormDetials()
-                        self?.isAgreed = true
-                        self?.hideHudAsync()
-                        self?.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
+                        strongSelf.isAgreed = true
+                        strongSelf.hideHudAsync()
+                        strongSelf.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
                         if let confirmationNumber = response.view?.fees?.shopExchange?.confirmationNumber {
                             Constant.MyClassConstants.transactionNumber = confirmationNumber
                         }
-                        self?.navigationController?.navigationBar.isHidden = true
-                        self?.performSegue(withIdentifier: Constant.segueIdentifiers.confirmationScreenSegue, sender: nil)
-                        
+                        strongSelf.navigationController?.navigationBar.isHidden = true
+                        strongSelf.entityStore.resetDatabase(for: .decrypted)
+                            .then { strongSelf.performSegue(withIdentifier: Constant.segueIdentifiers.confirmationScreenSegue, sender: nil) }
+                            .onViewError(strongSelf.presentErrorAlert)
+                    
                     }, onError: { [weak self] error in
-                        self?.hideHudAsync()
+                        guard let strongSelf = self else { return }
+                        strongSelf.hideHudAsync()
                         imageSlider.isHidden = false
-                        self?.isAgreed = false
-                        self?.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
-                        self?.presentErrorAlert(UserFacingCommonError.handleError(error))
+                        strongSelf.isAgreed = false
+                        strongSelf.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
+                        strongSelf.presentErrorAlert(UserFacingCommonError.handleError(error))
                     })
                     
                 } else {
@@ -246,6 +251,7 @@ class CheckOutViewController: UIViewController {
                     continueToPayRequest.acknowledgeAndAgreeResortFees = true
 
                     RentalProcessClient.continueToPay(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.getawayBookingLastStartedProcess, request: continueToPayRequest, onSuccess: { [weak self] response in
+                        guard let strongSelf = self else { return }
  if let updatedFees = response.view?.fees {
                             Constant.MyClassConstants.rentalFees[0] = updatedFees
                         }
@@ -259,19 +265,22 @@ class CheckOutViewController: UIViewController {
                         }
                         Constant.MyClassConstants.selectedCreditCard.removeAll()
                         Helper.removeStoredGuestFormDetials()
-                        self?.isAgreed = true
-                        self?.hideHudAsync()
+                        strongSelf.isAgreed = true
+                        strongSelf.hideHudAsync()
                         Constant.MyClassConstants.transactionNumber = response.view?.fees?.rental?.confirmationNumber ?? ""
-                        self?.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
-                        self?.navigationController?.navigationBar.isHidden = true
-                        self?.performSegue(withIdentifier: Constant.segueIdentifiers.confirmationScreenSegue, sender: nil)
+                        strongSelf.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
+                        strongSelf.navigationController?.navigationBar.isHidden = true
+                        strongSelf.entityStore.resetDatabase(for: .decrypted)
+                            .then { strongSelf.performSegue(withIdentifier: Constant.segueIdentifiers.confirmationScreenSegue, sender: nil) }
+                            .onViewError(strongSelf.presentErrorAlert)
                     }, onError: { [weak self] error in
-                        self?.hideHudAsync()
+                        guard let strongSelf = self else { return }
+                        strongSelf.hideHudAsync()
                         
                         imageSlider.isHidden = false
-                        self?.isAgreed = false
-                        self?.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
-                        self?.presentErrorAlert(UserFacingCommonError.handleError(error))
+                        strongSelf.isAgreed = false
+                        strongSelf.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
+                        strongSelf.presentErrorAlert(UserFacingCommonError.handleError(error))
                     })
                     
                 }

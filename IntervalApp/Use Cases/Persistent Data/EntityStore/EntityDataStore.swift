@@ -21,4 +21,5 @@ protocol EntityDataStore {
     func readObjectFromMemory<T: Object, K>(type: T.Type, forKey: K) -> Promise<T>
     func readObjectsFromDisk<T: Object>(type: T.Type, predicate: String?, encoding: Encoding) -> Promise<Results<T>>
     func readObjectsFromMemory<T: Object>(type: T.Type, predicate: String?) -> Promise<Results<T>>
+    func resetDatabase(for encoding: Encoding) -> Promise<Void>
 }

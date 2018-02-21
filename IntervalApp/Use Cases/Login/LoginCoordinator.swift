@@ -32,6 +32,7 @@ final class LoginCoordinator: ComputationHelper {
     private let sessionStore: Session
     private let backgroundImages: [UIImage]
     private let userClientAPIStore: UserClientAPIStore
+    private let entityDataStore: EntityDataStore
     private var messaging: Messaging
     private var backgroundImageIndex: Int {
         
@@ -62,13 +63,15 @@ final class LoginCoordinator: ComputationHelper {
          messaging: Messaging,
          configuration: Config,
          sessionStore: Session,
-         userClientAPIStore: UserClientAPIStore) {
+         userClientAPIStore: UserClientAPIStore,
+         entityDataStore: EntityDataStore) {
         
         self.messaging = messaging
         self.sessionStore = sessionStore
         self.configuration = configuration
         self.encryptedStore = encryptedStore
         self.decryptedStore = decryptedStore
+        self.entityDataStore = entityDataStore
         self.userClientAPIStore = userClientAPIStore
         self.backgroundImages = backgroundImages
     }
@@ -80,7 +83,8 @@ final class LoginCoordinator: ComputationHelper {
                   messaging: Messaging.messaging(),
                   configuration: Config.sharedInstance,
                   sessionStore: Session.sharedSession,
-                  userClientAPIStore: ClientAPI.sharedInstance)
+                  userClientAPIStore: ClientAPI.sharedInstance,
+                  entityDataStore: EntityDataSource.sharedInstance)
     }
 
     // MARK: - Public functions
@@ -256,6 +260,8 @@ final class LoginCoordinator: ComputationHelper {
             return
         }
 
-        delegate?.didLogin()
+        entityDataStore.resetDatabase(for: .decrypted)
+            .then { [weak self] in self?.delegate?.didLogin() }
+            .onError { [weak self] _ in self?.delegate?.didError(message: UserFacingCommonError.generic.description.body) }
     }
 }
