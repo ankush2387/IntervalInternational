@@ -435,7 +435,7 @@ class WhoWillBeCheckingInViewController: UIViewController {
         Helper.getRelinquishmentDetails(resortCode: resortCode, successCompletionBlock: {
             self.hideHudAsync()
             self.performSegue(withIdentifier: Constant.segueIdentifiers.showRelinguishmentsDetailsSegue, sender: self)
-        }(), errorCompletionBlock: { [unowned self] error  in
+        }, errorCompletionBlock: { [unowned self] error  in
             self.hideHudAsync()
             self.presentErrorAlert(UserFacingCommonError.handleError(error))
         })
@@ -801,8 +801,9 @@ extension WhoWillBeCheckingInViewController: UITableViewDataSource {
                 cell.nameLabel.text = Constant.WhoWillBeCheckingInViewControllerCellIdentifiersAndHardCodedStrings.noneOfAboveContactString
             } else {
                 
-                let contacts = Constant.MyClassConstants.membershipContactArray[indexPath.row]
-                cell.nameLabel.text = contacts.firstName?.capitalized
+                if let firstName = Constant.MyClassConstants.membershipContactArray[indexPath.row].firstName, let lastName = Constant.MyClassConstants.membershipContactArray[indexPath.row].lastName {
+                    cell.nameLabel.text = "\(firstName.capitalized) \(lastName.capitalized)"
+                }
             }
             if indexPath.row == whoWillBeCheckingInSelectedIndex {
                 
