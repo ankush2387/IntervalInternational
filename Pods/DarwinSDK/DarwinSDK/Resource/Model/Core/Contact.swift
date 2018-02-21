@@ -107,7 +107,6 @@ open class Contact {
 				}
 			}
 		}
-		
 		return nil
 	}
     
@@ -119,8 +118,20 @@ open class Contact {
                 }
             }
         }
-        
         return nil
+    }
+    
+    open func getCountryCode() -> String? {
+        /*
+        if let homeAddress = self.getAddress(AddressType.Home), let  countryCode = homeAddress.countryCode {
+            return countryCode
+        } else if let workAddress = self.getAddress(AddressType.Work), let countryCode = workAddress.countryCode {
+            return countryCode
+        } else {
+            return nil
+        }
+        */
+        return self.getAddress(AddressType.Home)?.countryCode ?? self.getAddress(AddressType.Work)?.countryCode ?? nil
     }
 	
 }
