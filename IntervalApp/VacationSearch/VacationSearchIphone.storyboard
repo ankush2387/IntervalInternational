@@ -5658,7 +5658,7 @@ to confirm a larger unit.</string>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pcX-4l-Ldm">
                                                     <rect key="frame" x="27" y="8" width="321" height="34"/>
                                                     <subviews>
-                                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="G9n-JQ-bOq">
+                                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="G9n-JQ-bOq">
                                                             <rect key="frame" x="10" y="5" width="298" height="24"/>
                                                             <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                             <color key="textColor" red="0.65490196079999996" green="0.65490196079999996" blue="0.66666666669999997" alpha="1" colorSpace="calibratedRGB"/>
@@ -7516,7 +7516,7 @@ transaction.</string>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="xan-e8-tse"/>
-        <segue reference="kmp-5Q-mdc"/>
+        <segue reference="Gma-QI-cCT"/>
         <segue reference="0uV-Eo-2bn"/>
         <segue reference="jTg-f9-AVL"/>
         <segue reference="ryk-nj-17Y"/>
