@@ -682,9 +682,10 @@ extension UpComingTripDetailController: UITableViewDataSource {
     }
     
     func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
-        //TODO:- will update once when we get the url
+        let fileViewController = SimpleFileViewController(url: "http://www.intervalworld.com/web/iicontent/ii/mobile-terms-getaways.html")
+        fileViewController.title = "Terms and Conditions"
+        navigationController?.pushViewController(fileViewController, animated: true)
         return true
-        
     }
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
