@@ -59,8 +59,7 @@ extension SelectedResortsIpadViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
        
-        let sectionArray: NSMutableArray
-        sectionArray = areaDictionary.allKeys as! NSMutableArray
+        let sectionArray = areaDictionary.allKeys
         
         if let areas = areaDictionary.value(forKey: sectionArray[section] as! String) {
             
@@ -171,8 +170,7 @@ extension SelectedResortsIpadViewController: UITableViewDelegate {
         
         let headerNameLabel = UILabel(frame: CGRect(x: 20, y: 0, width: view.frame.size.width - 20, height: 30))
         
-        let headerArray: NSMutableArray
-        headerArray = areaDictionary.allKeys as! NSMutableArray
+        let headerArray = areaDictionary.allKeys
         headerNameLabel.text = headerArray[section] as? String
         headerNameLabel.textColor = UIColor.lightGray
         headerNameLabel.font = UIFont(name: Constant.fontName.helveticaNeue, size: 15)
