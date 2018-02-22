@@ -312,16 +312,8 @@ extension MyUpcommingTripIpadViewController: UICollectionViewDataSource {
             }
  
             if let upcomingTripType = upcomingTrip.type {
-                var type = ExchangeTransactionType.fromName(name: upcomingTripType).rawValue
-                if upcomingTrip.type == Constant.myUpcomingTripCommonString.rental {
-                    
-                    type = Constant.myUpcomingTripCommonString.getaway
-                    
-                } else if upcomingTrip.type == Constant.myUpcomingTripCommonString.shop {
-                    
-                    type = Constant.myUpcomingTripCommonString.exchange
-                    
-                }
+                var type = ExchangeTransactionType.fromName(name: upcomingTripType).friendlyNameForUpcomingTrip()
+                
                 cell.resortType.text = type.uppercased()
             }
             if let exchangeNumber = upcomingTrip.exchangeNumber, let exchangeStatus = upcomingTrip.exchangeStatus {

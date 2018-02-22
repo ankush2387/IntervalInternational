@@ -311,6 +311,7 @@ extension MemberShipViewController: UITableViewDelegate {
                 let actionYes = UIAlertAction(title: "Yes", style: .destructive, handler: { (_) in
                     self.showHudAsync()
                     Session.sharedSession.selectedMembership = membership
+                    Constant.MyClassConstants.upcomingTripsArray.removeAll()
                     self.membershipWasSelected()
                 })
                 
