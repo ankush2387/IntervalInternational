@@ -42,7 +42,7 @@ final class LoginCoordinator: ComputationHelper {
                 return startIndex
         }
         
-        let nextIndex = rotate(imageIndex, within: 0..<6)
+        let nextIndex = rotate(imageIndex, within: 0..<8)
         try? decryptedStore.save(item: nextIndex, for: Persistent.backgroundImageIndex.key)
         return nextIndex
     }
@@ -74,7 +74,7 @@ final class LoginCoordinator: ComputationHelper {
     }
 
     convenience init() {
-        self.init(backgroundImages: [#imageLiteral(resourceName: "BackgroundImgLogin-A"), #imageLiteral(resourceName: "BackgroundImgLogin-B"), #imageLiteral(resourceName: "BackgroundImgLogin-C"), #imageLiteral(resourceName: "BackgroundImgLogin-D"), #imageLiteral(resourceName: "BackgroundImgLogin-E"), #imageLiteral(resourceName: "BackgroundImgLogin-F"), #imageLiteral(resourceName: "BackgroundImgLogin-G")],
+        self.init(backgroundImages: [#imageLiteral(resourceName: "BackgroundImgLogin-A"), #imageLiteral(resourceName: "BackgroundImgLogin-B"), #imageLiteral(resourceName: "BackgroundImgLogin-C"), #imageLiteral(resourceName: "BackgroundImgLogin-D"), #imageLiteral(resourceName: "BackgroundImgLogin-E"), #imageLiteral(resourceName: "BackgroundImgLogin-F"), #imageLiteral(resourceName: "BackgroundImgLogin-G"), #imageLiteral(resourceName:"BackgroundImgLogin-H"), #imageLiteral(resourceName: "BackgroundImgLogin-I")],
                   encryptedStore: Keychain(),
                   decryptedStore: UserDafaultsWrapper(),
                   messaging: Messaging.messaging(),
