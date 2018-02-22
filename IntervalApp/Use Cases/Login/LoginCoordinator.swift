@@ -90,6 +90,7 @@ final class LoginCoordinator: ComputationHelper {
     // MARK: - Public functions
     func loginView() -> UIViewController {
         
+        defer { newAppInstance = false }
         let viewModel = LoginViewModel(backgroundImage: backgroundImages[backgroundImageIndex],
                                        sessionStore: Session.sharedSession,
                                        userClientAPIStore: userClientAPIStore,
@@ -98,77 +99,11 @@ final class LoginCoordinator: ComputationHelper {
                                        decryptedStore: UserDafaultsWrapper(),
                                        configuration: Config.sharedInstance,
                                        appBundle: AppBundle())
-        var simpleOnboardingViewModel: SimpleOnboardingViewModel?
-        if newAppInstance {
-            
-            defer { newAppInstance = false } 
-            let exchangePage = SimpleOnboardingPageEntity(mainImage: #imageLiteral(resourceName: "Exchange Illustration"),
-                                                          title: "Game Changer".localized(),
-                                                          titleTextColor: IntervalThemeFactory.deviceTheme.textColorBlack,
-                                                          description: "Exchange like never before! Exclusively on the App, you can now search for an exchange with different ownership interests at the same time.".localized(),
-                                                          descriptionTextColor: IntervalThemeFactory.deviceTheme.textColorGray,
-                                                          iconNavigator: #imageLiteral(resourceName: "Active Segment"),
-                                                          screenColor: #colorLiteral(red: 0.9412514567, green: 0.9814893603, blue: 0.9980912805, alpha: 1))
-            
-            let exchangeAndGetawayPage = SimpleOnboardingPageEntity(mainImage: #imageLiteral(resourceName: "EX+GA Illustration"),
-                                                                    title: "Combined".localized(),
-                                                                    titleTextColor: IntervalThemeFactory.deviceTheme.textColorBlack,
-                                                                    description: "We've made it easier to see your vacation options! Search for both exchanges and Getaways together, or search each separately.".localized(),
-                                                                    descriptionTextColor: IntervalThemeFactory.deviceTheme.textColorGray,
-                                                                    iconNavigator: #imageLiteral(resourceName: "Active Segment"),
-                                                                    screenColor: .white)
-            
-            let chooseAndUsePage = SimpleOnboardingPageEntity(mainImage: #imageLiteral(resourceName: "Usage Illustration"),
-                                                              title: "Choose what to use".localized(),
-                                                              titleTextColor: IntervalThemeFactory.deviceTheme.textColorBlack,
-                                                              description: "Search first, then decide the best way to book your vacation. Search for an exchange using any or all of your available weeks or points - or book a Getaway. We'll show you options, the rest is up to you.".localized(),
-                                                              descriptionTextColor: IntervalThemeFactory.deviceTheme.textColorGray,
-                                                              iconNavigator: #imageLiteral(resourceName: "Active Segment"),
-                                                              screenColor: #colorLiteral(red: 0.9412514567, green: 0.9814893603, blue: 0.9980912805, alpha: 1),
-                                                              titleFont: UIFont.boldSystemFont(ofSize: 30.0))
-            
-            let multipleDestinationsPage = SimpleOnboardingPageEntity(mainImage: #imageLiteral(resourceName: "Multi-Des Illustration"),
-                                                                      title: "Multiple Destinations".localized(),
-                                                                      titleTextColor: IntervalThemeFactory.deviceTheme.textColorBlack,
-                                                                      description: "Choose one or more resorts or desinations by name, or select from the map.".localized(),
-                                                                      descriptionTextColor: IntervalThemeFactory.deviceTheme.textColorGray,
-                                                                      iconNavigator: #imageLiteral(resourceName: "Active Segment"),
-                                                                      screenColor: .white,
-                                                                      titleFont: UIFont.boldSystemFont(ofSize: 30.0))
-            
-            let upcomingTripsPage = SimpleOnboardingPageEntity(mainImage: #imageLiteral(resourceName: "Upcoming Trips Illustration"),
-                                                               title: "Upcoming Trips".localized(),
-                                                               titleTextColor: IntervalThemeFactory.deviceTheme.textColorBlack,
-                                                               description: "View your upcoming vacations all in one place with fast and easy access to your trip confirmation details. Even share your reservation information with friends and family!".localized(),
-                                                               descriptionTextColor: IntervalThemeFactory.deviceTheme.textColorGray,
-                                                               iconNavigator: #imageLiteral(resourceName: "Active Segment"),
-                                                               screenColor: #colorLiteral(red: 0.9412514567, green: 0.9814893603, blue: 0.9980912805, alpha: 1),
-                                                               titleFont: UIFont.boldSystemFont(ofSize: 30.0))
-            
-            let touchIDLoginPage = SimpleOnboardingPageEntity(mainImage: #imageLiteral(resourceName: "TouchID Illustration"),
-                                                              title: "Biometric Login".localized(),
-                                                              titleTextColor: IntervalThemeFactory.deviceTheme.textColorBlack,
-                                                              description: "A finger or a face is all you need to access your account. Sign in quickly and securely on phones and tablets that support fingerprint or facial recognition.".localized(),
-                                                              descriptionTextColor: IntervalThemeFactory.deviceTheme.textColorGray,
-                                                              iconNavigator: #imageLiteral(resourceName: "Active Segment"),
-                                                              screenColor: .white,
-                                                              titleFont: UIFont.boldSystemFont(ofSize: 30.0))
-            
-            let entities = [exchangePage,
-                            exchangeAndGetawayPage,
-                            chooseAndUsePage,
-                            multipleDestinationsPage,
-                            upcomingTripsPage,
-                            touchIDLoginPage]
-            
-            simpleOnboardingViewModel = SimpleOnboardingViewModel(onboardingPageEntities: entities,
-                                                      doneButtonTitle: "Done".localized(),
-                                                      skipIntroButtonTitle: "Skip Intro".localized())
-        }
-
+        
         viewModel.didLogin = didLogin
         self.viewModel = viewModel
-        loginViewController = LoginViewController(viewModel: viewModel, simpleOnboardingViewModel: simpleOnboardingViewModel)
+        loginViewController = LoginViewController(viewModel: viewModel, newAppInstance: newAppInstance)
+        
         return loginViewController
     }
 

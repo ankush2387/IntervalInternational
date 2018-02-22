@@ -32,15 +32,17 @@ final class LoginViewController: UIViewController {
     @IBOutlet fileprivate weak var versionLabel: UILabel!
     @IBOutlet private var webActivityButtons: [UIButton]!
 
+    var blurEffectView: UIView?
+    var onboardingVC: OnboardingContainerviewController?
     // MARK: - Private properties
     private let disposeBag = DisposeBag()
-    private let simpleOnboardingViewModel: SimpleOnboardingViewModel?
     fileprivate let viewModel: LoginViewModel
-    
+    fileprivate var newAppInstance: Bool
     // MARK: - Lifecycle
-    init(viewModel: LoginViewModel, simpleOnboardingViewModel: SimpleOnboardingViewModel? = nil) {
+    
+    init(viewModel: LoginViewModel, newAppInstance: Bool) {
         self.viewModel = viewModel
-        self.simpleOnboardingViewModel = simpleOnboardingViewModel
+        self.newAppInstance = newAppInstance
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -55,6 +57,10 @@ final class LoginViewController: UIViewController {
         bindUI()
         showOnboardingIfNewAppInstance()
         setSplashScreenAnimation()
+        onboardingVC?.OnboardingCompletionStatus = {[weak self] _ in
+            self?.onboardingVC?.view.removeFromSuperview()
+            self?.blurEffectView?.removeFromSuperview()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -65,6 +71,7 @@ final class LoginViewController: UIViewController {
     }
     
     override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
         navigationController?.navigationBar.isHidden = false
     }
     
@@ -75,8 +82,26 @@ final class LoginViewController: UIViewController {
     
     // MARK: - Private functions
     private func showOnboardingIfNewAppInstance() {
-        if let simpleOnboardingViewModel = simpleOnboardingViewModel {
-            present(SimpleOnboardingViewController(viewModel: simpleOnboardingViewModel), animated: false, completion: nil)
+       
+        if newAppInstance {
+            
+            let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.dark)
+            blurEffectView = UIVisualEffectView(effect: blurEffect)
+            blurEffectView?.frame = view.bounds
+            blurEffectView?.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+            blurEffectView?.alpha = 0.8
+            blurEffectView?.tag = 100
+            if let blurView = blurEffectView {
+                view.addSubview(blurView)
+            }
+            onboardingVC = OnboardingContainerviewController()
+            onboardingVC?.view.frame = CGRect(x: 30, y: 40, width: view.bounds.width - 60, height: view.bounds.height - 100)
+            onboardingVC?.view.backgroundColor = .white
+            onboardingVC?.view.layer.cornerRadius = 7
+            if let onboarding = onboardingVC {
+                view.addSubview(onboarding.view)
+            }
+            
         }
     }
 
@@ -199,6 +224,11 @@ final class LoginViewController: UIViewController {
         } else {
             setLandscapeStackView()
         }
+    }
+    
+   private func removeOnboardingView() {
+        onboardingVC?.view.removeFromSuperview()
+        blurEffectView?.removeFromSuperview()
     }
 }
 

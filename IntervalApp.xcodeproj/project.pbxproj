@@ -203,6 +203,7 @@
 		3ACC27931DDDBDA40057B809 /* PaymentSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ACC27921DDDBDA40057B809 /* PaymentSelectionViewController.swift */; };
 		3ACC27951DDDC2BA0057B809 /* SelectPaymentMethodCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ACC27941DDDC2BA0057B809 /* SelectPaymentMethodCell.swift */; };
 		3ACC27971DDDCB270057B809 /* AddNewCreditCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ACC27961DDDCB270057B809 /* AddNewCreditCardCell.swift */; };
+		3AD58117203C3623008F91D6 /* OnboardingContainerviewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD58116203C3623008F91D6 /* OnboardingContainerviewController.swift */; };
 		3AD822CA1F3A046A00CD68C6 /* AvailabilityCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD822C91F3A046A00CD68C6 /* AvailabilityCollectionViewCell.swift */; };
 		3ADA43AA1CA56603003F5373 /* CertificateWhoIsTravelingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADA43A91CA56603003F5373 /* CertificateWhoIsTravelingController.swift */; };
 		3AE0D8681E4B38B500FFF635 /* ResortDestinationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE0D8671E4B38B500FFF635 /* ResortDestinationCell.swift */; };
@@ -310,8 +311,6 @@
 		617434731F8EFE89006292E0 /* String+Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617434721F8EFE89006292E0 /* String+Localization.swift */; };
 		617434751F8F0DD2006292E0 /* SVProgressHUD+Async.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617434741F8F0DD2006292E0 /* SVProgressHUD+Async.swift */; };
 		617434771F8F0E5A006292E0 /* UIViewController+UIAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617434761F8F0E5A006292E0 /* UIViewController+UIAlertController.swift */; };
-		617517AC1FB2888A002A7609 /* OldLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617517A71FB28889002A7609 /* OldLoginViewController.swift */; };
-		617517AD1FB2888A002A7609 /* LoginIPadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617517A81FB28889002A7609 /* LoginIPadViewController.swift */; };
 		617517AF1FB2888A002A7609 /* LoginIPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 617517AA1FB28889002A7609 /* LoginIPhone.storyboard */; };
 		617517B01FB2888A002A7609 /* LoginIPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 617517AB1FB2888A002A7609 /* LoginIPad.storyboard */; };
 		618AEFCB1FA29B990097B423 /* ChargeSummaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 618AEFCA1FA29B990097B423 /* ChargeSummaryViewModel.swift */; };
@@ -400,7 +399,6 @@
 		E95A30BB1EF9693700AB64DB /* CheckoutPromotionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95A30BA1EF9693700AB64DB /* CheckoutPromotionCell.swift */; };
 		E961268D1EE9EB2A001BA096 /* WeatherViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E961268C1EE9EB2A001BA096 /* WeatherViewController.swift */; };
 		E9B3A7B41F59BBC7007A35DB /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9B3A7B31F59BBC7007A35DB /* OnboardingViewController.swift */; };
-		E9B3A7B61F59BC0F007A35DB /* OnboardingBaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9B3A7B51F59BC0F007A35DB /* OnboardingBaseViewController.swift */; };
 		E9C5EF381F19555B00E658DA /* UIViewController+Swipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9C5EF371F19555B00E658DA /* UIViewController+Swipe.swift */; };
 		E9ED1B591F44B89A00794C53 /* CertificateInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9ED1B581F44B89A00794C53 /* CertificateInfoViewController.swift */; };
 /* End PBXBuildFile section */
@@ -630,6 +628,7 @@
 		3ACC27921DDDBDA40057B809 /* PaymentSelectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaymentSelectionViewController.swift; sourceTree = "<group>"; };
 		3ACC27941DDDC2BA0057B809 /* SelectPaymentMethodCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectPaymentMethodCell.swift; sourceTree = "<group>"; };
 		3ACC27961DDDCB270057B809 /* AddNewCreditCardCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddNewCreditCardCell.swift; sourceTree = "<group>"; };
+		3AD58116203C3623008F91D6 /* OnboardingContainerviewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingContainerviewController.swift; sourceTree = "<group>"; };
 		3AD822C91F3A046A00CD68C6 /* AvailabilityCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AvailabilityCollectionViewCell.swift; sourceTree = "<group>"; };
 		3ADA43A91CA56603003F5373 /* CertificateWhoIsTravelingController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CertificateWhoIsTravelingController.swift; sourceTree = "<group>"; };
 		3AE0D8671E4B38B500FFF635 /* ResortDestinationCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResortDestinationCell.swift; sourceTree = "<group>"; };
@@ -740,8 +739,6 @@
 		617434721F8EFE89006292E0 /* String+Localization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Localization.swift"; sourceTree = "<group>"; };
 		617434741F8F0DD2006292E0 /* SVProgressHUD+Async.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SVProgressHUD+Async.swift"; sourceTree = "<group>"; };
 		617434761F8F0E5A006292E0 /* UIViewController+UIAlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+UIAlertController.swift"; sourceTree = "<group>"; };
-		617517A71FB28889002A7609 /* OldLoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OldLoginViewController.swift; sourceTree = "<group>"; };
-		617517A81FB28889002A7609 /* LoginIPadViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginIPadViewController.swift; sourceTree = "<group>"; };
 		617517AA1FB28889002A7609 /* LoginIPhone.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LoginIPhone.storyboard; sourceTree = "<group>"; };
 		617517AB1FB2888A002A7609 /* LoginIPad.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LoginIPad.storyboard; sourceTree = "<group>"; };
 		618AEFCA1FA29B990097B423 /* ChargeSummaryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChargeSummaryViewModel.swift; sourceTree = "<group>"; };
@@ -835,7 +832,6 @@
 		E95A30BA1EF9693700AB64DB /* CheckoutPromotionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckoutPromotionCell.swift; sourceTree = "<group>"; };
 		E961268C1EE9EB2A001BA096 /* WeatherViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeatherViewController.swift; sourceTree = "<group>"; };
 		E9B3A7B31F59BBC7007A35DB /* OnboardingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
-		E9B3A7B51F59BC0F007A35DB /* OnboardingBaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingBaseViewController.swift; sourceTree = "<group>"; };
 		E9C5EF371F19555B00E658DA /* UIViewController+Swipe.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Swipe.swift"; sourceTree = "<group>"; };
 		E9ED1B581F44B89A00794C53 /* CertificateInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CertificateInfoViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1229,7 +1225,6 @@
 				3A0B25D71CD241790080BF3F /* PolicyListTBLCell.swift */,
 				3A0B25D91CD2419C0080BF3F /* WebViewController.swift */,
 				E9B3A7B31F59BBC7007A35DB /* OnboardingViewController.swift */,
-				E9B3A7B51F59BC0F007A35DB /* OnboardingBaseViewController.swift */,
 			);
 			name = Login;
 			path = ../Login;
@@ -1434,6 +1429,7 @@
 				3C58DD591F8D2A46003C5791 /* LoginViewModel.swift */,
 				3C58DD551F8D167F003C5791 /* LoginViewController.swift */,
 				61066FDC1F91B380000D33EB /* LoginViewController.xib */,
+				3AD58116203C3623008F91D6 /* OnboardingContainerviewController.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -1557,9 +1553,7 @@
 			isa = PBXGroup;
 			children = (
 				617517AB1FB2888A002A7609 /* LoginIPad.storyboard */,
-				617517A81FB28889002A7609 /* LoginIPadViewController.swift */,
 				617517AA1FB28889002A7609 /* LoginIPhone.storyboard */,
-				617517A71FB28889002A7609 /* OldLoginViewController.swift */,
 			);
 			path = "Old Login";
 			sourceTree = "<group>";
@@ -2399,7 +2393,6 @@
 				3A4006A41CA161A40014DBF3 /* ResortBedroomDetailWithInfoCell.swift in Sources */,
 				DC7EF5051D709F8800E9E360 /* CustomPageControl.swift in Sources */,
 				3A586CC01DDCA22900EF6756 /* ExchangeOrProtectionCell.swift in Sources */,
-				617517AD1FB2888A002A7609 /* LoginIPadViewController.swift in Sources */,
 				3A476F091CEC8E8600607185 /* SearchResultDateCell.swift in Sources */,
 				3A930BCF1F4D86300052BE2A /* SearchBothInventoryCVCell.swift in Sources */,
 				3AF1700F1E96A5840021F393 /* ClubPointsCollectionViewLayout.swift in Sources */,
@@ -2512,7 +2505,6 @@
 				3AAA5A4A1C720F4500A5EA6D /* VacationSearchTabBarController.swift in Sources */,
 				3A29B4901EF034E4008995A5 /* ReservationTableViewCell.swift in Sources */,
 				3A4801E31F60050600AB6D68 /* SelectedResortsIpadViewController.swift in Sources */,
-				617517AC1FB2888A002A7609 /* OldLoginViewController.swift in Sources */,
 				087A875A1E951A2D009B1387 /* UnitSizeTdiCollectionViewCell.swift in Sources */,
 				3A0B25DC1CD241B50080BF3F /* DummyTableViewCell.swift in Sources */,
 				E9057F911F02DDA000E20047 /* ShareActivityImage.swift in Sources */,
@@ -2538,6 +2530,7 @@
 				3A892F451CD3902F00AE6F45 /* DateAndPersonPickerTableViewCell.swift in Sources */,
 				3A3A013E1C99BD0B00B7EC37 /* FloatDetailViewController.swift in Sources */,
 				DC7EF50D1D709F8800E9E360 /* ResortDirectoryCollectionViewCell.swift in Sources */,
+				3AD58117203C3623008F91D6 /* OnboardingContainerviewController.swift in Sources */,
 				DC04BB3D1DB829F100227FF5 /* IntervalHDCommonControllerForTabs.swift in Sources */,
 				3A3A01511C99BED600B7EC37 /* OwnerShipDetailTableViewCell.swift in Sources */,
 				3A3A01301C99BD0B00B7EC37 /* CallYourResortTableViewCell.swift in Sources */,
@@ -2584,7 +2577,6 @@
 				3A892F4A1CD3902F00AE6F45 /* SearchResultCollectionCell.swift in Sources */,
 				3A892F431CD3902F00AE6F45 /* CertificateCell.swift in Sources */,
 				3A892F4F1CD3902F00AE6F45 /* TravelWindowSelectionCell.swift in Sources */,
-				E9B3A7B61F59BC0F007A35DB /* OnboardingBaseViewController.swift in Sources */,
 				3A59DE161F013767005280D3 /* SearchResultMapviewController.swift in Sources */,
 				3A0326221C8EE684000758E3 /* CalendarViewController.swift in Sources */,
 				0887C97B1F6A99F5007F57C3 /* SearchFlexchangeButtonCell.swift in Sources */,
