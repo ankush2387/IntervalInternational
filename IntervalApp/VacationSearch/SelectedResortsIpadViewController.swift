@@ -119,16 +119,16 @@ extension SelectedResortsIpadViewController: UITableViewDelegate {
                     localArray.add(object)
                 }
                 
-                for value in Constant.MyClassConstants.selectedAreaCodeDictionary.allValues {
-                    if(value as! String == localArray[indexPath.row] as! String) {
-                        let key = Constant.MyClassConstants.selectedAreaCodeDictionary.allKeys(for: value)
-                        intervalPrint(key)
-                        Constant.MyClassConstants.selectedAreaCodeDictionary.removeObject(forKey: "\(key[0])")
-                        intervalPrint(Constant.MyClassConstants.selectedAreaCodeDictionary)
-                        Constant.MyClassConstants.selectedAreaCodeArray.remove("\(key[0])")
-                        
-                    }
-                }
+//                for value in Constant.MyClassConstants.selectedAreaCodeDictionary.al {
+//                    if(value as! String == localArray[indexPath.row] as! String) {
+//                        let key = Constant.MyClassConstants.selectedAreaCodeDictionary.allKeys(for: value)
+//                        intervalPrint(key)
+//                        Constant.MyClassConstants.selectedAreaCodeDictionary.removeObject(forKey: "\(key[0])")
+//                        intervalPrint(Constant.MyClassConstants.selectedAreaCodeDictionary)
+//                        Constant.MyClassConstants.selectedAreaCodeArray.remove("\(key[0])")
+//
+//                    }
+//                }
                 localArray.removeObject(at: indexPath.row)
                 selectedCounter = -1
                 if(localArray.count > 0) {
