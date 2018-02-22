@@ -1309,7 +1309,9 @@ extension CheckOutViewController: UITableViewDataSource {
                     }
                 } else {
                     cell.priceLabel.text = Constant.MyClassConstants.guestCertificateTitle
-                    cell.setTotalPrice(with: currencyCode, and: Float(Constant.MyClassConstants.guestCertificatePrice))
+                    if let guestCertPrice = Constant.MyClassConstants.rentalFees[indexPath.row].guestCertificate?.guestCertificatePrice?.price {
+                        cell.setTotalPrice(with: currencyCode, and: guestCertPrice)
+                    }
                 }
             } else {
                 isHeightZero = false

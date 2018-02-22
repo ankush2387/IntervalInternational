@@ -860,7 +860,6 @@ extension WhoWillBeCheckingInViewController: UITableViewDataSource {
             for price in guestPrices where price.productCode == memberTier {
                 let floatPriceString = "\(price.price)"
                 let priceArray = floatPriceString.components(separatedBy: ".")
-                Constant.MyClassConstants.guestCertificatePrice = Double(price.price)
                 cell.certificatePriceLabel.text = "\(priceArray.first!)."
                 if (priceArray.last?.characters.count)! > 1 {
                     

@@ -119,6 +119,7 @@ final class AppCoordinator {
         Constant.MyClassConstants.sideMenuOptionSelected = Constant.MyClassConstants.resortFunctionalityCheck
         
         Constant.MyClassConstants.memberCreditCardList.removeAll()
+        Constant.MyClassConstants.enableGuestCertificate = false
         
         // TODO: - Need to refactor code/calls above
         

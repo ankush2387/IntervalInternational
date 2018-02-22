@@ -464,7 +464,7 @@ class Constant: NSObject {
         
         static var enableTaxes = false
         static var enableGuestCertificate = false
-        static var guestCertificatePrice = 0.0
+//        static var guestCertificatePrice = 0.0
         
         static var hasAdditionalCharges = false
         static var guestString = "guest"
