@@ -206,7 +206,7 @@ class Constant: NSObject {
         static var threeSegmentHeaderTextArray = ["Where do you want to go".localized(), "Check in closest to".localized(), "Who is travelling".localized()]
         
         //***** Who will be checking-In header text array *****//
-        static var whoWillBeCheckingInHeaderTextArray = ["From the list below, Who on your  membership might be checking-in?".localized(), "", "Guest Name".localized(), "Guest Address", "Guest Contact info".localized(), ""]
+        static var whoWillBeCheckingInHeaderTextArray = ["From the list below, who on your membership will be checking in?".localized(), "", "Guest Name".localized(), "Guest Address", "Guest Contact info".localized(), ""]
         
         //***** checkout screen table header footer string array *****//
         static var checkOutScreenHeaderTextArray = ["", "Promotions".localized(), "Exchange Options".localized(), "Add Trip Protection(Recommended)".localized(), "Your Booking Costs".localized(), "", "", "", "Payment Method".localized(), "Confirmation Email".localized()]
@@ -943,7 +943,7 @@ class Constant: NSObject {
         static var editgetawayAlertsViewController = "Edit Getaway Alert".localized()
         static var intervalHDIpadControllerTitle = "Interval HD".localized()
         static var magazinesControllerTitle = "Magazines".localized()
-        static var whoWillBeCheckingInControllerTitle = "Who will be checking-in?".localized()
+        static var whoWillBeCheckingInControllerTitle = "Who will be checking in?".localized()
         static var checkOutControllerTitle = "Check Out".localized()
         
         static var confirmationControllerTitle = "Confirmation".localized()
@@ -1156,7 +1156,7 @@ class Constant: NSObject {
         
         static var cvvAlertTitle = NSLocalizedString("Please enter the credit card CVV code", comment: "")
         static var noneOfAboveContactString = NSLocalizedString("None of the above", comment: "")
-        static var contactListHeaderString = NSLocalizedString("From the list below, who on your  membership might be checking-in?", comment: "")
+        static var contactListHeaderString = NSLocalizedString("From the list below, who on your membership will be checking in?", comment: "")
         
     }
     
