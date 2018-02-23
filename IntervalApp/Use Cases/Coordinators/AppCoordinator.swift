@@ -119,7 +119,7 @@ final class AppCoordinator {
         Constant.MyClassConstants.sideMenuOptionSelected = Constant.MyClassConstants.resortFunctionalityCheck
         
         Constant.MyClassConstants.memberCreditCardList.removeAll()
-        
+        Constant.MyClassConstants.upcomingTripsArray.removeAll()
         // TODO: - Need to refactor code/calls above
         
         logoutDidFinish()
