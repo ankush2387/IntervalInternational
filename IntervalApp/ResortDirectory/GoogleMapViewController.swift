@@ -407,7 +407,7 @@ class GoogleMapViewController: UIViewController {
             needCameraChange = false
             if let latitude = selectedDestination.geoArea?.southEastCoordinate?.latitude, let longitude = selectedDestination.geoArea?.northWestCoordinate?.longitude {
                 let targetDestination = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-                mapView.camera = GMSCameraPosition.camera(withTarget: targetDestination, zoom: 8)
+                mapView.camera = GMSCameraPosition.camera(withTarget: targetDestination, zoom: 10)
             }
         }
         
@@ -729,8 +729,16 @@ class GoogleMapViewController: UIViewController {
                 self.navigationItem.rightBarButtonItem!.isEnabled = true
             }
             
-            resortView.frame = CGRect(x: 0, y: self.view.frame.height - 50, width: self.view.frame.width, height: self.view.frame.height - (self.view.frame.height - self.bottomResortHeight))
-            
+            if Constant.MyClassConstants.runningFunctionality != Constant.MyClassConstants.resortFunctionalityCheck {
+                resortView.frame = CGRect(x: 0, y: view.frame.height - 50, width: view.frame.width, height: view.frame.height - (view.frame.height - bottomResortHeight - 50))
+            } else {
+                let tabBarHeight = tabBarController?.tabBar.bounds.size.height ?? 0
+                if tabBarHeight == 83.0 {
+                    resortView.frame = CGRect(x: 0, y: view.frame.height - 50, width: view.frame.width, height: view.frame.height - (view.frame.height - bottomResortHeight + 32))
+                } else {
+                    resortView.frame = CGRect(x: 0, y: view.frame.height - 50, width: view.frame.width, height: view.frame.height - (view.frame.height - bottomResortHeight))
+                }
+            }
             let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
             layout.minimumInteritemSpacing = 0
             layout.minimumLineSpacing = 0
