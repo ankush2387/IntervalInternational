@@ -1600,7 +1600,7 @@
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="40" translatesAutoresizingMaskIntoConstraints="NO" id="izb-YS-SoI">
-                                                            <rect key="frame" x="0.0" y="0.0" width="394" height="40"/>
+                                                            <rect key="frame" x="10" y="0.0" width="384" height="40"/>
                                                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
@@ -1608,7 +1608,7 @@
                                                     </subviews>
                                                     <constraints>
                                                         <constraint firstItem="izb-YS-SoI" firstAttribute="top" secondItem="Apt-8e-XyS" secondAttribute="top" id="Eg5-l1-lRT"/>
-                                                        <constraint firstItem="izb-YS-SoI" firstAttribute="leading" secondItem="Apt-8e-XyS" secondAttribute="leading" id="ee2-Q2-gva"/>
+                                                        <constraint firstItem="izb-YS-SoI" firstAttribute="leading" secondItem="Apt-8e-XyS" secondAttribute="leading" constant="10" id="ee2-Q2-gva"/>
                                                         <constraint firstAttribute="trailing" secondItem="izb-YS-SoI" secondAttribute="trailing" id="fpU-yt-h1x"/>
                                                         <constraint firstAttribute="bottom" secondItem="izb-YS-SoI" secondAttribute="bottom" id="vNa-0R-aES"/>
                                                     </constraints>
