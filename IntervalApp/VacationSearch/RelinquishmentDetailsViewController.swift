@@ -14,6 +14,7 @@ class RelinquishmentDetailsViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
     var resort: Resort?
+    var filterRelinquishment = ExchangeRelinquishment()
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -50,7 +51,7 @@ extension RelinquishmentDetailsViewController: UITableViewDataSource, UITableVie
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let objRelinquishment = Constant.MyClassConstants.filterRelinquishments[0]
+        let objRelinquishment = filterRelinquishment
         
         if indexPath.section == 0 {
             
@@ -104,12 +105,15 @@ extension RelinquishmentDetailsViewController: UITableViewDataSource, UITableVie
                 cell.totalSleepAndPrivate.text = ""
             } else if let openWeek = objRelinquishment.openWeek {
                 
-                guard let date = openWeek.checkInDate?.dateFromString() else { return cell }
-                let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
-                let myComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: date)
-                if let day = myComponents.day, let month = myComponents.month {
-                    let monthName = Helper.getMonthnameFromInt(monthNumber: month).uppercased()
-                    cell.dayAndDateLabel.text = "\(monthName) \(String(format: "%02d", arguments: [day]))"
+                if let date = openWeek.checkInDate?.dateFromString() {
+                    let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
+                    let myComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: date)
+                    if let day = myComponents.day, let month = myComponents.month {
+                        let monthName = Helper.getMonthnameFromInt(monthNumber: month).uppercased()
+                        cell.dayAndDateLabel.text = "\(monthName) \(String(format: "%02d", arguments: [day]))"
+                    }
+                } else {
+                    cell.dayAndDateLabel.text = ""
                 }
                 
                 if let relinquishmentYear = openWeek.relinquishmentYear {

@@ -576,6 +576,7 @@ class SearchResultViewController: UIViewController {
             if response.view?.forceRenewals != nil {
                 // Navigate to Renewals Screen
                 guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.RenewelViewController) as? RenewelViewController else { return }
+                viewController.filterRelinquishment = Constant.MyClassConstants.filterRelinquishments[0]
                 viewController.delegate = self
                 self.present(viewController, animated: true)
             } else {
@@ -1862,14 +1863,12 @@ extension SearchResultViewController: RenewelViewControllerDelegate {
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
-    func selectedRenewalFromWhoWillBeCheckingIn(renewalArray: [Renewal]) {
+    func selectedRenewalFromWhoWillBeCheckingIn(renewalArray: [Renewal], selectedRelinquishment: ExchangeRelinquishment) {
         self.dismiss(animated: false, completion: nil)
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
         guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: SearchResultViewController.whoWillBeCheckingInViewController) as? WhoWillBeCheckingInViewController else { return }
         viewController.renewalsArray = renewalArray
-        
-        let transitionManager = TransitionManager()
-        self.navigationController?.transitioningDelegate = transitionManager
+        viewController.filterRelinquishments = selectedRelinquishment
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
@@ -1891,6 +1890,7 @@ extension SearchResultViewController: RenewelViewControllerDelegate {
             viewController.delegate = self
             
             viewController.forceRenewals = forceRenewals
+            viewController.selectedRelinquishment = Constant.MyClassConstants.filterRelinquishments[0]
             self.present(viewController, animated: true, completion: nil)
             
             return
@@ -1901,7 +1901,7 @@ extension SearchResultViewController: RenewelViewControllerDelegate {
             
             guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.renewalOtherOptionsVC) as? RenewalOtherOptionsVC else { return }
             viewController.delegate = self
-            
+            viewController.selectedRelinquishment = Constant.MyClassConstants.filterRelinquishments[0]
             viewController.forceRenewals = forceRenewals
             self.present(viewController, animated: true, completion: nil)
             
@@ -1913,7 +1913,7 @@ extension SearchResultViewController: RenewelViewControllerDelegate {
 
 // Mark : - Delegate
 extension SearchResultViewController: RenewalOtherOptionsVCDelegate {
-    func selectedRenewal(selectedRenewal: String, forceRenewals: ForceRenewals) {
+    func selectedRenewal(selectedRenewal: String, forceRenewals: ForceRenewals, filterRelinquishment: ExchangeRelinquishment) {
         
         var renewalArray = [Renewal]()
         renewalArray.removeAll()
@@ -1957,17 +1957,18 @@ extension SearchResultViewController: RenewalOtherOptionsVCDelegate {
         self.navigationController?.transitioningDelegate = transitionManager
         viewController.isFromRenewals = true
         viewController.renewalsArray = renewalArray
+        viewController.filterRelinquishments = filterRelinquishment
         self.navigationController?.pushViewController(viewController, animated: true)
     }
 }
 
 extension SearchResultViewController: WhoWillBeCheckInDelegate {
-    func navigateToWhoWillBeCheckIn(renewalArray: [Renewal], selectedRow: Int) {
+    func navigateToWhoWillBeCheckIn(renewalArray: [Renewal], selectedRow: Int, selectedRelinquishment: ExchangeRelinquishment) {
         
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
         guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: SearchResultViewController.whoWillBeCheckingInViewController) as? WhoWillBeCheckingInViewController else { return }
         viewController.renewalsArray = renewalArray
-        viewController.filterRelinquishments = Constant.MyClassConstants.filterRelinquishments[0]
+        viewController.filterRelinquishments = selectedRelinquishment
         self.navigationController?.pushViewController(viewController, animated: true)
     }
 }

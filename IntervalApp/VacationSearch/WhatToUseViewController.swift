@@ -13,7 +13,7 @@ import DarwinSDK
 import SVProgressHUD
 
 protocol WhoWillBeCheckInDelegate: class {
-    func navigateToWhoWillBeCheckIn(renewalArray: [Renewal], selectedRow: Int)
+    func navigateToWhoWillBeCheckIn(renewalArray: [Renewal], selectedRow: Int, selectedRelinquishment: ExchangeRelinquishment)
 }
 
 class WhatToUseViewController: UIViewController {
@@ -170,15 +170,17 @@ class WhatToUseViewController: UIViewController {
                             
                             //self.dismiss(animated: true, completion: nil)
                             let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
-                            let transitionManager = TransitionManager()
-                            self.navigationController?.transitioningDelegate = transitionManager
-                            
                             // Navigate to Renewals Screen
-                            let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.RenewelViewController) as! RenewelViewController
+                            guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.RenewelViewController) as? RenewelViewController else { return }
                             viewController.delegate = self
+                            if Constant.MyClassConstants.filterRelinquishments.count > 1 {
+                               viewController.filterRelinquishment = Constant.MyClassConstants.filterRelinquishments[self.selectedRow - 1]
+                            } else {
+                                viewController.filterRelinquishment = Constant.MyClassConstants.filterRelinquishments[self.selectedRow]
+                            }
                             Constant.MyClassConstants.isFromWhatToUse = true
-                            self.present(viewController, animated:true, completion: nil)
-                            
+                            self.present(viewController, animated:true)
+                        
                             return
                         } else {
                             
@@ -212,7 +214,11 @@ class WhatToUseViewController: UIViewController {
                         } else {
                             let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
                             guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: "WhoWillBeCheckingInIPadViewController") as? WhoWillBeCheckingInIPadViewController else { return }
-                            viewController.filterRelinquishments = Constant.MyClassConstants.filterRelinquishments[self.selectedRow]
+                            if Constant.MyClassConstants.filterRelinquishments.count > 1 {
+                                viewController.filterRelinquishments = Constant.MyClassConstants.filterRelinquishments[self.selectedRow - 1]
+                            } else {
+                                viewController.filterRelinquishments = Constant.MyClassConstants.filterRelinquishments[self.selectedRow]
+                            }
                             self.isCheckedBox = false
                             self.navigationController?.pushViewController(viewController, animated: true)
                         }
@@ -659,8 +665,13 @@ extension WhatToUseViewController: UITableViewDataSource {
                     if let unit = exchange.openWeek?.unit {
                         cell.totalSleepAndPrivate.text = "Sleeps \(unit.publicSleepCapacity) total, \(unit.privateSleepCapacity) Private".localized()
                     }
-                    let dateString = exchange.openWeek?.checkInDate
-                    let date = Helper.convertStringToDate(dateString: dateString!, format: Constant.MyClassConstants.dateFormat)
+                    guard let dateString = exchange.openWeek?.checkInDate else {
+                        return cell
+                    }
+                    guard let date = dateString.dateFromString(for: Constant.MyClassConstants.dateFormat) else {
+                        cell.dayAndDateLabel.text = nil
+                        return cell
+                    }
                     let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
                     let myComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: date)
                     let day = myComponents.day ?? 0
@@ -677,7 +688,7 @@ extension WhatToUseViewController: UITableViewDataSource {
                     
                 } else {
                     
-                    let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.exchangeCell1, for: indexPath) as! RelinquishmentSelectionOpenWeeksCell
+                    guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.exchangeCell1, for: indexPath) as? RelinquishmentSelectionOpenWeeksCell else { return UITableViewCell() }
                     
                     cell.tag = indexPath.row
                     cell.checkBox.tag = indexPath.row
@@ -704,8 +715,13 @@ extension WhatToUseViewController: UITableViewDataSource {
                         cell.totalSleepAndPrivate.text = "Sleeps \(unit.publicSleepCapacity) total, \(unit.privateSleepCapacity) Private".localized()
                     }
                     
-                    let dateString = exchange.openWeek?.checkInDate
-                    let date = Helper.convertStringToDate(dateString: dateString ?? "", format: Constant.MyClassConstants.dateFormat)
+                    guard let dateString = exchange.openWeek?.checkInDate else {
+                        return cell
+                    }
+                    guard let date = dateString.dateFromString(for: Constant.MyClassConstants.dateFormat) else {
+                        cell.dayAndDateLabel.text = nil
+                        return cell
+                    }
                     let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
                     let myComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: date)
                     let day = myComponents.day ?? 0
@@ -829,9 +845,14 @@ extension WhatToUseViewController: UITableViewDataSource {
 // Implementing custom delegate method definition
 extension WhatToUseViewController: RenewelViewControllerDelegate {
     
-    func selectedRenewalFromWhoWillBeCheckingIn(renewalArray: [Renewal]) {
+    func selectedRenewalFromWhoWillBeCheckingIn(renewalArray: [Renewal], selectedRelinquishment: ExchangeRelinquishment) {
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
         guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: "WhoWillBeCheckingInViewController") as? WhoWillBeCheckingInViewController else { return }
+        if Constant.MyClassConstants.filterRelinquishments.count > 1 {
+            viewController.filterRelinquishments = Constant.MyClassConstants.filterRelinquishments[self.selectedRow - 1]
+        } else {
+             viewController.filterRelinquishments = Constant.MyClassConstants.filterRelinquishments[self.selectedRow]
+        }
         viewController.renewalsArray = renewalArray
         self.navigationController?.pushViewController(viewController, animated: true)
     }
@@ -840,13 +861,22 @@ extension WhatToUseViewController: RenewelViewControllerDelegate {
         self.dismiss(animated: true, completion: nil)
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
         guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: "WhoWillBeCheckingInViewController") as? WhoWillBeCheckingInViewController else { return }
-        self.navigationController!.pushViewController(viewController, animated: true)
+        if Constant.MyClassConstants.filterRelinquishments.count > 1 {
+            viewController.filterRelinquishments = Constant.MyClassConstants.filterRelinquishments[self.selectedRow - 1]
+        } else {
+            viewController.filterRelinquishments = Constant.MyClassConstants.filterRelinquishments[self.selectedRow]
+        }
+        self.navigationController?.pushViewController(viewController, animated: true)
         
     }
     
     func dismissWhatToUse(renewalArray: [Renewal]) {
         self.dismiss(animated: true, completion: nil)
-        self.delegate?.navigateToWhoWillBeCheckIn(renewalArray: renewalArray, selectedRow: self.selectedRow)
+        if Constant.MyClassConstants.filterRelinquishments.count > 1 {
+            self.delegate?.navigateToWhoWillBeCheckIn(renewalArray: renewalArray, selectedRow: self.selectedRow, selectedRelinquishment: Constant.MyClassConstants.filterRelinquishments[selectedRow - 1])
+        } else {
+            self.delegate?.navigateToWhoWillBeCheckIn(renewalArray: renewalArray, selectedRow: self.selectedRow, selectedRelinquishment: Constant.MyClassConstants.filterRelinquishments[selectedRow])
+        }
     }
     
     func otherOptions(forceRenewals: ForceRenewals) {
@@ -858,6 +888,11 @@ extension WhatToUseViewController: RenewelViewControllerDelegate {
             guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: "RenewalOtherOptionsVC") as? RenewalOtherOptionsVC else { return }
             viewController.delegate = self
             viewController.forceRenewals = forceRenewals
+            if Constant.MyClassConstants.filterRelinquishments.count > 1 {
+                viewController.selectedRelinquishment = Constant.MyClassConstants.filterRelinquishments[selectedRow - 1]
+            } else {
+                viewController.selectedRelinquishment = Constant.MyClassConstants.filterRelinquishments[selectedRow]
+            }
             self.present(viewController, animated:true, completion: nil)
             return
             
@@ -867,6 +902,11 @@ extension WhatToUseViewController: RenewelViewControllerDelegate {
             guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: "RenewalOtherOptionsVC") as? RenewalOtherOptionsVC else { return }
             viewController.delegate = self
             viewController.forceRenewals = forceRenewals
+            if Constant.MyClassConstants.filterRelinquishments.count > 1 {
+                viewController.selectedRelinquishment = Constant.MyClassConstants.filterRelinquishments[selectedRow - 1]
+            } else {
+                viewController.selectedRelinquishment = Constant.MyClassConstants.filterRelinquishments[selectedRow]
+            }
             self.present(viewController, animated:true, completion: nil)
             return
             
@@ -876,7 +916,7 @@ extension WhatToUseViewController: RenewelViewControllerDelegate {
 
 //Mark :- Delegate
 extension WhatToUseViewController: RenewalOtherOptionsVCDelegate {
-    func selectedRenewal(selectedRenewal: String, forceRenewals: ForceRenewals) {
+    func selectedRenewal(selectedRenewal: String, forceRenewals: ForceRenewals, filterRelinquishment: ExchangeRelinquishment) {
         var renewalArray = [Renewal]()
         renewalArray.removeAll()
         if selectedRenewal == "Core" {
@@ -905,6 +945,7 @@ extension WhatToUseViewController: RenewalOtherOptionsVCDelegate {
 
         viewController.isFromRenewals = true
         viewController.renewalsArray = renewalArray
+        viewController.filterRelinquishments = filterRelinquishment
         self.navigationController!.pushViewController(viewController, animated: true)
     }
 }

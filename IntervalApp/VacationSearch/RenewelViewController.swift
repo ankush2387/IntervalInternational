@@ -13,7 +13,7 @@ import DarwinSDK
 //***** Custom delegate method declaration *****//
 protocol RenewelViewControllerDelegate: class {
     
-    func selectedRenewalFromWhoWillBeCheckingIn(renewalArray: [Renewal])
+    func selectedRenewalFromWhoWillBeCheckingIn(renewalArray: [Renewal], selectedRelinquishment: ExchangeRelinquishment)
     func noThanks()
     func otherOptions(forceRenewals: ForceRenewals)
     func dismissWhatToUse(renewalArray: [Renewal])
@@ -38,6 +38,7 @@ class RenewelViewController: UIViewController {
     var isCore = false
     var isNonCore = false
     var renewalArray = [Renewal()]
+    var filterRelinquishment = ExchangeRelinquishment()
     
     var forceRenewals = ForceRenewals()
     
@@ -198,13 +199,13 @@ class RenewelViewController: UIViewController {
                 if Constant.MyClassConstants.isFromWhatToUse {
                     self.delegate?.dismissWhatToUse(renewalArray: renewalArray)
                 } else {
-                    delegate?.selectedRenewalFromWhoWillBeCheckingIn(renewalArray: renewalArray)
+                    delegate?.selectedRenewalFromWhoWillBeCheckingIn(renewalArray: renewalArray, selectedRelinquishment: filterRelinquishment)
                 }
             } else {
                 if Constant.MyClassConstants.isFromWhatToUse {
                     self.delegate?.dismissWhatToUse(renewalArray: renewalArray)
                 } else {
-                    delegate?.selectedRenewalFromWhoWillBeCheckingIn(renewalArray: renewalArray)
+                    delegate?.selectedRenewalFromWhoWillBeCheckingIn(renewalArray: renewalArray, selectedRelinquishment: filterRelinquishment)
                     
                 }
             }

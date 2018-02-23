@@ -12,7 +12,7 @@ import DarwinSDK
 
 //***** Custom delegate method declaration *****//
 protocol RenewalOtherOptionsVCDelegate {
-    func selectedRenewal(selectedRenewal: String, forceRenewals: ForceRenewals)
+    func selectedRenewal(selectedRenewal: String, forceRenewals: ForceRenewals, filterRelinquishment: ExchangeRelinquishment)
 }
 
 class RenewalOtherOptionsVC: UIViewController {
@@ -25,6 +25,8 @@ class RenewalOtherOptionsVC: UIViewController {
     
     // class variables
     var forceRenewals = ForceRenewals()
+    
+    var selectedRelinquishment = ExchangeRelinquishment()
     
     // MARK: - lifecycle
     
@@ -56,7 +58,7 @@ class RenewalOtherOptionsVC: UIViewController {
     @IBAction func selectClicked(_ sender: UIButton) {
         // core select clicked
         if sender.tag == 0 {
-            delegate?.selectedRenewal(selectedRenewal: Helper.renewalType(type: 2), forceRenewals: forceRenewals)
+            delegate?.selectedRenewal(selectedRenewal: Helper.renewalType(type: 2), forceRenewals: forceRenewals, filterRelinquishment: selectedRelinquishment)
         } else { // non core select clicked
             
             // show guest certificate
@@ -66,14 +68,14 @@ class RenewalOtherOptionsVC: UIViewController {
                     Constant.MyClassConstants.isChangeNoThanksButtonTitle = true
                     Constant.MyClassConstants.noThanksForNonCore = true
              self.dismiss(animated: true, completion: nil)
-                    delegate?.selectedRenewal(selectedRenewal: Helper.renewalType(type: 0), forceRenewals: forceRenewals)
+                    delegate?.selectedRenewal(selectedRenewal: Helper.renewalType(type: 0), forceRenewals: forceRenewals, filterRelinquishment: selectedRelinquishment)
                     return
                     
                 } else {
                     Constant.MyClassConstants.noThanksForNonCore = false
                     Constant.MyClassConstants.isChangeNoThanksButtonTitle = false
                     self.dismiss(animated: true, completion: nil)
-                    delegate?.selectedRenewal(selectedRenewal: Helper.renewalType(type: 0), forceRenewals: forceRenewals)
+                    delegate?.selectedRenewal(selectedRenewal: Helper.renewalType(type: 0), forceRenewals: forceRenewals, filterRelinquishment: selectedRelinquishment)
                     return
                 }
             }
