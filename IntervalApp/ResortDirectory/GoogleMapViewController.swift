@@ -144,9 +144,7 @@ class GoogleMapViewController: UIViewController {
     func updateMapMarkers() {
         
         if !Constant.MyClassConstants.googleMarkerArray.isEmpty && Constant.MyClassConstants.runningFunctionality != Constant.MyClassConstants.resortFunctionalityCheck {
-            for selectedMarker in Constant.MyClassConstants.googleMarkerArray {
-                if selectedMarker.userData as! Int == Constant.MyClassConstants.collectionVwCurrentIndex {
-                    
+            for selectedMarker in Constant.MyClassConstants.googleMarkerArray  where selectedMarker.userData as! Int == Constant.MyClassConstants.collectionVwCurrentIndex {
                     if selectedMarker.isFlat == true {
                         
                         selectedMarker.icon = UIImage(named: Constant.assetImageNames.pinActiveImage)
@@ -159,7 +157,6 @@ class GoogleMapViewController: UIViewController {
                         selectedMarker.isFlat = true
                         
                     }
-                }
             }
         }
         if resortCollectionView != nil {
@@ -407,7 +404,7 @@ class GoogleMapViewController: UIViewController {
             needCameraChange = false
             if let latitude = selectedDestination.geoArea?.southEastCoordinate?.latitude, let longitude = selectedDestination.geoArea?.northWestCoordinate?.longitude {
                 let targetDestination = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-                mapView.camera = GMSCameraPosition.camera(withTarget: targetDestination, zoom: 8)
+                mapView.camera = GMSCameraPosition.camera(withTarget: targetDestination, zoom: 10)
             }
         }
         
@@ -713,31 +710,39 @@ class GoogleMapViewController: UIViewController {
                 let indexPath = IndexPath(row: self.currentIndex, section: 0)
                 self.resortCollectionView.scrollToItem(at: indexPath, at: UICollectionViewScrollPosition.right, animated: true)
             }
-            self.resortView.isHidden = false
+            resortView.isHidden = false
             
             UIView.animate (withDuration: 0.5, delay: 0.1, options: UIViewAnimationOptions.curveEaseIn, animations: {
-                self.resortView.frame = CGRect(x: 0, y: self.view.frame.height - (self.bottomResortHeight + 50), width: self.view.frame.width, height: self.bottomResortHeight)
+                self.resortView.frame = CGRect(x: 0, y: self.view.frame.height - (self.self.bottomResortHeight + 50), width: self.view.frame.width, height: self.self.bottomResortHeight)
                 
                 self.view.bringSubview(toFront: self.resortView)
             }, completion: { _ in
                 
             })
-            self.view.bringSubview(toFront: self.resortView)
+               view.bringSubview(toFront: resortView)
         } else {
             
-            if self.navigationItem.rightBarButtonItem != nil && Constant.MyClassConstants.addResortSelectedIndex.count > 0 {
-                self.navigationItem.rightBarButtonItem!.isEnabled = true
+            if navigationItem.rightBarButtonItem != nil && Constant.MyClassConstants.addResortSelectedIndex.count > 0 {
+                navigationItem.rightBarButtonItem!.isEnabled = true
             }
             
-            resortView.frame = CGRect(x: 0, y: self.view.frame.height - 50, width: self.view.frame.width, height: self.view.frame.height - (self.view.frame.height - self.bottomResortHeight))
-            
+            if Constant.MyClassConstants.runningFunctionality != Constant.MyClassConstants.resortFunctionalityCheck {
+                resortView.frame = CGRect(x: 0, y: view.frame.height - 50, width: view.frame.width, height: view.frame.height - (view.frame.height - bottomResortHeight - 50))
+            } else {
+                let tabBarHeight = tabBarController?.tabBar.bounds.size.height ?? 0
+                if tabBarHeight == 83.0 {
+                    resortView.frame = CGRect(x: 0, y: view.frame.height - 50, width: view.frame.width, height: view.frame.height - (view.frame.height - bottomResortHeight + 32))
+                } else {
+                    resortView.frame = CGRect(x: 0, y: view.frame.height - 50, width: view.frame.width, height: view.frame.height - (view.frame.height - bottomResortHeight))
+                }
+            }
             let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
             layout.minimumInteritemSpacing = 0
             layout.minimumLineSpacing = 0
             layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-            layout.itemSize = CGSize(width: self.resortView.frame.width, height: self.resortView.frame.height)
+            layout.itemSize = CGSize(width: self.resortView.frame.width, height: resortView.frame.height)
             layout.scrollDirection = UICollectionViewScrollDirection.horizontal
-            resortCollectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: self.resortView.bounds.width, height: self.resortView.bounds.height), collectionViewLayout: layout)
+            resortCollectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: resortView.bounds.width, height: self.resortView.bounds.height), collectionViewLayout: layout)
             
             resortCollectionView.register(CustomCollectionCell.self, forCellWithReuseIdentifier: Constant.dashboardTableScreenReusableIdentifiers.cell)
             resortCollectionView.backgroundColor = UIColor.clear
@@ -808,7 +813,9 @@ class GoogleMapViewController: UIViewController {
                         self.presentAlert(with: "Error".localized(), message: error?.localizedDescription ?? "")
                     }
                 }
-                Helper.getResortWithResortCode(code: selectedResort.resortCode!, viewcontroller: self)
+                if let resortCode = selectedResort.resortCode {
+                    Helper.getResortWithResortCode(code: resortCode, viewcontroller: self)
+                }
             }
         }
         
@@ -1093,7 +1100,9 @@ class GoogleMapViewController: UIViewController {
                     self.presentAlert(with: "Error".localized(), message: error?.localizedDescription ?? "")
                 }
             }
-            Helper.getResortWithResortCode(code: selectedResort.resortCode!, viewcontroller: self)
+            if let resortCode = selectedResort.resortCode {
+               Helper.getResortWithResortCode(code: resortCode, viewcontroller: self)
+            }
         }
     }
     
@@ -1147,18 +1156,18 @@ extension GoogleMapViewController: GMSMapViewDelegate {
                 marker.isFlat = true
                 mapView.selectedMarker = marker
                 Constant.MyClassConstants.resortsDescriptionArray = Constant.MyClassConstants.resortsArray[marker.userData as! Int]
-                
-                Helper.getResortWithResortCode(code: Constant.MyClassConstants.resortsDescriptionArray.resortCode!, viewcontroller: self)
-                
+                if let resortCode = Constant.MyClassConstants.resortsDescriptionArray.resortCode {
+                    Helper.getResortWithResortCode(code: resortCode, viewcontroller: self)
+                }
                 let rightSwipe = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipes(sender:)))
                 handleSwipes(sender: rightSwipe)
                 
             } else {
                 
                 Constant.MyClassConstants.resortsDescriptionArray = Constant.MyClassConstants.resortsArray[marker.userData as! Int]
-                
-                Helper.getResortWithResortCode(code: Constant.MyClassConstants.resortsDescriptionArray.resortCode!, viewcontroller: self)
-                
+                if let resortCode = Constant.MyClassConstants.resortsDescriptionArray.resortCode {
+                    Helper.getResortWithResortCode(code: resortCode, viewcontroller: self)
+                }
                 DispatchQueue.main.async {
                     for selectedMarker in Constant.MyClassConstants.googleMarkerArray {
                         
@@ -1340,11 +1349,13 @@ extension GoogleMapViewController: UICollectionViewDataSource {
             resortFavoritesButton.setImage(UIImage(named: Constant.assetImageNames.favoritesOnImage), for: UIControlState.selected)
             resortFavoritesButton.addTarget(self, action: #selector(
                 bottomResortFavoritesButtonPressed(sender:)), for: .touchUpInside)
-            let status = Helper.isResrotFavorite(resortCode: resort.resortCode!)
-            if status {
-                resortFavoritesButton.isSelected = true
-            } else {
-                resortFavoritesButton.isSelected = false
+            if let resortCode = resort.resortCode {
+                let status = Helper.isResrotFavorite(resortCode: resortCode)
+                if status {
+                    resortFavoritesButton.isSelected = true
+                } else {
+                    resortFavoritesButton.isSelected = false
+                }
             }
         }
         resortFavoritesButton.tag = indexPath.row
