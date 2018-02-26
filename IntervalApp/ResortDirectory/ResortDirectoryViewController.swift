@@ -611,7 +611,8 @@ extension ResortDirectoryViewController: UITableViewDataSource {
                 if tierName == "" {
                      cell.tierImageView.isHidden = true
                 } else {
-                     cell.tierImageView.image = UIImage(named: tierName)
+                    cell.tierImageView.image = UIImage(named: tierName)
+                    cell.tierImageView.isHidden = false
                 }
             } else {
                 cell.tierImageView.isHidden = true
