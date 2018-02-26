@@ -796,6 +796,7 @@ extension ResortDetailsViewController: UITableViewDataSource {
                         cell.tierImageView.isHidden = true
                     } else {
                         cell.tierImageView.image = UIImage(named: imageStr)
+                        cell.tierImageView.isHidden = false
                     }
                 } else {
                     cell.tierImageView.isHidden = true
