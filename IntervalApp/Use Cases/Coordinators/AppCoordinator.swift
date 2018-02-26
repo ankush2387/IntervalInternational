@@ -120,6 +120,8 @@ final class AppCoordinator {
         
         Constant.MyClassConstants.memberCreditCardList.removeAll()
         Constant.MyClassConstants.upcomingTripsArray.removeAll()
+        Constant.MyClassConstants.enableGuestCertificate = false
+        
         // TODO: - Need to refactor code/calls above
         
         logoutDidFinish()
