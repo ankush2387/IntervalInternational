@@ -240,27 +240,22 @@ class AddDebitOrCreditCardViewController: UIViewController {
                 //API call to tokenize new credit card.
                 
                 showHudAsync()
-                CreditCardTokenizeClient.tokenize(Session.sharedSession.userAccessToken, creditCardNumber: newCreditCard.cardNumber!, onSuccess: {(response) in
+                CreditCardTokenizeClient.tokenize(Session.sharedSession.userAccessToken, creditCardNumber: newCreditCard.cardNumber!, onSuccess: {[weak self](response) in
                     
                     ADBMobile.trackAction(Constant.omnitureEvents.event59, data: nil)
-                    self.hideHudAsync()
+                    self?.hideHudAsync()
                     Constant.MyClassConstants.selectedCreditCard.removeAll()
                     newCreditCard.creditcardId = 0
                     if let cardToken = response.cardToken {
                        newCreditCard.cardNumber = cardToken
                     }
                     Constant.MyClassConstants.selectedCreditCard.append(newCreditCard)
-                    self.resetCreditCardDetails()
+                    self?.resetCreditCardDetails()
                     
-                    let allViewControllers = self.navigationController?.viewControllers
-                    for vc in allViewControllers.unsafelyUnwrapped {
-                        if vc.isKind(of: CheckOutViewController.self) {
-                            self.navigationController?.popToViewController(vc, animated: true)
-                        }
-                    }
-                    }, onError: {(_) in
-                        self.presentErrorAlert(UserFacingCommonError.generic)
-                        self.hideHudAsync()
+                    self?.performSegue(withIdentifier: "unwindToCheckout", sender: self)
+                    }, onError: {[weak self](_) in
+                    self?.presentErrorAlert(UserFacingCommonError.generic)
+                    self?.hideHudAsync()
                 })
             } else {
                 self.presentAlert(with: Constant.MyClassConstants.newCardalertTitle, message: Constant.MyClassConstants.newCardalertMess)

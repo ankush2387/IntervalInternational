@@ -16,7 +16,7 @@ class VacationSearchTabBarController: UITabBarController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         title = Constant.ControllerTitles.vacationSearchTabBarController
-        UITabBar.appearance().selectionIndicatorImage = nil
+        UITabBar.appearance().selectionIndicatorImage = UIImage().makeImageWithColorAndSize(UIColor.white, size: CGSize(width: UIScreen.main.bounds.width / 2, height: tabBar.frame.height))
     }
 
     override func viewWillDisappear(_ animated: Bool) {

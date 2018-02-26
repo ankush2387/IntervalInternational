@@ -180,6 +180,8 @@ class CheckOutViewController: UIViewController {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.changeSliderStatus), object: nil)
     }
     
+     @IBAction func unwindToCheckout(_ segue: UIStoryboardSegue) {}
+    
     //***** Function called when notification for slide to agree button is fired. *****//
     func changeLabelStatus(notification: NSNotification) {
         
