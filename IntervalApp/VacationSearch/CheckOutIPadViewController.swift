@@ -1037,11 +1037,17 @@ extension CheckOutIPadViewController: UITableViewDataSource {
                                     return nil
                                 }
                                 
+                                let currencyHelper = CurrencyHelper()
+                                var currencyDesc = ""
+                                if let c = Constant.MyClassConstants.continueToCheckoutResponse.view?.fees?.currencyCode {
+                                    currencyDesc = currencyHelper.getCurrency(currencyCode: c).description
+                                }
                                 let viewModel = ChargeSummaryViewModel(charge: dataSet,
                                                                        headerTitle: "Detailed Tax Information".localized(),
                                                                        descriptionTitle: "Tax Description".localized(),
-                                                                       currency: "US Dollars".localized(),
-                                                                       totalTitle: "Total Tax Amount".localized())
+                                                                       currency: currencyDesc.localized(),
+                                                                       totalTitle: "Total Tax Amount".localized(),
+                                                                       currencySymbol: self.currencyCode)
                                 
                                 let chargeSummaryViewController = ChargeSummaryViewController(viewModel: viewModel)
                                 chargeSummaryViewController.doneButtonPressed = { chargeSummaryViewController.dismiss(animated: true) }
