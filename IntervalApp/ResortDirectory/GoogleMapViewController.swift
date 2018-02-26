@@ -589,13 +589,11 @@ class GoogleMapViewController: UIViewController {
             let Membership = Session.sharedSession.selectedMembership
             let resortList = ResortList()
             
-            for index in  Constant.MyClassConstants.addResortSelectedIndex {
+            for object in  Constant.MyClassConstants.resortsArray {
                 
-                let object = Constant.MyClassConstants.resortsArray[index]
                 let resortbyMap = ResortByMap()
-                
-                resortbyMap.resortCode = object.resortCode!
-                resortbyMap.resortName = object.resortName!
+                resortbyMap.resortCode = object.resortCode.unwrappedString
+                resortbyMap.resortName = object.resortName.unwrappedString
                 if let territoryCode = object.address?.territoryCode {
                     resortbyMap.territorrycode = territoryCode
                 }
