@@ -1003,25 +1003,15 @@ extension SearchResultViewController: UICollectionViewDelegate {
                     if collectionView.superview?.superview?.tag == 0 {
                         
                         if !combinedExactSearchItems.isEmpty {
-                            if let exchangeAvailability = combinedExactSearchItems[collectionView.tag].exchangeAvailability {
-                                
-                                if let bucket = combinedExactSearchItems[collectionView.tag].exchangeAvailability?.inventory?.buckets[indexPath.row] {
-                                    Constant.MyClassConstants.selectedExchangePointsCost = bucket.pointsCost as NSNumber
-                                    if bucket.pointsCost != bucket.memberPointsRequired {
-                                        showInfoIcon = true
-                                    }
-                                }
                                 
                                 if let rentalAvailability = combinedExactSearchItems[collectionView.tag].rentalAvailability {
                                     Constant.MyClassConstants.selectedResort = rentalAvailability
                                 } else {
-                                    if let resort = exchangeAvailability.resort {
+                                    if let resort = combinedExactSearchItems[collectionView.tag].exchangeAvailability?.resort {
                                         Constant.MyClassConstants.selectedResort = resort
                                     }
                                 }
-                            } else if let rentalAvailablility = combinedExactSearchItems[collectionView.tag].rentalAvailability {
-                                Constant.MyClassConstants.selectedResort = rentalAvailablility
-                            }
+                           
                         } else {
                             if let exchangeAvailability = combinedSurroundingSearchItems[collectionView.tag].exchangeAvailability {
                                 if let bucket = exchangeAvailability.inventory?.buckets[indexPath.row] {
