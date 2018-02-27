@@ -21,6 +21,9 @@
                 <subviews>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="NoImageIcon" translatesAutoresizingMaskIntoConstraints="NO" id="Zeg-62-lPT">
                         <rect key="frame" x="0.0" y="0.0" width="547" height="181.5"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="181.5" id="hE3-Wp-tCb"/>
+                        </constraints>
                     </imageView>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="USy-bz-533">
                         <rect key="frame" x="0.0" y="152" width="547" height="100"/>

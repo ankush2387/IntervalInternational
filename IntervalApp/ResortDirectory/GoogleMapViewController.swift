@@ -1691,6 +1691,7 @@ extension GoogleMapViewController: UITableViewDataSource {
                 let tierImageName = Helper.getTierImageName(tier: tier.uppercased())
                 if tierImageName != "" {
                     cell.tierImageView.image = UIImage(named: tierImageName)
+                    cell.tierImageView.isHidden = false
                 } else {
                     cell.tierImageView.isHidden = true
                 }

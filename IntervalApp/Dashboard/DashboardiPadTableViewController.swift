@@ -790,7 +790,7 @@ extension DashboardIPadTableViewController: UICollectionViewDataSource {
                         cell.layer.borderColor = UIColor(red: 224.0 / 255.0, green: 118.0 / 255.0, blue: 69.0 / 255.0, alpha: 1.0).cgColor
                         cell.backgroundColor = UIColor(red: 224.0 / 255.0, green: 118.0 / 255.0, blue: 69.0 / 255.0, alpha: 1.0)
                     } else {
-                        cell.alertStatus.text = Constant.buttonTitles.nothingYet
+                        cell.alertStatus.text = Constant.buttonTitles.noResultYet
                         cell.alertStatus.textColor = UIColor.white
                         cell.layer.borderColor = UIColor(red: 167.0 / 255.0, green: 167.0 / 255.0, blue: 170.0 / 255.0, alpha: 1.0).cgColor
                         cell.backgroundColor = UIColor(red: 167.0 / 255.0, green: 167.0 / 255.0, blue: 170.0 / 255.0, alpha: 1.0)

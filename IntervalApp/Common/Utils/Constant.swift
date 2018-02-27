@@ -234,8 +234,8 @@ class Constant: NSObject {
         static var filterOptionsArray: [ResortDestination] = []
         static var areaWithAreaCode: [AreaInfo] = []
         static var relinquishmentsArray: [RelinquishmentTypes] = []
-        static var selectedAreaCodeDictionary = NSMutableDictionary()
-        static var selectedAreaCodeArray = NSMutableArray()
+        static var selectedAreaCodeDictionary = [String : String]()
+        static var selectedAreaCodeArray = [String]()
         
         static var surroundingResortCodesArray: [String] = []
         static var resortsArray = [Resort]()
@@ -464,7 +464,6 @@ class Constant: NSObject {
         
         static var enableTaxes = false
         static var enableGuestCertificate = false
-        static var guestCertificatePrice = 0.0
         
         static var hasAdditionalCharges = false
         static var guestString = "guest"
@@ -818,7 +817,7 @@ class Constant: NSObject {
     struct buttonTitles {
         
         static var detail = "Detail".localized()
-        static var nothingYet = "Nothing Yet".localized()
+        static var noResultYet = "No Result Yet".localized()
         static var add = "Add".localized()
         static var delete = "Delete".localized()
         static var searchOption = "Search Option".localized()
@@ -1018,7 +1017,7 @@ class Constant: NSObject {
         static var revialViewController = "RevialViewController"
         static var accomodationCertsDetailController = "AccomodationCertsDetailController"
         static var certificateTabBarViewController = "VacationSearchTabBarController"
-        static var ownershipViewController = "OwnershipViewController"
+        static var ownershipViewController = "MyOwnershipViewController"
         static var floatViewController = "FloatDetailViewController"
         static var resortDirectoryViewController = "ResortDirectoryViewController"
         static var webViewController = "WebViewController"

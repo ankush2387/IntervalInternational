@@ -871,7 +871,6 @@ extension WhoWillBeCheckingInViewController: UITableViewDataSource {
             }
             
             for price in guestPrices where price.productCode == memberTier {
-                Constant.MyClassConstants.guestCertificatePrice = Double(price.price)
                     cell.setPrice(with: currencyCode, and: price.price)
             }
             

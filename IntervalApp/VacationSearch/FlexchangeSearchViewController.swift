@@ -148,7 +148,7 @@ class FlexchangeSearchViewController: UIViewController {
         
         if Constant.MyClassConstants.selectedAreaCodeArray.count > 0 {
             
-            Constant.MyClassConstants.vacationSearchResultHeaderLabel = Constant.MyClassConstants.selectedAreaCodeDictionary.value(forKey: Constant.MyClassConstants.selectedAreaCodeArray[0] as? String ?? "") as? String ?? ""
+            Constant.MyClassConstants.vacationSearchResultHeaderLabel = Constant.MyClassConstants.selectedAreaCodeDictionary[Constant.MyClassConstants.selectedAreaCodeArray[0]] ?? ""
         }
         
         Constant.MyClassConstants.filteredIndex = 0

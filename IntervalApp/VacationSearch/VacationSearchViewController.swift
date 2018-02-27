@@ -238,29 +238,31 @@ class VacationSearchViewController: UIViewController {
     //***** Add location pressed action to show map screen with list of location to select *****//
     func addRelinquishmentSectionButtonPressed(_ sender: IUIKButton) {
         showHudAsync()
+
+        let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+        if let viewController = mainStoryboard.instantiateViewController(withIdentifier: "RelinquishmentViewController") as? RelinquishmentViewController {
+            self.navigationController?.pushViewController(viewController, animated: true)
+        }
         ExchangeClient.getMyUnits(Session.sharedSession.userAccessToken, onSuccess: { relinquishments in
-            
+
             Constant.MyClassConstants.relinquishmentDeposits = relinquishments.deposits
             Constant.MyClassConstants.relinquishmentOpenWeeks = relinquishments.openWeeks
-            
+
             if let pointsProgram = relinquishments.pointsProgram {
                 Constant.MyClassConstants.relinquishmentProgram = pointsProgram
                 if let availablePoints = pointsProgram.availablePoints {
                     Constant.MyClassConstants.relinquishmentAvailablePointsProgram = availablePoints
                 }
             }
-            
+
             self.hideHudAsync()
-            let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
-            if let viewController = mainStoryboard.instantiateViewController(withIdentifier: "RelinquishmentViewController") as? RelinquishmentViewController {
-                self.navigationController?.pushViewController(viewController, animated: true)
-            }
-                   
+
+
         }, onError: { [weak self] error in
             self?.hideHudAsync()
             self?.presentErrorAlert(UserFacingCommonError.handleError(error))
         })
-        
+
     }
     
     func refreshTableView() {
@@ -1426,6 +1428,7 @@ extension VacationSearchViewController: SearchTableViewCellDelegate {
             switch segmentTitle {
                 case Constant.segmentControlItems.exchange:
                     requestExchange.setCheckInToDate(checkInToDate)
+                    requestExchange.travelParty = Constant.MyClassConstants.travelPartyInfo
                     searchType = VacationSearchType.EXCHANGE
                 
                 case Constant.segmentControlItems.getaways:
@@ -1441,8 +1444,8 @@ extension VacationSearchViewController: SearchTableViewCellDelegate {
             sender.isEnabled = false
             Constant.MyClassConstants.regionArray.removeAll()
             Constant.MyClassConstants.regionAreaDictionary.removeAllObjects()
-            Constant.MyClassConstants.selectedAreaCodeDictionary.removeAllObjects()
-            Constant.MyClassConstants.selectedAreaCodeArray.removeAllObjects()
+            Constant.MyClassConstants.selectedAreaCodeDictionary.removeAll()
+            Constant.MyClassConstants.selectedAreaCodeArray.removeAll()
             
             if searchType.isRental() || searchType.isCombined() {
                 
@@ -1730,7 +1733,7 @@ extension VacationSearchViewController: SearchTableViewCellDelegate {
             }
         } else if allDest.count > 0 {
             for areaCode in Constant.MyClassConstants.selectedAreaCodeArray {
-                let dictionaryArea = ["\(areaCode)": Constant.MyClassConstants.selectedAreaCodeDictionary.value(forKey: areaCode as! String)]
+                let dictionaryArea = ["\(areaCode)": Constant.MyClassConstants.selectedAreaCodeDictionary[areaCode]]
                 Constant.MyClassConstants.filterOptionsArray.append(.Area(dictionaryArea as! NSMutableDictionary))
             }
         }

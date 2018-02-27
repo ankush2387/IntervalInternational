@@ -676,7 +676,6 @@ extension WhoWillBeCheckingInIPadViewController: UITableViewDataSource {
                 
                 let floatPriceString = "\(price.price)"
                 let priceArray = floatPriceString.components(separatedBy: ".")
-                Constant.MyClassConstants.guestCertificatePrice = Double(price.price)
                 cell.certificatePriceLabel.text = "\(priceArray.first!)."
                 if (priceArray.last?.characters.count)! > 1 {
                     cell.fractionValue.text = "\(priceArray.last!)"
