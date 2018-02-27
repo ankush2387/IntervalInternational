@@ -1658,7 +1658,7 @@ extension VacationSearchResultIPadController: RenewelViewControllerDelegate {
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
         
         guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: "RenewalOtherOptionsVC") as? RenewalOtherOptionsVC else { return }
-        viewController.selectAction = { [weak self] (selectedType, renewal, relinquishment) -> () in
+        viewController.selectAction = { [weak self] (selectedType, renewal, relinquishment) in
             self?.selectedRenewal(selectedRenewal: selectedType, forceRenewals: renewal, filterRelinquishment: relinquishment)
         }
         

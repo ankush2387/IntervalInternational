@@ -52,12 +52,9 @@ class RenewalOtherOptionsVC: UIViewController {
     @IBAction func selectClicked(_ sender: UIButton) {
         // core select clicked
         if sender.tag == 0 {
-            
-            // MARK: - 1111
             guard let selectOption = selectAction else {
-                return dismiss(animated: true, completion: nil)
+                return dismiss(animated: true)
             }
-            
             selectOption(Helper.renewalType(type: 2), forceRenewals, selectedRelinquishment)
         } else { // non core select clicked
             
