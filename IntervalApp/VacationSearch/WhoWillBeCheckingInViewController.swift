@@ -17,7 +17,7 @@ class WhoWillBeCheckingInViewController: UIViewController {
     
     //Outlets
     @IBOutlet private weak var resortHoldingTimeLabel: UILabel!
-    @IBOutlet weak var checkingInUserTBLview: UITableView!
+    @IBOutlet fileprivate weak var checkingInUserTBLview: UITableView!
     @IBOutlet private weak var proceedToCheckoutButton: IUIKButton!
     
     @IBOutlet private var keyboardHeightLayoutConstraint: NSLayoutConstraint?
@@ -44,6 +44,7 @@ class WhoWillBeCheckingInViewController: UIViewController {
     var renewalsArray: [Renewal] = []
     var noThanksSelected = false
     var isFromRenewals = false
+    var currencyCode: String = ""
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
@@ -66,6 +67,18 @@ class WhoWillBeCheckingInViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWasShown), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillBeHidden), name: NSNotification.Name.UIKeyboardDidHide, object: nil)
         checkingInUserTBLview.reloadData()
+        let currencyHelper = CurrencyHelper()
+        let countryCode = Session.sharedSession.contact?.getCountryCode() ?? ""
+        if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
+            if let code = Constant.MyClassConstants.exchangeFees[0].currencyCode {
+                currencyCode = ("\(currencyHelper.getCurrencyFriendlySymbol(currencyCode: code, countryCode: countryCode))")
+            }
+        } else {
+            if let code = Constant.MyClassConstants.rentalFees[0].currencyCode {
+                currencyCode = ("\(currencyHelper.getCurrencyFriendlySymbol(currencyCode: code, countryCode: countryCode))")
+            }
+        }
+       
     }
     
     override func viewDidLoad() {
@@ -83,7 +96,7 @@ class WhoWillBeCheckingInViewController: UIViewController {
         // omniture tracking with event 37
         let userInfo: [String: String] = [
             Constant.omnitureEvars.eVar41: Constant.omnitureCommonString.vactionSearch,
-            Constant.omnitureCommonString.products: Constant.MyClassConstants.selectedResort.resortCode!,
+            Constant.omnitureCommonString.products: Constant.MyClassConstants.selectedResort.resortCode ?? "",
             Constant.omnitureEvars.eVar37: Helper.selectedSegment(index: Constant.MyClassConstants.searchForSegmentIndex),
             Constant.omnitureEvars.eVar39: ""
         ]
@@ -193,16 +206,16 @@ class WhoWillBeCheckingInViewController: UIViewController {
     // MARK: - NO THANKS from alert
     func noThanksPressed() {
         let button = UIButton()
-        self.proceedToCheckoutPressed(button)
+        proceedToCheckoutPressed(button)
     }
     
     //***** Checkout using guest. *****//
     func enableGuestFormCheckout() {
-        self.proceedToCheckoutButton.isEnabled = true
-        self.proceedToCheckoutButton.alpha = 1.0
+        proceedToCheckoutButton.isEnabled = true
+        proceedToCheckoutButton.alpha = 1.0
     }
     
-    func enableGuestButton(status :Bool) {
+    func enableGuestButton(status: Bool) {
         if status {
             proceedToCheckoutButton.isEnabled = true
             proceedToCheckoutButton.alpha = 1.0
@@ -292,12 +305,12 @@ class WhoWillBeCheckingInViewController: UIViewController {
         self.whoWillBeCheckingInSelectedIndex = sender.tag
         if sender.tag == Constant.MyClassConstants.membershipContactArray.count {
             
-            self.requiredSectionIntTBLview = 6
+            requiredSectionIntTBLview = 6
             checkingInUserTBLview.reloadData()
             let indexPath = NSIndexPath(row: 0, section: 2)
             checkingInUserTBLview.scrollToRow(at: indexPath as IndexPath, at: .top, animated: true)
-            self.proceedToCheckoutButton.isEnabled = false
-            self.proceedToCheckoutButton.alpha = 0.5
+            proceedToCheckoutButton.isEnabled = false
+            proceedToCheckoutButton.alpha = 0.5
             guard let systemAccessToken = Constant.MyClassConstants.systemAccessToken else { return }
             LookupClient.getCountries(systemAccessToken, onSuccess: { (response) in
                 Constant.GetawaySearchResultGuestFormDetailData.countryListArray = response
@@ -306,10 +319,10 @@ class WhoWillBeCheckingInViewController: UIViewController {
                 self?.presentErrorAlert(UserFacingCommonError.generic)
             })
         } else {
-            self.requiredSectionIntTBLview = 2
+            requiredSectionIntTBLview = 2
             checkingInUserTBLview.reloadData()
-            self.proceedToCheckoutButton.isEnabled = true
-            self.proceedToCheckoutButton.alpha = 1.0
+            proceedToCheckoutButton.isEnabled = true
+            proceedToCheckoutButton.alpha = 1.0
         }
         
     }
@@ -330,12 +343,12 @@ class WhoWillBeCheckingInViewController: UIViewController {
         }
         if !self.hideStatus {
             
-            self.hideStatus = true
+            hideStatus = true
             showPickerView()
-            self.pickerView.reloadAllComponents()
+            pickerView.reloadAllComponents()
         } else {
             
-            self.hideStatus = false
+            hideStatus = false
             hidePickerView()
         }
     }
@@ -344,15 +357,15 @@ class WhoWillBeCheckingInViewController: UIViewController {
     func createPickerView() {
         
         pickerBaseView = UIView(frame: CGRect(x: 0, y: self.view.frame.size.height - 200, width: self.view.frame.size.width, height: 200))
-        self.pickerBaseView.backgroundColor = IUIKColorPalette.primary1.color
+        pickerBaseView.backgroundColor = IUIKColorPalette.primary1.color
         let doneButton = UIButton(frame: CGRect(x: pickerBaseView.frame.size.width - 60, y: 5, width: 50, height: 50))
         doneButton.setTitle(Constant.AlertPromtMessages.done, for: .normal)
         doneButton.addTarget(self, action: #selector(WhoWillBeCheckingInViewController.pickerDoneButtonPressed(_:)), for: .touchUpInside)
         
         pickerView = UIPickerView(frame: CGRect(x: 0, y: 50, width: pickerBaseView.frame.size.width, height: pickerBaseView.frame.size.height - 60))
         pickerView.setValue(UIColor.white, forKeyPath: Constant.MyClassConstants.keyTextColor)
-        self.pickerBaseView.addSubview(doneButton)
-        self.pickerBaseView.addSubview(pickerView)
+        pickerBaseView.addSubview(doneButton)
+        pickerBaseView.addSubview(pickerView)
         pickerView.delegate = self
         pickerView.dataSource = self
         
@@ -362,20 +375,20 @@ class WhoWillBeCheckingInViewController: UIViewController {
     //***** Function to display picker. *****//
     func showPickerView() {
         
-        if self.pickerBaseView == nil {
-            self.hideStatus = true
-            self.createPickerView()
+        if pickerBaseView == nil {
+            hideStatus = true
+            createPickerView()
         } else {
             
-            self.hideStatus = true
-            self.pickerBaseView.isHidden = false
+            hideStatus = true
+            pickerBaseView.isHidden = false
         }
     }
     
     //***** Function to hide picker. *****//
     func hidePickerView() {
-        self.hideStatus = false
-        self.pickerBaseView.isHidden = true
+        hideStatus = false
+        pickerBaseView.isHidden = true
     }
     
     //***** Function to select value from picker. *****//
@@ -392,10 +405,10 @@ class WhoWillBeCheckingInViewController: UIViewController {
                 }
             }
         }
-        self.hideStatus = false
-        self.pickerBaseView.isHidden = true
+        hideStatus = false
+        pickerBaseView.isHidden = true
         let indexPath = NSIndexPath(row: self.dropDownSelectionRow, section: self.dropDownSelectionSection)
-        self.checkingInUserTBLview.reloadRows(at: [indexPath as IndexPath], with: UITableViewRowAnimation.automatic)
+        checkingInUserTBLview.reloadRows(at: [indexPath as IndexPath], with: UITableViewRowAnimation.automatic)
     }
     
     //***** Function called when detail button is pressed. ******//
@@ -431,7 +444,7 @@ class WhoWillBeCheckingInViewController: UIViewController {
     // MARK: - Function to get relinquishment details
     
     func getRelinquishmentDetails(resortCode: String) {
-        self.showHudAsync()
+        showHudAsync()
         Helper.getRelinquishmentDetails(resortCode: resortCode, successCompletionBlock: {
             self.hideHudAsync()
             self.performSegue(withIdentifier: Constant.segueIdentifiers.showRelinguishmentsDetailsSegue, sender: self)
@@ -444,18 +457,17 @@ class WhoWillBeCheckingInViewController: UIViewController {
     //***** Function to perform checkout *****//
     @IBAction func proceedToCheckoutPressed(_ sender: AnyObject) {
         
-        if Constant.MyClassConstants.noThanksForNonCore && self.whoWillBeCheckingInSelectedIndex == Constant.MyClassConstants.membershipContactArray.count {
+        if Constant.MyClassConstants.noThanksForNonCore && whoWillBeCheckingInSelectedIndex == Constant.MyClassConstants.membershipContactArray.count {
             Constant.MyClassConstants.enableGuestCertificate = false
             Constant.MyClassConstants.isNoThanksFromRenewalAgain = true
             let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
             let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.RenewelViewController) as! RenewelViewController
-            //Constant.MyClassConstants.noThanksForNonCore = false
             viewController.delegate = self
             
             let transitionManager = TransitionManager()
-            self.navigationController?.transitioningDelegate = transitionManager
+            navigationController?.transitioningDelegate = transitionManager
             let navController = UINavigationController(rootViewController: viewController)
-            self.present(navController, animated: true, completion: nil)
+            present(navController, animated: true, completion: nil)
             
         } else {
             
@@ -546,7 +558,7 @@ class WhoWillBeCheckingInViewController: UIViewController {
                 
                 let processRequest1 = RentalProcessPrepareContinueToCheckoutRequest()
                 
-                if self.whoWillBeCheckingInSelectedIndex == Constant.MyClassConstants.membershipContactArray.count {
+                if whoWillBeCheckingInSelectedIndex == Constant.MyClassConstants.membershipContactArray.count {
                     
                     let guest = Guest()
                     
@@ -666,7 +678,7 @@ extension WhoWillBeCheckingInViewController: UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         
-        return self.requiredSectionIntTBLview
+        return requiredSectionIntTBLview
         
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -827,14 +839,15 @@ extension WhoWillBeCheckingInViewController: UITableViewDataSource {
             
             var memberTier = ""
             if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
+                memberTier = Constant.MyClassConstants.exchangeFees[0].memberTier ?? ""
                 if !Constant.MyClassConstants.exchangeFees.isEmpty {
                     for renewal in renewalsArray {
                         for price in guestPrices {
                             if price.productCode == renewal.productCode {
-                                memberTier = price.productCode!
+                                memberTier = price.productCode ?? ""
                                 break
                             } else {
-                                memberTier = Constant.MyClassConstants.exchangeFees[0].memberTier!
+                                memberTier = Constant.MyClassConstants.exchangeFees[0].memberTier ?? ""
                             }
                         }
                     }
@@ -844,31 +857,22 @@ extension WhoWillBeCheckingInViewController: UITableViewDataSource {
                 }
                 
             } else {
-                
+                memberTier = Constant.MyClassConstants.rentalFees[0].memberTier ?? ""
                 for renewal in renewalsArray {
                     for price in guestPrices {
                         if price.productCode == renewal.productCode {
-                            memberTier = price.productCode!
+                            memberTier = price.productCode ?? ""
                             break
                         } else {
-                            memberTier = Constant.MyClassConstants.rentalFees[0].memberTier!
+                            memberTier = Constant.MyClassConstants.rentalFees[0].memberTier ?? ""
                         }
                     }
                 }
             }
             
             for price in guestPrices where price.productCode == memberTier {
-                let floatPriceString = "\(price.price)"
-                let priceArray = floatPriceString.components(separatedBy: ".")
                 Constant.MyClassConstants.guestCertificatePrice = Double(price.price)
-                cell.certificatePriceLabel.text = "\(priceArray.first!)."
-                if (priceArray.last?.characters.count)! > 1 {
-                    
-                    cell.fractionValue.text = "\(priceArray.last!)"
-                } else {
-                    
-                    cell.fractionValue.text = "\(priceArray.last!)0"
-                }
+                    cell.setPrice(with: currencyCode, and: price.price)
             }
             
             cell.infoButton.addTarget(self, action: #selector(showCertificateInfo), for: .touchUpInside)
@@ -1161,22 +1165,22 @@ extension WhoWillBeCheckingInViewController: UITextFieldDelegate {
             if textField.tag != 0 && textField.tag != 1 && textField.tag != 2 && textField.tag != 3 && textField.tag != 4 {
                 
                 textField.keyboardType = .numberPad
-                self.addDoneButtonOnNumpad(textField: textField)
+                addDoneButtonOnNumpad(textField: textField)
             }
         default :
             
             switch textField.tag {
             case 0 :
-                self.moved = true
+                moved = true
                 textField.keyboardType = .default
             case 1 :
-                self.moved = true
+                moved = true
                 textField.keyboardType = .numberPad
-                self.addDoneButtonOnNumpad(textField: textField)
+                addDoneButtonOnNumpad(textField: textField)
             default :
                 self.moved = true
                 textField.keyboardType = .numberPad
-                self.addDoneButtonOnNumpad(textField: textField)
+                addDoneButtonOnNumpad(textField: textField)
             }
         }
     }
@@ -1190,20 +1194,20 @@ extension WhoWillBeCheckingInViewController: RenewelViewControllerDelegate {
     }
     
     func selectedRenewalFromWhoWillBeCheckingIn(renewalArray: [Renewal]) {
-        self.renewalsArray = renewalArray
+        renewalsArray = renewalArray
         Constant.MyClassConstants.noThanksForNonCore = false
         let button = UIButton()
-        self.proceedToCheckoutPressed(button)
+        proceedToCheckoutPressed(button)
     }
     
     func noThanks() {
         let messageString = "Guest Certificate Fee will be charged. To proceed further please click on OK button else click on cancel to select the renewal of membership.".localized()
-        self.presentAlert(with: "Alert".localized(), message: messageString)
+        presentAlert(with: "Alert".localized(), message: messageString)
     }
     
     func otherOptions(forceRenewals: ForceRenewals) {
         let button = UIButton()
-        self.proceedToCheckoutPressed(button)
+        proceedToCheckoutPressed(button)
     }
 }
 
