@@ -49,8 +49,7 @@ class RentalInventoryCVCell: UICollectionViewCell {
             kitchenType.text = kitchenDetails
             var totalSleepCapacity = String()
             if unit.publicSleepCapacity > 0 {
-                
-                totalSleepCapacity = "\(unit.publicSleepCapacity) \(Constant.CommonLocalisedString.totalString), "
+                totalSleepCapacity = "\(unit.publicSleepCapacity) total, ".localized()
             }
             
             if unit.privateSleepCapacity > 0 {
