@@ -53,9 +53,8 @@ class ExchangeInventoryCVCell: UICollectionViewCell {
         var totalSleepCapacity = String()
         
         if unit.publicSleepCapacity > 0 {
-            
-            totalSleepCapacity = String(unit.publicSleepCapacity) + " " + Constant.CommonLocalisedString.totalString + ", "
-            
+                        
+            totalSleepCapacity = "\(unit.publicSleepCapacity) \(Constant.CommonLocalisedString.totalString), "
         }
         
         if unit.privateSleepCapacity > 0 {
