@@ -18,7 +18,7 @@ final class ChargeSummaryViewModel {
     let currencySymbol: String
     private (set) var charge: [(description: String, amount: Float)]
     
-    lazy var attributedTotal: NSAttributedString? = { 
+    lazy var attributedTotal: NSAttributedString? = { [unowned self] in
         let totalAmount = self.charge.map { $0.amount }.reduce(0, +)
         return totalAmount.currencyFormatter(for: self.currencySymbol, baseLineOffSet: 7)
     }()
