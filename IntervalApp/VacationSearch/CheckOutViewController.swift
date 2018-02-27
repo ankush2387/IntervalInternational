@@ -1234,10 +1234,10 @@ extension CheckOutViewController: UITableViewDataSource {
                                 .filter { !$0.description.unwrappedString.isEmpty }
                                 .map { ($0.description.unwrappedString, $0.amount) }
                             
-                            let currencyHelper = CurrencyHelper()
-                            var currencyDescription = ""
-                            if let curencyCodeOfFee = Constant.MyClassConstants.continueToCheckoutResponse.view?.fees?.currencyCode {
-                             currencyDescription = currencyHelper.getCurrency(currencyCode: curencyCodeOfFee).description
+                            let currencyCodeOfFee = Constant.MyClassConstants.continueToCheckoutResponse.view?.fees?.currencyCode ?? ""
+                            let currencyDescription = CurrencyHelper().getCurrency(currencyCode: currencyCodeOfFee).description
+                            if currencyDescription.isEmpty {
+                                return self.presentErrorAlert(UserFacingCommonError.generic)
                             }
                             let viewModel = ChargeSummaryViewModel(charge: dataSet,
                                                                    headerTitle: "Detailed Tax Information".localized(),
