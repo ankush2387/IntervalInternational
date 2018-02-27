@@ -200,8 +200,8 @@ class AddDebitOrCreditCardViewController: UIViewController {
                 var year = ""
                 var month = ""
                 if dateComp.count > 1 {
-                     year = dateComp[0]
-                    month = dateComp[1]
+                    month = dateComp[0]
+                    year = dateComp[1]
                 }
                 
                 var dateComponents = DateComponents()

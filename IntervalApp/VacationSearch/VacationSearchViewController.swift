@@ -1607,6 +1607,7 @@ extension VacationSearchViewController: SearchTableViewCellDelegate {
                     }
                     hideHudAsync()
                   Constant.MyClassConstants.isFromExchange = true
+                  Constant.MyClassConstants.isFromSearchBoth = false
                 }
 
             case Constant.segmentControlItems.searchBoth:
@@ -1650,6 +1651,7 @@ extension VacationSearchViewController: SearchTableViewCellDelegate {
                                 
                                 sender.isEnabled = true
                                 Constant.MyClassConstants.isFromSearchBoth = true
+                                Constant.MyClassConstants.isFromExchange = false
                             }
                             
                         }) { _ in
