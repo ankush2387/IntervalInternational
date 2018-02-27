@@ -19,9 +19,9 @@ final class ChargeSummaryTableViewCell: UITableViewCell {
     @IBOutlet private weak var chargeAmountLabel: UILabel!
     
     // MARK: - Public properties
-    func setUI(with chargeDescription: String, and chargeAmount: Float) {
+    func setUI(with chargeDescription: String, and chargeAmount: Float, and currencySymbol: String) {
        
-        if let attributedAmount = chargeAmount.currencyFormatter(for: "$") {
+        if let attributedAmount = chargeAmount.currencyFormatter(for: currencySymbol) {
             chargeAmountLabel.attributedText = attributedAmount
             chargeDescriptionLabel.text = chargeDescription
         }
