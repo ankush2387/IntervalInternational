@@ -19,10 +19,11 @@ class GuestCertificatePriceCell: UITableViewCell {
         // Initialization code
     }
 
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
+    func setPrice(with currencyDisplayes: String, and chargeAmount: Float) {
+        
+        if let attributedAmount = chargeAmount.currencyFormatter(for:currencyDisplayes) {
+            certificatePriceLabel.attributedText = attributedAmount
+        }
     }
 
 }
