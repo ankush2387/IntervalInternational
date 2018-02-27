@@ -195,7 +195,7 @@ class Constant: NSObject {
         //***** New creditcard screen constant string *****//
         static var newCardalertTitle = "New Creditcard Form".localized()
         static var newCardalertMess = "Card already exist.".localized()
-        static var alertReqFieldMsg = "Please fill mandatory fields!".localized()
+        static var alertReqFieldMsg = "Please enter a valid security code".localized()
         static var noResultError = "No Result".localized()
         static var tryAgainError = "Try Again".localized()
         static var tdi = "TDI".localized()
