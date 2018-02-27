@@ -743,7 +743,7 @@ class Constant: NSObject {
         static var bedroomSizeAlertMessage = "Please select at least one master or lock-off portion. ".localized()
         static var feesAlertMessage = "Slide to agree to fees. ".localized()
         static var insuranceSelectionMessage = "Select trip protection or choose \("\"No I decline coverage.\"")".localized()
-        static var paymentSelectionMessage = "Please select any payment method. ".localized()
+        static var paymentSelectionMessage = "Please enter a valid credit card. ".localized()
         static var promotionsMessage = "Please select any promotions. ".localized()
         static var feesPaymentMessage = "I acknowledge and agree that the mandatory resort fees will be payable to the resort. Fees are per person and per day".localized()
         static var agreeToFeesMessage = "Agreed to Fees".localized()
