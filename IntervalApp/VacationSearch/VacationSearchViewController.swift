@@ -1608,7 +1608,7 @@ extension VacationSearchViewController: SearchTableViewCellDelegate {
                     sender.isEnabled = false
                     showHudAsync()
                     let exchangeSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.EXCHANGE)
-                    exchangeSearchCriteria.relinquishmentsIds = self.availableRelinquishmentIdArray
+                    exchangeSearchCriteria.relinquishmentsIds = availableRelinquishmentIdArray
                         exchangeSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
                         exchangeSearchCriteria.travelParty = Constant.MyClassConstants.travelPartyInfo
                     

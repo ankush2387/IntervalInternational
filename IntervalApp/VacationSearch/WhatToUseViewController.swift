@@ -40,8 +40,7 @@ class WhatToUseViewController: UIViewController {
         // Get dynamic rows
         selectedRow = -1
         tableView.reloadData()
-        self.getNumberOfRows()
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
+        navigationController?.setNavigationBarHidden(false, animated: true)
         
     }
     
@@ -120,7 +119,7 @@ class WhatToUseViewController: UIViewController {
                 }
             }
         
-            ExchangeProcessClient.start(Session.sharedSession.userAccessToken, process: processResort, request: processRequest, onSuccess: {(response) in
+            ExchangeProcessClient.start(Session.sharedSession.userAccessToken, process: processResort, request: processRequest, onSuccess: { [weak self] response in
                 
                 // store response
                 Constant.MyClassConstants.exchangeProcessStartResponse = response
@@ -152,87 +151,70 @@ class WhatToUseViewController: UIViewController {
                         }
                     }
                 }
-                UserClient.updateSessionAndGetCurrentMembership(Session.sharedSession.userAccessToken, membershipNumber: Session.sharedSession.selectedMembership?.memberNumber ?? "", onSuccess: { membership in
-                    Session.sharedSession.selectedMembership = membership
+                
+                // check force renewals here
+                if let forceRenewals = Constant.MyClassConstants.exchangeProcessStartResponse.view?.forceRenewals {
                     
-                    // Got an access token!  Save it for later use.
-                    self.hideHudAsync()
-                    if let contacts = membership.contacts {
-                        Constant.MyClassConstants.membershipContactArray = contacts
-                    }
-                    
-                    // check force renewals here
-                    let forceRenewals = Constant.MyClassConstants.exchangeProcessStartResponse.view?.forceRenewals
-                    
-                    if forceRenewals != nil {
+                    if Constant.RunningDevice.deviceIdiom == .phone {
                         
-                        if Constant.RunningDevice.deviceIdiom == .phone {
-                            
-                            //self.dismiss(animated: true, completion: nil)
-                            let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
-                            // Navigate to Renewals Screen
-                            guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.RenewelViewController) as? RenewelViewController else { return }
-                            viewController.delegate = self
+                        //self.dismiss(animated: true, completion: nil)
+                        let mainStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+                        // Navigate to Renewals Screen
+                        guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.RenewelViewController) as? RenewelViewController else { return }
+                        viewController.delegate = self
+                        if let selectedRow = self?.selectedRow {
                             if Constant.MyClassConstants.filterRelinquishments.count > 1 {
-                               viewController.filterRelinquishment = Constant.MyClassConstants.filterRelinquishments[self.selectedRow - 1]
+                                viewController.filterRelinquishment = Constant.MyClassConstants.filterRelinquishments[selectedRow - 1]
                             } else {
-                                viewController.filterRelinquishment = Constant.MyClassConstants.filterRelinquishments[self.selectedRow]
+                                viewController.filterRelinquishment = Constant.MyClassConstants.filterRelinquishments[selectedRow]
                             }
-                            Constant.MyClassConstants.isFromWhatToUse = true
-                            self.present(viewController, animated:true)
-                        
-                            return
-                        } else {
-                            
-                            let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
-                            let transitionManager = TransitionManager()
-                            self.navigationController?.transitioningDelegate = transitionManager
-                            
-                            // Navigate to Who Will Be Checking in Screen
-                            let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.RenewelViewController) as! RenewelViewController
-                            viewController.delegate = self
-                            Constant.MyClassConstants.isFromWhatToUse = true
-                            self.present(viewController, animated:true, completion: nil)
-                            
-                            return
                         }
+                        Constant.MyClassConstants.isFromWhatToUse = true
+                        self?.present(viewController, animated:true)
                         
+                        return
                     } else {
                         
-                        if Constant.RunningDevice.deviceIdiom == .phone {
-                            let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
-                            guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: "WhoWillBeCheckingInViewController") as? WhoWillBeCheckingInViewController else { return }
-                            if count > 1 {
-                                  viewController.filterRelinquishments = Constant.MyClassConstants.filterRelinquishments[self.selectedRow - 1]
-                            } else {
-                                viewController.filterRelinquishments = Constant.MyClassConstants.filterRelinquishments[self.selectedRow]
-                            }
-                           
-                            self.isCheckedBox = false
-                            self.navigationController?.pushViewController(viewController, animated: true)
-                            
-                        } else {
-                            let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
-                            guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: "WhoWillBeCheckingInIPadViewController") as? WhoWillBeCheckingInIPadViewController else { return }
-                            if Constant.MyClassConstants.filterRelinquishments.count > 1 {
-                                viewController.filterRelinquishments = Constant.MyClassConstants.filterRelinquishments[self.selectedRow - 1]
-                            } else {
-                                viewController.filterRelinquishments = Constant.MyClassConstants.filterRelinquishments[self.selectedRow]
-                            }
-                            self.isCheckedBox = false
-                            self.navigationController?.pushViewController(viewController, animated: true)
-                        }
+                        let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
+                        // Navigate to Who Will Be Checking in Screen
+                        guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.RenewelViewController) as? RenewelViewController else { return }
+                        viewController.delegate = self
+                        Constant.MyClassConstants.isFromWhatToUse = true
+                        self?.present(viewController, animated:true)
+                        
+                        return
                     }
-                }, onError: { [weak self] error in
                     
-                    self?.hideHudAsync()
-                    self?.selectedRow = -1
-                    self?.selectedRowSection = -1
-                    self?.tableView.reloadData()
-                    self?.presentErrorAlert(UserFacingCommonError.handleError(error))
+                } else {
                     
-                })
-                
+                    if Constant.RunningDevice.deviceIdiom == .phone {
+                        let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+                        guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: "WhoWillBeCheckingInViewController") as? WhoWillBeCheckingInViewController else { return }
+                        if let selectedRow = self?.selectedRow {
+                            if count > 1 {
+                                viewController.filterRelinquishments = Constant.MyClassConstants.filterRelinquishments[selectedRow - 1]
+                            } else {
+                                viewController.filterRelinquishments = Constant.MyClassConstants.filterRelinquishments[selectedRow]
+                            }
+                        }
+                        
+                        self?.isCheckedBox = false
+                        self?.navigationController?.pushViewController(viewController, animated: true)
+                        
+                    } else {
+                        let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
+                        guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: "WhoWillBeCheckingInIPadViewController") as? WhoWillBeCheckingInIPadViewController else { return }
+                        if let selectedRow = self?.selectedRow {
+                            if Constant.MyClassConstants.filterRelinquishments.count > 1 {
+                                viewController.filterRelinquishments = Constant.MyClassConstants.filterRelinquishments[selectedRow - 1]
+                            } else {
+                                viewController.filterRelinquishments = Constant.MyClassConstants.filterRelinquishments[selectedRow]
+                            }
+                        }
+                        self?.isCheckedBox = false
+                        self?.navigationController?.pushViewController(viewController, animated: true)
+                    }
+                }
             }, onError: { [weak self] error in
                 self?.hideHudAsync()
                 self?.selectedRow = -1
@@ -401,10 +383,37 @@ class WhatToUseViewController: UIViewController {
         self.performSegue(withIdentifier: "pointsInfoSegue", sender: nil)
     }
     
-    // Function to get dynamic number of rows according to API response
-    
-    func getNumberOfRows() {
+    func selectedRenewal(selectedRenewal: String, forceRenewals: ForceRenewals, filterRelinquishment: ExchangeRelinquishment) {
+        var renewalArray = [Renewal]()
+        renewalArray.removeAll()
+        if selectedRenewal == "Core" {
+            // Selected core renewal
+            let lowestTerm = forceRenewals.products[0].term
+            for renewal in forceRenewals.products where renewal.term == lowestTerm {
+                let renewalItem = Renewal()
+                renewalItem.id = renewal.id
+                renewalArray.append(renewalItem)
+                break
+            }
+        } else {
+            // Selected non core renewal
+            let lowestTerm = forceRenewals.crossSelling[0].term
+            for renewal in forceRenewals.crossSelling where renewal.term == lowestTerm {
+                let renewalItem = Renewal()
+                renewalItem.id = renewal.id
+                renewalArray.append(renewalItem)
+                break
+            }
+        }
         
+        // Selected single renewal from other options. Navigate to WhoWillBeCheckingIn screen
+        let mainStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+        guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: "WhoWillBeCheckingInViewController") as? WhoWillBeCheckingInViewController else { return }
+        
+        viewController.isFromRenewals = true
+        viewController.renewalsArray = renewalArray
+        viewController.filterRelinquishments = filterRelinquishment
+        navigationController?.pushViewController(viewController, animated: true)
     }
 }
 
@@ -886,7 +895,9 @@ extension WhatToUseViewController: RenewelViewControllerDelegate {
             
             let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
             guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: "RenewalOtherOptionsVC") as? RenewalOtherOptionsVC else { return }
-            viewController.delegate = self
+            viewController.selectAction = { [weak self] (selectedType, renewal, relinquishment) -> () in
+                self?.selectedRenewal(selectedRenewal: selectedType, forceRenewals: renewal, filterRelinquishment: relinquishment)
+            }
             viewController.forceRenewals = forceRenewals
             if Constant.MyClassConstants.filterRelinquishments.count > 1 {
                 viewController.selectedRelinquishment = Constant.MyClassConstants.filterRelinquishments[selectedRow - 1]
@@ -900,52 +911,18 @@ extension WhatToUseViewController: RenewelViewControllerDelegate {
             
             let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
             guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: "RenewalOtherOptionsVC") as? RenewalOtherOptionsVC else { return }
-            viewController.delegate = self
+            viewController.selectAction = { [weak self] (selectedType, renewal, relinquishment) -> () in
+                self?.selectedRenewal(selectedRenewal: selectedType, forceRenewals: renewal, filterRelinquishment: relinquishment)
+            }
             viewController.forceRenewals = forceRenewals
             if Constant.MyClassConstants.filterRelinquishments.count > 1 {
                 viewController.selectedRelinquishment = Constant.MyClassConstants.filterRelinquishments[selectedRow - 1]
             } else {
                 viewController.selectedRelinquishment = Constant.MyClassConstants.filterRelinquishments[selectedRow]
             }
-            self.present(viewController, animated:true, completion: nil)
+            self.present(viewController, animated:true)
             return
             
         }
-    }
-}
-
-//Mark :- Delegate
-extension WhatToUseViewController: RenewalOtherOptionsVCDelegate {
-    func selectedRenewal(selectedRenewal: String, forceRenewals: ForceRenewals, filterRelinquishment: ExchangeRelinquishment) {
-        var renewalArray = [Renewal]()
-        renewalArray.removeAll()
-        if selectedRenewal == "Core" {
-            // Selected core renewal
-            let lowestTerm = forceRenewals.products[0].term
-            for renewal in forceRenewals.products where renewal.term == lowestTerm {
-                    let renewalItem = Renewal()
-                    renewalItem.id = renewal.id
-                    renewalArray.append(renewalItem)
-                    break
-            }
-        } else {
-            // Selected non core renewal
-            let lowestTerm = forceRenewals.crossSelling[0].term
-            for renewal in forceRenewals.crossSelling where renewal.term == lowestTerm {
-                    let renewalItem = Renewal()
-                    renewalItem.id = renewal.id
-                    renewalArray.append(renewalItem)
-                    break
-            }
-        }
-        
-        // Selected single renewal from other options. Navigate to WhoWillBeCheckingIn screen
-        let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
-        guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: "WhoWillBeCheckingInViewController") as? WhoWillBeCheckingInViewController else { return }
-
-        viewController.isFromRenewals = true
-        viewController.renewalsArray = renewalArray
-        viewController.filterRelinquishments = filterRelinquishment
-        self.navigationController!.pushViewController(viewController, animated: true)
     }
 }

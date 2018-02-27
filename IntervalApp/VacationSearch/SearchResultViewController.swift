@@ -787,6 +787,52 @@ class SearchResultViewController: UIViewController {
         }
     }
     
+    // MARK: - Other Renewal option selected
+    func selectedRenewal(selectedRenewal: String, forceRenewals: ForceRenewals, filterRelinquishment: ExchangeRelinquishment) {
+        
+        var renewalArray = [Renewal]()
+        renewalArray.removeAll()
+        if selectedRenewal == Helper.renewalType(type: 0) {
+            // Selected core renewal
+            let lowestTerm = forceRenewals.products[0].term
+            for renewal in forceRenewals.products where renewal.term == lowestTerm {
+                let renewalItem = Renewal()
+                renewalItem.id = renewal.id
+                renewalItem.productCode = renewal.productCode
+                renewalArray.append(renewalItem)
+                break
+            }
+        } else if selectedRenewal == Helper.renewalType(type: 2) {
+            // Selected combo renewal
+            let comboLowestTerm = forceRenewals.comboProducts[0].renewalComboProducts[0].term
+            for comboProduct in (forceRenewals.comboProducts) {
+                for renewalComboProduct in comboProduct.renewalComboProducts where renewalComboProduct.term == comboLowestTerm {
+                    let renewalItem = Renewal()
+                    renewalItem.id = renewalComboProduct.id
+                    renewalItem.productCode = renewalComboProduct.productCode
+                    renewalArray.append(renewalItem)
+                }
+            }
+        } else {
+            // Selected non core renewal
+            let lowestTerm = forceRenewals.crossSelling[0].term
+            for renewal in forceRenewals.crossSelling where renewal.term == lowestTerm {
+                let renewalItem = Renewal()
+                renewalItem.id = renewal.id
+                renewalArray.append(renewalItem)
+                break
+            }
+        }
+        
+        // Selected single renewal from other options. Navigate to WhoWillBeCheckingIn screen
+        let mainStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+        guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: SearchResultViewController.whoWillBeCheckingInViewController) as? WhoWillBeCheckingInViewController else { return }
+        viewController.isFromRenewals = true
+        viewController.renewalsArray = renewalArray
+        viewController.filterRelinquishments = filterRelinquishment
+        navigationController?.pushViewController(viewController, animated: true)
+    }
+    
 }
 
 //***** MARK: Extension classes starts from here *****//
@@ -1887,79 +1933,36 @@ extension SearchResultViewController: RenewelViewControllerDelegate {
             let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
             
             guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.renewalOtherOptionsVC) as? RenewalOtherOptionsVC else { return }
-            viewController.delegate = self
+            viewController.selectAction = { [weak self] (selectedType, renewal, relinquishment) -> () in
+                self?.selectedRenewal(selectedRenewal: selectedType, forceRenewals: renewal, filterRelinquishment: relinquishment)
+            }
             
             viewController.forceRenewals = forceRenewals
-            viewController.selectedRelinquishment = Constant.MyClassConstants.filterRelinquishments[0]
-            self.present(viewController, animated: true, completion: nil)
+            if !Constant.MyClassConstants.filterRelinquishments.isEmpty {
+                viewController.selectedRelinquishment = Constant.MyClassConstants.filterRelinquishments[0]
+            }
+            present(viewController, animated: true)
             
             return
             
         } else {
             
-            let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
+            let mainStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
             
             guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.renewalOtherOptionsVC) as? RenewalOtherOptionsVC else { return }
-            viewController.delegate = self
-            viewController.selectedRelinquishment = Constant.MyClassConstants.filterRelinquishments[0]
+            viewController.selectAction = { [weak self] (selectedType, renewal, relinquishment) -> () in
+                 self?.selectedRenewal(selectedRenewal: selectedType, forceRenewals: renewal, filterRelinquishment: relinquishment)
+            }
+            if !Constant.MyClassConstants.filterRelinquishments.isEmpty {
+                viewController.selectedRelinquishment = Constant.MyClassConstants.filterRelinquishments[0]
+            }
             viewController.forceRenewals = forceRenewals
-            self.present(viewController, animated: true, completion: nil)
+            present(viewController, animated: true)
             
             return
         }
     }
     
-}
-
-// Mark : - Delegate
-extension SearchResultViewController: RenewalOtherOptionsVCDelegate {
-    func selectedRenewal(selectedRenewal: String, forceRenewals: ForceRenewals, filterRelinquishment: ExchangeRelinquishment) {
-        
-        var renewalArray = [Renewal]()
-        renewalArray.removeAll()
-        if selectedRenewal == Helper.renewalType(type: 0) {
-            // Selected core renewal
-            let lowestTerm = forceRenewals.products[0].term
-            for renewal in forceRenewals.products where renewal.term == lowestTerm {
-                let renewalItem = Renewal()
-                renewalItem.id = renewal.id
-                renewalItem.productCode = renewal.productCode
-                renewalArray.append(renewalItem)
-                break
-            }
-        } else if selectedRenewal == Helper.renewalType(type: 2) {
-            // Selected combo renewal
-            let comboLowestTerm = forceRenewals.comboProducts[0].renewalComboProducts[0].term
-            for comboProduct in (forceRenewals.comboProducts) {
-                for renewalComboProduct in comboProduct.renewalComboProducts where renewalComboProduct.term == comboLowestTerm {
-                    let renewalItem = Renewal()
-                    renewalItem.id = renewalComboProduct.id
-                    renewalItem.productCode = renewalComboProduct.productCode
-                    renewalArray.append(renewalItem)
-                }
-            }
-        } else {
-            // Selected non core renewal
-            let lowestTerm = forceRenewals.crossSelling[0].term
-            for renewal in forceRenewals.crossSelling where renewal.term == lowestTerm {
-                let renewalItem = Renewal()
-                renewalItem.id = renewal.id
-                renewalArray.append(renewalItem)
-                break
-            }
-        }
-        
-        // Selected single renewal from other options. Navigate to WhoWillBeCheckingIn screen
-        let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
-        guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: SearchResultViewController.whoWillBeCheckingInViewController) as? WhoWillBeCheckingInViewController else { return }
-        
-        let transitionManager = TransitionManager()
-        self.navigationController?.transitioningDelegate = transitionManager
-        viewController.isFromRenewals = true
-        viewController.renewalsArray = renewalArray
-        viewController.filterRelinquishments = filterRelinquishment
-        self.navigationController?.pushViewController(viewController, animated: true)
-    }
 }
 
 extension SearchResultViewController: WhoWillBeCheckInDelegate {

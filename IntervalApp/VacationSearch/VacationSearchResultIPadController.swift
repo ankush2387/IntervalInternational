@@ -443,6 +443,53 @@ class VacationSearchResultIPadController: UIViewController {
         }
     }
     
+    func selectedRenewal(selectedRenewal: String, forceRenewals: ForceRenewals, filterRelinquishment: ExchangeRelinquishment) {
+        var renewalArray = [Renewal]()
+        renewalArray.removeAll()
+        if selectedRenewal == Helper.renewalType(type: 0) {
+            // Selected core renewal
+            let lowestTerm = forceRenewals.products[0].term
+            for renewal in forceRenewals.products {
+                if renewal.term == lowestTerm {
+                    let renewalItem = Renewal()
+                    renewalItem.id = renewal.id
+                    renewalArray.append(renewalItem)
+                    break
+                }
+            }
+        } else if selectedRenewal == Helper.renewalType(type: 2) {
+            // Selected combo renewal
+            
+            for comboProduct in (forceRenewals.comboProducts) {
+                let lowestTerm = comboProduct.renewalComboProducts[0].term
+                for renewalComboProduct in comboProduct.renewalComboProducts where renewalComboProduct.term == lowestTerm {
+                    let renewalItem = Renewal()
+                    renewalItem.id = renewalComboProduct.id
+                    renewalArray.append(renewalItem)
+                }
+            }
+        } else {
+            // Selected non core renewal
+            let lowestTerm = forceRenewals.crossSelling[0].term
+            for renewal in forceRenewals.crossSelling where renewal.term == lowestTerm {
+                let renewalItem = Renewal()
+                renewalItem.id = renewal.id
+                renewalArray.append(renewalItem)
+                break
+            }
+        }
+        
+        // Selected single renewal from other options. Navigate to WhoWillBeCheckingIn screen
+        let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
+        guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: "WhoWillBeCheckingInIPadViewController") as? WhoWillBeCheckingInIPadViewController else { return }
+        
+        let transitionManager = TransitionManager()
+        self.navigationController?.transitioningDelegate = transitionManager
+        viewController.isFromRenewals = true
+        viewController.renewalsArray = renewalArray
+        navigationController?.pushViewController(viewController, animated: true)
+    }
+    
 }
 // MARK: - Collection view FlowLayout Delegate
 extension VacationSearchResultIPadController: UICollectionViewDelegateFlowLayout {
@@ -1611,7 +1658,9 @@ extension VacationSearchResultIPadController: RenewelViewControllerDelegate {
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
         
         guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: "RenewalOtherOptionsVC") as? RenewalOtherOptionsVC else { return }
-        viewController.delegate = self
+        viewController.selectAction = { [weak self] (selectedType, renewal, relinquishment) -> () in
+            self?.selectedRenewal(selectedRenewal: selectedType, forceRenewals: renewal, filterRelinquishment: relinquishment)
+        }
         
         viewController.forceRenewals = forceRenewals
         self.present(viewController, animated: true, completion: nil)
@@ -1634,56 +1683,6 @@ extension VacationSearchResultIPadController: RenewelViewControllerDelegate {
         navigationController?.pushViewController(viewController, animated: true)
     }
     
-}
-
-//Mark:- Other Options Delegate
-extension VacationSearchResultIPadController: RenewalOtherOptionsVCDelegate {
-    func selectedRenewal(selectedRenewal: String, forceRenewals: ForceRenewals, filterRelinquishment: ExchangeRelinquishment) {
-        var renewalArray = [Renewal]()
-        renewalArray.removeAll()
-        if selectedRenewal == Helper.renewalType(type: 0) {
-            // Selected core renewal
-            let lowestTerm = forceRenewals.products[0].term
-            for renewal in forceRenewals.products {
-                if renewal.term == lowestTerm {
-                    let renewalItem = Renewal()
-                    renewalItem.id = renewal.id
-                    renewalArray.append(renewalItem)
-                    break
-                }
-            }
-        } else if selectedRenewal == Helper.renewalType(type: 2) {
-            // Selected combo renewal
-            
-            for comboProduct in (forceRenewals.comboProducts) {
-                let lowestTerm = comboProduct.renewalComboProducts[0].term
-                for renewalComboProduct in comboProduct.renewalComboProducts where renewalComboProduct.term == lowestTerm {
-                    let renewalItem = Renewal()
-                    renewalItem.id = renewalComboProduct.id
-                    renewalArray.append(renewalItem)
-                }
-            }
-        } else {
-            // Selected non core renewal
-            let lowestTerm = forceRenewals.crossSelling[0].term
-            for renewal in forceRenewals.crossSelling where renewal.term == lowestTerm {
-                let renewalItem = Renewal()
-                renewalItem.id = renewal.id
-                renewalArray.append(renewalItem)
-                break
-            }
-        }
-        
-        // Selected single renewal from other options. Navigate to WhoWillBeCheckingIn screen
-        let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
-        guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: "WhoWillBeCheckingInIPadViewController") as? WhoWillBeCheckingInIPadViewController else { return }
-        
-        let transitionManager = TransitionManager()
-        self.navigationController?.transitioningDelegate = transitionManager
-        viewController.isFromRenewals = true
-        viewController.renewalsArray = renewalArray
-        navigationController?.pushViewController(viewController, animated: true)
-    }
 }
 
 extension VacationSearchResultIPadController: WhoWillBeCheckInDelegate {
