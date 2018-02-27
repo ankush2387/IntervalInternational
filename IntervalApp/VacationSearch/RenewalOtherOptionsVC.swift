@@ -11,20 +11,16 @@ import IntervalUIKit
 import DarwinSDK
 
 //***** Custom delegate method declaration *****//
-protocol RenewalOtherOptionsVCDelegate {
-    func selectedRenewal(selectedRenewal: String, forceRenewals: ForceRenewals)
-}
 
 class RenewalOtherOptionsVC: UIViewController {
-    
-    //***** Custom cell delegate to access the delegate method *****//
-    var delegate: RenewalOtherOptionsVCDelegate?
     
     // MARK: - clas  outlets
     @IBOutlet weak var renewalOtherOptionsTableView: UITableView!
     
     // class variables
     var forceRenewals = ForceRenewals()
+    public var selectAction: ((String, ForceRenewals, ExchangeRelinquishment) -> ())?
+    var selectedRelinquishment = ExchangeRelinquishment()
     
     // MARK: - lifecycle
     
@@ -56,7 +52,10 @@ class RenewalOtherOptionsVC: UIViewController {
     @IBAction func selectClicked(_ sender: UIButton) {
         // core select clicked
         if sender.tag == 0 {
-            delegate?.selectedRenewal(selectedRenewal: Helper.renewalType(type: 2), forceRenewals: forceRenewals)
+            guard let selectOption = selectAction else {
+                return dismiss(animated: true)
+            }
+            selectOption(Helper.renewalType(type: 2), forceRenewals, selectedRelinquishment)
         } else { // non core select clicked
             
             // show guest certificate
@@ -65,15 +64,23 @@ class RenewalOtherOptionsVC: UIViewController {
                 if renewal.productCode == Constant.productCodeImageNames.platinum && renewal.term == lowestTerm {
                     Constant.MyClassConstants.isChangeNoThanksButtonTitle = true
                     Constant.MyClassConstants.noThanksForNonCore = true
-             self.dismiss(animated: true, completion: nil)
-                    delegate?.selectedRenewal(selectedRenewal: Helper.renewalType(type: 0), forceRenewals: forceRenewals)
+                    self.dismiss(animated: true, completion: nil)
+                    guard let selectOption = selectAction else {
+                        return dismiss(animated: true, completion: nil)
+                    }
+                    
+                    selectOption(Helper.renewalType(type: 0), forceRenewals, selectedRelinquishment)
                     return
                     
                 } else {
                     Constant.MyClassConstants.noThanksForNonCore = false
                     Constant.MyClassConstants.isChangeNoThanksButtonTitle = false
                     self.dismiss(animated: true, completion: nil)
-                    delegate?.selectedRenewal(selectedRenewal: Helper.renewalType(type: 0), forceRenewals: forceRenewals)
+                    guard let selectOption = selectAction else {
+                        return dismiss(animated: true, completion: nil)
+                    }
+                    
+                    selectOption(Helper.renewalType(type: 0), forceRenewals, selectedRelinquishment)
                     return
                 }
             }

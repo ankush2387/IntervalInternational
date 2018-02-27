@@ -797,6 +797,11 @@ class CheckOutViewController: UIViewController {
             self?.checkoutOptionTBLview.reloadData()
         })
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let relinquishmentDetails = segue.destination as? RelinquishmentDetailsViewController else { return }
+        relinquishmentDetails.filterRelinquishment = filterRelinquishments
+    }
 }
 
 // MARK: - Table View Delegate
