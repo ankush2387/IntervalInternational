@@ -664,7 +664,6 @@ class Constant: NSObject {
         static var user_id = "User ID".localized()
         static var user_password = "Password".localized()
         static var sign_in = "Sign In".localized()
-        static var totalString = " Total, ".localized()
         static var privateString = " Private".localized()
         static var exactString = "Resorts in ".localized()
         static var surroundingString = "Resorts near ".localized()
