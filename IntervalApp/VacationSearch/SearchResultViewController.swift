@@ -100,38 +100,33 @@ class SearchResultViewController: UIViewController {
         if Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.EXCHANGE {
             for section in sections {
                 if section.exactMatch {
-                    dateCellSelectionColor = Constant.CommonColor.blueColor
                     for exactResorts in section.items {
                         if let resortsExact = exactResorts.exchangeAvailability {
                             exactMatchResortsArrayExchange.append(resortsExact)
                         }
                     }
                 } else {
-                    if sections.count == 1 {
-                        dateCellSelectionColor = Constant.CommonColor.greenColor
-                    }
-                    // guard let items = section.items else { return }
                     for surroundingResorts in section.items {
                         if let resortsSurrounding = surroundingResorts.exchangeAvailability {
-                            exactMatchResortsArrayExchange.append(resortsSurrounding)
+                            surroundingMatchResortsArrayExchange.append(resortsSurrounding)
                         }
                     }
                 }
             }
+            if  exactMatchResortsArrayExchange.isEmpty {
+                dateCellSelectionColor = Constant.CommonColor.blueColor
+            } else { dateCellSelectionColor = Constant.CommonColor.greenColor }
+           
         } else if Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.RENTAL {
             
             for section in sections {
                 if section.exactMatch {
-                    dateCellSelectionColor = Constant.CommonColor.blueColor
                     for exactResorts in section.items {
                         if let resortsExact = exactResorts.rentalAvailability {
                             exactMatchResortsArray.append(resortsExact)
                         }
                     }
                 } else {
-                    if sections.count == 1 {
-                        dateCellSelectionColor = Constant.CommonColor.greenColor
-                    }
                     for surroundingResorts in section.items {
                         if let resortsSurrounding = surroundingResorts.rentalAvailability {
                             surroundingMatchResortsArray.append(resortsSurrounding)
@@ -139,17 +134,23 @@ class SearchResultViewController: UIViewController {
                     }
                 }
             }
+            if  exactMatchResortsArray.isEmpty {
+                dateCellSelectionColor = Constant.CommonColor.blueColor
+            } else { dateCellSelectionColor = Constant.CommonColor.greenColor }
+            
         } else {
             for section in sections {
                 if section.exactMatch {
+                    dateCellSelectionColor = Constant.CommonColor.greenColor
                     combinedExactSearchItems = section.items
                 } else {
-                    if sections.count == 1 {
-                        dateCellSelectionColor = Constant.CommonColor.greenColor
-                    }
+                    dateCellSelectionColor = Constant.CommonColor.blueColor
                     combinedSurroundingSearchItems = section.items
                 }
             }
+            if  combinedExactSearchItems.isEmpty {
+                dateCellSelectionColor = Constant.CommonColor.blueColor
+            } else { dateCellSelectionColor = Constant.CommonColor.greenColor }
         }
         
         checkExactSurroundingSections()
@@ -638,15 +639,16 @@ class SearchResultViewController: UIViewController {
         
         let firstVisibleIndexPath = searchResultTableView.indexPathsForVisibleRows?.first
         if firstVisibleIndexPath?.section == 1 {
-            dateCellSelectionColor = Constant.CommonColor.greenColor
+            dateCellSelectionColor = Constant.CommonColor.blueColor
         } else {
             checkExactSurroundingSections()
             if onlySurroundingsFound == true {
-                dateCellSelectionColor = Constant.CommonColor.greenColor
-            } else {
                 dateCellSelectionColor = Constant.CommonColor.blueColor
+            } else {
+                dateCellSelectionColor = Constant.CommonColor.greenColor
             }
         }
+        searchResultColelctionView.reloadData()
     }
     
     // Common method to get exchange collection view cell
@@ -819,7 +821,7 @@ extension SearchResultViewController: UICollectionViewDelegate {
                 viewForActivity.addSubview(myActivityIndicator)
                 cell.contentView.addSubview(viewForActivity)
             }
-            dateCellSelectionColor = Constant.CommonColor.blueColor
+            
             if Constant.MyClassConstants.calendarDatesArray[indexPath.item].isInterval ?? false {
                 showHudAsync()
                 intervalBucketClicked(calendarItem: Constant.MyClassConstants.calendarDatesArray[indexPath.item], cell: cell)
@@ -1248,9 +1250,9 @@ extension SearchResultViewController: UICollectionViewDataSource {
                 if vacationSearchCheckInDate == calendarItemCheckInDate {
                     
                     if dateCellSelectionColor == Constant.CommonColor.greenColor {
-                        cell.backgroundColor = IUIKColorPalette.primary1.color
-                    } else {
                         cell.backgroundColor = Constant.CommonColor.headerGreenColor
+                    } else {
+                        cell.backgroundColor = IUIKColorPalette.primary1.color
                     }
                     cell.dateLabel.textColor = UIColor.white
                     cell.daynameWithyearLabel.textColor = UIColor.white
@@ -1348,8 +1350,8 @@ extension SearchResultViewController: UICollectionViewDataSource {
                     let cell = self.getResortInfoCollectionCell(indexPath: indexPath, collectionView: collectionView, resort: inventoryItem)
                     return cell
                 } else {
-                    
-                    if (collectionView.superview?.superview?.tag == 0 && !combinedExactSearchItems.isEmpty && combinedExactSearchItems[collectionView.tag].hasRentalAvailability() && combinedExactSearchItems[collectionView.tag].hasExchangeAvailability()) || (collectionView.superview?.superview?.tag == 1 && combinedSurroundingSearchItems[collectionView.tag].hasRentalAvailability() && combinedSurroundingSearchItems[collectionView.tag].hasExchangeAvailability()) {
+                    guard let collectionSuperviewTag = collectionView.superview?.superview?.tag else { return UICollectionViewCell() }
+                    if (collectionSuperviewTag == 0 && !combinedExactSearchItems.isEmpty && combinedExactSearchItems[collectionView.tag].hasRentalAvailability() && combinedExactSearchItems[collectionView.tag].hasExchangeAvailability()) || (collectionSuperviewTag == 1 && combinedSurroundingSearchItems[collectionView.tag].hasRentalAvailability() && combinedSurroundingSearchItems[collectionView.tag].hasExchangeAvailability()) {
                         
                         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.reUsableIdentifiers.searchBothInventoryCell, for: indexPath) as? SearchBothInventoryCVCell else { return UICollectionViewCell() }
                         
@@ -1371,6 +1373,19 @@ extension SearchResultViewController: UICollectionViewDataSource {
                                 if let exchangeInventory = combinedSurroundingSearchItems[collectionView.tag].exchangeAvailability?.resort {
                                     cell.setDataForBothInventoryType(invetoryItem: exchangeInventory, indexPath: indexPath)
                                 }
+                            }
+                        }
+                        return cell
+                        
+                    } else if collectionSuperviewTag == 0 && !combinedSurroundingSearchItems.isEmpty && combinedSurroundingSearchItems.count > collectionView.tag && combinedSurroundingSearchItems[collectionView.tag].hasRentalAvailability() && combinedSurroundingSearchItems[collectionView.tag].hasExchangeAvailability() {
+                        
+                         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.reUsableIdentifiers.searchBothInventoryCell, for: indexPath) as? SearchBothInventoryCVCell else { return UICollectionViewCell() }
+                        
+                        if let rentalAvailability = combinedSurroundingSearchItems[collectionView.tag].rentalAvailability {
+                            cell.setDataForBothInventoryType(invetoryItem: rentalAvailability, indexPath: indexPath)
+                        } else {
+                            if let exchangeInventory = combinedSurroundingSearchItems[collectionView.tag].exchangeAvailability?.resort {
+                                cell.setDataForBothInventoryType(invetoryItem: exchangeInventory, indexPath: indexPath)
                             }
                         }
                         return cell
