@@ -24,12 +24,22 @@ final class LoginViewModel {
     let appSettings: Observable<AppSettings?>
     var didLogin: (() -> Void)?
     var fetchedMoreThanOneMembership = false
+    
+    var biometricAuthentication: BiometricAuthentication {
+        return BiometricAuthentication()
+    }
+    
     var touchIDEnabled: Bool {
         let touchIDEnabled = (try? encryptedStore.getItem(for: Persistent.touchIDEnabled.key, ofType: Bool()) ?? false) ?? false
         let appHasPreviousLogin = (try? decryptedStore.getItem(for: Persistent.appHasPreviousLogin.key, ofType: Bool()) ?? false) ?? false
         return touchIDEnabled && appHasPreviousLogin
     }
 
+    var biometricLoginTitle: String? {
+        guard let biometricType = biometricAuthentication.biometricType else { return nil }
+        return biometricType == .faceID ? "Sign in with Face ID".localized() : "Sign in with Touch ID".localized()
+    }
+    
     var buttonEnabledState: Signal<Bool, NoError> {
         return combineLatest(username, password, isLoggingIn)
             .map(shouldDisableButton)

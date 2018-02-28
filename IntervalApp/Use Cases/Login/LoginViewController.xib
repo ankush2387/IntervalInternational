@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="ipad9_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13174"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -22,6 +21,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LoginViewController" customModule="IntervalApp" customModuleProvider="target">
             <connections>
                 <outlet property="backgroundImageView" destination="dPm-bX-MSX" id="atx-bd-sLF"/>
+                <outlet property="biometricLoginButton" destination="Bh3-9v-A3d" id="Z0G-AH-Lin"/>
                 <outlet property="intervalHDButton" destination="mJA-42-fD7" id="hD6-8y-giw"/>
                 <outlet property="joinTodayButton" destination="rv3-6Q-gOW" id="xsJ-xo-gjm"/>
                 <outlet property="landscapeStackView" destination="kHa-jH-nk5" id="dkT-Rt-aX1"/>
@@ -34,7 +34,6 @@
                 <outlet property="resortDirectoryButton" destination="Jad-t0-VjU" id="yg9-QP-77e"/>
                 <outlet property="signInBackgroundView" destination="ZFJ-sS-AMq" id="2Zg-sh-fNf"/>
                 <outlet property="signInButton" destination="X9f-Sr-byv" id="ma1-4y-pt6"/>
-                <outlet property="touchIDImageView" destination="2vZ-lK-kRd" id="Mz8-tC-7vk"/>
                 <outlet property="versionLabel" destination="Y3H-bp-pqt" id="hZs-oa-2EM"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="webActivitiesButtonsView" destination="oFy-su-WAN" id="GXw-mX-iMz"/>
@@ -359,29 +358,26 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ydf-1e-fI2">
                     <rect key="frame" x="20" y="142" width="984" height="30"/>
                     <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="top" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kma-AW-zZj">
-                            <rect key="frame" x="859" y="0.0" width="125" height="30"/>
-                            <constraints>
-                                <constraint firstAttribute="width" secondItem="kma-AW-zZj" secondAttribute="height" multiplier="104:25" id="Gen-2a-ch7"/>
-                            </constraints>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kma-AW-zZj">
+                            <rect key="frame" x="944" y="8" width="32" height="14"/>
                             <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="15"/>
                             <state key="normal" title="Help"/>
                         </button>
-                        <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Touch ID" translatesAutoresizingMaskIntoConstraints="NO" id="2vZ-lK-kRd">
-                            <rect key="frame" x="8" y="8" width="14" height="14"/>
-                            <constraints>
-                                <constraint firstAttribute="width" secondItem="2vZ-lK-kRd" secondAttribute="height" multiplier="1:1" id="Nk7-oN-vjq"/>
-                            </constraints>
-                        </imageView>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bh3-9v-A3d">
+                            <rect key="frame" x="8" y="8" width="48" height="14"/>
+                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
+                            <state key="normal" title="Button"/>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstAttribute="bottom" secondItem="2vZ-lK-kRd" secondAttribute="bottom" constant="8" id="LWk-7S-jdg"/>
-                        <constraint firstAttribute="trailing" secondItem="kma-AW-zZj" secondAttribute="trailing" id="PQ5-cw-86Z"/>
-                        <constraint firstItem="2vZ-lK-kRd" firstAttribute="top" secondItem="Ydf-1e-fI2" secondAttribute="top" constant="8" id="UAx-um-YnP"/>
-                        <constraint firstItem="2vZ-lK-kRd" firstAttribute="leading" secondItem="Ydf-1e-fI2" secondAttribute="leading" constant="8" id="i50-xv-bi7"/>
-                        <constraint firstAttribute="bottom" secondItem="kma-AW-zZj" secondAttribute="bottom" id="iyh-wG-kXH"/>
-                        <constraint firstItem="kma-AW-zZj" firstAttribute="top" secondItem="Ydf-1e-fI2" secondAttribute="top" id="sgW-ge-q0c"/>
+                        <constraint firstItem="Bh3-9v-A3d" firstAttribute="leading" secondItem="Ydf-1e-fI2" secondAttribute="leading" constant="8" id="AUz-a8-mmO"/>
+                        <constraint firstItem="kma-AW-zZj" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Bh3-9v-A3d" secondAttribute="trailing" constant="15" id="AtX-by-L1M"/>
+                        <constraint firstAttribute="trailing" secondItem="kma-AW-zZj" secondAttribute="trailing" constant="8" id="BLa-in-ekI"/>
+                        <constraint firstAttribute="bottom" secondItem="kma-AW-zZj" secondAttribute="bottom" constant="8" id="NvO-CH-qN6"/>
+                        <constraint firstAttribute="bottom" secondItem="Bh3-9v-A3d" secondAttribute="bottom" constant="8" id="Z08-xV-mJA"/>
+                        <constraint firstItem="Bh3-9v-A3d" firstAttribute="top" secondItem="Ydf-1e-fI2" secondAttribute="top" constant="8" id="duZ-62-DAh"/>
+                        <constraint firstItem="kma-AW-zZj" firstAttribute="top" secondItem="Ydf-1e-fI2" secondAttribute="top" constant="8" id="lRY-hu-FDY"/>
                     </constraints>
                 </view>
             </subviews>
@@ -416,6 +412,5 @@
         <image name="LogoLogin" width="260" height="100"/>
         <image name="MagazineIcon" width="30" height="30"/>
         <image name="ResortIcon" width="30" height="30"/>
-        <image name="Touch ID" width="421" height="420"/>
     </resources>
 </document>
