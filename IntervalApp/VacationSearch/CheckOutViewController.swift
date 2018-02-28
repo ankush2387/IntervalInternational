@@ -254,11 +254,6 @@ class CheckOutViewController: UIViewController {
 
                     RentalProcessClient.continueToPay(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.getawayBookingLastStartedProcess, request: continueToPayRequest, onSuccess: { [weak self] response in
                         guard let strongSelf = self else { return }
- if let updatedFees = response.view?.fees {
-                            Constant.MyClassConstants.rentalFees[0] = updatedFees
-                        }
-                        
-
                         Constant.MyClassConstants.getawayBookingLastStartedProcess = nil
                         Constant.MyClassConstants.continueToPayResponse = response
                         let selectedCard = Constant.MyClassConstants.selectedCreditCard
@@ -275,7 +270,7 @@ class CheckOutViewController: UIViewController {
                         strongSelf.entityStore.resetDatabase(for: .decrypted)
                             .then { strongSelf.performSegue(withIdentifier: Constant.segueIdentifiers.confirmationScreenSegue, sender: nil) }
                             .onViewError(strongSelf.presentErrorAlert)
-                    }, onError: { [weak self] error in
+                        }, onError: { [weak self] error in
                         guard let strongSelf = self else { return }
                         strongSelf.hideHudAsync()
                         
