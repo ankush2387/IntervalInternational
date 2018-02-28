@@ -178,6 +178,13 @@ extension CalendarViewController: FSCalendarDataSource {
             guard let date = Constant.MyClassConstants.relinquishmentFloatDetialMaxDate else { return Date() }
             return date
             
+        } else if self.requestedController == "RentalAlert" {
+            if let dateAfter90Days = calendar.date(byAdding: .month, value: 3, to: Constant.MyClassConstants.alertWindowStartDate!) {
+                return fsCalendar.date(withYear: (dateAfter90Days as NSDate).fs_year, month: (dateAfter90Days as NSDate).fs_month, day: (dateAfter90Days as NSDate).fs_day)
+            } else {
+                let date = Date()
+                return fsCalendar.date(withYear: (date as NSDate).fs_year, month: (date as NSDate).fs_month, day: (date as NSDate).fs_day)
+            }
         } else {
             
             if self.requestedDateWindow == Constant.MyClassConstants.start {
@@ -247,14 +254,34 @@ extension CalendarViewController: FSCalendarDelegateAppearance {
             }
          } else {
             var startDT: Date
+            var endDT = Date()
+            let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
             if self.requestedDateWindow == Constant.MyClassConstants.end {
                 startDT = Constant.MyClassConstants.alertWindowStartDate ?? Date()
+                if requestedController == "RentalAlert" {
+                    
+                    if let endDate = calendar.date(byAdding: .month, value: 3, to: startDT) {
+                        endDT = endDate
+                    }
+                    if let maxDate = calendar.date(byAdding: .month, value: 24, to: Date()) {
+                        if endDT.isGreaterThanDate(maxDate) {
+                            endDT = maxDate
+                        }
+                    }
+                    
+                    print("\(endDT.numberOfDaysElapsedFromToday)")
+                } else {
+                    if let endDate = calendar.date(byAdding: .month, value: 24, to: Date()) {
+                        endDT = endDate
+                    }
+                }
             } else {
                 startDT = Date()
+                if let endDate = calendar.date(byAdding: .month, value: 24, to: Date()) {
+                    endDT = endDate
+                }
             }
-            if date .isLessThanDate(Date()) {
-                return UIColor.lightGray
-            } else if date .isLessThanDate(startDT) {
+            if (date .isLessThanDate(Date())) || (date .isLessThanDate(startDT)) || (date.isGreaterThanDate(endDT)) {
                  return UIColor.lightGray
             } else {
                 return UIColor.blue

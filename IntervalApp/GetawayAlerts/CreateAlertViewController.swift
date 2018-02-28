@@ -252,8 +252,6 @@ class CreateAlertViewController: UIViewController {
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
         if let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.calendarViewController) as? CalendarViewController {
             viewController.requestedDateWindow = Constant.MyClassConstants.start
-            let transitionManager = TransitionManager()
-            navigationController?.transitioningDelegate = transitionManager
             navigationController?.pushViewController(viewController, animated: true)
         }
         
@@ -265,8 +263,7 @@ class CreateAlertViewController: UIViewController {
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
         if let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.calendarViewController) as? CalendarViewController {
             viewController.requestedDateWindow = Constant.MyClassConstants.end
-            let transitionManager = TransitionManager()
-            navigationController?.transitioningDelegate = transitionManager
+            viewController.requestedController = "RentalAlert"
             navigationController?.pushViewController(viewController, animated: true)
         }
     }
