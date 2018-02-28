@@ -619,8 +619,9 @@ class GoogleMapViewController: UIViewController {
         } else {
             
             var selectedResortsArray = [Resort]()
-            for index in  Constant.MyClassConstants.addResortSelectedIndex {
-                selectedResortsArray.append(Constant.MyClassConstants.resortsArray[index])
+            for object in  Constant.MyClassConstants.resortsArray {
+      
+                selectedResortsArray.append(object)
                 
             }
         Constant.MyClassConstants.selectedGetawayAlertDestinationArray.append(Constant.selectedDestType.resorts(selectedResortsArray))

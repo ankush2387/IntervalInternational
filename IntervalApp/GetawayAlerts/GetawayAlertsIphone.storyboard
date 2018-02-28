@@ -111,11 +111,11 @@
                                                     </constraints>
                                                 </view>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9tK-KX-cen" customClass="IUIKButton" customModule="IntervalUIKit">
-                                                    <rect key="frame" x="270" y="18" width="80" height="30"/>
+                                                    <rect key="frame" x="254" y="18" width="96" height="30"/>
                                                     <color key="backgroundColor" red="0.90196078431372551" green="0.46274509803921571" blue="0.25882352941176467" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="30" id="DnN-9c-ty4"/>
-                                                        <constraint firstAttribute="width" constant="80" id="G5O-Ih-IIQ"/>
+                                                        <constraint firstAttribute="width" constant="96" id="G5O-Ih-IIQ"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="12"/>
                                                     <state key="normal">
@@ -135,7 +135,7 @@
                                                 </button>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="H9H-Ku-QzT" firstAttribute="centerX" secondItem="9tK-KX-cen" secondAttribute="centerX" id="1Cf-wy-VyO"/>
+                                                <constraint firstItem="H9H-Ku-QzT" firstAttribute="centerX" secondItem="9tK-KX-cen" secondAttribute="centerX" constant="8" id="1Cf-wy-VyO"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="9tK-KX-cen" secondAttribute="trailing" constant="10" id="1DZ-e8-Grw"/>
                                                 <constraint firstItem="W3i-S0-8Co" firstAttribute="leading" secondItem="96l-ju-r7h" secondAttribute="leading" id="Jrq-Di-Zrf"/>
                                                 <constraint firstItem="H9H-Ku-QzT" firstAttribute="centerY" secondItem="9tK-KX-cen" secondAttribute="centerY" id="O4v-kc-2cn"/>
@@ -214,7 +214,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qoI-4D-meM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1322" y="31"/>
+            <point key="canvasLocation" x="1321.0144927536232" y="30.570652173913047"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="ovu-8B-Ms3">

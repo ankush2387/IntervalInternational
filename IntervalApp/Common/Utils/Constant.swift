@@ -816,7 +816,7 @@ class Constant: NSObject {
     struct buttonTitles {
         
         static var detail = "Detail".localized()
-        static var noResultYet = "No Result Yet".localized()
+        static var noResultYet = "No Results Yet".localized()
         static var add = "Add".localized()
         static var delete = "Delete".localized()
         static var searchOption = "Search Option".localized()
