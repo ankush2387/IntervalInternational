@@ -969,7 +969,7 @@ extension WhoWillBeCheckingInIPadViewController: RenewelViewControllerDelegate {
         
     }
     
-    func selectedRenewalFromWhoWillBeCheckingIn(renewalArray: [Renewal]) {
+    func selectedRenewalFromWhoWillBeCheckingIn(renewalArray: [Renewal], selectedRelinquishment: ExchangeRelinquishment) {
         self.renewalsArray = renewalArray
         Constant.MyClassConstants.noThanksForNonCore = false
         let button = UIButton()

@@ -13,6 +13,7 @@ import RealmSwift
 import DarwinSDK
 import SVProgressHUD
 import SDWebImage
+import then
 
 class VacationSearchViewController: UIViewController {
     
@@ -43,10 +44,12 @@ class VacationSearchViewController: UIViewController {
     var searchDateRequest = RentalSearchDatesRequest()
     var rentalHasNotAvailableCheckInDates: Bool = false
     var exchangeHasNotAvailableCheckInDates: Bool = false
+    private let entityStore: EntityDataStore = EntityDataSource.sharedInstance
+    fileprivate var availableRelinquishmentIdArray = [String]()
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        //navigationController?.isNavigationBarHidden = false
+        readSavedRelinquishments()
         navigationController?.navigationBar.isHidden = false
         searchVacationTableView.reloadData()
     }
@@ -97,9 +100,44 @@ class VacationSearchViewController: UIViewController {
         searchVacationTableView.reloadData()
     }
     
+    func readSavedRelinquishments() {
+
+            self.availableRelinquishmentIdArray.removeAll()
+            let membership = Session.sharedSession.selectedMembership
+            let selectedMembershipNumber = membership?.memberNumber
+            var requiredMemberNumber = ""
+            if let membernumber = selectedMembershipNumber {
+                requiredMemberNumber = membernumber
+            }
+            let predicate = "membeshipNumber == '\(requiredMemberNumber)'"
+            entityStore.readObjectsFromDisk(type: OpenWeeksStorage.self, predicate: predicate, encoding: .decrypted)
+                .then { openWeeksStorage in
+                    self.availableRelinquishmentIdArray.append(contentsOf: openWeeksStorage
+                        .flatMap { $0.openWeeks }
+                        .flatMap { $0.openWeeks }
+                        .map { $0.relinquishmentID })
+                    self.availableRelinquishmentIdArray.append(contentsOf: openWeeksStorage
+                        .flatMap { $0.openWeeks }
+                        .flatMap { $0.deposits }
+                        .map { $0.relinquishmentID })
+                    
+                    self.availableRelinquishmentIdArray.append(contentsOf: openWeeksStorage
+                        .flatMap { $0.openWeeks }
+                        .flatMap { $0.clubPoints }
+                        .map { $0.relinquishmentId })
+                    
+                    self.availableRelinquishmentIdArray.append(contentsOf: openWeeksStorage
+                        .flatMap { $0.openWeeks }
+                        .flatMap { $0.pProgram }
+                        .map { $0.relinquishmentId })
+                }
+                .onError { [unowned self] error in
+                    self.presentErrorAlert(UserFacingCommonError.handleError(error))
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
         // set font of sement control
         let font = UIFont(name: Constant.fontName.helveticaNeue, size: 18)
         searchVacationSegementControl.setTitleTextAttributes([NSFontAttributeName: font ?? 18],
@@ -602,7 +640,7 @@ extension VacationSearchViewController: UITableViewDelegate {
         } else {
             
             let delete = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: Constant.buttonTitles.delete) { (_, index) -> Void in
-                // var isFloat = true
+                self.availableRelinquishmentIdArray.remove(at: indexPath.row)
                 let storedData = Helper.getLocalStorageWherewanttoTrade()
                 
                 if storedData.count > 0 {
@@ -652,6 +690,7 @@ extension VacationSearchViewController: UITableViewDelegate {
                                 } else {
                                     Constant.MyClassConstants.whatToTradeArray.removeObject(at: indexPath.row)
                                     Constant.MyClassConstants.relinquishmentIdArray.remove(at: indexPath.row)
+                                    Constant.MyClassConstants.isCIGAvailable = false
                                     realm.delete(storedData[indexPath.row])
                                 }
 
@@ -1567,12 +1606,12 @@ extension VacationSearchViewController: SearchTableViewCellDelegate {
                 if Constant.MyClassConstants.whereTogoContentArray.count == 0 {
                      presentAlert(with: Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.searchVacationMessage)
                 } else if Constant.MyClassConstants.relinquishmentIdArray.isEmpty {
-                     presentAlert(with: Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.tradeItemMessage)
+                      presentAlert(with: Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.tradeItemMessage)
                 } else {
                     sender.isEnabled = false
                     showHudAsync()
                     let exchangeSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.EXCHANGE)
-                        exchangeSearchCriteria.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray
+                    exchangeSearchCriteria.relinquishmentsIds = availableRelinquishmentIdArray
                         exchangeSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
                         exchangeSearchCriteria.travelParty = Constant.MyClassConstants.travelPartyInfo
                     
@@ -1607,6 +1646,7 @@ extension VacationSearchViewController: SearchTableViewCellDelegate {
                     }
                     hideHudAsync()
                   Constant.MyClassConstants.isFromExchange = true
+                  Constant.MyClassConstants.isFromSearchBoth = false
                 }
 
             case Constant.segmentControlItems.searchBoth:
@@ -1650,6 +1690,7 @@ extension VacationSearchViewController: SearchTableViewCellDelegate {
                                 
                                 sender.isEnabled = true
                                 Constant.MyClassConstants.isFromSearchBoth = true
+                                Constant.MyClassConstants.isFromExchange = false
                             }
                             
                         }) { _ in

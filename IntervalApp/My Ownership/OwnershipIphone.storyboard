@@ -1217,6 +1217,7 @@
                                     <constraint firstItem="2vH-be-yiX" firstAttribute="centerX" secondItem="4d7-3p-uzf" secondAttribute="centerX" id="4Ip-vA-ZTv"/>
                                     <constraint firstItem="1Vd-Dc-j3g" firstAttribute="leading" secondItem="4d7-3p-uzf" secondAttribute="leading" id="YF6-pq-m7z"/>
                                     <constraint firstAttribute="trailing" secondItem="1Vd-Dc-j3g" secondAttribute="trailing" constant="5" id="ccv-lq-rvY"/>
+                                    <constraint firstAttribute="width" constant="172.5" id="gJC-kN-IdQ"/>
                                     <constraint firstAttribute="height" constant="50" id="hrK-Cm-RZ4"/>
                                     <constraint firstItem="1Vd-Dc-j3g" firstAttribute="top" secondItem="4d7-3p-uzf" secondAttribute="top" id="qCh-UH-8Hr"/>
                                     <constraint firstItem="2vH-be-yiX" firstAttribute="centerY" secondItem="4d7-3p-uzf" secondAttribute="centerY" id="tiH-jQ-Dly"/>
@@ -1319,7 +1320,9 @@
                         <outlet property="enddatesecondbtn" destination="MQB-1d-q7X" id="rJQ-gr-98C"/>
                         <outlet property="endmonthfirstbtn" destination="p4f-jk-H6d" id="rkO-N0-yvu"/>
                         <outlet property="endmonthsecondbtn" destination="x1X-hv-08K" id="15R-aQ-ALy"/>
+                        <outlet property="equalWidthsBetweenFirstAndSecondTravelWindow" destination="0CZ-Sb-abh" id="lkz-zE-Rty"/>
                         <outlet property="firstTravelWindowConstraint" destination="vYY-zf-ICF" id="Mcr-SQ-IdP"/>
+                        <outlet property="firstTravelWindowWidth" destination="gJC-kN-IdQ" id="dLn-GV-RqE"/>
                         <outlet property="firsttravelwindowbtn" destination="1Vd-Dc-j3g" id="Wxm-k1-1Hj"/>
                         <outlet property="indisefirstview" destination="2vH-be-yiX" id="pI5-h4-LfB"/>
                         <outlet property="insidesecondview" destination="h4d-Zm-8iA" id="T8d-wp-L44"/>

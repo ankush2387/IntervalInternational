@@ -13,8 +13,26 @@ import LocalAuthentication
 final class BiometricAuthentication {
 
     // MARK: - Public properties
+    enum BiometricAuthenticationType { case faceID, touchID }
+    
     var canEvaluatePolicy: Bool {
         return context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil)
+    }
+    
+    var biometricType: BiometricAuthenticationType? {
+        guard canEvaluatePolicy else { return nil }
+        guard #available(iOS 11.0, *) else { return .touchID }
+        
+        switch context.biometryType {
+        case .none:
+            return nil
+            
+        case .faceID:
+            return .faceID
+            
+        case .touchID:
+            return .touchID
+        }
     }
 
     // MARK: - Private properties

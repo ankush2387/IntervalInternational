@@ -195,7 +195,7 @@ class Constant: NSObject {
         //***** New creditcard screen constant string *****//
         static var newCardalertTitle = "New Creditcard Form".localized()
         static var newCardalertMess = "Card already exist.".localized()
-        static var alertReqFieldMsg = "Please fill mandatory fields!".localized()
+        static var alertReqFieldMsg = "Please enter a valid security code".localized()
         static var noResultError = "No Result".localized()
         static var tryAgainError = "Try Again".localized()
         static var tdi = "TDI".localized()
@@ -664,7 +664,6 @@ class Constant: NSObject {
         static var user_id = "User ID".localized()
         static var user_password = "Password".localized()
         static var sign_in = "Sign In".localized()
-        static var totalString = " Total, ".localized()
         static var privateString = " Private".localized()
         static var exactString = "Resorts in ".localized()
         static var surroundingString = "Resorts near ".localized()
@@ -743,7 +742,7 @@ class Constant: NSObject {
         static var bedroomSizeAlertMessage = "Please select at least one master or lock-off portion. ".localized()
         static var feesAlertMessage = "Slide to agree to fees. ".localized()
         static var insuranceSelectionMessage = "Select trip protection or choose \("\"No I decline coverage.\"")".localized()
-        static var paymentSelectionMessage = "Please select any payment method. ".localized()
+        static var paymentSelectionMessage = "Please enter a valid credit card. ".localized()
         static var promotionsMessage = "Please select any promotions. ".localized()
         static var feesPaymentMessage = "I acknowledge and agree that the mandatory resort fees will be payable to the resort. Fees are per person and per day".localized()
         static var agreeToFeesMessage = "Agreed to Fees".localized()
@@ -817,7 +816,7 @@ class Constant: NSObject {
     struct buttonTitles {
         
         static var detail = "Detail".localized()
-        static var noResultYet = "No Result Yet".localized()
+        static var noResultYet = "No Results Yet".localized()
         static var add = "Add".localized()
         static var delete = "Delete".localized()
         static var searchOption = "Search Option".localized()

@@ -254,11 +254,6 @@ class CheckOutViewController: UIViewController {
 
                     RentalProcessClient.continueToPay(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.getawayBookingLastStartedProcess, request: continueToPayRequest, onSuccess: { [weak self] response in
                         guard let strongSelf = self else { return }
- if let updatedFees = response.view?.fees {
-                            Constant.MyClassConstants.rentalFees[0] = updatedFees
-                        }
-                        
-
                         Constant.MyClassConstants.getawayBookingLastStartedProcess = nil
                         Constant.MyClassConstants.continueToPayResponse = response
                         let selectedCard = Constant.MyClassConstants.selectedCreditCard
@@ -275,7 +270,7 @@ class CheckOutViewController: UIViewController {
                         strongSelf.entityStore.resetDatabase(for: .decrypted)
                             .then { strongSelf.performSegue(withIdentifier: Constant.segueIdentifiers.confirmationScreenSegue, sender: nil) }
                             .onViewError(strongSelf.presentErrorAlert)
-                    }, onError: { [weak self] error in
+                        }, onError: { [weak self] error in
                         guard let strongSelf = self else { return }
                         strongSelf.hideHudAsync()
                         
@@ -797,6 +792,11 @@ class CheckOutViewController: UIViewController {
             self?.checkoutOptionTBLview.reloadData()
         })
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let relinquishmentDetails = segue.destination as? RelinquishmentDetailsViewController else { return }
+        relinquishmentDetails.filterRelinquishment = filterRelinquishments
+    }
 }
 
 // MARK: - Table View Delegate
@@ -982,11 +982,11 @@ extension CheckOutViewController: UITableViewDataSource {
             } else if indexPath.row != (Constant.MyClassConstants.generalAdvisementsArray.count) + 1 {
                 guard let description = Constant.MyClassConstants.generalAdvisementsArray[indexPath.row].description else { return 0 }
                 let height = heightForView(description, font: font, width: view.frame.size.width - 10)
-                return height + 60
+                return height + 70
             } else {
                 guard let description = Constant.MyClassConstants.additionalAdvisementsArray.last?.description else { return 0 }
                 let height = heightForView(description, font: font, width: view.frame.size.width - 20)
-                return height + 60
+                return height + 70
             }
             
         case 2, 9 :
@@ -1234,11 +1234,17 @@ extension CheckOutViewController: UITableViewDataSource {
                                 .filter { !$0.description.unwrappedString.isEmpty }
                                 .map { ($0.description.unwrappedString, $0.amount) }
                             
+                            let currencyCodeOfFee = Constant.MyClassConstants.continueToCheckoutResponse.view?.fees?.currencyCode ?? ""
+                            let currencyDescription = CurrencyHelper().getCurrency(currencyCode: currencyCodeOfFee).description
+                            if currencyDescription.isEmpty {
+                                return self.presentErrorAlert(UserFacingCommonError.generic)
+                            }
                             let viewModel = ChargeSummaryViewModel(charge: dataSet,
                                                                    headerTitle: "Detailed Tax Information".localized(),
                                                                    descriptionTitle: "Tax Description".localized(),
-                                                                   currency: "US Dollars".localized(),
-                                                                   totalTitle: "Total Tax Amount".localized())
+                                                                   currency: currencyDescription.localized(),
+                                                                   totalTitle: "Total Tax Amount".localized(),
+                                                                   currencySymbol: self.currencyCode)
                             
                             let chargeSummaryViewController = ChargeSummaryViewController(viewModel: viewModel)
                             chargeSummaryViewController.doneButtonPressed = { chargeSummaryViewController.dismiss(animated: true) }
