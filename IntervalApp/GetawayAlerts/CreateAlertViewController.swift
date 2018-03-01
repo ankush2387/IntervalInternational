@@ -263,7 +263,7 @@ class CreateAlertViewController: UIViewController {
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
         if let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.calendarViewController) as? CalendarViewController {
             viewController.requestedDateWindow = Constant.MyClassConstants.end
-            viewController.requestedController = "RentalAlert"
+            viewController.showNinetyDaysWindow = true
             navigationController?.pushViewController(viewController, animated: true)
         }
     }

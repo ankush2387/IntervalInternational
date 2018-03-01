@@ -20,6 +20,7 @@ class CalendarViewController: UIViewController {
     let defaults = UserDefaults.standard
     var requestedDateWindow: String = ""
     var requestedController = ""
+    var showNinetyDaysWindow = false
     
     var dateArray = [Date]()
     var datesToAllow = [Date]()
@@ -178,7 +179,7 @@ extension CalendarViewController: FSCalendarDataSource {
             guard let date = Constant.MyClassConstants.relinquishmentFloatDetialMaxDate else { return Date() }
             return date
             
-        } else if self.requestedController == "RentalAlert" {
+        } else if showNinetyDaysWindow {
             if let dateAfter90Days = calendar.date(byAdding: .month, value: 3, to: Constant.MyClassConstants.alertWindowStartDate!) {
                 return fsCalendar.date(withYear: (dateAfter90Days as NSDate).fs_year, month: (dateAfter90Days as NSDate).fs_month, day: (dateAfter90Days as NSDate).fs_day)
             } else {
@@ -258,7 +259,7 @@ extension CalendarViewController: FSCalendarDelegateAppearance {
             let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
             if self.requestedDateWindow == Constant.MyClassConstants.end {
                 startDT = Constant.MyClassConstants.alertWindowStartDate ?? Date()
-                if requestedController == "RentalAlert" {
+                if showNinetyDaysWindow {
                     
                     if let endDate = calendar.date(byAdding: .month, value: 3, to: startDT) {
                         endDT = endDate

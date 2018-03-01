@@ -180,7 +180,7 @@ class EditMyAlertIpadViewController: UIViewController {
         let mainStoryboard: UIStoryboard = UIStoryboard(name: storyboardName, bundle: nil)
         if let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.calendarViewController) as? CalendarViewController {
             viewController.requestedDateWindow = Constant.MyClassConstants.end
-            viewController.requestedController = "RentalAlert"
+            viewController.showNinetyDaysWindow = true
             navigationController?.pushViewController(viewController, animated: true)
         }
     }
