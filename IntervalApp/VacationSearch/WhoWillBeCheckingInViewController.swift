@@ -807,10 +807,11 @@ extension WhoWillBeCheckingInViewController: UITableViewDataSource {
             
             let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.guestCertificatePriceCell, for: indexPath) as! GuestCertificatePriceCell
             guard let guestPrices = Constant.MyClassConstants.guestCertificate?.prices else { return cell }
-            
-            var memberTier = ""
+            var currencyCode = ""
+            var memberTier = Session.sharedSession.selectedMembership?.getProductWithHighestTier()?.productCode ?? ""
             if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
                 if !Constant.MyClassConstants.exchangeFees.isEmpty {
+                    currencyCode = Constant.MyClassConstants.exchangeFees[0].currencyCode ?? ""
                     for renewal in renewalsArray {
                         for price in guestPrices {
                             if price.productCode == renewal.productCode {
@@ -843,7 +844,12 @@ extension WhoWillBeCheckingInViewController: UITableViewDataSource {
             for price in guestPrices where price.productCode == memberTier {
                 let floatPriceString = "\(price.price)"
                 let priceArray = floatPriceString.components(separatedBy: ".")
-                cell.certificatePriceLabel.text = "\(priceArray.first!)."
+                let currencyHelper = CurrencyHelper()
+                let countryCode = Session.sharedSession.contact?.getCountryCode() ?? ""
+                
+                let currencySymbol = currencyHelper.getCurrencyFriendlySymbol(currencyCode: currencyCode, countryCode: countryCode)
+                
+                cell.certificatePriceLabel.text = "\(currencySymbol)\(priceArray.first!)."
                 if (priceArray.last?.characters.count)! > 1 {
                     
                     cell.fractionValue.text = "\(priceArray.last!)"
