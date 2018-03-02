@@ -32,7 +32,6 @@ final class LoginViewModel {
     var touchIDEnabled: Bool {
         let touchIDEnabled = (try? encryptedStore.getItem(for: Persistent.touchIDEnabled.key, ofType: Bool()) ?? false) ?? false
         let appHasPreviousLogin = (try? decryptedStore.getItem(for: Persistent.appHasPreviousLogin.key, ofType: Bool()) ?? false) ?? false
-        try? encryptedStore.save(item: touchIDEnabled && appHasPreviousLogin, for: Persistent.touchIDEnabled.key)
         return touchIDEnabled && appHasPreviousLogin
     }
 

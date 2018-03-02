@@ -43,16 +43,16 @@ final class SettingsViewModel {
         let touchIDEnabled = (try? encryptedStore.getItem(for: Persistent.touchIDEnabled.key, ofType: Bool()) ?? false) ?? false
         
         var viewModels = [SimpleCellViewModel]()
-        
-        if authentication.canEvaluatePolicy {
 
-            let simpleLabelSwitchCellViewModel = SimpleLabelSwitchCellViewModel(label: "Touch ID".localized(),
+        if let biometricType = authentication.biometricType, authentication.canEvaluatePolicy {
+            let biometricMessage = biometricType == .faceID ? "Enable face ID".localized() : "Enable Touch ID".localized()
+            let simpleLabelSwitchCellViewModel = SimpleLabelSwitchCellViewModel(label: biometricMessage,
                                                                                 switchOn: touchIDEnabled)
 
             simpleLabelSwitchCellViewModel.switchOn.observeNext { enabled in
                 try? encryptedStore.save(item: enabled, for: Persistent.touchIDEnabled.key)
                 }.dispose(in: disposeBag)
-            
+
             viewModels.append(simpleLabelSwitchCellViewModel)
         }
 
