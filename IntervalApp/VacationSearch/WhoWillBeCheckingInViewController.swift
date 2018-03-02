@@ -310,6 +310,7 @@ class WhoWillBeCheckingInViewController: UIViewController {
             checkingInUserTBLview.reloadData()
             self.proceedToCheckoutButton.isEnabled = true
             self.proceedToCheckoutButton.alpha = 1.0
+            Constant.MyClassConstants.enableGuestCertificate = false
         }
         
     }
