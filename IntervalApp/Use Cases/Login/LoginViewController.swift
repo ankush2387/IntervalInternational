@@ -53,7 +53,6 @@ final class LoginViewController: UIViewController {
     // MARK: - Overrides
     override func viewDidLoad() {
         super.viewDidLoad()
-        setUI()
         bindUI()
         showOnboardingIfNewAppInstance()
         setSplashScreenAnimation()
@@ -67,6 +66,7 @@ final class LoginViewController: UIViewController {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.isHidden = true
         viewModel.password.next(nil)
+        setUI()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
