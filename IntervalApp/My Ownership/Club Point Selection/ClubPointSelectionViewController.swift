@@ -52,6 +52,7 @@ class ClubPointSelectionViewController: UIViewController {
     var didSave: ((ClubPoints) -> Void)?
 
     let infoImageView = UIImageView()
+    var selectedViewIndex = 0
     var labelsCollectionView: UICollectionView!
     var clublabel = ""
     var clubIntervalValuesCollectionView: UICollectionView!
@@ -87,7 +88,7 @@ class ClubPointSelectionViewController: UIViewController {
         startmonthfirstbtn.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         enddatefirstbtn.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         endmonthfirstbtn.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-        
+        selectedViewIndex = 0
     }
     
     @IBAction func secondbuttonpressed(_ sender: Any) {
@@ -111,7 +112,7 @@ class ClubPointSelectionViewController: UIViewController {
         mapClubIntervalPoints(index: (sender as AnyObject).tag - 100)
         
         createClubsCollectionView()
-        
+        selectedViewIndex = 1
     }
     
     // MARK: - Function for done button click
@@ -128,9 +129,10 @@ class ClubPointSelectionViewController: UIViewController {
         pointMatrixType.clubPointsMatrixType = Constant.MyClassConstants.matrixType
         pointMatrixType.clubPointsMatrixDescription = Constant.MyClassConstants.matrixDescription
         pointMatrixType.clubPointsMatrixGridRowLabel = Constant.MyClassConstants.labelarray[0] as? String
-        intervalPrint(Constant.MyClassConstants.fromdatearray[0])
-        pointMatrixType.fromDate = Constant.MyClassConstants.fromdatearray[0] as? String
-        pointMatrixType.toDate = Constant.MyClassConstants.todatearray[0] as? String
+        intervalPrint(Constant.MyClassConstants.fromdatearray[selectedViewIndex])
+        intervalPrint(Constant.MyClassConstants.todatearray[selectedViewIndex])
+        pointMatrixType.fromDate = Constant.MyClassConstants.fromdatearray[selectedViewIndex] as? String
+        pointMatrixType.toDate = Constant.MyClassConstants.todatearray[selectedViewIndex] as? String
         pointMatrixType.clubPointsMatrixGridRowLabel = processClubPointMatrixRowLable(for: indexPath)
         _ = Constant.MyClassConstants.relinquishmentSelectedWeek.unit
         intervalPrint(Constant.MyClassConstants.matrixDataArray)
