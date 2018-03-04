@@ -180,7 +180,8 @@ extension CalendarViewController: FSCalendarDataSource {
             return date
             
         } else if showNinetyDaysWindow {
-            if let dateAfter90Days = calendar.date(byAdding: .month, value: 3, to: Constant.MyClassConstants.alertWindowStartDate!) {
+            if let alertWindowStartDate = Constant.MyClassConstants.alertWindowStartDate,
+                let dateAfter90Days = calendar.date(byAdding: .month, value: 3, to: alertWindowStartDate) {
                 return fsCalendar.date(withYear: (dateAfter90Days as NSDate).fs_year, month: (dateAfter90Days as NSDate).fs_month, day: (dateAfter90Days as NSDate).fs_day)
             } else {
                 let date = Date()
