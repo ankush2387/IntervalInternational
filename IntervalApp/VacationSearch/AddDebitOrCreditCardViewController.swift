@@ -272,20 +272,34 @@ class AddDebitOrCreditCardViewController: UIViewController {
                 //API call to tokenize new credit card.
                 
                 showHudAsync()
-                CreditCardTokenizeClient.tokenize(Session.sharedSession.userAccessToken, creditCardNumber: newCreditCard.cardNumber!, onSuccess: {[weak self](response) in
-                    
+                CreditCardTokenizeClient.tokenize(Session.sharedSession.userAccessToken, creditCardNumber: newCreditCard.cardNumber!, onSuccess: {[unowned self](response) in
                     ADBMobile.trackAction(Constant.omnitureEvents.event59, data: nil)
-                    self?.hideHudAsync()
                     Constant.MyClassConstants.selectedCreditCard.removeAll()
                     newCreditCard.creditcardId = 0
                     if let cardToken = response.cardToken {
-                       newCreditCard.cardNumber = cardToken
+                        newCreditCard.cardNumber = cardToken
                     }
-                    Constant.MyClassConstants.selectedCreditCard.append(newCreditCard)
-                    self?.resetCreditCardDetails()
+                    if self.saveCardCheckBoxChecked {
+                        UserClient.createCreditCard(Session.sharedSession.userAccessToken!, creditCard: newCreditCard, onSuccess: {[unowned self](cc) in
+                            // unfortunately we have to readd the cvv since the service call removes it
+                            cc.cvv = Constant.GetawaySearchResultCardFormDetailData.cvv
+                            Constant.MyClassConstants.selectedCreditCard.append(cc)
+                            
+                            self.resetCreditCardDetails()
+                            self.hideHudAsync()
+                            self.performSegue(withIdentifier: "unwindToCheckout", sender: self)
+                        }, onError: {(error) in
+                            self.hideHudAsync()
+                            self.presentErrorAlert(UserFacingCommonError.handleError(error))
+                        })
+                    } else {
+                        Constant.MyClassConstants.selectedCreditCard.append(newCreditCard)
+                        self.hideHudAsync()
+                        self.resetCreditCardDetails()
+                        self.performSegue(withIdentifier: "unwindToCheckout", sender: self)
+                    }
                     
-                    self?.performSegue(withIdentifier: "unwindToCheckout", sender: self)
-                    }, onError: {[weak self](_) in
+                }, onError: {[weak self](_) in
                     self?.presentErrorAlert(UserFacingCommonError.generic)
                     self?.hideHudAsync()
                 })
