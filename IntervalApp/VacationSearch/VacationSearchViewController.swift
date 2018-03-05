@@ -443,21 +443,22 @@ extension VacationSearchViewController: UICollectionViewDataSource {
                 centerView.addSubview(unitLabel)
                 
                 let priceLabel = UILabel(frame: CGRect(x: 10, y: 35, width: centerView.frame.size.width - 20, height: 20))
-                if let pricefrom = deal.price?.fromPrice, let currencyCode = deal.price?.currencySymbol {
-                    if let attributedAmount = pricefrom.currencyFormatter(for: currencyCode, baseLineOffSet: 0) {
-                        let fromAttributedString = NSMutableAttributedString(string: "From ", attributes: nil)
-                        let wkAttributedString = NSAttributedString(string: " Wk.", attributes: nil)
-                        fromAttributedString.append(attributedAmount)
-                        fromAttributedString.append(wkAttributedString)
-                        priceLabel.attributedText = fromAttributedString
-                    }
-                    priceLabel.numberOfLines = 2
-                    priceLabel.textAlignment = NSTextAlignment.center
-                    priceLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: 15)
-                    priceLabel.textColor = UIColor.white
-                    priceLabel.backgroundColor = UIColor.clear
-                    centerView.addSubview(priceLabel)
-                }
+            if let pricefrom = deal.price?.fromPrice, let currencyCode = deal.price?.currencySymbol {
+                
+                let fromAttributedString = NSMutableAttributedString(string: "From ", attributes: nil)
+                let amount = Int(pricefrom)
+                let attributedAmount = NSAttributedString(string: "\(currencyCode)\(amount)", attributes: nil)
+                let wkAttributedString = NSAttributedString(string: " / Wk.", attributes: nil)
+                fromAttributedString.append(attributedAmount)
+                fromAttributedString.append(wkAttributedString)
+                priceLabel.attributedText = fromAttributedString
+                priceLabel.numberOfLines = 2
+                priceLabel.textAlignment = NSTextAlignment.center
+                priceLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: 15)
+                priceLabel.textColor = UIColor.white
+                priceLabel.backgroundColor = UIColor.clear
+                centerView.addSubview(priceLabel)
+            }
                 cell.addSubview(centerView)
                 cell.layer.borderColor = UIColor.lightGray.cgColor
                 cell.layer.borderWidth = 1.0
