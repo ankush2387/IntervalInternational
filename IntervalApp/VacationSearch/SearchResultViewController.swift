@@ -85,7 +85,9 @@ class SearchResultViewController: UIViewController {
         
         if sections.isEmpty {
             searchResultTableView.tableHeaderView = Helper.noResortView(senderView: self.view)
+            self.title = "No Availability".localized()
         } else {
+            self.title = "Search Results".localized()
             let headerVw = UIView()
             searchResultTableView.tableHeaderView = headerVw
         }
@@ -212,7 +214,9 @@ class SearchResultViewController: UIViewController {
             self.alertView.isHidden = false
             headerVw.isHidden = true
             self.view.bringSubview(toFront: self.alertView)
+            self.title = "No Availability".localized()
         } else {
+            self.title = "Search Results".localized()
             headerVw.isHidden = false
             self.alertView.isHidden = true
         }
