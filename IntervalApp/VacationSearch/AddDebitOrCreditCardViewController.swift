@@ -47,6 +47,10 @@ class AddDebitOrCreditCardViewController: UIViewController {
             if !address.isEmpty {
                 Constant.GetawaySearchResultCardFormDetailData.pinCode = address[0].postalCode ?? ""
                 Constant.GetawaySearchResultCardFormDetailData.city = address[0].cityName ?? ""
+                 Constant.GetawaySearchResultCardFormDetailData.countryCode = address[0].countryCode ?? ""
+                
+                Constant.GetawaySearchResultCardFormDetailData.stateCode = address[0].territoryCode ?? ""
+                
                 if address[0].addressLines.count > 1 {
                     Constant.GetawaySearchResultCardFormDetailData.address1 = address[0].addressLines[0]
                     Constant.GetawaySearchResultCardFormDetailData.address2 = address[0].addressLines[1]
@@ -55,6 +59,46 @@ class AddDebitOrCreditCardViewController: UIViewController {
                 }
             }
         }
+       
+        LookupClient.getCountries(Constant.MyClassConstants.systemAccessToken!, onSuccess: {[weak self] (response) in
+            
+            for country in (response ) {
+                if Constant.GetawaySearchResultCardFormDetailData.countryCode == country.countryCode {
+                    Constant.GetawaySearchResultCardFormDetailData.country = country.countryName ?? ""
+                }
+                Constant.countryListArray.append(country)
+            }
+            self?.cardDetailTBLview.reloadData()
+            self?.hideHudAsync()
+            
+        }) {[weak self] _ in
+            self?.hideHudAsync()
+            self?.presentErrorAlert(UserFacingCommonError.generic)
+        }
+        
+        //get states here on the basis of country code
+        
+       /* Helper.getStates(countryCode: Constant.GetawaySearchResultCardFormDetailData.countryCode, successCompletionBlock: { [weak self]  in
+
+            for state in Constant.stateListArray where state.code == Constant.GetawaySearchResultCardFormDetailData.stateCode {
+                    Constant.GetawaySearchResultCardFormDetailData.state = state.name ?? ""
+                    self?.cardDetailTBLview.reloadData()
+            }
+            
+        }) { [weak self] error  in
+            self?.presentErrorAlert(UserFacingCommonError.handleError(Error.self))
+        }*/
+        
+        Helper.getStates(countryCode: Constant.GetawaySearchResultCardFormDetailData.countryCode, CompletionBlock: { [weak self] error in
+         if error != nil {
+            self?.presentErrorAlert(UserFacingCommonError.handleError(Error))
+         } else {
+            for state in Constant.stateListArray where state.code == Constant.GetawaySearchResultCardFormDetailData.stateCode {
+                    Constant.GetawaySearchResultCardFormDetailData.state = state.name ?? ""
+                    self?.cardDetailTBLview.reloadData()
+                }
+            }
+         })
         
         // population months with localized names
         var months: [String] = []
@@ -300,12 +344,12 @@ class AddDebitOrCreditCardViewController: UIViewController {
                     let indexPath = IndexPath(row: 4, section: dropDownSelectionSection)
                     cardDetailTBLview.reloadRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
                 }
-                if dropDownSelectionRow == 4 && Constant.GetawaySearchResultGuestFormDetailData.stateListArray.isEmpty {
+                if dropDownSelectionRow == 4 && Constant.stateListArray.isEmpty {
                     let state = State()
                     state.name = "N/A"
                     state.code = ""
                     
-                    Constant.GetawaySearchResultGuestFormDetailData.stateListArray.append(state)
+                    Constant.stateListArray.append(state)
                 }
                 
                     hideStatus = true
@@ -712,9 +756,9 @@ extension AddDebitOrCreditCardViewController: UIPickerViewDelegate {
         } else {
             
             if dropDownSelectionRow == 0 {
-                return Constant.GetawaySearchResultGuestFormDetailData.countryListArray[row].countryName
+                return Constant.countryListArray[row].countryName
             } else {
-                return Constant.GetawaySearchResultGuestFormDetailData.stateListArray[row].name
+                return Constant.stateListArray[row].name
             }
         }
             }
@@ -742,17 +786,23 @@ extension AddDebitOrCreditCardViewController: UIPickerViewDelegate {
         } else {
             
              if dropDownSelectionRow == 0 {
-                if !Constant.GetawaySearchResultGuestFormDetailData.countryListArray.isEmpty {
-                    if let countryName = Constant.GetawaySearchResultGuestFormDetailData.countryListArray[row].countryName {
+                if !Constant.countryListArray.isEmpty {
+                    if let countryName = Constant.countryListArray[row].countryName {
                         Constant.GetawaySearchResultCardFormDetailData.country = countryName
                     }
-                    Constant.GetawaySearchResultCardFormDetailData.countryCode = Constant.GetawaySearchResultGuestFormDetailData.countryCodeArray[row]
+                    Constant.GetawaySearchResultCardFormDetailData.countryCode = Constant.countryListArray[row].countryCode ?? ""
                 }
-                Helper.getStates(country: Constant.GetawaySearchResultCardFormDetailData.countryCode, viewController: self)
+            
+                Helper.getStates(countryCode: Constant.GetawaySearchResultCardFormDetailData.countryCode, CompletionBlock: { [weak self] error in
+                    if let Error = error {
+                        self?.presentErrorAlert(UserFacingCommonError.handleError(Error))
+                    }
+                })
+                
              } else {
-                if !Constant.GetawaySearchResultGuestFormDetailData.stateListArray.isEmpty {
-                    if let stateName = Constant.GetawaySearchResultGuestFormDetailData.stateListArray[row].name,
-                        let stateCode =  Constant.GetawaySearchResultGuestFormDetailData.stateListArray[row].name {
+                if !Constant.stateListArray.isEmpty {
+                    if let stateName = Constant.stateListArray[row].name,
+                        let stateCode = Constant.stateListArray[row].code {
                         Constant.GetawaySearchResultCardFormDetailData.state = stateName
                         Constant.GetawaySearchResultCardFormDetailData.stateCode = stateCode
                     }
@@ -798,9 +848,9 @@ extension AddDebitOrCreditCardViewController: UIPickerViewDataSource {
         } else {
             
             if dropDownSelectionRow == 0 {
-                return Constant.GetawaySearchResultGuestFormDetailData.countryListArray.count
+                return Constant.countryListArray.count
             } else {
-                return Constant.GetawaySearchResultGuestFormDetailData.stateListArray.count
+                return Constant.stateListArray.count
             }
 
         }

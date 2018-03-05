@@ -358,38 +358,30 @@ public class Helper {
     }
     
     // get Countries
-    static func getCountry(viewController: UIViewController) {
+    static func getCountry(CompletionBlock: @escaping ((Error?) -> Void)) {
         
-        Constant.GetawaySearchResultGuestFormDetailData.countryListArray.removeAll()
-        Constant.GetawaySearchResultGuestFormDetailData.countryCodeArray.removeAll()
         LookupClient.getCountries(Constant.MyClassConstants.systemAccessToken!, onSuccess: { (response) in
-            
+            Constant.countryListArray.removeAll()
             for country in (response ) {
-                Constant.GetawaySearchResultGuestFormDetailData.countryListArray.append(country)
-                Constant.GetawaySearchResultGuestFormDetailData.countryCodeArray.append(country.countryCode!)
+                Constant.countryListArray.append(country)
             }
-            viewController.hideHudAsync()
-            
-        }) { _ in
-            viewController.hideHudAsync()
-            viewController.presentErrorAlert(UserFacingCommonError.generic)
-        }
+            CompletionBlock(nil)
+        }, onError: { error in
+            CompletionBlock(error)
+        })
         
     }
     
-    static func getStates(country: String, viewController: UIViewController) {
-        
-        Constant.GetawaySearchResultGuestFormDetailData.stateListArray.removeAll()
-        LookupClient.getStates(Constant.MyClassConstants.systemAccessToken!, countryCode: country, onSuccess: { (response) in
-            viewController.hideHudAsync()
+    static func getStates(countryCode: String, CompletionBlock: @escaping ((Error?) -> Void))  {
+        Constant.stateListArray.removeAll()
+        LookupClient.getStates(Constant.MyClassConstants.systemAccessToken!, countryCode: countryCode, onSuccess: { (response) in
             for state in response {
-                Constant.GetawaySearchResultGuestFormDetailData.stateListArray.append(state)
-                Constant.GetawaySearchResultGuestFormDetailData.stateCodeArray.append(state.code!)
+                Constant.stateListArray.append(state)
             }
+            CompletionBlock(nil)
             
-        }, onError: {_ in
-            viewController.hideHudAsync()
-            viewController.presentErrorAlert(UserFacingCommonError.generic)
+        }, onError: { error in
+            CompletionBlock(error)
         })
         
     }

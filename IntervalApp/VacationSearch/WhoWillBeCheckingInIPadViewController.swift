@@ -214,7 +214,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
             self.proceedToCheckoutButton.alpha = 0.5
             guard let systemAccessToken = Constant.MyClassConstants.systemAccessToken else { return }
             LookupClient.getCountries(systemAccessToken, onSuccess: { (response) in
-                Constant.GetawaySearchResultGuestFormDetailData.countryListArray = response
+                Constant.countryListArray = response
                 
             }, onError: { [weak self] _ in
                 self?.presentErrorAlert(UserFacingCommonError.generic)
@@ -272,11 +272,11 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
     func dropDownButtonPressed(_ sender: IUIKButton) {
         self.dropDownSelectionRow = sender.tag
         self.dropDownSelectionSection = Int(sender.accessibilityValue!)!
-        if dropDownSelectionRow == 4 && Constant.GetawaySearchResultGuestFormDetailData.stateListArray.isEmpty {
+        if dropDownSelectionRow == 4 && Constant.stateListArray.isEmpty {
             let state = State()
             state.name = "N/A"
             state.code = ""
-            Constant.GetawaySearchResultGuestFormDetailData.stateListArray.append(state)
+            Constant.stateListArray.append(state)
         }
         if self.hideStatus == false {
             self.hideStatus = true
@@ -327,9 +327,9 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
     func pickerDoneButtonPressed(_ sender: UIButton) {
         if dropDownSelectionRow == 0 {
             if let countryIndex = selectedCountryIndex {
-                if let countryCode = Constant.GetawaySearchResultGuestFormDetailData.countryListArray[countryIndex].countryCode {
+                if let countryCode = Constant.countryListArray[countryIndex].countryCode {
                     LookupClient.getStates(Constant.MyClassConstants.systemAccessToken!, countryCode: countryCode, onSuccess: { (response) in
-                        Constant.GetawaySearchResultGuestFormDetailData.stateListArray = response
+                        Constant.stateListArray = response
                     }, onError: { [weak self] _ in
                         self?.presentErrorAlert(UserFacingCommonError.generic)
                     })
@@ -819,20 +819,20 @@ extension WhoWillBeCheckingInIPadViewController: UIPickerViewDelegate {
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         if self.dropDownSelectionRow == 0 {
             
-            return Constant.GetawaySearchResultGuestFormDetailData.countryListArray[row].countryName
+            return Constant.countryListArray[row].countryName
         } else {
             
-            return Constant.GetawaySearchResultGuestFormDetailData.stateListArray[row].name
+            return Constant.stateListArray[row].name
         }
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if self.dropDownSelectionRow == 0 {
-            guard let countryName = Constant.GetawaySearchResultGuestFormDetailData.countryListArray[row].countryName else { return }
+            guard let countryName = Constant.countryListArray[row].countryName else { return }
             Constant.GetawaySearchResultGuestFormDetailData.country = countryName
             selectedCountryIndex = row
         } else {
-            guard let stateName = Constant.GetawaySearchResultGuestFormDetailData.stateListArray[row].name else { return }
+            guard let stateName = Constant.stateListArray[row].name else { return }
             Constant.GetawaySearchResultGuestFormDetailData.state = stateName
         }
     }
@@ -848,9 +848,9 @@ extension WhoWillBeCheckingInIPadViewController: UIPickerViewDataSource {
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         
         if self.dropDownSelectionRow == 0 {
-            return Constant.GetawaySearchResultGuestFormDetailData.countryListArray.count
+            return Constant.countryListArray.count
         } else {
-            return Constant.GetawaySearchResultGuestFormDetailData.stateListArray.count
+            return Constant.stateListArray.count
         }
     }
 }

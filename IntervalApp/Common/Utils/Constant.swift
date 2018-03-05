@@ -19,6 +19,8 @@ class Constant: NSObject {
     static var needToReloadAlert = false
     static var selectedAlertToEdit: RentalAlert?
     static var calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
+    static var countryListArray = [Country]()
+    static var stateListArray = [State]()
     
     //***** common function to get device orientation *****//
     struct RunningDevice {
@@ -29,10 +31,6 @@ class Constant: NSObject {
     //Getaways SearchResult CardFormDetail Data
     struct GetawaySearchResultGuestFormDetailData {
         
-        static var countryCodeArray = [String]()
-        static var stateCodeArray = [String]()
-        static var countryListArray = [Country]()
-        static var stateListArray = [State]()
         static var textFieldChangedInSection = -1
         static var firstName = ""
         static var lastName = ""
@@ -75,8 +73,6 @@ class Constant: NSObject {
     //GetawaySearchResultCardFormDetailData
     struct GetawaySearchResultCardFormDetailData {
         
-        static var countryListArray = ["Canada", "USA", "India", "Austrelia", "South Africa"]
-        static var countryCodeArray: [String] = []
         static var textFieldChangedInSection = -1
         static var nameOnCard = ""
         static var cardNumber = ""
