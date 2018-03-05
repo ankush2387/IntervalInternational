@@ -272,36 +272,38 @@ class AddDebitOrCreditCardViewController: UIViewController {
                 //API call to tokenize new credit card.
                 
                 showHudAsync()
-                CreditCardTokenizeClient.tokenize(Session.sharedSession.userAccessToken, creditCardNumber: newCreditCard.cardNumber!, onSuccess: {[unowned self](response) in
+                CreditCardTokenizeClient.tokenize(Session.sharedSession.userAccessToken, creditCardNumber: newCreditCard.cardNumber!, onSuccess: {[weak self](response) in
                     ADBMobile.trackAction(Constant.omnitureEvents.event59, data: nil)
                     Constant.MyClassConstants.selectedCreditCard.removeAll()
                     newCreditCard.creditcardId = 0
                     if let cardToken = response.cardToken {
                         newCreditCard.cardNumber = cardToken
                     }
-                    if self.saveCardCheckBoxChecked {
-                        guard let accessToken = Session.sharedSession.userAccessToken else {
-                            self.hideHudAsync()
-                            self.presentErrorAlert(UserFacingCommonError.generic)
-                            return
+                    if let saveCard = self?.saveCardCheckBoxChecked {
+                        if saveCard {
+                            guard let accessToken = Session.sharedSession.userAccessToken else {
+                                self?.hideHudAsync()
+                                self?.presentErrorAlert(UserFacingCommonError.generic)
+                                return
+                            }
+                            UserClient.createCreditCard(accessToken, creditCard: newCreditCard, onSuccess: {[weak self](cc) in
+                                // unfortunately we have to re-add the cvv since the service call removes it
+                                cc.cvv = Constant.GetawaySearchResultCardFormDetailData.cvv
+                                Constant.MyClassConstants.selectedCreditCard.append(cc)
+                                
+                                self?.resetCreditCardDetails()
+                                self?.hideHudAsync()
+                                self?.performSegue(withIdentifier: "unwindToCheckout", sender: self)
+                            }, onError: {(error) in
+                                self?.hideHudAsync()
+                                self?.presentErrorAlert(UserFacingCommonError.handleError(error))
+                            })
                         }
-                        UserClient.createCreditCard(accessToken, creditCard: newCreditCard, onSuccess: {[unowned self](cc) in
-                            // unfortunately we have to re-add the cvv since the service call removes it
-                            cc.cvv = Constant.GetawaySearchResultCardFormDetailData.cvv
-                            Constant.MyClassConstants.selectedCreditCard.append(cc)
-                            
-                            self.resetCreditCardDetails()
-                            self.hideHudAsync()
-                            self.performSegue(withIdentifier: "unwindToCheckout", sender: self)
-                        }, onError: {(error) in
-                            self.hideHudAsync()
-                            self.presentErrorAlert(UserFacingCommonError.handleError(error))
-                        })
                     } else {
                         Constant.MyClassConstants.selectedCreditCard.append(newCreditCard)
-                        self.hideHudAsync()
-                        self.resetCreditCardDetails()
-                        self.performSegue(withIdentifier: "unwindToCheckout", sender: self)
+                        self?.hideHudAsync()
+                        self?.resetCreditCardDetails()
+                        self?.performSegue(withIdentifier: "unwindToCheckout", sender: self)
                     }
                     
                 }, onError: {[weak self](_) in
