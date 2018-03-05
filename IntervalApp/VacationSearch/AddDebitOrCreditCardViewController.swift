@@ -77,18 +77,6 @@ class AddDebitOrCreditCardViewController: UIViewController {
         }
         
         //get states here on the basis of country code
-        
-       /* Helper.getStates(countryCode: Constant.GetawaySearchResultCardFormDetailData.countryCode, successCompletionBlock: { [weak self]  in
-
-            for state in Constant.stateListArray where state.code == Constant.GetawaySearchResultCardFormDetailData.stateCode {
-                    Constant.GetawaySearchResultCardFormDetailData.state = state.name ?? ""
-                    self?.cardDetailTBLview.reloadData()
-            }
-            
-        }) { [weak self] error  in
-            self?.presentErrorAlert(UserFacingCommonError.handleError(Error.self))
-        }*/
-        
         Helper.getStates(countryCode: Constant.GetawaySearchResultCardFormDetailData.countryCode, CompletionBlock: { [weak self] error in
          if error != nil {
             self?.presentErrorAlert(UserFacingCommonError.handleError(Error))
