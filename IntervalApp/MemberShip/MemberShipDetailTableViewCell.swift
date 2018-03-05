@@ -119,11 +119,9 @@ class MemberShipDetailTableViewCell: UITableViewCell {
                 prodView.productImageView.image = UIImage(named: productCode)
             }
             if prod.coreProduct {
-                prodView.productImageView.isHidden = true
+                prodView.productImageView.isHidden = false
                 prodView.triangleView.isHidden = true
                 prodView.externalView.backgroundColor = UIColor.white
-                prodView.nameLabelLeadingConstraint.constant = 10
-                prodView.expiresLabelLeadingConstraint.constant = 10
             }
 
             if count > 1 {
