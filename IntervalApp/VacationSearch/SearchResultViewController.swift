@@ -203,7 +203,7 @@ class SearchResultViewController: UIViewController {
         searchResultTableView.register(UINib(nibName: "SearchResultContentTableCell", bundle: nil), forCellReuseIdentifier: "SearchResultContentTableCell")
         
         self.title = Constant.ControllerTitles.searchResultViewController
-        let menuButton = UIBarButtonItem(image:  imageLiteral(resourceName: "BackArrowNav"), style: .plain, target: self, action: #selector(SearchResultViewController.menuBackButtonPressed(_:)))
+        let menuButton = UIBarButtonItem(image: #imageLiteral(resourceName: "BackArrowNav"), style: .plain, target: self, action: #selector(SearchResultViewController.menuBackButtonPressed(_:)))
         menuButton.tintColor = UIColor.white
         self.navigationItem.leftBarButtonItem = menuButton
         
