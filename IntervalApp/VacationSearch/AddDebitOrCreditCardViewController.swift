@@ -280,8 +280,13 @@ class AddDebitOrCreditCardViewController: UIViewController {
                         newCreditCard.cardNumber = cardToken
                     }
                     if self.saveCardCheckBoxChecked {
-                        UserClient.createCreditCard(Session.sharedSession.userAccessToken!, creditCard: newCreditCard, onSuccess: {[unowned self](cc) in
-                            // unfortunately we have to readd the cvv since the service call removes it
+                        guard let accessToken = Session.sharedSession.userAccessToken else {
+                            self.hideHudAsync()
+                            self.presentErrorAlert(UserFacingCommonError.generic)
+                            return
+                        }
+                        UserClient.createCreditCard(accessToken, creditCard: newCreditCard, onSuccess: {[unowned self](cc) in
+                            // unfortunately we have to re-add the cvv since the service call removes it
                             cc.cvv = Constant.GetawaySearchResultCardFormDetailData.cvv
                             Constant.MyClassConstants.selectedCreditCard.append(cc)
                             
