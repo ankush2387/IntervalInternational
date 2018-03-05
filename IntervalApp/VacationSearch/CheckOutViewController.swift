@@ -978,16 +978,19 @@ extension CheckOutViewController: UITableViewDataSource {
             return 50
         case 1 :
             guard let font = UIFont(name: Constant.fontName.helveticaNeue, size: 16.0) else { return 0 }
+            
             if indexPath.row == (Constant.MyClassConstants.generalAdvisementsArray.count) {
                 return 30
             } else if indexPath.row != (Constant.MyClassConstants.generalAdvisementsArray.count) + 1 {
+                guard let text = (Constant.MyClassConstants.generalAdvisementsArray[indexPath.row].title)?.capitalized else { return 0 }
                 guard let description = Constant.MyClassConstants.generalAdvisementsArray[indexPath.row].description else { return 0 }
-                let height = heightForView(description, font: font, width: view.frame.size.width - 10)
-                return height + 70
+                let height1 = heightForView(description, font: font, width: view.frame.size.width - 40)
+                let height2 = heightForView(text, font: font, width: view.frame.size.width - 40)
+                return height1 + height2 + 40
             } else {
                 guard let description = Constant.MyClassConstants.additionalAdvisementsArray.last?.description else { return 0 }
-                let height = heightForView(description, font: font, width: view.frame.size.width - 20)
-                return height + 70
+                let height = heightForView(description, font: font, width: view.frame.size.width - 40)
+                return height + 80
             }
             
         case 2, 9 :
