@@ -195,7 +195,7 @@ final class LoginCoordinator: ComputationHelper {
             return
         }
 
-        entityDataStore.resetDatabase(for: .decrypted)
+        entityDataStore.delete(type: OpenWeeksStorage.self, for: .decrypted)
             .then { [weak self] in self?.delegate?.didLogin() }
             .onError { [weak self] _ in self?.delegate?.didError(message: UserFacingCommonError.generic.description.body) }
     }

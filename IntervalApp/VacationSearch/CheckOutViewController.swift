@@ -230,7 +230,7 @@ class CheckOutViewController: UIViewController {
                             Constant.MyClassConstants.transactionNumber = confirmationNumber
                         }
                         strongSelf.navigationController?.navigationBar.isHidden = true
-                        strongSelf.entityStore.resetDatabase(for: .decrypted)
+                        strongSelf.entityStore.delete(type: OpenWeeksStorage.self, for: .decrypted)
                             .then { strongSelf.performSegue(withIdentifier: Constant.segueIdentifiers.confirmationScreenSegue, sender: nil) }
                             .onViewError(strongSelf.presentErrorAlert)
                     
@@ -267,9 +267,10 @@ class CheckOutViewController: UIViewController {
                         Constant.MyClassConstants.transactionNumber = response.view?.fees?.rental?.confirmationNumber ?? ""
                         strongSelf.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
                         strongSelf.navigationController?.navigationBar.isHidden = true
-                        strongSelf.entityStore.resetDatabase(for: .decrypted)
+                        strongSelf.entityStore.delete(type: OpenWeeksStorage.self, for: .decrypted)
                             .then { strongSelf.performSegue(withIdentifier: Constant.segueIdentifiers.confirmationScreenSegue, sender: nil) }
                             .onViewError(strongSelf.presentErrorAlert)
+
                         }, onError: { [weak self] error in
                         guard let strongSelf = self else { return }
                         strongSelf.hideHudAsync()

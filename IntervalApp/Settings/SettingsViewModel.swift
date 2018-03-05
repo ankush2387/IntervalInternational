@@ -45,7 +45,7 @@ final class SettingsViewModel {
         var viewModels = [SimpleCellViewModel]()
 
         if let biometricType = authentication.biometricType, authentication.canEvaluatePolicy {
-            let biometricMessage = biometricType == .faceID ? "Enable face ID".localized() : "Enable Touch ID".localized()
+            let biometricMessage = biometricType == .faceID ? "Enable Face ID".localized() : "Enable Touch ID".localized()
             let simpleLabelSwitchCellViewModel = SimpleLabelSwitchCellViewModel(label: biometricMessage,
                                                                                 switchOn: touchIDEnabled)
 
