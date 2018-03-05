@@ -154,7 +154,7 @@ class Constant: NSObject {
         //***** global variable that hold side menu option selection *****//
         static var sideMenuOptionSelected = ""
         
-        static var allBedrommSizes = "All BedRoom Sizes"
+        static var allBedrommSizes = "All Bedroom Sizes"
         
         //global variable to hold last Getaway Booking Process
         
@@ -339,7 +339,7 @@ class Constant: NSObject {
         static var inactive = "INACTIVE".localized()
         static var expired = "EXPIRED".localized()
         static var active = "ACTIVE".localized()
-        static var bedroomSizes = "All BedRoom Sizes".localized()
+        static var bedroomSizes = "All Bedroom Sizes".localized()
         static var start = "start"
         static var end = "end"
         static var first = "First"
