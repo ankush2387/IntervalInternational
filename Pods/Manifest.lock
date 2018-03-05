@@ -95,7 +95,7 @@ DEPENDENCIES:
   - Brightcove-Player-SDK (~> 5.3.4)
   - Bugsee (~> 1.15.3)
   - CVCalendar (from `https://github.com/Mozharovsky/CVCalendar`, tag `1.4.0`)
-  - DarwinSDK (from `https://bitbucket.iilg.com/scm/iimob/darwin-sdk-ios.git`, commit `8ea4f3c2`, branch `develop`)
+  - DarwinSDK (from `https://bitbucket.iilg.com/scm/iimob/darwin-sdk-ios.git`, commit `d55e17d6`, branch `develop`)
   - Firebase/Core (~> 4.3.0)
   - Firebase/Messaging (~> 4.3.0)
   - FSCalendar (~> 2.1.1)
@@ -128,7 +128,7 @@ EXTERNAL SOURCES:
     :tag: 1.4.0
   DarwinSDK:
     :branch: develop
-    :commit: 8ea4f3c2
+    :commit: d55e17d6
     :git: https://bitbucket.iilg.com/scm/iimob/darwin-sdk-ios.git
   IntervalUIKit:
     :commit: e516eb84
@@ -157,7 +157,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/Mozharovsky/CVCalendar
     :tag: 1.4.0
   DarwinSDK:
-    :commit: 8ea4f3c23c98618742137621cc215e2e8dc842ae
+    :commit: d55e17d6deeb56c1012cc7e5986556bc79c008f0
     :git: https://bitbucket.iilg.com/scm/iimob/darwin-sdk-ios.git
   IntervalUIKit:
     :commit: e516eb84
@@ -214,6 +214,6 @@ SPEC CHECKSUMS:
   TPKeyboardAvoiding: 0d6af20e95e2850f4c621841225b59ec7d8dd852
   XCGLogger: 38063ea89b4c8b23232d18efd2e12eb0005f3ea4
 
-PODFILE CHECKSUM: db9c6deea09090c13883cfc669f2b181d8fe92e9
+PODFILE CHECKSUM: 7d00bcbb5051c403046c7422374a5c647d9d0554
 
 COCOAPODS: 1.3.1
