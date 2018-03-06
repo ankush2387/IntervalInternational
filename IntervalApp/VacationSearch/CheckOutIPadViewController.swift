@@ -113,7 +113,14 @@ class CheckOutIPadViewController: UIViewController {
         super.viewDidLoad()
         checkPromotionsAvailable()
         checkSectionsForFees()
-        Helper.getCountry(viewController: self)
+
+        // get country listCompletionBlock
+        Helper.getCountry { [weak self] error in
+            if let Error = error {
+                self?.presentErrorAlert(UserFacingCommonError.handleError(Error))
+            }
+        }
+        
         // omniture tracking with event 40
         let pageView: [String: String] = [
             Constant.omnitureEvars.eVar44: Constant.omnitureCommonString.vacationSearchPaymentInformation

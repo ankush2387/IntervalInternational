@@ -527,11 +527,11 @@ class DashboardTableViewController: UITableViewController {
         if !searchDateResponse.checkInDates.isEmpty {
             showHudAsync()
             let searchCriteria = createSearchCriteriaFor(alert: getawayAlert)
-
+            
             if let settings = Session.sharedSession.appSettings {
                 Constant.MyClassConstants.initialVacationSearch = VacationSearch(settings, searchCriteria)
             }
-
+            
             Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.response = searchDateResponse
             // Get activeInterval
             guard let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval() else { return }
@@ -637,7 +637,7 @@ class DashboardTableViewController: UITableViewController {
             Constant.MyClassConstants.vacationSearchResultHeaderLabel = destination.destinationName
             
         } else if !alert.resorts.isEmpty {
-           searchCriteria.resorts = alert.resorts
+            searchCriteria.resorts = alert.resorts
             if let resortName = alert.resorts[0].resortName {
                 Constant.MyClassConstants.vacationSearchResultHeaderLabel = "\(resortName) + \(alert.resorts.count) more"
             }
@@ -808,15 +808,13 @@ extension DashboardTableViewController: UICollectionViewDataSource {
             
             let priceLabel = UILabel(frame: CGRect(x: 10, y: 35, width: centerView.frame.size.width - 20, height: 20))
             if let pricefrom = topTenDeals.price?.fromPrice, let currencyCode = topTenDeals.price?.currencySymbol {
-                let currencyHelper = CurrencyHelper()
-                let currencySymbol = currencyHelper.getCurrencyFriendlySymbol(currencyCode: currencyCode)
-                if let attributedAmount = pricefrom.currencyFormatter(for: currencySymbol, baseLineOffSet: 0) {
-                    let fromAttributedString = NSMutableAttributedString(string: "From ", attributes: nil)
-                    let wkAttributedString = NSAttributedString(string: " Wk.", attributes: nil)
-                    fromAttributedString.append(attributedAmount)
-                    fromAttributedString.append(wkAttributedString)
-                    priceLabel.attributedText = fromAttributedString
-                }
+                let fromAttributedString = NSMutableAttributedString(string: "From ".localized(), attributes: nil)
+                let wkAttributedString = NSAttributedString(string: " / Wk.".localized(), attributes: nil)
+                let integerPrice = Int(pricefrom)
+                let priceAttributedString = NSAttributedString(string: "\(currencyCode)\(integerPrice)", attributes: nil)
+                fromAttributedString.append(priceAttributedString)
+                fromAttributedString.append(wkAttributedString)
+                priceLabel.attributedText = fromAttributedString
             }
             
             priceLabel.numberOfLines = 2
@@ -912,7 +910,7 @@ extension UIViewController {
         if let settings = Session.sharedSession.appSettings {
             Constant.MyClassConstants.initialVacationSearch = VacationSearch(settings, searchCriteria)
         }
-
+        
         if Reachability.isConnectedToNetwork() == true {
             ADBMobile.trackAction(Constant.omnitureEvents.event9, data: nil)
             showHudAsync()
@@ -1003,3 +1001,4 @@ extension UIViewController {
         
     }
 }
+

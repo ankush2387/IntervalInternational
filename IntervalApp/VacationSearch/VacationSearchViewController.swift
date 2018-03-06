@@ -443,21 +443,22 @@ extension VacationSearchViewController: UICollectionViewDataSource {
                 centerView.addSubview(unitLabel)
                 
                 let priceLabel = UILabel(frame: CGRect(x: 10, y: 35, width: centerView.frame.size.width - 20, height: 20))
-                if let pricefrom = deal.price?.fromPrice, let currencyCode = deal.price?.currencySymbol {
-                    if let attributedAmount = pricefrom.currencyFormatter(for: currencyCode, baseLineOffSet: 0) {
-                        let fromAttributedString = NSMutableAttributedString(string: "From ", attributes: nil)
-                        let wkAttributedString = NSAttributedString(string: " Wk.", attributes: nil)
-                        fromAttributedString.append(attributedAmount)
-                        fromAttributedString.append(wkAttributedString)
-                        priceLabel.attributedText = fromAttributedString
-                    }
-                    priceLabel.numberOfLines = 2
-                    priceLabel.textAlignment = NSTextAlignment.center
-                    priceLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: 15)
-                    priceLabel.textColor = UIColor.white
-                    priceLabel.backgroundColor = UIColor.clear
-                    centerView.addSubview(priceLabel)
-                }
+            if let pricefrom = deal.price?.fromPrice, let currencyCode = deal.price?.currencySymbol {
+                
+                let fromAttributedString = NSMutableAttributedString(string: "From ".localized(), attributes: nil)
+                let amount = Int(pricefrom)
+                let attributedAmount = NSAttributedString(string: "\(currencyCode)\(amount)", attributes: nil)
+                let wkAttributedString = NSAttributedString(string: " / Wk.".localized(), attributes: nil)
+                fromAttributedString.append(attributedAmount)
+                fromAttributedString.append(wkAttributedString)
+                priceLabel.attributedText = fromAttributedString
+                priceLabel.numberOfLines = 2
+                priceLabel.textAlignment = NSTextAlignment.center
+                priceLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: 15)
+                priceLabel.textColor = UIColor.white
+                priceLabel.backgroundColor = UIColor.clear
+                centerView.addSubview(priceLabel)
+            }
                 cell.addSubview(centerView)
                 cell.layer.borderColor = UIColor.lightGray.cgColor
                 cell.layer.borderWidth = 1.0
@@ -518,7 +519,7 @@ extension VacationSearchViewController: UITableViewDelegate {
             case 1:
                 return 80
             case 2:
-                return 120
+                return 0
             case 4:
                 return 290
                 
@@ -543,6 +544,7 @@ extension VacationSearchViewController: UITableViewDelegate {
             headerView.addSubview(headerTextLabel)
             return headerView
         } else {
+            guard section != 2 else { return nil }
             headerView.backgroundColor = IUIKColorPalette.tertiary1.color
             headerTextLabel.text = Constant.MyClassConstants.threeSegmentHeaderTextArray[section]
             headerTextLabel.textColor = IUIKColorPalette.primaryText.color
@@ -553,7 +555,11 @@ extension VacationSearchViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        
+
+        if segmentTitle == Constant.segmentControlItems.getaways && section == 2 {
+            return 0
+        }
+
         if tableView.numberOfSections == 6 || tableView.numberOfSections == 7 {
             if section < 4 {
                 return 55
@@ -1065,6 +1071,7 @@ extension VacationSearchViewController: UITableViewDataSource {
                 cell.delegate = self
                 cell.selectionStyle = UITableViewCellSelectionStyle.none
                 cell.backgroundColor = UIColor.clear
+                cell.contentView.isHidden = false
                 return cell
             } else if indexPath.section == 5 || indexPath.section == 6 {
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.dashboardTableScreenReusableIdentifiers.cellIdentifier, for: indexPath)
@@ -1251,6 +1258,7 @@ extension VacationSearchViewController: UITableViewDataSource {
                 cell.delegate = self
                 cell.selectionStyle = UITableViewCellSelectionStyle.none
                 cell.backgroundColor = UIColor.clear
+                cell.contentView.isHidden = segmentTitle == Constant.segmentControlItems.getaways
                 return cell
                 
             } else if indexPath.section == 4 {

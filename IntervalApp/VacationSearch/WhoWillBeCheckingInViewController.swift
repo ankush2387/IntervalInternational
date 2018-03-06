@@ -84,7 +84,13 @@ class WhoWillBeCheckingInViewController: UIViewController {
         super.viewDidLoad()
         
         // call country api
-        Helper.getCountry(viewController: self)
+        
+        Helper.getCountry { [weak self] error in
+            self?.hideHudAsync()
+            if let Error = error {
+                self?.presentErrorAlert(UserFacingCommonError.handleError(Error))
+            }
+        }
         
         // omniture tracking with event 40
         let pageView: [String: String] = [
@@ -312,7 +318,7 @@ class WhoWillBeCheckingInViewController: UIViewController {
             proceedToCheckoutButton.alpha = 0.5
             guard let systemAccessToken = Constant.MyClassConstants.systemAccessToken else { return }
             LookupClient.getCountries(systemAccessToken, onSuccess: { (response) in
-                Constant.GetawaySearchResultGuestFormDetailData.countryListArray = response
+                Constant.countryListArray = response
                 
             }, onError: { [weak self] _ in
                 self?.presentErrorAlert(UserFacingCommonError.generic)
@@ -320,8 +326,9 @@ class WhoWillBeCheckingInViewController: UIViewController {
         } else {
             requiredSectionIntTBLview = 2
             checkingInUserTBLview.reloadData()
-            proceedToCheckoutButton.isEnabled = true
-            proceedToCheckoutButton.alpha = 1.0
+            self.proceedToCheckoutButton.isEnabled = true
+            self.proceedToCheckoutButton.alpha = 1.0
+            Constant.MyClassConstants.enableGuestCertificate = false
         }
         
     }
@@ -334,15 +341,19 @@ class WhoWillBeCheckingInViewController: UIViewController {
         }
         dropDownSelectionRow = sender.tag
         dropDownSelectionSection = Int(sender.accessibilityValue ?? "0") ?? 0
-        if dropDownSelectionRow == 4 && Constant.GetawaySearchResultGuestFormDetailData.stateListArray.isEmpty {
+        if dropDownSelectionRow == 4 && Constant.stateListArray.isEmpty {
             let state = State()
             state.name = "N/A"
             state.code = ""
-            Constant.GetawaySearchResultGuestFormDetailData.stateListArray.append(state)
+            Constant.stateListArray.append(state)
         }
         if !self.hideStatus {
-            
-            hideStatus = true
+            if dropDownSelectionRow == 0 {
+                Constant.GetawaySearchResultGuestFormDetailData.state.removeAll()
+                let indexPath = IndexPath(row: 4, section: dropDownSelectionSection)
+                checkingInUserTBLview.reloadRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
+            }
+            self.hideStatus = true
             showPickerView()
             pickerView.reloadAllComponents()
         } else {
@@ -394,9 +405,9 @@ class WhoWillBeCheckingInViewController: UIViewController {
     func pickerDoneButtonPressed(_ sender: UIButton) {
         if dropDownSelectionRow == 0 {
             if let countryIndex = selectedCountryIndex {
-                if let countryCode = Constant.GetawaySearchResultGuestFormDetailData.countryListArray[countryIndex].countryCode {
+                if let countryCode = Constant.countryListArray[countryIndex].countryCode {
                     LookupClient.getStates(Constant.MyClassConstants.systemAccessToken!, countryCode: countryCode, onSuccess: { (response) in
-                        Constant.GetawaySearchResultGuestFormDetailData.stateListArray = response
+                        Constant.stateListArray = response
                     }, onError: { (error) in
                         intervalPrint(error)
                         
@@ -818,12 +829,10 @@ extension WhoWillBeCheckingInViewController: UITableViewDataSource {
             
             let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.guestCertificatePriceCell, for: indexPath) as! GuestCertificatePriceCell
             guard let guestPrices = Constant.MyClassConstants.guestCertificate?.prices else { return cell }
-            var currencyCode = ""
             var memberTier = Session.sharedSession.selectedMembership?.getProductWithHighestTier()?.productCode ?? ""
             if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
                 memberTier = Constant.MyClassConstants.exchangeFees[0].memberTier ?? ""
                 if !Constant.MyClassConstants.exchangeFees.isEmpty {
-                    currencyCode = Constant.MyClassConstants.exchangeFees[0].currencyCode ?? ""
                     for renewal in renewalsArray {
                         for price in guestPrices {
                             if price.productCode == renewal.productCode {
@@ -1021,23 +1030,29 @@ extension WhoWillBeCheckingInViewController: UIPickerViewDelegate {
         
         if self.dropDownSelectionRow == 0 {
             
-            return Constant.GetawaySearchResultGuestFormDetailData.countryListArray[row].countryName
+            return Constant.countryListArray[row].countryName
             
         } else {
             
-            return Constant.GetawaySearchResultGuestFormDetailData.stateListArray[row].name
+            return Constant.stateListArray[row].name
             
         }
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if self.dropDownSelectionRow == 0 {
-            Constant.GetawaySearchResultGuestFormDetailData.country = Constant.GetawaySearchResultGuestFormDetailData.countryListArray[row].countryName!
-            Constant.GetawaySearchResultCardFormDetailData.countryCode = Constant.GetawaySearchResultGuestFormDetailData.countryCodeArray[row]
-            Helper.getStates(country: Constant.GetawaySearchResultCardFormDetailData.countryCode, viewController: self)
+            Constant.GetawaySearchResultGuestFormDetailData.country = Constant.countryListArray[row].countryName ?? ""
+            Constant.GetawaySearchResultCardFormDetailData.countryCode = Constant.countryListArray[row].countryCode ?? ""
+            
+            Helper.getStates(countryCode: Constant.GetawaySearchResultCardFormDetailData.countryCode, CompletionBlock: { [weak self] error in
+                if let Error = error {
+                    self?.presentErrorAlert(UserFacingCommonError.handleError(Error))
+                }
+            })
+            
         } else {
-            if !Constant.GetawaySearchResultGuestFormDetailData.stateListArray.isEmpty {
-                guard let stateName = Constant.GetawaySearchResultGuestFormDetailData.stateListArray[row].name, let code = Constant.GetawaySearchResultGuestFormDetailData.stateListArray[row].code else { return }
+            if !Constant.stateListArray.isEmpty {
+                guard let stateName = Constant.stateListArray[row].name, let code = Constant.stateListArray[row].code else { return }
                 
                 Constant.GetawaySearchResultGuestFormDetailData.state = stateName
                 Constant.GetawaySearchResultCardFormDetailData.stateCode = code
@@ -1058,10 +1073,10 @@ extension WhoWillBeCheckingInViewController: UIPickerViewDataSource {
         
         if dropDownSelectionRow == 0 {
             
-            return Constant.GetawaySearchResultGuestFormDetailData.countryListArray.count
+            return Constant.countryListArray.count
         } else {
             
-            return Constant.GetawaySearchResultGuestFormDetailData.stateListArray.count
+            return Constant.stateListArray.count
         }
         
     }
