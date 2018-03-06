@@ -518,7 +518,7 @@ extension VacationSearchViewController: UITableViewDelegate {
             case 1:
                 return 80
             case 2:
-                return 120
+                return 0
             case 4:
                 return 290
                 
@@ -543,6 +543,7 @@ extension VacationSearchViewController: UITableViewDelegate {
             headerView.addSubview(headerTextLabel)
             return headerView
         } else {
+            guard section != 2 else { return nil }
             headerView.backgroundColor = IUIKColorPalette.tertiary1.color
             headerTextLabel.text = Constant.MyClassConstants.threeSegmentHeaderTextArray[section]
             headerTextLabel.textColor = IUIKColorPalette.primaryText.color
@@ -553,7 +554,11 @@ extension VacationSearchViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        
+
+        if segmentTitle == Constant.segmentControlItems.getaways && section == 2 {
+            return 0
+        }
+
         if tableView.numberOfSections == 6 || tableView.numberOfSections == 7 {
             if section < 4 {
                 return 55
@@ -1065,6 +1070,7 @@ extension VacationSearchViewController: UITableViewDataSource {
                 cell.delegate = self
                 cell.selectionStyle = UITableViewCellSelectionStyle.none
                 cell.backgroundColor = UIColor.clear
+                cell.contentView.isHidden = false
                 return cell
             } else if indexPath.section == 5 || indexPath.section == 6 {
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.dashboardTableScreenReusableIdentifiers.cellIdentifier, for: indexPath)
@@ -1251,6 +1257,7 @@ extension VacationSearchViewController: UITableViewDataSource {
                 cell.delegate = self
                 cell.selectionStyle = UITableViewCellSelectionStyle.none
                 cell.backgroundColor = UIColor.clear
+                cell.contentView.isHidden = segmentTitle == Constant.segmentControlItems.getaways
                 return cell
                 
             } else if indexPath.section == 4 {

@@ -4553,7 +4553,7 @@ to confirm a larger unit.</string>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="FlexchangeDestinationCell" rowHeight="83" id="HmQ-6r-2W8" customClass="FlexchangeDestinationCell" customModule="IntervalApp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="56" width="375" height="83"/>
+                                        <rect key="frame" x="0.0" y="55.5" width="375" height="83"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="HmQ-6r-2W8" id="LLx-dJ-vJ0">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="83"/>
@@ -4588,7 +4588,7 @@ to confirm a larger unit.</string>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="WhereToGoContentCell" rowHeight="84" id="DgA-Vh-YsC" customClass="WhereToGoContentCell" customModule="IntervalApp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="139" width="375" height="84"/>
+                                        <rect key="frame" x="0.0" y="138.5" width="375" height="84"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="DgA-Vh-YsC" id="dD8-5k-Dw3">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="84"/>
@@ -4634,7 +4634,7 @@ to confirm a larger unit.</string>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="CellIdentifier" rowHeight="75" id="xRl-P4-P79">
-                                        <rect key="frame" x="0.0" y="223" width="375" height="75"/>
+                                        <rect key="frame" x="0.0" y="222.5" width="375" height="75"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="xRl-P4-P79" id="1ER-aA-0iA">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="75"/>
@@ -4643,7 +4643,7 @@ to confirm a larger unit.</string>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="FlexchangeSearchButtonCell" rowHeight="75" id="1z4-Fp-mRT" customClass="SearchFlexchangeButtonCell" customModule="IntervalApp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="298" width="375" height="75"/>
+                                        <rect key="frame" x="0.0" y="297.5" width="375" height="75"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="1z4-Fp-mRT" id="e3t-cP-xIx">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="75"/>
@@ -7528,7 +7528,7 @@ transaction.</string>
         <segue reference="Gma-QI-cCT"/>
         <segue reference="0uV-Eo-2bn"/>
         <segue reference="jTg-f9-AVL"/>
-        <segue reference="ryk-nj-17Y"/>
+        <segue reference="Rpo-cQ-qF4"/>
         <segue reference="sGp-zH-9TZ"/>
         <segue reference="Uce-OZ-bfJ"/>
     </inferredMetricsTieBreakers>
