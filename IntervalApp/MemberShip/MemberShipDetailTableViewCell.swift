@@ -68,7 +68,7 @@ class MemberShipDetailTableViewCell: UITableViewCell {
         }
         
         if let memberSinceDate = contactInfo.lastVerifiedDate {
-            dateString = Helper.convertDateToString(date: memberSinceDate, format: Constant.MyClassConstants.dateFormat)
+            dateString = memberSinceDate.stringWithShortFormatForJSON()
         }
         
         if let count = contactInfo.memberships?.count {
