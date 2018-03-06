@@ -1003,13 +1003,13 @@ extension SearchResultViewController: UICollectionViewDelegate {
                                                                     unitSize: UnitSize(rawValue: unitSize),
                                                                     kitchenType: KitchenType(rawValue:kitchenType))
                     
-                    RentalProcessClient.start(Session.sharedSession.userAccessToken, process: processResort, request: processRequest1, onSuccess: {[unowned self] response in
+                    RentalProcessClient.start(Session.sharedSession.userAccessToken, process: processResort, request: processRequest1, onSuccess: {[weak self] response in
                         
                         let processResort = RentalProcess()
                         processResort.processId = response.processId
                         Constant.MyClassConstants.getawayBookingLastStartedProcess = processResort
                         Constant.MyClassConstants.processStartResponse = response
-                        self.hideHudAsync()
+                        self?.hideHudAsync()
                         
                         if let rentalView = response.view, let rentalFees = rentalView.fees {
                             Constant.MyClassConstants.viewResponse = rentalView
@@ -1038,7 +1038,7 @@ extension SearchResultViewController: UICollectionViewDelegate {
                         }
                         
                         // MARK: - Check forced renewals and redirect user to what to user or who will be checking In
-                        self.checkForceRenewals(response: response)
+                        self?.checkForceRenewals(response: response)
                         }, onError: { [weak self] error in
                             self?.hideHudAsync()
                             self?.presentErrorAlert(UserFacingCommonError.handleError(error))
