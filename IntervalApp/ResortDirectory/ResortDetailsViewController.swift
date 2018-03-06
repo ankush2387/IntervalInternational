@@ -935,7 +935,11 @@ extension ResortDetailsViewController: UITableViewDataSource {
                                 }
                                 
                                 //to show full filled circle
-                                for _ in 0..<resortCategory[indexPath.row - 1].rating {
+                                // Jira https://jira.iilg.com/browse/MOBI-1569
+                                // Change to account for Int to Float change introduced in DarwinSDK commit
+                                // https://bitbucket.iilg.com/projects/IIMOB/repos/darwin-sdk-ios/commits/87bb2a9b9b747993939022a87c2cb1297577e362
+                                let castedInt = Int(resortCategory[indexPath.row - 1].rating)
+                                for _ in 0..<castedInt {
                                     let imgVwRating = UIImageView()
                                     imgVwRating.frame = CGRect(x: image_X, y: 50, width: 20, height: 20)
                                     imgVwRating.image = UIImage(named: "full_filled_circle")
@@ -968,7 +972,12 @@ extension ResortDetailsViewController: UITableViewDataSource {
                                     availableCountryCell?.infoLabel.text = Helper.getRatingCategory(category: categoryCode ?? "") + "\n" + " \(resortCategory[indexPath.row - 1].rating)".localized()
                                 }
                                 var image_X: CGFloat = 0.0
-                                for _ in 0..<resortCategory[indexPath.row - 1].rating {
+                                
+                                // Jira https://jira.iilg.com/browse/MOBI-1569
+                                // Change to account for Int to Float change introduced in DarwinSDK commit
+                                // https://bitbucket.iilg.com/projects/IIMOB/repos/darwin-sdk-ios/commits/87bb2a9b9b747993939022a87c2cb1297577e362
+                                let castedInt = Int(resortCategory[indexPath.row - 1].rating)
+                                for _ in 0..<castedInt {
                                     if let imgVwRating = availableCountryCell?.tdiImageView {
                                         imgVwRating.backgroundColor = UIColor.orange
                                         imgVwRating.frame = CGRect(x: image_X, y: 20, width: 20, height: 20)
