@@ -19,21 +19,24 @@ final class LoginViewModel {
     let backgroundImage: Observable<UIImage>
     let username: Observable<String?>
     let password: Observable<String?>
-    let isLoggingIn = Observable(false)
     let clientTokenLoaded = Observable(false)
     let appSettings: Observable<AppSettings?>
     var didLogin: (() -> Void)?
     var fetchedMoreThanOneMembership = false
+    
+    var biometricAuthentication: BiometricAuthentication {
+        return BiometricAuthentication()
+    }
+    
     var touchIDEnabled: Bool {
         let touchIDEnabled = (try? encryptedStore.getItem(for: Persistent.touchIDEnabled.key, ofType: Bool()) ?? false) ?? false
         let appHasPreviousLogin = (try? decryptedStore.getItem(for: Persistent.appHasPreviousLogin.key, ofType: Bool()) ?? false) ?? false
         return touchIDEnabled && appHasPreviousLogin
     }
 
-    var buttonEnabledState: Signal<Bool, NoError> {
-        return combineLatest(username, password, isLoggingIn)
-            .map(shouldDisableButton)
-            .observeOn(.main)
+    var biometricLoginTitle: String? {
+        guard let biometricType = biometricAuthentication.biometricType else { return nil }
+        return biometricType == .faceID ? "Sign in with Face ID".localized() : "Sign in with Touch ID".localized()
     }
     
     var versionLabel: (text: String?, isHidden: Bool) {
@@ -85,7 +88,7 @@ final class LoginViewModel {
 
     // MARK: - Public functions
     func normalLogin() -> Promise<Void> {
-        isLoggingIn.next(true)
+
         return Promise { [unowned self] _, reject in
             
             self.saveCredentials()
@@ -99,7 +102,7 @@ final class LoginViewModel {
     }
     
     func touchIDLogin() -> Promise<Void> {
-        isLoggingIn.next(true)
+
         return Promise { [unowned self] _, reject in
             if let userName = try? self.encryptedStore.getItem(for: Persistent.userName.key, ofType: String()),
                 let password = try? self.encryptedStore.getItem(for: Persistent.password.key, ofType: String()) {
@@ -155,7 +158,7 @@ final class LoginViewModel {
     
     private func login(userName: String, password: String) -> Promise<Void> {
         return Promise { [unowned self] resolve, reject in
-            defer { self.userIsNotLogginIn() }
+            
             self.authProviderClientAPIStore.readAccessToken(for: userName, and: password)
                 .then(self.saveUserAccessToken)
                 .then(self.readCurrentProfileForAccessToken)
@@ -165,17 +168,9 @@ final class LoginViewModel {
         }
     }
 
-    private func userIsNotLogginIn() {
-        isLoggingIn.next(false)
-    }
-
     private func saveUserAccessToken(token: DarwinAccessToken) -> Promise<DarwinAccessToken> {
         sessionStore.userAccessToken = token
         return Promise.resolve(token)
-    }
-
-    private func shouldDisableButton(_ username: String?, password: String?, loggingIn: Bool) -> Bool {
-        return username?.isEmpty == false && password?.isEmpty == false && !loggingIn
     }
     
     private func checkAppVersion(clientTokenLoaded: Bool) {

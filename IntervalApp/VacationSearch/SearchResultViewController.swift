@@ -74,10 +74,7 @@ class SearchResultViewController: UIViewController {
             if !inventory.isEmpty {
                 let currencycode = inventory[0].inventory?.currencyCode ?? ""
                 let currencyHelper = CurrencyHelper()
-                let countryCode = Session.sharedSession.contact?.getCountryCode() ?? ""
-                
-                currencyCode = ("\(currencyHelper.getCurrencyFriendlySymbol(currencyCode: currencycode, countryCode: countryCode))")
-                
+                currencyCode = currencyHelper.getCurrencyFriendlySymbol(currencyCode: currencycode)
             }
         }
         
@@ -100,38 +97,33 @@ class SearchResultViewController: UIViewController {
         if Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.EXCHANGE {
             for section in sections {
                 if section.exactMatch {
-                    dateCellSelectionColor = Constant.CommonColor.blueColor
                     for exactResorts in section.items {
                         if let resortsExact = exactResorts.exchangeAvailability {
                             exactMatchResortsArrayExchange.append(resortsExact)
                         }
                     }
                 } else {
-                    if sections.count == 1 {
-                        dateCellSelectionColor = Constant.CommonColor.greenColor
-                    }
-                    // guard let items = section.items else { return }
                     for surroundingResorts in section.items {
                         if let resortsSurrounding = surroundingResorts.exchangeAvailability {
-                            exactMatchResortsArrayExchange.append(resortsSurrounding)
+                            surroundingMatchResortsArrayExchange.append(resortsSurrounding)
                         }
                     }
                 }
             }
+            if  exactMatchResortsArrayExchange.isEmpty {
+                dateCellSelectionColor = Constant.CommonColor.blueColor
+            } else { dateCellSelectionColor = Constant.CommonColor.greenColor }
+           
         } else if Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.RENTAL {
             
             for section in sections {
                 if section.exactMatch {
-                    dateCellSelectionColor = Constant.CommonColor.blueColor
                     for exactResorts in section.items {
                         if let resortsExact = exactResorts.rentalAvailability {
                             exactMatchResortsArray.append(resortsExact)
                         }
                     }
                 } else {
-                    if sections.count == 1 {
-                        dateCellSelectionColor = Constant.CommonColor.greenColor
-                    }
                     for surroundingResorts in section.items {
                         if let resortsSurrounding = surroundingResorts.rentalAvailability {
                             surroundingMatchResortsArray.append(resortsSurrounding)
@@ -139,17 +131,23 @@ class SearchResultViewController: UIViewController {
                     }
                 }
             }
+            if  exactMatchResortsArray.isEmpty {
+                dateCellSelectionColor = Constant.CommonColor.blueColor
+            } else { dateCellSelectionColor = Constant.CommonColor.greenColor }
+            
         } else {
             for section in sections {
                 if section.exactMatch {
+                    dateCellSelectionColor = Constant.CommonColor.greenColor
                     combinedExactSearchItems = section.items
                 } else {
-                    if sections.count == 1 {
-                        dateCellSelectionColor = Constant.CommonColor.greenColor
-                    }
+                    dateCellSelectionColor = Constant.CommonColor.blueColor
                     combinedSurroundingSearchItems = section.items
                 }
             }
+            if  combinedExactSearchItems.isEmpty {
+                dateCellSelectionColor = Constant.CommonColor.blueColor
+            } else { dateCellSelectionColor = Constant.CommonColor.greenColor }
         }
         
         checkExactSurroundingSections()
@@ -576,6 +574,7 @@ class SearchResultViewController: UIViewController {
             if response.view?.forceRenewals != nil {
                 // Navigate to Renewals Screen
                 guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.RenewelViewController) as? RenewelViewController else { return }
+                viewController.filterRelinquishment = Constant.MyClassConstants.filterRelinquishments[0]
                 viewController.delegate = self
                 self.present(viewController, animated: true)
             } else {
@@ -638,15 +637,16 @@ class SearchResultViewController: UIViewController {
         
         let firstVisibleIndexPath = searchResultTableView.indexPathsForVisibleRows?.first
         if firstVisibleIndexPath?.section == 1 {
-            dateCellSelectionColor = Constant.CommonColor.greenColor
+            dateCellSelectionColor = Constant.CommonColor.blueColor
         } else {
             checkExactSurroundingSections()
             if onlySurroundingsFound == true {
-                dateCellSelectionColor = Constant.CommonColor.greenColor
-            } else {
                 dateCellSelectionColor = Constant.CommonColor.blueColor
+            } else {
+                dateCellSelectionColor = Constant.CommonColor.greenColor
             }
         }
+        searchResultColelctionView.reloadData()
     }
     
     // Common method to get exchange collection view cell
@@ -786,6 +786,52 @@ class SearchResultViewController: UIViewController {
         }
     }
     
+    // MARK: - Other Renewal option selected
+    func selectedRenewal(selectedRenewal: String, forceRenewals: ForceRenewals, filterRelinquishment: ExchangeRelinquishment) {
+        
+        var renewalArray = [Renewal]()
+        renewalArray.removeAll()
+        if selectedRenewal == Helper.renewalType(type: 0) {
+            // Selected core renewal
+            let lowestTerm = forceRenewals.products[0].term
+            for renewal in forceRenewals.products where renewal.term == lowestTerm {
+                let renewalItem = Renewal()
+                renewalItem.id = renewal.id
+                renewalItem.productCode = renewal.productCode
+                renewalArray.append(renewalItem)
+                break
+            }
+        } else if selectedRenewal == Helper.renewalType(type: 2) {
+            // Selected combo renewal
+            let comboLowestTerm = forceRenewals.comboProducts[0].renewalComboProducts[0].term
+            for comboProduct in (forceRenewals.comboProducts) {
+                for renewalComboProduct in comboProduct.renewalComboProducts where renewalComboProduct.term == comboLowestTerm {
+                    let renewalItem = Renewal()
+                    renewalItem.id = renewalComboProduct.id
+                    renewalItem.productCode = renewalComboProduct.productCode
+                    renewalArray.append(renewalItem)
+                }
+            }
+        } else {
+            // Selected non core renewal
+            let lowestTerm = forceRenewals.crossSelling[0].term
+            for renewal in forceRenewals.crossSelling where renewal.term == lowestTerm {
+                let renewalItem = Renewal()
+                renewalItem.id = renewal.id
+                renewalArray.append(renewalItem)
+                break
+            }
+        }
+        
+        // Selected single renewal from other options. Navigate to WhoWillBeCheckingIn screen
+        let mainStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+        guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: SearchResultViewController.whoWillBeCheckingInViewController) as? WhoWillBeCheckingInViewController else { return }
+        viewController.isFromRenewals = true
+        viewController.renewalsArray = renewalArray
+        viewController.filterRelinquishments = filterRelinquishment
+        navigationController?.pushViewController(viewController, animated: true)
+    }
+    
 }
 
 //***** MARK: Extension classes starts from here *****//
@@ -819,7 +865,7 @@ extension SearchResultViewController: UICollectionViewDelegate {
                 viewForActivity.addSubview(myActivityIndicator)
                 cell.contentView.addSubview(viewForActivity)
             }
-            dateCellSelectionColor = Constant.CommonColor.blueColor
+            
             if Constant.MyClassConstants.calendarDatesArray[indexPath.item].isInterval ?? false {
                 showHudAsync()
                 intervalBucketClicked(calendarItem: Constant.MyClassConstants.calendarDatesArray[indexPath.item], cell: cell)
@@ -1003,25 +1049,15 @@ extension SearchResultViewController: UICollectionViewDelegate {
                     if collectionView.superview?.superview?.tag == 0 {
                         
                         if !combinedExactSearchItems.isEmpty {
-                            if let exchangeAvailability = combinedExactSearchItems[collectionView.tag].exchangeAvailability {
-                                
-                                if let bucket = combinedExactSearchItems[collectionView.tag].exchangeAvailability?.inventory?.buckets[indexPath.row] {
-                                    Constant.MyClassConstants.selectedExchangePointsCost = bucket.pointsCost as NSNumber
-                                    if bucket.pointsCost != bucket.memberPointsRequired {
-                                        showInfoIcon = true
-                                    }
-                                }
                                 
                                 if let rentalAvailability = combinedExactSearchItems[collectionView.tag].rentalAvailability {
                                     Constant.MyClassConstants.selectedResort = rentalAvailability
                                 } else {
-                                    if let resort = exchangeAvailability.resort {
+                                    if let resort = combinedExactSearchItems[collectionView.tag].exchangeAvailability?.resort {
                                         Constant.MyClassConstants.selectedResort = resort
                                     }
                                 }
-                            } else if let rentalAvailablility = combinedExactSearchItems[collectionView.tag].rentalAvailability {
-                                Constant.MyClassConstants.selectedResort = rentalAvailablility
-                            }
+                           
                         } else {
                             if let exchangeAvailability = combinedSurroundingSearchItems[collectionView.tag].exchangeAvailability {
                                 if let bucket = exchangeAvailability.inventory?.buckets[indexPath.row] {
@@ -1248,9 +1284,9 @@ extension SearchResultViewController: UICollectionViewDataSource {
                 if vacationSearchCheckInDate == calendarItemCheckInDate {
                     
                     if dateCellSelectionColor == Constant.CommonColor.greenColor {
-                        cell.backgroundColor = IUIKColorPalette.primary1.color
-                    } else {
                         cell.backgroundColor = Constant.CommonColor.headerGreenColor
+                    } else {
+                        cell.backgroundColor = IUIKColorPalette.primary1.color
                     }
                     cell.dateLabel.textColor = UIColor.white
                     cell.daynameWithyearLabel.textColor = UIColor.white
@@ -1348,8 +1384,8 @@ extension SearchResultViewController: UICollectionViewDataSource {
                     let cell = self.getResortInfoCollectionCell(indexPath: indexPath, collectionView: collectionView, resort: inventoryItem)
                     return cell
                 } else {
-                    
-                    if (collectionView.superview?.superview?.tag == 0 && !combinedExactSearchItems.isEmpty && combinedExactSearchItems[collectionView.tag].hasRentalAvailability() && combinedExactSearchItems[collectionView.tag].hasExchangeAvailability()) || (collectionView.superview?.superview?.tag == 1 && combinedSurroundingSearchItems[collectionView.tag].hasRentalAvailability() && combinedSurroundingSearchItems[collectionView.tag].hasExchangeAvailability()) {
+                    guard let collectionSuperviewTag = collectionView.superview?.superview?.tag else { return UICollectionViewCell() }
+                    if (collectionSuperviewTag == 0 && !combinedExactSearchItems.isEmpty && combinedExactSearchItems[collectionView.tag].hasRentalAvailability() && combinedExactSearchItems[collectionView.tag].hasExchangeAvailability()) || (collectionSuperviewTag == 1 && combinedSurroundingSearchItems[collectionView.tag].hasRentalAvailability() && combinedSurroundingSearchItems[collectionView.tag].hasExchangeAvailability()) {
                         
                         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.reUsableIdentifiers.searchBothInventoryCell, for: indexPath) as? SearchBothInventoryCVCell else { return UICollectionViewCell() }
                         
@@ -1371,6 +1407,19 @@ extension SearchResultViewController: UICollectionViewDataSource {
                                 if let exchangeInventory = combinedSurroundingSearchItems[collectionView.tag].exchangeAvailability?.resort {
                                     cell.setDataForBothInventoryType(invetoryItem: exchangeInventory, indexPath: indexPath)
                                 }
+                            }
+                        }
+                        return cell
+                        
+                    } else if collectionSuperviewTag == 0 && !combinedSurroundingSearchItems.isEmpty && combinedSurroundingSearchItems.count > collectionView.tag && combinedSurroundingSearchItems[collectionView.tag].hasRentalAvailability() && combinedSurroundingSearchItems[collectionView.tag].hasExchangeAvailability() {
+                        
+                         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.reUsableIdentifiers.searchBothInventoryCell, for: indexPath) as? SearchBothInventoryCVCell else { return UICollectionViewCell() }
+                        
+                        if let rentalAvailability = combinedSurroundingSearchItems[collectionView.tag].rentalAvailability {
+                            cell.setDataForBothInventoryType(invetoryItem: rentalAvailability, indexPath: indexPath)
+                        } else {
+                            if let exchangeInventory = combinedSurroundingSearchItems[collectionView.tag].exchangeAvailability?.resort {
+                                cell.setDataForBothInventoryType(invetoryItem: exchangeInventory, indexPath: indexPath)
                             }
                         }
                         return cell
@@ -1862,14 +1911,12 @@ extension SearchResultViewController: RenewelViewControllerDelegate {
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
-    func selectedRenewalFromWhoWillBeCheckingIn(renewalArray: [Renewal]) {
+    func selectedRenewalFromWhoWillBeCheckingIn(renewalArray: [Renewal], selectedRelinquishment: ExchangeRelinquishment) {
         self.dismiss(animated: false, completion: nil)
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
         guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: SearchResultViewController.whoWillBeCheckingInViewController) as? WhoWillBeCheckingInViewController else { return }
         viewController.renewalsArray = renewalArray
-        
-        let transitionManager = TransitionManager()
-        self.navigationController?.transitioningDelegate = transitionManager
+        viewController.filterRelinquishments = selectedRelinquishment
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
@@ -1888,22 +1935,31 @@ extension SearchResultViewController: RenewelViewControllerDelegate {
             let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
             
             guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.renewalOtherOptionsVC) as? RenewalOtherOptionsVC else { return }
-            viewController.delegate = self
+            viewController.selectAction = { [weak self] (selectedType, renewal, relinquishment) in
+                self?.selectedRenewal(selectedRenewal: selectedType, forceRenewals: renewal, filterRelinquishment: relinquishment)
+            }
             
             viewController.forceRenewals = forceRenewals
-            self.present(viewController, animated: true, completion: nil)
+            if !Constant.MyClassConstants.filterRelinquishments.isEmpty {
+                viewController.selectedRelinquishment = Constant.MyClassConstants.filterRelinquishments[0]
+            }
+            present(viewController, animated: true)
             
             return
             
         } else {
             
-            let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
+            let mainStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
             
             guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.renewalOtherOptionsVC) as? RenewalOtherOptionsVC else { return }
-            viewController.delegate = self
-            
+            viewController.selectAction = { [weak self] (selectedType, renewal, relinquishment) in
+                 self?.selectedRenewal(selectedRenewal: selectedType, forceRenewals: renewal, filterRelinquishment: relinquishment)
+            }
+            if !Constant.MyClassConstants.filterRelinquishments.isEmpty {
+                viewController.selectedRelinquishment = Constant.MyClassConstants.filterRelinquishments[0]
+            }
             viewController.forceRenewals = forceRenewals
-            self.present(viewController, animated: true, completion: nil)
+            present(viewController, animated: true)
             
             return
         }
@@ -1911,63 +1967,13 @@ extension SearchResultViewController: RenewelViewControllerDelegate {
     
 }
 
-// Mark : - Delegate
-extension SearchResultViewController: RenewalOtherOptionsVCDelegate {
-    func selectedRenewal(selectedRenewal: String, forceRenewals: ForceRenewals) {
-        
-        var renewalArray = [Renewal]()
-        renewalArray.removeAll()
-        if selectedRenewal == Helper.renewalType(type: 0) {
-            // Selected core renewal
-            let lowestTerm = forceRenewals.products[0].term
-            for renewal in forceRenewals.products where renewal.term == lowestTerm {
-                let renewalItem = Renewal()
-                renewalItem.id = renewal.id
-                renewalItem.productCode = renewal.productCode
-                renewalArray.append(renewalItem)
-                break
-            }
-        } else if selectedRenewal == Helper.renewalType(type: 2) {
-            // Selected combo renewal
-            let comboLowestTerm = forceRenewals.comboProducts[0].renewalComboProducts[0].term
-            for comboProduct in (forceRenewals.comboProducts) {
-                for renewalComboProduct in comboProduct.renewalComboProducts where renewalComboProduct.term == comboLowestTerm {
-                    let renewalItem = Renewal()
-                    renewalItem.id = renewalComboProduct.id
-                    renewalItem.productCode = renewalComboProduct.productCode
-                    renewalArray.append(renewalItem)
-                }
-            }
-        } else {
-            // Selected non core renewal
-            let lowestTerm = forceRenewals.crossSelling[0].term
-            for renewal in forceRenewals.crossSelling where renewal.term == lowestTerm {
-                let renewalItem = Renewal()
-                renewalItem.id = renewal.id
-                renewalArray.append(renewalItem)
-                break
-            }
-        }
-        
-        // Selected single renewal from other options. Navigate to WhoWillBeCheckingIn screen
-        let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
-        guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: SearchResultViewController.whoWillBeCheckingInViewController) as? WhoWillBeCheckingInViewController else { return }
-        
-        let transitionManager = TransitionManager()
-        self.navigationController?.transitioningDelegate = transitionManager
-        viewController.isFromRenewals = true
-        viewController.renewalsArray = renewalArray
-        self.navigationController?.pushViewController(viewController, animated: true)
-    }
-}
-
 extension SearchResultViewController: WhoWillBeCheckInDelegate {
-    func navigateToWhoWillBeCheckIn(renewalArray: [Renewal], selectedRow: Int) {
+    func navigateToWhoWillBeCheckIn(renewalArray: [Renewal], selectedRow: Int, selectedRelinquishment: ExchangeRelinquishment) {
         
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
         guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: SearchResultViewController.whoWillBeCheckingInViewController) as? WhoWillBeCheckingInViewController else { return }
         viewController.renewalsArray = renewalArray
-        viewController.filterRelinquishments = Constant.MyClassConstants.filterRelinquishments[0]
+        viewController.filterRelinquishments = selectedRelinquishment
         self.navigationController?.pushViewController(viewController, animated: true)
     }
 }

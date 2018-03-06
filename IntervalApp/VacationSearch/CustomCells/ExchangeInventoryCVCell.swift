@@ -54,7 +54,7 @@ class ExchangeInventoryCVCell: UICollectionViewCell {
         
         if unit.publicSleepCapacity > 0 {
             
-            totalSleepCapacity = String(unit.publicSleepCapacity) + Constant.CommonLocalisedString.totalString
+            totalSleepCapacity = "\(unit.publicSleepCapacity) total, ".localized()
             
         }
         

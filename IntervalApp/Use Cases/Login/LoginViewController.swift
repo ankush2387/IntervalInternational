@@ -22,7 +22,7 @@ final class LoginViewController: UIViewController {
     @IBOutlet private weak var signInButton: UIButton!
     @IBOutlet private weak var loginIDTextField: UITextField!
     @IBOutlet private weak var passwordTextField: UITextField!
-    @IBOutlet private weak var touchIDImageView: UIImageView!
+    @IBOutlet private weak var biometricLoginButton: UIButton!
     @IBOutlet private weak var loginHelpButton: UIButton!
     @IBOutlet private weak var joinTodayButton: UIButton!
     @IBOutlet private weak var resortDirectoryButton: UIButton!
@@ -53,7 +53,6 @@ final class LoginViewController: UIViewController {
     // MARK: - Overrides
     override func viewDidLoad() {
         super.viewDidLoad()
-        setUI()
         bindUI()
         showOnboardingIfNewAppInstance()
         setSplashScreenAnimation()
@@ -67,7 +66,7 @@ final class LoginViewController: UIViewController {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.isHidden = true
         viewModel.password.next(nil)
-        touchIDImageView.isHidden = !viewModel.touchIDEnabled
+        setUI()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -127,8 +126,8 @@ final class LoginViewController: UIViewController {
         signInBackgroundView.backgroundColor = UIColor.white.withAlphaComponent(0.9)
         updateUIForOrientation()
         setVersionLabelForNonProductionBuild()
-        let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap))
-        touchIDImageView.addGestureRecognizer(tap)
+        biometricLoginButton.setTitle(viewModel.biometricLoginTitle, for: .normal)
+        biometricLoginButton.isHidden = !viewModel.touchIDEnabled
     }
     
     private func bindUI() {
@@ -136,30 +135,23 @@ final class LoginViewController: UIViewController {
         viewModel.password.bidirectionalBind(to: passwordTextField.reactive.text)
         signInButton.reactive.tap.observeNext(with: login).dispose(in: disposeBag)
         privacyButton.reactive.tap.observeNext(with: privacyButtonTapped).dispose(in: disposeBag)
-        viewModel.buttonEnabledState.observeNext(with: updateLoginButtonsUI).dispose(in: disposeBag)
         loginHelpButton.reactive.tap.observeNext(with: showLoginHelpWebView).dispose(in: disposeBag)
         joinTodayButton.reactive.tap.observeNext(with: showJoinTodayWebView).dispose(in: disposeBag)
         magazinesButton.reactive.tap.observeNext(with: magazinesButtonTapped).dispose(in: disposeBag)
-        viewModel.buttonEnabledState.bind(to: signInButton.reactive.isEnabled).dispose(in: disposeBag)
         intervalHDButton.reactive.tap.observeNext(with: intervalHDButtonTapped).dispose(in: disposeBag)
         viewModel.clientTokenLoaded.observeNext(with: enabledWebActivityButton).dispose(in: disposeBag)
         viewModel.appSettings.flatMap { $0 }.observeNext(with: checkAppVersion).dispose(in: disposeBag)
-        viewModel.isLoggingIn.map { !$0 }.bind(to: loginIDTextField.reactive.isEnabled).dispose(in: disposeBag)
-        viewModel.isLoggingIn.map { !$0 }.bind(to: passwordTextField.reactive.isEnabled).dispose(in: disposeBag)
         resortDirectoryButton.reactive.tap.observeNext(with: resortDirectoryButtonTapped).dispose(in: disposeBag)
+        biometricLoginButton.reactive.tap.observeNext(with: performTouchIDLoginIfEnabled).dispose(in: disposeBag)
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         view.endEditing(true)
     }
     
-    @objc private func handleTap(_ sender: UITapGestureRecognizer) {
-        performTouchIDLoginIfEnabled()
-    }
-
     private func performTouchIDLoginIfEnabled() {
         guard viewModel.touchIDEnabled else { return }
-        let touchID = BiometricAuthentication()
+        let touchID = viewModel.biometricAuthentication
         touchID.authenticateUser()
             .then(showHudAsync)
             .then(viewModel.touchIDLogin)

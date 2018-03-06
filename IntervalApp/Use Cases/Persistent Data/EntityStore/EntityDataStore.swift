@@ -22,4 +22,5 @@ protocol EntityDataStore {
     func readObjectsFromDisk<T: Object>(type: T.Type, predicate: String?, encoding: Encoding) -> Promise<Results<T>>
     func readObjectsFromMemory<T: Object>(type: T.Type, predicate: String?) -> Promise<Results<T>>
     func resetDatabase(for encoding: Encoding) -> Promise<Void>
+    func delete<T: Object>(type: T.Type, for encoding: Encoding) -> Promise<Void>
 }

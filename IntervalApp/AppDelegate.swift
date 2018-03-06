@@ -50,7 +50,9 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     
     // MARK: - Private functions
     private func setBugseeSDK() {
-        Bugsee.launch(token: "02c07b72-bc9d-4eb2-81e0-00618d14db8b")
+        let options: [String: Any] = [BugseeShakeToReportKey: true,
+                                       BugseeScreenshotToReportKey: false]
+        Bugsee.launch(token: "02c07b72-bc9d-4eb2-81e0-00618d14db8b", options: options)
     }
     
     private func setWindow() {

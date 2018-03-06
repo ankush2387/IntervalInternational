@@ -33,9 +33,10 @@ open class InventoryUnit {
     open var lockOffIndicator : Bool = false
     open var trackCodeCategory : String?
     open var relinquishmentId : String?
-    open var vacationSearchType : VacationSearchType?
+    open var vacationSearchType : VacationSearchType
     
     public init() {
+        self.vacationSearchType = VacationSearchType.UNKNOWN
     }
 
     public convenience init(checkInDate:String?, checkOutDate:String?, unitSize:UnitSize?, kitchenType:KitchenType?) {

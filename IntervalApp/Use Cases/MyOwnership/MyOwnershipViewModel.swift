@@ -262,7 +262,7 @@ final class MyOwnershipViewModel {
     }
 
     func resetDatabase() -> Promise<Void> {
-        return self.entityDataStore.resetDatabase(for: .decrypted)
+        return self.entityDataStore.delete(type: OpenWeeksStorage.self, for: .decrypted)
     }
 
     // MARK: - Private functions

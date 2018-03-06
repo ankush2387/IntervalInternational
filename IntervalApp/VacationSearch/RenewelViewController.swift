@@ -13,7 +13,7 @@ import DarwinSDK
 //***** Custom delegate method declaration *****//
 protocol RenewelViewControllerDelegate: class {
     
-    func selectedRenewalFromWhoWillBeCheckingIn(renewalArray: [Renewal])
+    func selectedRenewalFromWhoWillBeCheckingIn(renewalArray: [Renewal], selectedRelinquishment: ExchangeRelinquishment)
     func noThanks()
     func otherOptions(forceRenewals: ForceRenewals)
     func dismissWhatToUse(renewalArray: [Renewal])
@@ -38,6 +38,8 @@ class RenewelViewController: UIViewController {
     var isCore = false
     var isNonCore = false
     var renewalArray = [Renewal()]
+    var filterRelinquishment = ExchangeRelinquishment()
+    var currencyHelper = CurrencyHelper()
     
     var forceRenewals = ForceRenewals()
     
@@ -198,13 +200,13 @@ class RenewelViewController: UIViewController {
                 if Constant.MyClassConstants.isFromWhatToUse {
                     self.delegate?.dismissWhatToUse(renewalArray: renewalArray)
                 } else {
-                    delegate?.selectedRenewalFromWhoWillBeCheckingIn(renewalArray: renewalArray)
+                    delegate?.selectedRenewalFromWhoWillBeCheckingIn(renewalArray: renewalArray, selectedRelinquishment: filterRelinquishment)
                 }
             } else {
                 if Constant.MyClassConstants.isFromWhatToUse {
                     self.delegate?.dismissWhatToUse(renewalArray: renewalArray)
                 } else {
-                    delegate?.selectedRenewalFromWhoWillBeCheckingIn(renewalArray: renewalArray)
+                    delegate?.selectedRenewalFromWhoWillBeCheckingIn(renewalArray: renewalArray, selectedRelinquishment: filterRelinquishment)
                     
                 }
             }
@@ -308,11 +310,11 @@ extension RenewelViewController: UITableViewDataSource {
                         cell.renewelnonCoreImageView?.isHidden = true
                     
                     if let currencyCode = forceRenewals.currencyCode {
-                        let currencyCodeWithSymbol = Helper.currencyCodeToSymbol(code: currencyCode)
+                        let currencyCodeWithSymbol = currencyHelper.getCurrencyFriendlySymbol(currencyCode: currencyCode)
                         
                         let price = String(format: "%.0f", crossSelling.price)
                         
-                        priceAndCurrency = currencyCodeWithSymbol + "\(price)" + " " + currencyCode
+                        priceAndCurrency = currencyCodeWithSymbol + "\(price)"
                     }
                         
                         // make attributed string
@@ -347,7 +349,7 @@ extension RenewelViewController: UITableViewDataSource {
                             // currency code
                         if let currencyCode = forceRenewals.currencyCode {
                             
-                            let currencyCodeWithSymbol = Helper.currencyCodeToSymbol(code: currencyCode)
+                            let currencyCodeWithSymbol = currencyHelper.getCurrencyFriendlySymbol(currencyCode: currencyCode)
 
                             if renewalComboProduct.isCoreProduct {
                                 if let productCode = renewalComboProduct.productCode {
@@ -356,7 +358,7 @@ extension RenewelViewController: UITableViewDataSource {
                                 
                                 let price = String(format: "%.0f", renewalComboProduct.price)
                                 
-                                priceAndCurrency = currencyCodeWithSymbol + "\(price)" + " " + currencyCode
+                                priceAndCurrency = currencyCodeWithSymbol + "\(price)"
                                 
                                 //formatted string
                                 let formattedString = Helper.returnIntervalMembershipString(price: priceAndCurrency, term: term)
@@ -377,7 +379,7 @@ extension RenewelViewController: UITableViewDataSource {
                                 
                                 let price = String(format: "%.0f", renewalComboProduct.price)
                                 if let currencyCode = forceRenewals.currencyCode {
-                                priceAndCurrency = currencyCodeWithSymbol + "\(price)" + " " + currencyCode
+                                priceAndCurrency = currencyCodeWithSymbol + "\(price)"
                                 }
                                 var mainString = ""
                                 // Create attributed string
@@ -466,11 +468,11 @@ extension RenewelViewController: UITableViewDataSource {
                     cell.renewelCoreImageView?.isHidden = true
                     cell.renewelnonCoreImageView?.isHidden = true
                     if let currencyCode = forceRenewals.currencyCode {
-                    let currencyCodeWithSymbol = Helper.currencyCodeToSymbol(code: currencyCode)
+                    let currencyCodeWithSymbol = currencyHelper.getCurrencyFriendlySymbol(currencyCode: currencyCode)
                     
                     let price = String(format: "%.0f", product.price)
                     
-                    priceAndCurrency = currencyCodeWithSymbol + "\(price)" + " " + currencyCode
+                    priceAndCurrency = currencyCodeWithSymbol + "\(price)"
                     
                     //formatted string
                     let formattedString = Helper.returnIntervalMembershipString(price: priceAndCurrency, term: term)
@@ -506,10 +508,10 @@ extension RenewelViewController: UITableViewDataSource {
                         cell.renewelnonCoreImageView?.image = UIImage(named: productCode)
                     }
                     if let currencyCode = forceRenewals.currencyCode {
-                        let currencyCodeWithSymbol = Helper.currencyCodeToSymbol(code: currencyCode)
+                        let currencyCodeWithSymbol = currencyHelper.getCurrencyFriendlySymbol(currencyCode: currencyCode)
                         let price = String(format: "%.0f", nonCoreProduct.price)
                         
-                        priceAndCurrency = currencyCodeWithSymbol + "\(price)" + " " + currencyCode
+                        priceAndCurrency = currencyCodeWithSymbol + "\(price)"
                     }
                     
                     // formatted string
@@ -568,11 +570,11 @@ extension RenewelViewController: UITableViewDataSource {
                         cell.renewelCoreImageView?.isHidden = true
                         cell.renewelnonCoreImageView?.isHidden = true
                     if let currencyCode = forceRenewals.currencyCode {
-                        let currencyCodeWithSymbol = Helper.currencyCodeToSymbol(code: currencyCode)
+                        let currencyCodeWithSymbol = currencyHelper.getCurrencyFriendlySymbol(currencyCode: currencyCode)
                         
                         let price = String(format: "%.0f", nonCoreProduct.price)
                         
-                        priceAndCurrency = currencyCodeWithSymbol + "\(price)" + " " + currencyCode
+                        priceAndCurrency = currencyCodeWithSymbol + "\(price)"
                     }
                     
                     if let displayName = nonCoreProduct.displayName?.capitalized {

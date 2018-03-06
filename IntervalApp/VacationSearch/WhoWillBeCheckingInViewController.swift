@@ -645,27 +645,10 @@ class WhoWillBeCheckingInViewController: UIViewController {
         present(nav, animated: true)
     }
     
-    func editingChanged(_ textField: UITextField) {
-        /*if textField.text?.characters.count == 1 {
-            if textField.text?.characters.first == " " {
-                textField.text = ""
-                return
-            }
-        }*/
-        if proceedStatus == guestFormCheckForDetails() {
-            //checkingInUserTBLview.reloadData()
-        }
-
-        /*guard
-            let habit = habitNameField.text, !habit.isEmpty,
-            let goal = goalField.text, !goal.isEmpty,
-            let frequency = frequencyField.text, !frequency.isEmpty
-            else {
-                doneBarButton.isEnabled = false
-                return
-        }
-        doneBarButton.isEnabled = true*/
-    }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let relinquishmentDetails = segue.destination as? RelinquishmentDetailsViewController else { return }
+        relinquishmentDetails.filterRelinquishment = filterRelinquishments
+     }
 }
 
 //Extension class starts from here
@@ -881,7 +864,6 @@ extension WhoWillBeCheckingInViewController: UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.guestTextFieldCell, for: indexPath) as! GuestTextFieldCell
             
             cell.nameTF.text = ""
-            cell.nameTF.addTarget(self, action: #selector(editingChanged), for: .editingChanged)
             cell.nameTF.delegate = self
             if indexPath.section == 3 {
                 
@@ -1191,8 +1173,8 @@ extension WhoWillBeCheckingInViewController: RenewelViewControllerDelegate {
         
     }
     
-    func selectedRenewalFromWhoWillBeCheckingIn(renewalArray: [Renewal]) {
-        renewalsArray = renewalArray
+    func selectedRenewalFromWhoWillBeCheckingIn(renewalArray: [Renewal], selectedRelinquishment: ExchangeRelinquishment) {
+        self.renewalsArray = renewalArray
         Constant.MyClassConstants.noThanksForNonCore = false
         let button = UIButton()
         proceedToCheckoutPressed(button)
