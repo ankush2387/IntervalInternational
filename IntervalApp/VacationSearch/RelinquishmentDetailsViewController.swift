@@ -16,6 +16,7 @@ class RelinquishmentDetailsViewController: UIViewController {
     var resort: Resort?
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.estimatedRowHeight = 80
 
         // Do any additional setup after loading the view.
         self.tableView.layer.cornerRadius = 5
@@ -104,12 +105,13 @@ extension RelinquishmentDetailsViewController: UITableViewDataSource, UITableVie
                 cell.totalSleepAndPrivate.text = ""
             } else if let openWeek = objRelinquishment.openWeek {
                 
-                guard let date = openWeek.checkInDate?.dateFromString() else { return cell }
-                let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
-                let myComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: date)
-                if let day = myComponents.day, let month = myComponents.month {
-                    let monthName = Helper.getMonthnameFromInt(monthNumber: month).uppercased()
-                    cell.dayAndDateLabel.text = "\(monthName) \(String(format: "%02d", arguments: [day]))"
+                if let date = openWeek.checkInDate?.dateFromString() {
+                    let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
+                    let myComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: date)
+                    if let day = myComponents.day, let month = myComponents.month {
+                        let monthName = Helper.getMonthnameFromInt(monthNumber: month).uppercased()
+                        cell.dayAndDateLabel.text = "\(monthName) \(String(format: "%02d", arguments: [day]))"
+                    }
                 }
                 
                 if let relinquishmentYear = openWeek.relinquishmentYear {
@@ -179,8 +181,7 @@ extension RelinquishmentDetailsViewController: UITableViewDataSource, UITableVie
                 return 450
             }
         } else {
-            return 80
-
+            return UITableViewAutomaticDimension
         }
     }
     
