@@ -19,6 +19,7 @@ final class RelinquishmentViewController: UIViewController {
     fileprivate let viewModel = RelinquishmentViewModel()
     private let adobeAnalyticsManager = ADBAnalyticsManager()
 
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         showHudAsync()
@@ -31,10 +32,20 @@ final class RelinquishmentViewController: UIViewController {
         
         sendAnalytics()
     }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        title = "Select Relinquishment".localized()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        title = ""
+    }
     
     // MARK: - Private functions
     private func setUI() {
-        title = "Relinquishment Selection".localized()
+
         registerSimpleCellViews(withTableView: tableView)
         tableView.estimatedRowHeight = 100
         tableView.rowHeight = UITableViewAutomaticDimension
@@ -52,6 +63,21 @@ final class RelinquishmentViewController: UIViewController {
 
         adobeAnalyticsManager.sendAnalyticEvent(withIdentifier: .event61,
                                                 data: [OmnitureEvar.eVar41.value: OmnitureIdentifier.vacationSearch.value])
+    }
+
+    private func createCellModel(for inventoryUnit: InventoryUnit) -> SingleSelectionCellModel {
+        return SingleSelectionCellModel(cellTitle: inventoryUnit.unitDetailsUIFormatted,
+                                        cellSubtitle: inventoryUnit.unitCapacityUIFormatted)
+    }
+
+    private func createCellModel(for inventoryUnit: InventoryUnit) -> MultipleSelectionCellModel {
+        return MultipleSelectionCellModel(cellTitle: inventoryUnit.unitDetailsUIFormatted,
+                                          cellSubtitle: inventoryUnit.unitCapacityUIFormatted)
+    }
+
+    private func createCellModel(for resortUnitDetails: ResortUnitDetails) -> MultipleSelectionCellModel {
+        return MultipleSelectionCellModel(cellTitle: resortUnitDetails.kitchenType,
+                                          cellSubtitle: resortUnitDetails.unitSize)
     }
     
     fileprivate func seperatorSection() -> UIView {
@@ -80,16 +106,17 @@ final class RelinquishmentViewController: UIViewController {
         Constant.MyClassConstants.relinquishmentIdArray.append(relinquishmentID.unwrappedString)
         
         viewModel.relinquish(availablePoints, for: code, and: relinquishmentID)
-            .then(popViewControllerAnimated)
+            .then(popFromRelinquishmentViewController)
             .onViewError(presentErrorAlert)
     }
     
     fileprivate func processNavigationAction(for relinquishment: Relinquishment) {
 
         showHudAsync()
-        
         if (relinquishment.memberUnitLocked || relinquishment.bulkAssignment)
             && !relinquishment.hasActions() && relinquishment.hasResortPhoneNumber() {
+            // Does not have actions
+            // User can only call resort
             defer { hideHudAsync() }
             guard let resortPhoneNumber = relinquishment.resort?.phone,
                 let url = URL(string: "tel://\(resortPhoneNumber)"),
@@ -108,62 +135,123 @@ final class RelinquishmentViewController: UIViewController {
                 .onViewError(presentErrorAlert)
                 .finally(hideHudAsync)
 
-        } else if relinquishment.requireAdditionalInfo() {
-            defer { hideHudAsync() }
-            // This viewController must delegate back when the relinquishment has been saved
-            // Must find out how this data must be stored... to make changes in viewModel
-            let viewModel = AdditionalInformationViewModel(relinquishment: relinquishment)
-            let additionalInformationViewController = AdditionalInformationViewController(viewModel: viewModel)
-            additionalInformationViewController.didUpdateFixWeekReservation = { [weak self] in
-                guard let strongSelf = self else { return }
-                strongSelf.navigationController?.popViewController(animated: false)
-                strongSelf.relinquish(relinquishment)
-            }
-            navigationController?.pushViewController(additionalInformationViewController, animated: true)
-        } else if relinquishment.lockOff {
-
-            viewModel.fetchLockedOffUnits(for: relinquishment).then { [weak self] lockedOffUnits in
-                guard let strongSelf = self, let units = relinquishment.unit?.lockOffUnits else { return }
-                let multipleSelectionViewModel = MultipleSelectionTableViewModel<InventoryUnit>(viewTitle: "Select all or any lock-off portion".localized(),
-                                                                                                dataSet: units,
-                                                                                                previouslySelectedDataSet: lockedOffUnits)
-
-                let multipleSelectionViewController = MultipleSelectionTableViewController(viewModel: multipleSelectionViewModel)
-                multipleSelectionViewController.didFinish = { [weak self] lockedOffUnits in
-                    guard let strongSelf = self else { return }
-                    strongSelf.showHudAsync()
-                    strongSelf.viewModel.relinquish(relinquishment, with: lockedOffUnits)
-                        .then(strongSelf.popViewControllerNonAnimated)
-                        .then(strongSelf.popViewControllerAnimated)
-                        .onViewError(strongSelf.presentErrorAlert)
-                        .finally(strongSelf.hideHudAsync)
+        } else if relinquishment.hasLockOffUnits && relinquishment.requireAdditionalInfo() {
+            
+            viewModel.readPreviouslySelectedLockOffUnits(for: relinquishment).then { [weak self] lockedOffUnits in
+                guard let strongSelf = self, let units = strongSelf.viewModel.processLockOffUnits(for: relinquishment) else {
+                    self?.presentErrorAlert(UserFacingCommonError.generic)
+                    return
                 }
 
-                strongSelf.navigationController?.pushViewController(multipleSelectionViewController, animated: true)
-            }
+                strongSelf.pushSingleSelectionView(title: "Select lock-off portion".localized(),
+                                                   with: units.map(strongSelf.createCellModel)) { selectedIndex in
+
+                                                    let selectedUnit = units[selectedIndex]
+                                                    relinquishment.relinquishmentId = selectedUnit.relinquishmentId
+                                                    relinquishment.fixWeekReservation?.unit = selectedUnit
+                                                    strongSelf.pushAdditionalInformationView(for: relinquishment,
+                                                                                             didUpdateFixWeekReservation: {
+
+                                    strongSelf.navigationController?.popToViewController(strongSelf, animated: false)
+                                    strongSelf.viewModel.relinquish(relinquishment)
+                                        .then(strongSelf.popToRelinquishmentViewController)
+                                        .then(strongSelf.popFromRelinquishmentViewController)
+                                        .onViewError(strongSelf.presentErrorAlert)
+                    })
+                }
+                }
+                
                 .onViewError(presentErrorAlert)
                 .finally(hideHudAsync)
-
+            
+        } else if relinquishment.requireAdditionalInfo() {
+            defer { hideHudAsync() }
+            pushAdditionalInformationView(for: relinquishment) { [weak self] in
+                guard let strongSelf = self else { return }
+                strongSelf.navigationController?.popViewController(animated: false)
+                strongSelf.viewModel.relinquish(relinquishment)
+                    .then(strongSelf.popToRelinquishmentViewController)
+                    .then(strongSelf.popFromRelinquishmentViewController)
+                    .onViewError(strongSelf.presentErrorAlert)
+            }
+            
+        } else if relinquishment.hasLockOffUnits {
+            
+            viewModel.readPreviouslySelectedLockOffUnits(for: relinquishment).then { [weak self] lockedOffUnits in
+                guard let strongSelf = self, let units = strongSelf.viewModel.processLockOffUnits(for: relinquishment) else {
+                    self?.presentErrorAlert(UserFacingCommonError.generic)
+                    return
+                }
+                let previousSelectionDataSet = lockedOffUnits.flatMap { $0.unitDetails }.map { strongSelf.createCellModel(for: $0) }
+                strongSelf.pushMultipleSelectionView(title: "Select lock-off portion".localized(),
+                                                     with: units.map(strongSelf.createCellModel),
+                                                     previousSelectionDataSet: previousSelectionDataSet) { [weak self] selectedLockedOffUnits in
+                                                        guard let strongSelf = self else { return }
+                                                        strongSelf.showHudAsync()
+                                                        let inventoryUnitsToRelinquish = units.filter {
+                                                            return selectedLockedOffUnits.map { $0.cellTitle }.contains($0.unitDetailsUIFormatted)
+                                                        }
+                                                        strongSelf.viewModel.relinquish(relinquishment, with: inventoryUnitsToRelinquish)
+                                                            .then(strongSelf.popToRelinquishmentViewController)
+                                                            .then(strongSelf.popFromRelinquishmentViewController)
+                                                            .onViewError(strongSelf.presentErrorAlert)
+                                                            .finally(strongSelf.hideHudAsync)
+                }
+                }
+                
+                .onViewError(presentErrorAlert)
+                .finally(hideHudAsync)
+            
         } else {
-            relinquish(relinquishment)
+            viewModel.relinquish(relinquishment)
+                .then(popFromRelinquishmentViewController)
+                .onViewError(presentErrorAlert)
+                .finally(hideHudAsync)
         }
     }
+
+    private func pushSingleSelectionView(title: String? = nil,
+                                         with dataSet: [SingleSelectionCellModel],
+                                         didSelect: @escaping (Int) -> Void) {
+
+        let singleSelectionViewModel = SingleSelectionViewModel(title: title,
+                                                                cellModels: dataSet,
+                                                                cellUIType: .disclosure)
+
+        let singleSelectionViewController = SingleSelectionViewController(viewModel: singleSelectionViewModel)
+        singleSelectionViewController.didSelectRow = didSelect
+        navigationController?.pushViewController(singleSelectionViewController, animated: true)
+    }
     
-    private func relinquish(_ relinquishment: Relinquishment) {
-        viewModel.relinquish(relinquishment)
-            .then(popViewControllerAnimated)
-            .onViewError(presentErrorAlert)
-            .finally(hideHudAsync)
+    private func pushMultipleSelectionView(title: String? = nil,
+                                           with dataSet: [MultipleSelectionCellModel],
+                                           previousSelectionDataSet: [MultipleSelectionCellModel] = [],
+                                           didSelect: @escaping ([MultipleSelectionCellModel]) -> Void) {
+        
+        let multipleSelectionViewModel = MultipleSelectionTableViewModel(viewTitle: title,
+                                                                            dataSet: dataSet,
+                                                                            previouslySelectedDataSet: previousSelectionDataSet)
+        
+        let multipleSelectionViewController = MultipleSelectionTableViewController(viewModel: multipleSelectionViewModel)
+        multipleSelectionViewController.didFinish = didSelect
+        navigationController?.pushViewController(multipleSelectionViewController, animated: true)
+    }
+    
+    private func pushAdditionalInformationView(for relinquishment: Relinquishment, didUpdateFixWeekReservation: @escaping CallBack) {
+        let viewModel = AdditionalInformationViewModel(relinquishment: relinquishment)
+        let additionalInformationViewController = AdditionalInformationViewController(viewModel: viewModel)
+        additionalInformationViewController.didUpdateFixWeekReservation = didUpdateFixWeekReservation
+        navigationController?.pushViewController(additionalInformationViewController, animated: true)
+    }
+    
+    private func popToRelinquishmentViewController() {
+        navigationController?.popToViewController(self, animated: false)
     }
 
-    private func popViewControllerNonAnimated() {
-        navigationController?.popViewController(animated: false)
-    }
-
-    private func popViewControllerAnimated() {
+    private func popFromRelinquishmentViewController() {
         navigationController?.popViewController(animated: true)
     }
-    
+
     private func performHorribleSingletonCode(for clubPointsChart: ClubPointsChart) -> Promise<Void> {
         return Promise { resolve, _ in
 
@@ -217,8 +305,8 @@ final class RelinquishmentViewController: UIViewController {
                 clubPoints.relinquishmentYear = relinquishment.relinquishmentYear ?? 0
                 
                 strongSelf.viewModel.relinquish(clubPoints)
-                    .then(strongSelf.popViewControllerNonAnimated)
-                    .then(strongSelf.popViewControllerAnimated)
+                    .then(strongSelf.popToRelinquishmentViewController)
+                    .then(strongSelf.popFromRelinquishmentViewController)
                     .onViewError(strongSelf.presentErrorAlert)
             }
 
@@ -275,38 +363,5 @@ extension RelinquishmentViewController: UITableViewDataSource, SimpleViewModelBi
         }
         
         return cell
-    }
-}
-
-extension InventoryUnit: MultipleSelectionElement {
-    var cellTitle: String { return unitDetailsUIFormatted }
-    var cellSubtitle: String { return unitCapacityUIFormatted }
-}
-
-// Temporary code, to not change model across application
-
-extension OpenWeek {
-    public convenience init(relinquishment: Relinquishment) {
-        self.init()
-        relinquishmentId = relinquishment.relinquishmentId
-        actions = relinquishment.actions
-        relinquishmentYear = relinquishment.relinquishmentYear
-        exchangeStatus = relinquishment.exchangeStatus
-        weekNumber = relinquishment.exchangeStatus
-        masterUnitNumber = relinquishment.masterUnitNumber
-        checkInDates = relinquishment.checkInDates
-        checkInDate = relinquishment.checkInDate
-        checkOutDate = relinquishment.checkOutDate
-        pointsProgramCode = relinquishment.pointsProgramCode
-        resort = relinquishment.resort
-        unit = relinquishment.unit
-        pointsMatrix = relinquishment.pointsMatrix
-        blackedOut = relinquishment.blackedOut
-        bulkAssignment = relinquishment.bulkAssignment
-        memberUnitLocked = relinquishment.memberUnitLocked
-        payback = relinquishment.payback
-        reservationAttributes = relinquishment.reservationAttributes
-        virtualWeekActions = relinquishment.virtualWeekActions
-        promotion = relinquishment.promotion
     }
 }

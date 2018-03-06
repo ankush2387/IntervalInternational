@@ -16,8 +16,8 @@ class ClubPointSelectionViewController: UIViewController {
     /** Outlets */
     @IBOutlet private weak var clubPoinScrollVw: UIScrollView!
     @IBOutlet private weak var standardFlexChartSegment: UISegmentedControl!
-    @IBOutlet private weak var travelingDetailView: UIView!
-    @IBOutlet private weak var secondView: UIView!
+    @IBOutlet fileprivate weak var travelingDetailView: UIView!
+    @IBOutlet fileprivate weak var secondView: UIView!
     @IBOutlet private weak var secondtravelwindowbtn: IUIKButton!
     @IBOutlet private weak var firsttravelwindowbtn: IUIKButton!
     @IBOutlet private weak var doneButton: IUIKButton!
@@ -42,6 +42,9 @@ class ClubPointSelectionViewController: UIViewController {
     @IBOutlet private weak var enddatesecondbtn: UILabel!
     @IBOutlet private weak var endmonthsecondbtn: UILabel!
     
+    @IBOutlet fileprivate weak var firstTravelWindowWidth: NSLayoutConstraint!
+    
+    @IBOutlet fileprivate weak var equalWidthsBetweenFirstAndSecondTravelWindow: NSLayoutConstraint!
     @IBOutlet private weak var indisefirstview: UIView!
     
     @IBOutlet private weak var insidesecondview: UIView!
@@ -49,6 +52,7 @@ class ClubPointSelectionViewController: UIViewController {
     var didSave: ((ClubPoints) -> Void)?
 
     let infoImageView = UIImageView()
+    var selectedViewIndex = 0
     var labelsCollectionView: UICollectionView!
     var clublabel = ""
     var clubIntervalValuesCollectionView: UICollectionView!
@@ -84,7 +88,7 @@ class ClubPointSelectionViewController: UIViewController {
         startmonthfirstbtn.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         enddatefirstbtn.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         endmonthfirstbtn.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-        
+        selectedViewIndex = 0
     }
     
     @IBAction func secondbuttonpressed(_ sender: Any) {
@@ -108,7 +112,7 @@ class ClubPointSelectionViewController: UIViewController {
         mapClubIntervalPoints(index: (sender as AnyObject).tag - 100)
         
         createClubsCollectionView()
-        
+        selectedViewIndex = 1
     }
     
     // MARK: - Function for done button click
@@ -125,9 +129,10 @@ class ClubPointSelectionViewController: UIViewController {
         pointMatrixType.clubPointsMatrixType = Constant.MyClassConstants.matrixType
         pointMatrixType.clubPointsMatrixDescription = Constant.MyClassConstants.matrixDescription
         pointMatrixType.clubPointsMatrixGridRowLabel = Constant.MyClassConstants.labelarray[0] as? String
-        intervalPrint(Constant.MyClassConstants.fromdatearray[0])
-        pointMatrixType.fromDate = Constant.MyClassConstants.fromdatearray[0] as? String
-        pointMatrixType.toDate = Constant.MyClassConstants.todatearray[0] as? String
+        intervalPrint(Constant.MyClassConstants.fromdatearray[selectedViewIndex])
+        intervalPrint(Constant.MyClassConstants.todatearray[selectedViewIndex])
+        pointMatrixType.fromDate = Constant.MyClassConstants.fromdatearray[selectedViewIndex] as? String
+        pointMatrixType.toDate = Constant.MyClassConstants.todatearray[selectedViewIndex] as? String
         pointMatrixType.clubPointsMatrixGridRowLabel = processClubPointMatrixRowLable(for: indexPath)
         _ = Constant.MyClassConstants.relinquishmentSelectedWeek.unit
         intervalPrint(Constant.MyClassConstants.matrixDataArray)
@@ -296,6 +301,10 @@ class ClubPointSelectionViewController: UIViewController {
         }
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        createClubsCollectionView()
+    }
+    
     //***** Function to create collection view to show club points. *****//
     func createClubsCollectionView() {
         self.clubPoinScrollVw.contentSize = CGSize(width: 0, height: ((Constant.MyClassConstants.clubIntervalDictionary.allKeys.count * 70) + 50))
@@ -361,7 +370,6 @@ class ClubPointSelectionViewController: UIViewController {
     
     func mapClubIntervalPoints(index: Int) {
 
-        intervalPrint(Constant.MyClassConstants.fromdatearray[0], Constant.MyClassConstants.fromdatearray[1])
         let dictKey = "\(Constant.MyClassConstants.fromdatearray[index]) - \(Constant.MyClassConstants.todatearray[index])"
         guard let rowsForClubInterval = Constant.MyClassConstants.pointMatrixDictionary.object(forKey: dictKey) as? [ClubPointsMatrixGridRow] else { return }
         
@@ -392,8 +400,8 @@ class ClubPointSelectionViewController: UIViewController {
         let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
         guard let fromStartDateString = Constant.MyClassConstants.todatearray[0] as? String else { return }
         guard let toStartDateString = Constant.MyClassConstants.fromdatearray[0] as? String else { return }
-        guard let fromEndDateString = Constant.MyClassConstants.todatearray[1] as? String else { return }
-        guard let toEndDateString = Constant.MyClassConstants.fromdatearray[1] as? String else { return }
+        guard let fromEndDateString = Constant.MyClassConstants.todatearray.lastObject as? String else { return }
+        guard let toEndDateString = Constant.MyClassConstants.fromdatearray.lastObject as? String else { return }
         let fromStartComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: Helper.convertStringToDate(dateString: fromStartDateString, format: "yyyy-MM-dd"))
         let toStartComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: Helper.convertStringToDate(dateString: toStartDateString, format: "yyyy-MM-dd"))
         let fromEndComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: Helper.convertStringToDate(dateString: fromEndDateString, format: "yyyy-MM-dd"))
@@ -421,6 +429,12 @@ class ClubPointSelectionViewController: UIViewController {
         endmonthfirstbtn.text = "\(Helper.getMonthnameFromInt(monthNumber: fromStartComponents.month!)) \(fromStartComponents.year!)"
         startmonthsecondbtn.text = "\(Helper.getMonthnameFromInt(monthNumber: toEndComponents.month!)) \(toEndComponents.year!)"
         endmonthsecondbtn.text = "\(Helper.getMonthnameFromInt(monthNumber: fromEndComponents.month!)) \(fromEndComponents.year!)"
+        
+        if startmonthfirstbtn.text == startmonthsecondbtn.text && endmonthfirstbtn.text == endmonthsecondbtn.text {
+            equalWidthsBetweenFirstAndSecondTravelWindow.priority = 250
+            secondView.isHidden = true
+            firstTravelWindowWidth.constant = view.frame.width
+        }
     }
     
     //Function for button toDate and FromDate click action

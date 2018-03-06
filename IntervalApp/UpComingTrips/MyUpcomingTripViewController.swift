@@ -23,6 +23,24 @@ class MyUpcomingTripViewController: UIViewController {
         
         title = Constant.ControllerTitles.myUpcomingTripViewController
         
+        if Constant.MyClassConstants.upcomingOriginationPoint == "dashboard" || Constant.MyClassConstants.upcomingOriginationPoint == "confirmation"{
+            showHudAsync()
+            let button = UIButton()
+            button.tag = Constant.MyClassConstants.dashbaordUpcomingSelectedIndex
+            viewTripDetailsClicked(button)
+        }
+        
+        if Constant.MyClassConstants.upcomingTripsArray.isEmpty {
+            showHudAsync()
+            Helper.getUpcomingTripsForUser {[weak self] error in
+                self?.hideHudAsync()
+                if let Error = error {
+                    self?.presentErrorAlert(UserFacingCommonError.handleError(Error))
+                } else {
+                    self?.myUpcommingTBL.reloadData()
+                }
+            }
+        }
         //***** Setup the hamburger menu.  This will reveal the side menu. *****//
         if let rvc = revealViewController() {
             //set SWRevealViewController's Delegate
@@ -119,15 +137,8 @@ extension MyUpcomingTripViewController: UITableViewDataSource {
             }
 
             if let tripType = upComingTrip.type {
-
-                var type = ExchangeTransactionType.fromName(name: tripType).rawValue
-                if tripType == Constant.myUpcomingTripCommonString.rental {
-                    type = Constant.myUpcomingTripCommonString.getaway
-                } else if tripType == Constant.myUpcomingTripCommonString.shop {
-                    type = Constant.myUpcomingTripCommonString.exchange
-                }
+                let type = ExchangeTransactionType.fromName(name: tripType).friendlyNameForUpcomingTrip()
                 cell.resortType.text = type.localized().uppercased()
-                upComingTrip.type = type
             }
             cell.resortImageView.backgroundColor = UIColor.lightGray
             var imgURL: String?

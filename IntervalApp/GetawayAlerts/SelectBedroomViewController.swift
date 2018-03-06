@@ -80,6 +80,7 @@ class SelectBedroomViewController: UIViewController {
             } else {
                 var i = 0
                 var selectedBedroomsizes = [String]()
+                localArrayToHoldSelection.sort()
                 for index in localArrayToHoldSelection where i < localArrayToHoldSelection.count {
                     let friendlyName = UnitSize.forDisplay[index].friendlyName()
                     let bedroomSize = Helper.bedRoomSizeToStringInteger(bedRoomSize: friendlyName)

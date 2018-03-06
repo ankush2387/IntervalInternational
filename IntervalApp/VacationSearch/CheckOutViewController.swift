@@ -48,6 +48,8 @@ class CheckOutViewController: UIViewController {
     static let checkoutPromotionCell = "CheckoutPromotionCell"
     var isPromotionApplied = false
     
+    private let entityStore: EntityDataStore = EntityDataSource.sharedInstance
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         checkPromotionsAvailable()
@@ -95,8 +97,9 @@ class CheckOutViewController: UIViewController {
                 }
                 guard let curCode = Constant.MyClassConstants.exchangeFees[0].currencyCode else { return }
                 let currencyHelper = CurrencyHelper()
-                let currency = currencyHelper.getCurrency(currencyCode: curCode)
-                currencyCode = ("\(currencyHelper.getCurrencyFriendlySymbol(currencyCode: currency.code))")
+                let countryCode = Session.sharedSession.contact?.getCountryCode() ?? ""
+                
+                currencyCode = ("\(currencyHelper.getCurrencyFriendlySymbol(currencyCode: curCode, countryCode: countryCode))")
                 
             }
         } else {
@@ -111,15 +114,25 @@ class CheckOutViewController: UIViewController {
                 }
             }
             
-            if let _ = Constant.MyClassConstants.rentalFees[0].insurance?.insuranceOfferHTML {
+            if let insurance = Constant.MyClassConstants.rentalFees[0].insurance?.insuranceOfferHTML {
                 showInsurance = true
+                if let isInsuranceSelected = Constant.MyClassConstants.rentalFees[0].insurance?.selected {
+                    if isInsuranceSelected {
+                        showInsurance = true
+                        self.isTripProtectionEnabled = true
+                    } else {
+                        showInsurance = false
+                        self.isTripProtectionEnabled = false
+                    }
+                }
             } else {
                 showInsurance = false
             }
             guard let curCode = Constant.MyClassConstants.rentalFees[0].currencyCode else { return }
             let currencyHelper = CurrencyHelper()
-            let currency = currencyHelper.getCurrency(currencyCode: curCode)
-            currencyCode = ("\(currencyHelper.getCurrencyFriendlySymbol(currencyCode: currency.code))")
+            let countryCode = Session.sharedSession.contact?.getCountryCode() ?? ""
+            
+            currencyCode = ("\(currencyHelper.getCurrencyFriendlySymbol(currencyCode: curCode, countryCode: countryCode))")
         }
         
         //Register custom cell xib with tableview
@@ -163,10 +176,11 @@ class CheckOutViewController: UIViewController {
     //**** Remove added observers ****//
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        //navigationController?.navigationBar.isHidden = true
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.updateResortHoldingTime), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.changeSliderStatus), object: nil)
     }
+    
+     @IBAction func unwindToCheckout(_ segue: UIStoryboardSegue) {}
     
     //***** Function called when notification for slide to agree button is fired. *****//
     func changeLabelStatus(notification: NSNotification) {
@@ -199,8 +213,8 @@ class CheckOutViewController: UIViewController {
                     continueToPayRequest.acceptTermsAndConditions = true
                     continueToPayRequest.acknowledgeAndAgreeResortFees = true
                     
-                    ExchangeProcessClient.continueToPay(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.exchangeBookingLastStartedProcess, request: continueToPayRequest, onSuccess: { response in
-                        
+                    ExchangeProcessClient.continueToPay(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.exchangeBookingLastStartedProcess, request: continueToPayRequest, onSuccess: { [weak self] response in
+                        guard let strongSelf = self else { return }
                         Constant.MyClassConstants.exchangeBookingLastStartedProcess = nil
                         Constant.MyClassConstants.exchangeContinueToPayResponse = response
                         let selectedCard = Constant.MyClassConstants.selectedCreditCard
@@ -209,20 +223,24 @@ class CheckOutViewController: UIViewController {
                         }
                         Constant.MyClassConstants.selectedCreditCard.removeAll()
                         Helper.removeStoredGuestFormDetials()
-                        self.isAgreed = true
-                        self.hideHudAsync()
-                        self.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
+                        strongSelf.isAgreed = true
+                        strongSelf.hideHudAsync()
+                        strongSelf.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
                         if let confirmationNumber = response.view?.fees?.shopExchange?.confirmationNumber {
                             Constant.MyClassConstants.transactionNumber = confirmationNumber
                         }
-                        self.performSegue(withIdentifier: Constant.segueIdentifiers.confirmationScreenSegue, sender: nil)
-                        
+                        strongSelf.navigationController?.navigationBar.isHidden = true
+                        strongSelf.entityStore.delete(type: OpenWeeksStorage.self, for: .decrypted)
+                            .then { strongSelf.performSegue(withIdentifier: Constant.segueIdentifiers.confirmationScreenSegue, sender: nil) }
+                            .onViewError(strongSelf.presentErrorAlert)
+                    
                     }, onError: { [weak self] error in
-                        self?.hideHudAsync()
+                        guard let strongSelf = self else { return }
+                        strongSelf.hideHudAsync()
                         imageSlider.isHidden = false
-                        self?.isAgreed = false
-                        self?.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
-                        self?.presentErrorAlert(UserFacingCommonError.handleError(error))
+                        strongSelf.isAgreed = false
+                        strongSelf.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
+                        strongSelf.presentErrorAlert(UserFacingCommonError.handleError(error))
                     })
                     
                 } else {
@@ -233,9 +251,9 @@ class CheckOutViewController: UIViewController {
                     continueToPayRequest.confirmationDelivery = confirmationDelivery
                     continueToPayRequest.acceptTermsAndConditions = true
                     continueToPayRequest.acknowledgeAndAgreeResortFees = true
-                    
-                    RentalProcessClient.continueToPay(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.getawayBookingLastStartedProcess, request: continueToPayRequest, onSuccess: { response in
-                        
+
+                    RentalProcessClient.continueToPay(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.getawayBookingLastStartedProcess, request: continueToPayRequest, onSuccess: { [weak self] response in
+                        guard let strongSelf = self else { return }
                         Constant.MyClassConstants.getawayBookingLastStartedProcess = nil
                         Constant.MyClassConstants.continueToPayResponse = response
                         let selectedCard = Constant.MyClassConstants.selectedCreditCard
@@ -244,18 +262,23 @@ class CheckOutViewController: UIViewController {
                         }
                         Constant.MyClassConstants.selectedCreditCard.removeAll()
                         Helper.removeStoredGuestFormDetials()
-                        self.isAgreed = true
-                        self.hideHudAsync()
+                        strongSelf.isAgreed = true
+                        strongSelf.hideHudAsync()
                         Constant.MyClassConstants.transactionNumber = response.view?.fees?.rental?.confirmationNumber ?? ""
-                        self.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
-                        self.performSegue(withIdentifier: Constant.segueIdentifiers.confirmationScreenSegue, sender: nil)
-                    }, onError: { [weak self] error in
-                        self?.hideHudAsync()
+                        strongSelf.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
+                        strongSelf.navigationController?.navigationBar.isHidden = true
+                        strongSelf.entityStore.delete(type: OpenWeeksStorage.self, for: .decrypted)
+                            .then { strongSelf.performSegue(withIdentifier: Constant.segueIdentifiers.confirmationScreenSegue, sender: nil) }
+                            .onViewError(strongSelf.presentErrorAlert)
+
+                        }, onError: { [weak self] error in
+                        guard let strongSelf = self else { return }
+                        strongSelf.hideHudAsync()
                         
                         imageSlider.isHidden = false
-                        self?.isAgreed = false
-                        self?.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
-                        self?.presentErrorAlert(UserFacingCommonError.handleError(error))
+                        strongSelf.isAgreed = false
+                        strongSelf.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
+                        strongSelf.presentErrorAlert(UserFacingCommonError.handleError(error))
                     })
                     
                 }
@@ -299,7 +322,7 @@ class CheckOutViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
+        
         remainingResortHoldingTimeLable.text = "We are holding this unit for \(Constant.holdingTime) minutes".localized()
         navigationController?.navigationBar.isHidden = false
         emailTextToEnter = Session.sharedSession.contact?.emailAddress ?? ""
@@ -497,12 +520,20 @@ class CheckOutViewController: UIViewController {
                 }
                 
                 let fees = RentalFees()
+                if let offerName = Constant.MyClassConstants.rentalFees[0].rental?.selectedOfferName {
+                    fees.rental?.selectedOfferName = offerName
+                }
+                let tripProtection = Insurance()
+                tripProtection.selected = Constant.MyClassConstants.rentalFees[0].insurance?.selected
+                fees.insurance = tripProtection
                 fees.rental = rental
                 
                 let processRequest = RentalProcessRecapRecalculateRequest()
                 processRequest.fees = fees
-                
                 RentalProcessClient.addCartPromotion(Session.sharedSession.userAccessToken, process: processResort, request: processRequest, onSuccess: { response in
+                    if let updatedFees = response.view?.fees {
+                        Constant.MyClassConstants.rentalFees[0] = updatedFees
+                    }
                     Constant.MyClassConstants.recapPromotionsArray.removeAll()
                     if let promotions = response.view?.fees?.rental?.promotions {
                         Constant.MyClassConstants.recapPromotionsArray = promotions
@@ -525,7 +556,7 @@ class CheckOutViewController: UIViewController {
                 })
             }
         }
-        self.present(promotionsNav, animated: true, completion: nil)
+        present(promotionsNav, animated: true)
     }
     
     //***** Function called when cross button is clicked in email text field. *****//
@@ -600,11 +631,9 @@ class CheckOutViewController: UIViewController {
                                                        onSuccess: onSuccess,
                                                        onError: onError)
             
-            ExchangeProcessClient.backToChooseExchange(accessToken,
-                                                       process: lastProcessStarted,
-                                                       onSuccess: onSuccess,
-                                                       onError: onError)
         } else {
+            let fees = Constant.MyClassConstants.rentalFees[0]
+            intervalPrint(fees)
             
             RentalProcessClient.backToWhoIsChecking(accessToken,
                                                     process: lastRentalProcess,
@@ -636,7 +665,6 @@ class CheckOutViewController: UIViewController {
                 Constant.MyClassConstants.checkoutInsurencePurchased = Constant.AlertPromtMessages.no
                 self.addTripProtection(shouldAddTripProtection: false)
             }
-            self.checkoutOptionTBLview.reloadSections(IndexSet(integer: 6), with:.automatic)
         }
         
     }
@@ -656,6 +684,7 @@ class CheckOutViewController: UIViewController {
                 Constant.MyClassConstants.exchangeContinueToCheckoutResponse = response
                 if let exchangeTotalFees = response.view?.fees?.total {
                     Constant.MyClassConstants.exchangeFees[0].total = exchangeTotalFees
+                    self.recapFeesTotal = exchangeTotalFees
                 }
                 self.checkoutOptionTBLview.reloadData()
                 self.hideHudAsync()
@@ -671,17 +700,27 @@ class CheckOutViewController: UIViewController {
         } else {
             
             guard let rentalFees = Constant.MyClassConstants.rentalFees.last else { return }
-            rentalFees.insurance?.selected = shouldAddTripProtection
+            let addTripProtection = Insurance()
+            addTripProtection.selected = shouldAddTripProtection
+            rentalFees.insurance = addTripProtection
+            
+            let rental = Rental()
+            rental.selectedOfferName = Constant.MyClassConstants.rentalFees[0].rental?.selectedOfferName
+            rentalFees.rental = rental
             let rentalRecalculateRequest = RentalProcessRecapRecalculateRequest()
             rentalRecalculateRequest.fees = rentalFees
             showHudAsync()
             RentalProcessClient.addTripProtection(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.getawayBookingLastStartedProcess, request: rentalRecalculateRequest, onSuccess: { response in
+                if let updatedFees = response.view?.fees {
+                    Constant.MyClassConstants.rentalFees[0] = updatedFees
+                }
                 self.tripRequestInProcess = false
                 Constant.MyClassConstants.continueToCheckoutResponse = response
                 if let rentalFeesTotal = response.view?.fees?.total {
                     Constant.MyClassConstants.rentalFees[0].total = rentalFeesTotal
+                    self.recapFeesTotal = rentalFeesTotal
                 }
-                self.checkoutOptionTBLview.reloadSections(IndexSet(integer: 8), with:.automatic)
+                self.checkoutOptionTBLview.reloadSections([6, 8], with:.automatic)
                 self.hideHudAsync()
             }, onError: { [weak self] error in
                 "document.getElementById('WASCInsuranceOfferOption0').checked = false;"
@@ -753,6 +792,11 @@ class CheckOutViewController: UIViewController {
             self?.checkSectionsForFees()
             self?.checkoutOptionTBLview.reloadData()
         })
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let relinquishmentDetails = segue.destination as? RelinquishmentDetailsViewController else { return }
+        relinquishmentDetails.filterRelinquishment = filterRelinquishments
     }
 }
 
@@ -934,16 +978,19 @@ extension CheckOutViewController: UITableViewDataSource {
             return 50
         case 1 :
             guard let font = UIFont(name: Constant.fontName.helveticaNeue, size: 16.0) else { return 0 }
+            
             if indexPath.row == (Constant.MyClassConstants.generalAdvisementsArray.count) {
                 return 30
             } else if indexPath.row != (Constant.MyClassConstants.generalAdvisementsArray.count) + 1 {
+                guard let text = (Constant.MyClassConstants.generalAdvisementsArray[indexPath.row].title)?.capitalized else { return 0 }
                 guard let description = Constant.MyClassConstants.generalAdvisementsArray[indexPath.row].description else { return 0 }
-                let height = heightForView(description, font: font, width: view.frame.size.width - 10)
-                return height + 60
+                let height1 = heightForView(description, font: font, width: view.frame.size.width - 40)
+                let height2 = heightForView(text, font: font, width: view.frame.size.width - 40)
+                return height1 + height2 + 40
             } else {
                 guard let description = Constant.MyClassConstants.additionalAdvisementsArray.last?.description else { return 0 }
-                let height = heightForView(description, font: font, width: view.frame.size.width - 20)
-                return height + 60
+                let height = heightForView(description, font: font, width: view.frame.size.width - 40)
+                return height + 80
             }
             
         case 2, 9 :
@@ -959,20 +1006,10 @@ extension CheckOutViewController: UITableViewDataSource {
                 return 0
             }
         case 4 :
-            if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
-                guard let _ = Constant.MyClassConstants.exchangeFees[0].insurance?.insuranceOfferHTML else {
-                    showInsurance = false
-                    return 0
-                }
-                showInsurance = true
-                return 420
+            if showInsurance {
+                return cellWebView.scrollView.contentSize.height
             } else {
-                guard let _ = Constant.MyClassConstants.rentalFees[0].insurance?.insuranceOfferHTML else {
-                    showInsurance = false
-                    return 0
-                }
-                showInsurance = true
-                return 420
+                return 0
             }
         case 5 :
             if !Constant.MyClassConstants.isFromExchange && Constant.MyClassConstants.isFromExchange && !Constant.MyClassConstants.enableTaxes && !eplusAdded {
@@ -1040,13 +1077,13 @@ extension CheckOutViewController: UITableViewDataSource {
                 if Constant.MyClassConstants.isCIGAvailable {
                     cell.resortDetailsButton.isHidden = true
                     cell.lblHeading.text = "CIG Points".localized()
-                    let availablePointsNumber = Constant.MyClassConstants.selectedExchangeCigPoints as NSNumber
                     let numberFormatter = NumberFormatter()
                     numberFormatter.numberStyle = .decimal
-                    if let availablePoints = numberFormatter.string(from: availablePointsNumber) {
+                    if let pointsCost = Constant.MyClassConstants.selectedExchangePointsCost, let availablePoints = numberFormatter.string(from: pointsCost) {
                         cell.resortName?.text = "\(availablePoints)".localized()
-                    } else { cell.resortName?.text = "\(0)".localized() }
-                    
+                    } else {
+                        cell.resortName?.text = "\(0)".localized()
+                    }
                 } else {
                     cell.resortDetailsButton.addTarget(self, action: #selector(WhoWillBeCheckingInViewController.resortDetailsClicked(_:)), for: .touchUpInside)
                     if let clubPoint = filterRelinquishments.clubPoints {
@@ -1138,6 +1175,9 @@ extension CheckOutViewController: UITableViewDataSource {
                 if showInsurance && !Constant.MyClassConstants.isFromExchange {
                     guard let str = Constant.MyClassConstants.rentalFees[indexPath.row].insurance?.insuranceOfferHTML else { return cell }
                     cellWebView.loadHTMLString(str, baseURL: nil)
+                    let noRadioValue = "document.getElementById('WASCInsuranceOfferOption1').checked  = true;"
+                    checkoutOptionTBLview.beginUpdates()
+                    checkoutOptionTBLview.endUpdates()
                 } else {
                     guard let str = Constant.MyClassConstants.exchangeFees[indexPath.row].insurance?.insuranceOfferHTML else { return cell }
                     cellWebView.loadHTMLString(str, baseURL: nil)
@@ -1198,11 +1238,17 @@ extension CheckOutViewController: UITableViewDataSource {
                                 .filter { !$0.description.unwrappedString.isEmpty }
                                 .map { ($0.description.unwrappedString, $0.amount) }
                             
+                            let currencyCodeOfFee = Constant.MyClassConstants.continueToCheckoutResponse.view?.fees?.currencyCode ?? ""
+                            let currencyDescription = CurrencyHelper().getCurrency(currencyCode: currencyCodeOfFee).description
+                            if currencyDescription.isEmpty {
+                                return self.presentErrorAlert(UserFacingCommonError.generic)
+                            }
                             let viewModel = ChargeSummaryViewModel(charge: dataSet,
                                                                    headerTitle: "Detailed Tax Information".localized(),
                                                                    descriptionTitle: "Tax Description".localized(),
-                                                                   currency: "US Dollars".localized(),
-                                                                   totalTitle: "Total Tax Amount".localized())
+                                                                   currency: currencyDescription.localized(),
+                                                                   totalTitle: "Total Tax Amount".localized(),
+                                                                   currencySymbol: self.currencyCode)
                             
                             let chargeSummaryViewController = ChargeSummaryViewController(viewModel: viewModel)
                             chargeSummaryViewController.doneButtonPressed = { chargeSummaryViewController.dismiss(animated: true) }
@@ -1275,7 +1321,9 @@ extension CheckOutViewController: UITableViewDataSource {
                     }
                 } else {
                     cell.priceLabel.text = Constant.MyClassConstants.guestCertificateTitle
-                    cell.setTotalPrice(with: currencyCode, and: Float(Constant.MyClassConstants.guestCertificatePrice))
+                    if let guestCertPrice = Constant.MyClassConstants.rentalFees[indexPath.row].guestCertificate?.guestCertificatePrice?.price {
+                        cell.setTotalPrice(with: currencyCode, and: guestCertPrice)
+                    }
                 }
             } else {
                 isHeightZero = false
@@ -1410,6 +1458,30 @@ extension CheckOutViewController: UITableViewDataSource {
             cell.agreeButton?.tag = indexPath.section
             cell.allInclusiveSelectedCheckBox.isHidden = true
             cell.isUserInteractionEnabled = true
+            cell.callback = { [weak self] in
+                guard let strongSelf = self else { return }
+                let optionMenu = UIAlertController(title: nil, message: "View Legal Information".localized(), preferredStyle: .actionSheet)
+                
+                let tcAction = UIAlertAction(title: "Terms & Conditions".localized(), style: .default) { _ in
+                    let webView = SimpleFileViewController(load: "https://www.intervalworld.com/web/iicontent/ii/mobile-terms-getaways.html")
+                    strongSelf.navigationController?.isNavigationBarHidden = false
+                    strongSelf.navigationController?.pushViewController(webView, animated: true)
+                    
+                }
+                let ppAction = UIAlertAction(title: "Privacy Policy".localized(), style: .default) { _ in
+                    let webView = SimpleFileViewController(load: "https://www.intervalworld.com/web/cs?a=60&p=privacy-policy")
+                    strongSelf.navigationController?.isNavigationBarHidden = false
+                    strongSelf.navigationController?.pushViewController(webView, animated: true)
+                }
+                
+                let cancelAction = UIAlertAction(title: "Cancel".localized(), style: .cancel)
+                
+                optionMenu.addAction(tcAction)
+                optionMenu.addAction(ppAction)
+                optionMenu.addAction(cancelAction)
+                
+                strongSelf.present(optionMenu, animated: true, completion: nil)
+            }
             if isAgreed {
                 cell.agreeLabel.backgroundColor = #colorLiteral(red: 0.6666666667, green: 0.7921568627, blue: 0.3607843137, alpha: 1)
                 cell.agreeLabel.layer.borderColor = #colorLiteral(red: 0.6666666667, green: 0.7921568627, blue: 0.3607843137, alpha: 1).cgColor
@@ -1473,9 +1545,12 @@ extension CheckOutViewController: UIWebViewDelegate {
     }
     
     func webViewDidFinishLoad(_ webView: UIWebView) {
+        webView.frame.size.height = 1
+        webView.frame.size = webView.sizeThatFits(.zero)
         self.hideHudAsync()
+        checkoutOptionTBLview.beginUpdates()
+        checkoutOptionTBLview.endUpdates()
     }
-    
     func webView(_ webView: UIWebView, didFailLoadWithError error: Error) {
         self.hideHudAsync()
     }
@@ -1486,17 +1561,14 @@ extension CheckOutViewController: UITextFieldDelegate {
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
-        self.emailTextToEnter = "\(String(describing: textField.text))\(string)"
+        emailTextToEnter = "\(textField.text ?? "")\(string)"
         
         if emailTextToEnter == Session.sharedSession.contact?.emailAddress {
-            self.showUpdateEmail = false
+            showUpdateEmail = false
             let indexPath = IndexPath(row: 0, section: 10)
-            self.checkoutOptionTBLview.reloadRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
+            checkoutOptionTBLview.reloadRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
         }
         
         return true
-    }
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        
     }
 }

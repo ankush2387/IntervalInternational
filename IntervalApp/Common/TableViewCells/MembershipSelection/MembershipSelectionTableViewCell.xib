@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -21,7 +21,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Membership No. 3201733" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9rA-Va-sDZ">
-                        <rect key="frame" x="89" y="11" width="167.5" height="20"/>
+                        <rect key="frame" x="89" y="11" width="189" height="20"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="20" id="D9P-5p-hPw"/>
                         </constraints>
@@ -37,7 +37,7 @@
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Membership Name" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KmX-cy-tha">
-                        <rect key="frame" x="89" y="29" width="167.5" height="20"/>
+                        <rect key="frame" x="89" y="29" width="189" height="20"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="20" id="Ele-Ip-xsH"/>
                         </constraints>
@@ -47,10 +47,11 @@
                     </label>
                 </subviews>
                 <constraints>
+                    <constraint firstItem="9rA-Va-sDZ" firstAttribute="trailing" secondItem="H2p-sc-9uM" secondAttribute="trailingMargin" id="CMU-80-QkV"/>
                     <constraint firstItem="9rA-Va-sDZ" firstAttribute="leading" secondItem="Xx7-kT-loJ" secondAttribute="trailing" constant="5" id="F9p-eK-pz1"/>
-                    <constraint firstItem="KmX-cy-tha" firstAttribute="trailing" secondItem="9rA-Va-sDZ" secondAttribute="trailing" id="L6Y-xf-rca"/>
                     <constraint firstItem="9rA-Va-sDZ" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="LIe-Ua-eTa"/>
                     <constraint firstItem="KmX-cy-tha" firstAttribute="leading" secondItem="Xx7-kT-loJ" secondAttribute="trailing" constant="5" id="UGn-sw-dXZ"/>
+                    <constraint firstItem="KmX-cy-tha" firstAttribute="trailing" secondItem="H2p-sc-9uM" secondAttribute="trailingMargin" id="XAP-0D-b2r"/>
                     <constraint firstItem="Xx7-kT-loJ" firstAttribute="bottom" secondItem="H2p-sc-9uM" secondAttribute="bottomMargin" id="bBj-GT-iBs"/>
                     <constraint firstItem="Xx7-kT-loJ" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="efx-1J-TYC"/>
                     <constraint firstItem="KmX-cy-tha" firstAttribute="bottom" secondItem="H2p-sc-9uM" secondAttribute="bottomMargin" id="gwl-Eb-ob5"/>

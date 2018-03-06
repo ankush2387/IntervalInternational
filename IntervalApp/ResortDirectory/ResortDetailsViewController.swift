@@ -55,6 +55,7 @@ class ResortDetailsViewController: UIViewController {
         self.hideHudAsync()
         if Constant.RunningDevice.deviceIdiom == .phone {
             navigationController?.navigationBar.isHidden = true
+            self.navigationController?.isNavigationBarHidden = true
         } else {
             navigationController?.navigationBar.isHidden = false
         }
@@ -72,6 +73,7 @@ class ResortDetailsViewController: UIViewController {
             
             if Constant.RunningDevice.deviceIdiom == .phone {
                 tabBarController?.tabBar.isHidden = true
+                self.navigationController?.isNavigationBarHidden = true
             } else {
                navigationController?.navigationBar.isHidden = false
             }
@@ -132,6 +134,11 @@ class ResortDetailsViewController: UIViewController {
         resortDescriptionArrayContainer.append(Constant.MyClassConstants.resortsDescriptionArray)
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        navigationController?.navigationBar.isHidden = true
+    }
+    
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         tableViewResorts.reloadData()
     }
@@ -148,10 +155,9 @@ class ResortDetailsViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         if Constant.RunningDevice.deviceIdiom == .phone {
             navigationController?.navigationBar.isHidden = showSearchResults
-            //showSearchResults ? (navigationController?.navigationBar.isHidden = true) : (navigationController?.navigationBar.isHidden = false)
             tabBarController?.tabBar.isHidden = false
         }
-        navigationController?.navigationBar.isHidden = false
+        self.navigationController?.isNavigationBarHidden = false
     }
 
     override func didReceiveMemoryWarning() {
@@ -233,7 +239,6 @@ class ResortDetailsViewController: UIViewController {
                     for imgStr in imagesArray where imgStr.size == Constant.MyClassConstants.imageSize {
                         if let url = imgStr.url {
                             Constant.MyClassConstants.imagesArray.append(url)
-
                         }
                     }
                     
@@ -301,7 +306,6 @@ class ResortDetailsViewController: UIViewController {
     func searchVacationClicked() {
         if Session.sharedSession.userAccessToken != nil && Constant.MyClassConstants.isLoginSuccessfull {
             do {
-                
                 let realm = try Realm()
                 let allDest = Helper.getLocalStorageWherewanttoGo()
                 if !allDest.isEmpty {
@@ -346,7 +350,6 @@ class ResortDetailsViewController: UIViewController {
                 } else {
                     storyboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
                 }
-
                 
                 if let initialViewController = storyboard.instantiateInitialViewController() {
                    showSearchResults = true
@@ -411,17 +414,12 @@ class ResortDetailsViewController: UIViewController {
             tappedButtonDictionary.updateValue(true, forKey: sender.tag)
         }
         tableViewResorts.reloadSections(IndexSet(integer: sender.tag), with: .automatic)
-
     }
     //Function for forward button
     @IBAction func forwardButtonClicked(_ sender: AnyObject) {
         imageIndexLabel.text = "Resort of ".localized()
     }
-    //Function for backward button
-    @IBAction func backButtonClicked(_ sender: AnyObject) {
-        
-    }
-    
+  
     func heightForView(_ text: String, font: UIFont, width: CGFloat) -> CGFloat {
         let label: UILabel = UILabel(frame: CGRect(x: 0, y: 0, width: width, height: CGFloat.greatestFiniteMagnitude))
         label.numberOfLines = 0
@@ -792,8 +790,17 @@ extension ResortDetailsViewController: UITableViewDataSource {
                 cell.resortCode.text = Constant.MyClassConstants.resortsDescriptionArray.resortCode
                 if let tier = Constant.MyClassConstants.resortsDescriptionArray.tier {
                     let imageStr = Helper.getTierImageName(tier:tier.uppercased())
-                    cell.tierImageView.image = UIImage(named: imageStr)
+                    if imageStr == "" {
+                        cell.tierImageView.isHidden = true
+                    } else {
+                        cell.tierImageView.image = UIImage(named: imageStr)
+                        cell.tierImageView.isHidden = false
+                    }
+                } else {
+                    cell.tierImageView.isHidden = true
                 }
+                cell.allInclusiveImageView.image = #imageLiteral(resourceName: "Resort_All_Inclusive")
+                cell.allInclusiveImageView.isHidden = !Constant.MyClassConstants.resortsDescriptionArray.allInclusive
                 cell.favoriteButton.addTarget(self, action: #selector(favoritesButtonClicked(_:)), for: .touchUpInside)
                 cell.backgroundColor = UIColor.clear
                 cell.showResortWeatherbutton?.addTarget(self, action: #selector(showWeatherButtonPressed), for: .touchUpInside)
@@ -934,7 +941,6 @@ extension ResortDetailsViewController: UITableViewDataSource {
                                     imgVwRating.image = UIImage(named: "full_filled_circle")
                                     availableCountryCell?.contentView.addSubview(imgVwRating)
                                     image_X = image_X + 25
-                                    
                                 }
                                 
                                 // to show half filled circle

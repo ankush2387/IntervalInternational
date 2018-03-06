@@ -7,6 +7,7 @@
 
 import Bond
 import UIKit
+import SDWebImage
 import ReactiveKit
 
 final public class SimpleResortDetailViewCell: SimpleTableViewCell {
@@ -26,7 +27,8 @@ final public class SimpleResortDetailViewCell: SimpleTableViewCell {
                 viewModel.resortNameLabelText.bind(to: resortNameLabel.reactive.text).dispose(in: onReuseBag)
                 viewModel.resortLocationLabelText.bind(to: resortLocationLabel.reactive.text).dispose(in: onReuseBag)
                 viewModel.resortCodeLabelText.bind(to: resortCodeLabel.reactive.text).dispose(in: onReuseBag)
-                viewModel.resortImage.bind(to: resortImageView.reactive.image).dispose(in: onReuseBag)
+                viewModel.resortImage.observeNext(with: setImage).dispose(in: onReuseBag)
+                viewModel.resortImageURL.observeNext(with: downloadImage).dispose(in: onReuseBag)
             }
         }
     }
@@ -47,5 +49,14 @@ final public class SimpleResortDetailViewCell: SimpleTableViewCell {
 
         resortCodeLabel.textColor = IntervalThemeFactory.deviceTheme.textColorLightOrange
         resortDetailBackgroundView.backgroundColor = IntervalThemeFactory.deviceTheme.backgroundColorWhite.withAlphaComponent(0.7)
+    }
+    
+    private func setImage(image: UIImage?) {
+        resortImageView.image = image
+    }
+    
+    private func downloadImage(url: String?) {
+        guard let url = url, let imageURL = URL(string: url) else { return }
+        resortImageView.sd_setImage(with: imageURL, placeholderImage: viewModel?.placeholderImage.value)
     }
 }

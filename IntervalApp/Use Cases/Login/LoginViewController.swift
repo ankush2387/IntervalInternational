@@ -22,7 +22,7 @@ final class LoginViewController: UIViewController {
     @IBOutlet private weak var signInButton: UIButton!
     @IBOutlet private weak var loginIDTextField: UITextField!
     @IBOutlet private weak var passwordTextField: UITextField!
-    @IBOutlet private weak var touchIDImageView: UIImageView!
+    @IBOutlet private weak var biometricLoginButton: UIButton!
     @IBOutlet private weak var loginHelpButton: UIButton!
     @IBOutlet private weak var joinTodayButton: UIButton!
     @IBOutlet private weak var resortDirectoryButton: UIButton!
@@ -32,15 +32,17 @@ final class LoginViewController: UIViewController {
     @IBOutlet fileprivate weak var versionLabel: UILabel!
     @IBOutlet private var webActivityButtons: [UIButton]!
 
+    var blurEffectView: UIView?
+    var onboardingVC: OnboardingContainerviewController?
     // MARK: - Private properties
     private let disposeBag = DisposeBag()
-    private let simpleOnboardingViewModel: SimpleOnboardingViewModel?
     fileprivate let viewModel: LoginViewModel
-    
+    fileprivate var newAppInstance: Bool
     // MARK: - Lifecycle
-    init(viewModel: LoginViewModel, simpleOnboardingViewModel: SimpleOnboardingViewModel? = nil) {
+    
+    init(viewModel: LoginViewModel, newAppInstance: Bool) {
         self.viewModel = viewModel
-        self.simpleOnboardingViewModel = simpleOnboardingViewModel
+        self.newAppInstance = newAppInstance
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -51,20 +53,24 @@ final class LoginViewController: UIViewController {
     // MARK: - Overrides
     override func viewDidLoad() {
         super.viewDidLoad()
-        setUI()
         bindUI()
         showOnboardingIfNewAppInstance()
         setSplashScreenAnimation()
+        onboardingVC?.OnboardingCompletionStatus = {[weak self] _ in
+            self?.onboardingVC?.view.removeFromSuperview()
+            self?.blurEffectView?.removeFromSuperview()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.isHidden = true
         viewModel.password.next(nil)
-        touchIDImageView.isHidden = !viewModel.touchIDEnabled
+        setUI()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
         navigationController?.navigationBar.isHidden = false
     }
     
@@ -75,8 +81,26 @@ final class LoginViewController: UIViewController {
     
     // MARK: - Private functions
     private func showOnboardingIfNewAppInstance() {
-        if let simpleOnboardingViewModel = simpleOnboardingViewModel {
-            present(SimpleOnboardingViewController(viewModel: simpleOnboardingViewModel), animated: false, completion: nil)
+       
+        if newAppInstance {
+            
+            let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.dark)
+            blurEffectView = UIVisualEffectView(effect: blurEffect)
+            blurEffectView?.frame = view.bounds
+            blurEffectView?.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+            blurEffectView?.alpha = 0.8
+            blurEffectView?.tag = 100
+            if let blurView = blurEffectView {
+                view.addSubview(blurView)
+            }
+            onboardingVC = OnboardingContainerviewController()
+            onboardingVC?.view.frame = CGRect(x: 30, y: 40, width: view.bounds.width - 60, height: view.bounds.height - 100)
+            onboardingVC?.view.backgroundColor = .white
+            onboardingVC?.view.layer.cornerRadius = 7
+            if let onboarding = onboardingVC {
+                view.addSubview(onboarding.view)
+            }
+            
         }
     }
 
@@ -102,8 +126,8 @@ final class LoginViewController: UIViewController {
         signInBackgroundView.backgroundColor = UIColor.white.withAlphaComponent(0.9)
         updateUIForOrientation()
         setVersionLabelForNonProductionBuild()
-        let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap))
-        touchIDImageView.addGestureRecognizer(tap)
+        biometricLoginButton.setTitle(viewModel.biometricLoginTitle, for: .normal)
+        biometricLoginButton.isHidden = !viewModel.touchIDEnabled
     }
     
     private func bindUI() {
@@ -111,26 +135,23 @@ final class LoginViewController: UIViewController {
         viewModel.password.bidirectionalBind(to: passwordTextField.reactive.text)
         signInButton.reactive.tap.observeNext(with: login).dispose(in: disposeBag)
         privacyButton.reactive.tap.observeNext(with: privacyButtonTapped).dispose(in: disposeBag)
-        viewModel.buttonEnabledState.observeNext(with: updateLoginButtonsUI).dispose(in: disposeBag)
         loginHelpButton.reactive.tap.observeNext(with: showLoginHelpWebView).dispose(in: disposeBag)
         joinTodayButton.reactive.tap.observeNext(with: showJoinTodayWebView).dispose(in: disposeBag)
         magazinesButton.reactive.tap.observeNext(with: magazinesButtonTapped).dispose(in: disposeBag)
-        viewModel.buttonEnabledState.bind(to: signInButton.reactive.isEnabled).dispose(in: disposeBag)
         intervalHDButton.reactive.tap.observeNext(with: intervalHDButtonTapped).dispose(in: disposeBag)
         viewModel.clientTokenLoaded.observeNext(with: enabledWebActivityButton).dispose(in: disposeBag)
         viewModel.appSettings.flatMap { $0 }.observeNext(with: checkAppVersion).dispose(in: disposeBag)
-        viewModel.isLoggingIn.map { !$0 }.bind(to: loginIDTextField.reactive.isEnabled).dispose(in: disposeBag)
-        viewModel.isLoggingIn.map { !$0 }.bind(to: passwordTextField.reactive.isEnabled).dispose(in: disposeBag)
         resortDirectoryButton.reactive.tap.observeNext(with: resortDirectoryButtonTapped).dispose(in: disposeBag)
+        biometricLoginButton.reactive.tap.observeNext(with: performTouchIDLoginIfEnabled).dispose(in: disposeBag)
     }
     
-    @objc private func handleTap(_ sender: UITapGestureRecognizer) {
-        performTouchIDLoginIfEnabled()
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        view.endEditing(true)
     }
-
+    
     private func performTouchIDLoginIfEnabled() {
         guard viewModel.touchIDEnabled else { return }
-        let touchID = BiometricAuthentication()
+        let touchID = viewModel.biometricAuthentication
         touchID.authenticateUser()
             .then(showHudAsync)
             .then(viewModel.touchIDLogin)
@@ -195,6 +216,11 @@ final class LoginViewController: UIViewController {
         } else {
             setLandscapeStackView()
         }
+    }
+    
+   private func removeOnboardingView() {
+        onboardingVC?.view.removeFromSuperview()
+        blurEffectView?.removeFromSuperview()
     }
 }
 

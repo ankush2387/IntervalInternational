@@ -91,82 +91,80 @@ class CreateActionSheet: UITableViewController {
     
     //***** Function called when we have found that user selected one of membership from list *****//
     func membershipWasSelected(isForSearchVacation: Bool) {
-        showHudAsync()
         
-        //***** Update the API session for the current access token *****//
-        let context = Session.sharedSession
-        if let selectedMemberShip = context.selectedMembership {
-            
-            //if let selectedMemberShip = context.selectedMemberShip
-            UserClient.updateSessionAndGetCurrentMembership(Session.sharedSession.userAccessToken, membershipNumber: Session.sharedSession.selectedMembership?.memberNumber ?? "", onSuccess: { membership in
-                Session.sharedSession.selectedMembership = membership
-                                        self.hideHudAsync()
-                                        Constant.MyClassConstants.isLoginSuccessfull = true
-                                        
-                                        let Product = Session.sharedSession.selectedMembership?.getProductWithHighestTier()
-                                        
-                                        // omniture tracking with event 2
-                                        if let memberNumber = Session.sharedSession.selectedMembership?.memberNumber {
-       
-                                            let userInfo: [String: String] = [
-                                                Constant.omnitureEvars.eVar1: memberNumber,
-                                                Constant.omnitureEvars.eVar3: "\(Product?.productCode ?? "")-\(Session.sharedSession.selectedMembership?.membershipTypeCode ?? "")",
-                                                Constant.omnitureEvars.eVar4: "",
-                                                Constant.omnitureEvars.eVar5: Constant.MyClassConstants.loginOriginationPoint,
-                                                Constant.omnitureEvars.eVar6: "",
-                                                Constant.omnitureEvars.eVar7: ""
-                                            ]
-                                            ADBMobile.trackAction(Constant.omnitureEvents.event2, data: userInfo)
-                                        }
-                                        
-                                        //***** Done!  Segue to the Home page *****//
-                                        
-                                        if let memberships = Session.sharedSession.contact?.memberships {
-                                            if !memberships.isEmpty {
-                                                if let controller = Constant.MyClassConstants.signInRequestedController {
-                                                    controller.dismiss(animated: true, completion: nil)
-                                                }
-                                            }
-                                        }
-                                        if let controller = Constant.MyClassConstants.signInRequestedController {
-                                            if  controller.isKind(of:SignInPreLoginViewController.self) {
-                                                controller.navigationController?.popViewController(animated: true)
-                                                NotificationCenter.default.post(name:NSNotification.Name(rawValue: Constant.notificationNames.reloadFavoritesTabNotification), object: nil)
-                                                
-                                                if isForSearchVacation {
-                                                    NotificationCenter.default.post(name:NSNotification.Name(rawValue: Constant.MyClassConstants.showVacationSearchNotification), object: nil)
-                                                }
-                                                
-                                            } else {
-                                                NotificationCenter.default.post(name:NSNotification.Name(rawValue: Constant.notificationNames.reloadFavoritesTabNotification), object: nil)
-                                            }
-                                        }
-                                        
-                                        //***** Favorites resort API call after successfull call *****//
-                                        Helper.getUserFavorites {[weak self] error in
-                                            if case .some = error {
-                                                self?.presentAlert(with: "Error".localized(), message: error?.localizedDescription ?? "")
-                                            }
-                                        }
-                                        //***** Get upcoming trips for user API call after successfull call *****//
-                                        Helper.getUpcomingTripsForUser {[weak self] error in
-                                            if case .some = error {
-                                                self?.presentAlert(with: "Error".localized(), message: error?.localizedDescription ?? "")
-                                            }
-                                        }
-                                        
-                },
-                                       onError: {_ in
-                                        self.hideHudAsync()
-                                        if let controller = Constant.MyClassConstants.signInRequestedController {
-                                            controller.dismiss(animated: true, completion: nil)
-                                        }
-                                        
-                                        self.presentAlert(with: Constant.AlertErrorMessages.loginFailed, message: "\(Constant.AlertPromtMessages.membershipFailureMessage) \(context.selectedMembership?.memberNumber ?? ""))")
-               }
-            )
-        }
+        showHudAsync()
+        UserClient.updateSessionAndGetCurrentMembership(Session.sharedSession.userAccessToken, membershipNumber: Session.sharedSession.selectedMembership?.memberNumber ?? "", onSuccess: { [weak self] membership in
+                
+            Session.sharedSession.selectedMembership = membership
+            if let memberContacts = membership.contacts {
+                Constant.MyClassConstants.membershipContactArray = memberContacts
+            } else { Constant.MyClassConstants.membershipContactArray.removeAll() }
+                
+            self?.hideHudAsync()
+            Constant.MyClassConstants.isLoginSuccessfull = true
+            let Product = Session.sharedSession.selectedMembership?.getProductWithHighestTier()
+                
+            // omniture tracking with event 2
+            if let memberNumber = Session.sharedSession.selectedMembership?.memberNumber {
 
+                let userInfo: [String: String] = [
+                    Constant.omnitureEvars.eVar1: memberNumber,
+                    Constant.omnitureEvars.eVar3: "\(Product?.productCode ?? "")-\(Session.sharedSession.selectedMembership?.membershipTypeCode ?? "")",
+                    Constant.omnitureEvars.eVar4: "",
+                    Constant.omnitureEvars.eVar5: Constant.MyClassConstants.loginOriginationPoint,
+                    Constant.omnitureEvars.eVar6: "",
+                    Constant.omnitureEvars.eVar7: ""
+                ]
+                ADBMobile.trackAction(Constant.omnitureEvents.event2, data: userInfo)
+            }
+                
+            //***** Done!  Segue to the Home page *****//
+            if let memberships = Session.sharedSession.contact?.memberships {
+                if !memberships.isEmpty {
+                    if let controller = Constant.MyClassConstants.signInRequestedController {
+                        controller.dismiss(animated: true, completion: nil)
+                    }
+                }
+            }
+            if let controller = Constant.MyClassConstants.signInRequestedController {
+                if  controller.isKind(of:SignInPreLoginViewController.self) {
+                    controller.navigationController?.popViewController(animated: true)
+                    NotificationCenter.default.post(name:NSNotification.Name(rawValue: Constant.notificationNames.reloadFavoritesTabNotification), object: nil)
+                    
+                    if isForSearchVacation {
+                        NotificationCenter.default.post(name:NSNotification.Name(rawValue: Constant.MyClassConstants.showVacationSearchNotification), object: nil)
+                    }
+                    
+                } else {
+                    NotificationCenter.default.post(name:NSNotification.Name(rawValue: Constant.notificationNames.reloadFavoritesTabNotification), object: nil)
+                }
+            }
+                
+                //***** Favorites resort API call after successfull call *****//
+                Helper.getUserFavorites {[weak self] error in
+                    if let Error = error {
+                        self?.hideHudAsync()
+                        self?.presentErrorAlert(UserFacingCommonError.handleError(Error))
+                    }
+                }
+                //***** Get upcoming trips for user API call after successfull call *****//
+                Helper.getUpcomingTripsForUser {[weak self] error in
+                    if let Error = error {
+                        self?.hideHudAsync()
+                        self?.presentErrorAlert(UserFacingCommonError.handleError(Error))
+                    }
+                }
+            
+            },
+           onError: {[unowned self] _ in
+            self.hideHudAsync()
+            if let controller = Constant.MyClassConstants.signInRequestedController {
+                controller.dismiss(animated: true, completion: nil)
+            }
+            
+            self.presentAlert(with: Constant.AlertErrorMessages.loginFailed, message: "\(Constant.AlertPromtMessages.membershipFailureMessage) \(Session.sharedSession.selectedMembership?.memberNumber ?? ""))")
+           }
+        )
     }
 
 }

@@ -14,6 +14,7 @@ class RelinquishmentDetailsViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
     var resort: Resort?
+    var filterRelinquishment = ExchangeRelinquishment()
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.estimatedRowHeight = 80
@@ -51,7 +52,7 @@ extension RelinquishmentDetailsViewController: UITableViewDataSource, UITableVie
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let objRelinquishment = Constant.MyClassConstants.filterRelinquishments[0]
+        let objRelinquishment = filterRelinquishment
         
         if indexPath.section == 0 {
             
@@ -112,6 +113,8 @@ extension RelinquishmentDetailsViewController: UITableViewDataSource, UITableVie
                         let monthName = Helper.getMonthnameFromInt(monthNumber: month).uppercased()
                         cell.dayAndDateLabel.text = "\(monthName) \(String(format: "%02d", arguments: [day]))"
                     }
+                } else {
+                    cell.dayAndDateLabel.text = ""
                 }
                 
                 if let relinquishmentYear = openWeek.relinquishmentYear {

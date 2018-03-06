@@ -33,7 +33,8 @@ class CheckoutPromotionCell: UITableViewCell {
             promotionSelectionCheckBox.checked = true
             promotionSelectionCheckBox.isHidden = false
             promotionStatusLabel.isHidden = false
-            if(Constant.MyClassConstants.isFromExchange) {
+            promotionNameLabel.numberOfLines = 2
+            if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
                 promotionNameLabel.text = Constant.MyClassConstants.exchangeFees[0].shopExchange?.selectedOfferName
             } else {
                 promotionNameLabel.text = Constant.MyClassConstants.rentalFees[0].rental?.selectedOfferName
@@ -42,7 +43,7 @@ class CheckoutPromotionCell: UITableViewCell {
             promotionSelectionCheckBox.checked = false
             promotionSelectionCheckBox.isHidden = true
             forwardArrowButton.isHidden = false
-            promotionNameLabel.text = "Select a Promotion"
+            promotionNameLabel.text = "Select a Promotion".localized()
             promotionStatusLabel.isHidden = true
         }
 
@@ -54,8 +55,8 @@ class CheckoutPromotionCell: UITableViewCell {
         promotionSelectionCheckBox.isHidden = false
         promotionStatusLabel.isHidden = false
         promotionNameLabel.text = Constant.MyClassConstants.filterRelinquishments[0].openWeek?.promotion?.offerName
-        promotionTypeLabel.text = "Deposit Promotion"
-        promotionStatusLabel.text = "Automatically Appplied"
+        promotionTypeLabel.text = "Deposit Promotion".localized()
+        promotionStatusLabel.text = "Automatically Appplied".localized()
     }
 
 }

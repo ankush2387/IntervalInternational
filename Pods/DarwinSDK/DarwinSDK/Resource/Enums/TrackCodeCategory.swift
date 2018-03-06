@@ -57,7 +57,7 @@ public enum TrackCodeCategory : String {
         return isThis(name: "OTHER_CATEGORY")
     }
     
-    public static func fromName(name : String) -> TrackCodeCategory {
+    public static func fromName(name : String?) -> TrackCodeCategory {
         if TrackCodeCategory.GuaranteedMember.name == name {
             return TrackCodeCategory.GuaranteedMember
         } else if TrackCodeCategory.GuaranteedPurchase.name == name {

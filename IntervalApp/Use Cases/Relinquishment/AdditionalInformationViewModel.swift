@@ -206,10 +206,6 @@ final class AdditionalInformationViewModel {
         }
     }
     
-    func update(inventoryUnit: InventoryUnit?) {
-        relinquishment.unit = inventoryUnit
-    }
-    
     func updateDate(with resortCalendar: ResortCalendar?) {
         relinquishment.fixWeekReservation?.checkInDate = resortCalendar?.checkInDate
         if let weekNumber = resortCalendar?.weekNumber {
@@ -283,9 +279,11 @@ final class AdditionalInformationViewModel {
 
             let createResortDetailViewModel = { (image: UIImage) in
                 let resort = self.relinquishment.resort
+                let resortLocationText = [resort?.address?.cityName, resort?.address?.territoryCode].flatMap { $0 }.joined(separator: ", ")
+                
                 self.simpleCellViewModels[.resortDetails] = [SimpleSeperatorCellViewModel(),
                                                              SimpleResortDetailViewModel(resortNameLabelText: resort?.resortName,
-                                                                                         resortLocationLabelText: resort?.address?.cityName,
+                                                                                         resortLocationLabelText: resortLocationText,
                                                                                          resortCodeLabelText: resort?.resortCode,
                                                                                          resortImage: image)]
             }

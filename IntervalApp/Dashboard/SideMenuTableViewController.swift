@@ -35,8 +35,8 @@ class SideMenuTableViewController: UIViewController {
     //***** Define a global list os side menu items *****//
     static let SideMenuItems: [SideMenuItem] = [
         
-        SideMenuItem(title: "", image: #imageLiteral(resourceName: "IntHD"), storyboardid: ""),
-        SideMenuItem(title: "", image: #imageLiteral(resourceName: "Member"), storyboardid: Constant.storyboardNames.membershipIphone),
+        SideMenuItem(title: "", image:  #imageLiteral(resourceName: "IntHD"), storyboardid: ""),
+        SideMenuItem(title: "", image:  #imageLiteral(resourceName: "Member"), storyboardid: Constant.storyboardNames.membershipIphone),
         SideMenuItem(title: Constant.sideMenuTitles.home, image: #imageLiteral(resourceName: "Home"), storyboardid: Constant.storyboardNames.dashboardIPhone),
         SideMenuItem(title: Constant.sideMenuTitles.searchVacation, image: #imageLiteral(resourceName: "Search"), storyboardid: Constant.storyboardNames.vacationSearchIphone),
         SideMenuItem(title: Constant.sideMenuTitles.upcomingTrips, image: #imageLiteral(resourceName: "Trips"), storyboardid: Constant.storyboardNames.myUpcomingTripIphone),
@@ -102,8 +102,9 @@ extension SideMenuTableViewController: UITableViewDelegate {
         Constant.MyClassConstants.googleMarkerArray.removeAll()
         let smi = SideMenuTableViewController.SideMenuItems[indexPath.row ]
         switch indexPath.row {
+        case 4:
+            Constant.MyClassConstants.upcomingOriginationPoint = "sideMenu"
         case 6 :
-            
             Constant.MyClassConstants.sideMenuOptionSelected = Constant.MyClassConstants.favoritesFunctionalityCheck
         case 8 :
             Constant.MyClassConstants.runningFunctionality = Constant.MyClassConstants.resortFunctionalityCheck
@@ -113,6 +114,8 @@ extension SideMenuTableViewController: UITableViewDelegate {
         default :
             Constant.MyClassConstants.sideMenuOptionSelected = Constant.MyClassConstants.resortFunctionalityCheck
         }
+        
+       
         
         guard let storyboardName = smi.storyboardId, !storyboardName.isEmpty else { return }
         
@@ -128,6 +131,8 @@ extension SideMenuTableViewController: UITableViewDelegate {
         (indexPath.row == 0) ? (height = 100) : (height = 50)
         return CGFloat(height)
     }
+    
+    
 }
 
 extension SideMenuTableViewController: UITableViewDataSource {
@@ -187,9 +192,9 @@ extension SideMenuTableViewController: UITableViewDataSource {
             if indexPath.row == 5 {
                 
                 let alertCounterLabel = UILabel()
-               
+                
                 if Constant.activeAlertCount > 0 {
-                   alertCounterLabel.text = "\(Constant.activeAlertCount)"
+                    alertCounterLabel.text = "\(Constant.activeAlertCount)"
                     alertCounterLabel.isHidden = false
                 } else {
                     alertCounterLabel.isHidden = true
@@ -210,3 +215,4 @@ extension SideMenuTableViewController: UITableViewDataSource {
         }
     }
 }
+

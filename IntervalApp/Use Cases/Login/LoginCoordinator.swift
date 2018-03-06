@@ -32,6 +32,7 @@ final class LoginCoordinator: ComputationHelper {
     private let sessionStore: Session
     private let backgroundImages: [UIImage]
     private let userClientAPIStore: UserClientAPIStore
+    private let entityDataStore: EntityDataStore
     private var messaging: Messaging
     private var backgroundImageIndex: Int {
         
@@ -42,7 +43,7 @@ final class LoginCoordinator: ComputationHelper {
                 return startIndex
         }
         
-        let nextIndex = rotate(imageIndex, within: 0..<6)
+        let nextIndex = rotate(imageIndex, within: 0..<8)
         try? decryptedStore.save(item: nextIndex, for: Persistent.backgroundImageIndex.key)
         return nextIndex
     }
@@ -62,30 +63,34 @@ final class LoginCoordinator: ComputationHelper {
          messaging: Messaging,
          configuration: Config,
          sessionStore: Session,
-         userClientAPIStore: UserClientAPIStore) {
+         userClientAPIStore: UserClientAPIStore,
+         entityDataStore: EntityDataStore) {
         
         self.messaging = messaging
         self.sessionStore = sessionStore
         self.configuration = configuration
         self.encryptedStore = encryptedStore
         self.decryptedStore = decryptedStore
+        self.entityDataStore = entityDataStore
         self.userClientAPIStore = userClientAPIStore
         self.backgroundImages = backgroundImages
     }
 
     convenience init() {
-        self.init(backgroundImages: [#imageLiteral(resourceName: "BackgroundImgLogin-A"), #imageLiteral(resourceName: "BackgroundImgLogin-B"), #imageLiteral(resourceName: "BackgroundImgLogin-C"), #imageLiteral(resourceName: "BackgroundImgLogin-D"), #imageLiteral(resourceName: "BackgroundImgLogin-E"), #imageLiteral(resourceName: "BackgroundImgLogin-F"), #imageLiteral(resourceName: "BackgroundImgLogin-G")],
+        self.init(backgroundImages: [#imageLiteral(resourceName: "BackgroundImgLogin-A"), #imageLiteral(resourceName: "BackgroundImgLogin-B"), #imageLiteral(resourceName: "BackgroundImgLogin-C"), #imageLiteral(resourceName: "BackgroundImgLogin-D"), #imageLiteral(resourceName: "BackgroundImgLogin-E"), #imageLiteral(resourceName: "BackgroundImgLogin-F"), #imageLiteral(resourceName: "BackgroundImgLogin-G"), #imageLiteral(resourceName:"BackgroundImgLogin-H"), #imageLiteral(resourceName: "BackgroundImgLogin-I")],
                   encryptedStore: Keychain(),
                   decryptedStore: UserDafaultsWrapper(),
                   messaging: Messaging.messaging(),
                   configuration: Config.sharedInstance,
                   sessionStore: Session.sharedSession,
-                  userClientAPIStore: ClientAPI.sharedInstance)
+                  userClientAPIStore: ClientAPI.sharedInstance,
+                  entityDataStore: EntityDataSource.sharedInstance)
     }
 
     // MARK: - Public functions
     func loginView() -> UIViewController {
         
+        defer { newAppInstance = false }
         let viewModel = LoginViewModel(backgroundImage: backgroundImages[backgroundImageIndex],
                                        sessionStore: Session.sharedSession,
                                        userClientAPIStore: userClientAPIStore,
@@ -94,77 +99,11 @@ final class LoginCoordinator: ComputationHelper {
                                        decryptedStore: UserDafaultsWrapper(),
                                        configuration: Config.sharedInstance,
                                        appBundle: AppBundle())
-        var simpleOnboardingViewModel: SimpleOnboardingViewModel?
-        if newAppInstance {
-            
-            defer { newAppInstance = false } 
-            let exchangePage = SimpleOnboardingPageEntity(mainImage: #imageLiteral(resourceName: "Exchange Illustration"),
-                                                          title: "Game Changer".localized(),
-                                                          titleTextColor: IntervalThemeFactory.deviceTheme.textColorBlack,
-                                                          description: "Exchange like never before! Exclusively on the App, you can now search for an exchange with different ownership interests at the same time.".localized(),
-                                                          descriptionTextColor: IntervalThemeFactory.deviceTheme.textColorGray,
-                                                          iconNavigator: #imageLiteral(resourceName: "Active Segment"),
-                                                          screenColor: #colorLiteral(red: 0.9412514567, green: 0.9814893603, blue: 0.9980912805, alpha: 1))
-            
-            let exchangeAndGetawayPage = SimpleOnboardingPageEntity(mainImage: #imageLiteral(resourceName: "EX+GA Illustration"),
-                                                                    title: "Combined".localized(),
-                                                                    titleTextColor: IntervalThemeFactory.deviceTheme.textColorBlack,
-                                                                    description: "We've made it easier to see your vacation options! Search for both exchanges and Getaways together, or search each separately.".localized(),
-                                                                    descriptionTextColor: IntervalThemeFactory.deviceTheme.textColorGray,
-                                                                    iconNavigator: #imageLiteral(resourceName: "Active Segment"),
-                                                                    screenColor: .white)
-            
-            let chooseAndUsePage = SimpleOnboardingPageEntity(mainImage: #imageLiteral(resourceName: "Usage Illustration"),
-                                                              title: "Choose what to use".localized(),
-                                                              titleTextColor: IntervalThemeFactory.deviceTheme.textColorBlack,
-                                                              description: "Search first, then decide the best way to book your vacation. Search for an exchange using any or all of your available weeks or points - or book a Getaway. We'll show you options, the rest is up to you.".localized(),
-                                                              descriptionTextColor: IntervalThemeFactory.deviceTheme.textColorGray,
-                                                              iconNavigator: #imageLiteral(resourceName: "Active Segment"),
-                                                              screenColor: #colorLiteral(red: 0.9412514567, green: 0.9814893603, blue: 0.9980912805, alpha: 1),
-                                                              titleFont: UIFont.boldSystemFont(ofSize: 30.0))
-            
-            let multipleDestinationsPage = SimpleOnboardingPageEntity(mainImage: #imageLiteral(resourceName: "Multi-Des Illustration"),
-                                                                      title: "Multiple Destinations".localized(),
-                                                                      titleTextColor: IntervalThemeFactory.deviceTheme.textColorBlack,
-                                                                      description: "Choose one or more resorts or desinations by name, or select from the map.".localized(),
-                                                                      descriptionTextColor: IntervalThemeFactory.deviceTheme.textColorGray,
-                                                                      iconNavigator: #imageLiteral(resourceName: "Active Segment"),
-                                                                      screenColor: .white,
-                                                                      titleFont: UIFont.boldSystemFont(ofSize: 30.0))
-            
-            let upcomingTripsPage = SimpleOnboardingPageEntity(mainImage: #imageLiteral(resourceName: "Upcoming Trips Illustration"),
-                                                               title: "Upcoming Trips".localized(),
-                                                               titleTextColor: IntervalThemeFactory.deviceTheme.textColorBlack,
-                                                               description: "View your upcoming vacations all in one place with fast and easy access to your trip confirmation details. Even share your reservation information with friends and family!".localized(),
-                                                               descriptionTextColor: IntervalThemeFactory.deviceTheme.textColorGray,
-                                                               iconNavigator: #imageLiteral(resourceName: "Active Segment"),
-                                                               screenColor: #colorLiteral(red: 0.9412514567, green: 0.9814893603, blue: 0.9980912805, alpha: 1),
-                                                               titleFont: UIFont.boldSystemFont(ofSize: 30.0))
-            
-            let touchIDLoginPage = SimpleOnboardingPageEntity(mainImage: #imageLiteral(resourceName: "TouchID Illustration"),
-                                                              title: "Biometric Login".localized(),
-                                                              titleTextColor: IntervalThemeFactory.deviceTheme.textColorBlack,
-                                                              description: "A finger or a face is all you need to access your account. Sign in quickly and securely on phones and tablets that support fingerprint or facial recognition.".localized(),
-                                                              descriptionTextColor: IntervalThemeFactory.deviceTheme.textColorGray,
-                                                              iconNavigator: #imageLiteral(resourceName: "Active Segment"),
-                                                              screenColor: .white,
-                                                              titleFont: UIFont.boldSystemFont(ofSize: 30.0))
-            
-            let entities = [exchangePage,
-                            exchangeAndGetawayPage,
-                            chooseAndUsePage,
-                            multipleDestinationsPage,
-                            upcomingTripsPage,
-                            touchIDLoginPage]
-            
-            simpleOnboardingViewModel = SimpleOnboardingViewModel(onboardingPageEntities: entities,
-                                                      doneButtonTitle: "Done".localized(),
-                                                      skipIntroButtonTitle: "Skip Intro".localized())
-        }
-
+        
         viewModel.didLogin = didLogin
         self.viewModel = viewModel
-        loginViewController = LoginViewController(viewModel: viewModel, simpleOnboardingViewModel: simpleOnboardingViewModel)
+        loginViewController = LoginViewController(viewModel: viewModel, newAppInstance: newAppInstance)
+        
         return loginViewController
     }
 
@@ -256,6 +195,8 @@ final class LoginCoordinator: ComputationHelper {
             return
         }
 
-        delegate?.didLogin()
+        entityDataStore.delete(type: OpenWeeksStorage.self, for: .decrypted)
+            .then { [weak self] in self?.delegate?.didLogin() }
+            .onError { [weak self] _ in self?.delegate?.didError(message: UserFacingCommonError.generic.description.body) }
     }
 }

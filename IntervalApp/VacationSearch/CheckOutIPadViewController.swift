@@ -113,7 +113,14 @@ class CheckOutIPadViewController: UIViewController {
         super.viewDidLoad()
         checkPromotionsAvailable()
         checkSectionsForFees()
-        Helper.getCountry(viewController: self)
+
+        // get country listCompletionBlock
+        Helper.getCountry { [weak self] error in
+            if let Error = error {
+                self?.presentErrorAlert(UserFacingCommonError.handleError(Error))
+            }
+        }
+        
         // omniture tracking with event 40
         let pageView: [String: String] = [
             Constant.omnitureEvars.eVar44: Constant.omnitureCommonString.vacationSearchPaymentInformation
@@ -156,8 +163,9 @@ class CheckOutIPadViewController: UIViewController {
                 
                 guard let curCode = Constant.MyClassConstants.exchangeFees[0].currencyCode else { return }
                 let currencyHelper = CurrencyHelper()
-                let currency = currencyHelper.getCurrency(currencyCode: curCode)
-                currencyCode = ("\(currencyHelper.getCurrencyFriendlySymbol(currencyCode: currency.code))")
+                let countryCode = Session.sharedSession.contact?.getCountryCode() ?? ""
+                
+                currencyCode = ("\(currencyHelper.getCurrencyFriendlySymbol(currencyCode: curCode, countryCode: countryCode))")
             }
         } else {
             for advisement in (Constant.MyClassConstants.viewResponse.resort?.advisements)! {
@@ -176,8 +184,9 @@ class CheckOutIPadViewController: UIViewController {
             
             guard let curCode = Constant.MyClassConstants.rentalFees[0].currencyCode else { return }
             let currencyHelper = CurrencyHelper()
-            let currency = currencyHelper.getCurrency(currencyCode: curCode)
-            currencyCode = ("\(currencyHelper.getCurrencyFriendlySymbol(currencyCode: currency.code))")
+            let countryCode = Session.sharedSession.contact?.getCountryCode() ?? ""
+            
+            currencyCode = ("\(currencyHelper.getCurrencyFriendlySymbol(currencyCode: curCode, countryCode: countryCode))")
             
         }
         
@@ -1035,11 +1044,17 @@ extension CheckOutIPadViewController: UITableViewDataSource {
                                     return nil
                                 }
                                 
+                                let currencyCodeOfFee = Constant.MyClassConstants.continueToCheckoutResponse.view?.fees?.currencyCode ?? ""
+                                let currencyDescription = CurrencyHelper().getCurrency(currencyCode: currencyCodeOfFee).description
+                                if currencyDescription.isEmpty {
+                                    return self.presentErrorAlert(UserFacingCommonError.generic)
+                                }
                                 let viewModel = ChargeSummaryViewModel(charge: dataSet,
                                                                        headerTitle: "Detailed Tax Information".localized(),
                                                                        descriptionTitle: "Tax Description".localized(),
-                                                                       currency: "US Dollars".localized(),
-                                                                       totalTitle: "Total Tax Amount".localized())
+                                                                       currency: currencyDescription.localized(),
+                                                                       totalTitle: "Total Tax Amount".localized(),
+                                                                       currencySymbol: self.currencyCode)
                                 
                                 let chargeSummaryViewController = ChargeSummaryViewController(viewModel: viewModel)
                                 chargeSummaryViewController.doneButtonPressed = { chargeSummaryViewController.dismiss(animated: true) }
@@ -1111,7 +1126,9 @@ extension CheckOutIPadViewController: UITableViewDataSource {
                         }
                     } else {
                         cell.priceLabel.text = Constant.MyClassConstants.guestCertificateTitle
-                        cell.setTotalPrice(with: currencyCode, and: Float(Constant.MyClassConstants.guestCertificatePrice))
+                        if let guestPrice = Constant.MyClassConstants.rentalFees[indexPath.row].guestCertificate?.guestCertificatePrice?.price {
+                            cell.setTotalPrice(with: currencyCode, and: guestPrice)
+                        }
                     }
                 } else {
                     isHeightZero = false
@@ -1184,13 +1201,13 @@ extension CheckOutIPadViewController: UITableViewDataSource {
                     if Constant.MyClassConstants.isCIGAvailable {
                         cell.resortDetailsButton.isHidden = true
                         cell.lblHeading.text = "CIG Points".localized()
-                        let availablePointsNumber = Constant.MyClassConstants.selectedExchangeCigPoints as NSNumber
                         let numberFormatter = NumberFormatter()
                         numberFormatter.numberStyle = .decimal
-                        if let availablePoints = numberFormatter.string(from: availablePointsNumber) {
+                        if let pointsCost = Constant.MyClassConstants.selectedExchangePointsCost, let availablePoints = numberFormatter.string(from: pointsCost) {
                             cell.resortName?.text = "\(availablePoints)".localized()
-                        } else { cell.resortName?.text = "\(0)".localized() }
-                        
+                        } else {
+                            cell.resortName?.text = "\(0)".localized()
+                        }
                     } else {
                         cell.resortDetailsButton.addTarget(self, action: #selector(WhoWillBeCheckingInViewController.resortDetailsClicked(_:)), for: .touchUpInside)
                         if let clubPoint = filterRelinquishments.clubPoints {

@@ -15,10 +15,12 @@ final class ChargeSummaryViewModel {
     let totalTitle: String
     let headerTitle: String
     let descriptionTitle: String
+    let currencySymbol: String
     private (set) var charge: [(description: String, amount: Float)]
-    lazy var attributedTotal: NSAttributedString? = {
+    
+    lazy var attributedTotal: NSAttributedString? = { [unowned self] in
         let totalAmount = self.charge.map { $0.amount }.reduce(0, +)
-        return totalAmount.currencyFormatter(for: "$", baseLineOffSet: 7)
+        return totalAmount.currencyFormatter(for: self.currencySymbol, baseLineOffSet: 7)
     }()
 
     // MARK: - Lifecycle
@@ -26,12 +28,14 @@ final class ChargeSummaryViewModel {
          headerTitle: String,
          descriptionTitle: String,
          currency: String,
-         totalTitle: String) {
+         totalTitle: String,
+         currencySymbol: String) {
 
         self.charge = charge
         self.currency = currency
         self.totalTitle = totalTitle
         self.headerTitle = headerTitle
         self.descriptionTitle = descriptionTitle
+        self.currencySymbol = currencySymbol
     }
 }

@@ -180,8 +180,7 @@ class EditMyAlertIpadViewController: UIViewController {
         let mainStoryboard: UIStoryboard = UIStoryboard(name: storyboardName, bundle: nil)
         if let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.calendarViewController) as? CalendarViewController {
             viewController.requestedDateWindow = Constant.MyClassConstants.end
-            let transitionManager = TransitionManager()
-            navigationController?.transitioningDelegate = transitionManager
+            viewController.showNinetyDaysWindow = true
             navigationController?.pushViewController(viewController, animated: true)
         }
     }
@@ -242,20 +241,19 @@ class EditMyAlertIpadViewController: UIViewController {
             rentalAlert.selections = []
             
             var unitsizearray = [UnitSize]()
-            let brWithoutSpaces = Constant.MyClassConstants.selectedBedRoomSize.replacingOccurrences(of: " ", with: "")
-            let selectedUnits = brWithoutSpaces.components(separatedBy: ",")
-            Constant.MyClassConstants.alertSelectedUnitSizeArray.removeAll()
-            for selectedUnit in selectedUnits {
-                
-                if selectedUnit == Constant.MyClassConstants.allBedrommSizes {
-                    for unit in Constant.MyClassConstants.bedRoomSize {
-                        if let selectedUnitSize = UnitSize(rawValue: unit) {
+            if Constant.MyClassConstants.selectedBedRoomSize == Constant.MyClassConstants.allBedrommSizes {
+                for unit in Constant.MyClassConstants.bedRoomSize {
+                    if let selectedUnitSize = UnitSize(rawValue: unit) {
                         Constant.MyClassConstants.alertSelectedUnitSizeArray.append(selectedUnitSize.rawValue)
-                        }
                     }
-                } else {
+                }
+            } else {
+                let brWithoutSpaces = Constant.MyClassConstants.selectedBedRoomSize.replacingOccurrences(of: " ", with: "")
+                let selectedUnits = brWithoutSpaces.components(separatedBy: ",")
+                Constant.MyClassConstants.alertSelectedUnitSizeArray.removeAll()
+                for selectedUnit in selectedUnits {
                     if let selectedUnitSize = UnitSize(rawValue: Constant.MyClassConstants.bedRoomSize[Int("\(selectedUnit)") ?? 0] ) {
-                    Constant.MyClassConstants.alertSelectedUnitSizeArray.append(selectedUnitSize.rawValue)
+                        Constant.MyClassConstants.alertSelectedUnitSizeArray.append(selectedUnitSize.rawValue)
                     }
                 }
             }
