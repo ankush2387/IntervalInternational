@@ -26,10 +26,10 @@ open class ResortWeather {
             self.temperature = Temperature(json:temperatureJson)
         }
         
-        self.condition = json["conditions"].string ?? ""
+        self.condition = json["condition"].string ?? ""
         
-        if json["monthaverage"].exists() {
-            let monthlyAverageArrary:[JSON] = json["monthaverage"].arrayValue
+        if json["monthlyAverages"].exists() {
+            let monthlyAverageArrary:[JSON] = json["monthlyAverages"].arrayValue
             self.monthlyAverage = monthlyAverageArrary.map { MonthlyAverage(json:$0) }
         }
     }
