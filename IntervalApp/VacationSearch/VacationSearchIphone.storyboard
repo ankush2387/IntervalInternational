@@ -4293,6 +4293,7 @@ to confirm a larger unit.</string>
                                             <outlet property="agreeLabel" destination="8tB-P1-K20" id="UDr-7w-SEh"/>
                                             <outlet property="allInclusiveSelectedCheckBox" destination="ym9-qK-OZJ" id="05Q-kV-Ws3"/>
                                             <outlet property="feesTitleLabel" destination="lgx-Nv-ALW" id="ZVr-1J-Ny8"/>
+                                            <outlet property="informationImage" destination="qhD-U3-w7Z" id="kZB-8Q-brH"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="EmailCell" rowHeight="125" id="mjX-Zp-5Vb" customClass="EmailTableViewCell" customModule="IntervalApp" customModuleProvider="target">
