@@ -273,6 +273,7 @@ class AddDebitOrCreditCardViewController: UIViewController {
                 
                 showHudAsync()
                 CreditCardTokenizeClient.tokenize(Session.sharedSession.userAccessToken, creditCardNumber: newCreditCard.cardNumber!, onSuccess: {[weak self](response) in
+                    guard let strongSelf = self else { return }
                     ADBMobile.trackAction(Constant.omnitureEvents.event59, data: nil)
                     Constant.MyClassConstants.selectedCreditCard.removeAll()
                     newCreditCard.creditcardId = 0
@@ -282,8 +283,8 @@ class AddDebitOrCreditCardViewController: UIViewController {
                     if let saveCard = self?.saveCardCheckBoxChecked {
                         if saveCard {
                             guard let accessToken = Session.sharedSession.userAccessToken else {
-                                self?.hideHudAsync()
-                                self?.presentErrorAlert(UserFacingCommonError.generic)
+                                strongSelf.hideHudAsync()
+                                strongSelf.presentErrorAlert(UserFacingCommonError.generic)
                                 return
                             }
                             UserClient.createCreditCard(accessToken, creditCard: newCreditCard, onSuccess: {[weak self](cc) in
@@ -291,19 +292,19 @@ class AddDebitOrCreditCardViewController: UIViewController {
                                 cc.cvv = Constant.GetawaySearchResultCardFormDetailData.cvv
                                 Constant.MyClassConstants.selectedCreditCard.append(cc)
                                 
-                                self?.resetCreditCardDetails()
-                                self?.hideHudAsync()
-                                self?.performSegue(withIdentifier: "unwindToCheckout", sender: self)
+                                strongSelf.resetCreditCardDetails()
+                                strongSelf.hideHudAsync()
+                                strongSelf.performSegue(withIdentifier: "unwindToCheckout", sender: self)
                             }, onError: {(error) in
-                                self?.hideHudAsync()
-                                self?.presentErrorAlert(UserFacingCommonError.handleError(error))
+                                strongSelf.hideHudAsync()
+                                strongSelf.presentErrorAlert(UserFacingCommonError.handleError(error))
                             })
                         }
                     } else {
                         Constant.MyClassConstants.selectedCreditCard.append(newCreditCard)
-                        self?.hideHudAsync()
-                        self?.resetCreditCardDetails()
-                        self?.performSegue(withIdentifier: "unwindToCheckout", sender: self)
+                        strongSelf.hideHudAsync()
+                        strongSelf.resetCreditCardDetails()
+                        strongSelf.performSegue(withIdentifier: "unwindToCheckout", sender: self)
                     }
                     
                 }, onError: {[weak self](_) in
