@@ -85,9 +85,9 @@ class SearchResultViewController: UIViewController {
         
         if sections.isEmpty {
             searchResultTableView.tableHeaderView = Helper.noResortView(senderView: self.view)
-            self.title = "No Availability".localized()
+            title = "No Availability".localized()
         } else {
-            self.title = "Search Results".localized()
+            title = "Search Results".localized()
             let headerVw = UIView()
             searchResultTableView.tableHeaderView = headerVw
         }
@@ -210,15 +210,15 @@ class SearchResultViewController: UIViewController {
         self.navigationItem.leftBarButtonItem = menuButton
         
         if Constant.MyClassConstants.showAlert == true {
-            self.alertView = Helper.noResortView(senderView: self.view)
-            self.alertView.isHidden = false
+            alertView = Helper.noResortView(senderView: self.view)
+            alertView.isHidden = false
             headerVw.isHidden = true
-            self.view.bringSubview(toFront: self.alertView)
-            self.title = "No Availability".localized()
+            view.bringSubview(toFront: self.alertView)
+            title = "No Availability".localized()
         } else {
-            self.title = "Search Results".localized()
+            title = "Search Results".localized()
             headerVw.isHidden = false
-            self.alertView.isHidden = true
+            alertView.isHidden = true
         }
         
         if Session.sharedSession.userAccessToken != nil {
