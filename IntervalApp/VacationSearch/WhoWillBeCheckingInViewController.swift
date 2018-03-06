@@ -1,4 +1,4 @@
-//
+ //
 //  WhoWillBeCheckingInViewController.swift
 //  IntervalApp
 //
@@ -818,11 +818,12 @@ extension WhoWillBeCheckingInViewController: UITableViewDataSource {
             
             let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.guestCertificatePriceCell, for: indexPath) as! GuestCertificatePriceCell
             guard let guestPrices = Constant.MyClassConstants.guestCertificate?.prices else { return cell }
-            
-            var memberTier = ""
+            var currencyCode = ""
+            var memberTier = Session.sharedSession.selectedMembership?.getProductWithHighestTier()?.productCode ?? ""
             if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
                 memberTier = Constant.MyClassConstants.exchangeFees[0].memberTier ?? ""
                 if !Constant.MyClassConstants.exchangeFees.isEmpty {
+                    currencyCode = Constant.MyClassConstants.exchangeFees[0].currencyCode ?? ""
                     for renewal in renewalsArray {
                         for price in guestPrices {
                             if price.productCode == renewal.productCode {
@@ -853,6 +854,7 @@ extension WhoWillBeCheckingInViewController: UITableViewDataSource {
             }
             
             for price in guestPrices where price.productCode == memberTier {
+
                     cell.setPrice(with: currencyCode, and: price.price)
             }
             
