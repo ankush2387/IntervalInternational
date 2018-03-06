@@ -335,7 +335,7 @@ class AddDebitOrCreditCardViewController: UIViewController {
                 if dropDownSelectionRow == 4 && Constant.stateListArray.isEmpty {
                     let state = State()
                     state.name = "N/A"
-                    state.code = ""
+                    state.code = "  "
                     
                     Constant.stateListArray.append(state)
                 }
