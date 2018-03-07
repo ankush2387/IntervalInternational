@@ -99,8 +99,12 @@ class MemberShipDetailTableViewCell: UITableViewCell {
          loginIdLabel.text = loginID
          emailLabel.text = email
          memberNumberLabel.text = Constant.MyClassConstants.memberNumber
-       let date = Helper.convertStringToDate(dateString: date, format: Constant.MyClassConstants.dateFormat)
-        memberSinceDateLabel.text = Helper.getWeekDay(dateString: date, getValue: Constant.MyClassConstants.month).appending(". ").appending(Helper.getWeekDay(dateString: date, getValue: Constant.MyClassConstants.date)).appending(", ").appending(Helper.getWeekDay(dateString: date, getValue: Constant.MyClassConstants.year))
+        
+        if let expDate = date.dateFromString(for: Constant.MyClassConstants.dateFormat) {
+             memberSinceDateLabel.text = Helper.getWeekDay(dateString: expDate , getValue: Constant.MyClassConstants.month).appending(". ").appending(Helper.getWeekDay(dateString: expDate, getValue: Constant.MyClassConstants.date)).appending(", ").appending(Helper.getWeekDay(dateString: expDate, getValue: Constant.MyClassConstants.year))
+        }
+       //let date = Helper.convertStringToDate(dateString: date, format: Constant.MyClassConstants.dateFormat)
+       
         
         activeLabel.text = status
         
