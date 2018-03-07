@@ -52,9 +52,12 @@ class UpComingTripDetailController: UIViewController, UITextViewDelegate {
         requiredRowsForAdditionalProducts()
         requiredRowsForRelinquishment()
         navigationController?.navigationBar.isHidden = false
+        title = Constant.ControllerTitles.upComingTripDetailController
     }
     
     override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        title = ""
         NotificationCenter.default
             .removeObserver(self, name: NSNotification.Name(rawValue:Constant.notificationNames.reloadTripDetailsNotification), object: nil)
     }
@@ -81,7 +84,6 @@ class UpComingTripDetailController: UIViewController, UITextViewDelegate {
         let cellNib3 = UINib(nibName: Constant.customCellNibNames.policyCell, bundle: nil)
         upcomingTripDetailTbleview?.register(cellNib3, forCellReuseIdentifier: Constant.upComingTripDetailControllerReusableIdentifiers.policyCell)
         
-        title = Constant.ControllerTitles.upComingTripDetailController
         let menuButton = UIBarButtonItem(image: UIImage(named: Constant.assetImageNames.backArrowNav), style: .plain, target: self, action: #selector(UpComingTripDetailController.menuBackButtonPressed(_:)))
         menuButton.tintColor = UIColor.white
         
