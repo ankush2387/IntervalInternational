@@ -17,16 +17,22 @@ final public class SimpleResortDetailViewModel {
     public var resortLocationLabelText: Observable<String?>
     public var resortCodeLabelText: Observable<String?>
     public var resortImage: Observable<UIImage?>
+    public var resortImageURL: Observable<String?>
+    public var placeholderImage: Observable<UIImage?>
 
     public init(resortNameLabelText: String? = nil,
                 resortLocationLabelText: String? = nil,
                 resortCodeLabelText: String? = nil,
-                resortImage: UIImage? = nil) {
+                resortImage: UIImage? = nil,
+                resortImageURL: String? = nil,
+                placeholderImage: UIImage? = nil) {
 
         self.resortNameLabelText = Observable(resortNameLabelText)
         self.resortLocationLabelText = Observable(resortLocationLabelText)
         self.resortCodeLabelText = Observable(resortCodeLabelText)
         self.resortImage = Observable(resortImage)
+        self.resortImageURL = Observable(resortImageURL)
+        self.placeholderImage = Observable(placeholderImage)
     }
 }
 

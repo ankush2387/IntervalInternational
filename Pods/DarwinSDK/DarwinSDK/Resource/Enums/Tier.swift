@@ -75,26 +75,27 @@ public enum Tier : String {
         return isThis(name: "affiliate")
     }
     
-    public static func fromName(name : String) -> Tier {
-        if Tier.PreferedResidence.name == name {
-            return Tier.PreferedResidence
-        } else if Tier.Premier.name == name {
-            return Tier.Premier
-        } else if Tier.PremierBoutique.name == name {
-            return Tier.PremierBoutique
-        } else if Tier.Elite.name == name {
+    public static func fromName(name : String?) -> Tier {
+        if let thatName = name {
+            if Tier.PreferedResidence.name == thatName {
+                return Tier.PreferedResidence
+            } else if Tier.Premier.name == thatName {
+                return Tier.Premier
+            } else if Tier.PremierBoutique.name == thatName {
+                return Tier.PremierBoutique
+            } else if Tier.Elite.name == thatName {
             return Tier.Elite
-        } else if Tier.EliteBoutique.name == name {
-            return Tier.EliteBoutique
-        } else if Tier.Select.name == name {
-            return Tier.Select
-        } else if Tier.SelectBoutique.name == name {
-            return Tier.SelectBoutique
-        } else if Tier.Affiliate.name == name {
-            return Tier.Affiliate
-        } else {
-            return Tier.Unknown
+            } else if Tier.EliteBoutique.name == thatName {
+                return Tier.EliteBoutique
+            } else if Tier.Select.name == thatName {
+                return Tier.Select
+            } else if Tier.SelectBoutique.name == thatName {
+                return Tier.SelectBoutique
+            } else if Tier.Affiliate.name == thatName {
+                return Tier.Affiliate
+            }
         }
+        return Tier.Unknown
     }
     
 }

@@ -41,9 +41,9 @@ open class RentalClient {
                     onError(DarwinSDK.parseDarwinError(statusCode:statusCode, json:json))
                 }
             }
-            .responseString { response in
-                DarwinSDK.logger.debug("Got \(response.response?.statusCode ?? 0) - \(response)")
-            }
+            //.responseString { response in
+            //    DarwinSDK.logger.debug("Got \(response.response?.statusCode ?? 0) - \(response)")
+            //}
     }
     
     // STATUS: Unit Test passed
@@ -75,9 +75,9 @@ open class RentalClient {
                     onError(DarwinSDK.parseDarwinError(statusCode:statusCode, json:json))
                 }
             }
-            .responseString { response in
-                DarwinSDK.logger.debug("Got \(response.response?.statusCode ?? 0) - \(response)")
-            }
+            //.responseString { response in
+            //    DarwinSDK.logger.debug("Got \(response.response?.statusCode ?? 0) - \(response)")
+            //}
     }
     
     // STATUS: Unit Test passed
@@ -356,5 +356,5 @@ open class RentalClient {
                 DarwinSDK.logger.debug("Got \(response.response?.statusCode ?? 0) - \(response)")
         }
     }
-    
+
 }

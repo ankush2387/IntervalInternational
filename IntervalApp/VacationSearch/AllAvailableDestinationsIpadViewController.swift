@@ -104,20 +104,24 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
             }
             
             //Manage dictionary for performing search with area codes
-            if Constant.MyClassConstants.selectedAreaCodeDictionary.value(forKey: "\(areaAtIndex.areaCode)") != nil {
-                Constant.MyClassConstants.selectedAreaCodeDictionary.removeObject(forKey: "\(areaAtIndex.areaCode)")
-                Constant.MyClassConstants.selectedAreaCodeArray.remove("\(areaAtIndex.areaCode)")
+            if Constant.MyClassConstants.selectedAreaCodeDictionary["\(areaAtIndex.areaCode)"] != nil {
+                 Constant.MyClassConstants.selectedAreaCodeDictionary.removeValue(forKey: "\(areaAtIndex.areaCode)")
+                if let index = Constant.MyClassConstants.selectedAreaCodeArray.index(of: "\(areaAtIndex.areaCode)") {
+                     Constant.MyClassConstants.selectedAreaCodeArray.remove(at: index)
+                }
+               
             } else {
-                Constant.MyClassConstants.selectedAreaCodeDictionary.setValue(areaAtIndex.areaName!, forKey: "\(areaAtIndex.areaCode)")
-                Constant.MyClassConstants.selectedAreaCodeArray.add("\(areaAtIndex.areaCode)")
+                Constant.MyClassConstants.selectedAreaCodeDictionary["\(areaAtIndex.areaCode)"] = areaAtIndex.areaName.unwrappedString
+                 Constant.MyClassConstants.selectedAreaCodeArray.append("\(areaAtIndex.areaCode)")
             }
             
         } else {
             var areasArray = [String]()
-            areasArray.append(region.areas[indexPathForSelectedRegion.row].areaName!)
-            selectedAreaDictionary.setValue(areasArray, forKey: region.regionName!)
-            Constant.MyClassConstants.selectedAreaCodeDictionary.setValue("\(String(describing: region.areas[indexPathForSelectedRegion.row].areaName!))", forKey: "\(region.areas[indexPathForSelectedRegion.row].areaCode)")
-            Constant.MyClassConstants.selectedAreaCodeArray.add("\(region.areas[indexPathForSelectedRegion.row].areaCode)")
+            areasArray.append(region.areas[indexPathForSelectedRegion.row].areaName.unwrappedString)
+            selectedAreaDictionary.setValue(areasArray, forKey: region.regionName.unwrappedString)
+            Constant.MyClassConstants.selectedAreaCodeDictionary["\(region.areas[indexPathForSelectedRegion.row].areaCode)"] = region.areas[indexPathForSelectedRegion.row].areaName.unwrappedString
+             Constant.MyClassConstants.selectedAreaCodeArray.append("\(region.areas[indexPathForSelectedRegion.row].areaCode)")
+
         }
         allAvailableDestinatontableview.reloadData()
         
@@ -146,7 +150,7 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
     //Function for navigating to search results
     func navigateToSearchResults() {
         
-        Constant.MyClassConstants.vacationSearchResultHeaderLabel = (Constant.MyClassConstants.selectedAreaCodeDictionary.value(forKey: Constant.MyClassConstants.selectedAreaCodeArray[0] as! String) as? String)!
+        Constant.MyClassConstants.vacationSearchResultHeaderLabel = Constant.MyClassConstants.selectedAreaCodeDictionary[Constant.MyClassConstants.selectedAreaCodeArray[0]] ?? ""
         Constant.MyClassConstants.filteredIndex = 0
         
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
@@ -237,8 +241,8 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
             
             //let storedData = Helper.getLocalStorageWherewanttoGo()
             let area = Area()
-            area.areaCode = Int(Constant.MyClassConstants.selectedAreaCodeArray[0] as! String)!
-            area.areaName = Constant.MyClassConstants.selectedAreaCodeDictionary.value(forKey: Constant.MyClassConstants.selectedAreaCodeArray[0] as! String) as? String
+            area.areaCode = Int(Constant.MyClassConstants.selectedAreaCodeArray[0]) ?? 0
+            area.areaName = Constant.MyClassConstants.selectedAreaCodeDictionary[Constant.MyClassConstants.selectedAreaCodeArray[0]]
             
             exchangeSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
             
@@ -280,11 +284,11 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
             var vacationSearch = VacationSearch()
             
             let area = Area()
-            area.areaCode = Int(Constant.MyClassConstants.selectedAreaCodeArray[0] as! String)!
-            area.areaName = Constant.MyClassConstants.selectedAreaCodeDictionary.value(forKey: Constant.MyClassConstants.selectedAreaCodeArray[0] as! String) as? String
+            area.areaCode = Int(Constant.MyClassConstants.selectedAreaCodeArray[0]) ?? 0
+            area.areaName = Constant.MyClassConstants.selectedAreaCodeDictionary[Constant.MyClassConstants.selectedAreaCodeArray[0]]
             
             if(!Constant.MyClassConstants.isFromRentalAllAvailable && !Constant.MyClassConstants.isFromExchangeAllAvailable) {
-                combinedSearchCriteria.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as? [String]
+                combinedSearchCriteria.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray
                 combinedSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
                 combinedSearchCriteria.travelParty = Constant.MyClassConstants.travelPartyInfo
                 combinedSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate

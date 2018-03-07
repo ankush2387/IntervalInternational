@@ -47,20 +47,19 @@ class ResortDirectoryViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         
-
         if containerView != nil {
             containerView.isHidden = true
             Constant.MyClassConstants.btnTag = -1
 
         }
         setNavigationBar()
-        
     }
     
     override func willRotate(to toInterfaceOrientation: UIInterfaceOrientation, duration: TimeInterval) {
         
         getScreenFrameForOrientation()
     }
+    
     override func viewDidAppear(_ animated: Bool) {
         navigationController?.navigationBar.isHidden = false
     }
@@ -105,7 +104,6 @@ class ResortDirectoryViewController: UIViewController {
         let attributes: [String: AnyObject] = [NSFontAttributeName: UIFont(name: Constant.fontName.helveticaNeue, size: 15)!, NSForegroundColorAttributeName: IUIKColorPalette.primary1.color]
         appearance.setTitleTextAttributes(attributes, for: UIControlState())
         setNavigationBar()
-        
     }
     
     override func viewDidLayoutSubviews() {
@@ -188,6 +186,7 @@ class ResortDirectoryViewController: UIViewController {
            NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.MyClassConstants.popToLoginView), object: nil)
         }
     }
+    
     func reloadView() {
         if self.resortTableView != nil {
             if Constant.MyClassConstants.btnTag != -1 {
@@ -273,14 +272,11 @@ class ResortDirectoryViewController: UIViewController {
                 regionTable.reloadData()
             }
         }
-        
     }
     
     //***** Notification to show region details. *****//
     func showAreaDetails() {
-        
         performSegue(withIdentifier: Constant.segueIdentifiers.areaSegue, sender: nil)
-        
     }
     
     //***** method to check device orientation for ipad *****//
@@ -414,8 +410,6 @@ extension ResortDirectoryViewController: UITableViewDelegate {
                     }
                     
                 }, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
-            } else {
-                
             }
             
             showHudAsync()
@@ -459,7 +453,6 @@ extension ResortDirectoryViewController: UITableViewDelegate {
             addChildViewController(controller)
         default :
             return
-
         }
     }
     
@@ -479,12 +472,10 @@ extension ResortDirectoryViewController: UITableViewDelegate {
             nameLabel.textColor = IUIKColorPalette.secondaryText.color
             headerView.addSubview(nameLabel)
         }
-        
         return headerView
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        
         return 30
     }
     
@@ -607,11 +598,12 @@ extension ResortDirectoryViewController: UITableViewDataSource {
             }
             cell.favoriteButton.tag = indexPath.row
             if let tierImageName = resort.tier {
-                var tierName = Helper.getTierImageName(tier: tierImageName.uppercased())
+                let tierName = Helper.getTierImageName(tier: tierImageName.uppercased())
                 if tierName == "" {
                      cell.tierImageView.isHidden = true
                 } else {
-                     cell.tierImageView.image = UIImage(named: tierName)
+                    cell.tierImageView.image = UIImage(named: tierName)
+                    cell.tierImageView.isHidden = false
                 }
             } else {
                 cell.tierImageView.isHidden = true
@@ -698,9 +690,7 @@ extension ResortDirectoryViewController: ResortFavoritesTableViewCellDelegate {
                 if let resortCode = selectedResort.resortCode {
                     Helper.getResortWithResortCode(code: resortCode, viewcontroller: self)
                 }
-                
             })
-            
         }
     }
 
@@ -736,7 +726,5 @@ extension ResortDirectoryViewController: ResortFavoritesTableViewCellDelegate {
                 
             }
         }
-
-
     }
 }

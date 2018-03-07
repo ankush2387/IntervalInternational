@@ -460,7 +460,11 @@ extension GetawayAlertsIPhoneViewController: UITableViewDelegate {
                     let bedroomSize = Helper.bedRoomSizeToStringInteger(bedRoomSize: friendlyName)
                     selectedBedroomsizes.append(bedroomSize)
                 }
-                Constant.MyClassConstants.selectedBedRoomSize = selectedBedroomsizes.joined(separator: ", ")
+                if selectedBedroomsizes.count == 5 {
+                    Constant.MyClassConstants.selectedBedRoomSize = Constant.MyClassConstants.allBedrommSizes
+                } else {
+                    Constant.MyClassConstants.selectedBedRoomSize = selectedBedroomsizes.joined(separator: ", ")
+                }
                 self.performSegue(withIdentifier: Constant.segueIdentifiers.editAlertSegue, sender: self)
                 
             }
@@ -515,7 +519,7 @@ extension GetawayAlertsIPhoneViewController: UITableViewDataSource {
             if searchDateResponse.checkInDates.isEmpty {
                 
                 cell.alertStatusButton.isHidden = false
-                cell.alertStatusButton.setTitle(Constant.buttonTitles.nothingYet, for: .normal)
+                cell.alertStatusButton.setTitle(Constant.buttonTitles.noResultYet, for: .normal)
                 cell.alertStatusButton.backgroundColor = UIColor(red: 245.0 / 255.0, green: 245.0 / 255.0, blue: 245.0 / 255.0, alpha: 1.0)
                 cell.alertStatusButton.setTitleColor(UIColor.lightGray, for: .normal)
                 
@@ -536,7 +540,7 @@ extension GetawayAlertsIPhoneViewController: UITableViewDataSource {
             }
         } else {
             cell.alertStatusButton.isHidden = false
-            cell.alertStatusButton.setTitle(Constant.buttonTitles.nothingYet, for: .normal)
+            cell.alertStatusButton.setTitle(Constant.buttonTitles.noResultYet, for: .normal)
             cell.alertStatusButton.backgroundColor = UIColor(red: 245.0 / 255.0, green: 245.0 / 255.0, blue: 245.0 / 255.0, alpha: 1.0)
             cell.alertStatusButton.setTitleColor(UIColor.lightGray, for: .normal)
             

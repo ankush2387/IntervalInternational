@@ -47,6 +47,9 @@ open class ExchangeProcessStartRequest {
         dictionary["unit"] = self.unitToDictionary() as AnyObject?
         dictionary["checkInDate"] = self.destination?.checkInDate as AnyObject?
         dictionary["checkOutDate"] = self.destination?.checkOutDate as AnyObject?
+        if let pointsCost = self.destination?.pointsCost {
+            dictionary["pointsCost"] = pointsCost as AnyObject?
+        }
         return dictionary
     }
     

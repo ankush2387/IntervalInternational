@@ -13,6 +13,7 @@ import RealmSwift
 import DarwinSDK
 import SVProgressHUD
 import SDWebImage
+import then
 
 class VacationSearchViewController: UIViewController {
     
@@ -43,10 +44,12 @@ class VacationSearchViewController: UIViewController {
     var searchDateRequest = RentalSearchDatesRequest()
     var rentalHasNotAvailableCheckInDates: Bool = false
     var exchangeHasNotAvailableCheckInDates: Bool = false
+    private let entityStore: EntityDataStore = EntityDataSource.sharedInstance
+    fileprivate var availableRelinquishmentIdArray = [String]()
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        //navigationController?.isNavigationBarHidden = false
+        readSavedRelinquishments()
         navigationController?.navigationBar.isHidden = false
         searchVacationTableView.reloadData()
     }
@@ -97,9 +100,44 @@ class VacationSearchViewController: UIViewController {
         searchVacationTableView.reloadData()
     }
     
+    func readSavedRelinquishments() {
+
+            self.availableRelinquishmentIdArray.removeAll()
+            let membership = Session.sharedSession.selectedMembership
+            let selectedMembershipNumber = membership?.memberNumber
+            var requiredMemberNumber = ""
+            if let membernumber = selectedMembershipNumber {
+                requiredMemberNumber = membernumber
+            }
+            let predicate = "membeshipNumber == '\(requiredMemberNumber)'"
+            entityStore.readObjectsFromDisk(type: OpenWeeksStorage.self, predicate: predicate, encoding: .decrypted)
+                .then { openWeeksStorage in
+                    self.availableRelinquishmentIdArray.append(contentsOf: openWeeksStorage
+                        .flatMap { $0.openWeeks }
+                        .flatMap { $0.openWeeks }
+                        .map { $0.relinquishmentID })
+                    self.availableRelinquishmentIdArray.append(contentsOf: openWeeksStorage
+                        .flatMap { $0.openWeeks }
+                        .flatMap { $0.deposits }
+                        .map { $0.relinquishmentID })
+                    
+                    self.availableRelinquishmentIdArray.append(contentsOf: openWeeksStorage
+                        .flatMap { $0.openWeeks }
+                        .flatMap { $0.clubPoints }
+                        .map { $0.relinquishmentId })
+                    
+                    self.availableRelinquishmentIdArray.append(contentsOf: openWeeksStorage
+                        .flatMap { $0.openWeeks }
+                        .flatMap { $0.pProgram }
+                        .map { $0.relinquishmentId })
+                }
+                .onError { [unowned self] error in
+                    self.presentErrorAlert(UserFacingCommonError.handleError(error))
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
         // set font of sement control
         let font = UIFont(name: Constant.fontName.helveticaNeue, size: 18)
         searchVacationSegementControl.setTitleTextAttributes([NSFontAttributeName: font ?? 18],
@@ -119,6 +157,7 @@ class VacationSearchViewController: UIViewController {
         
         var isPrePopulatedData = Constant.AlertPromtMessages.no
         searchVacationTableView.estimatedRowHeight = 100
+        searchVacationTableView.rowHeight = UITableViewAutomaticDimension
         
         if Constant.MyClassConstants.whereTogoContentArray.count > 0 || Constant.MyClassConstants.whatToTradeArray.count > 0 {
             isPrePopulatedData = Constant.AlertPromtMessages.yes
@@ -237,29 +276,31 @@ class VacationSearchViewController: UIViewController {
     //***** Add location pressed action to show map screen with list of location to select *****//
     func addRelinquishmentSectionButtonPressed(_ sender: IUIKButton) {
         showHudAsync()
+
+        let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+        if let viewController = mainStoryboard.instantiateViewController(withIdentifier: "RelinquishmentViewController") as? RelinquishmentViewController {
+            self.navigationController?.pushViewController(viewController, animated: true)
+        }
         ExchangeClient.getMyUnits(Session.sharedSession.userAccessToken, onSuccess: { relinquishments in
-            
+
             Constant.MyClassConstants.relinquishmentDeposits = relinquishments.deposits
             Constant.MyClassConstants.relinquishmentOpenWeeks = relinquishments.openWeeks
-            
+
             if let pointsProgram = relinquishments.pointsProgram {
                 Constant.MyClassConstants.relinquishmentProgram = pointsProgram
                 if let availablePoints = pointsProgram.availablePoints {
                     Constant.MyClassConstants.relinquishmentAvailablePointsProgram = availablePoints
                 }
             }
-            
+
             self.hideHudAsync()
-            let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
-            if let viewController = mainStoryboard.instantiateViewController(withIdentifier: "RelinquishmentViewController") as? RelinquishmentViewController {
-                self.navigationController?.pushViewController(viewController, animated: true)
-            }
-                   
+
+
         }, onError: { [weak self] error in
             self?.hideHudAsync()
             self?.presentErrorAlert(UserFacingCommonError.handleError(error))
         })
-        
+
     }
     
     func refreshTableView() {
@@ -402,21 +443,22 @@ extension VacationSearchViewController: UICollectionViewDataSource {
                 centerView.addSubview(unitLabel)
                 
                 let priceLabel = UILabel(frame: CGRect(x: 10, y: 35, width: centerView.frame.size.width - 20, height: 20))
-                if let pricefrom = deal.price?.fromPrice, let currencyCode = deal.price?.currencySymbol {
-                    if let attributedAmount = pricefrom.currencyFormatter(for: currencyCode, baseLineOffSet: 0) {
-                        let fromAttributedString = NSMutableAttributedString(string: "From ", attributes: nil)
-                        let wkAttributedString = NSAttributedString(string: " Wk.", attributes: nil)
-                        fromAttributedString.append(attributedAmount)
-                        fromAttributedString.append(wkAttributedString)
-                        priceLabel.attributedText = fromAttributedString
-                    }
-                    priceLabel.numberOfLines = 2
-                    priceLabel.textAlignment = NSTextAlignment.center
-                    priceLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: 15)
-                    priceLabel.textColor = UIColor.white
-                    priceLabel.backgroundColor = UIColor.clear
-                    centerView.addSubview(priceLabel)
-                }
+            if let pricefrom = deal.price?.fromPrice, let currencyCode = deal.price?.currencySymbol {
+                
+                let fromAttributedString = NSMutableAttributedString(string: "From ".localized(), attributes: nil)
+                let amount = Int(pricefrom)
+                let attributedAmount = NSAttributedString(string: "\(currencyCode)\(amount)", attributes: nil)
+                let wkAttributedString = NSAttributedString(string: " / Wk.".localized(), attributes: nil)
+                fromAttributedString.append(attributedAmount)
+                fromAttributedString.append(wkAttributedString)
+                priceLabel.attributedText = fromAttributedString
+                priceLabel.numberOfLines = 2
+                priceLabel.textAlignment = NSTextAlignment.center
+                priceLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: 15)
+                priceLabel.textColor = UIColor.white
+                priceLabel.backgroundColor = UIColor.clear
+                centerView.addSubview(priceLabel)
+            }
                 cell.addSubview(centerView)
                 cell.layer.borderColor = UIColor.lightGray.cgColor
                 cell.layer.borderWidth = 1.0
@@ -477,7 +519,7 @@ extension VacationSearchViewController: UITableViewDelegate {
             case 1:
                 return 80
             case 2:
-                return 120
+                return 0
             case 4:
                 return 290
                 
@@ -502,6 +544,7 @@ extension VacationSearchViewController: UITableViewDelegate {
             headerView.addSubview(headerTextLabel)
             return headerView
         } else {
+            guard section != 2 else { return nil }
             headerView.backgroundColor = IUIKColorPalette.tertiary1.color
             headerTextLabel.text = Constant.MyClassConstants.threeSegmentHeaderTextArray[section]
             headerTextLabel.textColor = IUIKColorPalette.primaryText.color
@@ -512,7 +555,11 @@ extension VacationSearchViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        
+
+        if segmentTitle == Constant.segmentControlItems.getaways && section == 2 {
+            return 0
+        }
+
         if tableView.numberOfSections == 6 || tableView.numberOfSections == 7 {
             if section < 4 {
                 return 55
@@ -599,7 +646,7 @@ extension VacationSearchViewController: UITableViewDelegate {
         } else {
             
             let delete = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: Constant.buttonTitles.delete) { (_, index) -> Void in
-                // var isFloat = true
+                self.availableRelinquishmentIdArray.remove(at: indexPath.row)
                 let storedData = Helper.getLocalStorageWherewanttoTrade()
                 
                 if storedData.count > 0 {
@@ -633,12 +680,23 @@ extension VacationSearchViewController: UITableViewDelegate {
                                         }
                                     } else {
                                         Constant.MyClassConstants.whatToTradeArray.removeObject(at: indexPath.row)
-                                        Constant.MyClassConstants.relinquishmentIdArray.remove(at: indexPath.row)
+                                        
+                                        if dataSelected.isLockOff {
+                                            if let index = Constant.MyClassConstants.relinquishmentIdArray.index(of: dataSelected.relinquishmentID),
+                                                dataSelected.unitDetails.count < 1 {
+                                                Constant.MyClassConstants.relinquishmentIdArray.remove(at: index)
+                                            }
+                                            
+                                        } else {
+                                            Constant.MyClassConstants.relinquishmentIdArray.remove(at: indexPath.row)
+                                        }
+                                    
                                         realm.delete(storedData[indexPath.row])
                                     }
                                 } else {
                                     Constant.MyClassConstants.whatToTradeArray.removeObject(at: indexPath.row)
                                     Constant.MyClassConstants.relinquishmentIdArray.remove(at: indexPath.row)
+                                    Constant.MyClassConstants.isCIGAvailable = false
                                     realm.delete(storedData[indexPath.row])
                                 }
 
@@ -809,7 +867,8 @@ extension VacationSearchViewController: UITableViewDataSource {
                             
                             cell.whereTogoTextLabel.text = resortNameString
                         } else {
-                            cell.whereTogoTextLabel.text = Constant.MyClassConstants.whereTogoContentArray[indexPath.row] as? String
+                            let whereToGoText = Constant.MyClassConstants.whereTogoContentArray[indexPath.row] as? String
+                            cell.whereTogoTextLabel.text = whereToGoText?.localized()
                         }
                         cell.selectionStyle = UITableViewCellSelectionStyle.none
                         cell.backgroundColor = UIColor.clear
@@ -842,6 +901,11 @@ extension VacationSearchViewController: UITableViewDataSource {
                         
                         guard let cell = tableView.dequeueReusableCell(withIdentifier: "WhereToGoContentCell", for: indexPath) as? WhereToGoContentCell else { return UITableViewCell() }
                         
+                        [cell.whereTogoTextLabel, cell.bedroomLabel].forEach {
+                            $0?.numberOfLines = 0
+                            $0?.lineBreakMode = .byWordWrapping
+                        }
+                        
                         if indexPath.row == Constant.MyClassConstants.whatToTradeArray.count - 1 {
                             cell.sepratorOr.isHidden = true
                         } else {
@@ -850,15 +914,20 @@ extension VacationSearchViewController: UITableViewDataSource {
                         let object = Constant.MyClassConstants.whatToTradeArray[indexPath.row] as AnyObject
                         if object.isKind(of: OpenWeek.self) {
                             guard let openWk = object as? OpenWeek else { return cell }
-                            if let resortName = openWk.resort?.resortName {
-                                cell.whereTogoTextLabel.text = "\(resortName)"
+                            let attributedTitle = NSMutableAttributedString()
+                            if let resort = openWk.resort {
+                                attributedTitle
+                                    .bold("\(resort.resortName.unwrappedString), \(resort.resortCode.unwrappedString)")
+                                    .normal("\n")
                             }
                             if let relinquishmentYear = openWk.relinquishmentYear {
-                                cell.whereTogoTextLabel.text = "\(String(describing: cell.whereTogoTextLabel.text)), \(relinquishmentYear)"
+                                attributedTitle.normal("\(relinquishmentYear)")
                             }
                             if let weekNumber = openWk.weekNumber {
-                                cell.whereTogoTextLabel.text = "\(String(describing: cell.whereTogoTextLabel.text)), Week \(weekNumber)".localized()
+                                let formattedWeekNumber = Constant.getWeekNumber(weekType: weekNumber)
+                                attributedTitle.normal("Week \(formattedWeekNumber)".localized())
                             }
+                            cell.whereTogoTextLabel.attributedText = attributedTitle
                             cell.bedroomLabel.isHidden = true
                         } else if object.isKind(of: OpenWeeks.self) {
                             guard let openWk = object as? OpenWeeks else { return cell }
@@ -870,20 +939,30 @@ extension VacationSearchViewController: UITableViewDataSource {
                                 if openWk.isFloat {
                                     let floatDetails = openWk.floatDetails
                                     if floatDetails[0].showUnitNumber {
-                                        cell.bedroomLabel.text = "\(floatDetails[0].unitSize), \(floatDetails[0].unitNumber), \(resortList[0].kitchenType)"
+                                        cell.bedroomLabel.text = "\(floatDetails[0].unitNumber), \(resortList[0].kitchenType), \(floatDetails[0].unitSize)"
                                     } else {
-                                        cell.bedroomLabel.text = "\(floatDetails[0].unitSize), \(resortList[0].kitchenType)"
+                                        cell.bedroomLabel.text = "\(resortList[0].kitchenType)\n\(floatDetails[0].unitSize)"
                                     }
                                 } else {
-                                    cell.bedroomLabel.text = "\(resortList[0].unitSize), \(resortList[0].kitchenType)"
+                                    cell.bedroomLabel.text = "\(resortList[0].kitchenType)\n\(resortList[0].unitSize)"
                                 }
                             } else {
                                 cell.bedroomLabel.isHidden = true
                             }
                             if weekNumber != "" {
-                                cell.whereTogoTextLabel.text = "\(openWk.resort[0].resortName)/ \(openWk.relinquishmentYear), Wk\(weekNumber)".localized()
+                                let attributedTitle = NSMutableAttributedString()
+                                attributedTitle
+                                    .bold("\(openWk.resort[0].resortName), \(openWk.resort[0].resortCode)")
+                                    .normal("\n")
+                                    .normal("\(openWk.relinquishmentYear) Week \(weekNumber)".localized())
+                                cell.whereTogoTextLabel.attributedText = attributedTitle
                             } else {
-                                cell.whereTogoTextLabel.text = "\(openWk.resort[0].resortName)/ \(openWk.relinquishmentYear)"
+                                let attributedTitle = NSMutableAttributedString()
+                                attributedTitle
+                                    .bold("\(openWk.resort[0].resortName), \(openWk.resort[0].resortCode)")
+                                    .normal("\n")
+                                    .normal("\(openWk.relinquishmentYear)")
+                                cell.whereTogoTextLabel.attributedText = attributedTitle
                             }
                         } else if object.isKind(of: Deposits.self) {
                             guard let deposits = object as? Deposits else { return cell }
@@ -895,19 +974,30 @@ extension VacationSearchViewController: UITableViewDataSource {
                                 cell.bedroomLabel.isHidden = false
                                 
                                 let resortList = deposits.unitDetails
-                                if deposits.isFloat {
-                                    let floatDetails = deposits.floatDetails
-                                    cell.bedroomLabel.text = "\(resortList[0].unitSize), \(floatDetails[0].unitNumber), \(resortList[0].kitchenType)"
+                                let floatDetails = deposits.floatDetails
+                                if floatDetails[0].showUnitNumber {
+                                    cell.bedroomLabel.text = "\(floatDetails[0].unitNumber), \(resortList[0].kitchenType), \(floatDetails[0].unitSize)"
                                 } else {
-                                    cell.bedroomLabel.text = "\(resortList[0].unitSize), \(resortList[0].kitchenType)"
+                                    cell.bedroomLabel.text = "\(resortList[0].kitchenType)\n\(floatDetails[0].unitSize)"
                                 }
+
                             } else {
                                 cell.bedroomLabel.isHidden = true
                             }
                             if weekNumber != "" {
-                                cell.whereTogoTextLabel.text = "\(deposits.resort[0].resortName)/ \(deposits.relinquishmentYear), Wk\(weekNumber)".localized()
+                                let attributedTitle = NSMutableAttributedString()
+                                attributedTitle
+                                    .bold("\(deposits.resort[0].resortName), \(deposits.resort[0].resortCode)")
+                                    .normal("\n")
+                                    .normal("\(deposits.relinquishmentYear) Week \(weekNumber)".localized())
+                                cell.whereTogoTextLabel.attributedText = attributedTitle
                             } else {
-                                cell.whereTogoTextLabel.text = "\(deposits.resort[0].resortName)/ \(deposits.relinquishmentYear)"
+                                let attributedTitle = NSMutableAttributedString()
+                                attributedTitle
+                                    .bold("\(deposits.resort[0].resortName), \(deposits.resort[0].resortCode)")
+                                    .normal("\n")
+                                    .normal("\(deposits.relinquishmentYear)")
+                                cell.whereTogoTextLabel.attributedText = attributedTitle
                             }
                             
                         } else if object.isKind(of: List<ClubPoints>.self) {
@@ -981,6 +1071,7 @@ extension VacationSearchViewController: UITableViewDataSource {
                 cell.delegate = self
                 cell.selectionStyle = UITableViewCellSelectionStyle.none
                 cell.backgroundColor = UIColor.clear
+                cell.contentView.isHidden = false
                 return cell
             } else if indexPath.section == 5 || indexPath.section == 6 {
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.dashboardTableScreenReusableIdentifiers.cellIdentifier, for: indexPath)
@@ -1167,6 +1258,7 @@ extension VacationSearchViewController: UITableViewDataSource {
                 cell.delegate = self
                 cell.selectionStyle = UITableViewCellSelectionStyle.none
                 cell.backgroundColor = UIColor.clear
+                cell.contentView.isHidden = segmentTitle == Constant.segmentControlItems.getaways
                 return cell
                 
             } else if indexPath.section == 4 {
@@ -1383,6 +1475,7 @@ extension VacationSearchViewController: SearchTableViewCellDelegate {
             switch segmentTitle {
                 case Constant.segmentControlItems.exchange:
                     requestExchange.setCheckInToDate(checkInToDate)
+                    requestExchange.travelParty = Constant.MyClassConstants.travelPartyInfo
                     searchType = VacationSearchType.EXCHANGE
                 
                 case Constant.segmentControlItems.getaways:
@@ -1398,8 +1491,8 @@ extension VacationSearchViewController: SearchTableViewCellDelegate {
             sender.isEnabled = false
             Constant.MyClassConstants.regionArray.removeAll()
             Constant.MyClassConstants.regionAreaDictionary.removeAllObjects()
-            Constant.MyClassConstants.selectedAreaCodeDictionary.removeAllObjects()
-            Constant.MyClassConstants.selectedAreaCodeArray.removeAllObjects()
+            Constant.MyClassConstants.selectedAreaCodeDictionary.removeAll()
+            Constant.MyClassConstants.selectedAreaCodeArray.removeAll()
             
             if searchType.isRental() || searchType.isCombined() {
                 
@@ -1521,12 +1614,12 @@ extension VacationSearchViewController: SearchTableViewCellDelegate {
                 if Constant.MyClassConstants.whereTogoContentArray.count == 0 {
                      presentAlert(with: Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.searchVacationMessage)
                 } else if Constant.MyClassConstants.relinquishmentIdArray.isEmpty {
-                     presentAlert(with: Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.tradeItemMessage)
+                      presentAlert(with: Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.tradeItemMessage)
                 } else {
                     sender.isEnabled = false
                     showHudAsync()
                     let exchangeSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.EXCHANGE)
-                        exchangeSearchCriteria.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray
+                    exchangeSearchCriteria.relinquishmentsIds = availableRelinquishmentIdArray
                         exchangeSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
                         exchangeSearchCriteria.travelParty = Constant.MyClassConstants.travelPartyInfo
                     
@@ -1561,6 +1654,7 @@ extension VacationSearchViewController: SearchTableViewCellDelegate {
                     }
                     hideHudAsync()
                   Constant.MyClassConstants.isFromExchange = true
+                  Constant.MyClassConstants.isFromSearchBoth = false
                 }
 
             case Constant.segmentControlItems.searchBoth:
@@ -1604,6 +1698,7 @@ extension VacationSearchViewController: SearchTableViewCellDelegate {
                                 
                                 sender.isEnabled = true
                                 Constant.MyClassConstants.isFromSearchBoth = true
+                                Constant.MyClassConstants.isFromExchange = false
                             }
                             
                         }) { _ in
@@ -1687,7 +1782,7 @@ extension VacationSearchViewController: SearchTableViewCellDelegate {
             }
         } else if allDest.count > 0 {
             for areaCode in Constant.MyClassConstants.selectedAreaCodeArray {
-                let dictionaryArea = ["\(areaCode)": Constant.MyClassConstants.selectedAreaCodeDictionary.value(forKey: areaCode as! String)]
+                let dictionaryArea = ["\(areaCode)": Constant.MyClassConstants.selectedAreaCodeDictionary[areaCode]]
                 Constant.MyClassConstants.filterOptionsArray.append(.Area(dictionaryArea as! NSMutableDictionary))
             }
         }

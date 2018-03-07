@@ -19,38 +19,6 @@ class InfoDetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        /*let object = Constant.MyClassConstants.selectedGetawayAlertDestinationArray[selectedIndex] as! NSArray
-        
-        var y = 60
-        
-        for resort in object {
-            
-            let rest  = resort as! Resort
-            let bullet = UIView()
-            if(Constant.RunningDevice.deviceIdiom == .pad){
-                bullet.frame = CGRect(x: 60, y: y + 10, width: 6, height: 6)
-            }else{
-                bullet.frame = CGRect(x: 10, y: y + 10, width: 6, height: 6)
-            }
-            bullet.backgroundColor = UIColor.black
-            bullet.layer.masksToBounds = true
-            bullet.layer.cornerRadius = 3
-            let nameLabel = UILabel()
-            nameLabel.numberOfLines = 0
-            if(Constant.RunningDevice.deviceIdiom == .pad){
-                nameLabel.frame = CGRect(x: 80, y: y, width: 300, height: 25)
-            }else{
-                nameLabel.frame = CGRect(x: 25, y: y, width: Int(UIScreen.main.bounds.size.width - 50), height: 25)
-            }
-            
-            nameLabel.text = rest.resortName
-            
-            self.resortDetailView.addSubview(bullet)
-            self.resortDetailView.addSubview(nameLabel)
-            y = y + Int(nameLabel.frame.height)
-        }*/
-        
     }
     
     override func didReceiveMemoryWarning() {
@@ -59,7 +27,6 @@ class InfoDetailViewController: UIViewController {
     }
     
     @IBAction func doneButtonPressed(_ sender: AnyObject) {
-        
         self.dismiss(animated: true, completion: nil)
     }
     
@@ -76,19 +43,27 @@ extension InfoDetailViewController: UITableViewDelegate {
 
 extension InfoDetailViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let object = Constant.MyClassConstants.selectedGetawayAlertDestinationArray[0] as! NSArray
-       // let count  = object as! Int
-        //let resort = object[0] as! NSArray
-        return object.count
+        
+        switch Constant.MyClassConstants.selectedGetawayAlertDestinationArray[0] {
+        case .resorts(let resorts):
+            return resorts.count
+        default :
+            return 0
+        }
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: Constant.dashboardTableScreenReusableIdentifiers.cellIdentifier, for: indexPath as IndexPath) as! ResortInfoTableViewCell
         cell.selectionStyle = UITableViewCellSelectionStyle.none
-        let object = Constant.MyClassConstants.selectedGetawayAlertDestinationArray[0] as! NSArray
-        let resort = object[indexPath.row] as! Resort
-        cell.resortInfoLabel.text =
-            resort.resortName
+        switch Constant.MyClassConstants.selectedGetawayAlertDestinationArray[0] {
+        case .resorts(let resorts):
+            let resort = resorts[indexPath.row]
+            cell.resortInfoLabel.text = "\u{2022}" + " " +
+                resort.resortName.unwrappedString
+        default :
+            break
+        }
+       
         return cell
         
     }

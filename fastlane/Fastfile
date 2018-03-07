@@ -76,10 +76,10 @@ sh("sudo ifconfig en0 up")
 end
 
 desc "Uploads a quick build to hockey"
-lane :development_manual do
+lane :beta do
 
 # Increment project build number
-increment_build_number(xcodeproj: "/Users/aolivas/interval-app-ios/IntervalApp.xcodeproj")
+increment_build_number(xcodeproj: "./IntervalApp.xcodeproj")
 buildNumber = get_build_number
 
 # Commit build number bump

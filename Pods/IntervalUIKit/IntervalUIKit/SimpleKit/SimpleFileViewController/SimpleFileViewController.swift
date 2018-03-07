@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SVProgressHUD
 
 public final class SimpleFileViewController: UIViewController {
 
@@ -14,16 +15,17 @@ public final class SimpleFileViewController: UIViewController {
     @IBOutlet private weak var webView: UIWebView!
 
     // MARK: - Public properties
-    public var didError: ((SimpleFileViewController) -> Void)?
-    public var atDocumentEnd: ((SimpleFileViewController) -> Void)?
-
+    public var didError: CallBack?
+    public var atDocumentEnd: CallBack?
+    public var documentDidFinishLoading: CallBack?
+    
     public var fileData: Data {
         guard let data = data else {
             // if NSData was not set, try and create one from the URL, otherwise show error and return.
             if let url = url, let URL = URL(string: url), let data = try? Data(contentsOf: URL) {
                 return data
             }
-            didError?(self)
+            didError?()
             return Data()
         }
 
@@ -40,6 +42,8 @@ public final class SimpleFileViewController: UIViewController {
     }
 
     // MARK: - Private properties
+    private let shouldShowLoadingIndicator: Bool
+    
     private var url: String?
     private var data: Data?
     private var mimeType: MIMEType?
@@ -57,29 +61,32 @@ public final class SimpleFileViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    public init(load url: String) {
+    public init(load url: String, shouldShowLoadingIndicator: Bool = false) {
         self.url = url
+        self.shouldShowLoadingIndicator = shouldShowLoadingIndicator
         super.init(nibName: "SimpleFileViewController", bundle: Bundle(for: SimpleFileViewController.self))
     }
 
-    public init(data: Data, mimeType: MIMEType) {
+    public init(data: Data, mimeType: MIMEType, shouldShowLoadingIndicator: Bool = false) {
         self.data = data
         self.mimeType = mimeType
         url = nil
+        self.shouldShowLoadingIndicator = shouldShowLoadingIndicator
         super.init(nibName: "SimpleFileViewController", bundle: Bundle(for: SimpleFileViewController.self))
     }
 
-    public init(url: String, mimeType: MIMEType? = nil) {
+    public init(url: String, mimeType: MIMEType? = nil, shouldShowLoadingIndicator: Bool = false) {
         self.url = url
         self.mimeType = mimeType
         data = nil
+        self.shouldShowLoadingIndicator = shouldShowLoadingIndicator
         super.init(nibName: "SimpleFileViewController", bundle: Bundle(for: SimpleFileViewController.self))
     }
 
     // MARK: - Overrides
     override public func viewDidLoad() {
         super.viewDidLoad()
-
+        showLoadingIndicator()
         if let mimeType = mimeType?.value {
 
             // Loading Data
@@ -89,14 +96,15 @@ public final class SimpleFileViewController: UIViewController {
 
             // Loading Webpage
             guard let URL = URL(string: myURL) else {
-                didError?(self)
+                didError?()
                 return
             }
 
             webView.loadRequest(URLRequest(url: URL))
 
         } else {
-            didError?(self)
+            dismissLoadingIndicator()
+            didError?()
         }
 
         webView.scalesPageToFit = true
@@ -106,24 +114,28 @@ public final class SimpleFileViewController: UIViewController {
 
     fileprivate func checkIfAtDocumentEnd() {
         if numberOfPagesInDocument == 1 {
-            atDocumentEnd?(self)
+            atDocumentEnd?()
             return
         }
 
         if numberOfPagesInDocument == numberOfPagesLoaded {
-            atDocumentEnd?(self)
+            atDocumentEnd?()
         }
     }
 }
+
+extension SimpleFileViewController: AsyncTasks { }
 
 extension SimpleFileViewController: UIWebViewDelegate {
 
     public func webViewDidFinishLoad(_ webView: UIWebView) {
         checkIfAtDocumentEnd()
+        showLoadingIndicator()
+        documentDidFinishLoading?()
     }
 
     public func webView(_ webView: UIWebView, didFailLoadWithError error: Error) {
-        didError?(self)
+        didError?()
     }
 }
 

@@ -9,7 +9,7 @@
 import Foundation
 
 public enum ExchangeTransactionType : String {
-    case Rental = "RENTAL"                          // UpcomingTrips-Display: Rental
+    case Rental = "RENTAL"                          // UpcomingTrips-Display: Getaway
     case Regular_Exchange = "SHOP"                  // UpcomingTrips-Display: Exchange
     case ShortStay_Exchange = "SHORT_STAY"          // UpcomingTrips-Display: ShortStay Exchange
     case Cruise_Exchange = "CRUISE_EXCHANGE"        // UpcomingTrips-Display: Cruise Exchange
@@ -79,7 +79,9 @@ public enum ExchangeTransactionType : String {
         let name = self.rawValue.lowercased().replacingOccurrences(of: "_", with: " ")
         
         let exchangeTransactionType = ExchangeTransactionType.fromName(name: self.rawValue)
-        if (exchangeTransactionType.isShortStayExchange()) {
+        if (exchangeTransactionType.isRental()) {
+            return "Getaway"
+        } else if (exchangeTransactionType.isShortStayExchange()) {
             return name.capitalized + " Exchange"
         } else if (exchangeTransactionType.isRegularExchange() || exchangeTransactionType.isEplusRetrade()) {
             return "Exchange"

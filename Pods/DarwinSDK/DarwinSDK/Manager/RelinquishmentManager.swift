@@ -13,22 +13,22 @@ open class RelinquishmentManager {
     public init() {
     }
 
-    open func getRelinquishmentGroups(myUnits: MyUnits) -> RelinquishmentGroups {
-        let groups = RelinquishmentGroups()
+    open func getRelinquishmentSections(myUnits: MyUnits) -> RelinquishmentSections {
+        let sections = RelinquishmentSections()
         
         if let value = myUnits.pointsProgram {
-            groups.cigPointsProgram = value
+            sections.cigPointsProgram = value
         }
         
         // Grouping OpenWeeks
         if !myUnits.openWeeks.isEmpty {
             for openWeek in myUnits.openWeeks {
                 if let value = openWeek.pointsProgramCode, PointsProgramCode.fromName(name: value).isCIG() {
-                    groups.cigPointsWeeks.append(Relinquishment(openWeek: openWeek))
+                    sections.cigPointsWeeks.append(Relinquishment(openWeek: openWeek))
                 } else if let value = openWeek.weekNumber, WeekNumber.fromName(name: value).isPointWeek() {
-                   groups.pointsWeeks.append(Relinquishment(openWeek: openWeek))
+                    sections.pointsWeeks.append(Relinquishment(openWeek: openWeek))
                 } else {
-                    groups.intervalWeeks.append(Relinquishment(openWeek: openWeek))
+                    sections.intervalWeeks.append(Relinquishment(openWeek: openWeek))
                 }
             }
         }
@@ -36,11 +36,39 @@ open class RelinquishmentManager {
         // Grouping Deposits
         if !myUnits.deposits.isEmpty {
             for deposit in self.filterDeposits(deposits: myUnits.deposits) {
-                groups.intervalWeeks.append(Relinquishment(deposit: deposit))
+                sections.intervalWeeks.append(Relinquishment(deposit: deposit))
             }
         }
 
-        return sort(gropus: groups)
+        return sort(sections: sections)
+    }
+    
+    open func groupRelinquishmentsByResort(relinquishments: [Relinquishment]) -> [RelinquishmentGroup] {
+        var groups = [RelinquishmentGroup]()
+        
+        if !relinquishments.isEmpty {
+            var groupByResortDic = [String: [Relinquishment]]()
+            for relinq in relinquishments {
+                if let resort = relinq.resort, let resortCode = resort.resortCode {
+                    if var list = groupByResortDic[resortCode] {
+                        list.append(relinq)
+                    } else {
+                        var list = [Relinquishment]()
+                        list.append(relinq)
+                        groupByResortDic[resortCode] = list
+                    }
+                }
+            }
+            
+            for list in groupByResortDic.values {
+                let group = RelinquishmentGroup()
+                group.resort = list.first?.resort
+                group.relinquishments = list
+                groups.append(group)
+            }
+        }
+        
+        return groups
     }
 
     //
@@ -83,9 +111,9 @@ open class RelinquishmentManager {
     }
     
     //
-    // Sort Relinquishment Groups
+    // Sort Relinquishment Sections
     //
-    fileprivate func sort(gropus: RelinquishmentGroups) -> RelinquishmentGroups {
+    fileprivate func sort(sections: RelinquishmentSections) -> RelinquishmentSections {
         // Sort by:
         //  Relinquishment Year (ASC)
         //  Resort Name (ASC)
@@ -96,19 +124,19 @@ open class RelinquishmentManager {
         //
         
         // Resort Name (ASC - alphabetical: A -> Z)
-        gropus.cigPointsWeeks.sort(by: {$0.resort?.resortName?.localizedCaseInsensitiveCompare(
+        sections.cigPointsWeeks.sort(by: {$0.resort?.resortName?.localizedCaseInsensitiveCompare(
             ($1.resort?.resortName!)!) == ComparisonResult.orderedAscending})
-        gropus.pointsWeeks.sort(by: {$0.resort?.resortName?.localizedCaseInsensitiveCompare(
+        sections.pointsWeeks.sort(by: {$0.resort?.resortName?.localizedCaseInsensitiveCompare(
             ($1.resort?.resortName!)!) == ComparisonResult.orderedAscending})
-        gropus.intervalWeeks.sort(by: {$0.resort?.resortName?.localizedCaseInsensitiveCompare(
+        sections.intervalWeeks.sort(by: {$0.resort?.resortName?.localizedCaseInsensitiveCompare(
             ($1.resort?.resortName!)!) == ComparisonResult.orderedAscending})
         
         // Relinquishment Year (alphabetical: A -> Z)
-        gropus.cigPointsWeeks.sort(by: {$0.relinquishmentYear! < $1.relinquishmentYear!})
-        gropus.pointsWeeks.sort(by: {$0.relinquishmentYear! < $1.relinquishmentYear!})
-        gropus.intervalWeeks.sort(by: {$0.relinquishmentYear! < $1.relinquishmentYear!})
+        sections.cigPointsWeeks.sort(by: {$0.relinquishmentYear! < $1.relinquishmentYear!})
+        sections.pointsWeeks.sort(by: {$0.relinquishmentYear! < $1.relinquishmentYear!})
+        sections.intervalWeeks.sort(by: {$0.relinquishmentYear! < $1.relinquishmentYear!})
        
-        return gropus
+        return sections
     }
     
 }

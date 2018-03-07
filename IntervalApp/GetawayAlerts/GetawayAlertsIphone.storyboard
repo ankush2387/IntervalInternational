@@ -111,11 +111,11 @@
                                                     </constraints>
                                                 </view>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9tK-KX-cen" customClass="IUIKButton" customModule="IntervalUIKit">
-                                                    <rect key="frame" x="270" y="18" width="80" height="30"/>
+                                                    <rect key="frame" x="254" y="18" width="96" height="30"/>
                                                     <color key="backgroundColor" red="0.90196078431372551" green="0.46274509803921571" blue="0.25882352941176467" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="30" id="DnN-9c-ty4"/>
-                                                        <constraint firstAttribute="width" constant="80" id="G5O-Ih-IIQ"/>
+                                                        <constraint firstAttribute="width" constant="96" id="G5O-Ih-IIQ"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="12"/>
                                                     <state key="normal">
@@ -135,7 +135,7 @@
                                                 </button>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="H9H-Ku-QzT" firstAttribute="centerX" secondItem="9tK-KX-cen" secondAttribute="centerX" id="1Cf-wy-VyO"/>
+                                                <constraint firstItem="H9H-Ku-QzT" firstAttribute="centerX" secondItem="9tK-KX-cen" secondAttribute="centerX" constant="8" id="1Cf-wy-VyO"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="9tK-KX-cen" secondAttribute="trailing" constant="10" id="1DZ-e8-Grw"/>
                                                 <constraint firstItem="W3i-S0-8Co" firstAttribute="leading" secondItem="96l-ju-r7h" secondAttribute="leading" id="Jrq-Di-Zrf"/>
                                                 <constraint firstItem="H9H-Ku-QzT" firstAttribute="centerY" secondItem="9tK-KX-cen" secondAttribute="centerY" id="O4v-kc-2cn"/>
@@ -214,7 +214,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qoI-4D-meM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1322" y="31"/>
+            <point key="canvasLocation" x="1321.0144927536232" y="30.570652173913047"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="ovu-8B-Ms3">
@@ -1199,7 +1199,7 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
-                                            <action selector="SaveMyAlertButtonPressed:" destination="rM7-2R-QSW" eventType="touchUpInside" id="jr5-fW-O3W"/>
+                                            <action selector="updateAlertPressed:" destination="rM7-2R-QSW" eventType="touchUpInside" id="MrV-1d-hAD"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -1600,7 +1600,7 @@
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="40" translatesAutoresizingMaskIntoConstraints="NO" id="izb-YS-SoI">
-                                                            <rect key="frame" x="0.0" y="0.0" width="394" height="40"/>
+                                                            <rect key="frame" x="10" y="0.0" width="384" height="40"/>
                                                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
@@ -1608,7 +1608,7 @@
                                                     </subviews>
                                                     <constraints>
                                                         <constraint firstItem="izb-YS-SoI" firstAttribute="top" secondItem="Apt-8e-XyS" secondAttribute="top" id="Eg5-l1-lRT"/>
-                                                        <constraint firstItem="izb-YS-SoI" firstAttribute="leading" secondItem="Apt-8e-XyS" secondAttribute="leading" id="ee2-Q2-gva"/>
+                                                        <constraint firstItem="izb-YS-SoI" firstAttribute="leading" secondItem="Apt-8e-XyS" secondAttribute="leading" constant="10" id="ee2-Q2-gva"/>
                                                         <constraint firstAttribute="trailing" secondItem="izb-YS-SoI" secondAttribute="trailing" id="fpU-yt-h1x"/>
                                                         <constraint firstAttribute="bottom" secondItem="izb-YS-SoI" secondAttribute="bottom" id="vNa-0R-aES"/>
                                                     </constraints>

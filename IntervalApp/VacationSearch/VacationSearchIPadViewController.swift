@@ -650,7 +650,7 @@ func createFilterOptions() {
         }
     } else if allDest.count > 0 {
         for areaCode in Constant.MyClassConstants.selectedAreaCodeArray {
-            let dictionaryArea = ["\(areaCode)": Constant.MyClassConstants.selectedAreaCodeDictionary.value(forKey: areaCode as! String)]
+            let dictionaryArea = ["\(areaCode)": Constant.MyClassConstants.selectedAreaCodeDictionary[areaCode]]
             Constant.MyClassConstants.filterOptionsArray.append(.Area(dictionaryArea as! NSMutableDictionary))
         }
     }
@@ -722,8 +722,8 @@ extension VacationSearchIPadViewController: SearchTableViewCellDelegate {
             
             Constant.MyClassConstants.regionArray.removeAll()
             Constant.MyClassConstants.regionAreaDictionary.removeAllObjects()
-            Constant.MyClassConstants.selectedAreaCodeDictionary.removeAllObjects()
-            Constant.MyClassConstants.selectedAreaCodeArray.removeAllObjects()
+            Constant.MyClassConstants.selectedAreaCodeDictionary.removeAll()
+            Constant.MyClassConstants.selectedAreaCodeArray.removeAll()
             
             if  searchType.isRental() || searchType.isCombined() {
                 RentalClient.searchRegions(Session.sharedSession.userAccessToken, request: requestRental, onSuccess: {(response)in

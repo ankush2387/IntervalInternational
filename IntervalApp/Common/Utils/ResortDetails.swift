@@ -63,6 +63,7 @@ class ResortDetails: NSObject, UITableViewDataSource, UITableViewDelegate {
         if let tier = resortDetails.tier {
             let tierImageName = Helper.getTierImageName(tier: tier.uppercased())
             cell.tierImageView.image = UIImage(named: tierImageName)
+            cell.tierImageView.isHidden = false
         } else {
             cell.tierImageView.isHidden = true
         }

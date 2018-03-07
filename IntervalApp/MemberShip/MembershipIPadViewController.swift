@@ -77,20 +77,42 @@ class MembershipIPadViewController: UIViewController {
         if let memberNo = Session.sharedSession.selectedMembership?.memberNumber {
             Constant.MyClassConstants.memberNumber = memberNo
         }
-        UserClient.updateSessionAndGetCurrentMembership(Session.sharedSession.userAccessToken, membershipNumber: Session.sharedSession.selectedMembership?.memberNumber ?? "", onSuccess: { membership in
-            Session.sharedSession.selectedMembership = membership
-            if let ownerships = membership.ownerships {
-                self.ownershipArray = ownerships
+        
+        guard let accessToken = Session.sharedSession.userAccessToken else { return }
+        
+        ClientAPI.sharedInstance.readMembership(for: accessToken, and: Session.sharedSession.selectedMembership?.memberNumber ?? "")
+            .then { newMembership in
+                Session.sharedSession.selectedMembership = newMembership
+                if let membershipContacts = newMembership.contacts {
+                    let contact = membershipContacts.filter {
+                        $0.firstName == self.contactInfo.firstName && $0.lastName == self.contactInfo.lastName }.last
+                    Session.sharedSession.contact?.isPrimary = contact?.isPrimary
+                }
+                if let contact = Session.sharedSession.contact {
+                    self.contactInfo = contact
+                }
+                if let ownerships = newMembership.ownerships {
+                    self.ownershipArray = ownerships
+                }
+                
+                if let products = newMembership.products {
+                    self.membershipProductsArray = products
+                }
+                
+                self.membershipProductsArray.sort { $0.coreProduct && !$1.coreProduct } //sort Array coreProduct First Element
+                //arrange array elements highestTier in second position
+                if self.membershipProductsArray.count > 2 {
+                    for (index, prod) in self.membershipProductsArray.enumerated()  where prod.highestTier == true {
+                        self.membershipProductsArray.remove(at: index)
+                        self.membershipProductsArray.insert(prod, at: 1)
+                    }
+                }
+                self.tableView.reloadData()
+                self.hideHudAsync()
             }
-            if let products = membership.products {
-                self.membershipProductsArray = products
-            }
-            self.hideHudAsync()
-            self.membershipProductsArray.sort { $0.coreProduct && !$1.coreProduct }
-            self.tableView.reloadData()
-        }) {[unowned self] _ in
-            self.hideHudAsync()
-             self.presentAlert(with: "Membership Error".localized(), message:"Unable to get membership from server. Please try again!".localized())
+            .onError { [unowned self] error in
+                self.hideHudAsync()
+                self.presentErrorAlert(UserFacingCommonError.handleError(error))
         }
     }
     

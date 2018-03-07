@@ -49,12 +49,13 @@ class ViewDetailsTBLcell: UITableViewCell {
                 if Constant.MyClassConstants.isCIGAvailable {
                     resortDetailsButton.isHidden = true
                     lblHeading.text = "CIG Points"
-                    let availablePointsNumber = Constant.MyClassConstants.selectedExchangeCigPoints as NSNumber
                     let numberFormatter = NumberFormatter()
                     numberFormatter.numberStyle = .decimal
-                    if let availablePoints = numberFormatter.string(from: availablePointsNumber) {
+                    if let pointsCost = Constant.MyClassConstants.selectedExchangePointsCost, let availablePoints = numberFormatter.string(from: pointsCost) {
                         resortName?.text = "\(availablePoints)".localized()
-                    } else { resortName?.text = "\(0)".localized() }
+                    } else {
+                        resortName?.text = "\(0)".localized()
+                    }
                 }
             }
             resortDetailsButton.tag = indexPath.row

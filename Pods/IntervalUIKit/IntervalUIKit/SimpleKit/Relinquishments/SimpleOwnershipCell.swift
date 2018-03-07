@@ -108,6 +108,7 @@ final public class SimpleOwnershipCell: SimpleTableViewCell {
          viewModel?.expirationDateLabelText.value,
          viewModel?.flagsLabelText.value].flatMap { $0 }
 
+        actionButtonHeight.constant = viewModel?.actionButton.value == nil ? 0 : 30
         resortNameTopOffset.constant = secondaryLableValues.count == 0 ? 40 : 5
         extraInformationLabelHeight.constant = viewModel?.extraInformationLabelText.value == nil ? 0 : 20
         stateLabelHeight.constant = viewModel?.ownershipStateLabelText.value == nil ? 0 : 40

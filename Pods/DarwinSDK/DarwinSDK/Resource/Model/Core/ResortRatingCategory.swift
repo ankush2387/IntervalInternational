@@ -11,8 +11,8 @@ import SwiftyJSON
 
 open class ResortRatingCategory {
     
-    open var rating : Int = 0
-    open var categoryCode : String??
+    open var rating : Float = 0.0
+    open var categoryCode : String?
     
     public init() {
     }
@@ -20,7 +20,7 @@ open class ResortRatingCategory {
     public convenience init(json:JSON) {
         self.init()
         
-        self.rating = json["rating"].intValue
+        self.rating = json["rating"].floatValue
         self.categoryCode = json["code"].string
     }
     

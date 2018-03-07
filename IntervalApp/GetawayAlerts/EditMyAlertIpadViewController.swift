@@ -180,8 +180,7 @@ class EditMyAlertIpadViewController: UIViewController {
         let mainStoryboard: UIStoryboard = UIStoryboard(name: storyboardName, bundle: nil)
         if let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.calendarViewController) as? CalendarViewController {
             viewController.requestedDateWindow = Constant.MyClassConstants.end
-            let transitionManager = TransitionManager()
-            navigationController?.transitioningDelegate = transitionManager
+            viewController.showNinetyDaysWindow = true
             navigationController?.pushViewController(viewController, animated: true)
         }
     }
@@ -207,7 +206,7 @@ class EditMyAlertIpadViewController: UIViewController {
         }
     }
     
-    @IBAction func SaveMyAlertButtonPressed(_ sender: AnyObject) {
+    @IBAction func updateAlertPressed(_ sender: UIButton) {
         
         guard let trimmedUsername = self.nameTextField.text?.trimmingCharacters(in: NSCharacterSet.whitespacesAndNewlines) else {
             presentAlert(with: Constant.AlertPromtMessages.editAlertTitle, message: Constant.AlertMessages.editAlertEmptyNameMessage)
@@ -228,25 +227,33 @@ class EditMyAlertIpadViewController: UIViewController {
             rentalAlert.name = trimmedUsername
             rentalAlert.enabled = alertStatusButton.isOn
             
-            rentalAlert.resorts = Constant.MyClassConstants.alertSelectedResorts
-            rentalAlert.destinations = Constant.MyClassConstants.alertSelectedDestination
+            for destination in Constant.MyClassConstants.selectedGetawayAlertDestinationArray {
+                switch destination {
+            case .resort(let resort):
+                rentalAlert.resorts.append(resort)
+            case .destination(let destination):
+                rentalAlert.destinations.append(destination)
+            case .resorts(let resorts):
+                print(resorts)
+            }
+            }
+            
             rentalAlert.selections = []
             
             var unitsizearray = [UnitSize]()
-            let brWithoutSpaces = Constant.MyClassConstants.selectedBedRoomSize.replacingOccurrences(of: " ", with: "")
-            let selectedUnits = brWithoutSpaces.components(separatedBy: ",")
-            Constant.MyClassConstants.alertSelectedUnitSizeArray.removeAll()
-            for selectedUnit in selectedUnits {
-                
-                if selectedUnit == Constant.MyClassConstants.allBedrommSizes {
-                    for unit in Constant.MyClassConstants.bedRoomSize {
-                        if let selectedUnitSize = UnitSize(rawValue: unit) {
+            if Constant.MyClassConstants.selectedBedRoomSize == Constant.MyClassConstants.allBedrommSizes {
+                for unit in Constant.MyClassConstants.bedRoomSize {
+                    if let selectedUnitSize = UnitSize(rawValue: unit) {
                         Constant.MyClassConstants.alertSelectedUnitSizeArray.append(selectedUnitSize.rawValue)
-                        }
                     }
-                } else {
+                }
+            } else {
+                let brWithoutSpaces = Constant.MyClassConstants.selectedBedRoomSize.replacingOccurrences(of: " ", with: "")
+                let selectedUnits = brWithoutSpaces.components(separatedBy: ",")
+                Constant.MyClassConstants.alertSelectedUnitSizeArray.removeAll()
+                for selectedUnit in selectedUnits {
                     if let selectedUnitSize = UnitSize(rawValue: Constant.MyClassConstants.bedRoomSize[Int("\(selectedUnit)") ?? 0] ) {
-                    Constant.MyClassConstants.alertSelectedUnitSizeArray.append(selectedUnitSize.rawValue)
+                        Constant.MyClassConstants.alertSelectedUnitSizeArray.append(selectedUnitSize.rawValue)
                     }
                 }
             }

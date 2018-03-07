@@ -17,51 +17,53 @@ class IntervalHDCommonControllerForTabs: UIViewController {
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var videoTBLView: UITableView!
     
+    @IBOutlet weak fileprivate var searhBarTopSpaceConstraint: NSLayoutConstraint!
     var searchResultArray = [Video]()
     
     override func viewWillAppear(_ animated: Bool) {
-        
+            super.viewWillAppear(animated)
+        if UIScreen.main.bounds.size.height == 812 {
+            searhBarTopSpaceConstraint.constant = 88
+        }
     // Handle hamburgur menu button for prelogin and post login case
         if Session.sharedSession.userAccessToken != nil && Constant.MyClassConstants.isLoginSuccessfull {
             
-            if let rvc = self.revealViewController() {
+            if let rvc = revealViewController() {
                 //set SWRevealViewController's Delegate
                 rvc.delegate = self
                 //***** Add the hamburger menu *****//
                 let menuButton = UIBarButtonItem(image: UIImage(named: Constant.assetImageNames.ic_menu), style: .plain, target: rvc, action: #selector(SWRevealViewController.revealToggle(_:)))
                 menuButton.tintColor = UIColor.white
-                self.navigationItem.leftBarButtonItem = menuButton
+                navigationItem.leftBarButtonItem = menuButton
                 
                 //***** This line allows the user to swipe left-to-right to reveal the menu. We might want to comment this out if it becomes confusing. *****//
-                self.view.addGestureRecognizer( rvc.panGestureRecognizer())
+                view.addGestureRecognizer( rvc.panGestureRecognizer())
             }
             
         } else {
             
             let menuButton = UIBarButtonItem(image: UIImage(named: Constant.assetImageNames.backArrowNav), style: .plain, target: self, action: #selector(menuBackButtonPressed))
             menuButton.tintColor = UIColor.white
-            self.navigationItem.leftBarButtonItem = menuButton
+            navigationItem.leftBarButtonItem = menuButton
             
         }
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        
-        self.searchBar.frame = CGRect(x: 0, y: 64, width: self.view.frame.width, height: 44)
-        self.videoTBLView.frame = CGRect(x: videoTBLView.frame.origin.x, y: 108, width: videoTBLView.frame.width, height: self.videoTBLView.frame.height)
-      
+        super.viewDidAppear(animated)
+        videoTBLView.reloadData()
     }
     
     //***** Method for back button *****//
     func menuBackButtonPressed() {
         
-        self.navigationController?.dismiss(animated: true, completion: nil)
+        navigationController?.dismiss(animated: true, completion: nil)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.searchBar.delegate = self
-        self.searchBar.placeholder = Constant.MyClassConstants.searchPlaceHolder
+        searchBar.delegate = self
+        searchBar.placeholder = "Search".localized()
         showHudAsync()
         if Constant.MyClassConstants.runningFunctionality != Constant.MyClassConstants.magazinesFunctionalityCheck {
             Helper.getVideos(searchBy: Constant.MyClassConstants.areaString, senderViewcontroller: self)
@@ -73,6 +75,7 @@ class IntervalHDCommonControllerForTabs: UIViewController {
     
     //**** Remove added observers ****//
     override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.reloadVideosNotification), object: nil)
     }
     
@@ -88,9 +91,10 @@ class IntervalHDCommonControllerForTabs: UIViewController {
     func playButtonPressedAtIndex(sender: IUIKButton) {
         let video = searchResultArray[sender.tag]
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.intervalHDIphone, bundle: nil)
-        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.intervalHDPlayerViewController) as! IntervalHDPlayerViewController
-        viewController.video = video
-        self.present(viewController, animated: true, completion: nil)
+        if let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.intervalHDPlayerViewController) as? IntervalHDPlayerViewController {
+            viewController.video = video
+            present(viewController, animated: true, completion: nil)
+        }
     }
     
     //***** Notification to hit API when system access token gets available. *****//
@@ -121,8 +125,8 @@ extension IntervalHDCommonControllerForTabs: UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         
-        if self.searchResultArray.count > 0 {
-            return self.searchResultArray.count
+        if !searchResultArray.isEmpty {
+            return searchResultArray.count
         } else {
             var searchBarText = ""
             if let text = searchBar.text {
@@ -154,8 +158,10 @@ extension IntervalHDCommonControllerForTabs: UITableViewDataSource {
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: Constant.IntervalHDReusableIdentifiers.videoTBLCell, for: indexPath) as! VideoTBLCell
-        
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.IntervalHDReusableIdentifiers.videoTBLCell, for: indexPath) as? VideoTBLCell else {
+            
+            return UITableViewCell()
+        }
         cell.shadowView.layer.shadowOffset = CGSize(width: 0, height: 0)
         cell.shadowView.layer.shadowColor = IUIKColorPalette.altState.color.cgColor
         cell.shadowView.layer.shadowRadius = 0.5
@@ -163,11 +169,12 @@ extension IntervalHDCommonControllerForTabs: UITableViewDataSource {
         let shadowFrame: CGRect = (cell.layer.bounds)
         let shadowPath: CGPath = UIBezierPath(rect: shadowFrame).cgPath
         cell.shadowView.layer.shadowPath = shadowPath
+        
         cell.playButton.tag = indexPath.section
         cell.playButton.addTarget(self, action: #selector(playButtonPressedAtIndex), for: .touchUpInside)
         var video = Video()
         if !searchResultArray.isEmpty {
-            video = self.searchResultArray[indexPath.section]
+            video = searchResultArray[indexPath.section]
         } else {
             switch tableView.tag {
             case 1:
@@ -209,12 +216,12 @@ extension IntervalHDCommonControllerForTabs: UISearchBarDelegate {
     
     //**** Search bar controller delegate ****//
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        self.searchBar.resignFirstResponder()
+        searchBar.resignFirstResponder()
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        self.searchBar.resignFirstResponder()
-        self.searchBar.showsCancelButton = false
+        searchBar.resignFirstResponder()
+        searchBar.showsCancelButton = false
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
@@ -232,8 +239,7 @@ extension IntervalHDCommonControllerForTabs: UISearchBarDelegate {
         default:
              videos = Constant.MyClassConstants.intervalHDTutorials
         }
-        self.searchResultArray = LookupClient.filterVideos(videos, searchText: searchBar.text!)
-        self.videoTBLView.reloadData()
-        
+        searchResultArray = LookupClient.filterVideos(videos, searchText: searchBar.text ?? "")
+        videoTBLView.reloadData()
     }
 }

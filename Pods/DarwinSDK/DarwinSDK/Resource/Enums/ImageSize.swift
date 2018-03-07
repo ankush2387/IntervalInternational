@@ -9,8 +9,8 @@
 import Foundation
 
 public enum ImageSize : String {
-    case Tiny = "tiny"
-    case Thumbnail = "thumbnail"
-    case Large = "large"
-    case XLarge = "xlarge"
+    case TYNY = "TYNY"
+    case THUMBNAIL = "thumbnail"
+    case LARGE = "LARGE"
+    case XLARGE = "XLARGE"
 }

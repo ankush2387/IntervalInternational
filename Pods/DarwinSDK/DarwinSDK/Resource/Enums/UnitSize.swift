@@ -26,7 +26,7 @@ public enum UnitSize : String {
     }
     
     // Helper methods for UI
-    public static func fromName(name : String) -> UnitSize {
+    public static func fromName(name : String?) -> UnitSize {
         if UnitSize.STUDIO.name == name {
             return UnitSize.STUDIO
         } else if UnitSize.ONE_BEDROOM.name == name {

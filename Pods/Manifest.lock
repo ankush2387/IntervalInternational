@@ -4,13 +4,13 @@ PODS:
     - AdobeMobileSDK/iOS (= 4.13.8)
   - AdobeMobileSDK/iOS (4.13.8)
   - Alamofire (4.0.0)
-  - Appsee (2.3.5)
   - Bond (6.3.0):
     - Diff (~> 0.5.3)
     - ReactiveKit (~> 3.6.2)
   - Brightcove-Player-SDK (5.3.4):
     - Brightcove-Player-SDK/default (= 5.3.4)
   - Brightcove-Player-SDK/default (5.3.4)
+  - Bugsee (1.15.3)
   - CVCalendar (1.3.1)
   - DarwinSDK (1.1.9-SNAPSHOT):
     - Alamofire
@@ -51,11 +51,13 @@ PODS:
     - GoogleToolboxForMac/Defines (= 2.1.1)
   - HexColors (4.0.0)
   - HockeySDK/AllFeaturesLib (5.0.0)
-  - IntervalUIKit (4.3.4):
+  - IntervalUIKit (4.4.3):
     - ActionSheetPicker-3.0 (~> 2.2.0)
     - Bond (= 6.3.0)
     - ReactiveKit (= 3.6.2)
+    - SDWebImage (~> 3.8.2)
     - SkyFloatingLabelTextField (~> 3.2.0)
+    - SVProgressHUD (~> 2.2.1)
   - nanopb (0.3.8):
     - nanopb/decode (= 0.3.8)
     - nanopb/encode (= 0.3.8)
@@ -90,17 +92,17 @@ PODS:
 DEPENDENCIES:
   - AdobeMobileSDK (~> 4.13.8)
   - Alamofire (from `https://github.com/Alamofire/Alamofire.git`, tag `4.0.0`)
-  - Appsee (~> 2.3.5)
   - Bond (from `https://github.com/ReactiveKit/Bond.git`, tag `6.3.0`)
   - Brightcove-Player-SDK (~> 5.3.4)
+  - Bugsee (~> 1.15.3)
   - CVCalendar (from `https://github.com/Mozharovsky/CVCalendar`, tag `1.4.0`)
-  - DarwinSDK (from `https://bitbucket.iilg.com/scm/iimob/darwin-sdk-ios.git`, commit `2127de48`, branch `develop`)
+  - DarwinSDK (from `https://bitbucket.iilg.com/scm/iimob/darwin-sdk-ios.git`, commit `87bb2a9b`, branch `develop`)
   - Firebase/Core (~> 4.3.0)
   - Firebase/Messaging (~> 4.3.0)
   - FSCalendar (~> 2.1.1)
   - GoogleMaps (~> 2.2.0)
   - HockeySDK/AllFeaturesLib
-  - IntervalUIKit (from `https://bitbucket.iilg.com/scm/iimob/interval-uikit-ios.git`, commit `ee050d2e`)
+  - IntervalUIKit (from `https://bitbucket.iilg.com/scm/iimob/interval-uikit-ios.git`, commit `0891b5e9`)
   - Nimble
   - Quick
   - ReactiveKit (from `https://github.com/ReactiveKit/ReactiveKit.git`, tag `v3.6.2`)
@@ -127,10 +129,10 @@ EXTERNAL SOURCES:
     :tag: 1.4.0
   DarwinSDK:
     :branch: develop
-    :commit: 2127de48
+    :commit: 87bb2a9b
     :git: https://bitbucket.iilg.com/scm/iimob/darwin-sdk-ios.git
   IntervalUIKit:
-    :commit: ee050d2e
+    :commit: 0891b5e9
     :git: https://bitbucket.iilg.com/scm/iimob/interval-uikit-ios.git
   ReactiveKit:
     :git: https://github.com/ReactiveKit/ReactiveKit.git
@@ -156,10 +158,10 @@ CHECKOUT OPTIONS:
     :git: https://github.com/Mozharovsky/CVCalendar
     :tag: 1.4.0
   DarwinSDK:
-    :commit: 2127de486828cdbd97c9c3db28e3a936e8e18007
+    :commit: 87bb2a9b9b747993939022a87c2cb1297577e362
     :git: https://bitbucket.iilg.com/scm/iimob/darwin-sdk-ios.git
   IntervalUIKit:
-    :commit: ee050d2e
+    :commit: 0891b5e9
     :git: https://bitbucket.iilg.com/scm/iimob/interval-uikit-ios.git
   ReactiveKit:
     :git: https://github.com/ReactiveKit/ReactiveKit.git
@@ -178,9 +180,9 @@ SPEC CHECKSUMS:
   ActionSheetPicker-3.0: d11a4c12c6aaf704b8a3f56d179198c99f3e41e6
   AdobeMobileSDK: de79920972a9abcf4e27b141fb79d0262fe9ee11
   Alamofire: fef59f00388f267e52d9b432aa5d93dc97190f14
-  Appsee: 7643d74bad4921c4df40e6977c756909365bd851
   Bond: 2e90c5bf07f1ad80e5aaf9eb75d2e82ca9b5ef77
   Brightcove-Player-SDK: 797417ba9ca513d079df6844515a05498e3639d8
+  Bugsee: 75d3af8fd2446e347b6df877ed48d81f0b343a3a
   CVCalendar: 7ed8a9cb7cd62c9fffc05ac92201d82b93e1546a
   DarwinSDK: f33c17037859a5c5176bfc7dbf44984c27ae13d1
   Diff: befa1d19c32726b2b36ce915d98793e2fbde8dcc
@@ -194,7 +196,7 @@ SPEC CHECKSUMS:
   GoogleToolboxForMac: 8e329f1b599f2512c6b10676d45736bcc2cbbeb0
   HexColors: 5f95843ef89aff6a72e1fd3a8ebabf205cc43379
   HockeySDK: 82bf8dcbe1af3c87c24dc98924fcf2e2ba5be8c4
-  IntervalUIKit: dcedddc2a78c5920c5b452d9719f583cc2a3f05c
+  IntervalUIKit: 5d2cdfa8eafaeb6a884245f18b3c29ca1b1e5d75
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
   Nimble: bfe1f814edabba69ff145cb1283e04ed636a67f2
   PPTopMostController: 4e6f1e5f8c645bdcc74cd837a20f607ff262c048
@@ -213,6 +215,6 @@ SPEC CHECKSUMS:
   TPKeyboardAvoiding: 0d6af20e95e2850f4c621841225b59ec7d8dd852
   XCGLogger: 38063ea89b4c8b23232d18efd2e12eb0005f3ea4
 
-PODFILE CHECKSUM: a53dbd7a28bace8b78d2ca3ace217d943edd7c74
+PODFILE CHECKSUM: 9ceee73908ac845994969b23362c34f0c1080a10
 
 COCOAPODS: 1.3.1

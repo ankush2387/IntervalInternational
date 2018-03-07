@@ -43,52 +43,28 @@ open class Address {
         self.statusChangeReason = json["statusChangeReason"].string
         self.enterpriseCode = json["enterpriseCode"].string
     }
-    
-    open func postalAddressString() -> String {
-        var sep = false
+
+    open func postalAddresAsString() -> String {
         var s = ""
-        
-        if (self.addressLines.count > 0 && self.addressLines[0].characters.count > 0) {
-            s += self.addressLines[0]
-            sep = true
-        }
-        
-        if (self.addressLines.count > 1 && self.addressLines[1].characters.count > 0) {
-            s += (sep == true ? ", " : "")
-            s += self.addressLines[1]
-            sep = true
-        }
 
-        if (self.addressLines.count > 2 && self.addressLines[2].characters.count > 0) {
-            s += (sep == true ? ", " : "")
-            s += self.addressLines[2]
-            sep = true
-        }
-
-        if (self.cityName?.characters.count)! > 0 {
-            s += (sep == true ? ", " : "")
-            s += self.cityName!
-            sep = true
-        }
-
-        if (self.territoryCode?.characters.count)! > 0 {
-            s += (sep == true ? ", " : "")
-            s += self.territoryCode!
-            sep = true
-        }
-
-        if (self.postalCode?.characters.count)! > 0 {
-            s += (sep == true ? " " : "")
-            s += self.postalCode!
-            sep = true
+        if let cityName = self.cityName {
+           s += cityName
         }
         
-        if (self.countryCode?.characters.count)! > 0 {
-            s += (sep == true ? ", " : "")
-            s += self.countryCode!
-            sep = true
+        if let territoryCode = self.territoryCode {
+            if !s.isEmpty {
+                s += ", "
+            }
+            s += territoryCode
         }
-    
+
+        if let countryCode = self.countryCode {
+            if !s.isEmpty {
+                s += ", "
+            }
+            s += countryCode
+        }
+        
         return s
     }
     

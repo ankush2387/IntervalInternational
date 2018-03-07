@@ -14,8 +14,6 @@ class OnboardingViewController: UIViewController {
     @IBOutlet weak var mainImageView: UIImageView!
     @IBOutlet weak var topicTtitleLabel: UILabel!
     @IBOutlet weak var topicDescriptionLabel: UILabel!
-    @IBOutlet weak var pageControl: UIPageControl!
-    @IBOutlet weak var actionButton: UIButton!
  
     var completionHandler: (Bool) -> Void = { _ in }
     var topicTitle: String?
@@ -44,24 +42,15 @@ class OnboardingViewController: UIViewController {
         topicTtitleLabel.text = topicTitle
         topicTtitleLabel.textColor = UIColor(colorLiteralRed: 0.38, green: 0.38, blue: 0.38, alpha: 1)
         topicDescriptionLabel.text = topicDescription
-        pageControl.currentPage = currentPageIndex!
-        actionButton.setTitle(buttonTitle, for: .normal)
-        
-        mainImageView.image = UIImage(named: imageName!)
-        if buttonTitle == "Done" {
-            actionButton.setTitleColor(UIColor.white, for: .normal)
-            actionButton.backgroundColor = UIColor(colorLiteralRed: 0, green: 0.47, blue: 0.75, alpha: 1.0)
-            actionButton.layer.cornerRadius = 12
+        if let imgName = imageName {
+           mainImageView.image = UIImage(named: imgName)
         }
+        
         
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
-    }
-
-    @IBAction func onboardingActionButtonPressed(_ sender: UIButton) {
-        completionHandler(true)
     }
 }

@@ -33,9 +33,10 @@ open class InventoryUnit {
     open var lockOffIndicator : Bool = false
     open var trackCodeCategory : String?
     open var relinquishmentId : String?
-    open var vacationSearchType : VacationSearchType?
+    open var vacationSearchType : VacationSearchType
     
     public init() {
+        self.vacationSearchType = VacationSearchType.UNKNOWN
     }
 
     public convenience init(checkInDate:String?, checkOutDate:String?, unitSize:UnitSize?, kitchenType:KitchenType?) {
@@ -109,6 +110,30 @@ open class InventoryUnit {
             }
         }
         return nil
+    }
+
+    open func detailsAsString() -> String {
+        var s = ""
+        
+        if let unitSize = self.unitSize {
+            s += unitSize
+        }
+        
+        if let kitchenType = self.kitchenType {
+            if !s.isEmpty {
+                s += ", "
+            }
+            s += kitchenType
+        }
+        
+        if let unitNumber = self.unitNumber {
+            if !s.isEmpty {
+                s += ", "
+            }
+            s += unitNumber
+        }
+        
+        return s
     }
     
 }
