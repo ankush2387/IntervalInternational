@@ -271,8 +271,7 @@ extension UpComingTripDetailController: UITableViewDelegate {
                 return 280
             }
         case 4:
-            return 240
-            
+            return UITableViewAutomaticDimension
         default:
             break
             
@@ -687,7 +686,7 @@ extension UpComingTripDetailController: UITableViewDataSource {
         navigationController?.pushViewController(fileViewController, animated: true)
         return true
     }
-
+    
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
         let headerView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 40))
