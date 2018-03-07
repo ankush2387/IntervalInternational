@@ -420,7 +420,7 @@ class GoogleMapViewController: UIViewController {
         
         if needCameraChange {
             needCameraChange = false
-            let camera = GMSCameraPosition.camera(withLatitude: (Constant.MyClassConstants.resortsArray[0].coordinates?.latitude)!, longitude: (Constant.MyClassConstants.resortsArray[0].coordinates?.longitude)!, zoom: 8.0)
+            let camera = GMSCameraPosition.camera(withLatitude: (Constant.MyClassConstants.resortsArray[0].coordinates?.latitude)!, longitude: (Constant.MyClassConstants.resortsArray[0].coordinates?.longitude)!, zoom: 10)
            
             mapView.camera = camera
         }
