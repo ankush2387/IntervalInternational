@@ -62,9 +62,6 @@ class UpComingTripDetailController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
-        
-        
         //***** register UnitDetailCell xib cells  with table *****//
         let cellNib = UINib(nibName: Constant.customCellNibNames.unitDetailCell, bundle: nil)
         upcomingTripDetailTbleview?.register(cellNib, forCellReuseIdentifier: Constant.upComingTripDetailControllerReusableIdentifiers.unitDetailCell)
@@ -754,13 +751,16 @@ extension UpComingTripDetailController: UITableViewDataSource {
                 
                 return UITableViewCell()
             }
-            let showPolicyButton: Bool? = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.ancillaryProducts?.eplus?.purchased
-            if let showPolicyButton = showPolicyButton, showPolicyButton {
-                // Executes when booleanValue is true
-                cell.purchasePolicyButton.isHidden = false
-            } else {
-                cell.purchasePolicyButton.isHidden = true
+            if let showPolicyButton = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.ancillaryProducts?.eplus?.purchased {
+                if showPolicyButton {
+                    // Executes when booleanValue is true
+                    cell.purchasePolicyButton.isHidden = false
+                    cell.purchasePolicyButton.addTarget(self, action: #selector(UpComingTripDetailController.modifyUpcomingTripButtonClicked(_:)), for: UIControlEvents.touchUpInside)
+                } else {
+                    cell.purchasePolicyButton.isHidden = true
+                }
             }
+            
             cell.backgroundColor = IUIKColorPalette.contentBackground.color
             return cell
             
