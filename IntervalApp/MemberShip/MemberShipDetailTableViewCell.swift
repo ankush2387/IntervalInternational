@@ -67,7 +67,7 @@ class MemberShipDetailTableViewCell: UITableViewCell {
             status = memberStatus
         }
         
-        if let memberSinceDate = contactInfo.lastVerifiedDate {
+        if let memberSinceDate = contactInfo.memberships?[0].sinceDate {
             dateString = memberSinceDate.stringWithShortFormatForJSON()
         }
         
