@@ -579,8 +579,9 @@ extension RenewelViewController: UITableViewDataSource {
                     
                     if let displayName = nonCoreProduct.displayName?.capitalized {
                         
+                        
                         // Create attributed string
-                        var mainString = Helper.returnIntervalMembershipStringWithDisplayName3(displayName: displayName, price: priceAndCurrency, term: term)
+                        var mainString = filterRelinquishment.deposit == nil ? Helper.returnIntervalMembershipStringWithDisplayName3(displayName: displayName, price: priceAndCurrency, term: term) : Helper.returnIntervalMembershipStringWithDisplayName2(displayName: displayName, price: priceAndCurrency, term: term)
                         
                         if Constant.MyClassConstants.noThanksForNonCore {
                             mainString = Helper.returnIntervalMembershipStringWithDisplayName4(displayName: displayName, price: priceAndCurrency, term: term)
