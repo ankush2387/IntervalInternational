@@ -136,8 +136,8 @@ class AddDebitOrCreditCardViewController: UIViewController {
             
             if Constant.holdingTime == 0 {
                 Constant.holdingTimer?.invalidate()
-                let alertController = UIAlertController(title: Constant.AlertMessages.holdingTimeLostTitle, message: Constant.AlertMessages.holdingTimeLostMessage, preferredStyle: .alert)
-                let Ok = UIAlertAction(title: Constant.AlertPromtMessages.ok, style: .default) { (_:UIAlertAction)  in
+                let alertController = UIAlertController(title: "".localized(), message: Constant.AlertMessages.holdingTimeLostMessage, preferredStyle: .alert)
+                let Ok = UIAlertAction(title: "OK".localized(), style: .default) { (_:UIAlertAction)  in
                     
                     self.performSegue(withIdentifier: "unwindToAvailabiity", sender: self)
                 }

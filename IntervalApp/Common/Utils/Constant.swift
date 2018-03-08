@@ -748,7 +748,6 @@ class Constant: NSObject {
         static var agreePayMessage = "Slide to Agree and Pay".localized()
         static var operationFailedMessage =  "Unable to perform back button operatin due to server error, Try again!".localized()
         static var availablePointToolDefaultSelectedDateAlert =  "if no date is selected the Available Points Balance displayed is based on today's date.".localized()
-        static var holdingTimeLostTitle = "Holding time lost".localized()
         static var holdingTimeLostMessage = "The booking time has expired and your selection is no longer on hold. You will now be returned to the search results.".localized()
         static var searchVacationTitle = "Search Vacation".localized()
         static var searchVacationMessage = "Please select any destination or resort".localized()
