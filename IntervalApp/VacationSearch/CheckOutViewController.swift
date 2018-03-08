@@ -44,7 +44,7 @@ class CheckOutViewController: UIViewController {
     var renewalsArray: [Renewal] = []
     var totalRowsInCost = 0
     var totalFeesArray = NSMutableArray()
-    var currencyCode: String = ""
+    var currencySymbol: String = ""
     static let checkoutPromotionCell = "CheckoutPromotionCell"
     var isPromotionApplied = false
     
@@ -95,12 +95,10 @@ class CheckOutViewController: UIViewController {
                     showInsurance = false
                     self.isTripProtectionEnabled = false
                 }
-                guard let curCode = Constant.MyClassConstants.exchangeFees[0].currencyCode else { return }
-                let currencyHelper = CurrencyHelper()
-                let countryCode = Session.sharedSession.contact?.getCountryCode() ?? ""
-                
-                currencyCode = ("\(currencyHelper.getCurrencyFriendlySymbol(currencyCode: curCode, countryCode: countryCode))")
-                
+                if let curencyCode = Constant.MyClassConstants.exchangeFees[0].currencyCode {
+                    let currencyHelper = CurrencyHelper()
+                    currencySymbol = currencyHelper.getCurrencyFriendlySymbol(currencyCode: curencyCode)
+                }
             }
         } else {
             if let advisementsArray = Constant.MyClassConstants.viewResponse.resort?.advisements {
@@ -128,11 +126,10 @@ class CheckOutViewController: UIViewController {
             } else {
                 showInsurance = false
             }
-            guard let curCode = Constant.MyClassConstants.rentalFees[0].currencyCode else { return }
-            let currencyHelper = CurrencyHelper()
-            let countryCode = Session.sharedSession.contact?.getCountryCode() ?? ""
-            
-            currencyCode = ("\(currencyHelper.getCurrencyFriendlySymbol(currencyCode: curCode, countryCode: countryCode))")
+            if let currencyCode = Constant.MyClassConstants.rentalFees[0].currencyCode {
+                let currencyHelper = CurrencyHelper()
+                currencySymbol = currencyHelper.getCurrencyFriendlySymbol(currencyCode: currencyCode)
+            }
         }
         
         //Register custom cell xib with tableview
@@ -1199,21 +1196,21 @@ extension CheckOutViewController: UITableViewDataSource {
                 switch totalFeesArray[indexPath.row] as? String ?? "" {
                 case Constant.MyClassConstants.exchangeFeeTitle:
                     if let exchangeFees = Constant.MyClassConstants.exchangeFees[0].shopExchange?.rentalPrice?.price {
-                        cell.setTotalPrice(with: currencyCode, and: exchangeFees)
+                        cell.setTotalPrice(with: currencySymbol, and: exchangeFees)
                     }
                     cell.priceLabel.text = Constant.MyClassConstants.exchangeFeeTitle
                     
                 case Constant.MyClassConstants.getawayFee:
                     
                     if let rentalPrice = Constant.MyClassConstants.rentalFees[0].rental?.rentalPrice?.price {
-                        cell.setTotalPrice(with: currencyCode, and: rentalPrice)
+                        cell.setTotalPrice(with: currencySymbol, and: rentalPrice)
                     }
                     cell.priceLabel.text = Constant.MyClassConstants.getawayFee
                     
                 case Constant.MyClassConstants.eplus:
                     
                     if let ePlusPrice = Constant.MyClassConstants.exchangeFees[0].eplus?.price {
-                        cell.setTotalPrice(with: currencyCode, and: ePlusPrice)
+                        cell.setTotalPrice(with: currencySymbol, and: ePlusPrice)
                     }
                     cell.priceLabel.text = Constant.MyClassConstants.eplus
                     
@@ -1222,12 +1219,12 @@ extension CheckOutViewController: UITableViewDataSource {
                     cell.priceLabel.text = Constant.MyClassConstants.taxesTitle
                     if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
                         if let tax = Constant.MyClassConstants.exchangeContinueToCheckoutResponse.view?.fees?.shopExchange?.prices[0].tax {
-                            cell.setTotalPrice(with: currencyCode, and: tax)
+                            cell.setTotalPrice(with: currencySymbol, and: tax)
                         }
                     } else {
                         
                         if let tax = Constant.MyClassConstants.continueToCheckoutResponse.view?.fees?.rental?.rentalPrice?.tax {
-                            cell.setTotalPrice(with: currencyCode, and: tax)
+                            cell.setTotalPrice(with: currencySymbol, and: tax)
                         }
                     }
                     
@@ -1248,7 +1245,7 @@ extension CheckOutViewController: UITableViewDataSource {
                                                                    descriptionTitle: "Tax Description".localized(),
                                                                    currency: currencyDescription.localized(),
                                                                    totalTitle: "Total Tax Amount".localized(),
-                                                                   currencySymbol: self.currencyCode)
+                                                                   currencySymbol: self.currencySymbol)
                             
                             let chargeSummaryViewController = ChargeSummaryViewController(viewModel: viewModel)
                             chargeSummaryViewController.doneButtonPressed = { chargeSummaryViewController.dismiss(animated: true) }
@@ -1260,7 +1257,7 @@ extension CheckOutViewController: UITableViewDataSource {
                     
                 case Constant.MyClassConstants.upgradeCost:
                     if let upgradeCost = Constant.MyClassConstants.exchangeFees[0].unitSizeUpgrade?.price {
-                        cell.setTotalPrice(with: currencyCode, and: upgradeCost)
+                        cell.setTotalPrice(with: currencySymbol, and: upgradeCost)
                     }
                     cell.priceLabel.text = Constant.MyClassConstants.upgradeCost
                     
@@ -1272,7 +1269,7 @@ extension CheckOutViewController: UITableViewDataSource {
                         renewalIndex = 1
                         cell.priceLabel.text = "\(String(describing: renewalsArray[renewalIndex].displayName?.capitalized ?? "")) Package".localized()
                         let packagePrice = renewalsArray[renewalIndex].price + renewalsArray[0].price
-                        cell.setTotalPrice(with: currencyCode, and: packagePrice)
+                        cell.setTotalPrice(with: currencySymbol, and: packagePrice)
                     } else if renewalsArray.count == 1 {
                         if let displayName = renewalsArray[renewalIndex].displayName {
                             
@@ -1283,7 +1280,7 @@ extension CheckOutViewController: UITableViewDataSource {
                             }
                             
                         }
-                        cell.setTotalPrice(with: currencyCode, and: renewalsArray[renewalIndex].price)
+                        cell.setTotalPrice(with: currencySymbol, and: renewalsArray[renewalIndex].price)
                     }
                     
                 }
@@ -1312,17 +1309,17 @@ extension CheckOutViewController: UITableViewDataSource {
                     cell.priceLabel.text = Constant.MyClassConstants.insurance
                     if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
                         if let insurancePrice = Constant.MyClassConstants.exchangeFees[0].insurance?.price {
-                            cell.setTotalPrice(with: currencyCode, and: insurancePrice)
+                            cell.setTotalPrice(with: currencySymbol, and: insurancePrice)
                         }
                     } else {
                         if let insurancePrice = Constant.MyClassConstants.rentalFees[indexPath.row].insurance?.price {
-                            cell.setTotalPrice(with: currencyCode, and: insurancePrice)
+                            cell.setTotalPrice(with: currencySymbol, and: insurancePrice)
                         }
                     }
                 } else {
                     cell.priceLabel.text = Constant.MyClassConstants.guestCertificateTitle
                     if let guestCertPrice = Constant.MyClassConstants.rentalFees[indexPath.row].guestCertificate?.guestCertificatePrice?.price {
-                        cell.setTotalPrice(with: currencyCode, and: guestCertPrice)
+                        cell.setTotalPrice(with: currencySymbol, and: guestCertPrice)
                     }
                 }
             } else {
@@ -1345,7 +1342,7 @@ extension CheckOutViewController: UITableViewDataSource {
                 }
                 cell.discountLabel.text = recapSelectedPromotion
                 for promotion in Constant.MyClassConstants.recapPromotionsArray where promotion.offerName == recapSelectedPromotion {
-                    cell.setPromotionPrice(with: currencyCode, and: promotion.amount)
+                    cell.setPromotionPrice(with: currencySymbol, and: promotion.amount)
                 }
             } else {
                 isHeightZero = false
@@ -1363,14 +1360,14 @@ extension CheckOutViewController: UITableViewDataSource {
             
             if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
                 
-                cell.setTotalPrice(with: currencyCode, and: (Constant.MyClassConstants.exchangeFees[0].total))
+                cell.setTotalPrice(with: currencySymbol, and: (Constant.MyClassConstants.exchangeFees[0].total))
                 if let total = recapFeesTotal {
-                    cell.setTotalPrice(with: currencyCode, and: total)
+                    cell.setTotalPrice(with: currencySymbol, and: total)
                 }
             } else {
-                cell.setTotalPrice(with: currencyCode, and: (Constant.MyClassConstants.rentalFees[0].total))
+                cell.setTotalPrice(with: currencySymbol, and: (Constant.MyClassConstants.rentalFees[0].total))
                 if let total = recapFeesTotal {
-                    cell.setTotalPrice(with: currencyCode, and: total)
+                    cell.setTotalPrice(with: currencySymbol, and: total)
                 }
             }
             return cell

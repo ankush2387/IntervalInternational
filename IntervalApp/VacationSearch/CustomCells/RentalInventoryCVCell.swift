@@ -33,7 +33,6 @@ class RentalInventoryCVCell: UICollectionViewCell {
                     let priceToDisplay = bestRentalPrice.price.currencyFormatter(for:code) {
                     getawayPrice.attributedText = priceToDisplay
                 }
-                
                 getawayNameLabel.text = "Per Week"
                 imgViewGetaway.isHidden = true
             }
