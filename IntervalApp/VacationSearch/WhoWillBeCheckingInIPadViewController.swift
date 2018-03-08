@@ -976,7 +976,7 @@ extension WhoWillBeCheckingInIPadViewController: RenewelViewControllerDelegate {
         self.proceedToCheckoutPressed(button)
     }
     
-    func noThanks() {
+    func noThanks(selectedRelinquishment: ExchangeRelinquishment) {
         self.dismiss(animated: true, completion: nil)
         let button = UIButton()
         Constant.MyClassConstants.isDismissWhoWillBeCheckin = true
