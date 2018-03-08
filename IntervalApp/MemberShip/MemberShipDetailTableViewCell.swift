@@ -67,8 +67,8 @@ class MemberShipDetailTableViewCell: UITableViewCell {
             status = memberStatus
         }
         
-        if let memberSinceDate = contactInfo.lastVerifiedDate {
-            dateString = Helper.convertDateToString(date: memberSinceDate, format: Constant.MyClassConstants.dateFormat)
+        if let memberSinceDate = contactInfo.memberships?[0].sinceDate {
+            dateString = memberSinceDate.stringWithShortFormatForJSON()
         }
         
         if let count = contactInfo.memberships?.count {
@@ -99,11 +99,12 @@ class MemberShipDetailTableViewCell: UITableViewCell {
          loginIdLabel.text = loginID
          emailLabel.text = email
          memberNumberLabel.text = Constant.MyClassConstants.memberNumber
-       let date = Helper.convertStringToDate(dateString: date, format: Constant.MyClassConstants.dateFormat)
-        memberSinceDateLabel.text = Helper.getWeekDay(dateString: date, getValue: Constant.MyClassConstants.month).appending(". ").appending(Helper.getWeekDay(dateString: date, getValue: Constant.MyClassConstants.date)).appending(", ").appending(Helper.getWeekDay(dateString: date, getValue: Constant.MyClassConstants.year))
+        
+        if let expDate = date.dateFromString(for: Constant.MyClassConstants.dateFormat) {
+             memberSinceDateLabel.text = Helper.getWeekDay(dateString: expDate , getValue: Constant.MyClassConstants.month).appending(". ").appending(Helper.getWeekDay(dateString: expDate, getValue: Constant.MyClassConstants.date)).appending(", ").appending(Helper.getWeekDay(dateString: expDate, getValue: Constant.MyClassConstants.year))
+        }
         
         activeLabel.text = status
-        
         //setup Products View depending on number of Products
         let size = products.count //amount of products to display
         var yPosition = 5 // yPosition of view
@@ -182,7 +183,6 @@ class MemberShipDetailTableViewCell: UITableViewCell {
         memberNumberLabel.textColor = UIColor(rgb: IUIKColorPalette.primaryText.rawValue)
         memberSinceInfoLabel.textColor = UIColor(rgb: IUIKColorPalette.secondaryText.rawValue)
         memberSinceDateLabel.textColor = UIColor(rgb: IUIKColorPalette.secondaryText.rawValue)
-
         switchMembershipButton.backgroundColor = UIColor(rgb: IUIKColorPalette.primary1.rawValue)
     }
     

@@ -74,10 +74,7 @@ class SearchResultViewController: UIViewController {
             if !inventory.isEmpty {
                 let currencycode = inventory[0].inventory?.currencyCode ?? ""
                 let currencyHelper = CurrencyHelper()
-                let countryCode = Session.sharedSession.contact?.getCountryCode() ?? ""
-                
-                currencyCode = ("\(currencyHelper.getCurrencyFriendlySymbol(currencyCode: currencycode, countryCode: countryCode))")
-                
+                currencyCode = currencyHelper.getCurrencyFriendlySymbol(currencyCode: currencycode)
             }
         }
         
@@ -85,7 +82,9 @@ class SearchResultViewController: UIViewController {
         
         if sections.isEmpty {
             searchResultTableView.tableHeaderView = Helper.noResortView(senderView: self.view)
+            title = "No Availability".localized()
         } else {
+            title = "Search Results".localized()
             let headerVw = UIView()
             searchResultTableView.tableHeaderView = headerVw
         }
@@ -208,13 +207,15 @@ class SearchResultViewController: UIViewController {
         self.navigationItem.leftBarButtonItem = menuButton
         
         if Constant.MyClassConstants.showAlert == true {
-            self.alertView = Helper.noResortView(senderView: self.view)
-            self.alertView.isHidden = false
+            alertView = Helper.noResortView(senderView: self.view)
+            alertView.isHidden = false
             headerVw.isHidden = true
-            self.view.bringSubview(toFront: self.alertView)
+            view.bringSubview(toFront: self.alertView)
+            title = "No Availability".localized()
         } else {
+            title = "Search Results".localized()
             headerVw.isHidden = false
-            self.alertView.isHidden = true
+            alertView.isHidden = true
         }
         
         if Session.sharedSession.userAccessToken != nil {

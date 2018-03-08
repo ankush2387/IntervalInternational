@@ -268,7 +268,7 @@
             </objects>
             <point key="canvasLocation" x="1866.4000000000001" y="1279.6101949025488"/>
         </scene>
-        <!--Tutorials-->
+        <!--Helpful-->
         <scene sceneID="4nO-Ts-7jJ">
             <objects>
                 <viewController id="7nh-d6-LqP" customClass="IntervalHDCommonControllerForTabs" customModule="IntervalApp" customModuleProvider="target" sceneMemberID="viewController">
@@ -374,7 +374,7 @@
                             <constraint firstItem="ntx-3A-GXs" firstAttribute="leading" secondItem="nO2-UD-vCE" secondAttribute="leadingMargin" constant="-20" id="yPU-T7-zUc"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Tutorials" image="ic_live_tv" selectedImage="ic_live_tv" id="vHW-wj-MKq"/>
+                    <tabBarItem key="tabBarItem" title="Helpful" image="ic_live_tv" selectedImage="ic_live_tv" id="vHW-wj-MKq"/>
                     <connections>
                         <outlet property="searchBar" destination="ntx-3A-GXs" id="mqx-Fz-WFS"/>
                         <outlet property="searhBarTopSpaceConstraint" destination="KHI-El-qAg" id="xrm-Nv-q4P"/>
@@ -383,7 +383,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uRo-ub-wjT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1116" y="998.95052473763121"/>
+            <point key="canvasLocation" x="1035" y="1024"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="AY6-Qu-Q4T">

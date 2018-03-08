@@ -21,6 +21,7 @@ class RenewalOtherOptionsVC: UIViewController {
     var forceRenewals = ForceRenewals()
     public var selectAction: ((String, ForceRenewals, ExchangeRelinquishment) -> ())?
     var selectedRelinquishment = ExchangeRelinquishment()
+    var currencyHelper = CurrencyHelper()
     
     // MARK: - lifecycle
     
@@ -129,7 +130,7 @@ extension RenewalOtherOptionsVC: UITableViewDataSource {
                         // currency code
                         var currencyCodeWithSymbol = ""
                         if let currencyCode = forceRenewals.currencyCode {
-                            currencyCodeWithSymbol = Helper.currencyCodeToSymbol(code: currencyCode)
+                            currencyCodeWithSymbol = currencyHelper.getCurrencyFriendlySymbol(currencyCode: currencyCode)
                         }
                         if renewalComboProduct.isCoreProduct {
                             if let productCode = renewalComboProduct.productCode {
@@ -138,7 +139,7 @@ extension RenewalOtherOptionsVC: UITableViewDataSource {
                             
                             let price = String(format: "%.0f", renewalComboProduct.price)
                             
-                            priceAndCurrency = currencyCodeWithSymbol + "\(price)" + " " + (forceRenewals.currencyCode)!
+                            priceAndCurrency = currencyCodeWithSymbol + "\(price)"
                             
                             // formatted string
                     
@@ -159,7 +160,7 @@ extension RenewalOtherOptionsVC: UITableViewDataSource {
                             
                             let price = String(format: "%.0f", renewalComboProduct.price)
                             
-                            priceAndCurrency = currencyCodeWithSymbol + "\(price)" + " " + (forceRenewals.currencyCode)!
+                            priceAndCurrency = currencyCodeWithSymbol + "\(price)"
                             
                             // formatted string
                             guard let displayName = renewalComboProduct.displayName?.capitalized else { return cell }
@@ -204,11 +205,11 @@ extension RenewalOtherOptionsVC: UITableViewDataSource {
                 }
                     var currencyCodeWithSymbol = ""
                     if let currencyCode = forceRenewals.currencyCode {
-                          currencyCodeWithSymbol = Helper.currencyCodeToSymbol(code: currencyCode)
+                          currencyCodeWithSymbol = currencyHelper.getCurrencyFriendlySymbol(currencyCode: currencyCode)
                     }
                     guard let displayName = coreProduct.displayName?.capitalized, let currencyCode = forceRenewals.currencyCode else { return cell }
                     let price = String(format: "%.0f", coreProduct.price)
-                    priceAndCurrency = currencyCodeWithSymbol + "\(price)" + " " + currencyCode
+                    priceAndCurrency = currencyCodeWithSymbol + "\(price)"
                     
                     // formatted string
                     let mainString = Helper.returnIntervalMembershipStringWithDisplayName5(displayName: displayName, price: priceAndCurrency, term: term)

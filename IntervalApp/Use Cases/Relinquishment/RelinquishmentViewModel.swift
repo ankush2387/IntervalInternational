@@ -63,7 +63,7 @@ final class RelinquishmentViewModel {
         if let cigProgramCount = simpleCellViewModels[.cigProgram]?.count, cigProgramCount < 1, sectionIdentifier == .cigWeeks {
             return sectionTitle.first as? String
         }
-
+        
         return sectionTitle[section]
     }
     
@@ -107,7 +107,7 @@ final class RelinquishmentViewModel {
         // Will later handle `pending`
         return relinquishment.isDeposit() ? depositDepositedWeek(for: relinquishment) : depositOpenWeek(for: relinquishment)
     }
-
+    
     func readPreviouslySelectedLockOffUnits(for relinquishment: Relinquishment) -> Promise<[OpenWeeks]> {
         return Promise { resolve, reject in
             self.entityDataStore.readObjectsFromDisk(type: OpenWeeksStorage.self, predicate: nil, encoding: .decrypted)
@@ -116,13 +116,13 @@ final class RelinquishmentViewModel {
                         .flatMap { $0.openWeeks }
                         .flatMap { $0.openWeeks }
                         .filter { $0.relinquishmentID == relinquishment.relinquishmentId.unwrappedString }
-
+                    
                     resolve(lockedOffUnits)
                 }
                 .onError(reject)
         }
     }
-
+    
     func relinquish(_ relinquishment: Relinquishment, with lockOffUnits: [InventoryUnit]) -> Promise<Void> {
         
         return Promise { [unowned self] resolve, reject in
@@ -154,19 +154,19 @@ final class RelinquishmentViewModel {
             resolve()
         }
     }
-
+    
     func relinquish(_ clubPoints: ClubPoints) -> Promise<Void> {
         return Promise { resolve, reject in
-
+            
             guard let membershipNumber = self.sessionStore.selectedMembership?.memberNumber else {
                 reject(UserFacingCommonError.invalidSession)
                 return
             }
-
+            
             let openWeeksEntity = OpenWeeksStorage()
             let tradeLocalDataEntity = TradeLocalData()
             let pointsEntity = rlmPointsProgram()
-
+            
             pointsEntity.relinquishmentId = clubPoints.relinquishmentId
             tradeLocalDataEntity.clubPoints.append(clubPoints)
             
@@ -238,13 +238,13 @@ final class RelinquishmentViewModel {
     // MARK: - Private functions
     private func processRelinquishmentGroups(myUnits: MyUnits) -> Promise<Void> {
         return Promise { [unowned self] resolve, reject in
-
+            
             Helper.storeInConstants(myUnits: myUnits)
             let relinquishmentGroups = self.relinquishmentManager.getRelinquishmentSections(myUnits: myUnits)
             
             self.processCIGProgram(for: relinquishmentGroups).then {
                 self.simpleCellViewModels[.cigProgram] = $0
-            }.onError(reject)
+                }.onError(reject)
             
             self.filterStored(relinquishmentGroups.cigPointsWeeks).then {
                 self.relinquishments[.cigWeeks] = $0
@@ -264,7 +264,7 @@ final class RelinquishmentViewModel {
             resolve()
         }
     }
-
+    
     private func resetLockOffUnitsInDisk(for relinquishment: Relinquishment) -> Promise<Void> {
         return Promise { [unowned self] resolve, reject in
             self.readPreviouslySelectedLockOffUnits(for: relinquishment)
@@ -273,17 +273,17 @@ final class RelinquishmentViewModel {
                         reject(CommonErrors.parsingError)
                         return
                     }
-
+                    
                     do {
                         try realm.write {
                             lockOffUnitsInDisk.forEach { $0.isFloatRemoved = true }
                             resolve()
                         }
-
+                        
                     } catch {
                         reject(error)
                     }
-
+                    
                 }.onError(reject)
         }
     }
@@ -313,7 +313,7 @@ final class RelinquishmentViewModel {
                     let hasNonSelectedLockOffUnits = { (relinquishment: Relinquishment) -> Bool in
                         
                         if let lockOffUnits = relinquishment.unit?.lockOffUnits {
-                         
+                            
                             let lockedOffUnits: [String] = openWeeksStore
                                 .flatMap { $0.openWeeks }
                                 .flatMap { $0.openWeeks }
@@ -328,7 +328,7 @@ final class RelinquishmentViewModel {
                         
                         return false
                     }
-
+                    
                     let filteredRelinquishments = relinquishments.filter {
                         if $0.hasLockOffUnits {
                             return hasNonSelectedLockOffUnits($0)
@@ -352,7 +352,7 @@ final class RelinquishmentViewModel {
             
             self.entityDataStore.readObjectsFromDisk(type: OpenWeeksStorage.self,
                                                      predicate: "membeshipNumber == '\(self.sessionStore.selectedMembership?.memberNumber ?? "")'",
-                                                     encoding: .decrypted)
+                encoding: .decrypted)
                 
                 .then { openWeeksStorage in
                     
@@ -370,7 +370,7 @@ final class RelinquishmentViewModel {
                                                                                   goldPointsHeadingLabelText: "Club Interval Gold Points".localized(),
                                                                                   goldPointsSubHeadingLabel: "Available Points as of Today".localized())])
                     }
-            
+                    
                 }.onError(reject)
         }
     }
@@ -554,6 +554,12 @@ final class RelinquishmentViewModel {
             selectedOpenWeek.weekNumber = relinquishment.weekNumber.unwrappedString
             selectedOpenWeek.relinquishmentYear = relinquishment.relinquishmentYear ?? 0
             selectedOpenWeek.relinquishmentID = relinquishment.relinquishmentId.unwrappedString
+            let unitDetails = ResortUnitDetails()
+            if let inventoryUnits = relinquishment.unit {
+                unitDetails.kitchenType = inventoryUnits.unitDetailsUIFormatted
+                unitDetails.unitSize = inventoryUnits.unitCapacityUIFormatted
+            }
+            selectedOpenWeek.unitDetails.append(unitDetails)
             resort.resortName = relinquishment.resort?.resortName ?? ""
             resort.resortCode = relinquishment.resort?.resortCode ?? ""
             selectedOpenWeek.resort.append(resort)
@@ -575,6 +581,12 @@ final class RelinquishmentViewModel {
             selectedOpenWeek.weekNumber = relinquishment.weekNumber.unwrappedString
             selectedOpenWeek.relinquishmentID = relinquishment.relinquishmentId.unwrappedString
             selectedOpenWeek.relinquishmentYear = relinquishment.relinquishmentYear ?? 0
+            let unitDetails = ResortUnitDetails()
+            if let inventoryUnits = relinquishment.unit {
+                unitDetails.kitchenType = inventoryUnits.unitDetailsUIFormatted
+                unitDetails.unitSize = inventoryUnits.unitCapacityUIFormatted
+            }
+            selectedOpenWeek.unitDetails.append(unitDetails)
             resort.resortName = relinquishment.resort?.resortName ?? ""
             resort.resortCode = relinquishment.resort?.resortCode ?? ""
             selectedOpenWeek.resort.append(resort)
@@ -587,3 +599,4 @@ final class RelinquishmentViewModel {
         }
     }
 }
+
