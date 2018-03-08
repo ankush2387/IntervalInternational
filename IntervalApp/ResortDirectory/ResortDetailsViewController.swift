@@ -936,7 +936,7 @@ extension ResortDetailsViewController: UITableViewDataSource {
                                 
                                 //to show full filled circle
                                 // Jira https://jira.iilg.com/browse/MOBI-1569
-                                // Change to account for Int to Float change introduced in DarwinSDK commit
+                                // Change to account for Int to Floasdgfdg dfg t change introduced in DarwinSDK commit
                                 // https://bitbucket.iilg.com/projects/IIMOB/repos/darwin-sdk-ios/commits/87bb2a9b9b747993939022a87c2cb1297577e362
                                 let castedInt = Int(resortCategory[indexPath.row - 1].rating)
                                 for _ in 0..<castedInt {
