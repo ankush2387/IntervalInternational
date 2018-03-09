@@ -91,6 +91,18 @@ class CertificateViewController: UIViewController {
         })
     }
     
+    // Change date format to mm/dd/yyyy.
+    func convertDateFormater(_ date: String) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        var returnDate = ""
+        if let date = dateFormatter.date(from: date) {
+            dateFormatter.dateFormat = "MM/dd/yyyy"
+            returnDate = dateFormatter.string(from: date)
+        }
+        return returnDate
+    }
+    
 }
 
 // MARK: - Tableview delegage
@@ -130,13 +142,9 @@ extension CertificateViewController: UITableViewDataSource {
         }
         if let expiredDate = Constant.MyClassConstants.certificateArray[indexPath.row].expirationDate {
             
-            let expireDateString = expiredDate
-            let myStringArr = expireDateString.components(separatedBy: "-")
-            
-            let expireDateFinalString = myStringArr.flatMap({ $0 }).joined(separator: "/")
-            if let daysOut = Constant.MyClassConstants.certificateArray[indexPath.row].daysOut {
-                cell.expireDate.text = "\(daysOut) Days, on \(expireDateFinalString)".localized()
-            }
+            let expireDateString = convertDateFormater(expiredDate)
+            let diffInDays = Constant.MyClassConstants.certificateArray[indexPath.row].getDaysUntilExpirationDate()
+            cell.expireDate.text =  "\(Helper.diffInDaysCalculation(String(diffInDays))), \(expireDateString)"
         }
         
         let diffInDays = Constant.MyClassConstants.certificateArray[indexPath.row].getDaysUntilExpirationDate()
