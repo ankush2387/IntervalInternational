@@ -29,6 +29,7 @@ class AvailabilityCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var ratingImgView4: UIImageView!
     @IBOutlet weak var ratingImgView5: UIImageView!
     
+    @IBOutlet weak var allIncImageView: UIImageView!
     //***** class variables *****//
     //var delegate:ResortDirectoryCollectionViewCellDelegate?
     
@@ -48,24 +49,89 @@ class AvailabilityCollectionViewCell: UICollectionViewCell {
         }
         Helper.addLinearGradientToView(view: self.viewGradient, colour: UIColor.white, transparntToOpaque: true, vertical: false)
         if url == nil {
-            self.resortImageView?.image = UIImage(named: Constant.MyClassConstants.noImage)
-            self.resortImageView.contentMode = .scaleAspectFit
+            resortImageView?.image = UIImage(named: Constant.MyClassConstants.noImage)
+            resortImageView.contentMode = .scaleAspectFit
         } else {
-            self.resortImageView.contentMode = .scaleToFill
-            self.resortImageView?.setImageWith(url, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
+            resortImageView.contentMode = .scaleToFill
+            resortImageView?.setImageWith(url, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
         }
-        self.resortName.text = inventoryItem.resortName
-        self.resortAddress.text = inventoryItem.address?.cityName
-        self.resortCode.text = inventoryItem.resortCode
+        resortName.text = inventoryItem.resortName
+        resortAddress.text = inventoryItem.address?.cityName
+        resortCode.text = inventoryItem.resortCode
         if let tierImageName = inventoryItem.tier {
-             let tier = Helper.getTierImageName(tier: tierImageName.uppercased())
-            self.tierImage.image = UIImage(named: tier)
+            tierImage.isHidden = false
+            let tier = Helper.getTierImageName(tier: tierImageName.uppercased())
+            if tier == "" {
+                tierImage.isHidden = true
+            } else {
+                tierImage.image = UIImage(named: tier)
+            }
+        } else {
+            tierImage.isHidden = true
         }
+            allIncImageView.image = #imageLiteral(resourceName: "Resort_All_Inclusive")
+            allIncImageView.isHidden = !inventoryItem.allInclusive
         
         if let reviews = inventoryItem.rating?.totalResponses {
             self.lblRatingReviews.text = "\(reviews) Member Reviews"
         }
         
+        // set rating view here
+       /* if let cat = inventoryItem.rating?.categories {
+            Constant.MyClassConstants.resortsDescriptionArray.rating?.categories = cat
+        }*/
+        
+        for category in inventoryItem.rating?.categories ?? [] {
+            
+            let categoryCode = category.categoryCode.unwrappedString
+            if categoryCode.caseInsensitiveCompare("OVERALL") == ComparisonResult.orderedSame {
+                showRating(rating: category.rating)
+                break
+            }
+        }
     }
     
+    //set rating
+    func showRating(rating: Float) {
+        //set empty image here
+        if rating == 0 {
+            for i in 1...5 {
+                if let imageView = self.viewWithTag(i) {
+                    if imageView.isKind(of: UIImageView.self) {
+                        let categoryImgVw = imageView as? UIImageView
+                        categoryImgVw?.image = #imageLiteral(resourceName: "empty_circle")
+                    }
+                }
+            }
+        } else {
+            // set full filled image here
+            var count = 0
+            let nInt = Int(rating)
+            for i in 1...nInt {
+                count = i
+                if let imageView = self.viewWithTag(i) {
+                    if imageView.isKind(of: UIImageView.self) {
+                        let categoryImgVw = imageView as? UIImageView
+                        categoryImgVw?.image = #imageLiteral(resourceName: "full_filled_circle")
+                    }
+                }
+            }
+            
+            //set half filled image here
+            let strRating = String(rating)
+            let arrStr = strRating.components(separatedBy: ".")
+            if let lastValue = arrStr.last {
+                if let newRating = Int(lastValue) {
+                    if newRating > 1 {
+                        if let imageView = self.viewWithTag(count) {
+                            if imageView.isKind(of: UIImageView.self) {
+                                let categoryImgVw = imageView as? UIImageView
+                                categoryImgVw?.image = #imageLiteral(resourceName: "half_filled_circle")
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

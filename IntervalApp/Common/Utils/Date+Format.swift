@@ -47,6 +47,10 @@ extension Date {
     var intervalShortDateFormat: String {
         return "yyyy-MM-dd"
     }
+
+    static var intervalShortDateFormat: String {
+        return "yyyy-MM-dd"
+    }
     
     func intervalShortDate() -> String {
         return self.formatDateAs(intervalShortDateFormat)
@@ -73,30 +77,18 @@ extension Date {
     }
     
     func formatDateAs(_ format: String) -> String {
-        
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = format
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+        dateFormatter.timeZone = TimeZone(identifier: "UTC")
         return dateFormatter.string(from: self)
     }
     
     static func dateFromString(_ dateString: String) -> Date? {
-        // Server should not be sending a time!
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-        dateFormatter.timeZone = TimeZone.autoupdatingCurrent
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+        dateFormatter.timeZone = TimeZone(identifier: "UTC")
+        dateFormatter.dateFormat = intervalShortDateFormat
         return dateFormatter.date(from: dateString)
-    }
-    
-    func modmed_isToday() -> Bool {
-        return Calendar.current.isDateInToday(self)
-    }
-    
-    func modmed_isThisWeek() -> Bool {
-        let calendar = Calendar.current
-        let today = Date()
-        let todayComponents = (calendar as NSCalendar).components(.weekOfYear, from: today)
-        let selfComponents = (calendar as NSCalendar).components(.weekOfYear, from: self)
-        return todayComponents.weekOfYear == selfComponents.weekOfYear
     }
 }

@@ -38,6 +38,9 @@
                             <rect key="frame" x="20" y="16" width="335" height="68"/>
                             <fontDescription key="fontDescription" type="system" pointSize="20"/>
                             <state key="normal" title="Button"/>
+                            <connections>
+                                <action selector="saveButtonTapped:" destination="-1" eventType="touchUpInside" id="GUO-bM-L7D"/>
+                            </connections>
                         </button>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

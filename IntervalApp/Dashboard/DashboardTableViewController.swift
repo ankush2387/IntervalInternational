@@ -39,7 +39,6 @@ class DashboardTableViewController: UITableViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(reloadAlertCollectionView), name: NSNotification.Name(rawValue: Constant.notificationNames.getawayAlertsNotification), object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(reloadTopDestinations), name: NSNotification.Name(rawValue:Constant.notificationNames.refreshTableNotification), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(reloadUpcomingTrip), name: NSNotification.Name(rawValue:Constant.notificationNames.reloadTripDetailsNotification), object: nil)
         getNumberOfSections()
         Helper.InitializeOpenWeeksFromLocalStorage()
         
@@ -55,6 +54,8 @@ class DashboardTableViewController: UITableViewController {
             .removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.getawayAlertsNotification), object: nil)
         NotificationCenter.default
             .removeObserver(self, name: NSNotification.Name(rawValue:Constant.notificationNames.refreshTableNotification), object: nil)
+        NotificationCenter.default
+            .removeObserver(self, name: NSNotification.Name(rawValue:Constant.notificationNames.reloadTripDetailsNotification), object: nil)
     }
     
     override func viewDidLoad() {
@@ -79,6 +80,16 @@ class DashboardTableViewController: UITableViewController {
                     strongSelf.readFlexExchangeDeals(accessToken: accessToken)
             }
         }
+        Helper.getUpcomingTripsForUser {[weak self] error in
+            if error != nil {
+                self?.presentAlert(with: "Error".localized(), message: error?.localizedDescription ?? "")
+            } else {
+                self?.getNumberOfSections()
+                self?.homeTableView.reloadData()
+                
+            }
+        }
+        
         // omniture tracking with event40
         let userInfo: [String: String] = [
             Constant.omnitureEvars.eVar44: Constant.omnitureCommonString.homeDashboard
@@ -135,6 +146,7 @@ class DashboardTableViewController: UITableViewController {
                 }
             }
             .onError { [weak self] error in
+                self?.hideHudAsync()
                 self?.presentErrorAlert(UserFacingCommonError.handleError(error as NSError))
         }
     }
@@ -225,11 +237,13 @@ class DashboardTableViewController: UITableViewController {
     //***** MARK: - Table view delegate methods *****//
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if dashboardArray[indexPath.section] == Constant.dashboardTableScreenReusableIdentifiers.upcoming {
-            if let exchaneNumber = Constant.MyClassConstants.upcomingTripsArray[indexPath.row].exchangeNumber {
-                Constant.MyClassConstants.transactionNumber = "\(exchaneNumber)"
+            Constant.MyClassConstants.dashbaordUpcomingSelectedIndex = indexPath.row
+            Constant.MyClassConstants.upcomingOriginationPoint = "dashboard"
+            let isRunningOnIphone = UIDevice.current.userInterfaceIdiom == .phone
+            let storyboardName = isRunningOnIphone ? Constant.storyboardNames.myUpcomingTripIphone : Constant.storyboardNames.myUpcomingTripIpad
+            if let initialViewController = UIStoryboard(name: storyboardName, bundle: nil).instantiateInitialViewController() {
+                navigationController?.pushViewController(initialViewController, animated: true)
             }
-            
-            Helper.getTripDetails(senderViewController: self)
         }
     }
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -317,7 +331,6 @@ class DashboardTableViewController: UITableViewController {
         
         let cell = getTableViewContents(indexPath, type: dashboardArray[indexPath.section])
         return cell
-        
     }
     
     func getTableViewContents(_ indexPath: IndexPath, type: String) -> UITableViewCell {
@@ -514,11 +527,11 @@ class DashboardTableViewController: UITableViewController {
         if !searchDateResponse.checkInDates.isEmpty {
             showHudAsync()
             let searchCriteria = createSearchCriteriaFor(alert: getawayAlert)
-
+            
             if let settings = Session.sharedSession.appSettings {
                 Constant.MyClassConstants.initialVacationSearch = VacationSearch(settings, searchCriteria)
             }
-
+            
             Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.response = searchDateResponse
             // Get activeInterval
             guard let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval() else { return }
@@ -624,7 +637,7 @@ class DashboardTableViewController: UITableViewController {
             Constant.MyClassConstants.vacationSearchResultHeaderLabel = destination.destinationName
             
         } else if !alert.resorts.isEmpty {
-           searchCriteria.resorts = alert.resorts
+            searchCriteria.resorts = alert.resorts
             if let resortName = alert.resorts[0].resortName {
                 Constant.MyClassConstants.vacationSearchResultHeaderLabel = "\(resortName) + \(alert.resorts.count) more"
             }
@@ -794,8 +807,14 @@ extension DashboardTableViewController: UICollectionViewDataSource {
             centerView.addSubview(unitLabel)
             
             let priceLabel = UILabel(frame: CGRect(x: 10, y: 35, width: centerView.frame.size.width - 20, height: 20))
-            if let pricefrom = topTenDeals.price?.fromPrice {
-                priceLabel.text = "From $ \(pricefrom) Wk."
+            if let pricefrom = topTenDeals.price?.fromPrice, let currencyCode = topTenDeals.price?.currencySymbol {
+                let fromAttributedString = NSMutableAttributedString(string: "From ".localized(), attributes: nil)
+                let wkAttributedString = NSAttributedString(string: " / Wk.".localized(), attributes: nil)
+                let integerPrice = Int(pricefrom)
+                let priceAttributedString = NSAttributedString(string: "\(currencyCode)\(integerPrice)", attributes: nil)
+                fromAttributedString.append(priceAttributedString)
+                fromAttributedString.append(wkAttributedString)
+                priceLabel.attributedText = fromAttributedString
             }
             
             priceLabel.numberOfLines = 2
@@ -845,13 +864,12 @@ extension DashboardTableViewController: UICollectionViewDataSource {
                         cell.layer.borderColor = UIColor(red: 224.0 / 255.0, green: 118.0 / 255.0, blue: 69.0 / 255.0, alpha: 1.0).cgColor
                         cell.backgroundColor = UIColor(red: 224.0 / 255.0, green: 118.0 / 255.0, blue: 69.0 / 255.0, alpha: 1.0)
                     } else {
-                        cell.alertStatus.text = Constant.buttonTitles.nothingYet
+                        cell.alertStatus.text = Constant.buttonTitles.noResultYet
                         cell.alertStatus.textColor = UIColor.white
                         cell.layer.borderColor = UIColor(red: 167.0 / 255.0, green: 167.0 / 255.0, blue: 170.0 / 255.0, alpha: 1.0).cgColor
                         cell.backgroundColor = UIColor(red: 167.0 / 255.0, green: 167.0 / 255.0, blue: 170.0 / 255.0, alpha: 1.0)
                     }
                 }
-                
                 cell.layer.borderWidth = 2.0
                 cell.layer.cornerRadius = 3
                 cell.layer.masksToBounds = true
@@ -862,7 +880,6 @@ extension DashboardTableViewController: UICollectionViewDataSource {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.dashboardTableScreenReusableIdentifiers.cell, for: indexPath)
             return cell
         }
-        
     }
 }
 
@@ -893,7 +910,7 @@ extension UIViewController {
         if let settings = Session.sharedSession.appSettings {
             Constant.MyClassConstants.initialVacationSearch = VacationSearch(settings, searchCriteria)
         }
-
+        
         if Reachability.isConnectedToNetwork() == true {
             ADBMobile.trackAction(Constant.omnitureEvents.event9, data: nil)
             showHudAsync()
@@ -923,7 +940,7 @@ extension UIViewController {
                 Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.response = response
                 
                 // Get activeInterval
-                let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval()
+                guard let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval() else { return }
                 
                 // Update active interval
                 Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
@@ -935,12 +952,7 @@ extension UIViewController {
                 
                 // Check not available checkIn dates for the active interval
                 
-                if activeInterval?.fetchedBefore != nil && activeInterval?.hasCheckInDates() != nil {
-                    Helper.showNotAvailabilityResults()
-                    self.navigateToSearchResultsScreen()
-                    
-                } else {
-                    
+                if activeInterval.hasCheckInDates() {
                     Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
                     let initialSearchCheckInDate = Helper.convertStringToDate(dateString:Constant.MyClassConstants.initialVacationSearch.searchCheckInDate!, format:Constant.MyClassConstants.dateFormat)
                     Constant.MyClassConstants.checkInDates = response.checkInDates
@@ -948,6 +960,9 @@ extension UIViewController {
                     Helper.helperDelegate = self as? HelperDelegate
                     self.hideHudAsync()
                     Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: initialSearchCheckInDate, senderViewController: self)
+                } else {
+                    Helper.showNotAvailabilityResults()
+                    self.navigateToSearchResultsScreen()
                 }
             }) {[unowned self] error in
                 self.hideHudAsync()
@@ -963,7 +978,6 @@ extension UIViewController {
         
         //Present no filter options
         Constant.MyClassConstants.noFilterOptions = true
-        
         let storyboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
         if let viewController = storyboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.flexchangeViewController) as? FlexchangeSearchViewController {
             viewController.selectedFlexchange = Constant.MyClassConstants.flexExchangeDeals[selectedIndexPath.row]
@@ -987,3 +1001,4 @@ extension UIViewController {
         
     }
 }
+

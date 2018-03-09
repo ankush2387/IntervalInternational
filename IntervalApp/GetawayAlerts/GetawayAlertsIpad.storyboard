@@ -2884,7 +2884,7 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
-                                            <action selector="SaveMyAlertButtonPressed:" destination="3Ft-ni-eQf" eventType="touchUpInside" id="ivo-dQ-KMz"/>
+                                            <action selector="updateAlertPressed:" destination="3Ft-ni-eQf" eventType="touchUpInside" id="MaL-hs-aUn"/>
                                         </connections>
                                     </button>
                                 </subviews>

@@ -27,6 +27,10 @@ final class AdditionalInformationViewModel {
         checkInDateVM?.textFieldValue.value.unwrappedString.isEmpty == false
     }
 
+    var resortPhoneNumber: String? {
+        return resort.value?.phone ?? relinquishment.resort?.phone
+    }
+
     // MARK: - Private properties
     private var onlyOneResortInRelinquishment = false
     private let disposeBag = DisposeBag()
@@ -76,15 +80,18 @@ final class AdditionalInformationViewModel {
                 self.resortUnitDetailsViewModel?.headerLabelText.next(formattedHeaderText)
                 self.relinquishment.resort = resort
                 self.relinquishment.fixWeekReservation?.resort = resort
+
+                self.reservationNumberVM?.textFieldValue.next(nil)
+                self.reservationNumberVM?.isEditing.next(true)
+                self.unitNumberVM?.isTappableTextField.next(true)
+                self.unitNumberVM?.textFieldValue.next(nil)
+                self.numberOfBedroomsVM?.isTappableTextField.next(true)
+                self.numberOfBedroomsVM?.textFieldValue.next(nil)
+                self.checkInDateVM?.textFieldValue.next(nil)
+                self.numberOfBedroomsVM?.isTappableTextField.next(true)
+                self.checkInDateVM?.isTappableTextField.next(true)
+
                 }.dispose(in: self.disposeBag)
-            
-            self.unitNumberVM?.textFieldValue.observeNext { [unowned self] unitNumber in
-                self.relinquishment.fixWeekReservation?.unit?.unitNumber = unitNumber
-            }.dispose(in: self.disposeBag)
-            
-            self.numberOfBedroomsVM?.textFieldValue.observeNext { [unowned self] numberOfBedrooms in
-                self.relinquishment.fixWeekReservation?.unit?.unitSize = numberOfBedrooms
-            }.dispose(in: self.disposeBag)
 
             self.directoryClientAPIStore.readResort(for: accessToken, and: resortCode)
                 .then(self.updateResortInRelinquishment)
@@ -198,27 +205,14 @@ final class AdditionalInformationViewModel {
                 }.onError { _ in reject(UserFacingCommonError.noData) }
         }
     }
-
-    func resortHasBeenSelected() {
-        reservationNumberVM?.textFieldValue.next(nil)
-        reservationNumberVM?.isEditing.next(true)
-        unitNumberVM?.isTappableTextField.next(true)
-        unitNumberVM?.textFieldValue.next(nil)
-        numberOfBedroomsVM?.isTappableTextField.next(true)
-        numberOfBedroomsVM?.textFieldValue.next(nil)
-        checkInDateVM?.textFieldValue.next(nil)
-
-        numberOfBedroomsVM?.isTappableTextField.next(true)
-        checkInDateVM?.isTappableTextField.next(true)
-    }
     
-    func update(inventoryUnit: InventoryUnit?) {
-        relinquishment.unit = inventoryUnit
-    }
-    
-    func update(checkInDate: String?, weekNumber: String? = nil) {
-        relinquishment.fixWeekReservation?.checkInDate = checkInDate
-        relinquishment.fixWeekReservation?.weekNumber = weekNumber == nil ? relinquishment.weekNumber : weekNumber
+    func updateDate(with resortCalendar: ResortCalendar?) {
+        relinquishment.fixWeekReservation?.checkInDate = resortCalendar?.checkInDate
+        if let weekNumber = resortCalendar?.weekNumber {
+            relinquishment.fixWeekReservation?.weekNumber = weekNumber
+        } else {
+            relinquishment.fixWeekReservation?.weekNumber = relinquishment.weekNumber
+        }
     }
     
     func getResortCalendars() -> Promise<[ResortCalendar]> {
@@ -249,11 +243,28 @@ final class AdditionalInformationViewModel {
                 return
             }
             
+            if !self.relinquishment.requireUnitNumberAndUnitSize() {
+                fixWeekReservation.unit = nil
+            }
+            
+            if !self.relinquishment.requireCheckInDateAndWeekNumber() {
+                fixWeekReservation.checkInDate = nil
+                fixWeekReservation.weekNumber = nil
+            }
+            
+            if !self.relinquishment.requireReservationNumber() {
+                fixWeekReservation.reservationNumber = nil
+            }
+            
+            if !self.relinquishment.requireClubResort() {
+                fixWeekReservation.resort = nil
+            }
+            
             self.exchangeClientAPIStore.writeFixWeekReservation(for: accessToken,
                                                                 relinquishmentID: relinquishmentID,
-                                                                reservation: fixWeekReservation).then(resolve).onError {
-                                                                    reject(UserFacingCommonError.handleError($0))
-            }
+                                                                reservation: fixWeekReservation)
+                .then(resolve)
+                .onError { reject(UserFacingCommonError.handleError($0)) }
         }
     }
 
@@ -268,9 +279,11 @@ final class AdditionalInformationViewModel {
 
             let createResortDetailViewModel = { (image: UIImage) in
                 let resort = self.relinquishment.resort
+                let resortLocationText = [resort?.address?.cityName, resort?.address?.territoryCode].flatMap { $0 }.joined(separator: ", ")
+                
                 self.simpleCellViewModels[.resortDetails] = [SimpleSeperatorCellViewModel(),
                                                              SimpleResortDetailViewModel(resortNameLabelText: resort?.resortName,
-                                                                                         resortLocationLabelText: resort?.address?.cityName,
+                                                                                         resortLocationLabelText: resortLocationText,
                                                                                          resortCodeLabelText: resort?.resortCode,
                                                                                          resortImage: image)]
             }
@@ -346,6 +359,16 @@ final class AdditionalInformationViewModel {
             checkInDateVM?.cellHeight.next(0)
             checkInDateVM?.placeholderText.next(nil)
         }
+        
+        self.unitNumberVM?.textFieldValue.observeNext { [unowned self] unitNumber in
+            let unit = InventoryUnit()
+            unit.unitNumber = unitNumber
+            self.relinquishment.fixWeekReservation?.unit = unit
+            }.dispose(in: self.disposeBag)
+        
+        self.numberOfBedroomsVM?.textFieldValue.observeNext { [unowned self] numberOfBedrooms in
+            self.relinquishment.fixWeekReservation?.unit?.unitSize = numberOfBedrooms
+            }.dispose(in: self.disposeBag)
 
         simpleCellViewModels[.reservationDetails] = [reservationNumberVM, unitNumberVM, numberOfBedroomsVM, checkInDateVM]
         return Promise.resolve()

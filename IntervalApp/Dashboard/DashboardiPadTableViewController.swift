@@ -74,6 +74,12 @@ class DashboardIPadTableViewController: UITableViewController {
             
         }
         
+        Helper.getUpcomingTripsForUser {[weak self] error in
+            if error != nil {
+                self?.presentAlert(with: "Error".localized(), message: error?.localizedDescription ?? "")
+            } else { self?.homeTableView.reloadData() }
+        }
+        
         //***** Setup the hamburger menu.  This will reveal the side menu. *****//
         if let rvc = self.revealViewController() {
             //set SWRevealViewController's Delegate
@@ -612,9 +618,10 @@ extension DashboardIPadTableViewController: UICollectionViewDelegate {
             homeAlertSelected(indexPath: indexPath)
             
         case 4:
-            if let exchangeNumber = Constant.MyClassConstants.upcomingTripsArray[indexPath.row].exchangeNumber {
-                Constant.MyClassConstants.transactionNumber = "\(exchangeNumber)"
-                Helper.getTripDetails(senderViewController: self)
+            Constant.MyClassConstants.upcomingOriginationPoint = "dashboard"
+            let storyboardName = Constant.storyboardNames.myUpcomingTripIpad
+            if let initialViewController = UIStoryboard(name: storyboardName, bundle: nil).instantiateInitialViewController() {
+                navigationController?.pushViewController(initialViewController, animated: true)
             }
             
         default:
@@ -724,8 +731,15 @@ extension DashboardIPadTableViewController: UICollectionViewDataSource {
             centerView.addSubview(unitLabel)
             
             let priceLabel = UILabel(frame: CGRect(x: 10, y: 35, width: centerView.frame.size.width - 20, height: 20))
-            if let price = topTenDeals.price {
-                priceLabel.text = "From $" + String(price.fromPrice) + " Wk.".localized()
+            if let price = topTenDeals.price?.fromPrice, let currencyCode = topTenDeals.price?.currencySymbol {
+                priceLabel.text = "From $" + String(price) + " Wk.".localized()
+                if let attributedAmount = price.currencyFormatter(for: "From \(currencyCode) Wk.", baseLineOffSet: 0) {
+                    let fromAttributedString = NSMutableAttributedString(string: "From ", attributes: nil)
+                    let wkAttributedString = NSAttributedString(string: " Wk.", attributes: nil)
+                    fromAttributedString.append(attributedAmount)
+                    fromAttributedString.append(wkAttributedString)
+                    priceLabel.attributedText = fromAttributedString
+                }
             }
             priceLabel.numberOfLines = 2
             priceLabel.textAlignment = NSTextAlignment.center
@@ -776,7 +790,7 @@ extension DashboardIPadTableViewController: UICollectionViewDataSource {
                         cell.layer.borderColor = UIColor(red: 224.0 / 255.0, green: 118.0 / 255.0, blue: 69.0 / 255.0, alpha: 1.0).cgColor
                         cell.backgroundColor = UIColor(red: 224.0 / 255.0, green: 118.0 / 255.0, blue: 69.0 / 255.0, alpha: 1.0)
                     } else {
-                        cell.alertStatus.text = Constant.buttonTitles.nothingYet
+                        cell.alertStatus.text = Constant.buttonTitles.noResultYet
                         cell.alertStatus.textColor = UIColor.white
                         cell.layer.borderColor = UIColor(red: 167.0 / 255.0, green: 167.0 / 255.0, blue: 170.0 / 255.0, alpha: 1.0).cgColor
                         cell.backgroundColor = UIColor(red: 167.0 / 255.0, green: 167.0 / 255.0, blue: 170.0 / 255.0, alpha: 1.0)

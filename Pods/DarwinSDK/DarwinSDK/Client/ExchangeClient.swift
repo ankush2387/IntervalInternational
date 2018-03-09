@@ -125,7 +125,7 @@ open class ExchangeClient {
         
         DarwinSDK.logger.debug("About to try \(endpoint) with token=\(accessToken.token!) and request payload=\(params)")
         
-        IntervalAlamofireManager.sharedInstance.defaultManager.request(endpoint, method: .put, encoding: JSONEncoding.default, headers: headers)
+        IntervalAlamofireManager.sharedInstance.defaultManager.request(endpoint, method: .put, parameters: params, encoding: JSONEncoding.default, headers: headers)
             //.validate(statusCode: 200...201)
             .responseJSON { response in
                 let statusCode = response.response?.statusCode ?? 200
@@ -159,7 +159,7 @@ open class ExchangeClient {
         
         DarwinSDK.logger.debug("About to try \(endpoint) with token=\(accessToken.token!) and request payload=\(params)")
         
-        IntervalAlamofireManager.sharedInstance.defaultManager.request(endpoint, method: .put, encoding: JSONEncoding.default, headers: headers)
+        IntervalAlamofireManager.sharedInstance.defaultManager.request(endpoint, method: .put, parameters: params, encoding: JSONEncoding.default, headers: headers)
             //.validate(statusCode: 200...201)
             .responseJSON { response in
                 let statusCode = response.response?.statusCode ?? 200
@@ -198,7 +198,7 @@ open class ExchangeClient {
             .responseJSON { response in
                 let statusCode = response.response?.statusCode ?? 200
                 let json = JSON(response.result.value ?? "{}")
-                //DarwinSDK.logger.debug("Response: \(statusCode) - \(json)")
+                DarwinSDK.logger.debug("Response: \(statusCode) - \(json)")
                 
                 switch statusCode {
                 case 200...209:
@@ -207,9 +207,9 @@ open class ExchangeClient {
                     onError(DarwinSDK.parseDarwinError(statusCode:statusCode, json:json))
                 }
             }
-            .responseString { response in
-                DarwinSDK.logger.debug("Got \(response.response?.statusCode ?? 0) - \(response)")
-            }
+            //.responseString { response in
+            //    DarwinSDK.logger.debug("Got \(response.response?.statusCode ?? 0) - \(response)")
+            //}
     }
     
     // STATUS: Unit Test passed
@@ -241,9 +241,9 @@ open class ExchangeClient {
                     onError(DarwinSDK.parseDarwinError(statusCode:statusCode, json:json))
                 }
             }
-            .responseString { response in
-                DarwinSDK.logger.debug("Got \(response.response?.statusCode ?? 0) - \(response)")
-            }
+            //.responseString { response in
+            //    DarwinSDK.logger.debug("Got \(response.response?.statusCode ?? 0) - \(response)")
+            //}
     }
     
     // STATUS: Unit Test passed

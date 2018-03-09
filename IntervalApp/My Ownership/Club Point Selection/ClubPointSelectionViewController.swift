@@ -16,8 +16,8 @@ class ClubPointSelectionViewController: UIViewController {
     /** Outlets */
     @IBOutlet private weak var clubPoinScrollVw: UIScrollView!
     @IBOutlet private weak var standardFlexChartSegment: UISegmentedControl!
-    @IBOutlet private weak var travelingDetailView: UIView!
-    @IBOutlet private weak var secondView: UIView!
+    @IBOutlet fileprivate weak var travelingDetailView: UIView!
+    @IBOutlet fileprivate weak var secondView: UIView!
     @IBOutlet private weak var secondtravelwindowbtn: IUIKButton!
     @IBOutlet private weak var firsttravelwindowbtn: IUIKButton!
     @IBOutlet private weak var doneButton: IUIKButton!
@@ -42,16 +42,22 @@ class ClubPointSelectionViewController: UIViewController {
     @IBOutlet private weak var enddatesecondbtn: UILabel!
     @IBOutlet private weak var endmonthsecondbtn: UILabel!
     
+    @IBOutlet fileprivate weak var firstTravelWindowWidth: NSLayoutConstraint!
+    
+    @IBOutlet fileprivate weak var equalWidthsBetweenFirstAndSecondTravelWindow: NSLayoutConstraint!
     @IBOutlet private weak var indisefirstview: UIView!
     
     @IBOutlet private weak var insidesecondview: UIView!
-    
+
+    var didSave: ((ClubPoints) -> Void)?
+
     let infoImageView = UIImageView()
+    var selectedViewIndex = 0
     var labelsCollectionView: UICollectionView!
     var clublabel = ""
     var clubIntervalValuesCollectionView: UICollectionView!
     var clubPointsValue = "0"
-   
+    var selectedIndexPath: IndexPath?
     var testArr = [1]
     var firstCheckedCheckBoxTag = 0
     var secondCheckedCheckBoxTag = 0
@@ -71,7 +77,6 @@ class ClubPointSelectionViewController: UIViewController {
         createClubsCollectionView()
         travelingDetailView.backgroundColor = #colorLiteral(red: 0, green: 0.5607843137, blue: 0.7764705882, alpha: 1)
         indisefirstview.backgroundColor = #colorLiteral(red: 0, green: 0.5607843137, blue: 0.7764705882, alpha: 1)
-        indisefirstview.backgroundColor = UIColor(red:0.00, green:1.00, blue:0.34, alpha:1.0)
         secondView.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         insidesecondview.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         startdatesecondbtn.textColor = #colorLiteral(red: 0, green: 0.5607843137, blue: 0.7764705882, alpha: 1)
@@ -83,7 +88,7 @@ class ClubPointSelectionViewController: UIViewController {
         startmonthfirstbtn.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         enddatefirstbtn.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         endmonthfirstbtn.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-        
+        selectedViewIndex = 0
     }
     
     @IBAction func secondbuttonpressed(_ sender: Any) {
@@ -107,23 +112,28 @@ class ClubPointSelectionViewController: UIViewController {
         mapClubIntervalPoints(index: (sender as AnyObject).tag - 100)
         
         createClubsCollectionView()
-        
+        selectedViewIndex = 1
     }
     
     // MARK: - Function for done button click
     @IBAction func doneButtonClicked(_ sender: IUIKButton) {
-        
-        guard let relinquishmentID = Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId else {
-         return }
-        
+        showHudAsync()
+        guard let relinquishmentID = Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId,
+            let indexPath = selectedIndexPath,
+            let unitSize = processUnitSize(for: indexPath) else {
+                hideHudAsync()
+                return
+        }
+
         let pointMatrixType = PointsMatrixReservation()
         pointMatrixType.clubPointsMatrixType = Constant.MyClassConstants.matrixType
         pointMatrixType.clubPointsMatrixDescription = Constant.MyClassConstants.matrixDescription
         pointMatrixType.clubPointsMatrixGridRowLabel = Constant.MyClassConstants.labelarray[0] as? String
-        intervalPrint(Constant.MyClassConstants.fromdatearray[0])
-        pointMatrixType.fromDate = Constant.MyClassConstants.fromdatearray[0] as? String
-        pointMatrixType.toDate = Constant.MyClassConstants.todatearray[0] as? String
-        
+        intervalPrint(Constant.MyClassConstants.fromdatearray[selectedViewIndex])
+        intervalPrint(Constant.MyClassConstants.todatearray[selectedViewIndex])
+        pointMatrixType.fromDate = Constant.MyClassConstants.fromdatearray[selectedViewIndex] as? String
+        pointMatrixType.toDate = Constant.MyClassConstants.todatearray[selectedViewIndex] as? String
+        pointMatrixType.clubPointsMatrixGridRowLabel = processClubPointMatrixRowLable(for: indexPath)
         _ = Constant.MyClassConstants.relinquishmentSelectedWeek.unit
         intervalPrint(Constant.MyClassConstants.matrixDataArray)
         intervalPrint(segmentSelectedString)
@@ -131,23 +141,60 @@ class ClubPointSelectionViewController: UIViewController {
         dictionaryForSegmentCheckBox.value(forKey: segmentSelectedString)
         
            let invenUnit = InventoryUnit()
-           invenUnit.unitSize = "STUDIO"
+           invenUnit.unitSize = unitSize
            let clubPoints = clubPointsValue.replacingOccurrences(of: ",", with: "")
            invenUnit.clubPoints = Int(clubPoints) ?? 0
         
                 pointMatrixType.unit = invenUnit
-         ExchangeClient.updatePointsMatrixReservation(Session.sharedSession.userAccessToken, relinquishmentId: relinquishmentID, reservation: pointMatrixType, onSuccess: {(response) in
-            intervalPrint(response)
-            
-         }, onError: { error in
-            self.presentErrorAlert(UserFacingCommonError.handleError(error))
+         ExchangeClient.updatePointsMatrixReservation(Session.sharedSession.userAccessToken, relinquishmentId: relinquishmentID, reservation: pointMatrixType, onSuccess: { [weak self] (response) in
+            let clubPoints = ClubPoints()
+            clubPoints.isPointsMatrix = true
+            clubPoints.pointsSpent = invenUnit.clubPoints
+            self?.hideHudAsync()
+            self?.didSave?(clubPoints)
+         }, onError: { [weak self] error in
+            self?.hideHudAsync()
+            self?.presentErrorAlert(UserFacingCommonError.handleError(error))
         })
         
     }
-    
+
+    private func processClubPointMatrixRowLable(for indexPath: IndexPath) -> String? {
+        return Constant.MyClassConstants.labelarray[indexPath.row - 1] as? String
+    }
+
+    private func processUnitSize(for indexPath: IndexPath) -> String? {
+
+        // This is not right..
+        // This class needs to be rewritten...
+        // This will break in other languages since its driven by UI and localization will change these values...
+        let selectedSize = Constant.MyClassConstants.clubPointMatrixHeaderArray[indexPath.section] as? String
+
+        switch selectedSize.unwrappedString {
+
+        case "Studio":
+            return UnitSize.STUDIO.rawValue
+
+        case "1 Bedroom":
+            return UnitSize.ONE_BEDROOM.rawValue
+
+        case "2 Bedroom":
+            return UnitSize.TWO_BEDROOM.rawValue
+
+        case "3 Bedroom":
+            return UnitSize.THREE_BEDROOM.rawValue
+
+        case "4 Bedroom":
+            return UnitSize.FOUR_BEDROOM.rawValue
+
+        default:
+            return nil
+        }
+    }
+
     // MARK: - Save Club points to database
     func saveSelectedClubPoints() {
-        
+
     }
     
     //*** Change frame layout while change iPad in Portrait and Landscape mode.***//
@@ -254,6 +301,10 @@ class ClubPointSelectionViewController: UIViewController {
         }
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        createClubsCollectionView()
+    }
+    
     //***** Function to create collection view to show club points. *****//
     func createClubsCollectionView() {
         self.clubPoinScrollVw.contentSize = CGSize(width: 0, height: ((Constant.MyClassConstants.clubIntervalDictionary.allKeys.count * 70) + 50))
@@ -319,7 +370,6 @@ class ClubPointSelectionViewController: UIViewController {
     
     func mapClubIntervalPoints(index: Int) {
 
-        intervalPrint(Constant.MyClassConstants.fromdatearray[0], Constant.MyClassConstants.fromdatearray[1])
         let dictKey = "\(Constant.MyClassConstants.fromdatearray[index]) - \(Constant.MyClassConstants.todatearray[index])"
         guard let rowsForClubInterval = Constant.MyClassConstants.pointMatrixDictionary.object(forKey: dictKey) as? [ClubPointsMatrixGridRow] else { return }
         
@@ -350,8 +400,8 @@ class ClubPointSelectionViewController: UIViewController {
         let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
         guard let fromStartDateString = Constant.MyClassConstants.todatearray[0] as? String else { return }
         guard let toStartDateString = Constant.MyClassConstants.fromdatearray[0] as? String else { return }
-        guard let fromEndDateString = Constant.MyClassConstants.todatearray[1] as? String else { return }
-        guard let toEndDateString = Constant.MyClassConstants.fromdatearray[1] as? String else { return }
+        guard let fromEndDateString = Constant.MyClassConstants.todatearray.lastObject as? String else { return }
+        guard let toEndDateString = Constant.MyClassConstants.fromdatearray.lastObject as? String else { return }
         let fromStartComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: Helper.convertStringToDate(dateString: fromStartDateString, format: "yyyy-MM-dd"))
         let toStartComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: Helper.convertStringToDate(dateString: toStartDateString, format: "yyyy-MM-dd"))
         let fromEndComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: Helper.convertStringToDate(dateString: fromEndDateString, format: "yyyy-MM-dd"))
@@ -379,6 +429,12 @@ class ClubPointSelectionViewController: UIViewController {
         endmonthfirstbtn.text = "\(Helper.getMonthnameFromInt(monthNumber: fromStartComponents.month!)) \(fromStartComponents.year!)"
         startmonthsecondbtn.text = "\(Helper.getMonthnameFromInt(monthNumber: toEndComponents.month!)) \(toEndComponents.year!)"
         endmonthsecondbtn.text = "\(Helper.getMonthnameFromInt(monthNumber: fromEndComponents.month!)) \(fromEndComponents.year!)"
+        
+        if startmonthfirstbtn.text == startmonthsecondbtn.text && endmonthfirstbtn.text == endmonthsecondbtn.text {
+            equalWidthsBetweenFirstAndSecondTravelWindow.priority = 250
+            secondView.isHidden = true
+            firstTravelWindowWidth.constant = view.frame.width
+        }
     }
     
     //Function for button toDate and FromDate click action
@@ -440,6 +496,7 @@ class ClubPointSelectionViewController: UIViewController {
     @IBAction func checkBoxClicked(_ sender: UIButton) {
         doneButton.isHidden = false
         let indexPath = IndexPath(item: sender.tag % 10, section: sender.tag / 10)
+        selectedIndexPath = indexPath
         Constant.MyClassConstants.checkBoxTag = sender.tag % 10
         guard let collectionVwCell = clubIntervalValuesCollectionView.cellForItem(at: indexPath) else { return }
 
@@ -545,7 +602,7 @@ extension ClubPointSelectionViewController: UICollectionViewDataSource {
         
         if collectionView.tag == 70 {
             if indexPath.row == 0 {
-                guard let dateCell = collectionView .dequeueReusableCell(withReuseIdentifier: "HeaderCell", for: indexPath) as? TdiCollectionViewCell else { return UICollectionViewCell() }
+                guard let dateCell = collectionView.dequeueReusableCell(withReuseIdentifier: "HeaderCell", for: indexPath) as? TdiCollectionViewCell else { return UICollectionViewCell() }
                 dateCell.backgroundColor = IUIKColorPalette.titleBackdrop.color
                 dateCell.contentLabel.textColor = UIColor.black
                 

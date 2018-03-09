@@ -252,8 +252,6 @@ class CreateAlertViewController: UIViewController {
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
         if let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.calendarViewController) as? CalendarViewController {
             viewController.requestedDateWindow = Constant.MyClassConstants.start
-            let transitionManager = TransitionManager()
-            navigationController?.transitioningDelegate = transitionManager
             navigationController?.pushViewController(viewController, animated: true)
         }
         
@@ -265,8 +263,7 @@ class CreateAlertViewController: UIViewController {
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
         if let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.calendarViewController) as? CalendarViewController {
             viewController.requestedDateWindow = Constant.MyClassConstants.end
-            let transitionManager = TransitionManager()
-            navigationController?.transitioningDelegate = transitionManager
+            viewController.showNinetyDaysWindow = true
             navigationController?.pushViewController(viewController, animated: true)
         }
     }
@@ -461,9 +458,7 @@ extension CreateAlertViewController: UITableViewDelegate {
         
         let delete = UITableViewRowAction(style: UITableViewRowActionStyle.destructive, title: Constant.buttonTitles.remove) { (_, index) -> Void in
             if !Constant.MyClassConstants.selectedGetawayAlertDestinationArray.isEmpty {
-                
                 Constant.MyClassConstants.selectedGetawayAlertDestinationArray.remove(at: indexPath.row)
-                Constant.MyClassConstants.realmStoredDestIdOrCodeArray.removeObject(at: indexPath.row)
             }
             tableView.deleteRows(at: [indexPath as IndexPath], with: UITableViewRowAnimation.automatic)
             tableView.reloadData()
@@ -564,17 +559,20 @@ extension CreateAlertViewController: UITableViewDataSource {
             case .resorts(let resorts):
                 var resortNm = ""
                 var resortCode = ""
-                if let restName = resorts[0].resortName {
-                    resortNm = restName
+                if !resorts.isEmpty {
+                    if let restName = resorts[0].resortName {
+                        resortNm = restName
+                    }
+                    if let restcode = resorts[0].resortCode {
+                        resortCode = restcode
+                    }
+                    var resortNameString = "\(resortNm) (\(resortCode))"
+                    if resorts.count > 1 {
+                        resortNameString = resortNameString.appending(" and \(resorts.count - 1) more")
+                    }
+                    cell.whereTogoTextLabel.text = resortNameString
                 }
-                if let restcode = resorts[0].resortCode {
-                    resortCode = restcode
-                }
-                var resortNameString = "\(resortNm) (\(resortCode))"
-                if resorts.count > 1 {
-                    resortNameString = resortNameString.appending(" and \(resorts.count - 1) more")
-                }
-                cell.whereTogoTextLabel.text = resortNameString
+
             }
             
             cell.selectionStyle = UITableViewCellSelectionStyle.none

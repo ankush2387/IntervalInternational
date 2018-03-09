@@ -6,7 +6,7 @@
 //  Copyright © 2016 Interval International. All rights reserved.
 //
 
-import Appsee
+import Bugsee
 import Firebase
 import GoogleMaps
 import HockeySDK
@@ -31,7 +31,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
-        setAppseeSDK()
+        setBugseeSDK()
         setXCTLogger()
         setGoogleMapsAPI()
         setHockeyManager()
@@ -49,8 +49,10 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     // MARK: - Private functions
-    private func setAppseeSDK() {
-        Appsee.start("4c587be2b8cd474593cd47e88d4ca407")
+    private func setBugseeSDK() {
+        let options: [String: Any] = [BugseeShakeToReportKey: true,
+                                       BugseeScreenshotToReportKey: false]
+        Bugsee.launch(token: "02c07b72-bc9d-4eb2-81e0-00618d14db8b", options: options)
     }
     
     private func setWindow() {

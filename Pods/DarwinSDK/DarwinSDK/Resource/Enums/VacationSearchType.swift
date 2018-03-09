@@ -9,12 +9,24 @@
 import Foundation
 
 public enum VacationSearchType : String {
-    case COMBINED = "COMBINED"
-    case EXCHANGE = "EXCHANGE"
-    case RENTAL = "RENTAL"
+    case EXCHANGE = "EXCHANGE"   // weigth = 3
+    case COMBINED = "COMBINED"   // weigth = 2
+    case RENTAL = "RENTAL"       // weigth = 1
+    case UNKNOWN = "UNKNOWN"     // weigth = 0
     
-    var name: String {
+    static let weigthMapper: [VacationSearchType: Int] = [
+        .EXCHANGE: 3,
+        .COMBINED: 2,
+        .RENTAL: 1,
+        .UNKNOWN: 0
+    ]
+    
+    public var name: String {
         return self.rawValue
+    }
+    
+    public var weigth: Int {
+        return VacationSearchType.weigthMapper[self]!
     }
     
     public func isThis(name : String) -> Bool {
@@ -42,7 +54,8 @@ public enum VacationSearchType : String {
             return VacationSearchType.RENTAL
         } else {
             // Fallback
-            return VacationSearchType.RENTAL
+            return VacationSearchType.UNKNOWN
         }
     }
 }
+

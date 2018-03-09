@@ -26,10 +26,14 @@ class SelectBedroomViewController: UIViewController {
             Constant.MyClassConstants.alertSelectedBedroom = []
         }
         
+        if Constant.MyClassConstants.selectedBedRoomSize == Constant.MyClassConstants.allBedrommSizes {
+            localArrayToHoldSelection = [0, 1, 2, 3, 4]
+        } else {
         let brWithoutSpaces = Constant.MyClassConstants.selectedBedRoomSize.replacingOccurrences(of: " ", with: "")
         let bedroomSizes = brWithoutSpaces.components(separatedBy: ",")
         for value in bedroomSizes {
             localArrayToHoldSelection.append(Int("\(value)") ?? 0)
+        }
         }
     }
     
@@ -76,6 +80,7 @@ class SelectBedroomViewController: UIViewController {
             } else {
                 var i = 0
                 var selectedBedroomsizes = [String]()
+                localArrayToHoldSelection.sort()
                 for index in localArrayToHoldSelection where i < localArrayToHoldSelection.count {
                     let friendlyName = UnitSize.forDisplay[index].friendlyName()
                     let bedroomSize = Helper.bedRoomSizeToStringInteger(bedRoomSize: friendlyName)
@@ -106,6 +111,10 @@ extension SelectBedroomViewController: UITableViewDataSource {
         
         cell.bedroomTitleLabel.text = bedroom?.friendlyName()
         cell.tag = indexPath.row
+        
+        if Constant.MyClassConstants.selectedBedRoomSize == Constant.MyClassConstants.allBedrommSizes {
+            cell.checkedImageView.image = #imageLiteral(resourceName: "Checkmark-On")
+        } else {
         let brWithoutSpaces = Constant.MyClassConstants.selectedBedRoomSize.replacingOccurrences(of: " ", with: "")
         let bedroomSizes = brWithoutSpaces.components(separatedBy: ",")
         if !bedroomSizes.isEmpty {
@@ -118,6 +127,7 @@ extension SelectBedroomViewController: UITableViewDataSource {
             if let text = cell.bedroomTitleLabel.text {
                 selectedBedroomArray.append(text)
             }
+        }
         }
         
         return cell

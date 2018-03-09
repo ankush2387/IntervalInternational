@@ -23,6 +23,7 @@ class SearchResultContentTableCell: UITableViewCell {
     @IBOutlet weak var resortNameGradientView: UIView!
     @IBOutlet weak var favoriteButton: UIButton!
     @IBOutlet weak var tierImageView: UIImageView!
+    @IBOutlet weak var allIncImageView: UIImageView!
     
     var delegate: SearchResultContentTableCellDelegate?
     

@@ -60,14 +60,20 @@ final public class SimpleOwnershipCellViewModel {
         self.relinquishmentPromotionLabelText = Observable(relinquishmentPromotionLabelText)
         self.actionButton = Observable(actionButton)
 
-        let staticIncrement: CGFloat = 40
-        
         if case .some = ownershipStateLabelText {
-            cellHeight.value += staticIncrement
+            cellHeight.value += 40
         }
         
         if case .some = relinquishmentPromotionLabelText {
-            cellHeight.value += staticIncrement
+            cellHeight.value += 40
+        }
+
+        if case .some = statusLabelText {
+            cellHeight.value += 20
+        }
+
+        if case .some = expirationDateLabelText {
+            cellHeight.value += 20
         }
 
         if let monthText = monthLabelText {
@@ -83,9 +89,11 @@ final public class SimpleOwnershipCellViewModel {
         }
         
         if let flags = flagsLabelText {
-            let newLines = flags.filter { $0 == "\n" }
-            let newHeightAdjustment = newLines.count * 20
-            cellHeight.value += CGFloat(newHeightAdjustment)
+            let newLines = flags.filter { $0 == "\n" }.count
+            if newLines > 1 {
+                let newHeightAdjustment = newLines * 20
+                cellHeight.value += CGFloat(newHeightAdjustment)
+            }
         }
     }
 }

@@ -82,7 +82,7 @@ extension ChargeSummaryViewController: UITableViewDataSource {
                                                         return UITableViewCell()
         }
 
-        cell.setUI(with: viewModel.charge[indexPath.row].description, and: viewModel.charge[indexPath.row].amount)
+        cell.setUI(with: viewModel.charge[indexPath.row].description, and: viewModel.charge[indexPath.row].amount, and: viewModel.currencySymbol)
         return cell
     }
 }

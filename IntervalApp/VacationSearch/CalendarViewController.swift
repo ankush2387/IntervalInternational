@@ -20,6 +20,7 @@ class CalendarViewController: UIViewController {
     let defaults = UserDefaults.standard
     var requestedDateWindow: String = ""
     var requestedController = ""
+    var showNinetyDaysWindow = false
     
     var dateArray = [Date]()
     var datesToAllow = [Date]()
@@ -66,14 +67,17 @@ class CalendarViewController: UIViewController {
     }
 
     fileprivate func dateIsAllowed(_ date: Date) -> Bool {
-        let dateIsAllowed = !(datesToAllow.filter {
+
+        let foundMatch = datesToAllow.first {
             let calendar = CalendarHelper().createCalendar()
             let parsedDateFromAllowedDates = calendar.dateComponents([.day, .weekday, .month, .year], from: $0)
             let parsedDateFromCalendarDate = calendar.dateComponents([.day, .weekday, .month, .year], from: date)
             return parsedDateFromAllowedDates.month == parsedDateFromCalendarDate.month
                 && parsedDateFromAllowedDates.day == parsedDateFromCalendarDate.day
-            }.isEmpty)
-        return dateIsAllowed
+                && parsedDateFromAllowedDates.year == parsedDateFromCalendarDate.year
+        }
+
+        return foundMatch != nil
     }
 }
 
@@ -135,7 +139,11 @@ extension CalendarViewController: FSCalendarDelegate {
 extension CalendarViewController: FSCalendarDataSource {
     
     func minimumDate(for calendar: FSCalendar) -> Date {
-        
+
+        if let minimumDate = (datesToAllow.sorted { $0 < $1 }.first), !datesToAllow.isEmpty {
+            return minimumDate
+        }
+
         if self.requestedController == Constant.MyClassConstants.relinquishmentFlaotWeek {
             guard let date = Constant.MyClassConstants.relinquishmentFloatDetialMinDate else { return Date() }
             return date
@@ -159,6 +167,11 @@ extension CalendarViewController: FSCalendarDataSource {
     }
     
     func maximumDate(for fsCalendar: FSCalendar) -> Date {
+
+        if let maximumDate = (datesToAllow.sorted { $0 > $1 }.first), !datesToAllow.isEmpty {
+            return maximumDate
+        }
+
         let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
         
         if self.requestedController == Constant.MyClassConstants.relinquishmentFlaotWeek {
@@ -166,6 +179,14 @@ extension CalendarViewController: FSCalendarDataSource {
             guard let date = Constant.MyClassConstants.relinquishmentFloatDetialMaxDate else { return Date() }
             return date
             
+        } else if showNinetyDaysWindow {
+            if let alertWindowStartDate = Constant.MyClassConstants.alertWindowStartDate,
+                let dateAfter90Days = calendar.date(byAdding: .month, value: 3, to: alertWindowStartDate) {
+                return fsCalendar.date(withYear: (dateAfter90Days as NSDate).fs_year, month: (dateAfter90Days as NSDate).fs_month, day: (dateAfter90Days as NSDate).fs_day)
+            } else {
+                let date = Date()
+                return fsCalendar.date(withYear: (date as NSDate).fs_year, month: (date as NSDate).fs_month, day: (date as NSDate).fs_day)
+            }
         } else {
             
             if self.requestedDateWindow == Constant.MyClassConstants.start {
@@ -212,7 +233,15 @@ extension CalendarViewController: FSCalendarDataSource {
 }
 
 extension CalendarViewController: FSCalendarDelegateAppearance {
-    
+
+    func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, fillSelectionColorFor date: Date) -> UIColor? {
+        return datesToAllow.isEmpty ? nil : .clear
+    }
+
+    func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, titleSelectionColorFor date: Date) -> UIColor? {
+        return datesToAllow.isEmpty ? nil : .lightGray
+    }
+
     func calendar(_ fsCalendar: FSCalendar, appearance: FSCalendarAppearance, titleDefaultColorFor date: Date) -> UIColor? {
 
         if !datesToAllow.isEmpty {
@@ -227,14 +256,34 @@ extension CalendarViewController: FSCalendarDelegateAppearance {
             }
          } else {
             var startDT: Date
+            var endDT = Date()
+            let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
             if self.requestedDateWindow == Constant.MyClassConstants.end {
                 startDT = Constant.MyClassConstants.alertWindowStartDate ?? Date()
+                if showNinetyDaysWindow {
+                    
+                    if let endDate = calendar.date(byAdding: .month, value: 3, to: startDT) {
+                        endDT = endDate
+                    }
+                    if let maxDate = calendar.date(byAdding: .month, value: 24, to: Date()) {
+                        if endDT.isGreaterThanDate(maxDate) {
+                            endDT = maxDate
+                        }
+                    }
+                    
+                    print("\(endDT.numberOfDaysElapsedFromToday)")
+                } else {
+                    if let endDate = calendar.date(byAdding: .month, value: 24, to: Date()) {
+                        endDT = endDate
+                    }
+                }
             } else {
                 startDT = Date()
+                if let endDate = calendar.date(byAdding: .month, value: 24, to: Date()) {
+                    endDT = endDate
+                }
             }
-            if date .isLessThanDate(Date()) {
-                return UIColor.lightGray
-            } else if date .isLessThanDate(startDT) {
+            if (date .isLessThanDate(Date())) || (date .isLessThanDate(startDT)) || (date.isGreaterThanDate(endDT)) {
                  return UIColor.lightGray
             } else {
                 return UIColor.blue

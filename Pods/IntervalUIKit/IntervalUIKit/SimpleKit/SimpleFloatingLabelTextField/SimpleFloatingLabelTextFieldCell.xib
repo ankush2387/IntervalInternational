@@ -24,18 +24,28 @@
                         <rect key="frame" x="16" y="11" width="288" height="58"/>
                         <nil key="textColor"/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                        <textInputTraits key="textInputTraits"/>
+                        <textInputTraits key="textInputTraits" returnKeyType="done"/>
                     </textField>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yVx-bC-Gnn">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="80"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="tmz-4A-Qkw"/>
+                    </view>
                 </subviews>
                 <constraints>
+                    <constraint firstItem="yVx-bC-Gnn" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="-11" id="59y-kb-mK2"/>
                     <constraint firstAttribute="bottomMargin" secondItem="HMa-RK-cQ0" secondAttribute="bottom" id="D7W-OY-Moy"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="yVx-bC-Gnn" secondAttribute="trailing" constant="-16" id="RW4-Ve-fCg"/>
                     <constraint firstAttribute="trailingMargin" secondItem="HMa-RK-cQ0" secondAttribute="trailing" id="aAv-Pp-TCi"/>
                     <constraint firstItem="HMa-RK-cQ0" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="agE-Q3-FnY"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="yVx-bC-Gnn" secondAttribute="bottom" constant="-11" id="fN6-ne-AKT"/>
                     <constraint firstItem="HMa-RK-cQ0" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="hlZ-SN-12f"/>
+                    <constraint firstItem="yVx-bC-Gnn" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="-16" id="xhE-jV-PAk"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
+                <outlet property="tappableView" destination="yVx-bC-Gnn" id="ICm-qn-jjL"/>
                 <outlet property="textField" destination="HMa-RK-cQ0" id="1Du-fI-1fg"/>
             </connections>
         </tableViewCell>

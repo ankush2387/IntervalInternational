@@ -77,8 +77,9 @@ class VacationSearchResultIPadController: UIViewController {
             let inventoryData = Constant.MyClassConstants.resortsArray[0].inventory
             if let code = inventoryData?.currencyCode {
                 let currencyHelper = CurrencyHelper()
-                let currency = currencyHelper.getCurrency(currencyCode: code)
-                currencyCode = ("\(currencyHelper.getCurrencyFriendlySymbol(currencyCode: currency.code))")
+                let countryCode = Session.sharedSession.contact?.getCountryCode() ?? ""
+                
+                currencyCode = ("\(currencyHelper.getCurrencyFriendlySymbol(currencyCode: code, countryCode: countryCode))")
             }
         }
 
@@ -191,7 +192,8 @@ class VacationSearchResultIPadController: UIViewController {
             alertView.isHidden = true
             headerVw.isHidden = false
         }
-        
+        let nib = UINib(nibName: Constant.customCellNibNames.searchResultCollectionCell, bundle: nil)
+        searchedDateCollectionView?.register(nib, forCellWithReuseIdentifier: Constant.customCellNibNames.searchResultCollectionCell)
         collectionviewSelectedIndex = Constant.MyClassConstants.searchResultCollectionViewScrollToIndex
         var index = 0
         for (Index, calendarItem) in Constant.MyClassConstants.calendarDatesArray.enumerated() where calendarItem.checkInDate == Constant.MyClassConstants.initialVacationSearch.searchCheckInDate {
@@ -324,37 +326,41 @@ class VacationSearchResultIPadController: UIViewController {
     }
     
     //*****Function for single date item press *****//
-    func intervalDateItemClicked(_ toDate: Date) {
-        searchedDateCollectionView.reloadData()
-        guard let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval() else { return }
+    func intervalDateItemClicked(_ calendarItem: CalendarItem) {
+        
+        let selectedDate = Helper.convertStringToDate(dateString: calendarItem.checkInDate ?? "", format: Constant.MyClassConstants.dateFormat)
+        intervalPrint(selectedDate)
+        Constant.MyClassConstants.vacationSearchShowDate = selectedDate
         Helper.helperDelegate = self
+        guard let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval() else { return }
+        Constant.MyClassConstants.initialVacationSearch.searchCheckInDate = calendarItem.checkInDate
+        searchedDateCollectionView.reloadData()
         
         if Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange() {
             showHudAsync()
-            Helper.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: toDate, senderViewController: self)
-            
+            Helper.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: selectedDate, senderViewController: self)
             
         } else if Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental() {
             showHudAsync()
-            Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: toDate, senderViewController: self)
+            Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: selectedDate, senderViewController: self)
         } else {
             showHudAsync()
             let request = RentalSearchResortsRequest()
-            request.checkInDate = toDate
+            request.checkInDate = selectedDate
             request.resortCodes = activeInterval.resortCodes
             
             RentalClient.searchResorts(Session.sharedSession.userAccessToken, request: request,
-                                       onSuccess: { (response) in
-                                        // Update Rental inventory
-                                        Constant.MyClassConstants.initialVacationSearch.rentalSearch?.inventory = response.resorts
-                                        
-                                        // Run Exchange Search Dates
-                                        Helper.executeExchangeSearchAvailabilityAfterSelectCheckInDate(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: Constant.MyClassConstants.initialVacationSearch.searchCheckInDate!, format: Constant.MyClassConstants.dateFormat), senderVC: self)
+               onSuccess: { (response) in
+                // Update Rental inventory
+                Constant.MyClassConstants.initialVacationSearch.rentalSearch?.inventory = response.resorts
+                
+                // Run Exchange Search Dates
+                Helper.executeExchangeSearchAvailabilityAfterSelectCheckInDate(activeInterval: activeInterval, checkInDate: selectedDate, senderVC: self)
                                         
             },
-                                       onError: {[unowned self] (_) in
-                                        self.hideHudAsync()
-                                        self.presentErrorAlert(UserFacingCommonError.generic)
+               onError: {[unowned self] (_) in
+                self.hideHudAsync()
+                self.presentErrorAlert(UserFacingCommonError.generic)
                 }
             )
             
@@ -437,6 +443,53 @@ class VacationSearchResultIPadController: UIViewController {
         }
     }
     
+    func selectedRenewal(selectedRenewal: String, forceRenewals: ForceRenewals, filterRelinquishment: ExchangeRelinquishment) {
+        var renewalArray = [Renewal]()
+        renewalArray.removeAll()
+        if selectedRenewal == Helper.renewalType(type: 0) {
+            // Selected core renewal
+            let lowestTerm = forceRenewals.products[0].term
+            for renewal in forceRenewals.products {
+                if renewal.term == lowestTerm {
+                    let renewalItem = Renewal()
+                    renewalItem.id = renewal.id
+                    renewalArray.append(renewalItem)
+                    break
+                }
+            }
+        } else if selectedRenewal == Helper.renewalType(type: 2) {
+            // Selected combo renewal
+            
+            for comboProduct in (forceRenewals.comboProducts) {
+                let lowestTerm = comboProduct.renewalComboProducts[0].term
+                for renewalComboProduct in comboProduct.renewalComboProducts where renewalComboProduct.term == lowestTerm {
+                    let renewalItem = Renewal()
+                    renewalItem.id = renewalComboProduct.id
+                    renewalArray.append(renewalItem)
+                }
+            }
+        } else {
+            // Selected non core renewal
+            let lowestTerm = forceRenewals.crossSelling[0].term
+            for renewal in forceRenewals.crossSelling where renewal.term == lowestTerm {
+                let renewalItem = Renewal()
+                renewalItem.id = renewal.id
+                renewalArray.append(renewalItem)
+                break
+            }
+        }
+        
+        // Selected single renewal from other options. Navigate to WhoWillBeCheckingIn screen
+        let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
+        guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: "WhoWillBeCheckingInIPadViewController") as? WhoWillBeCheckingInIPadViewController else { return }
+        
+        let transitionManager = TransitionManager()
+        self.navigationController?.transitioningDelegate = transitionManager
+        viewController.isFromRenewals = true
+        viewController.renewalsArray = renewalArray
+        navigationController?.pushViewController(viewController, animated: true)
+    }
+    
 }
 // MARK: - Collection view FlowLayout Delegate
 extension VacationSearchResultIPadController: UICollectionViewDelegateFlowLayout {
@@ -503,13 +556,7 @@ extension VacationSearchResultIPadController: UICollectionViewDelegate {
                     intervalBucketClicked(calendarItem: Constant.MyClassConstants.calendarDatesArray[indexPath.item], cell: cell)
                 } else {
                     
-                    let lastSelectedIndex = collectionviewSelectedIndex
-                    collectionviewSelectedIndex = indexPath.item
-                    dateCellSelectionColor = Constant.CommonColor.blueColor
-                    let lastIndexPath = IndexPath(item: lastSelectedIndex, section: 0)
-                    let currentIndexPath = IndexPath(item: collectionviewSelectedIndex, section: 0)
-                    searchedDateCollectionView.reloadItems(at: [lastIndexPath, currentIndexPath])
-                    intervalDateItemClicked(Helper.convertStringToDate(dateString: Constant.MyClassConstants.calendarDatesArray[indexPath.item].checkInDate!, format: Constant.MyClassConstants.dateFormat))
+                    intervalDateItemClicked(Constant.MyClassConstants.calendarDatesArray[indexPath.item])
                 }
             }
             
@@ -598,6 +645,7 @@ extension VacationSearchResultIPadController: UICollectionViewDelegate {
                             Constant.MyClassConstants.selectedResort = resort
                             
                             getFilterRelinquishments(selectedInventoryUnit: Inventory(), selectedIndex: indexPath.item, selectedExchangeInventory: inventory, hasSearchAllAvailability: false)
+                            Constant.MyClassConstants.selectedExchangePointsCost = inventory.buckets[indexPath.row].pointsCost as NSNumber
                         }
                         
                     } else {
@@ -605,6 +653,7 @@ extension VacationSearchResultIPadController: UICollectionViewDelegate {
                         if let resort = exchangeSurroundingMatchResortsArray[collectionView.tag].resort, let inventory = exchangeSurroundingMatchResortsArray[collectionView.tag].inventory {
                             Constant.MyClassConstants.selectedResort = resort
                             getFilterRelinquishments(selectedInventoryUnit: Inventory(), selectedIndex: indexPath.item, selectedExchangeInventory: inventory, hasSearchAllAvailability: false)
+                            Constant.MyClassConstants.selectedExchangePointsCost = inventory.buckets[indexPath.row].pointsCost as NSNumber
                         }
                     }
                     
@@ -719,6 +768,7 @@ extension VacationSearchResultIPadController: UICollectionViewDelegate {
                             }
                             
                             if let bucket = combinedExactSearchItems[collectionView.tag].exchangeAvailability?.inventory?.buckets[indexPath.row] {
+                                Constant.MyClassConstants.selectedExchangePointsCost = bucket.pointsCost as NSNumber
                                 if bucket.pointsCost != bucket.memberPointsRequired {
                                     showInfoIcon = true
                                 }
@@ -738,7 +788,11 @@ extension VacationSearchResultIPadController: UICollectionViewDelegate {
                             if combinedExactSearchItems[collectionView.tag].hasRentalAvailability() && combinedExactSearchItems[collectionView.tag].hasExchangeAvailability() {
                                 
                                 Constant.MyClassConstants.filterRelinquishments.removeAll()
-                                self.getFilterRelinquishments(selectedInventoryUnit: (combinedExactSearchItems[collectionView.tag].rentalAvailability?.inventory!)!, selectedIndex: indexPath.item, selectedExchangeInventory: ExchangeInventory(), hasSearchAllAvailability: true)
+                                if let inventory = combinedExactSearchItems[collectionView.tag].rentalAvailability?.inventory {
+                                    self.getFilterRelinquishments(selectedInventoryUnit: inventory, selectedIndex: indexPath.item, selectedExchangeInventory: ExchangeInventory(), hasSearchAllAvailability: true)
+                            
+                                }
+                                
                             } else if combinedExactSearchItems[collectionView.tag].hasRentalAvailability() {
                                 Constant.MyClassConstants.filterRelinquishments.removeAll()
                                 navigateToWhatToUseViewController(hasSearchAllAvailability: false)
@@ -746,6 +800,7 @@ extension VacationSearchResultIPadController: UICollectionViewDelegate {
                                 Constant.MyClassConstants.filterRelinquishments.removeAll()
                                 if let inventory = combinedExactSearchItems[collectionView.tag].exchangeAvailability?.inventory {
                                     getFilterRelinquishments(selectedInventoryUnit: Inventory(), selectedIndex: indexPath.item, selectedExchangeInventory: inventory, hasSearchAllAvailability: false)
+                                    Constant.MyClassConstants.selectedExchangePointsCost = inventory.buckets[indexPath.row].pointsCost as NSNumber
                                 }
                             }
                             
@@ -1048,7 +1103,11 @@ extension VacationSearchResultIPadController: UICollectionViewDataSource {
             } else {
                 
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.customCellNibNames.searchResultCollectionCell, for: indexPath) as? SearchResultCollectionCell else { return UICollectionViewCell() }
-                if indexPath.item == collectionviewSelectedIndex {
+                
+                let vacationSearchCheckInDate = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate
+                let calendarItemCheckInDate = Constant.MyClassConstants.calendarDatesArray[indexPath.row].checkInDate
+                if vacationSearchCheckInDate == calendarItemCheckInDate {
+                    
                     if dateCellSelectionColor == Constant.CommonColor.greenColor {
                         cell.backgroundColor = IUIKColorPalette.primary1.color
                     } else {
@@ -1057,12 +1116,14 @@ extension VacationSearchResultIPadController: UICollectionViewDataSource {
                     cell.dateLabel.textColor = UIColor.white
                     cell.daynameWithyearLabel.textColor = UIColor.white
                     cell.monthYearLabel.textColor = UIColor.white
+                    
                 } else {
                     cell.backgroundColor = UIColor.white
                     cell.dateLabel.textColor = IUIKColorPalette.primary1.color
                     cell.daynameWithyearLabel.textColor = IUIKColorPalette.primary1.color
                     cell.monthYearLabel.textColor = IUIKColorPalette.primary1.color
                 }
+                
                 cell.layer.cornerRadius = 7
                 cell.layer.borderWidth = 2
                 cell.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
@@ -1598,7 +1659,9 @@ extension VacationSearchResultIPadController: RenewelViewControllerDelegate {
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
         
         guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: "RenewalOtherOptionsVC") as? RenewalOtherOptionsVC else { return }
-        viewController.delegate = self
+        viewController.selectAction = { [weak self] (selectedType, renewal, relinquishment) in
+            self?.selectedRenewal(selectedRenewal: selectedType, forceRenewals: renewal, filterRelinquishment: relinquishment)
+        }
         
         viewController.forceRenewals = forceRenewals
         self.present(viewController, animated: true, completion: nil)
@@ -1606,7 +1669,7 @@ extension VacationSearchResultIPadController: RenewelViewControllerDelegate {
         
     }
     
-    func selectedRenewalFromWhoWillBeCheckingIn(renewalArray: [Renewal]) {
+    func selectedRenewalFromWhoWillBeCheckingIn(renewalArray: [Renewal], selectedRelinquishment: ExchangeRelinquishment) {
         self.dismiss(animated: false, completion: nil)
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
         guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: "WhoWillBeCheckingInIPadViewController") as? WhoWillBeCheckingInIPadViewController else { return }
@@ -1623,58 +1686,8 @@ extension VacationSearchResultIPadController: RenewelViewControllerDelegate {
     
 }
 
-//Mark:- Other Options Delegate
-extension VacationSearchResultIPadController: RenewalOtherOptionsVCDelegate {
-    func selectedRenewal(selectedRenewal: String, forceRenewals: ForceRenewals) {
-        var renewalArray = [Renewal]()
-        renewalArray.removeAll()
-        if selectedRenewal == Helper.renewalType(type: 0) {
-            // Selected core renewal
-            let lowestTerm = forceRenewals.products[0].term
-            for renewal in forceRenewals.products {
-                if renewal.term == lowestTerm {
-                    let renewalItem = Renewal()
-                    renewalItem.id = renewal.id
-                    renewalArray.append(renewalItem)
-                    break
-                }
-            }
-        } else if selectedRenewal == Helper.renewalType(type: 2) {
-            // Selected combo renewal
-            
-            for comboProduct in (forceRenewals.comboProducts) {
-                let lowestTerm = comboProduct.renewalComboProducts[0].term
-                for renewalComboProduct in comboProduct.renewalComboProducts where renewalComboProduct.term == lowestTerm {
-                    let renewalItem = Renewal()
-                    renewalItem.id = renewalComboProduct.id
-                    renewalArray.append(renewalItem)
-                }
-            }
-        } else {
-            // Selected non core renewal
-            let lowestTerm = forceRenewals.crossSelling[0].term
-            for renewal in forceRenewals.crossSelling where renewal.term == lowestTerm {
-                let renewalItem = Renewal()
-                renewalItem.id = renewal.id
-                renewalArray.append(renewalItem)
-                break
-            }
-        }
-        
-        // Selected single renewal from other options. Navigate to WhoWillBeCheckingIn screen
-        let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
-        guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: "WhoWillBeCheckingInIPadViewController") as? WhoWillBeCheckingInIPadViewController else { return }
-        
-        let transitionManager = TransitionManager()
-        self.navigationController?.transitioningDelegate = transitionManager
-        viewController.isFromRenewals = true
-        viewController.renewalsArray = renewalArray
-        navigationController?.pushViewController(viewController, animated: true)
-    }
-}
-
 extension VacationSearchResultIPadController: WhoWillBeCheckInDelegate {
-    func navigateToWhoWillBeCheckIn(renewalArray: [Renewal], selectedRow: Int) {
+    func navigateToWhoWillBeCheckIn(renewalArray: [Renewal], selectedRow: Int, selectedRelinquishment: ExchangeRelinquishment) {
         let mainStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
         guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: "WhoWillBeCheckingInIPadViewController") as? WhoWillBeCheckingInIPadViewController else { return }
         viewController.renewalsArray = renewalArray

@@ -49,8 +49,12 @@ class ViewDetailsTBLcell: UITableViewCell {
                 if Constant.MyClassConstants.isCIGAvailable {
                     resortDetailsButton.isHidden = true
                     lblHeading.text = "CIG Points"
-                    if let availablePoints = Constant.MyClassConstants.exchangeViewResponse.relinquishment?.pointsProgram?.availablePoints {
-                        resortName?.text = "\(availablePoints)"
+                    let numberFormatter = NumberFormatter()
+                    numberFormatter.numberStyle = .decimal
+                    if let pointsCost = Constant.MyClassConstants.selectedExchangePointsCost, let availablePoints = numberFormatter.string(from: pointsCost) {
+                        resortName?.text = "\(availablePoints)".localized()
+                    } else {
+                        resortName?.text = "\(0)".localized()
                     }
                 }
             }

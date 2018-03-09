@@ -31,7 +31,7 @@ open class DarwinSDK {
     var environment = Environment.development2
     var clientId : String = ""
     var clientSecret : String = ""
-
+    
     open func config(_ environment:Environment, client:String, secret:String) {
         self.config(environment:environment, client: client, secret: secret, logLevel: .info)
     }
@@ -87,7 +87,7 @@ open class DarwinSDK {
         case .qa:
             return withContextAndVersion ? "https://qa-mag.ii-apps.com/tokenize/v1" : "https://qa-mag.ii-apps.com"
         case .qa2:
-             return withContextAndVersion ? "https://qa2-mag.ii-apps.com/tokenize/v1" : "https://qa2-mag.ii-apps.com"
+            return withContextAndVersion ? "https://qa2-mag.ii-apps.com/tokenize/v1" : "https://qa2-mag.ii-apps.com"
         case .staging:
             return withContextAndVersion ? "https://staging-mag.ii-apps.com/tokenize/v1" : "https://staging-mag.ii-apps.com"
         case .production:
@@ -104,85 +104,115 @@ open class DarwinSDK {
             return withContextAndVersion ? "https://api.intervalintl.com/tokenize/v1" : "https://api.intervalintl.com"
         }
     }
-
+    
     open static func parseDarwinError(statusCode:Int, json:JSON) -> NSError {
-        let friendlyErrorMsg = "We’re sorry, we are unable to process your request at this time. Please contact your local servicing office for assistance"
+        let friendlyErrorMsg = "We’re sorry, we are unable to process your request at this time. Please contact your local servicing office for assistance."
         
         var userInfo: [String:Any] = [
             NSLocalizedDescriptionKey: friendlyErrorMsg as Any,
             "apiErrorCode": "" as Any,
-            "apiErrorDescription": "" as Any
+            "apiErrorDescription": "" as Any,
+            "correlationId": "" as Any
         ]
         
         if let errorCode = json["error"].string {
             userInfo["apiErrorCode"] = errorCode as Any
+        } else if let errorCode = json["code"].string {
+            userInfo["apiErrorCode"] = errorCode as Any
+        }
+        if let errorDesc = json["error_description"].string {
+            userInfo[NSLocalizedDescriptionKey] = errorDesc as Any
+            userInfo["apiErrorDescription"] = errorDesc as Any
+        } else if let errorDesc = json["description"].string {
+            userInfo[NSLocalizedDescriptionKey] = errorDesc as Any
+            userInfo["apiErrorDescription"] = errorDesc as Any
+        }
+        if let _ = json["support"].dictionary, let _ = json["support"]["cause"].dictionary,
+            let correlationId = json["support"]["cause"]["correlationId"].string {
+            userInfo["correlationId"] = correlationId as Any
         }
         
-        if let errorDesc = json["error_description"].string {
-            userInfo["apiErrorDescription"] = errorDesc as Any
-            
+        // Process errors have a different payload =>
+        // [ {"code" : "ERRORDAO", "description" : "The homeKitchenType property must not be null."} ]
+        if let errorsArray = json.array, let error:JSON = errorsArray.first {
+            if let errorCode = error["code"].string {
+                userInfo["apiErrorCode"] = errorCode as Any
+            }
+            if let errorDesc = error["description"].string {
+                userInfo[NSLocalizedDescriptionKey] = errorDesc as Any
+                userInfo["apiErrorDescription"] = errorDesc as Any
+            }
+            if let _ = error["support"].dictionary, let _ = error["support"]["cause"].dictionary,
+                let correlationId = error["support"]["cause"]["correlationId"].string {
+                userInfo["correlationId"] = correlationId as Any
+            }
         }
-
+        
         // Process errors have a different payload =>
         // { "id": 799, "step": "END", "errors": [ { "code": "WEB0065", "description": "We're sorry, this unit is no longer available." } ] }
-        if let errorsArray = json["errors"].array {
-            let errorsJsonArray:[JSON] = errorsArray
-            if !errorsJsonArray.isEmpty {
-                let authErrorMsg = "We’re sorry, we are unable to log you in at this time. Please contact your local servicing office for assistance"
-                userInfo[NSLocalizedDescriptionKey] = authErrorMsg as Any
-                userInfo["errorCode"] = errorsJsonArray.map { $0.string! }.flatMap({$0}).joined() as Any
+        if let errorsArray = json["errors"].array, let error:JSON = errorsArray.first  {
+            if let errorCode = error["code"].string {
+                userInfo["apiErrorCode"] = errorCode as Any
+            }
+            if let errorDesc = error["description"].string {
+                userInfo[NSLocalizedDescriptionKey] = errorDesc as Any
+                userInfo["apiErrorDescription"] = errorDesc as Any
+            }
+            if let _ = error["support"].dictionary, let _ = error["support"]["cause"].dictionary,
+                let correlationId = error["support"]["cause"]["correlationId"].string {
+                userInfo["correlationId"] = correlationId as Any
             }
         }
         
-        if let reasonsArray = json["errors"].array {
-            let reasonsJsonArray:[JSON] = reasonsArray
-            if !reasonsJsonArray.isEmpty, let firstError = reasonsJsonArray.first {
-                userInfo["apiErrorCode"] = firstError["code"].string as Any
-                userInfo["apiErrorDescription"] = firstError["description"].string as Any
-            }
-        }
-
         let error = NSError(domain: "com.intervalintl.darwin", code: statusCode, userInfo: userInfo)
         DarwinSDK.logger.error("\(error.code): \(error.description)")
         return error
     }
     
     open static func parseDarwinAuthError(statusCode:Int, json:JSON) -> NSError {
-        let friendlyErrorMsg = "We’re sorry, we are unable to log you in at this time. Please contact your local servicing office for assistance"
+        let friendlyGeneralErrorMsg = "We’re sorry, we are unable to log you in at this time. Please contact your local servicing office for assistance."
+        let friendlyAccountLockedErrorMsg = "Your account has been locked. Select from the Help menu for further assistance."
         
         var userInfo: [String:Any] = [
-            NSLocalizedDescriptionKey: friendlyErrorMsg as Any,
+            NSLocalizedDescriptionKey: friendlyGeneralErrorMsg as Any,
             "apiErrorCode": "" as Any,
-            "apiErrorDescription": "" as Any
+            "apiErrorDescription": "" as Any,
+            "loginAttempts": 1 as Any,
+            "lockedReasons": "" as Any,
+            "correlationId": "" as Any
         ]
-
+        
         if let errorCode = json["error"].string {
             userInfo["apiErrorCode"] = errorCode as Any
         }
-        
         if let errorDesc = json["error_description"].string {
             userInfo["apiErrorDescription"] = errorDesc as Any
-            userInfo[NSLocalizedDescriptionKey] = errorDesc as Any
         }
-        
-        if let accountLocked = json["accountLocked"].bool {
-            userInfo["accountLocked"] = accountLocked
+        if let loginAttempts = json["loginAttempts"].int {
+            userInfo["loginAttempts"] = loginAttempts
         }
-        
-        if let loginAttemps = json["loginAttemps"].int {
-            userInfo["loginAttemps"] = loginAttemps
-        }
-        
-        if let reasonsArray = json["reasons"].array {
-            let reasonsJsonArray:[JSON] = reasonsArray
-            if !reasonsJsonArray.isEmpty {
-                let reasons = reasonsJsonArray.map { $0.string! }.flatMap({$0}).joined() as Any
-                userInfo["apiErrorCode"] = reasons
+        if let lockedReasons = json["reasons"].array {
+            let reasons = lockedReasons.map { $0.string! }
+            userInfo["lockedReasons"] = reasons
+            
+            // Overwrite the code based in Reasons
+            if !reasons.isEmpty {
+                userInfo["apiErrorCode"] = reasons[0] as Any
+                
+                // Overwrite the description based in Reasons if contains the value ACCOUNT_LOCKED
+                if reasons.contains("ACCOUNT_LOCKED") {
+                    userInfo[NSLocalizedDescriptionKey] = friendlyAccountLockedErrorMsg as Any
+                }
             }
         }
+        if let _ = json["support"].dictionary, let _ = json["support"]["cause"].dictionary,
+            let correlationId = json["support"]["cause"]["correlationId"].string {
+            userInfo["correlationId"] = correlationId as Any
+        }
         
-        let error = NSError(domain: "com.intervalintl.darwin", code: statusCode, userInfo: userInfo)
+        let error = NSError(domain: "com.intervalintl.DarwinSDK", code: statusCode, userInfo: userInfo)
         DarwinSDK.logger.error("\(error.code): \(error.description)")
         return error
     }
 }
+

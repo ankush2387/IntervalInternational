@@ -17,7 +17,7 @@ open class VacationSearch {
     open var rentalSearch : RentalSearch?
     open var exchangeSearch : ExchangeSearch?
     open var searchCheckInDate : String?
-
+    
     public init() {
         self.settings = Settings()
         self.searchCriteria = VacationSearchCriteria(searchType: VacationSearchType.RENTAL)
@@ -29,7 +29,7 @@ open class VacationSearch {
         self.settings = settings
         self.searchCriteria = searchCriteria
         self.sortType = AvailabilitySortType.Default
-
+        
         if let checkInFromDate = searchCriteria.checkInFromDate, let checkInToDate = searchCriteria.checkInToDate {
             // Apply for: Flexchange, Rental Alert
             self.bookingWindow = BookingWindow(startDate: checkInFromDate, endDate: checkInToDate)
@@ -40,7 +40,7 @@ open class VacationSearch {
             // Fallback
             self.bookingWindow = BookingWindow(checkInDate: Date())
         }
-
+        
         if let vacationSearchSettings = settings.vacationSearch {
             if vacationSearchSettings.vacationSearchTypes.contains(searchCriteria.searchType.name) {
                 if self.searchCriteria.searchType.isCombined() {
@@ -58,7 +58,7 @@ open class VacationSearch {
     open func hasRentalSearch() -> Bool {
         return self.rentalSearch != nil
     }
-
+    
     open func hasExchangeSearch() -> Bool {
         return self.exchangeSearch != nil
     }
@@ -84,7 +84,7 @@ open class VacationSearch {
             self.searchCheckInDate = self.resolveCheckInDate(strategy: BookingIntervalDateStrategy.fromName(name: strategyName))
         }
     }
-
+    
     /*
      * Create the Calendar that UI need to show up in the Search Availability Results screen.
      */
@@ -137,7 +137,7 @@ open class VacationSearch {
         }
         return calendar;
     }
-
+    
     /*
      * Create sections that UI need to show up in the Search Availability Results screen.
      */
@@ -156,7 +156,7 @@ open class VacationSearch {
         // return empty list
         return [AvailabilitySection]()
     }
-
+    
     private func resolveCheckInDate(strategy:BookingIntervalDateStrategy) -> String? {
         if let activeInterval = self.bookingWindow.getActiveInterval(), let checkInDates = activeInterval.checkInDates {
             switch(strategy) {
@@ -187,13 +187,13 @@ open class VacationSearch {
         }
         return nil
     }
-  
+    
     /*
      * Merge checkInDates from SeacrhDatesOut based on VacationSearchType
      */
     private func getCheckInDatesFromSearchDatesOut() -> [String] {
         var checkInDates = Set<String>()
-
+        
         if let vacationSearch = self.settings.vacationSearch {
             if vacationSearch.vacationSearchTypes.contains(searchCriteria.searchType.name) {
                 if self.searchCriteria.searchType.isCombined() {
@@ -223,7 +223,7 @@ open class VacationSearch {
                 }
             }
         }
-
+        
         return checkInDates.sorted()
     }
     
@@ -232,7 +232,7 @@ open class VacationSearch {
      */
     private func getResortCodesFromSearchDatesOut() -> [String] {
         var resortCodes = Set<String>()
-
+        
         if let vacationSearch = self.settings.vacationSearch {
             if vacationSearch.vacationSearchTypes.contains(searchCriteria.searchType.name) {
                 if (self.searchCriteria.searchType.isCombined()) {
@@ -262,7 +262,7 @@ open class VacationSearch {
                 }
             }
         }
-
+        
         return resortCodes.sorted()
     }
     
@@ -286,7 +286,7 @@ open class VacationSearch {
                     sectionsMap[rentalSection.header] = rentalSection
                 }
             }
-  
+            
             if let exchangeSearch = self.exchangeSearch {
                 // Verify all the Exchange sections
                 for exchangeSection in exchangeSearch.groupAndSorting(sortType: sortType) {
@@ -296,50 +296,44 @@ open class VacationSearch {
                         // Section with same header already exists? -> then Merge
                         for exchangeSectionItem in exchangeSection.items {
                             if let exchangeAvailability = exchangeSectionItem.exchangeAvailability, let resort = exchangeAvailability.resort,
-                                let resortCode = resort.resortCode {
+                                let exchangeResortCode = resort.resortCode {
                                 
                                 // Get Rental section items from map
                                 var rentalSectionItems = sectionsMap[exchangeSection.header]?.items
                                 
+                                var exchangeSectionItemsMap = [String: AvailabilitySectionItem]()
+                                
                                 // Compare ResortCode and UnitInfo
                                 for rentalSectionItem in rentalSectionItems! {
-                                    if (rentalSectionItem.rentalAvailability?.resortCode == resortCode) {
+                                    if let rentalResortCode = rentalSectionItem.rentalAvailability?.resortCode, exchangeResortCode.caseInsensitiveCompare(rentalResortCode) == ComparisonResult.orderedSame {
                                         // Resort Match
                                         DarwinSDK.logger.info("Resort Match: \(String(describing: rentalSectionItem.rentalAvailability?.resortCode!))")
+
+                                        checkMatchBuckets((rentalSectionItem.rentalAvailability?.inventory?.units)!, (exchangeAvailability.inventory?.buckets)!)
                                         
-                                        var unitMatch = false
                                         for exchangeBucket in (exchangeAvailability.inventory?.buckets)! {
-                                            for rentalBucket in (rentalSectionItem.rentalAvailability?.inventory?.units)! {
-                                                if (rentalBucket.unitSize == exchangeBucket.unit?.unitSize &&
-                                                    rentalBucket.kitchenType == exchangeBucket.unit?.kitchenType &&
-                                                    rentalBucket.publicSleepCapacity == exchangeBucket.unit?.publicSleepCapacity &&
-                                                    rentalBucket.privateSleepCapacity == exchangeBucket.unit?.privateSleepCapacity) {
-                                                    
-                                                    // Unit Match
-                                                    DarwinSDK.logger.info("   Unit Match: \(String(describing: self.resolveUnitInfo(unit: rentalBucket)))")
-                                                    
-                                                    rentalBucket.vacationSearchType = VacationSearchType.COMBINED
-                                                    exchangeBucket.unit?.vacationSearchType = VacationSearchType.COMBINED
-                                                    unitMatch = true
-                                                }
-                                                
-                                                if (unitMatch) {
-                                                    // Combined item
-                                                    rentalSectionItem.exchangeAvailability = exchangeAvailability
-                                                } else {
-                                                    // Only Exchange item
-                                                    rentalSectionItems?.append(AvailabilitySectionItem(exchangeAvailability: exchangeAvailability))
-                                                }
+                                            if let unit = exchangeBucket.unit, unit.vacationSearchType.isCombined() {
+                                                // Combined item
+                                                rentalSectionItem.exchangeAvailability = exchangeAvailability
+                                            } else {
+                                                // Only Exchange item
+                                                //exchangeSectionItemsMap[exchangeResortCode] = AvailabilitySectionItem(exchangeAvailability: exchangeAvailability)
                                             }
                                         }
+                                    } else {
+                                        // Only Exchange item
+                                        exchangeSectionItemsMap[exchangeResortCode] = AvailabilitySectionItem(exchangeAvailability: exchangeAvailability)
                                     }
                                 }
+                                
+                                rentalSectionItems?.append(contentsOf: exchangeSectionItemsMap.values)
+                                sectionsMap[exchangeSection.header]?.items = rentalSectionItems!
                             }
                         }
                     }
                 }
             }
-
+            
             var sections = [AvailabilitySection]()
             for section in sectionsMap.values {
                 sections.append(section)
@@ -350,9 +344,39 @@ open class VacationSearch {
         }
     }
     
-    // FIXME(Frank): Sorting rules for Combined are pending.
+    private func checkMatchBuckets(_ rentalBuckets: [InventoryUnit], _ exchangeBuckets: [ExchangeBucket]) {
+        for exchangeBucket in exchangeBuckets {
+            for rentalBucket in rentalBuckets {
+                if rentalBucket.unitSize == exchangeBucket.unit?.unitSize &&
+                    rentalBucket.kitchenType == exchangeBucket.unit?.kitchenType &&
+                    rentalBucket.publicSleepCapacity == exchangeBucket.unit?.publicSleepCapacity &&
+                    rentalBucket.privateSleepCapacity == exchangeBucket.unit?.privateSleepCapacity {
+                    
+                    // Bucket Match
+                    DarwinSDK.logger.info("   Bucket Match: \(String(describing: self.resolveUnitInfo(unit: rentalBucket)))")
+                    
+                    rentalBucket.vacationSearchType = VacationSearchType.COMBINED
+                    exchangeBucket.unit?.vacationSearchType = VacationSearchType.COMBINED
+                }
+            }
+        }
+    }
+    
     private func sortSections(sections:[AvailabilitySection]) -> [AvailabilitySection] {
+        for section in sections {
+            section.items.sort(by: {self.resolveHighestSearchType($0.getInventoryBuckets()) > self.resolveHighestSearchType($1.getInventoryBuckets())})
+        }
         return sections
+    }
+    
+    private func resolveHighestSearchType(_ inventoryBuckets: [AvailabilitySectionItemInventoryBucket]) -> Int {
+        var highestSearchTypeWeight = 0
+        for inventoryBucket in inventoryBuckets {
+            if inventoryBucket.vacationSearchType.weigth > highestSearchTypeWeight {
+                highestSearchTypeWeight = inventoryBucket.vacationSearchType.weigth
+            }
+        }
+        return highestSearchTypeWeight
     }
     
     private func resolveUnitInfo(unit:InventoryUnit) -> String {
@@ -373,5 +397,6 @@ open class VacationSearch {
         
         return info
     }
-
+    
 }
+

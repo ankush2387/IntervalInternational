@@ -66,12 +66,13 @@ public class Helper {
     //TODO: Need to revisit this code, and dynamically get locale identifier from server, or a decision should be made to calculate this information on the client
     static func getWeekDay(dateString: Date, getValue: String) -> String {
         let dateFormatter = DateFormatter()
+            dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+            dateFormatter.timeZone = TimeZone(identifier: "UTC")
         switch getValue {
         case "Date":
             dateFormatter.dateFormat = "d"
-             dateFormatter.locale = Locale(identifier: "en_US_POSIX")
             var dateFromString = dateFormatter.string(from: dateString as Date)
-            if dateFromString.characters.count == 1 {
+            if dateFromString.count == 1 {
                 dateFromString = "0\(dateFromString)"
             }
             return dateFromString
@@ -346,7 +347,7 @@ public class Helper {
             if Constant.MyClassConstants.isEvent2Ready > 1 {
                 sendOmnitureTrackCallForEvent2()
             }
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue:Constant.notificationNames.refreshTableNotification), object: self)
+            CompletionBlock(nil)
         }, onError: { error in
             
             Constant.MyClassConstants.isEvent2Ready += 1
@@ -358,44 +359,36 @@ public class Helper {
     }
     
     // get Countries
-    static func getCountry(viewController: UIViewController) {
+    static func getCountry(CompletionBlock: @escaping ((Error?) -> Void)) {
         
-        Constant.GetawaySearchResultGuestFormDetailData.countryListArray.removeAll()
-        Constant.GetawaySearchResultGuestFormDetailData.countryCodeArray.removeAll()
         LookupClient.getCountries(Constant.MyClassConstants.systemAccessToken!, onSuccess: { (response) in
-            
+            Constant.countryListArray.removeAll()
             for country in (response ) {
-                Constant.GetawaySearchResultGuestFormDetailData.countryListArray.append(country)
-                Constant.GetawaySearchResultGuestFormDetailData.countryCodeArray.append(country.countryCode!)
+                Constant.countryListArray.append(country)
             }
-            viewController.hideHudAsync()
-            
-        }) { _ in
-            viewController.hideHudAsync()
-            viewController.presentErrorAlert(UserFacingCommonError.generic)
-        }
+            CompletionBlock(nil)
+        }, onError: { error in
+            CompletionBlock(error)
+        })
         
     }
     
-    static func getStates(country: String, viewController: UIViewController) {
-        
-        Constant.GetawaySearchResultGuestFormDetailData.stateListArray.removeAll()
-        LookupClient.getStates(Constant.MyClassConstants.systemAccessToken!, countryCode: country, onSuccess: { (response) in
-            viewController.hideHudAsync()
+    static func getStates(countryCode: String, CompletionBlock: @escaping ((Error?) -> Void))  {
+        Constant.stateListArray.removeAll()
+        LookupClient.getStates(Constant.MyClassConstants.systemAccessToken!, countryCode: countryCode, onSuccess: { (response) in
             for state in response {
-                Constant.GetawaySearchResultGuestFormDetailData.stateListArray.append(state)
-                Constant.GetawaySearchResultGuestFormDetailData.stateCodeArray.append(state.code!)
+                Constant.stateListArray.append(state)
             }
+            CompletionBlock(nil)
             
-        }, onError: {_ in
-            viewController.hideHudAsync()
-            viewController.presentErrorAlert(UserFacingCommonError.generic)
+        }, onError: { error in
+            CompletionBlock(error)
         })
         
     }
     
     //Relinquishment details
-    static func getRelinquishmentDetails(resortCode: String, successCompletionBlock: (()), errorCompletionBlock: @escaping ((NSError) -> Void)) {
+    static func getRelinquishmentDetails(resortCode: String, successCompletionBlock: @escaping (() -> Void), errorCompletionBlock: @escaping ((NSError) -> Void)) {
         DirectoryClient.getResortDetails(Constant.MyClassConstants.systemAccessToken, resortCode: resortCode, onSuccess: { response in
             
             Constant.MyClassConstants.resortsDescriptionArray = response
@@ -407,7 +400,7 @@ public class Helper {
                     Constant.MyClassConstants.imagesArray.append(url)
                 }
             }
-            successCompletionBlock
+            successCompletionBlock()
         }) { error in
             errorCompletionBlock(error)
         }
@@ -496,6 +489,18 @@ public class Helper {
             senderVC.presentErrorAlert(UserFacingCommonError.noNetConnection)
         }
         
+    }
+
+    static func storeInConstants(myUnits: MyUnits) {
+        Constant.MyClassConstants.relinquishmentDeposits = myUnits.deposits
+        Constant.MyClassConstants.relinquishmentOpenWeeks = myUnits.openWeeks
+
+        if let pointsProgram = myUnits.pointsProgram {
+            Constant.MyClassConstants.relinquishmentProgram = pointsProgram
+            if let availablePoints = pointsProgram.availablePoints {
+                Constant.MyClassConstants.relinquishmentAvailablePointsProgram = availablePoints
+            }
+        }
     }
     
     //***** function to get all local storage object on the basis of selected membership number *****//
@@ -1069,36 +1074,36 @@ public class Helper {
     }
     /***** common function for adding uivew as a pop up with some mesage *****/
     static func noResortView(senderView: UIView) -> UIView {
-        
         let noResortView = UIView()
         let titleView = UIView()
         let titleLabel = UILabel()
         let detailView = UIView()
         let detailLabel = UILabel()
-        
-        noResortView.frame = CGRect(x: 0, y: 150, width: UIScreen.main.bounds.height, height: UIScreen.main.bounds.width / 3)
+
+        noResortView.frame = CGRect(x: 0, y: 150, width: UIScreen.main.bounds.width, height: 140)
         noResortView.backgroundColor = UIColor(red: 209.0 / 255.0, green: 226.0 / 255.0, blue: 237.0 / 255.0, alpha: 1.0)
         senderView.addSubview(noResortView)
-        
-        titleView.frame = CGRect(x: 0, y: 0, width: noResortView.frame.size.width, height: noResortView.frame.size.height / 5)
+
+        titleView.frame = CGRect(x: 0, y: 0, width: noResortView.frame.size.width, height: 40)
         titleView.backgroundColor = UIColor.darkGray
         noResortView.addSubview(titleView)
         
-        titleLabel.frame = CGRect(x: 5, y: 0, width: noResortView.frame.size.width, height: noResortView.frame.size.height / 5)
-        titleLabel.text = "No match found. Please select another date.".localized()
+        titleLabel.frame = CGRect(x: 5, y: 0, width: noResortView.frame.size.width - 10, height: 40)
+        titleLabel.text = Constant.AlertMessages.vactionSearchDateMessage
         titleLabel.textAlignment = .center
         titleLabel.textColor = UIColor.white
         titleLabel.font = UIFont(name: "Helvetica", size: 12)
         noResortView.addSubview(titleLabel)
         
-        detailView.frame = CGRect(x: 0, y: noResortView.frame.size.height / 4, width: noResortView.frame.size.width, height: 3 * (noResortView.frame.size.height / 4))
+        detailView.frame = CGRect(x: 0, y: titleLabel.frame.maxY, width: noResortView.frame.size.width, height: 100)
+        
         detailView.backgroundColor = UIColor(red: 209.0 / 255.0, green: 226.0 / 255.0, blue: 237.0 / 255.0, alpha: 1.0)
         
         noResortView.addSubview(detailView)
         
-        detailLabel.frame = CGRect(x: 10, y: noResortView.frame.size.height / 4, width: noResortView.frame.size.width - 20, height: 3 * (noResortView.frame.size.height / 4))
+        detailLabel.frame = CGRect(x: 10, y: titleLabel.frame.maxY, width: noResortView.frame.size.width - 20, height: detailView.frame.size.height)
         detailLabel.numberOfLines = 0
-        detailLabel.text = "We were unable to find any availability for the travel dates you requested. Please check other available dates by scrolling above."
+        detailLabel.text = Constant.AlertMessages.vacationSearchMessage
         detailLabel.textColor = UIColor.gray
         detailLabel.font = UIFont(name: "Helvetica", size: 12)
         noResortView.addSubview(detailLabel)
@@ -1107,7 +1112,6 @@ public class Helper {
             detailLabel.font = UIFont(name: "Helvetica", size:30)
             titleLabel.font = UIFont(name: "Helvetica", size:30)
         }
-        
         return noResortView
     }
     
@@ -1260,7 +1264,7 @@ public class Helper {
         case Constant.MyClassConstants.tutorialsString:
             categoryString = VideoCategory.Tutorial
         default:
-            categoryString = VideoCategory.Area
+            categoryString = VideoCategory.Destination
         }
         
         if Constant.MyClassConstants.systemAccessToken?.token != nil {
@@ -1410,23 +1414,6 @@ public class Helper {
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")
         let date = dateFormatter.date(from: dateString)
         return date ?? Date()
-    }
-    // Function to get trip details
-    static func getTripDetails(senderViewController: UIViewController) {
-        senderViewController.showHudAsync()
-        ExchangeClient.getExchangeTripDetails(Session.sharedSession.userAccessToken, confirmationNumber: Constant.MyClassConstants.transactionNumber, onSuccess: { (exchangeResponse) in
-            senderViewController.hideHudAsync()
-            Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails = exchangeResponse
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.notificationNames.reloadTripDetailsNotification), object: nil)
-            
-        }) { _ in
-            senderViewController.hideHudAsync()
-            senderViewController.presentErrorAlert(UserFacingCommonError.generic)
-        }
-    }
-    //Common function to add notifications.
-    static func addNotifications(notificationNames: NSArray, senderVC: UIViewController) {
-        
     }
     
     // mapping function to return unit details header string with space
@@ -1709,13 +1696,15 @@ public class Helper {
             if activeInterval.fetchedBefore  && !activeInterval.hasCheckInDates()  {
                senderVC.hideHudAsync()
                 Helper.showNotAvailabilityResults()
+                helperDelegate?.resortSearchComplete()
                 
             } else {
                 Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
                 executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: Constant.MyClassConstants.initialVacationSearch.searchCheckInDate ?? "", format: Constant.MyClassConstants.dateFormat), senderViewController: senderVC) }
         },
-           onError: { _ in
-            senderVC.presentErrorAlert(UserFacingCommonError.generic)
+           onError: { error in
+            senderVC.hideHudAsync()
+            senderVC.presentErrorAlert(UserFacingCommonError.handleError(error))
     })
 }
     /*
@@ -1780,21 +1769,6 @@ public class Helper {
             Constant.MyClassConstants.calendarDatesArray.append(calendarItem)
         }
     }
-    
-    // FIXME (Frank): Remove this helper method
-    /*
-    static func createSettings() -> Settings {
-        let vacationSearchSettings = VacationSearchSettings()
-        vacationSearchSettings.bookingIntervalDateStrategy = BookingIntervalDateStrategy.FIRST.rawValue
-        vacationSearchSettings.collapseBookingIntervalsOnChange = true
-        vacationSearchSettings.vacationSearchTypes = [String] (arrayLiteral: VacationSearchType.COMBINED.rawValue, VacationSearchType.EXCHANGE.rawValue, VacationSearchType.RENTAL.rawValue)
-        
-        let settings = Settings()
-        settings.vacationSearch = vacationSearchSettings
-        
-        return settings
-    }
-    */
 
     static func showNearestCheckInDateSelectedMessage() {
         Constant.MyClassConstants.isShowAvailability = true

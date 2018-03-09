@@ -48,7 +48,6 @@ class IntervalHDTabController: UITabBarController {
             self.navigationItem.leftBarButtonItem = menuButton
             
         }
-
     }
     override func viewWillAppear(_ animated: Bool) {
         

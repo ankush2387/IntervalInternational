@@ -21,28 +21,30 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Don't have your resort details? Call your resort." textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bw4-zk-p5C">
-                        <rect key="frame" x="20" y="11" width="314" height="45.5"/>
+                        <rect key="frame" x="20" y="11" width="314" height="46"/>
                         <fontDescription key="fontDescription" type="boldSystem" pointSize="19"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Oz4-T1-5fI">
-                        <rect key="frame" x="366" y="13" width="50" height="42.5"/>
+                        <rect key="frame" x="366" y="13" width="50" height="43"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="50" id="lfd-8b-wHg"/>
-                            <constraint firstAttribute="width" constant="50" id="w9M-S6-uxU"/>
+                            <constraint firstAttribute="width" constant="50" id="nbR-p8-h9O"/>
                         </constraints>
                         <state key="normal" image="ResortDial-inIcon"/>
+                        <connections>
+                            <action selector="didPressCallButton:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="fON-DT-LSt"/>
+                        </connections>
                     </button>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="Oz4-T1-5fI" firstAttribute="leading" secondItem="bw4-zk-p5C" secondAttribute="trailing" constant="32" id="7P5-EZ-HoC"/>
-                    <constraint firstItem="bw4-zk-p5C" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="HvS-bB-htl"/>
-                    <constraint firstItem="bw4-zk-p5C" firstAttribute="bottom" secondItem="H2p-sc-9uM" secondAttribute="bottomMargin" id="bwG-c4-AMv"/>
-                    <constraint firstItem="bw4-zk-p5C" firstAttribute="centerY" secondItem="Oz4-T1-5fI" secondAttribute="centerY" id="niv-Q3-yT7"/>
-                    <constraint firstItem="bw4-zk-p5C" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="ope-Z0-hzv"/>
-                    <constraint firstItem="Oz4-T1-5fI" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="2" id="sDq-8r-Ciq"/>
-                    <constraint firstItem="Oz4-T1-5fI" firstAttribute="trailing" secondItem="H2p-sc-9uM" secondAttribute="trailingMargin" id="tMK-AQ-w3N"/>
+                    <constraint firstItem="bw4-zk-p5C" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="53i-gX-D6Q"/>
+                    <constraint firstItem="bw4-zk-p5C" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="LSn-q4-P6Z"/>
+                    <constraint firstItem="Oz4-T1-5fI" firstAttribute="leading" secondItem="bw4-zk-p5C" secondAttribute="trailing" constant="32" id="Re0-we-Hhl"/>
+                    <constraint firstItem="Oz4-T1-5fI" firstAttribute="trailing" secondItem="H2p-sc-9uM" secondAttribute="trailingMargin" id="Vdq-s6-lgT"/>
+                    <constraint firstItem="bw4-zk-p5C" firstAttribute="centerY" secondItem="Oz4-T1-5fI" secondAttribute="centerY" id="er0-lj-bxM"/>
+                    <constraint firstItem="bw4-zk-p5C" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="xQZ-gh-jX2"/>
+                    <constraint firstItem="Oz4-T1-5fI" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="2" id="yLK-cH-gcN"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>

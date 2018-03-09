@@ -1,14 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16F2073" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="dYv-Er-fzN">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="dYv-Er-fzN">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="HelveticaNeue.ttc">
+            <string>HelveticaNeue</string>
+            <string>HelveticaNeue-Bold</string>
+            <string>HelveticaNeue-Medium</string>
+        </array>
+    </customFonts>
     <scenes>
         <!--Reveal View Controller-->
         <scene sceneID="HUs-fX-D5v">
@@ -104,7 +111,6 @@
                                 <rect key="frame" x="0.0" y="64" width="375" height="136"/>
                                 <color key="backgroundColor" red="0.4392156862745098" green="0.72549019607843135" blue="0.035294117647058823" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="375" id="e4q-3e-ypa"/>
                                     <constraint firstAttribute="height" constant="136" id="yzY-pZ-Uan"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="30"/>
@@ -114,7 +120,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NAa-hp-Aaa">
                                 <rect key="frame" x="0.0" y="200" width="375" height="40"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your Exchange Details" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="58x-YZ-XVq">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your Confirmation Details" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="58x-YZ-XVq">
                                         <rect key="frame" x="20" y="10" width="335" height="20"/>
                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
@@ -274,21 +280,22 @@
                         </subviews>
                         <color key="backgroundColor" red="0.94509803921568625" green="0.94509803921568625" blue="0.96862745098039216" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
+                            <constraint firstItem="JFI-QA-olU" firstAttribute="top" secondItem="fdH-C9-hSt" secondAttribute="top" constant="64" id="3D2-b9-Psr"/>
                             <constraint firstAttribute="trailing" secondItem="r9t-qJ-IpX" secondAttribute="trailing" id="7fA-2V-8J0"/>
                             <constraint firstItem="NAa-hp-Aaa" firstAttribute="top" secondItem="r9t-qJ-IpX" secondAttribute="bottom" constant="35" id="E2L-nh-3ev"/>
                             <constraint firstItem="NAa-hp-Aaa" firstAttribute="top" secondItem="JFI-QA-olU" secondAttribute="bottom" id="HN0-eI-GBc"/>
+                            <constraint firstItem="JFI-QA-olU" firstAttribute="leading" secondItem="fdH-C9-hSt" secondAttribute="leading" id="HZo-bg-GD4"/>
                             <constraint firstItem="3Oe-3V-o12" firstAttribute="top" secondItem="NAa-hp-Aaa" secondAttribute="bottom" id="Hnq-7l-rPe"/>
                             <constraint firstAttribute="trailingMargin" secondItem="aZ8-u7-fc5" secondAttribute="trailing" constant="14" id="IEM-8W-cxO"/>
                             <constraint firstAttribute="trailing" secondItem="NAa-hp-Aaa" secondAttribute="trailing" id="Lwq-QK-hr4"/>
                             <constraint firstAttribute="trailingMargin" secondItem="Otw-zk-FX4" secondAttribute="trailing" constant="14" id="Md4-yT-i5X"/>
                             <constraint firstItem="3Oe-3V-o12" firstAttribute="leading" secondItem="fdH-C9-hSt" secondAttribute="leading" id="MpZ-Es-mpF"/>
                             <constraint firstItem="Otw-zk-FX4" firstAttribute="top" secondItem="aZ8-u7-fc5" secondAttribute="bottom" constant="19" id="Q0R-ce-5Sn"/>
+                            <constraint firstAttribute="trailing" secondItem="JFI-QA-olU" secondAttribute="trailing" id="Y2h-Lg-hJA"/>
                             <constraint firstItem="aZ8-u7-fc5" firstAttribute="top" secondItem="3Oe-3V-o12" secondAttribute="bottom" constant="40" id="ZpX-xs-EDJ"/>
                             <constraint firstItem="NAa-hp-Aaa" firstAttribute="leading" secondItem="fdH-C9-hSt" secondAttribute="leading" id="bSq-Kj-Sme"/>
-                            <constraint firstItem="JFI-QA-olU" firstAttribute="top" secondItem="8OJ-C6-TFx" secondAttribute="bottom" id="bja-aG-6M8"/>
                             <constraint firstItem="gxB-rp-qmZ" firstAttribute="leading" secondItem="fdH-C9-hSt" secondAttribute="leading" id="f8s-pM-oCE"/>
                             <constraint firstAttribute="trailing" secondItem="3Oe-3V-o12" secondAttribute="trailing" id="jwB-W5-IC6"/>
-                            <constraint firstItem="JFI-QA-olU" firstAttribute="centerX" secondItem="fdH-C9-hSt" secondAttribute="centerX" id="k8c-5t-HQU"/>
                             <constraint firstAttribute="trailing" secondItem="gxB-rp-qmZ" secondAttribute="trailing" id="mj2-Og-eX0"/>
                             <constraint firstItem="r9t-qJ-IpX" firstAttribute="top" secondItem="gxB-rp-qmZ" secondAttribute="bottom" id="o4X-AS-NY5"/>
                             <constraint firstItem="Otw-zk-FX4" firstAttribute="leading" secondItem="fdH-C9-hSt" secondAttribute="leadingMargin" constant="14" id="ogx-77-uel"/>
@@ -305,8 +312,8 @@
                         <outlet property="memberNumber" destination="jDE-GM-umt" id="OTL-sz-vCB"/>
                         <outlet property="transactionDate" destination="8um-pB-t7Z" id="BTh-qy-0Xq"/>
                         <outlet property="viewTripDetailsButton" destination="aZ8-u7-fc5" id="keO-Sa-VGr"/>
-                        <segue destination="GDu-GD-gmf" kind="presentation" identifier="confirmationViewTripSegue" id="aWe-7a-ifI"/>
-                        <segue destination="uJD-iZ-xA9" kind="presentation" identifier="confirmationUpcomingTripSegue" id="4VL-VL-wNv"/>
+                        <segue destination="GDu-GD-gmf" kind="show" identifier="confirmationViewTripSegue" id="aWe-7a-ifI"/>
+                        <segue destination="uJD-iZ-xA9" kind="show" identifier="confirmationUpcomingTripSegue" id="4VL-VL-wNv"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Mdx-1p-rfD" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -335,7 +342,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="AW7-NK-Iqp" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="htm-3Q-FE6">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>

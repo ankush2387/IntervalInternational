@@ -127,6 +127,9 @@ extension ResortFavoritesTableViewCell: UICollectionViewDataSource {
         let tierImage = Helper.getTierImageName(tier: resort.tier!.uppercased())
         if resort.tier != nil && cell.tierImageView != nil {
             cell.tierImageView.image = UIImage(named: tierImage)
+            cell.tierImageView.isHidden = false
+        } else {
+            cell.tierImageView.isHidden = true
         }
         if let city = resort.address?.cityName {
             cell.regionAreaLabel.text = "\(city)"

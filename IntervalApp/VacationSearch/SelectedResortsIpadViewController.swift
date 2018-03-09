@@ -59,8 +59,7 @@ extension SelectedResortsIpadViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
        
-        let sectionArray: NSMutableArray
-        sectionArray = areaDictionary.allKeys as! NSMutableArray
+        let sectionArray = areaDictionary.allKeys
         
         if let areas = areaDictionary.value(forKey: sectionArray[section] as! String) {
             
@@ -119,16 +118,16 @@ extension SelectedResortsIpadViewController: UITableViewDelegate {
                     localArray.add(object)
                 }
                 
-                for value in Constant.MyClassConstants.selectedAreaCodeDictionary.allValues {
-                    if(value as! String == localArray[indexPath.row] as! String) {
-                        let key = Constant.MyClassConstants.selectedAreaCodeDictionary.allKeys(for: value)
-                        intervalPrint(key)
-                        Constant.MyClassConstants.selectedAreaCodeDictionary.removeObject(forKey: "\(key[0])")
-                        intervalPrint(Constant.MyClassConstants.selectedAreaCodeDictionary)
-                        Constant.MyClassConstants.selectedAreaCodeArray.remove("\(key[0])")
-                        
-                    }
-                }
+//                for value in Constant.MyClassConstants.selectedAreaCodeDictionary.al {
+//                    if(value as! String == localArray[indexPath.row] as! String) {
+//                        let key = Constant.MyClassConstants.selectedAreaCodeDictionary.allKeys(for: value)
+//                        intervalPrint(key)
+//                        Constant.MyClassConstants.selectedAreaCodeDictionary.removeObject(forKey: "\(key[0])")
+//                        intervalPrint(Constant.MyClassConstants.selectedAreaCodeDictionary)
+//                        Constant.MyClassConstants.selectedAreaCodeArray.remove("\(key[0])")
+//
+//                    }
+//                }
                 localArray.removeObject(at: indexPath.row)
                 selectedCounter = -1
                 if(localArray.count > 0) {
@@ -171,8 +170,7 @@ extension SelectedResortsIpadViewController: UITableViewDelegate {
         
         let headerNameLabel = UILabel(frame: CGRect(x: 20, y: 0, width: view.frame.size.width - 20, height: 30))
         
-        let headerArray: NSMutableArray
-        headerArray = areaDictionary.allKeys as! NSMutableArray
+        let headerArray = areaDictionary.allKeys
         headerNameLabel.text = headerArray[section] as? String
         headerNameLabel.textColor = UIColor.lightGray
         headerNameLabel.font = UIFont(name: Constant.fontName.helveticaNeue, size: 15)

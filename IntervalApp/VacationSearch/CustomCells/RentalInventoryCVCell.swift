@@ -29,9 +29,9 @@ class RentalInventoryCVCell: UICollectionViewCell {
                 imgViewGetaway.isHidden = false
                 getawayPrice.isHidden = true
             } else {
-                let price = Float(unit.prices[0].price)
-                if let attributedAmount = price.currencyFormatter(for:code) {
-                    getawayPrice.attributedText = attributedAmount
+                if let currentMembership = Session.sharedSession.selectedMembership, let bestRentalPrice = IntervalHelper.getBestRentalPrice(currentMembership, prices: unit.prices),
+                    let priceToDisplay = bestRentalPrice.price.currencyFormatter(for:code) {
+                    getawayPrice.attributedText = priceToDisplay
                 }
                 getawayNameLabel.text = "Per Week"
                 imgViewGetaway.isHidden = true
@@ -48,15 +48,13 @@ class RentalInventoryCVCell: UICollectionViewCell {
             kitchenType.text = kitchenDetails
             var totalSleepCapacity = String()
             if unit.publicSleepCapacity > 0 {
-                
-                totalSleepCapacity = String(unit.publicSleepCapacity) + Constant.CommonLocalisedString.totalString
+                totalSleepCapacity = "\(unit.publicSleepCapacity) total, ".localized()
             }
             
             if unit.privateSleepCapacity > 0 {
                 
                 sleeps.text = totalSleepCapacity + String(unit.privateSleepCapacity) + Constant.CommonLocalisedString.privateString
             }
-            
         }
 
         if let promotions = invetoryItem.inventory?.units[indexPath.item].promotions {
@@ -71,7 +69,7 @@ class RentalInventoryCVCell: UICollectionViewCell {
                     let imgV = UIImageView(frame: CGRect(x: 10, y: yPosition, width: 15, height: 15))
                     imgV.image = UIImage(named: Constant.assetImageNames.promoImage)
                     let promLabel = UILabel(frame: CGRect(x: 30, y: yPosition, width: promotionsView.bounds.width, height: 15))
-                    promLabel.text = promotion.offerName
+                    promLabel.text = promotion.offerContentFragment
                     promLabel.adjustsFontSizeToFitWidth = true
                     promLabel.minimumScaleFactor = 0.7
                     promLabel.numberOfLines = 0

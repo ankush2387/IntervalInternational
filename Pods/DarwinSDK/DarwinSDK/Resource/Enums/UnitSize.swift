@@ -14,6 +14,8 @@ public enum UnitSize : String {
     case TWO_BEDROOM = "TWO_BEDROOM"
     case THREE_BEDROOM = "THREE_BEDROOM"
     case FOUR_BEDROOM = "FOUR_BEDROOM"
+    case FLOATING_UNIT = "FLOATING_UNIT"
+    case UNKNOWN_UNIT = "UNKNOWN_UNIT"
     
     var name: String {
         return self.rawValue
@@ -24,7 +26,7 @@ public enum UnitSize : String {
     }
     
     // Helper methods for UI
-    public static func fromName(name : String) -> UnitSize {
+    public static func fromName(name : String?) -> UnitSize {
         if UnitSize.STUDIO.name == name {
             return UnitSize.STUDIO
         } else if UnitSize.ONE_BEDROOM.name == name {
@@ -35,19 +37,23 @@ public enum UnitSize : String {
             return UnitSize.THREE_BEDROOM
         } else if UnitSize.FOUR_BEDROOM.name == name {
             return UnitSize.FOUR_BEDROOM
+        } else if UnitSize.FLOATING_UNIT.name == name {
+            return UnitSize.FLOATING_UNIT
+        } else if UnitSize.UNKNOWN_UNIT.name == name {
+            return UnitSize.UNKNOWN_UNIT
         } else {
             // Fallback
-            return UnitSize.STUDIO
+            return UnitSize.UNKNOWN_UNIT
         }
     }
+    
+    public static let forDisplay = [ STUDIO, ONE_BEDROOM, TWO_BEDROOM, THREE_BEDROOM, FOUR_BEDROOM ]
     
     public func friendlyName() -> String {
         let name = self.rawValue.lowercased().replacingOccurrences(of: "_", with: " ")
         return name.capitalized
     }
-    
-    public static let forDisplay = [ STUDIO, ONE_BEDROOM, TWO_BEDROOM, THREE_BEDROOM, FOUR_BEDROOM ]
-  
+
     public static func fromFriendlyName(_ friendlyName:String) -> UnitSize? {
         let name = friendlyName.uppercased().replacingOccurrences(of: " ", with: "_")
         return UnitSize(rawValue: name)

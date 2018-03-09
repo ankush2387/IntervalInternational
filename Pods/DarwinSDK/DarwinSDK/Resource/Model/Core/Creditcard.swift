@@ -44,4 +44,34 @@ open class Creditcard
         }
     }
     
+    open func toDictionary() -> Dictionary<String, AnyObject> {
+        var dictionary = Dictionary<String, AnyObject>()
+        dictionary["id"] = self.creditcardId as AnyObject?
+        dictionary["cardHolderName"] = self.cardHolderName as AnyObject?
+        dictionary["cardNumber"] = self.cardNumber as AnyObject?
+        dictionary["type"] = self.typeCode as AnyObject?
+        dictionary["cvv"] = self.cvv as AnyObject?
+        dictionary["expirationDate"] = self.expirationDate as AnyObject?
+        dictionary["preferredCardIndicator"] = self.preferredCardIndicator as AnyObject?
+        dictionary["saveCardIndicator"] = self.saveCardIndicator as AnyObject?
+        dictionary["autoRenew"] = self.autoRenew as AnyObject?
+        dictionary["billingAddress"] = self.billingAddressToDictionary() as AnyObject?
+        return dictionary
+    }
+    
+    private func billingAddressToDictionary() -> Dictionary<String, AnyObject> {
+        var addressLinesArray = Array<AnyObject>()
+        for addressLine in (self.billingAddress?.addressLines)! {
+            addressLinesArray.append(addressLine as AnyObject)
+        }
+        
+        var dictionary = Dictionary<String, AnyObject>()
+        dictionary["addressLines"] = addressLinesArray as AnyObject?
+        dictionary["cityName"] = self.billingAddress?.cityName as AnyObject?
+        dictionary["territoryCode"] = self.billingAddress?.territoryCode as AnyObject?
+        dictionary["countryCode"] = self.billingAddress?.countryCode as AnyObject?
+        dictionary["postalCode"] = self.billingAddress?.postalCode as AnyObject?
+        return dictionary
+    }
+    
 }
