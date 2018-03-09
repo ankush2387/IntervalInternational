@@ -31,6 +31,7 @@ final class LoginViewController: UIViewController {
     @IBOutlet private weak var magazinesButton: UIButton!
     @IBOutlet fileprivate weak var versionLabel: UILabel!
     @IBOutlet private var webActivityButtons: [UIButton]!
+    @IBOutlet private weak var showPasswordButton: UIButton!
 
     var blurEffectView: UIView?
     var onboardingVC: OnboardingContainerviewController?
@@ -49,8 +50,26 @@ final class LoginViewController: UIViewController {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    // MARK: - Overrides
+
+    // MARK: - IBActions
+    @IBAction func showPasswordButtonPressed(_ sender: AnyObject) {
+        passwordTextField.tintColor = .clear
+        passwordTextField.isSecureTextEntry = false
+    }
+
+    @IBAction func showPasswordButtonReleased(_ sender: AnyObject) {
+        passwordTextField.tintColor = IntervalThemeFactory.deviceTheme.intervalColorBlue
+        passwordTextField.isSecureTextEntry = true
+    }
+
+    @IBAction func passwordEntryDidBegin(_ sender: AnyObject) {
+        let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 30, height: passwordTextField.frame.height))
+        passwordTextField.rightView = paddingView
+        passwordTextField.rightViewMode = .always
+        showPasswordButton.isHidden = passwordTextField.text.unwrappedString.isEmpty
+    }
+
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         bindUI()
@@ -122,6 +141,7 @@ final class LoginViewController: UIViewController {
     }
 
     private func setUI() {
+        showPasswordButton.isHidden = true
         backgroundImageView.image = viewModel.backgroundImage.value
         signInBackgroundView.backgroundColor = UIColor.white.withAlphaComponent(0.9)
         updateUIForOrientation()
@@ -143,12 +163,13 @@ final class LoginViewController: UIViewController {
         viewModel.password.bidirectionalBind(to: passwordTextField.reactive.text).dispose(in: disposeBag)
         resortDirectoryButton.reactive.tap.observeNext(with: resortDirectoryButtonTapped).dispose(in: disposeBag)
         biometricLoginButton.reactive.tap.observeNext(with: performTouchIDLoginIfEnabled).dispose(in: disposeBag)
+
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         view.endEditing(true)
     }
-    
+
     private func performTouchIDLoginIfEnabled() {
         guard viewModel.touchIDEnabled else { return }
         let touchID = viewModel.biometricAuthentication
