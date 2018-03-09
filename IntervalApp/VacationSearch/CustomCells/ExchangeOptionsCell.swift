@@ -8,6 +8,7 @@
 
 import UIKit
 import IntervalUIKit
+import DarwinSDK
 
 class ExchangeOptionsCell: UITableViewCell {
     
@@ -26,10 +27,12 @@ class ExchangeOptionsCell: UITableViewCell {
     func setupCell(selectedEplus: Bool) {
         
         if let currencyCode = Constant.MyClassConstants.exchangeFees[0].currencyCode {
+            let currencyHelper = CurrencyHelper()
+            let currencySymbol = currencyHelper.getCurrencyFriendlySymbol(currencyCode: currencyCode)
             if !Constant.MyClassConstants.exchangeFees.isEmpty && Constant.MyClassConstants.exchangeFees[0].eplus != nil {
                 if let eplus = Constant.MyClassConstants.exchangeFees[0].eplus?.price, let selectedTrue = Constant.MyClassConstants.exchangeFees[0].eplus?.selected {
                     priceCheckBox.checked = selectedTrue
-                    setTotalPrice(with: currencyCode, and: eplus)
+                    setTotalPrice(with: currencySymbol, and: eplus)
                 }
             }
         }

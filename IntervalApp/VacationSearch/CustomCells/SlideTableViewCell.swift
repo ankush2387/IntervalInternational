@@ -16,6 +16,7 @@ class SlideTableViewCell: UITableViewCell {
     @IBOutlet weak var agreeButton: MMSlidingButton?
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var allInclusiveSelectedCheckBox: UIImageView!
+    @IBOutlet weak var informationImage: UIImageView!
     
     var callback: CallBack?
     
@@ -27,6 +28,10 @@ class SlideTableViewCell: UITableViewCell {
         let tap = UITapGestureRecognizer(target: self, action: #selector(SlideTableViewCell.tapFunction))
         feesTitleLabel.isUserInteractionEnabled = true
         feesTitleLabel.addGestureRecognizer(tap)
+        
+        let tap1 = UITapGestureRecognizer(target: self, action: #selector(SlideTableViewCell.tapFunction))
+        informationImage.isUserInteractionEnabled = true
+        informationImage.addGestureRecognizer(tap1)
     }
 
     func tapFunction(sender: UITapGestureRecognizer) {

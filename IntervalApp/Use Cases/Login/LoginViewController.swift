@@ -131,8 +131,6 @@ final class LoginViewController: UIViewController {
     }
     
     private func bindUI() {
-        viewModel.username.bidirectionalBind(to: loginIDTextField.reactive.text)
-        viewModel.password.bidirectionalBind(to: passwordTextField.reactive.text)
         signInButton.reactive.tap.observeNext(with: login).dispose(in: disposeBag)
         privacyButton.reactive.tap.observeNext(with: privacyButtonTapped).dispose(in: disposeBag)
         loginHelpButton.reactive.tap.observeNext(with: showLoginHelpWebView).dispose(in: disposeBag)
@@ -141,6 +139,8 @@ final class LoginViewController: UIViewController {
         intervalHDButton.reactive.tap.observeNext(with: intervalHDButtonTapped).dispose(in: disposeBag)
         viewModel.clientTokenLoaded.observeNext(with: enabledWebActivityButton).dispose(in: disposeBag)
         viewModel.appSettings.flatMap { $0 }.observeNext(with: checkAppVersion).dispose(in: disposeBag)
+        viewModel.username.bidirectionalBind(to: loginIDTextField.reactive.text).dispose(in: disposeBag)
+        viewModel.password.bidirectionalBind(to: passwordTextField.reactive.text).dispose(in: disposeBag)
         resortDirectoryButton.reactive.tap.observeNext(with: resortDirectoryButtonTapped).dispose(in: disposeBag)
         biometricLoginButton.reactive.tap.observeNext(with: performTouchIDLoginIfEnabled).dispose(in: disposeBag)
     }
@@ -207,6 +207,12 @@ final class LoginViewController: UIViewController {
     }
     
     private func updateUIForOrientation() {
+        
+        guard !isRunningOnIphone else {
+            setPortraitStackView()
+            return
+        }
+        
         let inPortraitMode = UIDevice.current.orientation == .portrait || UIDevice.current.orientation == .portraitUpsideDown
         landscapeStackView.isHidden = inPortraitMode
         portraitStackView.isHidden = !landscapeStackView.isHidden

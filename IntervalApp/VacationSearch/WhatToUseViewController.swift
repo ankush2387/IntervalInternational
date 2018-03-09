@@ -53,9 +53,7 @@ class WhatToUseViewController: UIViewController {
         self.navigationItem.leftBarButtonItem = menuButton
         guard let currencycode = Constant.MyClassConstants.selectedResort.inventory?.currencyCode else { return }
         let currencyHelper = CurrencyHelper()
-        let countryCode = Session.sharedSession.contact?.getCountryCode() ?? ""
-        
-        currencyCode = ("\(currencyHelper.getCurrencyFriendlySymbol(currencyCode: currencycode, countryCode: countryCode))")
+        currencyCode = currencyHelper.getCurrencyFriendlySymbol(currencyCode: currencycode)
     }
     
     override func didReceiveMemoryWarning() {

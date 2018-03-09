@@ -121,7 +121,7 @@ class Constant: NSObject {
         static var carRentalCounter = 0
         static var isEvent2Ready = 0
         
-        static var rentalSortingOptionArray = ["Recommended", "Resort Name:", "Resort Name:", "Price:", "Price:", "City:", "City:", "Resort Tier:", "Resort Tier:"]
+        static var rentalSortingOptionArray = ["Suggested", "Resort Name:", "Resort Name:", "Price:", "Price:", "City:", "City:", "Resort Tier:", "Resort Tier:"]
         static var sortingSetValues = ["DEFAULT", "RESORT_NAME_ASC", "RESORT_NAME_DESC", "CITY_NAME_ASC", "CITY_NAME_DESC", "RESORT_TIER_LOW_TO_HIGH", "RESORT_TIER_HIGH_TO_LOW", "PRICE_LOW_TO_HIGH", "PRICE_HIGH_TO_LOW", "UNKNOWN"]
         
         static var rentalSortingRangeArray = ["Default", "A - Z", "Z - A", "Low - High", "High - Low", "A - Z", "Z - A", "Low - High", "High - Low"]
@@ -600,6 +600,8 @@ class Constant: NSObject {
         
         static var popToLoginView =  "PopToLoginView"
         
+        static var textViewStr =  "If arriving after the scheduled check-in date/time indicated, contact the resort for instructions. For an explanatin of the Cancellation Policy, see the Terms and Conditions. This Purchase is final and non-refundable.".localized()
+        
         static var certifcateCount = 0
         static var certificateArray = [AccommodationCertificate]()
         static var noFilterOptions = false
@@ -751,8 +753,8 @@ class Constant: NSObject {
         static var searchVacationTitle = "Search Vacation".localized()
         static var searchVacationMessage = "Please select any destination or resort".localized()
         static var travellingDetailMessage = "Traveling: Tue Oct 15, 2015 - Sun May 20, 2018".localized()
-        static var vacationSearchMessage = "We were unable to find any availability for the travel dates you requested. Please check other available dates by scrolling above.".localized()
-        static var vactionSearchDateMessage = "No match found. Please select another date.".localized()
+        static var vacationSearchMessage = "We were unable to find any availability for the destination you requested. Please select additional travel dates by scrolling above or return to your search criteria and select another destination.".localized()
+        static var vactionSearchDateMessage = "No availability found.".localized()
         static var userInterestMessage = "How's about you go favorite some resorts and when you come back they will be here all warm and toasty waiting for you!".localized()
         static var goGetMessage = "Go on Get! ".localized()
         static var noDatesMessage = "No Dates availabel".localized()
@@ -1340,6 +1342,7 @@ class Constant: NSObject {
         static var helveticaNeue = "HelveticaNeue"
         static var helveticaNeueMedium = "HelveticaNeue-Medium"
         static var helveticaNeueBold = "Helvetica-Bold"
+        static var helveticaNeueItalic = "HelveticaNeue-Italic"
     }
     
     //***** common  structure to provide all enableTouchId messages and titles *****//

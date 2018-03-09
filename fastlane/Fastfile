@@ -84,6 +84,7 @@ buildNumber = get_build_number
 
 # Commit build number bump
 commit_version_bump(force: true, message: "Auto-increment build version: " + buildNumber)
+push_to_git_remote(remote: "origin", local_branch: "HEAD", remote_branch: "develop", force: true, tags: true)
 
 # Shut down ethernet connection
 sh("sudo ifconfig en0 down")
@@ -109,7 +110,6 @@ notes: "Develop Build (Uploaded via fastlane)."
 
 # Activate ethernet connection
 sh("sudo ifconfig en0 up")
-push_to_git_remote(remote: "origin", local_branch: "HEAD", remote_branch: "develop", force: true, tags: true)
 
 end
 
