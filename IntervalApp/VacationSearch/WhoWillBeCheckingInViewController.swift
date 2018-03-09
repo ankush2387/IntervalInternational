@@ -1197,7 +1197,7 @@ extension WhoWillBeCheckingInViewController: RenewelViewControllerDelegate {
         proceedToCheckoutPressed(button)
     }
     
-    func noThanks() {
+    func noThanks(selectedRelinquishment: ExchangeRelinquishment) {
         let messageString = "Guest Certificate Fee will be charged. To proceed further please click on OK button else click on cancel to select the renewal of membership.".localized()
         presentAlert(with: "Alert".localized(), message: messageString)
     }

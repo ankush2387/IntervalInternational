@@ -1676,7 +1676,7 @@ extension VacationSearchResultIPadController: RenewelViewControllerDelegate {
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
-    func noThanks() {
+    func noThanks(selectedRelinquishment: ExchangeRelinquishment) {
         self.dismiss(animated: true, completion: nil)
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
         guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: "WhoWillBeCheckingInIPadViewController") as? WhoWillBeCheckingInIPadViewController else { return }

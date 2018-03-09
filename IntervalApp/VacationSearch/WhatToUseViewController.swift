@@ -864,15 +864,11 @@ extension WhatToUseViewController: RenewelViewControllerDelegate {
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
-    func noThanks() {
+    func noThanks(selectedRelinquishment: ExchangeRelinquishment) {
         self.dismiss(animated: true, completion: nil)
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
         guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: "WhoWillBeCheckingInViewController") as? WhoWillBeCheckingInViewController else { return }
-        if Constant.MyClassConstants.filterRelinquishments.count > 1 {
-            viewController.filterRelinquishments = Constant.MyClassConstants.filterRelinquishments[self.selectedRow - 1]
-        } else {
-            viewController.filterRelinquishments = Constant.MyClassConstants.filterRelinquishments[self.selectedRow]
-        }
+        viewController.filterRelinquishments = selectedRelinquishment
         self.navigationController?.pushViewController(viewController, animated: true)
         
     }

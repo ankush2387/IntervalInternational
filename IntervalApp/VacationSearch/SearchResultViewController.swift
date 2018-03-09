@@ -1935,14 +1935,12 @@ extension SearchResultViewController: RenewelViewControllerDelegate {
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
-    func noThanks() {
+    func noThanks(selectedRelinquishment: ExchangeRelinquishment) {
         self.dismiss(animated: true, completion: nil)
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
         guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: SearchResultViewController.whoWillBeCheckingInViewController) as? WhoWillBeCheckingInViewController else { return }
-        
-        let transitionManager = TransitionManager()
-        self.navigationController?.transitioningDelegate = transitionManager
-        self.navigationController?.pushViewController(viewController, animated: true)
+        viewController.filterRelinquishments = selectedRelinquishment
+        navigationController?.pushViewController(viewController, animated: true)
     }
     
     func otherOptions(forceRenewals: ForceRenewals) {

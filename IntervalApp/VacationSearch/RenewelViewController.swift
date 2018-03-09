@@ -14,7 +14,7 @@ import DarwinSDK
 protocol RenewelViewControllerDelegate: class {
     
     func selectedRenewalFromWhoWillBeCheckingIn(renewalArray: [Renewal], selectedRelinquishment: ExchangeRelinquishment)
-    func noThanks()
+    func noThanks(selectedRelinquishment: ExchangeRelinquishment)
     func otherOptions(forceRenewals: ForceRenewals)
     func dismissWhatToUse(renewalArray: [Renewal])
 }
@@ -223,7 +223,7 @@ class RenewelViewController: UIViewController {
         if Constant.MyClassConstants.noThanksForNonCore {
             self.dismiss(animated: true, completion: nil)
             Constant.MyClassConstants.noThanksForNonCore = false
-            self.delegate?.noThanks()
+            self.delegate?.noThanks(selectedRelinquishment: filterRelinquishment)
         } else {
             
             if self.isCombo {
@@ -237,7 +237,7 @@ class RenewelViewController: UIViewController {
                     if Constant.MyClassConstants.isNoThanksFromRenewalAgain {
                         Constant.MyClassConstants.isNoThanksFromRenewalAgain = false
                         //self.dismiss(animated: true, completion: nil)
-                        self.delegate?.noThanks()
+                        self.delegate?.noThanks(selectedRelinquishment: filterRelinquishment)
                         return
                     } else {
                         
@@ -250,7 +250,7 @@ class RenewelViewController: UIViewController {
                                 Constant.MyClassConstants.noThanksForNonCore = false
                             }
                         }
-                        self.delegate?.noThanks()
+                        self.delegate?.noThanks(selectedRelinquishment: filterRelinquishment)
                     }
                 }
                 
