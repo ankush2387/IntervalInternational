@@ -83,10 +83,10 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
             resortHoldingTimeLabel.text = "We are holding this unit for \(Constant.holdingTime) minutes".localized()
         } else {
             Constant.holdingTimer?.invalidate()
-            let alertController = UIAlertController(title: Constant.AlertMessages.holdingTimeLostTitle, message: Constant.AlertMessages.holdingTimeLostMessage, preferredStyle: .alert)
-            let Ok = UIAlertAction(title: Constant.AlertPromtMessages.ok, style: .default) { (_:UIAlertAction)  in
+            let alertController = UIAlertController(title: "", message: Constant.AlertMessages.holdingTimeLostMessage, preferredStyle: .alert)
+            let Ok = UIAlertAction(title: "OK".localized(), style: .default) {[weak self] (_:UIAlertAction)  in
                 
-                self.performSegue(withIdentifier: "unwindToAvailabiity", sender: self)
+                self?.performSegue(withIdentifier: "unwindToAvailabiity", sender: self)
             }
             alertController.addAction(Ok)
             present(alertController, animated: true, completion:nil)
@@ -976,7 +976,7 @@ extension WhoWillBeCheckingInIPadViewController: RenewelViewControllerDelegate {
         self.proceedToCheckoutPressed(button)
     }
     
-    func noThanks() {
+    func noThanks(selectedRelinquishment: ExchangeRelinquishment) {
         self.dismiss(animated: true, completion: nil)
         let button = UIButton()
         Constant.MyClassConstants.isDismissWhoWillBeCheckin = true

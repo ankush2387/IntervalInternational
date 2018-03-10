@@ -17,6 +17,7 @@ class RelinquishmentDetailsViewController: UIViewController {
     var filterRelinquishment = ExchangeRelinquishment()
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.estimatedRowHeight = 80
 
         // Do any additional setup after loading the view.
         self.tableView.layer.cornerRadius = 5
@@ -105,15 +106,12 @@ extension RelinquishmentDetailsViewController: UITableViewDataSource, UITableVie
                 cell.totalSleepAndPrivate.text = ""
             } else if let openWeek = objRelinquishment.openWeek {
                 
-                if let date = openWeek.checkInDate?.dateFromString() {
-                    let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
-                    let myComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: date)
-                    if let day = myComponents.day, let month = myComponents.month {
-                        let monthName = Helper.getMonthnameFromInt(monthNumber: month).uppercased()
-                        cell.dayAndDateLabel.text = "\(monthName) \(String(format: "%02d", arguments: [day]))"
-                    }
-                } else {
-                    cell.dayAndDateLabel.text = ""
+                if let checkInDate = Date.dateFromString(openWeek.checkInDate.unwrappedString)?.formatDateAs("MM-dd"),
+                    let month = checkInDate.split(separator: "-").first,
+                    let day = checkInDate.split(separator: "-").last,
+                    let monthNumber = Int(month) {
+                    let monthName = Helper.getMonthnameFromInt(monthNumber: monthNumber).uppercased()
+                    cell.dayAndDateLabel.text = "\(monthName) \(day)"
                 }
                 
                 if let relinquishmentYear = openWeek.relinquishmentYear {
@@ -136,6 +134,15 @@ extension RelinquishmentDetailsViewController: UITableViewDataSource, UITableVie
                 }
                 
             } else if let deposits = objRelinquishment.deposit {
+                
+                if let checkInDate = Date.dateFromString(deposits.checkInDate.unwrappedString)?.formatDateAs("MM-dd"),
+                    let month = checkInDate.split(separator: "-").first,
+                    let day = checkInDate.split(separator: "-").last,
+                    let monthNumber = Int(month) {
+                    let monthName = Helper.getMonthnameFromInt(monthNumber: monthNumber).uppercased()
+                    cell.dayAndDateLabel.text = "\(monthName) \(day)"
+                }
+                
                 if let relinquishmentYear = deposits.relinquishmentYear {
                     cell.yearLabel.text = "\(relinquishmentYear)"
                 }
@@ -183,8 +190,7 @@ extension RelinquishmentDetailsViewController: UITableViewDataSource, UITableVie
                 return 450
             }
         } else {
-            return 80
-
+            return UITableViewAutomaticDimension
         }
     }
     

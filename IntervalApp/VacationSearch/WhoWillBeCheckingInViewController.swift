@@ -236,10 +236,10 @@ class WhoWillBeCheckingInViewController: UIViewController {
             resortHoldingTimeLabel.text = "We are holding this unit for \(Constant.holdingTime) minutes".localized()
         } else {
             Constant.holdingTimer?.invalidate()
-            let alertController = UIAlertController(title: Constant.AlertMessages.holdingTimeLostTitle, message: Constant.AlertMessages.holdingTimeLostMessage, preferredStyle: .alert)
-            let Ok = UIAlertAction(title: Constant.AlertPromtMessages.ok, style: .default) { (_:UIAlertAction)  in
+            let alertController = UIAlertController(title: "", message: Constant.AlertMessages.holdingTimeLostMessage, preferredStyle: .alert)
+            let Ok = UIAlertAction(title: "OK".localized(), style: .default) {[weak self] (_:UIAlertAction)  in
                 
-                self.performSegue(withIdentifier: "unwindToAvailabiity", sender: self)
+                self?.performSegue(withIdentifier: "unwindToAvailabiity", sender: self)
             }
             alertController.addAction(Ok)
             present(alertController, animated: true, completion:nil)
@@ -1197,7 +1197,7 @@ extension WhoWillBeCheckingInViewController: RenewelViewControllerDelegate {
         proceedToCheckoutPressed(button)
     }
     
-    func noThanks() {
+    func noThanks(selectedRelinquishment: ExchangeRelinquishment) {
         let messageString = "Guest Certificate Fee will be charged. To proceed further please click on OK button else click on cancel to select the renewal of membership.".localized()
         presentAlert(with: "Alert".localized(), message: messageString)
     }

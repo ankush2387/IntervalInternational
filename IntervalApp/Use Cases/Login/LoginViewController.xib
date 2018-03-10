@@ -32,6 +32,7 @@
                 <outlet property="portraitStackView" destination="a6B-cz-OLJ" id="s2y-Gl-SM6"/>
                 <outlet property="privacyButton" destination="ieR-sI-nH2" id="roW-Ic-9tG"/>
                 <outlet property="resortDirectoryButton" destination="Jad-t0-VjU" id="yg9-QP-77e"/>
+                <outlet property="showPasswordButton" destination="7ax-p2-Kvk" id="wKF-Fu-6Fz"/>
                 <outlet property="signInBackgroundView" destination="ZFJ-sS-AMq" id="2Zg-sh-fNf"/>
                 <outlet property="signInButton" destination="X9f-Sr-byv" id="ma1-4y-pt6"/>
                 <outlet property="versionLabel" destination="Y3H-bp-pqt" id="hZs-oa-2EM"/>
@@ -331,13 +332,16 @@
                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                     <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no"/>
                 </textField>
-                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="aAr-G7-MUF">
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="aAr-G7-MUF">
                     <rect key="frame" x="20" y="88" width="984" height="50"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="50" id="WTV-yj-QAM"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                     <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" secureTextEntry="YES"/>
+                    <connections>
+                        <action selector="passwordEntryDidBegin:" destination="-1" eventType="editingChanged" id="AVx-Sz-j7I"/>
+                    </connections>
                 </textField>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X9f-Sr-byv">
                     <rect key="frame" x="20" y="146" width="984" height="50"/>
@@ -380,6 +384,14 @@
                         <constraint firstItem="kma-AW-zZj" firstAttribute="top" secondItem="Ydf-1e-fI2" secondAttribute="top" constant="8" id="lRY-hu-FDY"/>
                     </constraints>
                 </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7ax-p2-Kvk">
+                    <rect key="frame" x="969" y="102" width="22" height="22"/>
+                    <state key="normal" image="visibility"/>
+                    <connections>
+                        <action selector="showPasswordButtonPressed:" destination="-1" eventType="touchDown" id="mQO-BE-Lqa"/>
+                        <action selector="showPasswordButtonReleased:" destination="-1" eventType="touchUpInside" id="K7G-7a-Rim"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
@@ -389,11 +401,13 @@
                 <constraint firstItem="Ydf-1e-fI2" firstAttribute="leading" secondItem="aAr-G7-MUF" secondAttribute="leading" id="JIu-ok-ZgK"/>
                 <constraint firstItem="X9f-Sr-byv" firstAttribute="top" secondItem="aAr-G7-MUF" secondAttribute="bottom" constant="8" symbolic="YES" id="K7Y-3Z-m6e"/>
                 <constraint firstItem="U1T-Lv-NMh" firstAttribute="top" secondItem="M7Z-lh-vYP" secondAttribute="top" constant="10" id="KNG-G3-hsA"/>
+                <constraint firstItem="7ax-p2-Kvk" firstAttribute="leading" secondItem="aAr-G7-MUF" secondAttribute="trailing" constant="-35" id="VgB-OF-6I4"/>
                 <constraint firstItem="aAr-G7-MUF" firstAttribute="top" secondItem="U1T-Lv-NMh" secondAttribute="bottom" constant="8" id="akF-kD-t2e"/>
                 <constraint firstItem="X9f-Sr-byv" firstAttribute="trailing" secondItem="Ydf-1e-fI2" secondAttribute="trailing" id="gQ1-CX-SSy"/>
                 <constraint firstItem="X9f-Sr-byv" firstAttribute="leading" secondItem="Ydf-1e-fI2" secondAttribute="leading" id="nIB-VU-Dxu"/>
                 <constraint firstItem="Ydf-1e-fI2" firstAttribute="trailing" secondItem="aAr-G7-MUF" secondAttribute="trailing" id="nu4-Cb-yEI"/>
                 <constraint firstItem="aAr-G7-MUF" firstAttribute="leading" secondItem="M7Z-lh-vYP" secondAttribute="leading" constant="20" id="qDN-z9-1lW"/>
+                <constraint firstItem="7ax-p2-Kvk" firstAttribute="top" secondItem="aAr-G7-MUF" secondAttribute="bottom" constant="-36" id="tIk-Uk-uHE"/>
                 <constraint firstItem="M7Z-lh-vYP" firstAttribute="trailing" secondItem="U1T-Lv-NMh" secondAttribute="trailing" constant="20" id="wny-RR-T9i"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
@@ -411,5 +425,6 @@
         <image name="LogoLogin" width="260" height="100"/>
         <image name="MagazineIcon" width="30" height="30"/>
         <image name="ResortIcon" width="30" height="30"/>
+        <image name="visibility" width="22" height="15"/>
     </resources>
 </document>

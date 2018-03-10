@@ -136,10 +136,10 @@ class AddDebitOrCreditCardViewController: UIViewController {
             
             if Constant.holdingTime == 0 {
                 Constant.holdingTimer?.invalidate()
-                let alertController = UIAlertController(title: Constant.AlertMessages.holdingTimeLostTitle, message: Constant.AlertMessages.holdingTimeLostMessage, preferredStyle: .alert)
-                let Ok = UIAlertAction(title: Constant.AlertPromtMessages.ok, style: .default) { (_:UIAlertAction)  in
+                let alertController = UIAlertController(title: "", message: Constant.AlertMessages.holdingTimeLostMessage, preferredStyle: .alert)
+                let Ok = UIAlertAction(title: "OK".localized(), style: .default) {[weak self] (_:UIAlertAction)  in
                     
-                    self.performSegue(withIdentifier: "unwindToAvailabiity", sender: self)
+                    self?.performSegue(withIdentifier: "unwindToAvailabiity", sender: self)
                 }
                 alertController.addAction(Ok)
                 present(alertController, animated: true, completion:nil)
@@ -239,11 +239,12 @@ class AddDebitOrCreditCardViewController: UIViewController {
                 var dateComponents = DateComponents()
                 dateComponents.year = Int(year)
                 dateComponents.month = Int(month)
-                dateComponents.day = 01
+                dateComponents.day = 1
                 let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
                 let date = calendar.date(from: dateComponents)
                 let dateFor = DateFormatter()
                 dateFor.dateFormat = Constant.MyClassConstants.dateTimeFormat
+                dateFor.timeZone = TimeZone(identifier: "UTC")
                 let expString: String = dateFor.string(from: date ?? Date())
                 debugPrint(expString)
                 newCreditCard.expirationDate = expString
