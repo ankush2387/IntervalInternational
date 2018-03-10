@@ -1091,6 +1091,7 @@ extension SearchResultViewController: UICollectionViewDelegate {
                                 self.navigateToWhatToUseViewController(hasSearchAllAvailability: false)
                             } else {
                                 if let exchangeInventory = combinedExactSearchItems[collectionView.tag].exchangeAvailability?.inventory {
+                                     Constant.MyClassConstants.selectedExchangePointsCost = exchangeInventory.buckets[indexPath.row].pointsCost as NSNumber
                                     getFilterRelinquishments(selectedInventoryUnit: Inventory(),
                                                              selectedIndex: indexPath.item,
                                                              selectedExchangeInventory:exchangeInventory,
@@ -1103,6 +1104,7 @@ extension SearchResultViewController: UICollectionViewDelegate {
                                 Constant.MyClassConstants.filterRelinquishments.removeAll()
                                 navigateToWhatToUseViewController(hasSearchAllAvailability: false)
                             } else if let exchangeAvailability = combinedSurroundingSearchItems[collectionView.tag].exchangeAvailability {
+                                Constant.MyClassConstants.selectedExchangePointsCost = exchangeAvailability.inventory?.buckets[indexPath.row].pointsCost as? NSNumber
                                 if let resort = exchangeAvailability.resort, let exchangeInventory = exchangeAvailability.inventory {
                                     Constant.MyClassConstants.selectedResort = resort
                                     getFilterRelinquishments(selectedInventoryUnit: Inventory(),
