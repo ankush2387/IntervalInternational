@@ -33,14 +33,19 @@ final class LoginViewController: UIViewController {
     @IBOutlet private var webActivityButtons: [UIButton]!
     @IBOutlet private weak var showPasswordButton: UIButton!
 
-    var blurEffectView: UIView?
-    var onboardingVC: OnboardingContainerviewController?
+    // MARK: - Public properties
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+
     // MARK: - Private properties
     private let disposeBag = DisposeBag()
     fileprivate let viewModel: LoginViewModel
     fileprivate var newAppInstance: Bool
+    private var blurEffectView: UIView?
+    private var onboardingVC: OnboardingContainerviewController?
+
     // MARK: - Lifecycle
-    
     init(viewModel: LoginViewModel, newAppInstance: Bool) {
         self.viewModel = viewModel
         self.newAppInstance = newAppInstance
@@ -163,6 +168,7 @@ final class LoginViewController: UIViewController {
         viewModel.password.bidirectionalBind(to: passwordTextField.reactive.text).dispose(in: disposeBag)
         resortDirectoryButton.reactive.tap.observeNext(with: resortDirectoryButtonTapped).dispose(in: disposeBag)
         biometricLoginButton.reactive.tap.observeNext(with: performTouchIDLoginIfEnabled).dispose(in: disposeBag)
+
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
