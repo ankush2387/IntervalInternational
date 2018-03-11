@@ -173,14 +173,17 @@ final class LoginViewController: UIViewController {
     private func performTouchIDLoginIfEnabled() {
         guard viewModel.touchIDEnabled else { return }
         let touchID = viewModel.biometricAuthentication
-        touchID.authenticateUser()
-            .then(showHudAsync)
-            .then(viewModel.touchIDLogin)
-            .onViewError { [unowned self] error in
-                if error.description.title != "Login cancelled".localized() {
-                    self.presentErrorAlert(error)
-                }
-            }.finally(hideHudAsync)
+        DispatchQueue.main.async { [weak self] in
+            guard let strongSelf = self else { return }
+            touchID.authenticateUser()
+                .then(strongSelf.showHudAsync)
+                .then(strongSelf.viewModel.touchIDLogin)
+                .onViewError { error in
+                    if error.description.title != "Login cancelled".localized() {
+                        strongSelf.presentErrorAlert(error)
+                    }
+                }.finally(strongSelf.hideHudAsync)
+        }
     }
 
     private func enabledWebActivityButton(enable: Bool) {
