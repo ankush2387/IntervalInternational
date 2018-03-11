@@ -277,7 +277,7 @@ class Constant: NSObject {
         static var dateAfterTwoYear = calendar.date(byAdding: .month, value: 24, to: NSDate() as Date)
         
         static var bundelVersionUsedString = "CFBundleShortVersionString".localized()
-        static var member = "Member #  ".localized()
+        static var member = "Member: ".localized()
         static var switchToView = "SwitchToView"
         static var signOutSelected = "signOutSelected"
         
@@ -1578,7 +1578,7 @@ class Constant: NSObject {
             static let activeLabelText = "Active"
             static let loginInfoLabelText = "Login ID"
             static let emailInfoLabelText = "Email"
-            static let memberNumberInfoLabelText = "Member Number"
+            static let memberNumberInfoLabelText = "Member: "
             static let memberSinceInfoLabelText = "Member Since"
             static let membershipInfoLabelText = "Interval Membership"
             
