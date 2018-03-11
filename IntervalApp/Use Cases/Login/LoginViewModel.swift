@@ -23,7 +23,11 @@ final class LoginViewModel {
     let appSettings: Observable<AppSettings?>
     var didLogin: (() -> Void)?
     var fetchedMoreThanOneMembership = false
-    
+
+    var trimmedUserName: String? {
+        return username.value?.trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+
     var biometricAuthentication: BiometricAuthentication {
         return BiometricAuthentication()
     }
@@ -92,7 +96,7 @@ final class LoginViewModel {
         return Promise { [unowned self] _, reject in
             
             self.saveCredentials()
-                .then(self.login(userName: self.username.value.unwrappedString, password: self.password.value.unwrappedString))
+                .then(self.login(userName: self.trimmedUserName.unwrappedString, password: self.password.value.unwrappedString))
                 .onError { error in
                     let message = (error as NSError).userInfo[NSLocalizedDescriptionKey]
                     let loginError = UserFacingCommonError.custom(title: "Error".localized(), body: message.unwrappedString)
@@ -147,7 +151,7 @@ final class LoginViewModel {
     private func saveCredentials() -> Promise<Void> {
         return Promise { [unowned self] resolve, reject in
             do {
-                try self.encryptedStore.save(item: self.username.value.unwrappedString, for: Persistent.userName.key)
+                try self.encryptedStore.save(item: self.trimmedUserName.unwrappedString, for: Persistent.userName.key)
                 try self.encryptedStore.save(item: self.password.value.unwrappedString, for: Persistent.password.key)
                 resolve()
             } catch {

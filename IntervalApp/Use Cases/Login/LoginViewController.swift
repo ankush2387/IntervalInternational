@@ -163,7 +163,6 @@ final class LoginViewController: UIViewController {
         viewModel.password.bidirectionalBind(to: passwordTextField.reactive.text).dispose(in: disposeBag)
         resortDirectoryButton.reactive.tap.observeNext(with: resortDirectoryButtonTapped).dispose(in: disposeBag)
         biometricLoginButton.reactive.tap.observeNext(with: performTouchIDLoginIfEnabled).dispose(in: disposeBag)
-
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
