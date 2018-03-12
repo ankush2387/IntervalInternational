@@ -685,7 +685,7 @@ transaction.</string>
                                             <outlet property="tdiImageView" destination="qVN-Ng-HPx" id="9Ud-Yh-g1o"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="RatingCell" id="nLj-cP-mBm" customClass="AvailableDestinationPlaceTableViewCell" customModule="IntervalApp" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="RatingCell" rowHeight="40" id="nLj-cP-mBm" customClass="AvailableDestinationPlaceTableViewCell" customModule="IntervalApp" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="575" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="nLj-cP-mBm" id="qem-zP-t9w">
@@ -1599,18 +1599,21 @@ transaction.</string>
                                                     </collectionViewFlowLayout>
                                                     <cells>
                                                         <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ImageCell" id="iVh-tG-H2p" customClass="AvailabilityCollectionViewCell" customModule="IntervalApp" customModuleProvider="target">
-                                                            <rect key="frame" x="0.0" y="0.0" width="375" height="313"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="375" height="310"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                                                <rect key="frame" x="0.0" y="0.0" width="375" height="313"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="375" height="310"/>
                                                                 <autoresizingMask key="autoresizingMask"/>
                                                                 <subviews>
                                                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="NoImageIcon" translatesAutoresizingMaskIntoConstraints="NO" id="3j7-jS-zrs">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="375" height="273"/>
+                                                                        <rect key="frame" x="0.0" y="0.0" width="375" height="250"/>
                                                                         <color key="backgroundColor" red="0.65490196079999996" green="0.65490196079999996" blue="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                        <constraints>
+                                                                            <constraint firstAttribute="height" constant="250" id="foM-3w-9eb"/>
+                                                                        </constraints>
                                                                     </imageView>
                                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Nkh-8I-zv1">
-                                                                        <rect key="frame" x="0.0" y="190" width="375" height="115"/>
+                                                                        <rect key="frame" x="0.0" y="187" width="375" height="115"/>
                                                                         <subviews>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Sheraton Vistana Village" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ko0-QF-n5p" userLabel="ResortName">
                                                                                 <rect key="frame" x="10" y="4" width="355" height="21"/>
@@ -1747,7 +1750,11 @@ transaction.</string>
                                                                         </constraints>
                                                                     </view>
                                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Tmo-2Z-5so">
-                                                                        <rect key="frame" x="316" y="2" width="50" height="130"/>
+                                                                        <rect key="frame" x="315" y="10" width="50" height="50"/>
+                                                                        <constraints>
+                                                                            <constraint firstAttribute="width" constant="50" id="CB7-sj-J5S"/>
+                                                                            <constraint firstAttribute="height" constant="50" id="UsI-Oy-NOQ"/>
+                                                                        </constraints>
                                                                         <state key="normal" image="FavoriteIcon-Off"/>
                                                                         <state key="selected" image="FavoriteIcon-On"/>
                                                                     </button>
@@ -1755,19 +1762,17 @@ transaction.</string>
                                                             </view>
                                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             <constraints>
-                                                                <constraint firstItem="Tmo-2Z-5so" firstAttribute="leading" secondItem="iVh-tG-H2p" secondAttribute="leadingMargin" constant="308" id="3sJ-vp-C9s"/>
-                                                                <constraint firstAttribute="bottomMargin" secondItem="Tmo-2Z-5so" secondAttribute="bottom" constant="173" id="EfA-iI-Xs4"/>
-                                                                <constraint firstAttribute="trailingMargin" secondItem="Tmo-2Z-5so" secondAttribute="trailing" constant="1" id="IQ6-U9-NN3"/>
+                                                                <constraint firstAttribute="bottom" secondItem="3j7-jS-zrs" secondAttribute="bottom" constant="60" id="1Lh-Nh-C58"/>
+                                                                <constraint firstItem="3j7-jS-zrs" firstAttribute="leading" secondItem="iVh-tG-H2p" secondAttribute="leading" id="1NH-FN-kxq"/>
+                                                                <constraint firstItem="3j7-jS-zrs" firstAttribute="top" secondItem="iVh-tG-H2p" secondAttribute="top" id="6HJ-hJ-OMK"/>
                                                                 <constraint firstAttribute="trailingMargin" secondItem="Nkh-8I-zv1" secondAttribute="trailing" constant="-8" id="Jm5-TI-iaU"/>
                                                                 <constraint firstItem="Nkh-8I-zv1" firstAttribute="leading" secondItem="iVh-tG-H2p" secondAttribute="leadingMargin" constant="-8" id="NL1-63-O4v"/>
-                                                                <constraint firstItem="Tmo-2Z-5so" firstAttribute="top" secondItem="iVh-tG-H2p" secondAttribute="topMargin" constant="-6" id="VJD-l5-cqk"/>
+                                                                <constraint firstAttribute="trailing" secondItem="3j7-jS-zrs" secondAttribute="trailing" id="XsS-XX-BSx"/>
+                                                                <constraint firstItem="Tmo-2Z-5so" firstAttribute="top" secondItem="iVh-tG-H2p" secondAttribute="top" constant="10" id="fYc-VO-oLO"/>
                                                                 <constraint firstAttribute="bottomMargin" secondItem="Nkh-8I-zv1" secondAttribute="bottom" id="fn0-YU-xBQ"/>
-                                                                <constraint firstAttribute="bottom" secondItem="3j7-jS-zrs" secondAttribute="bottom" constant="40" id="gZD-wt-fVz"/>
-                                                                <constraint firstItem="3j7-jS-zrs" firstAttribute="top" secondItem="iVh-tG-H2p" secondAttribute="topMargin" constant="-8" id="l6E-vU-zjX"/>
-                                                                <constraint firstAttribute="trailingMargin" secondItem="3j7-jS-zrs" secondAttribute="trailing" constant="-8" id="qXW-rF-gEj"/>
-                                                                <constraint firstItem="3j7-jS-zrs" firstAttribute="leading" secondItem="iVh-tG-H2p" secondAttribute="leadingMargin" constant="-8" id="tNO-jT-Axm"/>
+                                                                <constraint firstAttribute="trailing" secondItem="Tmo-2Z-5so" secondAttribute="trailing" constant="10" id="oM8-4X-eUj"/>
                                                             </constraints>
-                                                            <size key="customSize" width="375" height="313"/>
+                                                            <size key="customSize" width="375" height="310"/>
                                                             <connections>
                                                                 <outlet property="allIncImageView" destination="Ncq-SI-caM" id="imi-if-hcz"/>
                                                                 <outlet property="favourite" destination="Tmo-2Z-5so" id="EbH-bD-dbQ"/>
@@ -1787,7 +1792,7 @@ transaction.</string>
                                                             </connections>
                                                         </collectionViewCell>
                                                         <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="RentalInventory" id="iur-lH-CIF" customClass="RentalInventoryCVCell" customModule="IntervalApp" customModuleProvider="target">
-                                                            <rect key="frame" x="0.5" y="313" width="374" height="80"/>
+                                                            <rect key="frame" x="0.5" y="310" width="374" height="80"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                                                 <rect key="frame" x="0.0" y="0.0" width="374" height="80"/>
@@ -1926,7 +1931,7 @@ transaction.</string>
                                                             </connections>
                                                         </collectionViewCell>
                                                         <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="SearchBothInventory" id="5A6-8e-lZJ" customClass="SearchBothInventoryCVCell" customModule="IntervalApp" customModuleProvider="target">
-                                                            <rect key="frame" x="0.0" y="393" width="375" height="80"/>
+                                                            <rect key="frame" x="0.0" y="390" width="375" height="80"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                                                 <rect key="frame" x="0.0" y="0.0" width="375" height="80"/>
@@ -2086,7 +2091,7 @@ transaction.</string>
                                                             </connections>
                                                         </collectionViewCell>
                                                         <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ExchangeInventory" id="ffm-wg-B2E" customClass="ExchangeInventoryCVCell" customModule="IntervalApp" customModuleProvider="target">
-                                                            <rect key="frame" x="0.0" y="473" width="375" height="100"/>
+                                                            <rect key="frame" x="0.0" y="470" width="375" height="100"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                                                 <rect key="frame" x="0.0" y="0.0" width="375" height="100"/>

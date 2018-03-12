@@ -77,9 +77,6 @@ class AvailabilityCollectionViewCell: UICollectionViewCell {
         }
         
         // set rating view here
-       /* if let cat = inventoryItem.rating?.categories {
-            Constant.MyClassConstants.resortsDescriptionArray.rating?.categories = cat
-        }*/
         
         for category in inventoryItem.rating?.categories ?? [] {
             
@@ -94,42 +91,31 @@ class AvailabilityCollectionViewCell: UICollectionViewCell {
     //set rating
     func showRating(rating: Float) {
         //set empty image here
-        if rating == 0 {
-            for i in 1...5 {
-                if let imageView = self.viewWithTag(i) {
-                    if imageView.isKind(of: UIImageView.self) {
-                        let categoryImgVw = imageView as? UIImageView
-                        categoryImgVw?.image = #imageLiteral(resourceName: "empty_circle")
-                    }
+        for i in 1...5 {
+            if let imageView = self.viewWithTag(i) {
+                if imageView.isKind(of: UIImageView.self) {
+                    let categoryImgVw = imageView as? UIImageView
+                    categoryImgVw?.image = #imageLiteral(resourceName: "empty_circle")
                 }
             }
-        } else {
-            // set full filled image here
-            var count = 0
-            let nInt = Int(rating)
-            for i in 1...nInt {
-                count = i
-                if let imageView = self.viewWithTag(i) {
-                    if imageView.isKind(of: UIImageView.self) {
-                        let categoryImgVw = imageView as? UIImageView
-                        categoryImgVw?.image = #imageLiteral(resourceName: "full_filled_circle")
-                    }
+        }
+        
+        // set full filled image here
+        let nInt = Int(rating)
+        for i in 1...nInt {
+            if let imageView = self.viewWithTag(i) {
+                if imageView.isKind(of: UIImageView.self) {
+                    let categoryImgVw = imageView as? UIImageView
+                    categoryImgVw?.image = #imageLiteral(resourceName: "full_filled_circle")
                 }
             }
-            
-            //set half filled image here
-            let strRating = String(rating)
-            let arrStr = strRating.components(separatedBy: ".")
-            if let lastValue = arrStr.last {
-                if let newRating = Int(lastValue) {
-                    if newRating > 1 {
-                        if let imageView = self.viewWithTag(count) {
-                            if imageView.isKind(of: UIImageView.self) {
-                                let categoryImgVw = imageView as? UIImageView
-                                categoryImgVw?.image = #imageLiteral(resourceName: "half_filled_circle")
-                            }
-                        }
-                    }
+        }
+        let modulus = rating.truncatingRemainder(dividingBy: 1.0)
+        if modulus > 0 {
+            if let imageView = self.viewWithTag(nInt + 1) {
+                if imageView.isKind(of: UIImageView.self) {
+                    let categoryImgVw = imageView as? UIImageView
+                    categoryImgVw?.image = #imageLiteral(resourceName: "half_filled_circle")
                 }
             }
         }
