@@ -27,8 +27,8 @@ class FlexchangeSearchViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         // Adding controller title
-        self.title = Constant.ControllerTitles.flexChangeSearch
-        self.navigationController?.navigationBar.isHidden = false
+        title = Constant.ControllerTitles.flexChangeSearch
+        navigationController?.navigationBar.isHidden = false
         Helper.InitializeArrayFromLocalStorage()
         Helper.InitializeOpenWeeksFromLocalStorage()
         _ = Helper.getLocalStorageWherewanttoTrade()
@@ -37,7 +37,7 @@ class FlexchangeSearchViewController: UIViewController {
     }
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        self.title = ""
+        title = ""
     }
     
     override func viewDidLoad() {
@@ -54,7 +54,7 @@ class FlexchangeSearchViewController: UIViewController {
     
     func readSavedRelinquishments() {
         
-        self.availableRelinquishmentIdArray.removeAll()
+        availableRelinquishmentIdArray.removeAll()
         let membership = Session.sharedSession.selectedMembership
         let selectedMembershipNumber = membership?.memberNumber
         var requiredMemberNumber = ""
