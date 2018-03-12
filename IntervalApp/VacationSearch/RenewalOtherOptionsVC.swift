@@ -130,11 +130,13 @@ extension RenewalOtherOptionsVC: UITableViewDataSource {
                         // currency code
                         var currencyCodeWithSymbol = ""
                         if let currencyCode = forceRenewals.currencyCode {
-                            currencyCodeWithSymbol = currencyHelper.getCurrencyFriendlySymbol(currencyCode: currencyCode)
+                            if let countryCode = Session.sharedSession.contact?.getCountryCode() {
+                                currencyCodeWithSymbol = currencyHelper.getCurrencyFriendlySymbol(currencyCode: currencyCode, countryCode: countryCode)
+                            }
                         }
                         if renewalComboProduct.isCoreProduct {
                             if let productCode = renewalComboProduct.productCode {
-                            cell.renewelCoreImageView?.image = UIImage(named: productCode)
+                                cell.renewelCoreImageView?.image = UIImage(named: productCode)
                             }
                             
                             let price = String(format: "%.0f", renewalComboProduct.price)
@@ -205,7 +207,9 @@ extension RenewalOtherOptionsVC: UITableViewDataSource {
                 }
                     var currencyCodeWithSymbol = ""
                     if let currencyCode = forceRenewals.currencyCode {
-                          currencyCodeWithSymbol = currencyHelper.getCurrencyFriendlySymbol(currencyCode: currencyCode)
+                        if let countryCode = Session.sharedSession.contact?.getCountryCode() {
+                            currencyCodeWithSymbol = currencyHelper.getCurrencyFriendlySymbol(currencyCode: currencyCode, countryCode: countryCode)
+                        }
                     }
                     guard let displayName = coreProduct.displayName?.capitalized, let currencyCode = forceRenewals.currencyCode else { return cell }
                     let price = String(format: "%.0f", coreProduct.price)

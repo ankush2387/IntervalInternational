@@ -310,8 +310,10 @@ extension RenewelViewController: UITableViewDataSource {
                         cell.renewelnonCoreImageView?.isHidden = true
                     
                     if let currencyCode = forceRenewals.currencyCode {
-                        let currencyCodeWithSymbol = currencyHelper.getCurrencyFriendlySymbol(currencyCode: currencyCode)
-                        
+                        var currencyCodeWithSymbol = currencyHelper.getCurrencyFriendlySymbol(currencyCode: currencyCode)
+                        if let countryCode = Session.sharedSession.contact?.getCountryCode() {
+                            currencyCodeWithSymbol = currencyHelper.getCurrencyFriendlySymbol(currencyCode: currencyCode, countryCode: countryCode)
+                        }
                         let price = String(format: "%.0f", crossSelling.price)
                         
                         priceAndCurrency = currencyCodeWithSymbol + "\(price)"
@@ -349,8 +351,10 @@ extension RenewelViewController: UITableViewDataSource {
                             // currency code
                         if let currencyCode = forceRenewals.currencyCode {
                             
-                            let currencyCodeWithSymbol = currencyHelper.getCurrencyFriendlySymbol(currencyCode: currencyCode)
-
+                            var currencyCodeWithSymbol = currencyHelper.getCurrencyFriendlySymbol(currencyCode: currencyCode)
+                            if let countryCode = Session.sharedSession.contact?.getCountryCode() {
+                                currencyCodeWithSymbol = currencyHelper.getCurrencyFriendlySymbol(currencyCode: currencyCode, countryCode: countryCode)
+                            }
                             if renewalComboProduct.isCoreProduct {
                                 if let productCode = renewalComboProduct.productCode {
                                     cell.renewelCoreImageView?.image = UIImage(named: productCode)
@@ -378,9 +382,7 @@ extension RenewelViewController: UITableViewDataSource {
                                 }
                                 
                                 let price = String(format: "%.0f", renewalComboProduct.price)
-                                if let currencyCode = forceRenewals.currencyCode {
                                 priceAndCurrency = currencyCodeWithSymbol + "\(price)"
-                                }
                                 var mainString = ""
                                 // Create attributed string
                                 
@@ -467,23 +469,26 @@ extension RenewelViewController: UITableViewDataSource {
                     
                     cell.renewelCoreImageView?.isHidden = true
                     cell.renewelnonCoreImageView?.isHidden = true
-                    if let currencyCode = forceRenewals.currencyCode {
-                    let currencyCodeWithSymbol = currencyHelper.getCurrencyFriendlySymbol(currencyCode: currencyCode)
-                    
-                    let price = String(format: "%.0f", product.price)
-                    
-                    priceAndCurrency = currencyCodeWithSymbol + "\(price)"
-                    
-                    //formatted string
-                    let formattedString = Helper.returnIntervalMembershipString(price: priceAndCurrency, term: term)
-                    
-                    let range = (formattedString as NSString).range(of: priceAndCurrency)
-                    
-                    let attributeString = NSMutableAttributedString(string: formattedString)
-                    
-                    attributeString.setAttributes([NSFontAttributeName: UIFont(name: Constant.fontName.helveticaNeueMedium, size: CGFloat(20.0))!, NSForegroundColorAttributeName: UIColor(red: 0.0 / 255.0, green: 201.0 / 255.0, blue: 11.0 / 255.0, alpha: 1.0)], range: range)
-                    
-                    cell.renewelLbl?.attributedText = attributeString
+                    if let currencyCode = forceRenewals.currencyCode,
+                        let font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: CGFloat(20.0)) {
+                        var currencyCodeWithSymbol = currencyHelper.getCurrencyFriendlySymbol(currencyCode: currencyCode)
+                        if let countryCode = Session.sharedSession.contact?.getCountryCode() {
+                            currencyCodeWithSymbol = currencyHelper.getCurrencyFriendlySymbol(currencyCode: currencyCode, countryCode: countryCode)
+                        }
+                        let price = String(format: "%.0f", product.price)
+                        
+                        priceAndCurrency = currencyCodeWithSymbol + "\(price)"
+                        
+                        //formatted string
+                        let formattedString = Helper.returnIntervalMembershipString(price: priceAndCurrency, term: term)
+                        
+                        let range = (formattedString as NSString).range(of: priceAndCurrency)
+                        
+                        let attributeString = NSMutableAttributedString(string: formattedString)
+                        
+                        attributeString.setAttributes([NSFontAttributeName: font, NSForegroundColorAttributeName: UIColor(red: 0.0 / 255.0, green: 201.0 / 255.0, blue: 11.0 / 255.0, alpha: 1.0)], range: range)
+                        
+                        cell.renewelLbl?.attributedText = attributeString
                     }
                     
                     break
