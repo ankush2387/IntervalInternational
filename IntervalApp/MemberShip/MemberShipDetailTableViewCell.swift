@@ -63,7 +63,7 @@ class MemberShipDetailTableViewCell: UITableViewCell {
         }
         
         if contactInfo.isPrimary == true {
-            let memberStatus = "Primary Owner"
+            let memberStatus = "Primary Contact"
             status = memberStatus
         }
         
