@@ -69,7 +69,7 @@ class RentalInventoryCVCell: UICollectionViewCell {
                     let imgV = UIImageView(frame: CGRect(x: 10, y: yPosition, width: 15, height: 15))
                     imgV.image = UIImage(named: Constant.assetImageNames.promoImage)
                     let promLabel = UILabel(frame: CGRect(x: 30, y: yPosition, width: promotionsView.bounds.width, height: 15))
-                    promLabel.text = promotion.offerContentFragment
+                    promLabel.text = promotion.offerName
                     promLabel.adjustsFontSizeToFitWidth = true
                     promLabel.minimumScaleFactor = 0.7
                     promLabel.numberOfLines = 0
