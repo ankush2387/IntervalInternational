@@ -469,7 +469,8 @@ extension RenewelViewController: UITableViewDataSource {
                     
                     cell.renewelCoreImageView?.isHidden = true
                     cell.renewelnonCoreImageView?.isHidden = true
-                    if let currencyCode = forceRenewals.currencyCode {
+                    if let currencyCode = forceRenewals.currencyCode,
+                        let font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: CGFloat(20.0)) {
                         var currencyCodeWithSymbol = currencyHelper.getCurrencyFriendlySymbol(currencyCode: currencyCode)
                         if let countryCode = Session.sharedSession.contact?.getCountryCode() {
                             currencyCodeWithSymbol = currencyHelper.getCurrencyFriendlySymbol(currencyCode: currencyCode, countryCode: countryCode)
@@ -485,7 +486,7 @@ extension RenewelViewController: UITableViewDataSource {
                         
                         let attributeString = NSMutableAttributedString(string: formattedString)
                         
-                        attributeString.setAttributes([NSFontAttributeName: UIFont(name: Constant.fontName.helveticaNeueMedium, size: CGFloat(20.0))!, NSForegroundColorAttributeName: UIColor(red: 0.0 / 255.0, green: 201.0 / 255.0, blue: 11.0 / 255.0, alpha: 1.0)], range: range)
+                        attributeString.setAttributes([NSFontAttributeName: font, NSForegroundColorAttributeName: UIColor(red: 0.0 / 255.0, green: 201.0 / 255.0, blue: 11.0 / 255.0, alpha: 1.0)], range: range)
                         
                         cell.renewelLbl?.attributedText = attributeString
                     }
