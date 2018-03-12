@@ -11,6 +11,7 @@ import IntervalUIKit
 import DarwinSDK
 import RealmSwift
 import SVProgressHUD
+import then
 
 class FlexchangeSearchViewController: UIViewController {
     
@@ -18,15 +19,25 @@ class FlexchangeSearchViewController: UIViewController {
     
     var selectedFlexchange: FlexExchangeDeal?
     var destinationOrResort = Helper.getLocalStorageWherewanttoGo()
+    private let entityStore: EntityDataStore = EntityDataSource.sharedInstance
+    fileprivate var availableRelinquishmentIdArray = [String]()
     
     @IBOutlet weak var flexChangeTableView: UITableView!
     
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // Adding controller title
+        self.title = Constant.ControllerTitles.flexChangeSearch
         self.navigationController?.navigationBar.isHidden = false
         Helper.InitializeArrayFromLocalStorage()
         Helper.InitializeOpenWeeksFromLocalStorage()
         _ = Helper.getLocalStorageWherewanttoTrade()
+        readSavedRelinquishments()
         flexChangeTableView.reloadData()
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.title = ""
     }
     
     override func viewDidLoad() {
@@ -39,9 +50,42 @@ class FlexchangeSearchViewController: UIViewController {
         let menuButton = UIBarButtonItem(image: UIImage(named: Constant.assetImageNames.backArrowNav), style: .plain, target: self, action: #selector(FlexchangeSearchViewController.menuBackButtonPressed(_:)))
         menuButton.tintColor = UIColor.white
         self.navigationItem.leftBarButtonItem = menuButton
+    }
+    
+    func readSavedRelinquishments() {
         
-        // Adding controller title
-        self.title = Constant.ControllerTitles.flexChangeSearch
+        self.availableRelinquishmentIdArray.removeAll()
+        let membership = Session.sharedSession.selectedMembership
+        let selectedMembershipNumber = membership?.memberNumber
+        var requiredMemberNumber = ""
+        if let membernumber = selectedMembershipNumber {
+            requiredMemberNumber = membernumber
+        }
+        let predicate = "membeshipNumber == '\(requiredMemberNumber)'"
+        entityStore.readObjectsFromDisk(type: OpenWeeksStorage.self, predicate: predicate, encoding: .decrypted)
+            .then { openWeeksStorage in
+                self.availableRelinquishmentIdArray.append(contentsOf: openWeeksStorage
+                    .flatMap { $0.openWeeks }
+                    .flatMap { $0.openWeeks }
+                    .map { $0.relinquishmentID })
+                self.availableRelinquishmentIdArray.append(contentsOf: openWeeksStorage
+                    .flatMap { $0.openWeeks }
+                    .flatMap { $0.deposits }
+                    .map { $0.relinquishmentID })
+                
+                self.availableRelinquishmentIdArray.append(contentsOf: openWeeksStorage
+                    .flatMap { $0.openWeeks }
+                    .flatMap { $0.clubPoints }
+                    .map { $0.relinquishmentId })
+                
+                self.availableRelinquishmentIdArray.append(contentsOf: openWeeksStorage
+                    .flatMap { $0.openWeeks }
+                    .flatMap { $0.pProgram }
+                    .map { $0.relinquishmentId })
+            }
+            .onError { [unowned self] error in
+                self.presentErrorAlert(UserFacingCommonError.handleError(error))
+        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -85,7 +129,7 @@ class FlexchangeSearchViewController: UIViewController {
     @IBAction func searchButtonPressed(_ sender: Any) {
         
         Helper.helperDelegate = self
-        if Constant.MyClassConstants.relinquishmentIdArray.isEmpty {
+        if availableRelinquishmentIdArray.isEmpty {
             
             presentAlert(with: Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.tradeItemMessage)
             self.hideHudAsync()
@@ -104,7 +148,7 @@ class FlexchangeSearchViewController: UIViewController {
                 Constant.MyClassConstants.isFromExchange = true
                 
                 let searchCriteria = Helper.createSearchCriteriaFor(deal: deal)
-                
+                searchCriteria.relinquishmentsIds = availableRelinquishmentIdArray
                 if let settings = Session.sharedSession.appSettings {
                     Constant.MyClassConstants.initialVacationSearch = VacationSearch(settings, searchCriteria)
                 }
@@ -236,10 +280,10 @@ extension FlexchangeSearchViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         
         let delete = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: Constant.buttonTitles.delete) { (_, index) -> Void in
-            // var isFloat = true
+            self.availableRelinquishmentIdArray.remove(at: indexPath.row)
             let storedData = Helper.getLocalStorageWherewanttoTrade()
             
-            if storedData.count > 0 {
+            if !storedData.isEmpty {
                 do {
                     let realm = try Realm()
                     try realm.write {
@@ -488,7 +532,7 @@ extension FlexchangeSearchViewController: UITableViewDataSource {
         } else {
             
             guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.flexchangeSearchButtonCell, for: indexPath) as? SearchFlexchangeButtonCell else { return UITableViewCell() }
-            
+            cell.selectionStyle = .none
             cell.searchButton.layer.cornerRadius = 5
             return cell
         }
