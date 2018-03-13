@@ -109,14 +109,32 @@ final class EntityDataSource {
             return Promise.resolve(realm.objects(type))
         }
     }
-    
+
+    fileprivate func delete<T: Object>(_ type: T.Type, in realm: Realm?) -> Promise<Void> {
+        return Promise { resolve, reject in
+            guard let realm = realm else {
+                reject(CommonErrors.emptyInstance)
+                return
+            }
+
+            do {
+                try realm.write {
+                    realm.delete(realm.objects(type))
+                    resolve()
+                }
+            } catch {
+                reject(error)
+            }
+        }
+    }
+
     fileprivate func resetDatabase(for realm: Realm?) -> Promise<Void> {
         return Promise { resolve, reject in
             guard let realm = realm else {
                 reject(CommonErrors.emptyInstance)
                 return
             }
-            
+
             do {
                 try realm.write {
                     realm.deleteAll()
@@ -179,5 +197,11 @@ extension EntityDataSource: EntityDataStore {
     func resetDatabase(for encoding: Encoding) -> Promise<Void> {
         let realm = encoding == .encrypted ? encryptedRealmOnDisk : decryptedRealmOnDiskGlobal
         return resetDatabase(for: realm)
+    }
+
+    /// Reset database for realm in specified encoding
+    func delete<T: Object>(type: T.Type, for encoding: Encoding) -> Promise<Void> {
+        let realm = encoding == .encrypted ? encryptedRealmOnDisk : decryptedRealmOnDiskGlobal
+        return delete(type, in: realm)
     }
 }

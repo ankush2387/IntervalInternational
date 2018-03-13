@@ -26,7 +26,7 @@ extension MembershipSelectionTableViewCell: SimpleGenericTableViewCell {
     func setCell(membershipImage: UIImage, membershipName: String, membershipNumber: String) {
         write(data: [Key.membershipImage.rawValue: membershipImage,
                      Key.membershipName.rawValue: membershipName,
-                     Key.membershipNumber.rawValue: "Member No ".localized() + membershipNumber])
+                     Key.membershipNumber.rawValue: "Member: ".localized() + membershipNumber])
     }
     
     func setUI(for index: Int) {

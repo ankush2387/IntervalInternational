@@ -19,6 +19,8 @@ class Constant: NSObject {
     static var needToReloadAlert = false
     static var selectedAlertToEdit: RentalAlert?
     static var calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
+    static var countryListArray = [Country]()
+    static var stateListArray = [State]()
     
     //***** common function to get device orientation *****//
     struct RunningDevice {
@@ -29,10 +31,6 @@ class Constant: NSObject {
     //Getaways SearchResult CardFormDetail Data
     struct GetawaySearchResultGuestFormDetailData {
         
-        static var countryCodeArray = [String]()
-        static var stateCodeArray = [String]()
-        static var countryListArray = [Country]()
-        static var stateListArray = [State]()
         static var textFieldChangedInSection = -1
         static var firstName = ""
         static var lastName = ""
@@ -75,8 +73,6 @@ class Constant: NSObject {
     //GetawaySearchResultCardFormDetailData
     struct GetawaySearchResultCardFormDetailData {
         
-        static var countryListArray = ["Canada", "USA", "India", "Austrelia", "South Africa"]
-        static var countryCodeArray: [String] = []
         static var textFieldChangedInSection = -1
         static var nameOnCard = ""
         static var cardNumber = ""
@@ -125,7 +121,7 @@ class Constant: NSObject {
         static var carRentalCounter = 0
         static var isEvent2Ready = 0
         
-        static var rentalSortingOptionArray = ["Recommended", "Resort Name:", "Resort Name:", "Price:", "Price:", "City:", "City:", "Resort Tier:", "Resort Tier:"]
+        static var rentalSortingOptionArray = ["Suggested", "Resort Name:", "Resort Name:", "Price:", "Price:", "City:", "City:", "Resort Tier:", "Resort Tier:"]
         static var sortingSetValues = ["DEFAULT", "RESORT_NAME_ASC", "RESORT_NAME_DESC", "CITY_NAME_ASC", "CITY_NAME_DESC", "RESORT_TIER_LOW_TO_HIGH", "RESORT_TIER_HIGH_TO_LOW", "PRICE_LOW_TO_HIGH", "PRICE_HIGH_TO_LOW", "UNKNOWN"]
         
         static var rentalSortingRangeArray = ["Default", "A - Z", "Z - A", "Low - High", "High - Low", "A - Z", "Z - A", "Low - High", "High - Low"]
@@ -154,7 +150,7 @@ class Constant: NSObject {
         //***** global variable that hold side menu option selection *****//
         static var sideMenuOptionSelected = ""
         
-        static var allBedrommSizes = "All BedRoom Sizes"
+        static var allBedrommSizes = "All Bedroom Sizes"
         
         //global variable to hold last Getaway Booking Process
         
@@ -193,9 +189,9 @@ class Constant: NSObject {
         static var selectedBedRoomSize = "All Bedroom Sizes".localized()
         
         //***** New creditcard screen constant string *****//
-        static var newCardalertTitle = "New Creditcard Form".localized()
+        static var newCardalertTitle = "Credit Card Information".localized()
         static var newCardalertMess = "Card already exist.".localized()
-        static var alertReqFieldMsg = "Please fill mandatory fields!".localized()
+        static var alertReqFieldMsg = "Please fill out all required fields.".localized()
         static var noResultError = "No Result".localized()
         static var tryAgainError = "Try Again".localized()
         static var tdi = "TDI".localized()
@@ -281,7 +277,7 @@ class Constant: NSObject {
         static var dateAfterTwoYear = calendar.date(byAdding: .month, value: 24, to: NSDate() as Date)
         
         static var bundelVersionUsedString = "CFBundleShortVersionString".localized()
-        static var member = "Member #  ".localized()
+        static var member = "Member: ".localized()
         static var switchToView = "SwitchToView"
         static var signOutSelected = "signOutSelected"
         
@@ -339,7 +335,7 @@ class Constant: NSObject {
         static var inactive = "INACTIVE".localized()
         static var expired = "EXPIRED".localized()
         static var active = "ACTIVE".localized()
-        static var bedroomSizes = "All BedRoom Sizes".localized()
+        static var bedroomSizes = "All Bedroom Sizes".localized()
         static var start = "start"
         static var end = "end"
         static var first = "First"
@@ -451,7 +447,7 @@ class Constant: NSObject {
         static var paymentInfo = "Select your payment method".localized()
         static var verifying = "Verifying...".localized()
         static var insurance = "Trip Protection".localized()
-        static var upgradeCost = "Upgrade".localized()
+        static var upgradeCost = "Unit Upgrade Fee".localized()
         static var guestCertificateTitle = "Guest Certificate".localized()
         static var renewals = "Renewals".localized()
         static var exchangeFeeTitle = "Exchange Fee"
@@ -604,6 +600,8 @@ class Constant: NSObject {
         
         static var popToLoginView =  "PopToLoginView"
         
+        static var textViewStr =  "If arriving after the scheduled check-in date/time indicated, contact the resort for instructions. For an explanatin of the Cancellation Policy, see the Terms and Conditions. This Purchase is final and non-refundable.".localized()
+        
         static var certifcateCount = 0
         static var certificateArray = [AccommodationCertificate]()
         static var noFilterOptions = false
@@ -664,7 +662,6 @@ class Constant: NSObject {
         static var user_id = "User ID".localized()
         static var user_password = "Password".localized()
         static var sign_in = "Sign In".localized()
-        static var totalString = " Total, ".localized()
         static var privateString = " Private".localized()
         static var exactString = "Resorts in ".localized()
         static var surroundingString = "Resorts near ".localized()
@@ -743,7 +740,7 @@ class Constant: NSObject {
         static var bedroomSizeAlertMessage = "Please select at least one master or lock-off portion. ".localized()
         static var feesAlertMessage = "Slide to agree to fees. ".localized()
         static var insuranceSelectionMessage = "Select trip protection or choose \("\"No I decline coverage.\"")".localized()
-        static var paymentSelectionMessage = "Please select any payment method. ".localized()
+        static var paymentSelectionMessage = "Please enter a valid credit card. ".localized()
         static var promotionsMessage = "Please select any promotions. ".localized()
         static var feesPaymentMessage = "I acknowledge and agree that the mandatory resort fees will be payable to the resort. Fees are per person and per day".localized()
         static var agreeToFeesMessage = "Agreed to Fees".localized()
@@ -751,13 +748,12 @@ class Constant: NSObject {
         static var agreePayMessage = "Slide to Agree and Pay".localized()
         static var operationFailedMessage =  "Unable to perform back button operatin due to server error, Try again!".localized()
         static var availablePointToolDefaultSelectedDateAlert =  "if no date is selected the Available Points Balance displayed is based on today's date.".localized()
-        static var holdingTimeLostTitle = "Holding time lost".localized()
         static var holdingTimeLostMessage = "The booking time has expired and your selection is no longer on hold. You will now be returned to the search results.".localized()
         static var searchVacationTitle = "Search Vacation".localized()
         static var searchVacationMessage = "Please select any destination or resort".localized()
         static var travellingDetailMessage = "Traveling: Tue Oct 15, 2015 - Sun May 20, 2018".localized()
-        static var vacationSearchMessage = "We were unable to find any availability for the travel dates you requested. Please check other available dates by scrolling above.".localized()
-        static var vactionSearchDateMessage = "No match found. Please select another date.".localized()
+        static var vacationSearchMessage = "We were unable to find any availability for the destination you requested. Please select additional travel dates by scrolling above or return to your search criteria and select another destination.".localized()
+        static var vactionSearchDateMessage = "No availability found.".localized()
         static var userInterestMessage = "How's about you go favorite some resorts and when you come back they will be here all warm and toasty waiting for you!".localized()
         static var goGetMessage = "Go on Get! ".localized()
         static var noDatesMessage = "No Dates availabel".localized()
@@ -817,7 +813,7 @@ class Constant: NSObject {
     struct buttonTitles {
         
         static var detail = "Detail".localized()
-        static var noResultYet = "No Result Yet".localized()
+        static var noResultYet = "No Results Yet".localized()
         static var add = "Add".localized()
         static var delete = "Delete".localized()
         static var searchOption = "Search Option".localized()
@@ -1345,6 +1341,7 @@ class Constant: NSObject {
         static var helveticaNeue = "HelveticaNeue"
         static var helveticaNeueMedium = "HelveticaNeue-Medium"
         static var helveticaNeueBold = "Helvetica-Bold"
+        static var helveticaNeueItalic = "HelveticaNeue-Italic"
     }
     
     //***** common  structure to provide all enableTouchId messages and titles *****//
@@ -1581,7 +1578,7 @@ class Constant: NSObject {
             static let activeLabelText = "Active"
             static let loginInfoLabelText = "Login ID"
             static let emailInfoLabelText = "Email"
-            static let memberNumberInfoLabelText = "Member Number"
+            static let memberNumberInfoLabelText = "Member: "
             static let memberSinceInfoLabelText = "Member Since"
             static let membershipInfoLabelText = "Interval Membership"
             

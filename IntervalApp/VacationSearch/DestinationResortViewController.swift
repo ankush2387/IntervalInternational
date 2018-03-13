@@ -149,11 +149,11 @@ extension DestinationResortViewController: UITableViewDataSource {
                 if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
                     guard let description = Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.advisements[0].description else { return 60 }
                     height = heightForView((Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.advisements[0].description)!, font: font, width: view.frame.size.width - 40)
-                    return height + 60
+                    return height + 70
                 } else {
                     guard let description = Constant.MyClassConstants.viewResponse.resort?.advisements[0].description else { return 60 }
                     height = heightForView(description, font: font, width: view.frame.size.width - 40)
-                    return height + 60
+                    return height + 70
                 }
             }
         case 4, 5 :

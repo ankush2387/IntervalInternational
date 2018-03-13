@@ -460,7 +460,11 @@ extension GetawayAlertsIPhoneViewController: UITableViewDelegate {
                     let bedroomSize = Helper.bedRoomSizeToStringInteger(bedRoomSize: friendlyName)
                     selectedBedroomsizes.append(bedroomSize)
                 }
-                Constant.MyClassConstants.selectedBedRoomSize = selectedBedroomsizes.joined(separator: ", ")
+                if selectedBedroomsizes.count == 5 {
+                    Constant.MyClassConstants.selectedBedRoomSize = Constant.MyClassConstants.allBedrommSizes
+                } else {
+                    Constant.MyClassConstants.selectedBedRoomSize = selectedBedroomsizes.joined(separator: ", ")
+                }
                 self.performSegue(withIdentifier: Constant.segueIdentifiers.editAlertSegue, sender: self)
                 
             }

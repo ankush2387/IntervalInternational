@@ -113,7 +113,14 @@ class CheckOutIPadViewController: UIViewController {
         super.viewDidLoad()
         checkPromotionsAvailable()
         checkSectionsForFees()
-        Helper.getCountry(viewController: self)
+
+        // get country listCompletionBlock
+        Helper.getCountry { [weak self] error in
+            if let Error = error {
+                self?.presentErrorAlert(UserFacingCommonError.handleError(Error))
+            }
+        }
+        
         // omniture tracking with event 40
         let pageView: [String: String] = [
             Constant.omnitureEvars.eVar44: Constant.omnitureCommonString.vacationSearchPaymentInformation
@@ -378,10 +385,10 @@ class CheckOutIPadViewController: UIViewController {
             remainingResortHoldingTimeLabel.text = "We are holding this unit for \(Constant.holdingTime) minutes".localized()
         } else {
             Constant.holdingTimer?.invalidate()
-            let alertController = UIAlertController(title: Constant.AlertMessages.holdingTimeLostTitle, message: Constant.AlertMessages.holdingTimeLostMessage, preferredStyle: .alert)
-            let Ok = UIAlertAction(title: Constant.AlertPromtMessages.ok, style: .default) { (_:UIAlertAction)  in
+            let alertController = UIAlertController(title: "", message: Constant.AlertMessages.holdingTimeLostMessage, preferredStyle: .alert)
+            let Ok = UIAlertAction(title: "OK".localized(), style: .default) {[weak self] (_:UIAlertAction)  in
                 
-               self.performSegue(withIdentifier: "unwindToAvailabiity", sender: self)
+               self?.performSegue(withIdentifier: "unwindToAvailabiity", sender: self)
             }
             alertController.addAction(Ok)
             present(alertController, animated: true, completion:nil)
@@ -1037,11 +1044,17 @@ extension CheckOutIPadViewController: UITableViewDataSource {
                                     return nil
                                 }
                                 
+                                let currencyCodeOfFee = Constant.MyClassConstants.continueToCheckoutResponse.view?.fees?.currencyCode ?? ""
+                                let currencyDescription = CurrencyHelper().getCurrency(currencyCode: currencyCodeOfFee).description
+                                if currencyDescription.isEmpty {
+                                    return self.presentErrorAlert(UserFacingCommonError.generic)
+                                }
                                 let viewModel = ChargeSummaryViewModel(charge: dataSet,
                                                                        headerTitle: "Detailed Tax Information".localized(),
                                                                        descriptionTitle: "Tax Description".localized(),
-                                                                       currency: "US Dollars".localized(),
-                                                                       totalTitle: "Total Tax Amount".localized())
+                                                                       currency: currencyDescription.localized(),
+                                                                       totalTitle: "Total Tax Amount".localized(),
+                                                                       currencySymbol: self.currencyCode)
                                 
                                 let chargeSummaryViewController = ChargeSummaryViewController(viewModel: viewModel)
                                 chargeSummaryViewController.doneButtonPressed = { chargeSummaryViewController.dismiss(animated: true) }

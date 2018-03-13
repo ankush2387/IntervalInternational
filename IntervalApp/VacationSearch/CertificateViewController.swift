@@ -169,7 +169,15 @@ extension CertificateViewController: UITableViewDataSource {
             }
         }
 
-        cell.statusLbl.text = Constant.MyClassConstants.certificateArray[indexPath.row].certificateStatus?.localized()
+        var status: String = Constant.MyClassConstants.certificateArray[indexPath.row].certificateStatus ?? ""
+        status = status.replacingOccurrences(of: "_", with: " ", options: .literal, range: nil)
+        // all of the statuses translate perfect only unredeem needs to be changed to unredeemed
+        // maybe move this to SDK at some point
+        if status == "UNREDEEM" {
+            status = "UNREDEEMED"
+        }
+        status = status.capitalized
+        cell.statusLbl.text = status
         Helper.applyShadowOnUIView(view: cell.cellBaseView, shadowcolor: UIColor.black, shadowopacity: 0.4, shadowradius: 1.0)
         cell.selectionStyle = UITableViewCellSelectionStyle.none
         

@@ -13,7 +13,7 @@ import DarwinSDK
 import MessageUI
 import SVProgressHUD
 
-class UpComingTripDetailController: UIViewController {
+class UpComingTripDetailController: UIViewController, UITextViewDelegate {
     
     //***** Outlets *****//
     @IBOutlet weak fileprivate var upcomingTripDetailTbleview: UITableView!
@@ -52,18 +52,18 @@ class UpComingTripDetailController: UIViewController {
         requiredRowsForAdditionalProducts()
         requiredRowsForRelinquishment()
         navigationController?.navigationBar.isHidden = false
+        title = Constant.ControllerTitles.upComingTripDetailController
     }
     
     override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        title = ""
         NotificationCenter.default
             .removeObserver(self, name: NSNotification.Name(rawValue:Constant.notificationNames.reloadTripDetailsNotification), object: nil)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
-        
         
         //***** register UnitDetailCell xib cells  with table *****//
         let cellNib = UINib(nibName: Constant.customCellNibNames.unitDetailCell, bundle: nil)
@@ -81,7 +81,6 @@ class UpComingTripDetailController: UIViewController {
         let cellNib3 = UINib(nibName: Constant.customCellNibNames.policyCell, bundle: nil)
         upcomingTripDetailTbleview?.register(cellNib3, forCellReuseIdentifier: Constant.upComingTripDetailControllerReusableIdentifiers.policyCell)
         
-        title = Constant.ControllerTitles.upComingTripDetailController
         let menuButton = UIBarButtonItem(image: UIImage(named: Constant.assetImageNames.backArrowNav), style: .plain, target: self, action: #selector(UpComingTripDetailController.menuBackButtonPressed(_:)))
         menuButton.tintColor = UIColor.white
         
@@ -376,13 +375,12 @@ extension UpComingTripDetailController: UITableViewDelegate {
                 return 280
             }
         case 4:
-            return 176
-            
+            return UITableViewAutomaticDimension
         default:
             break
             
         }
-        return 216
+        return 240
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -754,17 +752,50 @@ extension UpComingTripDetailController: UITableViewDataSource {
                 
                 return UITableViewCell()
             }
-            let showPolicyButton: Bool? = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.ancillaryProducts?.eplus?.purchased
-            if let showPolicyButton = showPolicyButton, showPolicyButton {
-                // Executes when booleanValue is true
-                cell.purchasePolicyButton.isHidden = false
-            } else {
-                cell.purchasePolicyButton.isHidden = true
+            if let showPolicyButton = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.ancillaryProducts?.eplus?.purchased {
+                if showPolicyButton {
+                    // Executes when booleanValue is true
+                    cell.purchasePolicyButton.isHidden = false
+                    cell.purchasePolicyButton.addTarget(self, action: #selector(UpComingTripDetailController.modifyUpcomingTripButtonClicked(_:)), for: UIControlEvents.touchUpInside)
+                } else {
+                    cell.purchasePolicyButton.isHidden = true
+                }
             }
+            cell.selectionStyle = .none
+            cell.isUserInteractionEnabled = true
             cell.backgroundColor = IUIKColorPalette.contentBackground.color
-            return cell
+            cell.textView.delegate = self
+            cell.textView.isSelectable = true
+            cell.textView.isEditable = false
+            cell.textView.isUserInteractionEnabled = true
+            cell.textView.isScrollEnabled = false
+            let strToChange = "Terms and Conditions.".localized()
+            let strToChangeFont = "This Purchase is final and non-refundable.".localized()
+            let strRange = (Constant.MyClassConstants.textViewStr as NSString).range(of: strToChange)
             
+            let strRangeFontChange = (Constant.MyClassConstants.textViewStr as NSString).range(of: strToChangeFont)
+            
+            let attributedString1 = NSMutableAttributedString(string: Constant.MyClassConstants.textViewStr, attributes: [NSFontAttributeName: UIFont(name: Constant.fontName.helveticaNeue, size: 15.0) ?? ""])
+            
+            attributedString1.addAttribute(NSLinkAttributeName, value: "", range: strRange)
+            
+            let linkAttributes: [String : AnyObject] = [NSForegroundColorAttributeName: UIColor.blue, NSUnderlineColorAttributeName: UIColor.blue as AnyObject]
+            
+            attributedString1.addAttribute(NSFontAttributeName, value: UIFont(name: Constant.fontName.helveticaNeueItalic, size: 15.0) ?? "", range: strRangeFontChange)
+        
+            cell.textView.linkTextAttributes = linkAttributes
+            cell.textView.attributedText = attributedString1
+            return cell
         }
+    }
+    
+    func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
+        
+        let fileViewController = SimpleFileViewController(load: "http://www.intervalworld.com/web/iicontent/ii/mobile-terms-getaways.html", shouldShowLoadingIndicator: true)
+        fileViewController.title = "Terms and Conditions"
+        fileViewController.documentDidFinishLoading = { _ in fileViewController.hideHudAsync()}
+        navigationController?.pushViewController(fileViewController, animated: true)
+        return true
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {

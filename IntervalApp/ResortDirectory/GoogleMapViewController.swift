@@ -403,8 +403,8 @@ class GoogleMapViewController: UIViewController {
         if needCameraChange {
             needCameraChange = false
             if let latitude = selectedDestination.geoArea?.southEastCoordinate?.latitude, let longitude = selectedDestination.geoArea?.northWestCoordinate?.longitude {
-                let targetDestination = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-                mapView.camera = GMSCameraPosition.camera(withTarget: targetDestination, zoom: 10)
+                let camera = GMSCameraPosition.camera(withLatitude: latitude, longitude: longitude, zoom: 10)
+                mapView.animate(to: camera)
             }
         }
         
@@ -619,8 +619,9 @@ class GoogleMapViewController: UIViewController {
         } else {
             
             var selectedResortsArray = [Resort]()
-            for index in  Constant.MyClassConstants.addResortSelectedIndex {
-                selectedResortsArray.append(Constant.MyClassConstants.resortsArray[index])
+            for object in  Constant.MyClassConstants.resortsArray {
+      
+                selectedResortsArray.append(object)
                 
             }
         Constant.MyClassConstants.selectedGetawayAlertDestinationArray.append(Constant.selectedDestType.resorts(selectedResortsArray))

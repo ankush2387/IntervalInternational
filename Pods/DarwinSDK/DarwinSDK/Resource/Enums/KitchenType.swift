@@ -22,7 +22,7 @@ public enum KitchenType : String {
     }
     
     // Helper methods for UI
-    public static func fromName(name : String) -> KitchenType {
+    public static func fromName(name : String?) -> KitchenType {
         if KitchenType.NO_KITCHEN.name == name {
             return KitchenType.NO_KITCHEN
         } else if KitchenType.LIMITED_KITCHEN.name == name {

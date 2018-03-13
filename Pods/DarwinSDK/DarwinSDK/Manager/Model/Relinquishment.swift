@@ -94,12 +94,15 @@ open class Relinquishment {
         }
         
         // OpenWeek: More
-        if let value = unit {
-            if !value.lockOffUnits.isEmpty {
-                lockOffUnits = value.lockOffUnits
+        if let marterUnit = unit {
+            // Set the relinqId for Master Unit
+            marterUnit.relinquishmentId = relinquishmentId
+            // Get the lockOffUnits
+            if !marterUnit.lockOffUnits.isEmpty {
+                lockOffUnits = marterUnit.lockOffUnits
             }
-            // Clean unit if only comes lock-offs
-            if let unitNumber = value.unitNumber, unitNumber.isEmpty {
+            // Clean the Master Unit if only comes lock-offs
+            if let unitNumber = marterUnit.unitNumber, unitNumber.isEmpty {
                 unit = nil
             }
         }

@@ -5,14 +5,14 @@
   },
   "summary": "User Interface classes for Interval applications",
   "requires_arc": true,
-  "version": "4.4.1",
+  "version": "4.4.3",
   "authors": {
     "Interval International": "support@intervalintl.com"
   },
   "homepage": "https://bitbucket.org/intervalintl/intervaluikit-ios",
   "source": {
     "git": "https://bitbucket.org/intervalintl/intervaluikit-ios.git",
-    "tag": "4.4.1"
+    "tag": "4.4.3"
   },
   "frameworks": "UIKit",
   "source_files": "IntervalUIKit/**/*.{swift}",
@@ -26,6 +26,9 @@
     ],
     "SDWebImage": [
       "~>3.8.2"
+    ],
+    "SVProgressHUD": [
+      "~>2.2.1"
     ],
     "ActionSheetPicker-3.0": [
       "~>2.2.0"

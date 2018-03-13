@@ -55,10 +55,10 @@ class PaymentSelectionViewController: UIViewController {
         
         if Constant.holdingTime == 0 {
             Constant.holdingTimer?.invalidate()
-            let alertController = UIAlertController(title: Constant.AlertMessages.holdingTimeLostTitle, message: Constant.AlertMessages.holdingTimeLostMessage, preferredStyle: .alert)
-            let Ok = UIAlertAction(title: Constant.AlertPromtMessages.ok, style: .default) { (_:UIAlertAction)  in
+            let alertController = UIAlertController(title: "", message: Constant.AlertMessages.holdingTimeLostMessage, preferredStyle: .alert)
+            let Ok = UIAlertAction(title: "OK".localized(), style: .default) {[weak self] (_:UIAlertAction)  in
                 
-                 self.performSegue(withIdentifier: "unwindToAvailabiity", sender: self)
+                 self?.performSegue(withIdentifier: "unwindToAvailabiity", sender: self)
             }
             alertController.addAction(Ok)
             present(alertController, animated: true, completion:nil)
@@ -185,7 +185,8 @@ class PaymentSelectionViewController: UIViewController {
                     return
                 }
                
-                Constant.MyClassConstants.memberCreditCardList[self.selectedCardIndex].cvv = cvvNumber
+                let cc = Constant.MyClassConstants.memberCreditCardList[self.selectedCardIndex]
+                cc.cvv = cvvNumber
                 let expirydate = expDate
                 let dateArr: [String] = expirydate.components(separatedBy: "/")
                 
@@ -211,25 +212,30 @@ class PaymentSelectionViewController: UIViewController {
                 
                 let dt = Calendar(identifier: Calendar.Identifier.gregorian).date(from: dateComponents)
                 let df = DateFormatter()
+                df.timeZone = TimeZone(identifier: "UTC")
                 df.dateFormat = Constant.MyClassConstants.dateTimeFormat
                 let dateString: String = df.string(from: dt!)
 
-                (Constant.MyClassConstants.memberCreditCardList[self.selectedCardIndex]).expirationDate = dateString
-                
+                cc.expirationDate = dateString
                 if let creditCardCount = Session.sharedSession.contact?.creditcards?.count {
                     if self.selectedCardIndex < (creditCardCount) {
-                        
                         Constant.MyClassConstants.selectedCreditCard.removeAll()
-                        let existingCard = Constant.MyClassConstants.memberCreditCardList[self.selectedCardIndex]
-                        Constant.MyClassConstants.selectedCreditCard.append(existingCard)
-                        self.navigationController?.popViewController(animated: true)
-                        
+                        Constant.MyClassConstants.selectedCreditCard.append(cc)
+                        cc.cardNumber = nil
+                        guard let accessToken = Session.sharedSession.userAccessToken else {
+                            self.navigationController?.popViewController(animated: true)
+                            return
+                        }
+                        UserClient.updateCreditCard(accessToken, creditCard: cc, onSuccess: { _ in
+                            self.navigationController?.popViewController(animated: true)
+                        }, onError: { (error) in
+                            self.presentErrorAlert(UserFacingCommonError.handleError(error))
+                        })
                     } else {
                         
                         Constant.MyClassConstants.selectedCreditCard.removeAll()
-                        let newCard = Constant.MyClassConstants.memberCreditCardList[self.selectedCardIndex]
-                        newCard.creditcardId = 0
-                        Constant.MyClassConstants.selectedCreditCard.append(newCard)
+                        cc.creditcardId = 0
+                        Constant.MyClassConstants.selectedCreditCard.append(cc)
                         self.navigationController?.popViewController(animated: true)
                         
                     }
@@ -259,20 +265,20 @@ class PaymentSelectionViewController: UIViewController {
         alert.addAction(UIAlertAction(title: Constant.AlertPromtMessages.done, style: .default, handler: { [weak alert] (_) in
             let textField = alert?.textFields![0] // Force unwrapping because we know it exists.
            
-          (Constant.MyClassConstants.memberCreditCardList[self.selectedCardIndex]).cvv = (textField?.text)
+            let cc = Constant.MyClassConstants.memberCreditCardList[self.selectedCardIndex]
+            cc.cvv = textField?.text
             
             if let creditCardCount = Session.sharedSession.contact?.creditcards?.count {
                 if self.selectedCardIndex < creditCardCount {
                     
                     Constant.MyClassConstants.selectedCreditCard.removeAll()
-                    let existingCard = Constant.MyClassConstants.memberCreditCardList[self.selectedCardIndex]
-                    Constant.MyClassConstants.selectedCreditCard.append(existingCard)
+                    Constant.MyClassConstants.selectedCreditCard.append(cc)
                     self.navigationController?.popViewController(animated: true)
+                    
                 } else {
                     Constant.MyClassConstants.selectedCreditCard.removeAll()
-                    let newCard = Constant.MyClassConstants.memberCreditCardList[self.selectedCardIndex]
-                    newCard.creditcardId = 0
-                    Constant.MyClassConstants.selectedCreditCard.append(newCard)
+                    cc.creditcardId = 0
+                    Constant.MyClassConstants.selectedCreditCard.append(cc)
                     self.navigationController?.popViewController(animated: true)
                 }
             }
@@ -376,6 +382,7 @@ extension PaymentSelectionViewController: UITableViewDataSource {
             }
             let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
             let dateFormatter = DateFormatter()
+            dateFormatter.timeZone = TimeZone(identifier: "UTC")
             dateFormatter.dateFormat = Constant.MyClassConstants.dateTimeFormat
             var expiryDate: Date?
             if let date = creditcard.expirationDate {

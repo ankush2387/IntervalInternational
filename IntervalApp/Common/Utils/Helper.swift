@@ -66,12 +66,13 @@ public class Helper {
     //TODO: Need to revisit this code, and dynamically get locale identifier from server, or a decision should be made to calculate this information on the client
     static func getWeekDay(dateString: Date, getValue: String) -> String {
         let dateFormatter = DateFormatter()
+            dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+            dateFormatter.timeZone = TimeZone(identifier: "UTC")
         switch getValue {
         case "Date":
             dateFormatter.dateFormat = "d"
-             dateFormatter.locale = Locale(identifier: "en_US_POSIX")
             var dateFromString = dateFormatter.string(from: dateString as Date)
-            if dateFromString.characters.count == 1 {
+            if dateFromString.count == 1 {
                 dateFromString = "0\(dateFromString)"
             }
             return dateFromString
@@ -358,38 +359,30 @@ public class Helper {
     }
     
     // get Countries
-    static func getCountry(viewController: UIViewController) {
+    static func getCountry(CompletionBlock: @escaping ((Error?) -> Void)) {
         
-        Constant.GetawaySearchResultGuestFormDetailData.countryListArray.removeAll()
-        Constant.GetawaySearchResultGuestFormDetailData.countryCodeArray.removeAll()
         LookupClient.getCountries(Constant.MyClassConstants.systemAccessToken!, onSuccess: { (response) in
-            
+            Constant.countryListArray.removeAll()
             for country in (response ) {
-                Constant.GetawaySearchResultGuestFormDetailData.countryListArray.append(country)
-                Constant.GetawaySearchResultGuestFormDetailData.countryCodeArray.append(country.countryCode!)
+                Constant.countryListArray.append(country)
             }
-            viewController.hideHudAsync()
-            
-        }) { _ in
-            viewController.hideHudAsync()
-            viewController.presentErrorAlert(UserFacingCommonError.generic)
-        }
+            CompletionBlock(nil)
+        }, onError: { error in
+            CompletionBlock(error)
+        })
         
     }
     
-    static func getStates(country: String, viewController: UIViewController) {
-        
-        Constant.GetawaySearchResultGuestFormDetailData.stateListArray.removeAll()
-        LookupClient.getStates(Constant.MyClassConstants.systemAccessToken!, countryCode: country, onSuccess: { (response) in
-            viewController.hideHudAsync()
+    static func getStates(countryCode: String, CompletionBlock: @escaping ((Error?) -> Void))  {
+        Constant.stateListArray.removeAll()
+        LookupClient.getStates(Constant.MyClassConstants.systemAccessToken!, countryCode: countryCode, onSuccess: { (response) in
             for state in response {
-                Constant.GetawaySearchResultGuestFormDetailData.stateListArray.append(state)
-                Constant.GetawaySearchResultGuestFormDetailData.stateCodeArray.append(state.code!)
+                Constant.stateListArray.append(state)
             }
+            CompletionBlock(nil)
             
-        }, onError: {_ in
-            viewController.hideHudAsync()
-            viewController.presentErrorAlert(UserFacingCommonError.generic)
+        }, onError: { error in
+            CompletionBlock(error)
         })
         
     }
@@ -1096,7 +1089,7 @@ public class Helper {
         noResortView.addSubview(titleView)
         
         titleLabel.frame = CGRect(x: 5, y: 0, width: noResortView.frame.size.width - 10, height: 40)
-        titleLabel.text = "No match found. Please select another date.".localized()
+        titleLabel.text = Constant.AlertMessages.vactionSearchDateMessage
         titleLabel.textAlignment = .center
         titleLabel.textColor = UIColor.white
         titleLabel.font = UIFont(name: "Helvetica", size: 12)
@@ -1110,7 +1103,7 @@ public class Helper {
         
         detailLabel.frame = CGRect(x: 10, y: titleLabel.frame.maxY, width: noResortView.frame.size.width - 20, height: detailView.frame.size.height)
         detailLabel.numberOfLines = 0
-        detailLabel.text = "We were unable to find any availability for the travel dates you requested. Please check other available dates by scrolling above."
+        detailLabel.text = Constant.AlertMessages.vacationSearchMessage
         detailLabel.textColor = UIColor.gray
         detailLabel.font = UIFont(name: "Helvetica", size: 12)
         noResortView.addSubview(detailLabel)

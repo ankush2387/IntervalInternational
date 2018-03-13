@@ -34,7 +34,7 @@ open class AccommodationCertificate {
         }
         
         self.certificateType = json["certificateType"].string ?? ""
-        self.certificateStatus = json["certificateStatus"].string ?? ""
+        self.certificateStatus = json["status"].string ?? ""
         self.issueDate = json["issueDate"].string ?? ""
         self.expirationDate = json["expirationDate"].string ?? ""
         
