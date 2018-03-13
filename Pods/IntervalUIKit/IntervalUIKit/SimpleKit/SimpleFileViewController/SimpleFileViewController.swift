@@ -86,7 +86,11 @@ public final class SimpleFileViewController: UIViewController {
     // MARK: - Overrides
     override public func viewDidLoad() {
         super.viewDidLoad()
-        showLoadingIndicator()
+        
+        if shouldShowLoadingIndicator {
+            showLoadingIndicator()
+        }
+        
         if let mimeType = mimeType?.value {
 
             // Loading Data
@@ -130,11 +134,12 @@ extension SimpleFileViewController: UIWebViewDelegate {
 
     public func webViewDidFinishLoad(_ webView: UIWebView) {
         checkIfAtDocumentEnd()
-        showLoadingIndicator()
+        dismissLoadingIndicator()
         documentDidFinishLoading?()
     }
 
     public func webView(_ webView: UIWebView, didFailLoadWithError error: Error) {
+        dismissLoadingIndicator()
         didError?()
     }
 }
