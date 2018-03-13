@@ -90,7 +90,6 @@ class CertificateViewController: UIViewController {
             self.hideHudAsync()
         })
     }
-    
 }
 
 // MARK: - Tableview delegage
@@ -130,12 +129,9 @@ extension CertificateViewController: UITableViewDataSource {
         }
         if let expiredDate = Constant.MyClassConstants.certificateArray[indexPath.row].expirationDate {
             
-            let expireDateString = expiredDate
-            let myStringArr = expireDateString.components(separatedBy: "-")
-            
-            let expireDateFinalString = myStringArr.flatMap({ $0 }).joined(separator: "/")
-            if let daysOut = Constant.MyClassConstants.certificateArray[indexPath.row].daysOut {
-                cell.expireDate.text = "\(daysOut) Days, on \(expireDateFinalString)".localized()
+            if let expireDateString = expiredDate.dateFromString()?.formatDateAs("MM/dd/yyyy") {
+                let diffInDays = Constant.MyClassConstants.certificateArray[indexPath.row].getDaysUntilExpirationDate()
+                cell.expireDate.text =  "\(Helper.diffInDaysCalculation(String(diffInDays))), \(expireDateString)"
             }
         }
         

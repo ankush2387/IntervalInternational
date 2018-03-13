@@ -2000,6 +2000,19 @@ public class Helper {
         return transition
     }
     
+    static func diffInDaysCalculation( _ daysDiffrence: String) -> String {
+
+        if daysDiffrence == "0" {
+            return "Today"
+        } else if daysDiffrence == "1" {
+            return "1 Day on"
+        } else if daysDiffrence > "1" {
+            return "\(daysDiffrence) Days, on"
+        } else {
+            return "Expired"
+        }
+    }
+    
     enum MonthType { case number, monthName }
     static func getMonth(_ monthType: MonthType, for month: String) -> String? {
         
