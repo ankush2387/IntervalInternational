@@ -81,7 +81,7 @@ class AvailabilityCollectionViewCell: UICollectionViewCell {
         for category in inventoryItem.rating?.categories ?? [] {
             
             let categoryCode = category.categoryCode.unwrappedString
-            if categoryCode.caseInsensitiveCompare("OVERALL") == ComparisonResult.orderedSame {
+            if categoryCode.uppercased() == "OVERALL" {
                 showRating(rating: category.rating)
                 break
             }
@@ -92,30 +92,32 @@ class AvailabilityCollectionViewCell: UICollectionViewCell {
     func showRating(rating: Float) {
         //set empty image here
         for i in 1...5 {
-            if let imageView = self.viewWithTag(i) {
-                if imageView.isKind(of: UIImageView.self) {
-                    let categoryImgVw = imageView as? UIImageView
-                    categoryImgVw?.image = #imageLiteral(resourceName: "empty_circle")
-                }
+            if let imageView = self.viewWithTag(i) as? UIImageView {
+                imageView.image = #imageLiteral(resourceName: "empty_circle")
             }
         }
         
-        // set full filled image here
-        let nInt = Int(rating)
-        for i in 1...nInt {
-            if let imageView = self.viewWithTag(i) {
-                if imageView.isKind(of: UIImageView.self) {
-                    let categoryImgVw = imageView as? UIImageView
-                    categoryImgVw?.image = #imageLiteral(resourceName: "full_filled_circle")
-                }
-            }
+        func parse(_ rating: Float) -> (wholeRating: Int, hasHalfRating: Bool) {
+            let parsedRating = String(rating).split(separator: ".")
+            let wholeRating = Int(parsedRating.first ?? "") ?? 0
+            let halfRating = Int(parsedRating.last ?? "")
+            let hasHalfRating = (halfRating ?? 0) > 0
+            return (wholeRating, hasHalfRating)
         }
-        let modulus = rating.truncatingRemainder(dividingBy: 1.0)
-        if modulus > 0 {
-            if let imageView = self.viewWithTag(nInt + 1) {
-                if imageView.isKind(of: UIImageView.self) {
-                    let categoryImgVw = imageView as? UIImageView
-                    categoryImgVw?.image = #imageLiteral(resourceName: "half_filled_circle")
+        
+        let parsedRating = parse(rating)
+        
+        for currentRating in 1...parsedRating.wholeRating {
+            
+            // Set all full circles here by creating your casting to the UIimageView
+            if let imageView = self.viewWithTag(currentRating) as? UIImageView {
+                imageView.image = #imageLiteral(resourceName: "full_filled_circle")
+            }
+            
+            if currentRating == parsedRating.wholeRating && parsedRating.hasHalfRating {
+                // Currently in the last rating index and has half rating
+                if let imageView = self.viewWithTag(currentRating + 1) as? UIImageView {
+                    imageView.image = #imageLiteral(resourceName: "half_filled_circle")
                 }
             }
         }

@@ -918,43 +918,46 @@ extension ResortDetailsViewController: UITableViewDataSource {
                                 availableCountryCell?.infoLabel.text = amenityNearbyString.localized()
                             }
                         case 5 :
-             
                             let ratingCell = UITableViewCell()
                             let resortCategory = Constant.MyClassConstants.resortsDescriptionArray.rating?.categories ?? []
                             let categoryCode = resortCategory[indexPath.row - 1].categoryCode ?? ""
                              ratingCell.textLabel?.text = Helper.getRatingCategory(category: categoryCode)
                             
+                            // to set cell background color
                             if indexPath.row % 2 != 0 {
                                 ratingCell.backgroundColor = #colorLiteral(red: 0.968627451, green: 0.968627451, blue: 0.968627451, alpha: 1)
                             }
                             
-                                let resortRating = resortCategory[indexPath.row - 1].rating
-                                var image_X: CGFloat = view.frame.size.width / 2 + 40
-                                var ratingImageArray = [UIImageView]()
+                            let resortRating = resortCategory[indexPath.row - 1].rating
+                            var image_X: CGFloat = view.frame.size.width / 2 + 40
+                            var ratingImageArray = [UIImageView]()
+                            let startRatingIndex = 1, endRatingIndex = 5
                             
-                                // to show empty circle image
-                                for _ in 1...5 {
-                                    let ratingImageView = UIImageView(image: #imageLiteral(resourceName: "empty_circle"))
-                                    ratingImageView.frame.origin.x = image_X
-                                    ratingCell.contentView.addSubview(ratingImageView)
-                                    image_X = image_X + ratingImageView.frame.size.width + 5
-                                    ratingImageView.center.y = ratingCell.center.y + 3
-                                    ratingImageArray.append(ratingImageView)
-                                }
-                                
-                                let fullRating = Int(resortCategory[indexPath.row - 1].rating)
-                                var index = 0
-                                for _ in 0..<fullRating {
-                                    ratingImageArray[index].image = #imageLiteral(resourceName: "full_filled_circle")
-                                    index = index + 1
-                                }
-                            let modulus = resortRating.truncatingRemainder(dividingBy: 1.0)
-                            if modulus > 0 {
-                                ratingImageArray[fullRating].image = #imageLiteral(resourceName: "half_filled_circle")
+                            // to show empty circle image
+                            for _ in startRatingIndex...endRatingIndex {
+                                let ratingImageView = UIImageView(image: #imageLiteral(resourceName: "empty_circle"))
+                                ratingImageView.frame.origin.x = image_X
+                                ratingCell.contentView.addSubview(ratingImageView)
+                                image_X = image_X + ratingImageView.frame.size.width + 5
+                                ratingImageView.center.y = ratingCell.center.y + 3
+                                ratingImageArray.append(ratingImageView)
+                            }
+
+                            // show full rating here
+                            let fullRating = Int(resortCategory[indexPath.row - 1].rating)
+                            var index = 0
+                            for _ in 0..<fullRating {
+                                ratingImageArray[index].image = #imageLiteral(resourceName: "full_filled_circle")
+                                index = index + 1
                             }
                             
+                            // show hakf rating here
+                            let hasHalfrating = resortRating.truncatingRemainder(dividingBy: 1.0)
+                            if hasHalfrating > 0 {
+                                ratingImageArray[fullRating].image = #imageLiteral(resourceName: "half_filled_circle")
+                            }
                             return ratingCell
-                        
+        
                         case 6 :
                             availableCountryCell?.tdiImageView.backgroundColor = UIColor.lightGray
                             if let urlString = Constant.MyClassConstants.resortsDescriptionArray.tdiUrl {
