@@ -724,11 +724,16 @@ public class Helper {
                         } else {
                             
                             Constant.MyClassConstants.whatToTradeArray.add(openWk.pProgram)
-                            if(!Constant.MyClassConstants.relinquishmentIdArray.contains(openWk.pProgram[0].relinquishmentId)) {
+                            if !Constant.MyClassConstants.relinquishmentIdArray.contains(openWk.pProgram[0].relinquishmentId) {
                                 Constant.MyClassConstants.relinquishmentIdArray.append(openWk.pProgram[0].relinquishmentId)
                             }
                             Constant.MyClassConstants.relinquishmentAvailablePointsProgram = Int((openWk.pProgram[0].availablePoints))
-                            Constant.MyClassConstants.isCIGAvailable = true
+                            if realmLocalStorage.count == 1 {
+                                Constant.MyClassConstants.isCIGAvailable = true
+                            } else {
+                                Constant.MyClassConstants.isCIGAvailable = false
+                            }
+                        
                         }
                     }
                 }
