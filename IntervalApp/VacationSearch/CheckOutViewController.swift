@@ -979,15 +979,18 @@ extension CheckOutViewController: UITableViewDataSource {
             if indexPath.row == (Constant.MyClassConstants.generalAdvisementsArray.count) {
                 return 30
             } else if indexPath.row != (Constant.MyClassConstants.generalAdvisementsArray.count) + 1 {
-                guard let text = (Constant.MyClassConstants.generalAdvisementsArray[indexPath.row].title)?.capitalized else { return 0 }
+                guard let title = (Constant.MyClassConstants.generalAdvisementsArray[indexPath.row].title)?.capitalized else { return 0 }
                 guard let description = Constant.MyClassConstants.generalAdvisementsArray[indexPath.row].description else { return 0 }
-                let height = heightForView(description, font: font, width: view.frame.size.width - 10)
-                return height + 80
+                let heightTitle = heightForView(title, font: font, width: view.frame.size.width - 40)
+                let heightDescription = heightForView(description, font: font, width: view.frame.size.width - 40)
+                return heightTitle + heightDescription + 40 // here 40 is used for padding
 
             } else {
+                guard let title = (Constant.MyClassConstants.additionalAdvisementsArray[indexPath.row].title)?.capitalized else { return 0 }
                 guard let description = Constant.MyClassConstants.additionalAdvisementsArray.last?.description else { return 0 }
-                let height = heightForView(description, font: font, width: view.frame.size.width - 40)
-                return height + 80
+                let heightTitle = heightForView(title, font: font, width: view.frame.size.width - 40)
+                let heightDescription = heightForView(description, font: font, width: view.frame.size.width - 40)
+                return heightTitle + heightDescription + 40 // here 40 is used for padding
             }
             
         case 2, 9 :
