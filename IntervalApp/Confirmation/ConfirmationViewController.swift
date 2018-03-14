@@ -45,25 +45,25 @@ class ConfirmationViewController: UIViewController {
         ]
         ADBMobile.trackAction(Constant.omnitureEvents.event40, data: pageView)
         
-        self.title = Constant.ControllerTitles.confirmationControllerTitle
-        if let rvc = self.revealViewController() {
+        title = Constant.ControllerTitles.confirmationControllerTitle
+        if let rvc = revealViewController() {
             //set SWRevealViewController's Delegate
             rvc.delegate = self
             //***** Add the hamburger menu *****//
             let menuButton = UIBarButtonItem(image: UIImage(named: Constant.assetImageNames.ic_menu), style: .plain, target: rvc, action: #selector(SWRevealViewController.revealToggle(_:)))
             menuButton.tintColor = UIColor.white
-            self.navigationItem.leftBarButtonItem = menuButton
+            navigationItem.leftBarButtonItem = menuButton
             
             //***** creating and adding right bar button for more option button *****//
             moreButton = UIBarButtonItem(image: UIImage(named: Constant.assetImageNames.MoreNav), style: .plain, target: self, action: #selector(MoreNavButtonPressed(_:)))
             moreButton!.tintColor = UIColor.white
-            self.navigationItem.rightBarButtonItem = moreButton
+            navigationItem.rightBarButtonItem = moreButton
             
             //***** This line allows the user to swipe left-to-right to reveal the menu. We might want to comment this out if it becomes confusing. *****//
-            self.view.addGestureRecognizer( rvc.panGestureRecognizer() )
+            view.addGestureRecognizer( rvc.panGestureRecognizer() )
             
         }
-        if Constant.MyClassConstants.isFromExchange {
+        if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
             confirmationNumber.text = Constant.MyClassConstants.exchangeContinueToPayResponse.view?.fees?.shopExchange?.confirmationNumber
             if let number = Constant.MyClassConstants.exchangeContinueToPayResponse.view?.fees?.shopExchange?.confirmationNumber {
                 exchangeNum = number
@@ -147,7 +147,7 @@ class ConfirmationViewController: UIViewController {
     //***** Function called when upcoming trip details button is pressed. *****//
     @IBAction func UpComingTripDetailsPressed(_ sender: IUIKButton) {
         
-        self.performSegue(withIdentifier: Constant.segueIdentifiers.confirmationUpcomingTripSegue, sender: self)
+        performSegue(withIdentifier: Constant.segueIdentifiers.confirmationUpcomingTripSegue, sender: self)
     }
     
     override func didReceiveMemoryWarning() {
@@ -188,12 +188,12 @@ class ConfirmationViewController: UIViewController {
         }
         actionSheetController.addAction(cancelAction)
         
-        if(Constant.RunningDevice.deviceIdiom == .pad) {
+        if Constant.RunningDevice.deviceIdiom == .pad {
             actionSheetController.popoverPresentationController?.sourceView = self.view
             actionSheetController.popoverPresentationController?.sourceRect = self.view.bounds
         }
         
         //Present the AlertController
-        self.present(actionSheetController, animated: true, completion: nil)
+        present(actionSheetController, animated: true, completion: nil)
     }
 }
