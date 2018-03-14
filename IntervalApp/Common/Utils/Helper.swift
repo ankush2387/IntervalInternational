@@ -849,7 +849,7 @@ public class Helper {
         switch bedroomType {
             
         case UnitSize.STUDIO.rawValue:
-            return "Studio"
+            return "0 Bedroom"
         case UnitSize.ONE_BEDROOM.rawValue:
             return "1 Bedroom"
         case UnitSize.TWO_BEDROOM.rawValue:
