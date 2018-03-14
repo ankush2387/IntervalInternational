@@ -17,6 +17,12 @@ class DestinationResortViewController: UIViewController {
     //class variables
     fileprivate var tappedButtonDictionary = [Int: Bool]()
     var amenitiesString: String = ""
+    var unitDetialsCellHeight: CGFloat = 0.0
+    var advisementSectionHeight: CGFloat = 0.0
+    var additionalAdvisementCellHeight: CGFloat = 0.0
+    var detailsView: UIView?
+    var advisementView: UIView?
+    var additionalAdvisementView: UIView?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -70,15 +76,139 @@ class DestinationResortViewController: UIViewController {
         self.tableViewDestinations.reloadData()
     }
     
-    //***** Function to calculate dynamic height. ******//
-    func heightForView(_ text: String, font: UIFont, width: CGFloat) -> CGFloat {
-        let label: UILabel = UILabel(frame: CGRect(x: 0, y: 0, width: width, height: CGFloat.greatestFiniteMagnitude))
-        label.numberOfLines = 0
-        label.lineBreakMode = NSLineBreakMode.byWordWrapping
-        label.font = font
-        label.text = text
-        label.sizeToFit()
-        return label.frame.height
+    func addSepratorView(onView: UIView?) {
+        
+        guard let onview = onView else { return }
+        let sepratorView = UIView(frame: CGRect(x: 0, y: onview.frame.size.height - 3, width: view.frame.size.width, height: 2))
+            sepratorView.backgroundColor = #colorLiteral(red: 0.7882352941, green: 0.7882352941, blue: 0.7921568627, alpha: 1)
+        
+        onview.addSubview(sepratorView)
+    }
+    
+    // function to get all advisement from API response and return view with all advisement with title and description
+    func getAdvisements() -> UIView {
+        
+        var isSepratorNeeded = false
+        var advisements: [Advisement]?
+        if Constant.MyClassConstants.isFromExchange ||
+            Constant.MyClassConstants.searchBothExchange {
+            advisements = Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.advisements
+            let advisements = Constant.MyClassConstants.exchangeViewResponse.destination?.unit?.amenities.count ?? 0
+            isSepratorNeeded = advisements > 0 ? true : false
+        } else {
+            advisements = Constant.MyClassConstants.viewResponse.resort?.advisements
+            let advisements = Constant.MyClassConstants.viewResponse.resort?.amenities.count ?? 0
+            isSepratorNeeded = advisements > 0 ? true : false
+        }
+        guard let resortAdvisements = advisements else { return UIView() }
+        advisementView = UIView()
+        advisementSectionHeight = 10
+        for advisement in resortAdvisements {
+            let isAdditionalAdvisement = advisement.title?.contains("ADDITIONAL INFORMATION") ?? false
+            if !isAdditionalAdvisement {
+                let titleLabel = UILabel(frame: CGRect(x: 20, y: advisementSectionHeight, width: view.frame.width - 20, height: 20))
+                titleLabel.text = advisement.title
+                titleLabel.font = UIFont(name: Constant.fontName.helveticaNeue, size: 14.0)
+                titleLabel.textColor = UIColor.lightGray
+                advisementView?.addSubview(titleLabel)
+                advisementSectionHeight = advisementSectionHeight + 25
+                
+                let descriptionLabel: UILabel = UILabel(frame: CGRect(x: 20, y: advisementSectionHeight, width: view.frame.size.width - 40, height: 0))
+                
+                descriptionLabel.numberOfLines = 0
+                descriptionLabel.lineBreakMode = NSLineBreakMode.byWordWrapping
+                descriptionLabel.font = UIFont(name: Constant.fontName.helveticaNeue, size: 16.0)
+                descriptionLabel.text = advisement.description
+                descriptionLabel.sizeToFit()
+                advisementView?.addSubview(descriptionLabel)
+                advisementSectionHeight = advisementSectionHeight + descriptionLabel.frame.height + 10
+            } else {
+                additionalAdvisementView = UIView()
+                additionalAdvisementCellHeight = 10
+                let descriptionLabel: UILabel = UILabel(frame: CGRect(x: 20, y: additionalAdvisementCellHeight, width: view.frame.size.width - 40, height: 0))
+                descriptionLabel.numberOfLines = 0
+                descriptionLabel.lineBreakMode = NSLineBreakMode.byWordWrapping
+                descriptionLabel.font = UIFont(name: Constant.fontName.helveticaNeue, size: 16.0)
+                descriptionLabel.text = advisement.description
+                descriptionLabel.sizeToFit()
+                additionalAdvisementView?.addSubview(descriptionLabel)
+                additionalAdvisementCellHeight = additionalAdvisementCellHeight + descriptionLabel.frame.height + 10
+                additionalAdvisementView?.frame = CGRect(x: 0, y: 20, width: self.view.frame.size.width, height: additionalAdvisementCellHeight)
+            }
+           
+        }
+        advisementView?.frame = CGRect(x: 0, y: 20, width: self.view.frame.size.width, height: advisementSectionHeight)
+        if isSepratorNeeded {
+            addSepratorView(onView: advisementView)
+        }
+        return advisementView ?? UIView()
+    }
+    
+    // function to get all amenities under unit from API response and return view with all amenities with title and description
+    func getUnitDetails() -> UIView {
+        
+        var isSepratorNeeded = false
+        var inventoryUnit: InventoryUnit?
+        if Constant.MyClassConstants.isFromExchange ||
+            Constant.MyClassConstants.searchBothExchange {
+            inventoryUnit = Constant.MyClassConstants.exchangeViewResponse.destination?.unit
+            let advisements = Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.advisements.count ?? 0
+            isSepratorNeeded = advisements > 0 ? true : false
+        } else {
+            inventoryUnit = Constant.MyClassConstants.viewResponse.unit
+            let advisements = Constant.MyClassConstants.viewResponse.resort?.advisements.count ?? 0
+            isSepratorNeeded = advisements > 0 ? true : false
+        }
+        guard let unitDetils = inventoryUnit else { return UIView() }
+        detailsView = UIView()
+        for amunities in unitDetils.amenities {
+            
+            let sectionLabel = UILabel(frame: CGRect(x: 20, y: unitDetialsCellHeight, width: view.frame.width - 20, height: 20))
+            if let category = amunities.category {
+                sectionLabel.text = Helper.getMappedStringForDetailedHeaderSection(sectonHeader: category).localized()
+            }
+            sectionLabel.font = UIFont(name: Constant.fontName.helveticaNeue, size: 14.0)
+            sectionLabel.textColor = UIColor.lightGray
+            detailsView?.addSubview(sectionLabel)
+            unitDetialsCellHeight = unitDetialsCellHeight + 25
+            
+            for details in amunities.details {
+                
+                let detailSectionLabel = UILabel(frame: CGRect(x: 20, y: unitDetialsCellHeight, width: view.frame.width - 20, height: 20))
+                if let  section = details.section {
+                    detailSectionLabel.text = section.capitalized
+                }
+                detailSectionLabel.font = UIFont(name: Constant.fontName.helveticaNeueBold, size: 16.0)
+                detailSectionLabel.sizeToFit()
+                
+                detailsView?.addSubview(detailSectionLabel)
+                if let detailString = detailSectionLabel.text {
+                    if detailString.count > 0 {
+                        unitDetialsCellHeight = unitDetialsCellHeight + 20
+                    }
+                }
+                
+                for desc in details.descriptions {
+                    
+                    let detaildescLabel = UILabel(frame: CGRect(x: 20, y: unitDetialsCellHeight, width: view.frame.width - 20, height: 20))
+                    if sectionLabel.text == "Other Facilities" || sectionLabel.text == "Kitchen Facilities" {
+                        detaildescLabel.text = "\u{2022} \(desc)".localized()
+                    } else {
+                        detaildescLabel.text = desc
+                    }
+                    detaildescLabel.font = UIFont(name: Constant.fontName.helveticaNeue, size: 14.0)
+                    detaildescLabel.sizeToFit()
+                    detailsView?.addSubview(detaildescLabel)
+                    unitDetialsCellHeight = unitDetialsCellHeight + 20
+                }
+                unitDetialsCellHeight = unitDetialsCellHeight + 20
+            }
+        }
+        detailsView?.frame = CGRect(x: 0, y: 20, width: view.frame.size.width, height: unitDetialsCellHeight)
+        if isSepratorNeeded {
+            addSepratorView(onView: detailsView)
+        }
+        return detailsView ?? UIView()
     }
     
 }
@@ -91,28 +221,69 @@ extension DestinationResortViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == 4 || section == 5 {
-            if let isOpen = tappedButtonDictionary[section] {
-                if isOpen {
-                    return 2
-                } else {
-                    return 1
-                }
-                
-            } else {
-                return 1
-            }
-        } else if section == 3 && Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.advisements.count == 0 {
-            return 0
-        } else {
+        
+        switch section {
+        case 0, 1, 2:
             return 1
+        case 3:
+            if Constant.MyClassConstants.isFromExchange ||
+                Constant.MyClassConstants.searchBothExchange {
+                guard let advisements = Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.advisements else { return 0 }
+                return advisements.count > 0 ? 1 : 0
+            } else {
+                 guard let advisements = Constant.MyClassConstants.viewResponse.resort?.advisements else { return 0 }
+                return advisements.count > 0 ? 1 : 0
+            }
+        case 4:
+            if Constant.MyClassConstants.isFromExchange ||
+                Constant.MyClassConstants.searchBothExchange {
+                guard let amenities = Constant.MyClassConstants.exchangeViewResponse.destination?.unit?.amenities else { return 0 }
+                if amenities.isEmpty {
+                    return 0
+                } else {
+                    let isOpen = tappedButtonDictionary[section] ?? false
+                    return isOpen ? 2 : 1
+                }
+               
+            } else {
+                guard let amenities = Constant.MyClassConstants.viewResponse.unit?.amenities else { return 0 }
+                if amenities.isEmpty {
+                    return 0
+                } else {
+                    let isOpen = tappedButtonDictionary[section] ?? false
+                    return isOpen ? 2 : 1
+                }
+            }
+        case 5:
+            if Constant.MyClassConstants.isFromExchange ||
+                Constant.MyClassConstants.searchBothExchange {
+                guard let advisements = Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.advisements else { return 0 }
+                if advisements.isEmpty {
+                    return 0
+                } else {
+                    let isOpen = tappedButtonDictionary[section] ?? false
+                    return isOpen ? 2 : 1
+                }
+               
+            } else {
+                guard let advisement = Constant.MyClassConstants.viewResponse.resort?.advisements else { return 0 }
+                if advisement.isEmpty {
+                    return 0
+                } else {
+                    let isOpen = tappedButtonDictionary[section] ?? false
+                    return isOpen ? 2 : 1
+                }
+               
+            }
+        default:
+            return 0
         }
     }
     
     @objc(tableView:heightForRowAtIndexPath:) func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
         switch indexPath.section {
-        case 0 :
+        case 0, 2:
             if Constant.RunningDevice.deviceIdiom == .pad {
                 return 130
             } else {
@@ -124,93 +295,30 @@ extension DestinationResortViewController: UITableViewDataSource {
             } else {
                 return 80
             }
-        case 2:
-            if Constant.RunningDevice.deviceIdiom == .pad {
-                return 130
-            } else {
-                return 80
-            }
         case 3:
-            var height: CGFloat
-            if Constant.RunningDevice.deviceIdiom == .pad {
-                guard let font = UIFont(name: Constant.fontName.helveticaNeue, size: 16.0) else { return 0 }
-                if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
-                    guard let description = Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.advisements[0].description else { return 0 }
-                    height = heightForView(description, font: font, width: (view.frame.size.width / 2) - 100)
-                    return height
-                    
-                } else {
-                    guard let description = Constant.MyClassConstants.viewResponse.resort?.advisements[0].description else { return 0 }
-                    height = heightForView(description, font: font, width: (view.frame.size.width / 2) - 100)
-                    return height
-                }
+            return advisementSectionHeight + 20
+        case 4:
+            if indexPath.row == 0 {
+                return 50
             } else {
-                guard let font = UIFont(name: Constant.fontName.helveticaNeue, size: 15.0) else { return 60 }
-                if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
-                    guard let description = Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.advisements[0].description else { return 60 }
-                    height = heightForView((Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.advisements[0].description)!, font: font, width: view.frame.size.width - 40)
-                    return height + 70
+                if tappedButtonDictionary[indexPath.section] == false {
+                    return 50
                 } else {
-                    guard let description = Constant.MyClassConstants.viewResponse.resort?.advisements[0].description else { return 60 }
-                    height = heightForView(description, font: font, width: view.frame.size.width - 40)
-                    return height + 70
+                    return unitDetialsCellHeight + 20
                 }
             }
-        case 4, 5 :
-            if indexPath.row == 1 && indexPath.section == 4 {
-                
-                var count = 0
-                if Constant.MyClassConstants.onsiteArray.count > 0 {
-                    count = count + Constant.MyClassConstants.onsiteArray.count * 20 + 40
-                }
-                if Constant.MyClassConstants.nearbyArray.count > 0 {
-                    count = count + Constant.MyClassConstants.nearbyArray.count + 40
-                }
-                return CGFloat (count)
-                
-            } else if indexPath.row == 1 && indexPath.section == 5 {
-                
-                if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
-                    
-                    if (Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.advisements.count)! > 1 {
-                        let font = UIFont(name: Constant.fontName.helveticaNeue, size: 16.0)
-                        var height: CGFloat
-                        if Constant.RunningDevice.deviceIdiom == .pad {
-                            height = heightForView((Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.advisements[1].description)!, font: font!, width: (view.frame.size.width / 2) - 100)
-                            return height
-                        } else {
-                            height = heightForView((Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.advisements[1].description)!, font: font!, width: view.frame.size.width)
-                            return height + 20
-                        }
-                    } else {
-                        return 0
-                    }
-                } else {
-                    let font = UIFont(name: Constant.fontName.helveticaNeue, size: 16.0)
-                    var height: CGFloat
-                    if (Constant.MyClassConstants.viewResponse.resort?.advisements.count)! > 0 {
-                        if Constant.RunningDevice.deviceIdiom == .pad {
-                            height = heightForView((Constant.MyClassConstants.viewResponse.resort?.advisements[1].description)!, font: font!, width: (view.frame.size.width / 2) - 100)
-                            return height
-                        } else {
-                            height = heightForView((Constant.MyClassConstants.viewResponse.resort?.advisements[1].description)!, font: font!, width: view.frame.size.width)
-                            return height + 20
-                        }
-                    } else {
-                        return 0
-                    }
-                    
-                }
-                
-            } else {
+        case 5:
+            if indexPath.row == 0 {
                 return 50
+            } else {
+                if tappedButtonDictionary[indexPath.section] == false {
+                    return 50
+                } else {
+                    return additionalAdvisementCellHeight + 20
+                }
             }
         default :
-            if Constant.RunningDevice.deviceIdiom == .pad {
-                return 200
-            } else {
-                return 50
-            }
+            return 0
         }
         
     }
@@ -224,9 +332,9 @@ extension DestinationResortViewController: UITableViewDataSource {
             var url = URL(string: "")
             var imagesArray = [Image]()
             if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
-                imagesArray = (Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.images)!
+                imagesArray = Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.images ?? []
             } else {
-                imagesArray = (Constant.MyClassConstants.viewResponse.resort?.images)!
+                imagesArray = Constant.MyClassConstants.viewResponse.resort?.images ?? []
                 
             }
             
@@ -241,93 +349,119 @@ extension DestinationResortViewController: UITableViewDataSource {
             cell.resortImageView?.setImageWith(url, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
             
             if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
+                
                 cell.resortName?.text = Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.resortName
                 var addressArray = [String]()
                 addressArray.append(Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.address?.cityName ?? "" )
-                if let territoryCode = Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.address?.territoryCode {
-                    addressArray.append(territoryCode)
-                }
+                addressArray.append(Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.address?.territoryCode ?? "")
                 cell.resortAddress?.text = addressArray.joined(separator: ", ")
                 cell.resortCode?.text = Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.resortCode
                 
             } else {
+                
                 cell.resortName?.text = Constant.MyClassConstants.viewResponse.resort?.resortName
-                cell.resortAddress?.text = Constant.MyClassConstants.viewResponse.resort?.address?.cityName?.appending(", ").appending((Constant.MyClassConstants.viewResponse.resort?.address?.territoryCode!)!)
+                cell.resortAddress?.text = Constant.MyClassConstants.viewResponse.resort?.address?.cityName?.appending(", ").appending(Constant.MyClassConstants.viewResponse.resort?.address?.territoryCode ?? "")
                 cell.resortCode?.text = Constant.MyClassConstants.viewResponse.resort?.resortCode
             }
             return cell
+            
         case 1 :
             guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.dateCell, for: indexPath) as? CaledarDateCell else { return UITableViewCell() }
-            let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = Constant.MyClassConstants.dateFormat
-            
-            if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange { // for exchange process
-                if let checkInDate = dateFormatter.date(from: (Constant.MyClassConstants.exchangeViewResponse.destination?.unit?.checkInDate)!) {
-                    //creating calendar date components to get date components sepratelly
-                    let myComponents = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: checkInDate)
-                    cell.checkInDayDateLabel.text = String(describing: myComponents.day!)
-                    cell.checkInDayNameLabel.text = "\(Helper.getWeekdayFromInt(weekDayNumber: myComponents.weekday!))"
-                    cell.checkInMonthYearLabel.text = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month!)) \(myComponents.year!)"
+           
+            if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
+                
+                // for exchange process
+                if let checkInDate = Constant.MyClassConstants.exchangeViewResponse.destination?.checkInDate?.dateFromString(for: Constant.MyClassConstants.dateFormat) {
+                    
+                    let DateComponents = Calendar.current.dateComponents([.day, .weekday, .month, .year], from: checkInDate)
+                    cell.checkInDayDateLabel.text = "\(DateComponents.day ?? 0)".localized()
+                    cell.checkInDayNameLabel.text = "\(Helper.getWeekdayFromInt(weekDayNumber: DateComponents.weekday ?? 0))".localized()
+                    cell.checkInMonthYearLabel.text = "\(Helper.getMonthnameFromInt(monthNumber: DateComponents.month ?? 0)) \(DateComponents.year ?? 0)".localized()
+                } else {
+                    cell.checkInDayDateLabel.text = ""
+                    cell.checkInDayNameLabel.text = ""
+                    cell.checkInMonthYearLabel.text = ""
                 }
                 
-                let myCalendar1 = Calendar(identifier: Calendar.Identifier.gregorian)
-                let dateFormatter1 = DateFormatter()
-                dateFormatter1.dateFormat = Constant.MyClassConstants.dateFormat
-                //checkout date
-                if  let checkOutDate = dateFormatter.date(from: (Constant.MyClassConstants.exchangeViewResponse.destination?.unit?.checkOutDate)!) {
-                    let myComponents1 = (myCalendar1 as NSCalendar).components([.day, .weekday, .month, .year], from: checkOutDate)
-                    //updating date label with date components.
-                    cell.checkOutDayDateLabel.text = String(describing: myComponents1.day!)
-                    cell.checkOutDayNameLabel.text = "\(Helper.getWeekdayFromInt(weekDayNumber: myComponents1.weekday!))"
-                    cell.checkOutMonthYearLabel.text = "\(Helper.getMonthnameFromInt(monthNumber: myComponents1.month!)) \(myComponents1.year!)"
+                if let checkOutDate = Constant.MyClassConstants.exchangeViewResponse.destination?.checkOutDate?.dateFromString(for: Constant.MyClassConstants.dateFormat) {
                     
+                    let checkOutDateComponents = Calendar.current.dateComponents([.day, .weekday, .month, .year], from: checkOutDate)
+                    cell.checkOutDayDateLabel.text = String(checkOutDateComponents.day ?? 0).localized()
+                    cell.checkOutDayNameLabel.text = String(Helper.getWeekdayFromInt(weekDayNumber: checkOutDateComponents.weekday ?? 0)).localized()
+                    cell.checkOutMonthYearLabel.text = "\(Helper.getMonthnameFromInt(monthNumber: checkOutDateComponents.month ?? 0)) \(checkOutDateComponents.year ?? 0)".localized()
+                } else {
+                    cell.checkOutDayDateLabel.text = ""
+                    cell.checkOutDayNameLabel.text = ""
+                    cell.checkOutMonthYearLabel.text = ""
                 }
                 return cell
+                
             } else {
                 
                 //for rental process
-                let checkInDate = dateFormatter.date(from: (Constant.MyClassConstants.viewResponse.unit?.checkInDate)!)
-                
-                //creating calendar date components to get date components sepratelly
-                let myComponents = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: checkInDate!)
-                cell.checkInDayDateLabel.text = String(describing: myComponents.day!)
-                cell.checkInDayNameLabel.text = "\(Helper.getWeekdayFromInt(weekDayNumber: myComponents.weekday!))"
-                cell.checkInMonthYearLabel.text = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month!)) \(myComponents.year!)"
-                
-                let myCalendar1 = Calendar(identifier: Calendar.Identifier.gregorian)
-                let dateFormatter1 = DateFormatter()
-                dateFormatter1.dateFormat = Constant.MyClassConstants.dateFormat
-                let checkOutDate = dateFormatter.date(from: (Constant.MyClassConstants.viewResponse.unit?.checkOutDate)!)
-                let myComponents1 = (myCalendar1 as NSCalendar).components([.day, .weekday, .month, .year], from: checkOutDate!)
-                //updating date label with date components.
-                cell.checkOutDayDateLabel.text = String(describing: myComponents1.day!)
-                cell.checkOutDayNameLabel.text = "\(Helper.getWeekdayFromInt(weekDayNumber: myComponents1.weekday!))"
-                cell.checkOutMonthYearLabel.text = "\(Helper.getMonthnameFromInt(monthNumber: myComponents1.month!)) \(myComponents1.year!)"
+                if let checkInDate = Constant.MyClassConstants.viewResponse.unit?.checkInDate?.dateFromString(for: Constant.MyClassConstants.dateFormat) {
+                    
+                    let checkInDateComponents = Calendar.current.dateComponents([.day, .weekday, .month, .year], from: checkInDate)
+                    cell.checkInDayDateLabel.text = String(checkInDateComponents.day ?? 0).localized()
+                    cell.checkInDayNameLabel.text = "\(Helper.getWeekdayFromInt(weekDayNumber: checkInDateComponents.weekday ?? 0))"
+                    cell.checkInMonthYearLabel.text = "\(Helper.getMonthnameFromInt(monthNumber: checkInDateComponents.month ?? 0)) \(checkInDateComponents.year ?? 0)"
+                } else {
+                    cell.checkInDayDateLabel.text = ""
+                    cell.checkInDayNameLabel.text = ""
+                    cell.checkInMonthYearLabel.text = ""
+                }
+            
+                if let checkOutDate = Constant.MyClassConstants.viewResponse.unit?.checkOutDate?.dateFromString(for: Constant.MyClassConstants.dateFormat) {
+                    
+                    let checkOutDateComponents = Calendar.current.dateComponents([.day, .weekday, .month, .year], from: checkOutDate)
+                    //updating date label with date components.
+                    cell.checkOutDayDateLabel.text = String(checkOutDateComponents.day ?? 0).localized()
+                    cell.checkOutDayNameLabel.text = String(Helper.getWeekdayFromInt(weekDayNumber: checkOutDateComponents.weekday ?? 0))?.localized()
+                    cell.checkOutMonthYearLabel.text = "\(Helper.getMonthnameFromInt(monthNumber: checkOutDateComponents.month ?? 0)) \(checkOutDateComponents.year ?? 0)"
+                } else {
+                    
+                    cell.checkOutDayDateLabel.text = ""
+                    cell.checkOutDayNameLabel.text = ""
+                    cell.checkOutMonthYearLabel.text = ""
+                }
                 
                 return cell
             }
         case 2 :
             guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.unitDetailsCell1, for: indexPath) as? UnitDetailCell else { return UITableViewCell() }
-            // for exchange
             
+            // for exchange search
             if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
                 
-                if let roomSize = UnitSize(rawValue: (Constant.MyClassConstants.exchangeViewResponse.destination?.unit?.unitSize!)!) {
-                    
-                    if let kitchenSize = KitchenType(rawValue: (Constant.MyClassConstants.exchangeViewResponse.destination?.unit?.kitchenType!)!) {
-                        cell.bedroomKitchenLabel.text = Helper.getBedroomNumbers(bedroomType: roomSize.rawValue).appending(", ").appending(Helper.getKitchenEnums(kitchenType: kitchenSize.rawValue))
+                var roomSize = ""
+                var kitchenSize = ""
+                var totalSleepCapacity = 0
+                var privateSleepCapacity = 0
+                
+                if let unitSize = Constant.MyClassConstants.exchangeViewResponse.destination?.unit?.unitSize {
+                    if let bedRoomSize = UnitSize(rawValue: unitSize) {
+                        roomSize = Helper.getBedroomNumbers(bedroomType: bedRoomSize.rawValue)
                     }
                 }
+                if let kitchen = Constant.MyClassConstants.exchangeViewResponse.destination?.unit?.kitchenType {
+                    if let kitchenType = KitchenType(rawValue:  kitchen) {
+                        kitchenSize = Helper.getKitchenEnums(kitchenType: kitchenType.rawValue)
+                    }
+                }
+                cell.bedroomKitchenLabel.text = "\(roomSize), \(kitchenSize)".localized()
                 
-                let totalSleepCapacity: String = String((Constant.MyClassConstants.exchangeViewResponse.destination?.unit?.publicSleepCapacity)! + (Constant.MyClassConstants.exchangeViewResponse.destination?.unit?.privateSleepCapacity)!)
-                let privateSleepCapacity: String = String(describing: (Constant.MyClassConstants.exchangeViewResponse.destination?.unit?.privateSleepCapacity)!)
-                cell.sleepLabel.text = "Sleeps " + totalSleepCapacity + " Total, " + privateSleepCapacity + " Private"
-                
+                if let publicSleepCapacity = Constant.MyClassConstants.exchangeViewResponse.destination?.unit?.publicSleepCapacity {
+                    totalSleepCapacity += publicSleepCapacity
+                }
+                if let privateCapacity = Constant.MyClassConstants.exchangeViewResponse.destination?.unit?.privateSleepCapacity {
+                    totalSleepCapacity += privateCapacity
+                    privateSleepCapacity = privateCapacity
+                }
+                cell.sleepLabel.text = "Sleeps \(totalSleepCapacity) Total, \(privateSleepCapacity) Private".localized()
                 return cell
-            } else {
-                // for rental
                 
+            } else {
+                // for rental search
                 if let roomSize = Constant.MyClassConstants.viewResponse.unit?.unitSize, let kitchen = Constant.MyClassConstants.viewResponse.unit?.kitchenType {
                     guard let roomSize = UnitSize(rawValue: roomSize) else { return cell }
                     guard let kitchenSize = KitchenType(rawValue: kitchen) else { return cell }
@@ -340,28 +474,26 @@ extension DestinationResortViewController: UITableViewDataSource {
                 
             }
         case 3 :
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.advisementCell, for: indexPath) as? AdvisementsTableViewCell else { return UITableViewCell() }
-            if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
-                cell.advisementsLabel.text = Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.advisements[0].description
+            let cell = UITableViewCell()
+            if advisementView == nil {
+                cell.addSubview(getAdvisements())
             } else {
-                cell.advisementsLabel.text = Constant.MyClassConstants.viewResponse.resort?.advisements[0].description
+                guard let advisementview = advisementView else { return cell }
+                cell.addSubview(advisementview)
             }
+            
             return cell
         case 4, 5 :
             if indexPath.row == 0 {
                 
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.unitsDetailCell, for: indexPath) as? AvailableDestinationCountryOrContinentsTableViewCell else { return UITableViewCell() }
-                cell.tooglebutton.tag = indexPath.section
-                if let isOpen = tappedButtonDictionary[indexPath.section] {
+                    cell.tooglebutton.tag = indexPath.section
+                    let isOpen = tappedButtonDictionary[indexPath.section] ?? false
                     if isOpen {
                         cell.dropDownArrowImage.image = #imageLiteral(resourceName: "up_arrow_icon")
                     } else {
                         cell.dropDownArrowImage.image = #imageLiteral(resourceName: "DropArrowIcon")
                     }
-                    
-                } else {
-                    cell.dropDownArrowImage.image = #imageLiteral(resourceName: "DropArrowIcon")
-                }
                 if indexPath.section == 4 {
                     cell.countryOrContinentLabel.text = Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.textUnitDetails
                 } else {
@@ -370,27 +502,20 @@ extension DestinationResortViewController: UITableViewDataSource {
                 return cell
                 
             } else {
-                guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.amenitiesCell, for: indexPath) as? AvailableDestinationPlaceTableViewCell else { return UITableViewCell() }
+                let cell = UITableViewCell()
                 if indexPath.section == 4 {
-                    cell.infoLabel.text = Constant.MyClassConstants.nearbyString.appending("\n\n").appending(Constant.MyClassConstants.onsiteString)
-                } else {
-                    
-                    if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
-                        guard let advisements = Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.advisements else { return cell }
-                        if advisements.count > 1 {
-                            cell.infoLabel.text = Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.advisements[1].description
-                        }
+                    if detailsView == nil {
+                        cell.addSubview(getUnitDetails())
                     } else {
-                        guard let advisements = Constant.MyClassConstants.viewResponse.resort?.advisements else { return cell }
-                        if advisements.count > 1 {
-                            cell.infoLabel.text = Constant.MyClassConstants.viewResponse.resort?.advisements[1].description
-                        }
+                        guard let unitDetialsView = detailsView else { return cell }
+                        cell.addSubview(unitDetialsView)
                     }
-                    
+                    return cell
+                } else {
+                    guard let additionalAdvisementView = additionalAdvisementView else { return cell }
+                    cell.addSubview(additionalAdvisementView)
+                    return cell
                 }
-                cell.infoLabel.sizeToFit()
-                return cell
-                
             }
         default :
             guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.additionalAdvisementCell, for: indexPath) as? UpComingTripCell else { return UITableViewCell() }
@@ -398,4 +523,3 @@ extension DestinationResortViewController: UITableViewDataSource {
         }
     }
 }
-
