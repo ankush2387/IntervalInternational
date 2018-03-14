@@ -44,6 +44,7 @@ class SearchResultViewController: UIViewController {
     var value: String = ""
     var alertFilterOptionsArray = [Constant.AlertResortDestination]()
     var currencyCode = ""
+    var resortImageCellHeight = 310
     
     // Only one section with surroundings found
     var onlySurroundingsFound = false
@@ -1175,7 +1176,7 @@ extension SearchResultViewController: UICollectionViewDelegateFlowLayout {
             }
         } else {
             if indexPath.section == 0 {
-                return CGSize(width: UIScreen.main.bounds.width, height: 270.0)
+                return CGSize(width: UIScreen.main.bounds.width, height: CGFloat(resortImageCellHeight))
             } else {
                 return CGSize(width: UIScreen.main.bounds.width, height: 80.0)
             }
@@ -1546,14 +1547,14 @@ extension SearchResultViewController: UITableViewDelegate {
                     case VacationSearchType.EXCHANGE:
                         if !exactMatchResortsArrayExchange.isEmpty {
                             if let totalUnits = exactMatchResortsArrayExchange[index].inventory?.buckets.count {
-                                return CGFloat(totalUnits * 80 + 270 + 10)
+                                return CGFloat(totalUnits * 80 + resortImageCellHeight + 10)
                             } else {
                                 return 0
                             }
                             
                         } else {
                             if let totalUnits = self.surroundingMatchResortsArrayExchange[index].inventory?.buckets.count {
-                                return CGFloat(totalUnits * 80 + 270 + 10)
+                                return CGFloat(totalUnits * 80 + resortImageCellHeight + 10)
                             } else {
                                 return 0
                             }
@@ -1562,13 +1563,13 @@ extension SearchResultViewController: UITableViewDelegate {
                     case VacationSearchType.RENTAL:
                         if !exactMatchResortsArray.isEmpty {
                             if let totalUnits = self.exactMatchResortsArray[index].inventory?.units.count {
-                                return CGFloat(totalUnits * 80 + 270 + 10)
+                                return CGFloat(totalUnits * 80 + resortImageCellHeight + 10)
                             } else {
                                 return 0
                             }
                         } else {
                             if let totalUnits = self.surroundingMatchResortsArray[index].inventory?.units.count {
-                                return CGFloat(totalUnits * 80 + 270 + 10)
+                                return CGFloat(totalUnits * 80 + resortImageCellHeight + 10)
                             } else {
                                 return 0
                             }
@@ -1579,14 +1580,14 @@ extension SearchResultViewController: UITableViewDelegate {
                             if combinedExactSearchItems[index].rentalAvailability != nil {
                                 let rentalInventory = combinedExactSearchItems[index].rentalAvailability
                                 if let totalUnits = rentalInventory?.inventory?.units.count {
-                                    return CGFloat(totalUnits * 80 + 270 + 10)
+                                    return CGFloat(totalUnits * 80 + resortImageCellHeight + 10)
                                 } else {
                                     return 0
                                 }
                             } else {
                                 let exchangeInventory = combinedExactSearchItems[index].exchangeAvailability
                                 if let totalUnits = exchangeInventory?.inventory?.buckets.count {
-                                    return CGFloat(totalUnits * 80 + 270 + 10)
+                                    return CGFloat(totalUnits * 80 + resortImageCellHeight + 10)
                                 } else {
                                     return 0
                                 }
@@ -1595,14 +1596,14 @@ extension SearchResultViewController: UITableViewDelegate {
                             if combinedSurroundingSearchItems[index].rentalAvailability != nil {
                                 let rentalInventory = combinedSurroundingSearchItems[index].rentalAvailability
                                 if let totalUnits = rentalInventory?.inventory?.units.count {
-                                    return CGFloat(totalUnits * 80 + 270 + 10)
+                                    return CGFloat(totalUnits * 80 + resortImageCellHeight + 10)
                                 } else {
                                     return 0
                                 }
                             } else {
                                 let exchangeInventory = combinedSurroundingSearchItems[index].exchangeAvailability
                                 if let totalUnits = exchangeInventory?.inventory?.buckets.count {
-                                    return CGFloat(totalUnits * 80 + 270 + 10)
+                                    return CGFloat(totalUnits * 80 + resortImageCellHeight + 10)
                                 } else {
                                     return 0
                                 }
@@ -1618,13 +1619,13 @@ extension SearchResultViewController: UITableViewDelegate {
                     case VacationSearchType.EXCHANGE:
                         if !exactMatchResortsArrayExchange.isEmpty {
                             if let totalUnits = self.exactMatchResortsArrayExchange[indexPath.row].inventory?.buckets.count {
-                                return CGFloat(totalUnits * 80 + 270 + 10)
+                                return CGFloat(totalUnits * 80 + resortImageCellHeight + 10)
                             } else {
                                 return 0
                             }
                         } else {
                             if let totalUnits = self.surroundingMatchResortsArrayExchange[indexPath.row].inventory?.buckets.count {
-                                return CGFloat(totalUnits * 80 + 270 + 10)
+                                return CGFloat(totalUnits * 80 + resortImageCellHeight + 10)
                             } else {
                                 return 0
                             }
@@ -1633,13 +1634,13 @@ extension SearchResultViewController: UITableViewDelegate {
                     case VacationSearchType.RENTAL:
                         if !exactMatchResortsArray.isEmpty {
                             if let totalUnits = self.exactMatchResortsArray[indexPath.row].inventory?.units.count {
-                                return CGFloat(totalUnits * 80 + 270 + 10)
+                                return CGFloat(totalUnits * 80 + resortImageCellHeight + 10)
                             } else {
                                 return 0
                             }
                         } else {
                             if let totalUnits = self.surroundingMatchResortsArray[indexPath.row].inventory?.units.count {
-                                return CGFloat(totalUnits * 80 + 270 + 10)
+                                return CGFloat(totalUnits * 80 + resortImageCellHeight + 10)
                             } else {
                                 return 0
                             }
@@ -1650,14 +1651,14 @@ extension SearchResultViewController: UITableViewDelegate {
                             if combinedExactSearchItems[indexPath.row].rentalAvailability != nil {
                                 let rentalInventory = combinedExactSearchItems[indexPath.row].rentalAvailability
                                 if let totalUnits = rentalInventory?.inventory?.units.count {
-                                    return CGFloat(totalUnits * 80 + 270 + 10)
+                                    return CGFloat(totalUnits * 80 + resortImageCellHeight + 10)
                                 } else {
                                     return 0
                                 }
                             } else {
                                 let exchangeInventory = combinedExactSearchItems[indexPath.row].exchangeAvailability
                                 if let totalUnits = exchangeInventory?.inventory?.buckets.count {
-                                    return CGFloat(totalUnits * 80 + 270 + 10)
+                                    return CGFloat(totalUnits * 80 + resortImageCellHeight + 10)
                                 } else {
                                     return 0
                                 }
@@ -1667,14 +1668,14 @@ extension SearchResultViewController: UITableViewDelegate {
                             if combinedSurroundingSearchItems[indexPath.row].rentalAvailability != nil {
                                 let rentalInventory = combinedSurroundingSearchItems[indexPath.row].rentalAvailability
                                 if let totalUnits = rentalInventory?.inventory?.units.count {
-                                    return CGFloat(totalUnits * 80 + 270 + 10)
+                                    return CGFloat(totalUnits * 80 + resortImageCellHeight + 10)
                                 } else {
                                     return 0
                                 }
                             } else {
                                 let exchangeInventory = combinedSurroundingSearchItems[indexPath.row].exchangeAvailability
                                 if let totalUnits = exchangeInventory?.inventory?.buckets.count {
-                                    return CGFloat(totalUnits * 80 + 270 + 10)
+                                    return CGFloat(totalUnits * 80 + resortImageCellHeight + 10)
                                 } else {
                                     return 0
                                 }
