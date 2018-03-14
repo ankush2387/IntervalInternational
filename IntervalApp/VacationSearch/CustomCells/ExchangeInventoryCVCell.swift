@@ -73,7 +73,7 @@ class ExchangeInventoryCVCell: UICollectionViewCell {
             let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapBlurButton))
             self.addGestureRecognizer(tapGesture)
         } else {
-            if  invetoryItem.buckets[indexPath.row].pointsCost != 0 {
+            if  invetoryItem.buckets[indexPath.row].pointsCost != 0 && (Constant.MyClassConstants.isCIGAvailable || Constant.MyClassConstants.isClubPointsAvailable) {
                 let availablePoints = invetoryItem.buckets[indexPath.row].pointsCost as NSNumber
                 exchangeStackView.isHidden = true
                 let numberFormatter = NumberFormatter()
