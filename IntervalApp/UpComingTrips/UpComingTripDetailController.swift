@@ -532,7 +532,8 @@ extension UpComingTripDetailController: UITableViewDataSource {
                     }, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
                 }
             }
-            cell.transactionType.text = Constant.MyClassConstants.transactionType.localized()
+            let type = ExchangeTransactionType.fromName(name: Constant.MyClassConstants.transactionType).friendlyNameForUpcomingTrip()
+            cell.transactionType.text = type.localized().uppercased()
             
             cell.selectionStyle = UITableViewCellSelectionStyle.none
             cell.backgroundColor = UIColor.clear
