@@ -902,9 +902,11 @@ extension UIViewController {
             deal.header = header
         }
         deal.fromDate = Constant.MyClassConstants.topDeals[selectedIndexPath.row].fromDate
-        if let areacode = Constant.MyClassConstants.topDeals[selectedIndexPath.row].areaCodes.first {
-            deal.areaCodes = [areacode]
+        guard let areacode = Constant.MyClassConstants.topDeals[selectedIndexPath.row].areaCodes.first else {
+            return presentErrorAlert(UserFacingCommonError.noData)
         }
+        
+        deal.areaCodes = [areacode]
         let searchCriteria = Helper.createSearchCriteriaForRentalDeal(deal: deal)
         
         if let settings = Session.sharedSession.appSettings {
