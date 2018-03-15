@@ -413,7 +413,7 @@ class ResortDetailsViewController: UIViewController {
         } else {
             tappedButtonDictionary.updateValue(true, forKey: sender.tag)
         }
-        tableViewResorts.reloadSections(IndexSet(integer: sender.tag), with: .automatic)
+        tableViewResorts.reloadData()
     }
     //Function for forward button
     @IBAction func forwardButtonClicked(_ sender: AnyObject) {
@@ -525,7 +525,7 @@ extension ResortDetailsViewController: UITableViewDelegate {
                             } else { return 60 }
 
                         case 5 :
-                            return 80
+                            return 50
                         case 6 :
                             if Constant.MyClassConstants.resortsDescriptionArray.tdiUrl != nil {
                                 return 600
@@ -689,7 +689,9 @@ extension ResortDetailsViewController: UITableViewDataSource {
                             return 2
                             
                         case 5 :
-                            return Constant.MyClassConstants.resortsDescriptionArray.rating?.categories.count ?? 0 + 1
+                            if let categories = Constant.MyClassConstants.resortsDescriptionArray.rating?.categories {
+                                return categories.count > 0  ? categories.count + 1 : 0
+                            } else { return  0 }
                             
                         case 6 :
                             return 2
@@ -916,47 +918,46 @@ extension ResortDetailsViewController: UITableViewDataSource {
                                 availableCountryCell?.infoLabel.text = amenityNearbyString.localized()
                             }
                         case 5 :
-                            if let resortCategory = Constant.MyClassConstants.resortsDescriptionArray.rating?.categories, let categoryCode = resortCategory[indexPath.row - 1].categoryCode {
-                                availableCountryCell?.infoLabel.text = Helper.getRatingCategory(category: categoryCode ?? "") + "\n" + " \(resortCategory[indexPath.row - 1].rating)".localized()
-                                
-                                let resortRating = "\(resortCategory[indexPath.row - 1].rating)"
-                                let ratingArray = resortRating.components(separatedBy: "")
-                                var image_X: CGFloat = 25.0
-                                var image_X1: CGFloat = 25.0
-                                
-                                // to show empty circle image
-                                for _ in 0..<5 {
-                                    let imgVwRating = UIImageView()
-                                    imgVwRating.frame = CGRect(x: image_X1, y: 50, width: 20, height: 20)
-                                    imgVwRating.image = UIImage(named: "empty_circle")
-                                    availableCountryCell?.contentView.addSubview(imgVwRating)
-                                    image_X1 = image_X1 + 25
-                                    
-                                }
-                                
-                                //to show full filled circle
-                                // Jira https://jira.iilg.com/browse/MOBI-1569
-                                // Change to account for Int to Float change introduced in DarwinSDK commit
-                                // https://bitbucket.iilg.com/projects/IIMOB/repos/darwin-sdk-ios/commits/87bb2a9b9b747993939022a87c2cb1297577e362
-                                let castedInt = Int(resortCategory[indexPath.row - 1].rating)
-                                for _ in 0..<castedInt {
-                                    let imgVwRating = UIImageView()
-                                    imgVwRating.frame = CGRect(x: image_X, y: 50, width: 20, height: 20)
-                                    imgVwRating.image = UIImage(named: "full_filled_circle")
-                                    availableCountryCell?.contentView.addSubview(imgVwRating)
-                                    image_X = image_X + 25
-                                }
-                                
-                                // to show half filled circle
-                                if let rating = ratingArray.last?.characters.count, rating > 1 {
-                                    let imgVwRating = UIImageView()
-                                    imgVwRating.frame = CGRect(x: image_X, y: 50, width: 20, height: 20)
-                                    imgVwRating.image = UIImage(named: "half_filled_circle")
-                                    availableCountryCell?.contentView.addSubview(imgVwRating)
-                                    image_X = image_X + 25
-                                }
+                            let ratingCell = UITableViewCell()
+                            let resortCategory = Constant.MyClassConstants.resortsDescriptionArray.rating?.categories ?? []
+                            let categoryCode = resortCategory[indexPath.row - 1].categoryCode ?? ""
+                             ratingCell.textLabel?.text = Helper.getRatingCategory(category: categoryCode)
+                            
+                            // to set cell background color
+                            if indexPath.row % 2 != 0 {
+                                ratingCell.backgroundColor = #colorLiteral(red: 0.968627451, green: 0.968627451, blue: 0.968627451, alpha: 1)
                             }
-                        
+                            
+                            let resortRating = resortCategory[indexPath.row - 1].rating
+                            var image_X: CGFloat = view.frame.size.width / 2 + 40
+                            var ratingImageArray = [UIImageView]()
+                            let startRatingIndex = 1, endRatingIndex = 5
+                            
+                            // to show empty circle image
+                            for _ in startRatingIndex...endRatingIndex {
+                                let ratingImageView = UIImageView(image: #imageLiteral(resourceName: "empty_circle"))
+                                ratingImageView.frame.origin.x = image_X
+                                ratingCell.contentView.addSubview(ratingImageView)
+                                image_X = image_X + ratingImageView.frame.size.width + 5
+                                ratingImageView.center.y = ratingCell.center.y + 3
+                                ratingImageArray.append(ratingImageView)
+                            }
+
+                            // show full rating here
+                            let fullRating = Int(resortCategory[indexPath.row - 1].rating)
+                            var index = 0
+                            for _ in 0..<fullRating {
+                                ratingImageArray[index].image = #imageLiteral(resourceName: "full_filled_circle")
+                                index = index + 1
+                            }
+                            
+                            // show hakf rating here
+                            let hasHalfrating = resortRating.truncatingRemainder(dividingBy: 1.0)
+                            if hasHalfrating > 0 {
+                                ratingImageArray[fullRating].image = #imageLiteral(resourceName: "half_filled_circle")
+                            }
+                            return ratingCell
+        
                         case 6 :
                             availableCountryCell?.tdiImageView.backgroundColor = UIColor.lightGray
                             if let urlString = Constant.MyClassConstants.resortsDescriptionArray.tdiUrl {
