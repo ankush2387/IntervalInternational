@@ -420,7 +420,11 @@ extension GetawayAlertsIPhoneViewController: UITableViewDelegate {
             return []
         }
         
-        if !alertStatus {
+        guard let alertCheckInDate = getawayAlert.earliestCheckInDate?.dateFromFormat(Constant.MyClassConstants.dateFormat) else {
+           return []
+        }
+        
+        if !alertStatus && alertCheckInDate.isAfter(Date()) {
             let activate = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: Constant.buttonTitles.activate) { (action, index) -> Void in
                 self.showHudAsync()
                 let editedAlert = getawayAlert
