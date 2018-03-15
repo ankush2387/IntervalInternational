@@ -447,7 +447,7 @@ class Constant: NSObject {
         static var paymentInfo = "Select your payment method".localized()
         static var verifying = "Verifying...".localized()
         static var insurance = "Trip Protection".localized()
-        static var upgradeCost = "Unit Upgrade Fee".localized()
+        static var upgradeCost = "Unit-Size Upgrade".localized()
         static var guestCertificateTitle = "Guest Certificate".localized()
         static var renewals = "Renewals".localized()
         static var exchangeFeeTitle = "Exchange Fee"
