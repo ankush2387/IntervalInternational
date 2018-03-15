@@ -753,15 +753,16 @@ extension UpComingTripDetailController: UITableViewDataSource {
                 
                 return UITableViewCell()
             }
-            if let showPolicyButton = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.ancillaryProducts?.eplus?.purchased {
-                if showPolicyButton {
-                    // Executes when booleanValue is true
-                    cell.purchasePolicyButton.isHidden = false
-                    cell.purchasePolicyButton.addTarget(self, action: #selector(UpComingTripDetailController.modifyUpcomingTripButtonClicked(_:)), for: UIControlEvents.touchUpInside)
-                } else {
-                    cell.purchasePolicyButton.isHidden = true
-                }
+
+            if Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.ancillaryProducts?.insurance != nil && Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.ancillaryProducts?.insurance?.policyNumber != nil {
+                
+                        cell.purchasePolicyButton.isHidden = true
+                
+            } else {
+                cell.purchasePolicyButton.isHidden = false
+                cell.purchasePolicyButton.addTarget(self, action: #selector(UpComingTripDetailController.modifyUpcomingTripButtonClicked(_:)), for: UIControlEvents.touchUpInside)
             }
+            
             cell.selectionStyle = .none
             cell.isUserInteractionEnabled = true
             cell.backgroundColor = IUIKColorPalette.contentBackground.color
