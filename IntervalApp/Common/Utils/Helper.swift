@@ -1346,7 +1346,7 @@ public class Helper {
     // function for card name mappping with code and return code
     static func cardNameMapping(cardName: String) -> String {
         switch cardName {
-        case "MASTER CARD":
+        case "MASTERCARD":
             return "MC"
             
         case "AMERICAN EXPRESS":

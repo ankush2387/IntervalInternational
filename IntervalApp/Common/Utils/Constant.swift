@@ -872,7 +872,7 @@ class Constant: NSObject {
         //card details
         static var nameOnCard = "Name on Card".localized()
         static var cardNumber = "Card Number".localized()
-        static var type = "Type".localized()
+        static var type = "Card Type".localized()
         static var expirationDate = "Select Expiration Date".localized()
         static var cvv = NSLocalizedString("CVV", comment: "")
         static var expirationDatePlaceHolder = "MM/YY".localized()

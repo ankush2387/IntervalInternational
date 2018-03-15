@@ -255,6 +255,7 @@
 		3C58DD5A1F8D2A46003C5791 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C58DD591F8D2A46003C5791 /* LoginViewModel.swift */; };
 		3C58DD5C1F8D2B32003C5791 /* LoginCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C58DD5B1F8D2B32003C5791 /* LoginCoordinator.swift */; };
 		3C58DD5F1F8D3D04003C5791 /* UserDafaultsWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C58DD5E1F8D3D04003C5791 /* UserDafaultsWrapper.swift */; };
+		3C646E61205B0EA200081A64 /* String+Formatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C646E60205B0EA200081A64 /* String+Formatting.swift */; };
 		3C68B2AD20338222006BF970 /* SingleSelectionCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C68B2AC20338222006BF970 /* SingleSelectionCellModel.swift */; };
 		3C68B2B120339E45006BF970 /* SingleSelectionCellUIType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C68B2B020339E45006BF970 /* SingleSelectionCellUIType.swift */; };
 		3C6D10DE1F965520000B9583 /* String+UnwrappedSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C6D10DD1F965520000B9583 /* String+UnwrappedSpec.swift */; };
@@ -687,6 +688,7 @@
 		3C58DD591F8D2A46003C5791 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		3C58DD5B1F8D2B32003C5791 /* LoginCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginCoordinator.swift; sourceTree = "<group>"; };
 		3C58DD5E1F8D3D04003C5791 /* UserDafaultsWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDafaultsWrapper.swift; sourceTree = "<group>"; };
+		3C646E60205B0EA200081A64 /* String+Formatting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Formatting.swift"; sourceTree = "<group>"; };
 		3C68B2AC20338222006BF970 /* SingleSelectionCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleSelectionCellModel.swift; sourceTree = "<group>"; };
 		3C68B2B020339E45006BF970 /* SingleSelectionCellUIType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleSelectionCellUIType.swift; sourceTree = "<group>"; };
 		3C6D10DD1F965520000B9583 /* String+UnwrappedSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+UnwrappedSpec.swift"; sourceTree = "<group>"; };
@@ -1857,6 +1859,7 @@
 				3C28D2BA200FD17700A08C68 /* String+DateFormat.swift */,
 				3C28D2BD200FD69300A08C68 /* Date+Format.swift */,
 				3CABE66A203CAE2300C8EC15 /* AttributedString+Bold.swift */,
+				3C646E60205B0EA200081A64 /* String+Formatting.swift */,
 			);
 			name = Extensions;
 			path = Utils;
@@ -2260,7 +2263,7 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-IntervalApp/Pods-IntervalApp-resources.sh",
 				"$PODS_CONFIGURATION_BUILD_DIR/Brightcove-Player-SDK/BCOVPUIResources.bundle",
 				"${PODS_ROOT}/GoogleMaps/Maps/Frameworks/GoogleMaps.framework/Versions/A/Resources/GoogleMaps.bundle",
-				"$PODS_CONFIGURATION_BUILD_DIR/HockeySDK/HockeySDKResources.bundle",
+				$PODS_CONFIGURATION_BUILD_DIR/HockeySDK/HockeySDKResources.bundle,
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
@@ -2349,6 +2352,7 @@
 				3AF7CC081C8450FF00FB9AC6 /* TransitionManager.swift in Sources */,
 				3A45F5C21CA051FE0045B2EF /* MyownershipClubIntervalGoldPointsTableViewCell.swift in Sources */,
 				3AAA5A431C720F4500A5EA6D /* LoginLowerButtonCell.swift in Sources */,
+				3C646E61205B0EA200081A64 /* String+Formatting.swift in Sources */,
 				3A8C7EB91C85A7DB000A4E46 /* PrivacyLegalViewController.swift in Sources */,
 				3A932D5A1C8868F7004BF665 /* PaymentCell.swift in Sources */,
 				3A892F491CD3902F00AE6F45 /* GetawaysCell.swift in Sources */,

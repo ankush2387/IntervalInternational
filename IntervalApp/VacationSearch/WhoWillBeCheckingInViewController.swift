@@ -543,7 +543,25 @@ class WhoWillBeCheckingInViewController: UIViewController {
                     
                     DarwinSDK.logger.debug("Promo codes are : \(String(describing: response.view?.promoCodes))")
                     DarwinSDK.logger.debug("Response is : \(String(describing: response.view?.fees)) , -------->\(response)")
-                    Constant.MyClassConstants.allowedCreditCardType = (response.view?.allowedCreditCardTypes)!
+                    
+                    if let allowedCreditCards = response.view?.allowedCreditCardTypes {
+                        
+                        // Jira: https://jira.iilg.com/browse/MOBI-1854
+                        // This should already come from the server without the spacing.
+                        // Will fix on our side for now, but correct way would be for server to make the adjustments.
+                        
+                        Constant.MyClassConstants.allowedCreditCardType = allowedCreditCards.map {
+                            if $0.name?.uppercased() == "MASTER CARD" {
+                                let allowedCreditCard = AllowedCreditCardType()
+                                allowedCreditCard.name = $0.name?.replacingOccurrences(of: " ", with: "")
+                                allowedCreditCard.typeCode = $0.typeCode
+                                return allowedCreditCard
+                            }
+                            
+                            return $0
+                        }
+                    }
+                
                     Constant.MyClassConstants.exchangeFees = [(response.view?.fees)!]
                     if Int((Constant.MyClassConstants.exchangeFees[0].shopExchange?.rentalPrice?.tax)!) != 0 {
                         Constant.MyClassConstants.enableTaxes = true
