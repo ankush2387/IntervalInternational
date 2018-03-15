@@ -23,7 +23,7 @@ class RenewelViewController: UIViewController {
     
     // MARK: - Delegate
     weak var delegate: RenewelViewControllerDelegate?
-
+    
     // MARK: - clas  outlets
     @IBOutlet fileprivate weak var renewalsTableView: UITableView!
     
@@ -54,7 +54,7 @@ class RenewelViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         if Constant.MyClassConstants.noThanksForNonCore || Constant.MyClassConstants.isChangeNoThanksButtonTitle {
-             Constant.MyClassConstants.renewalsHeaderTitle = Constant.MyClassConstants.freeGuestCertificateTitle
+            Constant.MyClassConstants.renewalsHeaderTitle = Constant.MyClassConstants.freeGuestCertificateTitle
             lblHeaderTitle?.text = Constant.MyClassConstants.freeGuestCertificateTitle
         } else if !forceRenewals.comboProducts.isEmpty || (!forceRenewals.crossSelling.isEmpty && !forceRenewals.products.isEmpty) {
             Constant.MyClassConstants.renewalsHeaderTitle = Constant.MyClassConstants.comboHeaderTitle
@@ -73,7 +73,7 @@ class RenewelViewController: UIViewController {
             renewalsTableView.tableHeaderView = headerLabel
         }
         checkForComboNonCombo()
- 
+        
     }
     
     // MARK: - Check for combo and non combo
@@ -96,8 +96,8 @@ class RenewelViewController: UIViewController {
             // case for como
         } else if !forceRenewals.comboProducts.isEmpty || (forceRenewals.crossSelling.count == 0 && forceRenewals.products.count == 0) {
             
-           sectionCount = 2
-           isCombo = true
+            sectionCount = 2
+            isCombo = true
             
         } else {
             
@@ -105,7 +105,7 @@ class RenewelViewController: UIViewController {
         }
         
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -119,79 +119,79 @@ class RenewelViewController: UIViewController {
         if sender.tag == 0 && isNonCombo {
             let lowestTerm = forceRenewals.products[0].term
             for renewal in forceRenewals.products where renewal.term == lowestTerm {
-                    let renewalItem = Renewal()
-                    renewalItem.id = renewal.id
-                    renewalItem.productCode = renewal.productCode
-                    renewalArray.append(renewalItem)
-                    break
+                let renewalItem = Renewal()
+                renewalItem.id = renewal.id
+                renewalItem.productCode = renewal.productCode
+                renewalArray.append(renewalItem)
+                break
             }
             
             let lowestCrossSellingTerm = forceRenewals.crossSelling[0].term
             for renewal in forceRenewals.crossSelling where renewal.term == lowestCrossSellingTerm {
                 
-                    let renewalItem = Renewal()
-                    renewalItem.id = renewal.id
-                    renewalItem.productCode = renewal.productCode
-                    renewalArray.append(renewalItem)
-                    break
+                let renewalItem = Renewal()
+                renewalItem.id = renewal.id
+                renewalItem.productCode = renewal.productCode
+                renewalArray.append(renewalItem)
+                break
             }
         } else if sender.tag == 1 && isNonCombo {
             let lowestTerm = forceRenewals.products[0].term
             for renewal in forceRenewals.products where renewal.term == lowestTerm {
                 
-                    let renewalItem = Renewal()
-                    renewalItem.id = renewal.id
-                    renewalItem.productCode = renewal.productCode
-                    renewalArray.append(renewalItem)
-                    
-                    // show guest certificate
-                    let lowestTerm = forceRenewals.crossSelling[0].term
-                    for renewal in forceRenewals.crossSelling {
-                        if renewal.productCode == "PLT" && renewal.term == lowestTerm {
-                            Constant.MyClassConstants.noThanksForNonCore = true
-                        } else {
-                            Constant.MyClassConstants.noThanksForNonCore = false
-                        }
+                let renewalItem = Renewal()
+                renewalItem.id = renewal.id
+                renewalItem.productCode = renewal.productCode
+                renewalArray.append(renewalItem)
+                
+                // show guest certificate
+                let lowestTerm = forceRenewals.crossSelling[0].term
+                for renewal in forceRenewals.crossSelling {
+                    if renewal.productCode == "PLT" && renewal.term == lowestTerm {
+                        Constant.MyClassConstants.noThanksForNonCore = true
+                    } else {
+                        Constant.MyClassConstants.noThanksForNonCore = false
                     }
-                   
+                }
+                
             }
             
         } else if isCombo {
             for renewalComboArray in forceRenewals.comboProducts {
                 let lowestTerm = forceRenewals.comboProducts[0].renewalComboProducts[0].term
                 for renewals in renewalComboArray.renewalComboProducts  where renewals.term == lowestTerm {
-                        let renewalItem = Renewal()
-                        renewalItem.id = renewals.id
-                        renewalItem.productCode = renewals.productCode
-                        renewalArray.append(renewalItem)
+                    let renewalItem = Renewal()
+                    renewalItem.id = renewals.id
+                    renewalItem.productCode = renewals.productCode
+                    renewalArray.append(renewalItem)
                 }
             }
         } else if isNonCore {
             let lowestTerm = forceRenewals.crossSelling[0].term
             for renewal in forceRenewals.crossSelling where renewal.term == lowestTerm {
-                    let renewalItem = Renewal()
-                    renewalItem.id = renewal.id
-                    renewalItem.productCode = renewal.productCode
-                    renewalArray.append(renewalItem)
-                    let lowestCrossSellingTerm = forceRenewals.crossSelling[0].term
-                    for renewal in forceRenewals.crossSelling {
-                        if renewal.productCode == "PLT" && renewal.term == lowestCrossSellingTerm {
-                            Constant.MyClassConstants.noThanksForNonCore = true
-                        } else {
-                            Constant.MyClassConstants.noThanksForNonCore = false
-                        }
+                let renewalItem = Renewal()
+                renewalItem.id = renewal.id
+                renewalItem.productCode = renewal.productCode
+                renewalArray.append(renewalItem)
+                let lowestCrossSellingTerm = forceRenewals.crossSelling[0].term
+                for renewal in forceRenewals.crossSelling {
+                    if renewal.productCode == "PLT" && renewal.term == lowestCrossSellingTerm {
+                        Constant.MyClassConstants.noThanksForNonCore = true
+                    } else {
+                        Constant.MyClassConstants.noThanksForNonCore = false
                     }
-                    
-                    break
+                }
+                
+                break
             }
         } else if isCore {
             let lowestTerm = forceRenewals.products[0].term
             for renewal in forceRenewals.products where renewal.term == lowestTerm {
-                    let renewalItem = Renewal()
-                    renewalItem.id = renewal.id
-                    renewalItem.productCode = renewal.productCode
-                    renewalArray.append(renewalItem)
-                    break
+                let renewalItem = Renewal()
+                renewalItem.id = renewal.id
+                renewalItem.productCode = renewal.productCode
+                renewalArray.append(renewalItem)
+                break
             }
         }
         
@@ -261,13 +261,13 @@ class RenewelViewController: UIViewController {
     }
     
     // MARK: - Navigation
-
+    
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
     }
-
+    
 }
 
 // MARK: - table view datasource
@@ -276,7 +276,7 @@ extension RenewelViewController: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         
         return sectionCount
-    
+        
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -294,20 +294,20 @@ extension RenewelViewController: UITableViewDataSource {
         var priceAndCurrency = ""
         
         //Combo
-        if !forceRenewals.comboProducts.isEmpty {
-    
-             if lblHeaderTitle?.text == Constant.MyClassConstants.freeGuestCertificateTitle || Constant.MyClassConstants.renewalsHeaderTitle == Constant.MyClassConstants.freeGuestCertificateTitle {
+        if !forceRenewals.comboProducts.isEmpty && indexPath.section == 0 {
+            
+            if lblHeaderTitle?.text == Constant.MyClassConstants.freeGuestCertificateTitle || Constant.MyClassConstants.renewalsHeaderTitle == Constant.MyClassConstants.freeGuestCertificateTitle {
                 let lowestTerm = forceRenewals.crossSelling[0].term
                 term = "\( (lowestTerm ?? 12) / 12)-year"
                 for crossSelling in forceRenewals.crossSelling where crossSelling.term == lowestTerm {
                     if let productCode = crossSelling.productCode {
                         cell.renewelImageView?.image = UIImage(named: productCode )
                     }
-                        
-                        // hide core and non core here
-                        
-                        cell.renewelCoreImageView?.isHidden = true
-                        cell.renewelnonCoreImageView?.isHidden = true
+                    
+                    // hide core and non core here
+                    
+                    cell.renewelCoreImageView?.isHidden = true
+                    cell.renewelnonCoreImageView?.isHidden = true
                     
                     if let currencyCode = forceRenewals.currencyCode {
                         var currencyCodeWithSymbol = currencyHelper.getCurrencyFriendlySymbol(currencyCode: currencyCode)
@@ -318,75 +318,77 @@ extension RenewelViewController: UITableViewDataSource {
                         
                         priceAndCurrency = currencyCodeWithSymbol + "\(price)"
                     }
-                        
-                        // make attributed string
-                       let formattedString = Helper.returnStringWithPriceAndTerm(price: priceAndCurrency, term: term)
-                        
-                        let range = (formattedString as NSString).range(of: priceAndCurrency)
-                        
-                        let attributeString = NSMutableAttributedString(string: formattedString)
-                        if let font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: CGFloat(20.0)) {
+                    
+                    // make attributed string
+                    let formattedString = Helper.returnStringWithPriceAndTerm(price: priceAndCurrency, term: term)
+                    
+                    let range = (formattedString as NSString).range(of: priceAndCurrency)
+                    
+                    let attributeString = NSMutableAttributedString(string: formattedString)
+                    if let font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: CGFloat(20.0)) {
                         attributeString.setAttributes([NSFontAttributeName: font, NSForegroundColorAttributeName: UIColor(red: 0.0 / 255.0, green: 201.0 / 255.0, blue: 11.0 / 255.0, alpha: 1.0)], range: range)
                     }
-                        
-                        cell.renewelLbl?.attributedText = attributeString
-                        cell.selectButton?.setTitle(Constant.MyClassConstants.renewNow, for: .normal)
-                        
-                        break
+                    
+                    cell.renewelLbl?.attributedText = attributeString
+                    cell.selectButton?.setTitle(Constant.MyClassConstants.renewNow, for: .normal)
+                    
+                    break
                 }
                 
             } else {
                 let comboLowestTerm = forceRenewals.comboProducts[0].renewalComboProducts[0].term
-                term = "\((comboLowestTerm ?? 12)/12)-year"
-                for comboProduct in (forceRenewals.comboProducts) {
-                    for renewalComboProduct in comboProduct.renewalComboProducts where renewalComboProduct.term == comboLowestTerm {
-                            //hide renewal image here
-                            cell.renewelImageView?.isHidden = true
-                            
-                            // show core and non core here
-                            
-                            cell.renewelCoreImageView?.isHidden = false
-                            cell.renewelnonCoreImageView?.isHidden = false
-                            
-                            // currency code
-                        if let currencyCode = forceRenewals.currencyCode {
-                            
-                            var currencyCodeWithSymbol = currencyHelper.getCurrencyFriendlySymbol(currencyCode: currencyCode)
-                            if let countryCode = Session.sharedSession.contact?.getCountryCode() {
-                                currencyCodeWithSymbol = currencyHelper.getCurrencyFriendlySymbol(currencyCode: currencyCode, countryCode: countryCode)
+                term = "\((comboLowestTerm ?? 12) / (12))-year"
+                
+                for renewalComboProduct in forceRenewals.comboProducts[0].renewalComboProducts where renewalComboProduct.term == comboLowestTerm {
+                    //hide renewal image here
+                    cell.renewelImageView?.isHidden = true
+                    
+                    // show core and non core here
+                    
+                    cell.renewelCoreImageView?.isHidden = false
+                    cell.renewelnonCoreImageView?.isHidden = false
+                    
+                    // currency code
+                    if let currencyCode = forceRenewals.currencyCode {
+                        
+                        var currencyCodeWithSymbol = currencyHelper.getCurrencyFriendlySymbol(currencyCode: currencyCode)
+                        if let countryCode = Session.sharedSession.contact?.getCountryCode() {
+                            currencyCodeWithSymbol = currencyHelper.getCurrencyFriendlySymbol(currencyCode: currencyCode, countryCode: countryCode)
+                        }
+                        if renewalComboProduct.isCoreProduct {
+                            if let productCode = renewalComboProduct.productCode {
+                                cell.renewelCoreImageView?.image = UIImage(named: productCode)
                             }
-                            if renewalComboProduct.isCoreProduct {
-                                if let productCode = renewalComboProduct.productCode {
-                                    cell.renewelCoreImageView?.image = UIImage(named: productCode)
-                                }
-                                
-                                let price = String(format: "%.0f", renewalComboProduct.price)
-                                
-                                priceAndCurrency = currencyCodeWithSymbol + "\(price)"
-                                
+                            
+                            let price = String(format: "%.0f", renewalComboProduct.price)
+                            
+                            priceAndCurrency = currencyCodeWithSymbol + "\(price)"
+                            
+                            if let displayName = renewalComboProduct.displayName?.capitalized {
                                 //formatted string
-                                let formattedString = Helper.returnIntervalMembershipString(price: priceAndCurrency, term: term)
+                                let formattedString = Helper.returnIntervalMembershipString(displayName: displayName, price: priceAndCurrency, term: term)
                                 
                                 let range = (formattedString as NSString).range(of: priceAndCurrency)
                                 
                                 let attributeString = NSMutableAttributedString(string: formattedString)
                                 if let font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: CGFloat(20.0)) {
-                                attributeString.setAttributes([NSFontAttributeName: font, NSForegroundColorAttributeName: UIColor(red: 0.0 / 255.0, green: 201.0 / 255.0, blue: 11.0 / 255.0, alpha: 1.0)], range: range)
+                                    attributeString.setAttributes([NSFontAttributeName: font, NSForegroundColorAttributeName: UIColor(red: 0.0 / 255.0, green: 201.0 / 255.0, blue: 11.0 / 255.0, alpha: 1.0)], range: range)
                                 }
                                 
                                 cell.renewelLbl?.attributedText = attributeString
-                                
-                            } else {
-                               
-                                if let productCode = renewalComboProduct.productCode { cell.renewelnonCoreImageView?.image = UIImage(named: productCode)
-                                }
-                                
-                                let price = String(format: "%.0f", renewalComboProduct.price)
-                                priceAndCurrency = currencyCodeWithSymbol + "\(price)"
-                                var mainString = ""
-                                // Create attributed string
-                                
-                                if let displayName = renewalComboProduct.displayName?.capitalized {
+                            }
+                            
+                        } else {
+                            
+                            if let productCode = renewalComboProduct.productCode { cell.renewelnonCoreImageView?.image = UIImage(named: productCode)
+                            }
+                            
+                            let price = String(format: "%.0f", renewalComboProduct.price)
+                            priceAndCurrency = currencyCodeWithSymbol + "\(price)"
+                            var mainString = ""
+                            // Create attributed string
+                            
+                            if let displayName = renewalComboProduct.displayName?.capitalized {
                                 if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
                                     
                                     mainString = Helper.returnIntervalMembershipStringWithDisplayName(displayName: String(describing: displayName), price: priceAndCurrency, term: term)
@@ -394,17 +396,17 @@ extension RenewelViewController: UITableViewDataSource {
                                     
                                     mainString = Helper.returnIntervalMembershipStringWithDisplayName1(displayName: String(describing:displayName), price: priceAndCurrency, term: term)
                                 }
-                                }
-                                
-                                let range = (mainString as NSString).range(of: priceAndCurrency)
-                                
-                                let attributeString = NSMutableAttributedString(string: mainString)
-                                
-                                attributeString.setAttributes([NSFontAttributeName: UIFont(name: Constant.fontName.helveticaNeueMedium, size: CGFloat(20.0))!, NSForegroundColorAttributeName: UIColor(red: 0.0 / 255.0, green: 201.0 / 255.0, blue: 11.0 / 255.0, alpha: 1.0)], range: range)
-                                
-                                let nextLine = NSMutableAttributedString(string: "\n\n")
-                                
-                                if let attributedString = cell.renewelLbl?.attributedText {
+                            }
+                            
+                            let range = (mainString as NSString).range(of: priceAndCurrency)
+                            
+                            let attributeString = NSMutableAttributedString(string: mainString)
+                            
+                            attributeString.setAttributes([NSFontAttributeName: UIFont(name: Constant.fontName.helveticaNeueMedium, size: CGFloat(20.0))!, NSForegroundColorAttributeName: UIColor(red: 0.0 / 255.0, green: 201.0 / 255.0, blue: 11.0 / 255.0, alpha: 1.0)], range: range)
+                            
+                            let nextLine = NSMutableAttributedString(string: "\n\n")
+                            
+                            if let attributedString = cell.renewelLbl?.attributedText {
                                 
                                 let combination = NSMutableAttributedString()
                                 
@@ -413,17 +415,12 @@ extension RenewelViewController: UITableViewDataSource {
                                 combination.append(attributeString)
                                 
                                 cell.renewelLbl?.attributedText = combination
-                                }
-                                break
-                                
                             }
-
+                            break
+                            
                         }
-                        
-                     }
-                    
+                    }
                 }
-                
             }
             
             // show other option button
@@ -463,7 +460,7 @@ extension RenewelViewController: UITableViewDataSource {
                 for product in (forceRenewals.products) where product.term == lowestTerm {
                     
                     if let productCode = product.productCode {
-                    cell.renewelImageView?.image = UIImage(named: productCode)
+                        cell.renewelImageView?.image = UIImage(named: productCode)
                     }
                     // hide core and non core here
                     
@@ -480,15 +477,16 @@ extension RenewelViewController: UITableViewDataSource {
                         priceAndCurrency = currencyCodeWithSymbol + "\(price)"
                         
                         //formatted string
-                        let formattedString = Helper.returnIntervalMembershipString(price: priceAndCurrency, term: term)
-                        
-                        let range = (formattedString as NSString).range(of: priceAndCurrency)
-                        
-                        let attributeString = NSMutableAttributedString(string: formattedString)
-                        
-                        attributeString.setAttributes([NSFontAttributeName: font, NSForegroundColorAttributeName: UIColor(red: 0.0 / 255.0, green: 201.0 / 255.0, blue: 11.0 / 255.0, alpha: 1.0)], range: range)
-                        
-                        cell.renewelLbl?.attributedText = attributeString
+                        if let displayName = product.displayName?.capitalized {
+                            let formattedString = Helper.returnIntervalMembershipString(displayName: displayName, price: priceAndCurrency, term: term)
+                            
+                            let range = (formattedString as NSString).range(of: priceAndCurrency)
+                            
+                            let attributeString = NSMutableAttributedString(string: formattedString)
+                            
+                            attributeString.setAttributes([NSFontAttributeName: font, NSForegroundColorAttributeName: UIColor(red: 0.0 / 255.0, green: 201.0 / 255.0, blue: 11.0 / 255.0, alpha: 1.0)], range: range)
+                            cell.renewelLbl?.attributedText = attributeString
+                        }
                     }
                     
                     break
@@ -529,20 +527,20 @@ extension RenewelViewController: UITableViewDataSource {
                         let attributeString = NSMutableAttributedString(string: mainString)
                         
                         if let font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: CGFloat(20.0)) {
-                        attributeString.setAttributes([NSFontAttributeName: font, NSForegroundColorAttributeName: UIColor(red: 0.0 / 255.0, green: 201.0 / 255.0, blue: 11.0 / 255.0, alpha: 1.0)], range: range)
+                            attributeString.setAttributes([NSFontAttributeName: font, NSForegroundColorAttributeName: UIColor(red: 0.0 / 255.0, green: 201.0 / 255.0, blue: 11.0 / 255.0, alpha: 1.0)], range: range)
                         }
                         
                         let nextLine = NSMutableAttributedString(string: "\n\n")
                         
                         if let attributedString = cell.renewelLbl?.attributedText {
-                        
-                        let combination = NSMutableAttributedString()
-                        
-                        combination.append(attributedString)
-                        combination.append(nextLine)
-                        combination.append(attributeString)
-                        
-                        cell.renewelLbl?.attributedText = combination
+                            
+                            let combination = NSMutableAttributedString()
+                            
+                            combination.append(attributedString)
+                            combination.append(nextLine)
+                            combination.append(attributeString)
+                            
+                            cell.renewelLbl?.attributedText = combination
                         }
                     }
                     
@@ -564,16 +562,16 @@ extension RenewelViewController: UITableViewDataSource {
                 
                 let lowestTerm = forceRenewals.crossSelling[0].term
                 for nonCoreProduct in (forceRenewals.crossSelling) where nonCoreProduct.term == lowestTerm {
-                        
-                        // show renewel image  here
-                        cell.renewelImageView?.isHidden = false
+                    
+                    // show renewel image  here
+                    cell.renewelImageView?.isHidden = false
                     if let productCode = nonCoreProduct.productCode {
                         cell.renewelImageView?.image = UIImage(named: productCode)
                     }
-                        
-                        // show core and non core image here
-                        cell.renewelCoreImageView?.isHidden = true
-                        cell.renewelnonCoreImageView?.isHidden = true
+                    
+                    // show core and non core image here
+                    cell.renewelCoreImageView?.isHidden = true
+                    cell.renewelnonCoreImageView?.isHidden = true
                     if let currencyCode = forceRenewals.currencyCode {
                         let currencyCodeWithSymbol = currencyHelper.getCurrencyFriendlySymbol(currencyCode: currencyCode)
                         
@@ -596,22 +594,22 @@ extension RenewelViewController: UITableViewDataSource {
                         
                         let attributeString = NSMutableAttributedString(string: mainString)
                         if let font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: CGFloat(20.0)) {
-                        attributeString.setAttributes([NSFontAttributeName: font, NSForegroundColorAttributeName: UIColor(red: 0.0 / 255.0, green: 201.0 / 255.0, blue: 11.0 / 255.0, alpha: 1.0)], range: range)
+                            attributeString.setAttributes([NSFontAttributeName: font, NSForegroundColorAttributeName: UIColor(red: 0.0 / 255.0, green: 201.0 / 255.0, blue: 11.0 / 255.0, alpha: 1.0)], range: range)
                         }
                         
                         let combination = NSMutableAttributedString()
                         combination.append(attributeString)
                         cell.renewelLbl?.attributedText = combination
                         
-                }
-                        
-                        if Constant.MyClassConstants.noThanksForNonCore {
-                            cell.selectButton?.setTitle(Constant.MyClassConstants.renewNow, for: .normal)
-                        } else {
-                            cell.selectButton?.setTitle(Constant.MyClassConstants.select, for: .normal)
-                        }
+                    }
                     
-                        break
+                    if Constant.MyClassConstants.noThanksForNonCore {
+                        cell.selectButton?.setTitle(Constant.MyClassConstants.renewNow, for: .normal)
+                    } else {
+                        cell.selectButton?.setTitle(Constant.MyClassConstants.select, for: .normal)
+                    }
+                    
+                    break
                 }
             } else {
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.renewalAdditionalCell) as? RenewalAdditionalCell else { return UITableViewCell() }
@@ -657,5 +655,6 @@ extension RenewelViewController: UITableViewDelegate {
         return view
         
     }
-  
+    
 }
+

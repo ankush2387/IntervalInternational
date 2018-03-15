@@ -145,7 +145,7 @@ extension RenewalOtherOptionsVC: UITableViewDataSource {
                             
                             // formatted string
                     
-                            let mainString = Helper.returnIntervalMembershipString(price: priceAndCurrency, term: term)
+                            let mainString = Helper.returnIntervalMembershipString(displayName: renewalComboProduct.displayName ?? "", price: priceAndCurrency, term: term)
                             
                             let range = (mainString as NSString).range(of: priceAndCurrency)
                             
