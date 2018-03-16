@@ -788,7 +788,9 @@ extension ResortDetailsViewController: UITableViewDataSource {
                 }
                 cell.detailsPageControl.numberOfPages = Constant.MyClassConstants.imagesArray.count
                 cell.resortName.text = Constant.MyClassConstants.resortsDescriptionArray.resortName
-                cell.resortAddress.text = Constant.MyClassConstants.resortsDescriptionArray.address?.cityName
+                if let address = Constant.MyClassConstants.resortsDescriptionArray.address {
+                    cell.resortAddress.text =  "\(address.cityName ?? ""), \(address.territoryCode ?? "") \(address.countryCode ?? "")".localized()
+                }
                 cell.resortCode.text = Constant.MyClassConstants.resortsDescriptionArray.resortCode
                 if let tier = Constant.MyClassConstants.resortsDescriptionArray.tier {
                     let imageStr = Helper.getTierImageName(tier:tier.uppercased())
