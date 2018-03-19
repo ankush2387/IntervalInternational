@@ -3150,7 +3150,7 @@ transaction.</string>
                     </view>
                     <navigationItem key="navigationItem" id="jpZ-Pd-3ig"/>
                     <connections>
-                        <outlet property="calendar" destination="1op-Vt-ofl" id="DvX-cB-Ond"/>
+                        <outlet property="fsCalendar" destination="1op-Vt-ofl" id="NBU-ls-iVa"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Bqb-93-N7J" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -7621,9 +7621,9 @@ transaction.</string>
     <inferredMetricsTieBreakers>
         <segue reference="4Eo-F1-CbC"/>
         <segue reference="kmp-5Q-mdc"/>
-        <segue reference="0uV-Eo-2bn"/>
+        <segue reference="Lp2-ch-oU8"/>
         <segue reference="KRw-si-7MT"/>
-        <segue reference="Rpo-cQ-qF4"/>
+        <segue reference="u0k-hc-uRI"/>
         <segue reference="4gU-cx-AAf"/>
         <segue reference="Uce-OZ-bfJ"/>
     </inferredMetricsTieBreakers>
