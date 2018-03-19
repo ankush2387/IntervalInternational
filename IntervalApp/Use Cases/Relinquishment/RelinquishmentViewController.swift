@@ -104,6 +104,7 @@ final class RelinquishmentViewController: UIViewController {
         
         Constant.MyClassConstants.whatToTradeArray.add(Constant.MyClassConstants.relinquishmentProgram)
         Constant.MyClassConstants.relinquishmentIdArray.append(relinquishmentID.unwrappedString)
+        Constant.MyClassConstants.isCIGAvailable = true
         
         viewModel.relinquish(availablePoints, for: code, and: relinquishmentID)
             .then(popFromRelinquishmentViewController)
@@ -303,6 +304,9 @@ final class RelinquishmentViewController: UIViewController {
             viewController.didSave = { clubPoints in
                 clubPoints.relinquishmentId = relinquishment.relinquishmentId.unwrappedString
                 clubPoints.relinquishmentYear = relinquishment.relinquishmentYear ?? 0
+                
+                //FIXME(Frank): This HACK is required for now :(
+                Constant.MyClassConstants.isClubPointsAvailable = true
                 
                 strongSelf.viewModel.relinquish(clubPoints)
                     .then(strongSelf.popToRelinquishmentViewController)

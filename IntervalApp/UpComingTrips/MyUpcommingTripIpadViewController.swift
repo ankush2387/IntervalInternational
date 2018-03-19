@@ -329,18 +329,18 @@ extension MyUpcommingTripIpadViewController: UICollectionViewDataSource {
                 cell.resortCodeLabel.text = countryCode
             }
             
-            if let checkInDateForUpcomingTrips = upcomingTrip.unit?.checkInDate {
-                
-            let checkInDate = Helper.convertStringToDate(dateString: checkInDateForUpcomingTrips, format: Constant.MyClassConstants.dateFormat)
+            if let checkInDateForUpcomingTrips = upcomingTrip.unit?.checkInDate, let checkInDate = checkInDateForUpcomingTrips.dateFromShortFormat() {
             
-            let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
+            //FIXME(FRANK) - how is this possible?
+            //let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
+            let myCalendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
+                
             let myComponents = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: checkInDate)
             
             if let weekday = myComponents.weekday, let month = myComponents.month, let day = myComponents.day, let year = myComponents.year {
                 let formatedCheckInDate = "\(Helper.getWeekdayFromInt(weekDayNumber: weekday)) \(Helper.getMonthnameFromInt(monthNumber: month)). \(day), \(year)"
-                if let checkOutDateUpcomingTrips = upcomingTrip.unit?.checkOutDate {
-                    let checkOutDate = Helper.convertStringToDate(dateString: checkOutDateUpcomingTrips, format: Constant.MyClassConstants.dateFormat)
-                    
+                
+                if let checkOutDateUpcomingTrips = upcomingTrip.unit?.checkOutDate, let checkOutDate = checkOutDateUpcomingTrips.dateFromShortFormat() {
                     let myComponents1 = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: checkOutDate)
                     if let weekday = myComponents1.weekday, let month = myComponents1.month, let day = myComponents1.day, let year = myComponents1.year {
                         let formatedCheckOutDate = "\(Helper.getWeekdayFromInt(weekDayNumber: weekday)) \(Helper.getMonthnameFromInt(monthNumber: month)). \(day), \(year)"

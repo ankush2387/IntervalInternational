@@ -28,7 +28,7 @@ open class ExchangeDetails {
         
         self.exchangeTransactionType = json["type"].string ?? ""
         self.confirmationNumber = json["confirmationNumber"].string ?? ""
-        self.exchangeStatus = json["exchangeStatus"].string ?? ""
+        self.exchangeStatus = json["status"].string ?? ""
         self.transactionDate = json["transactionDate"].string ?? ""
         
         if json["destination"].exists() {

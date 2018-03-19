@@ -176,7 +176,7 @@ class AllAvailableDestinationViewController: UIViewController {
                 } else {
                     
                     Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
-                    Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: Constant.MyClassConstants.initialVacationSearch.searchCheckInDate ?? "", format: Constant.MyClassConstants.dateFormat), senderViewController: strongSelf)
+                    Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: Constant.MyClassConstants.initialVacationSearch.searchCheckInDate?.dateFromShortFormat(), senderViewController: strongSelf)
                 }
                 Constant.MyClassConstants.isFromSearchBoth = true
                 

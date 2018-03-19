@@ -184,7 +184,7 @@ class SortingViewController: UIViewController {
                         self.dismiss(animated: true, completion: nil)
                     } else {
                         Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
-                        Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: Constant.MyClassConstants.initialVacationSearch.searchCheckInDate ?? "", format: Constant.MyClassConstants.dateFormat), senderViewController: self)
+                        Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: Constant.MyClassConstants.initialVacationSearch.searchCheckInDate?.dateFromShortFormat(), senderViewController: self)
                     }
                     
                 }) { (_) in
@@ -213,7 +213,7 @@ class SortingViewController: UIViewController {
                         
                     } else {
                         Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
-                        Helper.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: Constant.MyClassConstants.initialVacationSearch.searchCheckInDate ?? "", format: Constant.MyClassConstants.dateFormat), senderViewController: self)
+                        Helper.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: Constant.MyClassConstants.initialVacationSearch.searchCheckInDate?.dateFromShortFormat(), senderViewController: self)
                     }
                     
                 }) { _ in
@@ -236,7 +236,7 @@ class SortingViewController: UIViewController {
                         Helper.executeExchangeSearchDates(senderVC: self)
                     } else {
                         Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
-                        Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: Constant.MyClassConstants.initialVacationSearch.searchCheckInDate ?? "", format: Constant.MyClassConstants.dateFormat), senderViewController: self)
+                        Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: Constant.MyClassConstants.initialVacationSearch.searchCheckInDate?.dateFromShortFormat(), senderViewController: self)
                         
                     }
                 }) { (_) in

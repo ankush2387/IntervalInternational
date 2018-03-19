@@ -12,10 +12,10 @@ class TotalCostCell: UITableViewCell {
     
     @IBOutlet weak private var amountLabel: UILabel!
 
-    func setTotalPrice(with currencyDisplayes: String, and chargeAmount: Float) {
-        
-        if let attributedAmount = chargeAmount.currencyFormatter(for:currencyDisplayes) {
+    func setTotalPrice(with currencyCode: String, and chargeAmount: Float, and countryCode: String?) {
+        if let attributedAmount = chargeAmount.currencyFormatter(for:currencyCode, for: countryCode) {
             amountLabel.attributedText = attributedAmount
         }
     }
+    
 }

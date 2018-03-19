@@ -54,7 +54,7 @@ final class ChargeSummaryViewController: UIViewController {
     private func setUI() {
         tableView.tableFooterView = tableViewFooter
         titleLabel.text = viewModel.headerTitle
-        currencyTypeLabel.text = viewModel.currency
+        currencyTypeLabel.text = viewModel.currencyCode
         descriptionLabel.text = viewModel.descriptionTitle
         totalAmountTitleLabel.text = viewModel.totalTitle
         totalAmountValueLabel.attributedText = viewModel.attributedTotal
@@ -82,7 +82,7 @@ extension ChargeSummaryViewController: UITableViewDataSource {
                                                         return UITableViewCell()
         }
 
-        cell.setUI(with: viewModel.charge[indexPath.row].description, and: viewModel.charge[indexPath.row].amount, and: viewModel.currencySymbol)
-        return cell
+        cell.setUI(with: viewModel.charge[indexPath.row].description, and: viewModel.currencyCode, and: viewModel.charge[indexPath.row].amount, and: viewModel.countryCode)
+        return cell       
     }
 }

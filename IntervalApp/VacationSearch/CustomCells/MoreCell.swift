@@ -21,23 +21,22 @@ class MoreCell: UICollectionViewCell {
         
         setUpCell(index: index, collectionViewSelectedIndex: selectedIndex, dateSelectionColor: color)
         
-        let startDate = Helper.convertStringToDate(dateString: Constant.MyClassConstants.calendarDatesArray[index].intervalStartDate ?? "", format: Constant.MyClassConstants.dateFormat)
-        let endDate = Helper.convertStringToDate(dateString: Constant.MyClassConstants.calendarDatesArray[index].intervalEndDate ?? "", format: Constant.MyClassConstants.dateFormat)
-        
-        intervalPrint(startDate, endDate)
-        
-        let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
-        let startComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: startDate)
-        let endComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: endDate)
-        let startYear =  "\(startComponents.year ?? 0)"
-        let endYear = "\(endComponents.year ?? 0)"
-        
-        let monthStartName = "\(Helper.getMonthnameFromInt(monthNumber: startComponents.month ?? 0))"
-        let monthEndName = "\(Helper.getMonthnameFromInt(monthNumber: endComponents.month ?? 0))"
-        lblMonth.text = "\(monthStartName) - \(monthEndName)".localizedUppercase
-        lblStartYear.text = "\(startYear)".localized()
-        lblEndYear.text = "\(endYear)".localized()
-        
+        if let startDate = Constant.MyClassConstants.calendarDatesArray[index].intervalStartDate?.dateFromShortFormat(), let endDate = Constant.MyClassConstants.calendarDatesArray[index].intervalEndDate?.dateFromShortFormat() {
+            
+            intervalPrint(startDate, endDate)
+            
+            let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
+            let startComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: startDate)
+            let endComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: endDate)
+            let startYear =  "\(startComponents.year ?? 0)"
+            let endYear = "\(endComponents.year ?? 0)"
+            
+            let monthStartName = "\(Helper.getMonthnameFromInt(monthNumber: startComponents.month ?? 0))"
+            let monthEndName = "\(Helper.getMonthnameFromInt(monthNumber: endComponents.month ?? 0))"
+            lblMonth.text = "\(monthStartName) - \(monthEndName)".localizedUppercase
+            lblStartYear.text = "\(startYear)".localized()
+            lblEndYear.text = "\(endYear)".localized()
+        }
     }
     
     func setUpCell(index: Int, collectionViewSelectedIndex: Int, dateSelectionColor: String) {

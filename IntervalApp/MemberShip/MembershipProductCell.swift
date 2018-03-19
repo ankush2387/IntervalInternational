@@ -32,7 +32,7 @@ class MembershipProductCell: UITableViewCell {
     func setupCell(product: Product) {
         var dateString = ""
         if let expDate = product.expirationDate {
-            dateString = Helper.convertDateToString(date: expDate, format: "mm/DD/YYYY")
+            dateString = expDate.stringWithShortFormatForJSON()
         }
         
         productNameLabel.text = product.productName

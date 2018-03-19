@@ -269,7 +269,7 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
                     self.navigateToSearchResults()
                 } else {
                     Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
-                    Helper.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: Constant.MyClassConstants.initialVacationSearch.searchCheckInDate ?? "", format: Constant.MyClassConstants.dateFormat), senderViewController: self)
+                    Helper.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: Constant.MyClassConstants.initialVacationSearch.searchCheckInDate?.dateFromShortFormat(), senderViewController: self)
                 }
                 
             }, onError: { (_) in
@@ -316,7 +316,7 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
                     } else {
                         self.hideHudAsync()
                         Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
-                        Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: Constant.MyClassConstants.initialVacationSearch.searchCheckInDate ?? "", format: Constant.MyClassConstants.dateFormat), senderViewController: self)
+                        Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: Constant.MyClassConstants.initialVacationSearch.searchCheckInDate?.dateFromShortFormat(), senderViewController: self)
                     }
                     Constant.MyClassConstants.checkInDates = response.checkInDates
                     Constant.MyClassConstants.isFromSearchBoth = true
@@ -354,7 +354,7 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
                     } else {
                         
                         Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
-                        let initialSearchCheckInDate = Helper.convertStringToDate(dateString: Constant.MyClassConstants.initialVacationSearch.searchCheckInDate ?? "", format: Constant.MyClassConstants.dateFormat)
+                        let initialSearchCheckInDate = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate?.dateFromShortFormat()
                         Constant.MyClassConstants.checkInDates = response.checkInDates
                         
                         self.hideHudAsync()

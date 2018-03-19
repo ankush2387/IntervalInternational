@@ -36,7 +36,11 @@ class ViewDetailsTBLcell: UITableViewCell {
         if indexPath.row == 0 {
             resortDetailsButton.tag = indexPath.row
             lblHeading.text = "Resort Detail".localized()
-            resortName?.text = Constant.MyClassConstants.selectedResort.resortName
+            if let selectedResort = Constant.MyClassConstants.selectedAvailabilityResort {
+                resortName?.text = selectedResort.name
+            } else {
+                resortName?.text = ""
+            }
         } else {
             lblHeading.text = Constant.MyClassConstants.relinquishment
             if let clubPoint = filterRelinquishments.clubPoints {
@@ -49,10 +53,9 @@ class ViewDetailsTBLcell: UITableViewCell {
                 if Constant.MyClassConstants.isCIGAvailable {
                     resortDetailsButton.isHidden = true
                     lblHeading.text = "CIG Points"
-                    let numberFormatter = NumberFormatter()
-                    numberFormatter.numberStyle = .decimal
-                    if let pointsCost = Constant.MyClassConstants.selectedExchangePointsCost, let availablePoints = numberFormatter.string(from: pointsCost) {
-                        resortName?.text = "\(availablePoints)".localized()
+                    
+                    if let selectedBucket = Constant.MyClassConstants.selectedAvailabilityInventoryBucket, let pointsCost = selectedBucket.exchangePointsCost {
+                         resortName?.text = "\(pointsCost)".localized()
                     } else {
                         resortName?.text = "\(0)".localized()
                     }

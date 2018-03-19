@@ -19,11 +19,8 @@ class WhoWillBeCheckingInViewController: UIViewController {
     @IBOutlet private weak var resortHoldingTimeLabel: UILabel!
     @IBOutlet fileprivate weak var checkingInUserTBLview: UITableView!
     @IBOutlet private weak var proceedToCheckoutButton: IUIKButton!
-    
     @IBOutlet private var keyboardHeightLayoutConstraint: NSLayoutConstraint?
-    
-    var filterRelinquishments = ExchangeRelinquishment()
-    
+
     //Class variables
     var isKeyBoardOpen = false
     var moved: Bool = false
@@ -41,16 +38,19 @@ class WhoWillBeCheckingInViewController: UIViewController {
     var holdingTime = 2
     var decreaseValue = 1
     var selectedCountryIndex: Int?
-    var renewalsArray: [Renewal] = []
     var noThanksSelected = false
     var isFromRenewals = false
-    var currencyCode: String = ""
+    var selectedRelinquishment = ExchangeRelinquishment()
+    var renewalCoreProduct: Renewal?
+    var renewalNonCoreProduct: Renewal?
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
         resortHoldingTimeLabel.text = "We are holding this unit for \(Constant.holdingTime) minutes".localized()
         navigationController?.navigationBar.isHidden = false
+        
+        //FIXME(Frank) - what is this?
         Constant.GetawaySearchResultGuestFormDetailData.firstName = ""
         Constant.GetawaySearchResultGuestFormDetailData.lastName = ""
         Constant.GetawaySearchResultGuestFormDetailData.country = ""
@@ -63,21 +63,12 @@ class WhoWillBeCheckingInViewController: UIViewController {
         Constant.GetawaySearchResultGuestFormDetailData.homePhoneNumber = ""
         Constant.GetawaySearchResultGuestFormDetailData.businessPhoneNumber = ""
         
+        //FIXME(Frank) - what is this?
         NotificationCenter.default.addObserver(self, selector: #selector(updateResortHoldingTime), name: NSNotification.Name(rawValue: Constant.notificationNames.updateResortHoldingTime), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWasShown), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillBeHidden), name: NSNotification.Name.UIKeyboardDidHide, object: nil)
+        
         checkingInUserTBLview.reloadData()
-        let currencyHelper = CurrencyHelper()
-        if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
-            if let code = Constant.MyClassConstants.exchangeFees[0].currencyCode {
-                currencyCode = currencyHelper.getCurrencyFriendlySymbol(currencyCode: code)
-            }
-        } else {
-            if let code = Constant.MyClassConstants.rentalFees[0].currencyCode {
-                currencyCode = currencyHelper.getCurrencyFriendlySymbol(currencyCode: code)
-            }
-        }
-       
     }
     
     override func viewDidLoad() {
@@ -85,11 +76,17 @@ class WhoWillBeCheckingInViewController: UIViewController {
         
         // call country api
         
+        //FIXME(Frank) - what is this?
         Helper.getCountry { [weak self] error in
             self?.hideHudAsync()
             if let Error = error {
                 self?.presentErrorAlert(UserFacingCommonError.handleError(Error))
             }
+        }
+        
+        var resortCode = ""
+        if let selectedResort = Constant.MyClassConstants.selectedAvailabilityResort {
+            resortCode = selectedResort.code
         }
         
         // omniture tracking with event 40
@@ -101,11 +98,10 @@ class WhoWillBeCheckingInViewController: UIViewController {
         // omniture tracking with event 37
         let userInfo: [String: String] = [
             Constant.omnitureEvars.eVar41: Constant.omnitureCommonString.vactionSearch,
-            Constant.omnitureCommonString.products: Constant.MyClassConstants.selectedResort.resortCode ?? "",
+            Constant.omnitureCommonString.products: resortCode,
             Constant.omnitureEvars.eVar37: Helper.selectedSegment(index: Constant.MyClassConstants.searchForSegmentIndex),
             Constant.omnitureEvars.eVar39: ""
         ]
-        
         ADBMobile.trackAction(Constant.omnitureEvents.event37, data: userInfo)
         
         self.proceedToCheckoutButton.isEnabled = false
@@ -116,7 +112,6 @@ class WhoWillBeCheckingInViewController: UIViewController {
         let menuButton = UIBarButtonItem(image: #imageLiteral(resourceName: "BackArrowNav"), style: .plain, target: self, action: #selector(WhoWillBeCheckingInViewController.menuBackButtonPressed(_:)))
         menuButton.tintColor = UIColor.white
         self.navigationItem.leftBarButtonItem = menuButton
-        
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -424,47 +419,14 @@ class WhoWillBeCheckingInViewController: UIViewController {
     //***** Function called when detail button is pressed. ******//
     
     func resortDetailsClicked(_ sender: IUIKCheckbox) {
-        
         if sender.tag == 0 {
             self.performSegue(withIdentifier: Constant.segueIdentifiers.showResortDetailsSegue, sender: nil)
-            
         } else {
-            
-            if let openWeek = filterRelinquishments.openWeek {
-                if let resortCode = openWeek.resort?.resortCode {
-                    getRelinquishmentDetails(resortCode: resortCode)
-                }
-            }
-            
-            if let deposits = filterRelinquishments.deposit {
-                if let resortCode = deposits.resort?.resortCode {
-                    getRelinquishmentDetails(resortCode: resortCode)
-                }
-            }
-            
-            if let clubPoints = filterRelinquishments.clubPoints {
-                if let resortCode = clubPoints.resort?.resortCode {
-                    getRelinquishmentDetails(resortCode: resortCode)
-                }
-            }
-        }
-        
-    }
-    
-    // MARK: - Function to get relinquishment details
-    
-    func getRelinquishmentDetails(resortCode: String) {
-        showHudAsync()
-        Helper.getRelinquishmentDetails(resortCode: resortCode, successCompletionBlock: {
-            self.hideHudAsync()
             self.performSegue(withIdentifier: Constant.segueIdentifiers.showRelinguishmentsDetailsSegue, sender: self)
-        }, errorCompletionBlock: { [unowned self] error  in
-            self.hideHudAsync()
-            self.presentErrorAlert(UserFacingCommonError.handleError(error))
-        })
+        }
     }
     
-    //***** Function to perform checkout *****//
+    // MARK: - Function to perform checkout
     @IBAction func proceedToCheckoutPressed(_ sender: AnyObject) {
         
         if Constant.MyClassConstants.noThanksForNonCore && whoWillBeCheckingInSelectedIndex == Constant.MyClassConstants.membershipContactArray.count {
@@ -523,8 +485,20 @@ class WhoWillBeCheckingInViewController: UIViewController {
                     Constant.MyClassConstants.enableGuestCertificate = false
                 }
                 
-                if !renewalsArray.isEmpty {
-                    exchangeProcessRequest.renewals = renewalsArray
+                // Add selected renewals to the ExchangeProcessContinueToCheckoutRequest
+                var selectedRenewals = [Renewal]()
+                if let coreProduct = renewalCoreProduct {
+                    let renewal = Renewal()
+                    renewal.id = coreProduct.id
+                    selectedRenewals.append(renewal)
+                }
+                if let nonCoreProduct = renewalNonCoreProduct {
+                    let renewal = Renewal()
+                    renewal.id = nonCoreProduct.id
+                    selectedRenewals.append(renewal)
+                }
+                if !selectedRenewals.isEmpty {
+                    exchangeProcessRequest.renewals = selectedRenewals
                 }
                 
                 let processResort = ExchangeProcess()
@@ -537,44 +511,41 @@ class WhoWillBeCheckingInViewController: UIViewController {
                     self.hideHudAsync()
                     Constant.MyClassConstants.exchangeContinueToCheckoutResponse = response
                     
-                    if let promotions = response.view?.fees?.shopExchange?.promotions {
-                        Constant.MyClassConstants.recapViewPromotionCodeArray = promotions
+                    if let view = response.view, let exchangeFees = view.fees, let shopExchangeFee = exchangeFees.shopExchange, let shopExchangePrice = shopExchangeFee.inventoryPrice {
+                        Constant.MyClassConstants.exchangeFeeOriginalPrice = shopExchangePrice.price
                     }
                     
-                    DarwinSDK.logger.debug("Promo codes are : \(String(describing: response.view?.promoCodes))")
-                    DarwinSDK.logger.debug("Response is : \(String(describing: response.view?.fees)) , -------->\(response)")
+                    Constant.MyClassConstants.selectedDestinationPromotionDisplayName = nil
                     
-                    if let allowedCreditCards = response.view?.allowedCreditCardTypes {
+                    //FIXME(Frank) - If we already have exchangeContinueToCheckoutResponse as global then why the next block of code?
+                    if let view = response.view {
+                        Constant.MyClassConstants.allowedCreditCardType = view.allowedCreditCardTypes
                         
-                        // Jira: https://jira.iilg.com/browse/MOBI-1854
-                        // This should already come from the server without the spacing.
-                        // Will fix on our side for now, but correct way would be for server to make the adjustments.
-                        
-                        Constant.MyClassConstants.allowedCreditCardType = allowedCreditCards.map {
-                            if $0.name?.uppercased() == "MASTER CARD" {
-                                let allowedCreditCard = AllowedCreditCardType()
-                                allowedCreditCard.name = $0.name?.replacingOccurrences(of: " ", with: "")
-                                allowedCreditCard.typeCode = $0.typeCode
-                                return allowedCreditCard
-                            }
+                        if let fees = view.fees {
+                            //FIXME(Frank) - why an array? - what is this?
+                            Constant.MyClassConstants.exchangeFees = fees
                             
-                            return $0
+                            if let shopExchangeFee = fees.shopExchange {
+                                if !shopExchangeFee.promotions.isEmpty {
+                                    //FIXME(Frank): recapViewPromotionCodeArray is confuse - these are "destinationPromotions"
+                                    Constant.MyClassConstants.recapViewPromotionCodeArray = shopExchangeFee.promotions
+                                }
+                                
+                                if let shopExchangePrice = shopExchangeFee.inventoryPrice, shopExchangePrice.tax != 0 {
+                                    Constant.MyClassConstants.enableTaxes = true
+                                } else {
+                                    Constant.MyClassConstants.enableTaxes = false
+                                }
+                            }
                         }
                     }
-                
-                    Constant.MyClassConstants.exchangeFees = [(response.view?.fees)!]
-                    if Int((Constant.MyClassConstants.exchangeFees[0].shopExchange?.rentalPrice?.tax)!) != 0 {
-                        Constant.MyClassConstants.enableTaxes = true
-                    } else {
-                        Constant.MyClassConstants.enableTaxes = false
-                    }
-                    
-                    if let creditCardInfo = Session.sharedSession.contact?.creditcards {
-                        Constant.MyClassConstants.memberCreditCardList = creditCardInfo
+
+                    if let currentProfile = Session.sharedSession.contact, let creditCards = currentProfile.creditcards {
+                        Constant.MyClassConstants.memberCreditCardList = creditCards
                     }
                     
                     if let checkOutViewController = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil).instantiateViewController(withIdentifier: Constant.storyboardControllerID.checkOutViewController) as? CheckOutViewController {
-                        checkOutViewController.filterRelinquishments = self.filterRelinquishments
+                        checkOutViewController.selectedRelinquishment = self.selectedRelinquishment
                         self.navigationController?.pushViewController(checkOutViewController, animated: true)
                     }
                     
@@ -594,6 +565,7 @@ class WhoWillBeCheckingInViewController: UIViewController {
                     guest.lastName = Constant.GetawaySearchResultGuestFormDetailData.lastName
                     guest.primaryTraveler = true
                     
+                    //FIXME(Frank) - why static data as: HADDR, 1, HOME_PRIMARY, 305
                     let guestAddress = Address()
                     var address = [String]()
                     address.append(Constant.GetawaySearchResultGuestFormDetailData.address1)
@@ -621,10 +593,23 @@ class WhoWillBeCheckingInViewController: UIViewController {
                     
                     Constant.MyClassConstants.enableGuestCertificate = true
                 }
-                
-                if renewalsArray.isEmpty == false {
-                    processRequest1.renewals = renewalsArray
+
+                // Add selected renewals to the RentalProcessPrepareContinueToCheckoutRequest
+                var selectedRenewals = [Renewal]()
+                if let coreProduct = renewalCoreProduct {
+                    let renewal = Renewal()
+                    renewal.id = coreProduct.id
+                    selectedRenewals.append(renewal)
                 }
+                if let nonCoreProduct = renewalNonCoreProduct {
+                    let renewal = Renewal()
+                    renewal.id = nonCoreProduct.id
+                    selectedRenewals.append(renewal)
+                }
+                if !selectedRenewals.isEmpty {
+                    processRequest1.renewals = selectedRenewals
+                }
+       
                 showHudAsync()
                 let processResort = RentalProcess()
                 processResort.holdUnitStartTimeInMillis = Constant.holdingTime
@@ -635,14 +620,19 @@ class WhoWillBeCheckingInViewController: UIViewController {
                     self.hideHudAsync()
                     Constant.MyClassConstants.continueToCheckoutResponse = response
                     
+                    if let view = response.view, let rentalFees = view.fees, let rentalFee = rentalFees.rental, let rentalPrice = rentalFee.rentalPrice {
+                        Constant.MyClassConstants.rentalFeeOriginalPrice = rentalPrice.price
+                    }
+                    
+                    Constant.MyClassConstants.selectedDestinationPromotionDisplayName = nil
+                    
                     if let promotions = response.view?.fees?.rental?.promotions {
                         Constant.MyClassConstants.recapViewPromotionCodeArray = promotions
                     }
-                    
-                    DarwinSDK.logger.debug("Promo codes are : \(String(describing: response.view?.promoCodes))")
-                    DarwinSDK.logger.debug("Response is : \(String(describing: response.view?.fees)) , -------->\(response)")
+
                     Constant.MyClassConstants.allowedCreditCardType = (response.view?.allowedCreditCardTypes)!
-                    Constant.MyClassConstants.rentalFees = [(response.view?.fees)!]
+                    Constant.MyClassConstants.rentalFees = response.view?.fees
+                    
                     if Int((response.view?.fees?.rental?.rentalPrice?.tax)!) != 0 {
                         Constant.MyClassConstants.enableTaxes = true
                     } else {
@@ -676,7 +666,7 @@ class WhoWillBeCheckingInViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let relinquishmentDetails = segue.destination as? RelinquishmentDetailsViewController else { return }
-        relinquishmentDetails.filterRelinquishment = filterRelinquishments
+        relinquishmentDetails.selectedRelinquishment = selectedRelinquishment
      }
 }
 
@@ -784,25 +774,27 @@ extension WhoWillBeCheckingInViewController: UITableViewDataSource {
             if indexPath.row == 0 {
                 cell.resortDetailsButton.addTarget(self, action: #selector(WhoWillBeCheckingInViewController.resortDetailsClicked(_:)), for: .touchUpInside)
                 cell.resortDetailsButton.tag = indexPath.row
-                cell.resortName?.text = Constant.MyClassConstants.selectedResort.resortName
+                if let selectedResort = Constant.MyClassConstants.selectedAvailabilityResort {
+                    cell.resortName?.text = selectedResort.name
+                } else {
+                    cell.resortName?.text = ""
+                }
                 cell.resortImageView?.image = #imageLiteral(resourceName: "RST_CO")
                 
             } else {
                 cell.lblHeading.text = Constant.MyClassConstants.relinquishment
-                if let clubPoint = filterRelinquishments.clubPoints {
+                if let clubPoint = selectedRelinquishment.clubPoints {
                     cell.resortName?.text = clubPoint.resort?.resortName
-                } else if let openWeek = filterRelinquishments.openWeek {
+                } else if let openWeek = selectedRelinquishment.openWeek {
                     cell.resortName?.text = openWeek.resort?.resortName
-                } else if let deposits = filterRelinquishments.deposit {
+                } else if let deposits = selectedRelinquishment.deposit {
                     cell.resortName?.text = deposits.resort?.resortName
                 } else {
                     if Constant.MyClassConstants.isCIGAvailable {
                         cell.resortDetailsButton.isHidden = true
                         cell.lblHeading.text = "CIG Points"
-                        let numberFormatter = NumberFormatter()
-                        numberFormatter.numberStyle = .decimal
-                        if let pointsCost = Constant.MyClassConstants.selectedExchangePointsCost, let availablePoints = numberFormatter.string(from: pointsCost) {
-                            cell.resortName?.text = "\(availablePoints)".localized()
+                        if let selectedBucket = Constant.MyClassConstants.selectedAvailabilityInventoryBucket, let pointsCost = selectedBucket.exchangePointsCost {
+                            cell.resortName?.text = "\(pointsCost)".localized()
                         } else {
                             cell.resortName?.text = "\(0)".localized()
                         }
@@ -847,42 +839,76 @@ extension WhoWillBeCheckingInViewController: UITableViewDataSource {
             
             let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.guestCertificatePriceCell, for: indexPath) as! GuestCertificatePriceCell
             guard let guestPrices = Constant.MyClassConstants.guestCertificate?.prices else { return cell }
+            
             var memberTier = Session.sharedSession.selectedMembership?.getProductWithHighestTier()?.productCode ?? ""
+            
+            //FIXME(Frank) - what is this?
             if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
-                memberTier = Constant.MyClassConstants.exchangeFees[0].memberTier ?? ""
-                if !Constant.MyClassConstants.exchangeFees.isEmpty {
-                    for renewal in renewalsArray {
+                
+                var foundMemberTier = false
+                
+                if let exchangeFees = Constant.MyClassConstants.exchangeFees {
+                    if let renewal = renewalNonCoreProduct {
                         for price in guestPrices {
-                            if price.productCode == renewal.productCode {
-                                memberTier = price.productCode ?? ""
+                            if let priceProductCode = price.productCode, let renewalProductCode = renewal.productCode, priceProductCode == renewalProductCode {
+                                memberTier = priceProductCode
+                                foundMemberTier = true
                                 break
-                            } else {
-                                memberTier = Constant.MyClassConstants.exchangeFees[0].memberTier ?? ""
                             }
                         }
-                    }
-                    
-                } else {
-                    memberTier = ""
-                }
-                
-            } else {
-                memberTier = Constant.MyClassConstants.rentalFees[0].memberTier ?? ""
-                for renewal in renewalsArray {
-                    for price in guestPrices {
-                        if price.productCode == renewal.productCode {
-                            memberTier = price.productCode ?? ""
-                            break
-                        } else {
-                            memberTier = Constant.MyClassConstants.rentalFees[0].memberTier ?? ""
+                    } else if foundMemberTier == false, let renewal = renewalCoreProduct {
+                        for price in guestPrices {
+                            if let priceProductCode = price.productCode, let renewalProductCode = renewal.productCode, priceProductCode == renewalProductCode {
+                                memberTier = priceProductCode
+                                foundMemberTier = true
+                                break
+                            }
                         }
+                    } else if foundMemberTier == false, let memberTierValue = exchangeFees.memberTier {
+                        memberTier = memberTierValue
+                    }
+                }
+     
+            } else {
+                    
+                var foundMemberTier = false
+                
+                if let rentalFees = Constant.MyClassConstants.rentalFees {
+                    if let renewal = renewalNonCoreProduct {
+                        for price in guestPrices {
+                            if let priceProductCode = price.productCode, let renewalProductCode = renewal.productCode, priceProductCode == renewalProductCode {
+                                memberTier = priceProductCode
+                                foundMemberTier = true
+                                break
+                            }
+                        }
+                    } else if foundMemberTier == false, let renewal = renewalCoreProduct {
+                        for price in guestPrices {
+                            if let priceProductCode = price.productCode, let renewalProductCode = renewal.productCode, priceProductCode == renewalProductCode {
+                                memberTier = priceProductCode
+                                foundMemberTier = true
+                                break
+                            }
+                        }
+                    } else if foundMemberTier == false, let memberTierValue = rentalFees.memberTier {
+                        memberTier = memberTierValue
                     }
                 }
             }
             
-            for price in guestPrices where price.productCode == memberTier {
+            //FIXME(Frank): - review with Business if we can take USD as the default Currency Code
+            var currencyCode = "USD"
+            if let selectedBucket = Constant.MyClassConstants.selectedAvailabilityInventoryBucket, let currencyCodeValue = selectedBucket.currencyCode {
+                currencyCode = currencyCodeValue
+            }
+            
+            var countryCode: String?
+            if let currentProfile = Session.sharedSession.contact {
+                countryCode = currentProfile.getCountryCode()
+            }
 
-                    cell.setPrice(with: currencyCode, and: price.price)
+            for price in guestPrices where price.productCode == memberTier {
+                cell.setPrice(with: currencyCode, and: price.price, and: countryCode)
             }
             
             cell.infoButton.addTarget(self, action: #selector(showCertificateInfo), for: .touchUpInside)
@@ -1204,12 +1230,13 @@ extension WhoWillBeCheckingInViewController: UITextFieldDelegate {
 
 // MARK: - Extension for renewals
 extension WhoWillBeCheckingInViewController: RenewelViewControllerDelegate {
-    func dismissWhatToUse(renewalArray: [Renewal]) {
+    func dismissWhatToUse(renewalCoreProduct: Renewal?, renewalNonCoreProduct:  Renewal?) {
         
     }
     
-    func selectedRenewalFromWhoWillBeCheckingIn(renewalArray: [Renewal], selectedRelinquishment: ExchangeRelinquishment) {
-        self.renewalsArray = renewalArray
+    func selectedRenewalFromWhoWillBeCheckingIn(renewalCoreProduct: Renewal?, renewalNonCoreProduct: Renewal?, selectedRelinquishment: ExchangeRelinquishment) {
+        self.renewalCoreProduct = renewalCoreProduct
+        self.renewalNonCoreProduct = renewalNonCoreProduct
         Constant.MyClassConstants.noThanksForNonCore = false
         let button = UIButton()
         proceedToCheckoutPressed(button)

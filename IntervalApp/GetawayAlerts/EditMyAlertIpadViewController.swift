@@ -58,10 +58,10 @@ class EditMyAlertIpadViewController: UIViewController {
                 editAlertName = alrtName
             }
             if let earliestCheckInDate = alert.earliestCheckInDate {
-                Constant.MyClassConstants.alertWindowStartDate = Helper.convertStringToDate(dateString: earliestCheckInDate, format: "yyyy-MM-dd")
+                Constant.MyClassConstants.alertWindowStartDate = earliestCheckInDate.dateFromShortFormat()
             }
             if let latestCheckInDate = alert.latestCheckInDate {
-                Constant.MyClassConstants.alertWindowEndDate = Helper.convertStringToDate(dateString: latestCheckInDate, format: "yyyy-MM-dd")
+                Constant.MyClassConstants.alertWindowEndDate = latestCheckInDate.dateFromShortFormat()
             }
             let destination = alert.destinations
             for dest in destination {
@@ -221,8 +221,8 @@ class EditMyAlertIpadViewController: UIViewController {
             showHudAsync()
             let rentalAlert = RentalAlert()
             rentalAlert.alertId = self.alertId
-            rentalAlert.earliestCheckInDate = Helper.convertDateToString(date: startDate, format: Constant.MyClassConstants.dateFormat)
-            rentalAlert.latestCheckInDate = Helper.convertDateToString(date: endDate, format: Constant.MyClassConstants.dateFormat)
+            rentalAlert.earliestCheckInDate = startDate.stringWithShortFormatForJSON()
+            rentalAlert.latestCheckInDate = endDate.stringWithShortFormatForJSON()
             rentalAlert.enabled = true
             rentalAlert.name = trimmedUsername
             rentalAlert.enabled = alertStatusButton.isOn

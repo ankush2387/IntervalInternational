@@ -60,7 +60,7 @@ class AvailablePointToolViewController: UIViewController {
         
         if let AblToolSelectdDate = Constant.MyClassConstants.relinquishmentAvalableToolSelectedDate {
             
-          let dateStr = Helper.convertDateToString(date: AblToolSelectdDate, format: Constant.MyClassConstants.dateFormat)
+          let dateStr = AblToolSelectdDate.stringWithShortFormatForJSON()
             showHudAsync()
             UserClient.getProgramAvailablePoints(Session.sharedSession.userAccessToken, date: dateStr, onSuccess: {[weak self] (availablePoints) in
                 guard let strongSelf = self else { return }
@@ -132,14 +132,17 @@ extension AvailablePointToolViewController: UITableViewDataSource {
                 let programPointsUsage = self.availablePoints.usage
                 let usage = programPointsUsage[indexPath.row - 1]
                 
-                let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
-                let myComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: Helper.convertStringToDate(dateString: usage.expirationDate ?? "", format: Constant.MyClassConstants.dateFormat))
-                let year = "\(myComponents.year ?? 0)"
-                let month = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month ?? 0)) \( myComponents.day ?? 0)"
-                
-                cell.pointsLabel.text = "\(usage.points ?? 0)".localized()
-                cell.expirationdateLabel.text = "\(month) \(year)".localized()
-                cell.depositstatusLabel.text = usage.pointsType?.localizedCapitalized
+                if let expirationDate = usage.expirationDate {
+                    let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
+                    let myComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: expirationDate.dateFromShortFormat())
+                    let year = "\(myComponents.year ?? 0)"
+                    let month = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month ?? 0)) \( myComponents.day ?? 0)"
+                    
+                    cell.pointsLabel.text = "\(usage.points ?? 0)".localized()
+                    cell.expirationdateLabel.text = "\(month) \(year)".localized()
+                    cell.depositstatusLabel.text = usage.pointsType?.localizedCapitalized
+                }
+   
                 return cell
             }
         }

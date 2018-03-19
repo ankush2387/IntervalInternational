@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import DarwinSDK
 
 extension Float {
     
@@ -14,7 +15,16 @@ extension Float {
     /// Allows for caller to specify the baselineOffSet for currency and decimal numbers.
     /// Returns nil in case of a failure.
     
-    func currencyFormatter(for currency: String = "", baseLineOffSet: Int = 5) -> NSAttributedString? {
+    func currencyFormatter(for currencyCode: String = "", for countryCode: String?, baseLineOffSet: Int = 5) -> NSAttributedString? {
+        
+        var currencySymbol = currencyCode
+        
+        let currencyHelper = CurrencyHelperLocator.sharedInstance.provideHelper()
+        if let countryCodeValue = countryCode {
+            currencySymbol = currencyHelper.getCurrencyFriendlySymbol(currencyCode: currencyCode, countryCode: countryCodeValue)
+        } else {
+            currencySymbol = currencyHelper.getCurrencyFriendlySymbol(currencyCode: currencyCode)
+        }
         
         let numberFormatter = NumberFormatter()
             numberFormatter.numberStyle = .decimal
@@ -23,7 +33,7 @@ extension Float {
         let chargedAmount = numberFormatter.string(from: self as NSNumber)
         let amount = chargedAmount.unwrappedString
         let attributes: [String: Any] = [NSFontAttributeName: UIFont.systemFont(ofSize: 9), NSBaselineOffsetAttributeName: baseLineOffSet]
-        let attributedTextWithAttributedCurrencySign = NSMutableAttributedString(string: currency, attributes: attributes)
+        let attributedTextWithAttributedCurrencySign = NSMutableAttributedString(string: currencySymbol, attributes: attributes)
         let attributedAmount = NSMutableAttributedString(string: amount)
         guard let range = amount.NSRangeFor(.after, character: ".") else { return nil }
         attributedAmount.addAttributes(attributes, range: range)

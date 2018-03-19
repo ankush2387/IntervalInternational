@@ -20,14 +20,13 @@ class GetawayCell: UITableViewCell {
     @IBOutlet weak var currencySymbol: UILabel!
     @IBOutlet weak var mainView: UIView!
     @IBOutlet weak var checkbox: IUIKCheckbox!
-    
     //@IBOutlet weak var contentView: UIView!
     @IBOutlet weak var viewContent: UIView!
     
-    func setGetawayPrice(with currencyDisplayes: String, and chargeAmount: Float) {
-        
-        if let attributedAmount = chargeAmount.currencyFormatter(for:currencyDisplayes) {
+    func setGetawayPrice(with currencyCode: String, and chargeAmount: Float, and countryCode: String?) {
+        if let attributedAmount = chargeAmount.currencyFormatter(for:currencyCode, for: countryCode) {
             getawayPrice.attributedText = attributedAmount
         }
     }
+    
 }

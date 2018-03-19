@@ -19,9 +19,8 @@ class GuestCertificatePriceCell: UITableViewCell {
         // Initialization code
     }
 
-    func setPrice(with currencyDisplayes: String, and chargeAmount: Float) {
-        
-        if let attributedAmount = chargeAmount.currencyFormatter(for:currencyDisplayes) {
+    func setPrice(with currencyCode: String, and chargeAmount: Float, and countryCode: String?) {
+        if let attributedAmount = chargeAmount.currencyFormatter(for:currencyCode, for: countryCode) {
             certificatePriceLabel.attributedText = attributedAmount
         }
     }

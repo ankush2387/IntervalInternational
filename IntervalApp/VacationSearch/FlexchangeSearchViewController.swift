@@ -173,7 +173,7 @@ class FlexchangeSearchViewController: UIViewController {
                         self.navigateToSearchResults()
                     } else {
                         Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
-                        Helper.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: Constant.MyClassConstants.initialVacationSearch.searchCheckInDate ?? "", format: Constant.MyClassConstants.dateFormat), senderViewController: self)
+                        Helper.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: Constant.MyClassConstants.initialVacationSearch.searchCheckInDate?.dateFromShortFormat(), senderViewController: self)
 
                     }
                     

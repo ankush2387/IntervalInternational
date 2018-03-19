@@ -13,7 +13,7 @@ import DarwinSDK
 class CalendarViewController: UIViewController {
     
     //***** Outlets *****//
-    @IBOutlet weak var calendar: FSCalendar!
+    @IBOutlet weak var fsCalendar: FSCalendar!
     @IBOutlet weak var calendarHeightConstraint: NSLayoutConstraint!
     
     //***** class variables *****//
@@ -35,20 +35,23 @@ class CalendarViewController: UIViewController {
         self.navigationItem.leftBarButtonItem = menuButton
     
         self.title = Constant.ControllerTitles.calendarViewController
-        calendar.scrollDirection = .vertical
-        calendar.appearance.caseOptions = [.headerUsesUpperCase, .weekdayUsesUpperCase]
-        calendar.delegate = self
-          calendar.dataSource = self
-
+        
+        fsCalendar.scrollDirection = .vertical
+        fsCalendar.appearance.caseOptions = [.headerUsesUpperCase, .weekdayUsesUpperCase]
+        fsCalendar.delegate = self
+        fsCalendar.dataSource = self
+        //fsCalendar.formatter = Helper.createDateFormatter("yyyy/MM/dd")
+        //fsCalendar.calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
+        
         if !datesToAllow.isEmpty {
-            calendar.select(Date())
+            fsCalendar.select(Date())
         } else {
             if let date = Constant.MyClassConstants.relinquishmentFloatDetialSelectedDate {
-                calendar.select(date)
+                fsCalendar.select(date)
             } else {
-                calendar.select(Constant.MyClassConstants.vacationSearchShowDate)
+                fsCalendar.select(Constant.MyClassConstants.vacationSearchShowDate)
             }
-            calendar.deselect(Date())
+            fsCalendar.deselect(Date())
         }
     }
     //***** navigation back button action *****//
@@ -85,11 +88,19 @@ extension CalendarViewController: FSCalendarDelegate {
     
     func calendar(_ calendar: FSCalendar, didSelect date: Date) {
 
+        //FIXME(Frank): what is this?
+        /*
         let df = DateFormatter()
             df.dateFormat = "yyyy/MM/dd"
         let dateStr = df.string(from: date)
             df.timeZone = TimeZone(abbreviation: "UTC")
         let selectedDate = df.date(from: dateStr)
+         */
+        
+        let dateFormatter = Helper.createDateFormatter("yyyy/MM/dd")
+        let dateStr = dateFormatter.string(from: date)
+        let selectedDate = dateFormatter.date(from: dateStr)
+        
         if self.requestedController == Constant.MyClassConstants.relinquishment {
             
             Constant.MyClassConstants.relinquishmentAvalableToolSelectedDate = selectedDate
@@ -134,6 +145,7 @@ extension CalendarViewController: FSCalendarDelegate {
             return true
         }
     }
+
 }
 
 extension CalendarViewController: FSCalendarDataSource {

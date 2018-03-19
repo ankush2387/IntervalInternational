@@ -94,19 +94,21 @@ class RelinquishmentSelectionOpenWeeksCell: UITableViewCell {
             if let dateStr = deposit.checkInDate {
                 dateString = dateStr
             }
-            let date = Helper.convertStringToDate(dateString: dateString, format: Constant.MyClassConstants.dateFormat)
-            let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
-            let myComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: date)
-            let day = myComponents.day ?? 0
-            var month = ""
-            if let monthNumber = myComponents.month {
-                if day < 10 {
-                    month = "\(Helper.getMonthnameFromInt(monthNumber: monthNumber)) 0\(day)"
-                } else {
-                    month = "\(Helper.getMonthnameFromInt(monthNumber: monthNumber)) \(day)"
+            if let date = dateString.dateFromShortFormat() {
+                let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
+                let myComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: date)
+                let day = myComponents.day ?? 0
+                var month = ""
+                if let monthNumber = myComponents.month {
+                    if day < 10 {
+                        month = "\(Helper.getMonthnameFromInt(monthNumber: monthNumber)) 0\(day)"
+                    } else {
+                        month = "\(Helper.getMonthnameFromInt(monthNumber: monthNumber)) \(day)"
+                    }
+                    dayAndDateLabel.text = month.uppercased()
                 }
-                dayAndDateLabel.text = month.uppercased()
             }
+            
         } else {
             dayAndDateLabel.text = ""
         }
@@ -115,18 +117,19 @@ class RelinquishmentSelectionOpenWeeksCell: UITableViewCell {
             totalWeekLabel.text = "Week \(Constant.getWeekNumber(weekType: weekNumber))".localized()
         }
         if let expiredDate = deposit.expirationDate {
-            let expirationDate = Helper.convertStringToDate(dateString: expiredDate, format: "yyyy-MM-dd")
-            let diff = getDaysDiff(expiration: expirationDate)
-            
-            if diff > 0 {
-                expirationMessageLabel.text = "Expires in \(diff) days.".localized()
-                addButton?.isHidden = false
-            } else if diff == 0 {
-                expirationMessageLabel.text = "Expiring today".localized()
-                addButton?.isHidden = false
-            } else {
-                expirationMessageLabel.text = "Expired on \(expiredDate)".localized()
-                addButton?.isHidden = true
+            if let expirationDate = expiredDate.dateFromShortFormat() {
+                let diff = getDaysDiff(expiration: expirationDate)
+                
+                if diff > 0 {
+                    expirationMessageLabel.text = "Expires in \(diff) days.".localized()
+                    addButton?.isHidden = false
+                } else if diff == 0 {
+                    expirationMessageLabel.text = "Expiring today".localized()
+                    addButton?.isHidden = false
+                } else {
+                    expirationMessageLabel.text = "Expired on \(expiredDate)".localized()
+                    addButton?.isHidden = true
+                }
             }
         }
         //hide promotions

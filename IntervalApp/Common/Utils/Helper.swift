@@ -719,21 +719,18 @@ public class Helper {
                                     Constant.MyClassConstants.whatToTradeArray.add(openWk.clubPoints)
                                 }
                             }
-                            Constant.MyClassConstants.isClubPointsAvailable = true
                             
-                        } else {
+                            Constant.MyClassConstants.isClubPointsAvailable = true
+
+                        } else if !openWk.pProgram.isEmpty {
                             
                             Constant.MyClassConstants.whatToTradeArray.add(openWk.pProgram)
                             if !Constant.MyClassConstants.relinquishmentIdArray.contains(openWk.pProgram[0].relinquishmentId) {
                                 Constant.MyClassConstants.relinquishmentIdArray.append(openWk.pProgram[0].relinquishmentId)
                             }
+                            
                             Constant.MyClassConstants.relinquishmentAvailablePointsProgram = Int((openWk.pProgram[0].availablePoints))
-                            if realmLocalStorage.count == 1 {
-                                Constant.MyClassConstants.isCIGAvailable = true
-                            } else {
-                                Constant.MyClassConstants.isCIGAvailable = false
-                            }
-                        
+                            Constant.MyClassConstants.isCIGAvailable = true
                         }
                     }
                 }
@@ -827,6 +824,8 @@ public class Helper {
             return Constant.roomType.unKnown
         }
     }
+    
+    //FIXME(Frank): REMOVE ME - use the SDK KitchenType.friendlyName
     //***** function to return unitsize kitchen type in lower case with space form server kitchen type *****//
     static func getKitchenEnums(kitchenType: String) -> String {
         
@@ -1032,10 +1031,11 @@ public class Helper {
             senderViewController.hideHudAsync()
             
             if resortCalendar.count > 0 {
-                Constant.MyClassConstants.relinquishmentFloatDetialMinDate = self.convertStringToDate(dateString: resortCalendar[0].checkInDate!, format: Constant.MyClassConstants.dateFormat)
-                Constant.MyClassConstants.relinquishmentFloatDetialMaxDate = self.convertStringToDate(dateString: (resortCalendar.last?.checkInDate!)!, format: Constant.MyClassConstants.dateFormat)
+                Constant.MyClassConstants.relinquishmentFloatDetialMinDate = resortCalendar[0].checkInDate?.dateFromShortFormat()
+                Constant.MyClassConstants.relinquishmentFloatDetialMaxDate = resortCalendar.last?.checkInDate?.dateFromShortFormat()
+       
                 for calendarDetails in resortCalendar {
-                    Constant.MyClassConstants.floatDetailsCalendarDateArray.append((Helper.convertStringToDate(dateString: calendarDetails.checkInDate!, format: Constant.MyClassConstants.dateFormat)))
+                    Constant.MyClassConstants.floatDetailsCalendarDateArray.append((calendarDetails.checkInDate?.dateFromShortFormat())!)
                     Constant.MyClassConstants.floatDetailsCalendarWeekArray.add(calendarDetails.weekNumber!)
                 }
                 
@@ -1346,7 +1346,7 @@ public class Helper {
     // function for card name mappping with code and return code
     static func cardNameMapping(cardName: String) -> String {
         switch cardName {
-        case "MASTERCARD":
+        case "MASTER CARD":
             return "MC"
             
         case "AMERICAN EXPRESS":
@@ -1400,7 +1400,9 @@ public class Helper {
         return attrStr
     }
     
+    //FIXME(Frank) - DO NOT USE this - use the SDK
     // function to return date string from date
+    /*
     static func convertDateToString(date: Date, format: String) -> String {
         
         let dateFormatter = DateFormatter()
@@ -1410,7 +1412,11 @@ public class Helper {
         let dateStr = dateFormatter.string(from: date)
         return dateStr
     }
+     */
+    
+    //FIXME(Frank) - DO NOT USE this - use the SDK
     // function to return date from dateString
+    /*
     static func convertStringToDate(dateString: String, format: String) -> Date {
         
         let dateFormatter = DateFormatter()
@@ -1420,6 +1426,7 @@ public class Helper {
         let date = dateFormatter.date(from: dateString)
         return date ?? Date()
     }
+     */
     
     // mapping function to return unit details header string with space
     static func getMappedStringForDetailedHeaderSection(sectonHeader: String) -> String {
@@ -1612,18 +1619,16 @@ public class Helper {
             if Constant.MyClassConstants.isFromSorting == false && Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType != VacationSearchType.COMBINED {
                 helperDelegate?.resortSearchComplete()
             } else {
-                
                 executeExchangeSearchDates(senderVC: senderViewController)
             }
             Constant.MyClassConstants.isFromSorting = false
             Constant.MyClassConstants.noAvailabilityView = false
-                                    
         },
-           onError: {_ in
+           onError: { error in
             Constant.MyClassConstants.noAvailabilityView = true
             Constant.MyClassConstants.isFromSorting = false
             senderViewController.hideHudAsync()
-            senderViewController.presentErrorAlert(UserFacingCommonError.generic)
+            senderViewController.presentErrorAlert(UserFacingCommonError.handleError(error))
         }
         )
     }
@@ -1647,7 +1652,10 @@ public class Helper {
             Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.inventory = searchAvailabilityResponse
             
             //Added resorts for resort detail screen
-            Constant.MyClassConstants.resortsArray.removeAll()
+            if Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType != VacationSearchType.COMBINED {
+                Constant.MyClassConstants.resortsArray.removeAll()
+            }
+            
             for resorts in searchAvailabilityResponse {
                 if let resort = resorts.resort {
                     Constant.MyClassConstants.resortsArray.append(resort)
@@ -1655,11 +1663,15 @@ public class Helper {
             }
             showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
             senderViewController.hideHudAsync()
-           
+
             if senderViewController.isKind(of: VacationSearchResultIPadController.self) || senderViewController.isKind(of: SearchResultViewController.self) || senderViewController.isKind(of: SortingViewController.self) || senderViewController.isKind(of:AllAvailableDestinationViewController.self) || senderViewController.isKind(of: AllAvailableDestinationsIpadViewController.self) || senderViewController.isKind(of: FlexChangeSearchIpadViewController.self) || senderViewController.isKind(of: FlexchangeSearchViewController.self) {
                 helperDelegate?.resortSearchComplete()
+                
             } else {
                 
+                helperDelegate?.resortSearchComplete()
+                
+                /*
                 let isRunningOnIphone = UIDevice.current.userInterfaceIdiom == .phone
                 let storyboardName = isRunningOnIphone ? Constant.storyboardNames.vacationSearchIphone : Constant.storyboardNames.vacationSearchIPad
                 let mainStoryboard: UIStoryboard = UIStoryboard(name: storyboardName, bundle: nil)
@@ -1671,21 +1683,20 @@ public class Helper {
                     guard let Controller = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.vacationSearchController) as? VacationSearchResultIPadController else { return }
                     viewController = Controller
                 }
+ 
                 let transitionManager = TransitionManager()
                 senderViewController.navigationController?.transitioningDelegate = transitionManager
                 senderViewController.navigationController?.pushViewController(viewController, animated: true)
-
+                 */
             }
             
-        }) { _ in
+        }) { error in
             senderViewController.hideHudAsync()
-            senderViewController.presentErrorAlert(UserFacingCommonError.generic)
+            senderViewController.presentErrorAlert(UserFacingCommonError.handleError(error))
         }
     }
     
     //Search both perform exchange search after rental
-
-
     static func executeExchangeSearchDates(senderVC: UIViewController) {
         senderVC.showHudAsync()
         ExchangeClient.searchDates(Session.sharedSession.userAccessToken, request: Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request, onSuccess: { (response) in
@@ -1705,7 +1716,7 @@ public class Helper {
                 
             } else {
                 Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
-                executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: Constant.MyClassConstants.initialVacationSearch.searchCheckInDate ?? "", format: Constant.MyClassConstants.dateFormat), senderViewController: senderVC) }
+                executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: Constant.MyClassConstants.initialVacationSearch.searchCheckInDate?.dateFromShortFormat(), senderViewController: senderVC) }
         },
            onError: { error in
             senderVC.hideHudAsync()
@@ -1727,10 +1738,10 @@ public class Helper {
                 datesCV.reloadData()
                 senderVC.hideHudAsync()
         },
-               onError: { _ in
+               onError: { error in
                 datesCV.reloadData()
                 senderVC.hideHudAsync()
-                senderVC.presentErrorAlert(UserFacingCommonError.generic)
+                senderVC.presentErrorAlert(UserFacingCommonError.handleError(error))
         }
         )
     }
@@ -1753,8 +1764,8 @@ public class Helper {
             Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.inventory = response
             helperDelegate?.resortSearchComplete()
         },
-          onError: { _ in
-            senderVC.presentErrorAlert(UserFacingCommonError.generic)
+          onError: { error in
+            senderVC.presentErrorAlert(UserFacingCommonError.handleError(error))
         }
         )
     }
@@ -1780,7 +1791,7 @@ public class Helper {
         DarwinSDK.logger.info("NEAREST CHECK-IN DATE SELECTED - We found availability close to your desired Check-in Date")
     }
     
-    // FIXME (Frank): Remove this helper method
+    // FIXME(Frank): Remove this helper method
     static func resolveDestinationInfo(destination: AreaOfInfluenceDestination) -> String {
         var info = String()
         info.append(destination.destinationName)
@@ -1803,7 +1814,7 @@ public class Helper {
         return info
     }
     
-    // FIXME (Frank): Remove this helper method
+    // FIXME(Frank): Remove this helper method
     static func resolveUnitInfo(unit: InventoryUnit) -> String {
         var info = String()
         info.append("    ")
@@ -2035,5 +2046,84 @@ public class Helper {
             
         }
     }
+    
+    //
+    // Resolve the currency symbol based on the Profile country code and the param currency code
+    //
+    static func resolveCurrencySymbol(currencyCode: String) -> String {
+        let currencyHelper = CurrencyHelperLocator.sharedInstance.provideHelper()
+        
+        if let profile = Session.sharedSession.contact, let countryCode = profile.getCountryCode() {
+            return currencyHelper.getCurrencyFriendlySymbol(currencyCode: currencyCode, countryCode: countryCode)
+        } else {
+            return currencyHelper.getCurrencyFriendlySymbol(currencyCode: currencyCode)
+        }
+    }
+    
+    //
+    // Resolve the DateFormatter
+    //
+    static func createDateFormatter(_ format:String) -> DateFormatter {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = format
+        if let timeZone = TimeZone(identifier: "UTC") {
+            dateFormatter.timeZone = timeZone
+        } else {
+            dateFormatter.timeZone = NSTimeZone.local
+        }
+        return dateFormatter
+    }
+    
+    //
+    // Resolve the Destination Promotion display name
+    //
+    static func resolveDestinationPromotionDisplayName(currencyCode: String, originalPrice: Float, promotion: Promotion) -> String? {
+        var displayName: String?
+        
+        if let rewardType = promotion.rewardType, rewardType.caseInsensitiveCompare("FA") == ComparisonResult.orderedSame {
+            var countryCode: String?
+            if let currentProfile = Session.sharedSession.contact {
+                countryCode = currentProfile.getCountryCode()
+            }
+            
+            if let amount = promotion.amount.currencyFormatter(for: currencyCode, for: countryCode) {
+                if let offerContent = promotion.offerContentFragment, let cleanOfferContent = offerContent.trim() {
+                    let amountMutable = amount as! NSMutableAttributedString
+                    amountMutable.append(NSMutableAttributedString(string: " " + cleanOfferContent))
+                    displayName = amountMutable.string
+                } else {
+                    displayName = amount.string
+                }
+            }
+        } else if let rewardType = promotion.rewardType, rewardType.caseInsensitiveCompare("PR") == ComparisonResult.orderedSame, let offerContent = promotion.offerContentFragment, let cleanOfferContent = offerContent.trim() {
+            let percent = Int(promotion.amount / originalPrice * 100)
+            displayName = "\(percent)% " + cleanOfferContent
+        }
+        
+        //FIXME(Frank): Temporal solution until I review it with Business
+        if let displayNameValue = displayName, displayNameValue.count > 35 {
+            return String(displayNameValue.prefix(35))
+        }
+        return displayName
+    }
+    
+    static func getDefaultImage(_ images: [Image], _ size:ImageSize ) -> Image? {
+        return images.filter { $0.size == size.rawValue }.first
+    }
+    
+    static func getDefaultImage(_ images: [Image]) -> Image? {
+        if let image = getDefaultImage(images, ImageSize.XLARGE) {
+            return image
+        } else if let image = getDefaultImage(images, ImageSize.LARGE) {
+            return image
+        } else if let image = getDefaultImage(images, ImageSize.THUMBNAIL) {
+            return image
+        } else if let image = getDefaultImage(images, ImageSize.TYNY) {
+            return image
+        } else {
+            return nil
+        }
+    }
+    
 }
 

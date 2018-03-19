@@ -68,7 +68,7 @@ class UpComingTripCell: UITableViewCell {
     }
     
     func setTripInformation(with resortDetails: Resort) {
-        
+        intervalPrint("Upcoming Trip details with Resort")
     }
     
     func setDateDetails(with checkInDate: String, checkOutDate: String) {
@@ -77,54 +77,54 @@ class UpComingTripCell: UITableViewCell {
         checkOutDateView.layer.borderColor = UIColor.lightGray.cgColor
         
         let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
-        let checkInDate = Helper.convertStringToDate(dateString: checkInDate, format: Constant.MyClassConstants.dateFormat)
-        let checkOutDate = Helper.convertStringToDate(dateString: checkOutDate, format: Constant.MyClassConstants.dateFormat)
         
-        let checkIndateComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: checkInDate)
-        if let day = checkIndateComponents.day, let month = checkIndateComponents.month, let weekDay = checkIndateComponents.weekday, let  year = checkIndateComponents.year {
+        if let formattedCheckInDate = checkInDate.dateFromShortFormat(), let formattedCheckOutDate = checkOutDate.dateFromShortFormat() {
+            let checkIndateComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: formattedCheckInDate)
+            if let day = checkIndateComponents.day, let month = checkIndateComponents.month, let weekDay = checkIndateComponents.weekday, let  year = checkIndateComponents.year {
+                
+                checkInDateLabel.text = "\(String(format: "%02d", arguments: [day]))"
+                checkinDayLabel.text = "\(Helper.getWeekdayFromInt(weekDayNumber: weekDay))"
+                checkInMonthYearLabel.text = "\(Helper.getMonthnameFromInt(monthNumber: month)) \(year)"
+            }
             
-            checkInDateLabel.text = "\(String(format: "%02d", arguments: [day]))"
-            checkinDayLabel.text = "\(Helper.getWeekdayFromInt(weekDayNumber: weekDay))"
-            checkInMonthYearLabel.text = "\(Helper.getMonthnameFromInt(monthNumber: month)) \(year)"
-        }
-        
-        let checkOutdateComponents = (calendar as NSCalendar).components([.day, .weekday, .month, .year], from: checkOutDate)
-        
-        if let day = checkOutdateComponents.day, let month = checkOutdateComponents.month, let weekDay = checkOutdateComponents.weekday, let year = checkOutdateComponents.year {
-            checkOutDateLabel.text = "\(String(format: "%02d", arguments: [day]))"
-            checkoutDayLabel.text = "\(Helper.getWeekdayFromInt(weekDayNumber: weekDay))"
-            let formatedCheckOutDate = "\(Helper.getMonthnameFromInt(monthNumber: month)). \(year)"
-            checkOutMonthYearLabel.text = formatedCheckOutDate
+            let checkOutdateComponents = (calendar as NSCalendar).components([.day, .weekday, .month, .year], from: formattedCheckOutDate)
+            
+            if let day = checkOutdateComponents.day, let month = checkOutdateComponents.month, let weekDay = checkOutdateComponents.weekday, let year = checkOutdateComponents.year {
+                checkOutDateLabel.text = "\(String(format: "%02d", arguments: [day]))"
+                checkoutDayLabel.text = "\(Helper.getWeekdayFromInt(weekDayNumber: weekDay))"
+                let formatedCheckOutDate = "\(Helper.getMonthnameFromInt(monthNumber: month)). \(year)"
+                checkOutMonthYearLabel.text = formatedCheckOutDate
+            }
         }
     }
     
     func setDepositInformation(with depositDetails: Deposit) {
         
         let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
-        if let checkInDate = depositDetails.checkInDate {
-            let checkInDate = Helper.convertStringToDate(dateString: checkInDate, format: Constant.MyClassConstants.dateFormat)
-            
-            let dateComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: checkInDate)
+        
+        if let checkInDate = depositDetails.checkInDate, let formattedCheckInDate = checkInDate.dateFromShortFormat() {
+            let dateComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: formattedCheckInDate)
             if let day = dateComponents.day, let month = dateComponents.month {
                 checkInDateLabel.text = "\(Helper.getMonthnameFromInt(monthNumber: month)) \(String(format: "%02d", arguments: [day]))"
             }
-            
-            if let relinquishmentYr = depositDetails.relinquishmentYear {
-                checkInMonthYearLabel.text = "\(relinquishmentYr)"
-            }
-            
-            if let weekNumber = depositDetails.weekNumber {
-                resortFixedWeekLabel.text = "Week \(Constant.getWeekNumber(weekType: weekNumber))"
-            }
-            
-            if let unitSize = depositDetails.unit?.unitSize, let kitchenType = depositDetails.unit?.kitchenType {
-                bedRoomKitechenType.text =  "\(Helper.getBedroomNumbers(bedroomType: unitSize)) \(Helper.getKitchenEnums(kitchenType: kitchenType))"
-            }
-            
-            if let publicSleeps = depositDetails.unit?.publicSleepCapacity, let privateSleeps = depositDetails.unit?.privateSleepCapacity {
-                sleepsTotalOrPrivate.text = "Sleeps \(publicSleeps) total, \(privateSleeps) Private"
-            }
         }
+            
+        if let relinquishmentYr = depositDetails.relinquishmentYear {
+            checkInMonthYearLabel.text = "\(relinquishmentYr)"
+        }
+        
+        if let weekNumber = depositDetails.weekNumber {
+            resortFixedWeekLabel.text = "Week \(Constant.getWeekNumber(weekType: weekNumber))"
+        }
+        
+        if let unitSize = depositDetails.unit?.unitSize, let kitchenType = depositDetails.unit?.kitchenType {
+            bedRoomKitechenType.text =  "\(Helper.getBedroomNumbers(bedroomType: unitSize)) \(Helper.getKitchenEnums(kitchenType: kitchenType))"
+        }
+        
+        if let publicSleeps = depositDetails.unit?.publicSleepCapacity, let privateSleeps = depositDetails.unit?.privateSleepCapacity {
+            sleepsTotalOrPrivate.text = "Sleeps \(publicSleeps) total, \(privateSleeps) Private"
+        }
+
     }
 
 }

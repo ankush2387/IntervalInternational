@@ -169,6 +169,7 @@ class UpComingTripDetailController: UIViewController, UITextViewDelegate {
 
     func tapCallButton(button: UIButton) {
 
+        //FIXME(Frank): Why the phone number is here?
         if let phoneCallURL = URL(string: "tel://8442429977") {
             let application: UIApplication = UIApplication.shared
             if application.canOpenURL(phoneCallURL) {
@@ -408,133 +409,126 @@ extension UpComingTripDetailController: UITableViewDataSource {
                 return UITableViewCell()
             }
             
-            if Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.confirmationNumber != nil {
+            let myCalendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
+            
+            if let confirmationNumber = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.confirmationNumber {
                 
-                if let confirmationNumber = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.confirmationNumber {
-                    cell.headerLabel.text = "Confirmation #\(confirmationNumber)".localized()
-                }
-                var resortImage = Image()
-                if Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.cruise != nil {
+                cell.headerLabel.text = "Confirmation #\(confirmationNumber)".localized()
+                
+                let type = ExchangeTransactionType.fromName(name: Constant.MyClassConstants.transactionType).friendlyNameForUpcomingTrip()
+                cell.transactionType.text = type.localized().uppercased()
+  
+                if let destinnation = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination, let cruise = destinnation.cruise {
+                    // TODO: Destination is a Cruise
                     
-                    if let resortImages = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.cruise?.images {
-                        
-                        for largeResortImage in resortImages {
-                            if largeResortImage.size == Constant.MyClassConstants.imageSizeXL {
-                                resortImage = largeResortImage
-                            } else {
-                                resortImage = (resortImages[0])
+                    if !cruise.images.isEmpty, let image = Helper.getDefaultImage(cruise.images), let imageUrl = image.url {
+                        cell.resortImageView.setImageWith(URL(string: imageUrl), completed: { (image:UIImage?, error:Error?, _:SDImageCacheType, _:URL?) in
+                            if error != nil {
+                                cell.resortImageView.image = UIImage(named: Constant.MyClassConstants.noImage)
                             }
-                        }
+                        }, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
                     }
                     
-                    cell.resortNameLabel.text = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.cruise?.shipName?.localized()
-                    cell.resortLocationLabel.text = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.cruise?.tripName?.localized()
-                    
-                    if let sailingDate = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.cruise?.cabin?.sailingDate {
-                        let checkInDate = Helper.convertStringToDate(dateString: sailingDate, format: Constant.MyClassConstants.dateFormat)
-                        let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
-                        let myComponents = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: checkInDate)
-                        if let day = myComponents.day, let weekday = myComponents.weekday, let month = myComponents.month, let year = myComponents.year {
-                            cell.checkinDayLabel.text = "\(Helper.getWeekdayFromInt(weekDayNumber: weekday))".localized()
-                            let formatedCheckInDate = "\(Helper.getMonthnameFromInt(monthNumber: month)). \(year)"
-                            cell.checkInDateLabel.text = "\(day)".localized()
-                            
-                            if cell.checkInDateLabel.text?.count == 1 {
-                                cell.checkInDateLabel.text = "0\(day)".localized()
-                                
-                            }
-                            cell.checkInMonthYearLabel.text = formatedCheckInDate
-                        }
-                        
-                        cell.inDateHeading.text = Constant.upComingTripDetailControllerReusableIdentifiers.inHeadingString.localized()
-                        
-                        if let returnDate = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.cruise?.cabin?.returnDate {
-                            let checkOutDate = Helper.convertStringToDate(dateString: returnDate, format: Constant.MyClassConstants.dateFormat)
-                            let myComponents1 = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: checkOutDate)
-                            if let day = myComponents1.day, let weekday = myComponents1.weekday, let month = myComponents1.month, let year = myComponents1.year {
-                                
-                                cell.checkoutDayLabel.text = "\(Helper.getWeekdayFromInt(weekDayNumber: weekday))".localized()
-                                let formatedCheckOutDate = "\(Helper.getMonthnameFromInt(monthNumber: month)). \(year)"
-                                cell.checkOutDateLabel.text = "\(day)".localized()
-                                if cell.checkOutDateLabel.text?.count == 1 {
-                                    cell.checkOutDateLabel.text = "0\(day)".localized()
-                                }
-                                cell.checkOutMonthYearLabel.text = formatedCheckOutDate.localized()
-                            }
-                        }
-                        cell.outDateHeading.text = Constant.upComingTripDetailControllerReusableIdentifiers.outHeadingString
+                    if let shipName = cruise.shipName {
+                        cell.resortNameLabel.text = shipName.localized()
                     }
                     
-                } else {
-                    
-                    if let resortImages = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.resort?.images {
-                        
-                        for largeResortImage in resortImages {
-                            if largeResortImage.size == Constant.MyClassConstants.imageSizeXL {
-                                resortImage = largeResortImage
-                            } else {
-                                resortImage = (resortImages[0])
-                            }
-                        }
-                    }
-                    
-                    cell.resortNameLabel.text = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.resort?.resortName?.localized()
-                    cell.resortCodeLabel.text = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.resort?.address?.countryCode?.localized()
-                    if let unitSize = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.unit?.unitSize {
-                        if let size = UnitSize.fromFriendlyName(unitSize) {
-                            if let kitchenType = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.unit?.kitchenType {
-                                cell.bedRoomKitechenType.text =  "\(size) \(Helper.getKitchenEnums(kitchenType: kitchenType))".localized()
-                            }
-                        }
+                    if let tripName = cruise.tripName {
+                        cell.resortLocationLabel.text = tripName.localized()
                     }
 
-                    cell.sleepsTotalOrPrivate.text = "Sleeps \(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.unit?.publicSleepCapacity ?? 0) total, \(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.unit?.privateSleepCapacity ?? 0) Private".localized()
-                    
-                    let checkInDate = Helper.convertStringToDate(dateString: Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.unit?.checkInDate ?? "", format: Constant.MyClassConstants.dateFormat)
-                    
-                    let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
-                    let myComponents = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: checkInDate)
-                    
-                    if let weekday = myComponents.weekday {
-                        cell.checkinDayLabel.text = Helper.getWeekdayFromInt(weekDayNumber: weekday)
-                    }
-                    if let day = myComponents.day, let month = myComponents.month, let year = myComponents.year {
-                        let formatedCheckInDate = "\(Helper.getMonthnameFromInt(monthNumber: month)). \(year)"
-                        cell.checkInMonthYearLabel.text = formatedCheckInDate
-                        cell.checkInDateLabel.text = "\(day)".localized()
-                        if cell.checkInDateLabel.text?.count == 1 {
-                            cell.checkInDateLabel.text = "0\(day)".localized()
+                    // Cruise Cabin info
+                    if let cabin = cruise.cabin {
+                        if let sailingDate = cabin.sailingDate, let checkInDate = sailingDate.dateFromShortFormat() {
+                            cell.inDateHeading.text = Constant.upComingTripDetailControllerReusableIdentifiers.inHeadingString.localized()
                             
-                        }
-                    }
-                    if let checkOutDate = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.unit?.checkOutDate {
-                        let checkOutDate = Helper.convertStringToDate(dateString: checkOutDate, format: Constant.MyClassConstants.dateFormat)
-                        let myComponents1 = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: checkOutDate)
-                        if let weekday = myComponents1.weekday {
-                            cell.checkoutDayLabel.text = Helper.getWeekdayFromInt(weekDayNumber: weekday).localized()
-                        }
-                        if let day = myComponents1.day, let month = myComponents1.month, let year = myComponents1.year {
-                            let formatedCheckOutDate = "\(Helper.getMonthnameFromInt(monthNumber: month)). \(year)"
-                            cell.checkOutDateLabel.text = "\(day)"
-                            if cell.checkOutDateLabel.text?.count == 1 {
-                                cell.checkOutDateLabel.text = "0\(day)".localized()
+                            let myComponents = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: checkInDate)
+                            if let day = myComponents.day, let weekday = myComponents.weekday, let month = myComponents.month, let year = myComponents.year {
+                                cell.checkinDayLabel.text = "\(Helper.getWeekdayFromInt(weekDayNumber: weekday))".localized()
+                                cell.checkInMonthYearLabel.text = "\(Helper.getMonthnameFromInt(monthNumber: month)). \(year)".localized()
+                                if cell.checkInDateLabel.text?.count == 1 {
+                                    cell.checkInDateLabel.text = "0\(day)".localized()
+                                } else {
+                                    cell.checkInDateLabel.text = "\(day)".localized()
+                                }
                             }
-                            cell.checkOutMonthYearLabel.text = formatedCheckOutDate.localized()
-                            
+     
+                            if let returnDate = cruise.cabin?.returnDate, let checkOutDate = returnDate.dateFromShortFormat() {
+                                cell.outDateHeading.text = Constant.upComingTripDetailControllerReusableIdentifiers.outHeadingString
+                                
+                                let myComponents1 = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: checkOutDate)
+                                if let day = myComponents1.day, let weekday = myComponents1.weekday, let month = myComponents1.month, let year = myComponents1.year {
+                                    cell.checkoutDayLabel.text = "\(Helper.getWeekdayFromInt(weekDayNumber: weekday))".localized()
+                                    cell.checkOutMonthYearLabel.text = "\(Helper.getMonthnameFromInt(monthNumber: month)). \(year)".localized()
+                                    if cell.checkOutDateLabel.text?.count == 1 {
+                                        cell.checkOutDateLabel.text = "0\(day)".localized()
+                                    } else {
+                                        cell.checkOutDateLabel.text = "\(day)".localized()
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    
+                } else if let destinnation = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination, let resort = destinnation.resort, let unit = destinnation.unit {
+                    // TODO: Destination is a Resort
+
+                    if !resort.images.isEmpty, let image = Helper.getDefaultImage(resort.images), let imageUrl = image.url {
+                        cell.resortImageView.setImageWith(URL(string: imageUrl), completed: { (image:UIImage?, error:Error?, _:SDImageCacheType, _:URL?) in
+                            if error != nil {
+                                cell.resortImageView.image = UIImage(named: Constant.MyClassConstants.noImage)
+                            }
+                        }, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
+                    }
+                    
+                    if let resortName = resort.resortName {
+                        cell.resortNameLabel.text = resortName.localized()
+                    }
+                    
+                    if let address = resort.address {
+                        cell.resortLocationLabel.text = address.postalAddresAsString().localized()
+                        
+                        if let countryCode = address.countryCode {
+                            cell.resortCodeLabel.text = countryCode.localized()
+                        }
+                    }
+                    
+                    // Resort Unit info
+                    if let unitSizeRawValue = unit.unitSize, let kitchenTypeRawValue = unit.kitchenType {
+                        cell.bedRoomKitechenType.text =  "\(Helper.getBedroomNumbers(bedroomType: unitSizeRawValue)), \(Helper.getKitchenEnums(kitchenType: kitchenTypeRawValue))".localized()
+                    }
+                       
+                    cell.sleepsTotalOrPrivate.text = "Sleeps \(unit.publicSleepCapacity) total, \(unit.privateSleepCapacity) Private".localized()
+                
+                    if let checkInDate = unit.checkInDate, let formattedCheckInDate = checkInDate.dateFromShortFormat() {
+                        let myComponents = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: formattedCheckInDate)
+                        if let weekday = myComponents.weekday, let day = myComponents.day, let month = myComponents.month, let year = myComponents.year {
+                            cell.checkinDayLabel.text = Helper.getWeekdayFromInt(weekDayNumber: weekday)
+                            cell.checkInMonthYearLabel.text = "\(Helper.getMonthnameFromInt(monthNumber: month)). \(year)"
+                            if cell.checkInDateLabel.text?.count == 1 {
+                                cell.checkInDateLabel.text = "0\(day)".localized()
+                            } else {
+                                cell.checkInDateLabel.text = "\(day)".localized()
+                            }
+                        }
+                    }
+                    
+                    if let checkOutDate = unit.checkOutDate, let formattedCheckOutDate = checkOutDate.dateFromShortFormat() {
+                        let myComponents = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: formattedCheckOutDate)
+                        if let weekday = myComponents.weekday, let day = myComponents.day, let month = myComponents.month, let year = myComponents.year {
+                            cell.checkinDayLabel.text = Helper.getWeekdayFromInt(weekDayNumber: weekday)
+                            cell.checkInMonthYearLabel.text = "\(Helper.getMonthnameFromInt(monthNumber: month)). \(year)"
+                            if cell.checkInDateLabel.text?.count == 1 {
+                                cell.checkInDateLabel.text = "0\(day)".localized()
+                            } else {
+                                cell.checkInDateLabel.text = "\(day)".localized()
+                            }
                         }
                     }
                 }
-                if let image = resortImage.url {
-                    cell.resortImageView.setImageWith(URL(string: image), completed: { (image:UIImage?, error:Error?, _:SDImageCacheType, _:URL?) in
-                        if error != nil {
-                            cell.resortImageView.image = UIImage(named: Constant.MyClassConstants.noImage)
-                        }
-                    }, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
-                }
+
             }
-            let type = ExchangeTransactionType.fromName(name: Constant.MyClassConstants.transactionType).friendlyNameForUpcomingTrip()
-            cell.transactionType.text = type.localized().uppercased()
-            
+     
             cell.selectionStyle = UITableViewCellSelectionStyle.none
             cell.backgroundColor = UIColor.clear
             cell.resortNameBaseView.backgroundColor = UIColor.clear
@@ -544,33 +538,22 @@ extension UpComingTripDetailController: UITableViewDataSource {
                     layer.removeFromSuperlayer()
                 }
             }
+            
             Helper.addLinearGradientToView(view: cell.resortNameBaseView, colour: UIColor.white, transparntToOpaque: true, vertical: false)
             cell.showMapDetailButton.addTarget(self, action: #selector(UpComingTripDetailController.showMapDetail), for: .touchUpInside)
             cell.showWeatherDetailButton.addTarget(self, action: #selector(UpComingTripDetailController.showWeatherDetail), for: .touchUpInside)
-            guard let addressDetails = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.resort?.address else {
-                return cell
-            }
-            
-            var resortAddress = [String]()
-            if let city = addressDetails.cityName {
-                resortAddress.append(city)
-            }
-            if let state = addressDetails.territoryCode {
-                resortAddress.append(state)
-            }
-            if let countryCode = addressDetails.countryCode {
-                resortAddress.append(countryCode)
-            }
-            cell.resortLocationLabel.text = resortAddress.joined(separator: ", ")
             return cell
+            
         } else if indexPath.section == 1 {
             
-            //***** Configuring prototype cell for unit details with dynamic button to shwo unit details *****//
+            // TODO: Unit Amenities
             
+            //***** Configuring prototype cell for unit details with dynamic button to shwo unit details *****//
             guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.upComingTripDetailControllerReusableIdentifiers.customTableViewCell, for: indexPath) as? CustomTableViewCell else {
-                
                 return UITableViewCell()
             }
+            
+            // FIXME(Frank): I do not sure if this implementation is completed - need to be tested.
             if isOpen == true {
                 cell.dropDown.image = #imageLiteral(resourceName: "up_arrow_icon")
                 
@@ -581,39 +564,44 @@ extension UpComingTripDetailController: UITableViewDataSource {
             } else {
                cell.dropDown.image = #imageLiteral(resourceName: "DropArrowIcon")
             }
+            
             cell.backgroundColor = IUIKColorPalette.contentBackground.color
             let horizontalSeprator = UIView(frame: CGRect(x: 0, y: 49, width: cell.contentView.frame.size.width, height: 1))
             horizontalSeprator.backgroundColor = UIColor.lightGray
             cell.addSubview(horizontalSeprator)
             cell.selectionStyle = UITableViewCellSelectionStyle.none
-            
             return cell
             
         } else if indexPath.section == 2 {
             
+            // TODO: Relinquishment is a Deposit
+            
+             let myCalendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
+            
             if requiredRowsArrayRelinquishment[indexPath.row]  == Constant.upComingTripDetailControllerReusableIdentifiers.resortCell {
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.upComingTripDetailControllerReusableIdentifiers.resortCell, for: indexPath) as? UpComingTripCell else {
-                    
                     return UITableViewCell()
                 }
+                
                 cell.resortNameLabel.text = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment?.deposit?.resort?.resortName?.localized()
                 cell.resortLocationLabel.text = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment?.deposit?.resort?.address?.cityName?.localized()
                 cell.resortCodeLabel.text = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment?.deposit?.resort?.address?.territoryCode?.localized()
                 
                 cell.backgroundColor = IUIKColorPalette.contentBackground.color
-                
                 return cell
+                
             } else if requiredRowsArrayRelinquishment[indexPath.row]  == Constant.upComingTripDetailControllerReusableIdentifiers.unitCell {
                 
+                // TODO: Relinquishment is an AccomodationCertificate
+                
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.upComingTripDetailControllerReusableIdentifiers.unitCell, for: indexPath) as? UpComingTripCell else {
-                    
                     return UITableViewCell()
                 }
+                
                 if Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment?.accommodationCertificate != nil {
-                    let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
-                    if let fromDate = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment?.accommodationCertificate?.travelWindow?.fromDate {
-                        
-                        let checkInDate = Helper.convertStringToDate(dateString: fromDate, format: Constant.MyClassConstants.dateFormat)
+                   
+                    if let fromDate = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment?.accommodationCertificate?.travelWindow?.fromDate, let checkInDate = fromDate.dateFromShortFormat() {
+             
                         let myComponents1 = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: checkInDate)
                         if let day = myComponents1.day, let month = myComponents1.month, let year = myComponents1.year {
                             cell.checkInDateLabel.text = "\(Helper.getMonthnameFromInt(monthNumber: month)) \(cell.checkInDateLabel.text ?? ""))".localized()
@@ -634,19 +622,22 @@ extension UpComingTripDetailController: UITableViewDataSource {
                         cell.bedRoomKitechenType.text =  "\(unitSize) \(Helper.getKitchenEnums(kitchenType: kitchen))".localized()
                     }
                     cell.sleepsTotalOrPrivate.text = "Sleeps \((Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment?.accommodationCertificate?.unit?.publicSleepCapacity) ?? 0) total, \((Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment?.accommodationCertificate?.unit?.privateSleepCapacity) ?? 0) Private".localized()
+                
                 } else {
-                    let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
-                    let checkInDate = Helper.convertStringToDate(dateString: Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment?.deposit?.checkInDate ?? "", format: Constant.MyClassConstants.dateFormat)
+       
+                    // FIXME(Frank): Relinquishment is a Deposit ??? - AGAIN?
                     
-                    let myComponents1 = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: checkInDate)
-                    if let day = myComponents1.day, let checkinDate = cell.checkInDateLabel.text, let month = myComponents1.month {
-                        cell.checkInDateLabel.text = "\(day)".localized()
-                        if cell.checkInDateLabel.text?.count == 1 {
-                            cell.checkInDateLabel.text = "0\(day)".localized()
-                        cell.checkInDateLabel.text = "\(Helper.getMonthnameFromInt(monthNumber: month)) \(checkinDate)".localized()
+                    if let checkInDate = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment?.deposit?.checkInDate?.dateFromShortFormat() {
+                        let myComponents1 = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: checkInDate)
+                        if let day = myComponents1.day, let checkinDate = cell.checkInDateLabel.text, let month = myComponents1.month {
+                            cell.checkInDateLabel.text = "\(day)".localized()
+                            if cell.checkInDateLabel.text?.count == 1 {
+                                cell.checkInDateLabel.text = "0\(day)".localized()
+                                cell.checkInDateLabel.text = "\(Helper.getMonthnameFromInt(monthNumber: month)) \(checkinDate)".localized()
+                            }
                         }
                     }
-
+       
                     cell.checkInMonthYearLabel.text = String(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment?.deposit?.relinquishmentYear ?? 0).localized()
                     
                     cell.resortFixedWeekLabel.text = Constant.getWeekNumber(weekType: Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment?.deposit?.weekNumber ?? "").localized()
@@ -657,7 +648,10 @@ extension UpComingTripDetailController: UITableViewDataSource {
                     
                 }
                 return cell
+                
             } else if requiredRowsArrayRelinquishment[indexPath.row]  == Constant.upComingTripDetailControllerReusableIdentifiers.pointsProgramCell {
+                
+                // TODO: Relinquishment is a CIG PointsProgram
                 
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.availablePointToolViewController.availablePointCell, for: indexPath) as? AvailablePointCell else {
                     
@@ -666,7 +660,10 @@ extension UpComingTripDetailController: UITableViewDataSource {
                 cell.availablePointValueLabel.text = "\(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment?.pointsProgram?.pointsSpent ?? 0)".localized()
                 
                 return cell
+                
             } else if requiredRowsArrayRelinquishment[indexPath.row]  == Constant.upComingTripDetailControllerReusableIdentifiers.accomodationCell {
+                
+                // FIXME(Frank): Relinquishment is an accommodationCertificate ??? - AGAIN?
                 
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.upComingTripDetailControllerReusableIdentifiers.accomodationCell, for: indexPath) as? CustomTableViewCell else {
                     
@@ -678,13 +675,18 @@ extension UpComingTripDetailController: UITableViewDataSource {
                 
             } else {
                 
+                // FIXME(Frank): what is this?
+                
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.upComingTripDetailControllerReusableIdentifiers.customTableViewCell, for: indexPath) as? CustomTableViewCell else {
                     
                     return UITableViewCell()
                 }
                 return cell
             }
+            
         } else if indexPath.section == 3 {
+            
+            // FIXME(Frank): What is this? - guestCertificate?
             
             if requiredRowsArray[indexPath.row] == Constant.upComingTripDetailControllerReusableIdentifiers.guestCertificateCell {
                 
@@ -694,7 +696,10 @@ extension UpComingTripDetailController: UITableViewDataSource {
                 }
                 cell.backgroundColor = IUIKColorPalette.contentBackground.color
                 return cell
+                
             } else if requiredRowsArray[indexPath.row] == Constant.upComingTripDetailControllerReusableIdentifiers.insuranceCell {
+                
+                // FIXME(Frank): What is this? - Identifier is insuranceCell but the cell is EPlusTableViewCell - why?
                 
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.upComingTripDetailControllerReusableIdentifiers.insuranceCell, for: indexPath) as? EPlusTableViewCell else {
                     
@@ -702,7 +707,10 @@ extension UpComingTripDetailController: UITableViewDataSource {
                 }
                 
                 return cell
+                
             } else if requiredRowsArray[indexPath.row]  == Constant.upComingTripDetailControllerReusableIdentifiers.modifyInsuranceCell {
+                
+                // FIXME(Frank): What is this cell CustomTableViewCell?
                 
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.upComingTripDetailControllerReusableIdentifiers.modifyInsuranceCell, for: indexPath) as? CustomTableViewCell else {
                     
@@ -710,14 +718,17 @@ extension UpComingTripDetailController: UITableViewDataSource {
                 }
                 
                 return cell
+                
             } else if requiredRowsArray[indexPath.row] == Constant.upComingTripDetailControllerReusableIdentifiers.transactionDetailsCell {
+                
+                // FIXME(Frank): What is this? - Cruise Cabin details?
                 
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.upComingTripDetailControllerReusableIdentifiers.transactionDetailsCell, for: indexPath) as? TransactionDetailsTableViewCell else {
                     return UITableViewCell()
                 }
+                
                 cell.travellingWithLabel.text = "\(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.cruise?.cabin?.travelParty?.adults ?? 0) Adults".localized()
                 if let childrenCount = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.cruise?.cabin?.travelParty?.children {
-                    
                     if childrenCount > 0 {
                         cell.travellingWithLabel.text = "\(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.cruise?.cabin?.travelParty?.adults ?? Int(0.0)) Adults, \(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.cruise?.cabin?.travelParty?.children ?? Int(0.0)) Children ".localized()
                     }
@@ -731,14 +742,19 @@ extension UpComingTripDetailController: UITableViewDataSource {
                 
             } else {
                 
+                // FIXME(Frank): What is this cell CustomTableViewCell?
+                
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.upComingTripDetailControllerReusableIdentifiers.customTableViewCell, for: indexPath) as? CustomTableViewCell else {
                     
                     return UITableViewCell()
                 }
                 return cell
-                
             }
+            
         } else if indexPath.section == 4 {
+            
+            // FIXME(Frank): What is this? - Cruise SupplementalPayment details?
+            
             guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.upComingTripDetailControllerReusableIdentifiers.paymentDetailsCell, for: indexPath) as? PaymentCell else {
                 
                 return UITableViewCell()
@@ -747,20 +763,24 @@ extension UpComingTripDetailController: UITableViewDataSource {
             cell.balanceDueLabel.text = "$\(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.payment?.balanceDueAmount?.amount ?? 0.0)".localized()
             cell.balanceDueDateLabel.text = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.payment?.balanceDueDate?.localized()
             return cell
+            
         } else {
+            
+            // TODO: Trip Policy details
             
             guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.upComingTripDetailControllerReusableIdentifiers.policyCell, for: indexPath) as? PolicyCell else {
                 
                 return UITableViewCell()
             }
-
-            if Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.ancillaryProducts?.insurance != nil && Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.ancillaryProducts?.insurance?.policyNumber != nil {
-                
-                        cell.purchasePolicyButton.isHidden = true
-                
-            } else {
-                cell.purchasePolicyButton.isHidden = false
-                cell.purchasePolicyButton.addTarget(self, action: #selector(UpComingTripDetailController.modifyUpcomingTripButtonClicked(_:)), for: UIControlEvents.touchUpInside)
+            
+            if let showPolicyButton = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.ancillaryProducts?.eplus?.purchased {
+                if showPolicyButton {
+                    // Executes when booleanValue is true
+                    cell.purchasePolicyButton.isHidden = false
+                    cell.purchasePolicyButton.addTarget(self, action: #selector(UpComingTripDetailController.modifyUpcomingTripButtonClicked(_:)), for: UIControlEvents.touchUpInside)
+                } else {
+                    cell.purchasePolicyButton.isHidden = true
+                }
             }
             
             cell.selectionStyle = .none
@@ -792,7 +812,6 @@ extension UpComingTripDetailController: UITableViewDataSource {
     }
     
     func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
-        
         let fileViewController = SimpleFileViewController(load: "http://www.intervalworld.com/web/iicontent/ii/mobile-terms-getaways.html", shouldShowLoadingIndicator: true)
         fileViewController.title = "Terms and Conditions"
         fileViewController.documentDidFinishLoading = { _ in fileViewController.hideHudAsync()}
@@ -846,8 +865,11 @@ extension UpComingTripDetailController: UITableViewDataSource {
         
         var sortedArrayAmenities = [InventoryUnitAmenity]()
         if let unitDetils = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.unit {
+            detailsView = UIView()
+            
             self.unitDetialsCellHeight = 50
             
+            //FIXME(Frank): Why the categories are hard-coded? - what will happen if we get a new category from the API?
             //sort array to show in this order: Sleeping, Bathroom, Kitchen and Other
             for amenities in unitDetils.amenities {
                 if amenities.category == "OTHER_FACILITIES" {
@@ -861,9 +883,8 @@ extension UpComingTripDetailController: UITableViewDataSource {
                 }
             }
         }
-        detailsView = UIView()
+
         for amunities in sortedArrayAmenities {
-            
             let sectionLabel = UILabel(frame: CGRect(x: 20, y: Int(unitDetialsCellHeight), width: Int(view.frame.width - 20), height: 20))
             if let category = amunities.category {
                 sectionLabel.text = Helper.getMappedStringForDetailedHeaderSection(sectonHeader: category).localized()
@@ -894,6 +915,7 @@ extension UpComingTripDetailController: UITableViewDataSource {
                 for desc in details.descriptions {
                     
                     let detaildescLabel = UILabel(frame: CGRect(x: 20, y: Int(unitDetialsCellHeight), width: Int(view.frame.width - 20), height: 20))
+                    //FIXME(Frank): what is this? - hard-coded?
                     if sectionLabel.text == "Other Facilities" || sectionLabel.text == "Kitchen Facilities" {
                         detaildescLabel.text = "\u{2022} \(desc)".localized()
                     } else {
@@ -968,6 +990,7 @@ extension UpComingTripDetailController: UITableViewDataSource {
         return 0
     }
     
+    //FIXME(Frank): This func is horrible - REMOVE ME
     // *** Get date diffrence for between checkindate and current date to send with omniture events.
     func getdatediffrence() -> Int {
         var checkDate: Int = 0
@@ -975,12 +998,12 @@ extension UpComingTripDetailController: UITableViewDataSource {
         if Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.confirmationNumber != nil {
             
             if let sailingDate = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.cruise?.cabin?.sailingDate {
-                // TODO(Jhon): Error, found nil
-                checkDate = Helper.getUpcommingcheckinDatesDiffrence(date: Helper.convertStringToDate(dateString: sailingDate, format: Constant.MyClassConstants.dateFormat))
+                //FIXME(Jhon): Error, found nil
+                checkDate = Helper.getUpcommingcheckinDatesDiffrence(date: sailingDate.dateFromShortFormat())
             }
         } else {
             if let fromDate = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment?.accommodationCertificate?.travelWindow?.fromDate {
-                checkDate = Helper.getUpcommingcheckinDatesDiffrence(date: Helper.convertStringToDate(dateString: fromDate, format: Constant.MyClassConstants.dateFormat))
+                checkDate = Helper.getUpcommingcheckinDatesDiffrence(date: fromDate.dateFromShortFormat())
             }
             
         }

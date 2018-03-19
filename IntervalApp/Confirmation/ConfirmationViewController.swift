@@ -85,13 +85,19 @@ class ConfirmationViewController: UIViewController {
         if let cards = Session.sharedSession.contact?.creditcards {
             creditCards = cards.count
         }
+        
+        var resortCode = ""
+        if let selectedResort = Constant.MyClassConstants.selectedAvailabilityResort {
+            resortCode = selectedResort.code
+        }
+        
         //Omniture tracking calls for conformation screen with event
         let userInfo: [String: String] = [
             Constant.omnitureEvars.eVar41: Constant.omnitureCommonString.vactionSearch ,
-            Constant.omnitureCommonString.productItem: Constant.MyClassConstants.selectedResort.resortCode ?? "" ,
+            Constant.omnitureCommonString.productItem: resortCode,
             Constant.omnitureEvars.eVar13: "\(String(describing: Constant.MyClassConstants.continueToPayResponse.view?.fees?.rental?.confirmationNumber))",
             Constant.omnitureEvars.eVar22: "\(18 - Constant.holdingTime)",
-            Constant.omnitureEvars.eVar29: Helper.convertDateToString(date: Constant.MyClassConstants.vacationSearchShowDate, format: Constant.MyClassConstants.dateFormat)  ,
+            Constant.omnitureEvars.eVar29: Constant.MyClassConstants.vacationSearchShowDate.stringWithShortFormatForJSON(),
             Constant.omnitureEvars.eVar30: "" ,
             Constant.omnitureEvars.eVar37: Helper.selectedSegment(index: Constant.MyClassConstants.searchForSegmentIndex) ,
             Constant.omnitureEvars.eVar39: "" ,
@@ -103,6 +109,7 @@ class ConfirmationViewController: UIViewController {
             Constant.omnitureEvars.eVar77: Constant.MyClassConstants.checkoutPromotionPurchased
             
         ]
+        //FIXME(FRANK) - what is happening here?
         //ADBMobile.trackAction(Constant.omnitureEvents.event44, data: userInfo)
         
     }

@@ -34,7 +34,8 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
     var decreaseValue = 1
     var selectedCountryIndex: Int?
     var isFromRenewals = false
-    var renewalsArray = [Renewal()]
+    var renewalCoreProduct: Renewal?
+    var renewalNonCoreProduct: Renewal?
     
     var filterRelinquishments = ExchangeRelinquishment()
     
@@ -55,6 +56,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
         ]
         ADBMobile.trackAction(Constant.omnitureEvents.event40, data: pageView)
         
+        //FIXME(Frank) - what is this?
         NotificationCenter.default.addObserver(self, selector: #selector(updateResortHoldingTime), name: NSNotification.Name(rawValue: Constant.notificationNames.updateResortHoldingTime), object: nil)
         
         self.proceedToCheckoutButton.isEnabled = false
@@ -65,16 +67,20 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
         menuButton.tintColor = UIColor.white
         self.navigationItem.leftBarButtonItem = menuButton
         
+        var resortCode = ""
+        if let selectedResort = Constant.MyClassConstants.selectedAvailabilityResort {
+            resortCode = selectedResort.code
+        }
+        
         // omniture tracking with event 37
         let userInfo: [String: String] = [
             Constant.omnitureEvars.eVar41: Constant.omnitureCommonString.vactionSearch,
-            Constant.omnitureCommonString.products: Constant.MyClassConstants.selectedResort.resortCode!,
+            Constant.omnitureCommonString.products: resortCode,
             Constant.omnitureEvars.eVar37: Helper.selectedSegment(index: Constant.MyClassConstants.searchForSegmentIndex),
             Constant.omnitureEvars.eVar39: ""
         ]
         
         ADBMobile.trackAction(Constant.omnitureEvents.event37, data: userInfo)
-        
     }
 
     //***** Notification for update timer.*****//
@@ -407,8 +413,20 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
                      exchangeProcessRequest.guest = guest*/
                 }
                 
-                if renewalsArray.count > 0 {
-                    exchangeProcessRequest.renewals = renewalsArray
+                // Add selected renewals to the ExchangeProcessContinueToCheckoutRequest
+                var selectedRenewals = [Renewal]()
+                if let coreProduct = renewalCoreProduct {
+                    let renewal = Renewal()
+                    renewal.id = coreProduct.id
+                    selectedRenewals.append(renewal)
+                }
+                if let nonCoreProduct = renewalNonCoreProduct {
+                    let renewal = Renewal()
+                    renewal.id = nonCoreProduct.id
+                    selectedRenewals.append(renewal)
+                }
+                if !selectedRenewals.isEmpty {
+                    exchangeProcessRequest.renewals = selectedRenewals
                 }
                 
                 let processResort = ExchangeProcess()
@@ -421,6 +439,12 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
                     self.hideHudAsync()
                     Constant.MyClassConstants.exchangeContinueToCheckoutResponse = response
                     
+                    if let view = response.view, let exchangeFees = view.fees, let shopExchangeFee = exchangeFees.shopExchange, let shopExchangePrice = shopExchangeFee.inventoryPrice {
+                        Constant.MyClassConstants.exchangeFeeOriginalPrice = shopExchangePrice.price
+                    }
+                    
+                    Constant.MyClassConstants.selectedDestinationPromotionDisplayName = nil
+                    
                     if let promotions = response.view?.fees?.shopExchange?.promotions {
                         Constant.MyClassConstants.recapViewPromotionCodeArray = promotions
                     }
@@ -430,10 +454,10 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
                     }
    
                     if let exchangeFees = response.view?.fees {
-                        Constant.MyClassConstants.exchangeFees = [exchangeFees]
+                        Constant.MyClassConstants.exchangeFees = exchangeFees
                     }
                     
-                    if Int((response.view?.fees?.shopExchange?.rentalPrice?.tax) ?? 0) != 0 {
+                    if Int((response.view?.fees?.shopExchange?.inventoryPrice?.tax) ?? 0) != 0 {
                         Constant.MyClassConstants.enableTaxes = true
                     } else {
                         Constant.MyClassConstants.enableTaxes = false
@@ -492,9 +516,22 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
                     Constant.MyClassConstants.enableGuestCertificate = true
                 }
                 
-                if renewalsArray.count > 0 {
-                    processRequest1.renewals = renewalsArray
+                // Add selected renewals to the RentalProcessPrepareContinueToCheckoutRequest
+                var selectedRenewals = [Renewal]()
+                if let coreProduct = renewalCoreProduct {
+                    let renewal = Renewal()
+                    renewal.id = coreProduct.id
+                    selectedRenewals.append(renewal)
                 }
+                if let nonCoreProduct = renewalNonCoreProduct {
+                    let renewal = Renewal()
+                    renewal.id = nonCoreProduct.id
+                    selectedRenewals.append(renewal)
+                }
+                if !selectedRenewals.isEmpty {
+                    processRequest1.renewals = selectedRenewals
+                }
+
                 showHudAsync()
                 let processResort = RentalProcess()
                 processResort.holdUnitStartTimeInMillis = Constant.holdingTime
@@ -505,11 +542,18 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
                     self.hideHudAsync()
                     Constant.MyClassConstants.continueToCheckoutResponse = response
                     
+                    if let view = response.view, let rentalFees = view.fees, let rentalFee = rentalFees.rental, let rentalPrice = rentalFee.rentalPrice {
+                        Constant.MyClassConstants.rentalFeeOriginalPrice = rentalPrice.price
+                    }
+                    
+                    Constant.MyClassConstants.selectedDestinationPromotionDisplayName = nil
+                    
+                    //FIXME(Frank): Missing nil handeling
                     if let promotions = response.view?.fees?.rental?.promotions {
                         Constant.MyClassConstants.recapViewPromotionCodeArray = promotions
                     }
                     Constant.MyClassConstants.allowedCreditCardType = (response.view?.allowedCreditCardTypes)!
-                    Constant.MyClassConstants.rentalFees = [(response.view?.fees)!]
+                    Constant.MyClassConstants.rentalFees = response.view?.fees
                     if Int((response.view?.fees?.rental?.rentalPrice?.tax)!) != 0 {
                         Constant.MyClassConstants.enableTaxes = true
                     } else {
@@ -662,22 +706,28 @@ extension WhoWillBeCheckingInIPadViewController: UITableViewDataSource {
             
             var memberTier = ""
             if Constant.MyClassConstants.isFromExchange {
-                if Constant.MyClassConstants.exchangeFees.count > 0 {
-                    memberTier = Constant.MyClassConstants.exchangeFees[0].memberTier!
+                if let exchangeFees = Constant.MyClassConstants.exchangeFees, let memberTierValue = exchangeFees.memberTier {
+                    memberTier = memberTierValue
                 } else {
                     memberTier = ""
                 }
                 
             } else {
-                memberTier = Constant.MyClassConstants.rentalFees[0].memberTier!
+                
+                if let rentalFees = Constant.MyClassConstants.rentalFees, let memberTierValue = rentalFees.memberTier {
+                    memberTier = memberTierValue
+                } else {
+                    memberTier = ""
+                }
             }
             
+            //FIXME(Frank): what is this?
             for price in guestPrices where price.productCode == memberTier {
                 
                 let floatPriceString = "\(price.price)"
                 let priceArray = floatPriceString.components(separatedBy: ".")
                 cell.certificatePriceLabel.text = "\(priceArray.first!)."
-                if (priceArray.last?.characters.count)! > 1 {
+                if (priceArray.last?.count)! > 1 {
                     cell.fractionValue.text = "\(priceArray.last!)"
                 } else {
                     cell.fractionValue.text = "\(priceArray.last!)0"
@@ -965,12 +1015,13 @@ extension WhoWillBeCheckingInIPadViewController: RenewelViewControllerDelegate {
         
     }
     
-    func dismissWhatToUse(renewalArray: [Renewal]) {
+    func dismissWhatToUse(renewalCoreProduct: Renewal?, renewalNonCoreProduct: Renewal?) {
         
     }
     
-    func selectedRenewalFromWhoWillBeCheckingIn(renewalArray: [Renewal], selectedRelinquishment: ExchangeRelinquishment) {
-        self.renewalsArray = renewalArray
+    func selectedRenewalFromWhoWillBeCheckingIn(renewalCoreProduct: Renewal?, renewalNonCoreProduct: Renewal?, selectedRelinquishment: ExchangeRelinquishment) {
+        self.renewalCoreProduct = renewalCoreProduct
+        self.renewalNonCoreProduct = renewalNonCoreProduct
         Constant.MyClassConstants.noThanksForNonCore = false
         let button = UIButton()
         self.proceedToCheckoutPressed(button)

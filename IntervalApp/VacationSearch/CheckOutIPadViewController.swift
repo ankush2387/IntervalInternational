@@ -36,6 +36,7 @@ class CheckOutIPadViewController: UIViewController {
     var emailTextToEnter = ""
     var tripRequestInProcess = false
     var isHeightZero = false
+    //FIXME(Frank) - what is this?
     var promotionsArray = ["20% OFF", "10% OFF", "No Thanks"]
     var showLoader = false
     var showInsurance = false
@@ -47,8 +48,10 @@ class CheckOutIPadViewController: UIViewController {
     var totalFeesArray = NSMutableArray()
     var filterRelinquishments = ExchangeRelinquishment()
     var totalRowsInCost = 0
-    var renewalsArray = [Renewal]()
-    var currencyCode: String = ""
+    var renewalCoreProduct: Renewal?
+    var renewalNonCoreProduct: Renewal?
+    var currencyCode: String = "USA"
+    var countryCode: String?
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -64,38 +67,65 @@ class CheckOutIPadViewController: UIViewController {
         self.checkoutTableView.reloadData()
         
         if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
-            if let selectedPromotion = Constant.MyClassConstants.exchangeFees[0].shopExchange?.selectedOfferName {
-                self.recapSelectedPromotion = selectedPromotion
-                if selectedPromotion == "" {
-                    Constant.MyClassConstants.isPromotionsEnabled = false
-                    destinationPromotionSelected = false
-                } else {
-                    Constant.MyClassConstants.isPromotionsEnabled = true
-                    destinationPromotionSelected = true
+            
+            if let exchangeFees = Constant.MyClassConstants.exchangeFees, !exchangeFees.renewals.isEmpty {
+                
+                if let shopExchangeFee = exchangeFees.shopExchange, let selectedPromotion = shopExchangeFee.selectedOfferName {
+                    self.recapSelectedPromotion = selectedPromotion
+                    if selectedPromotion == "" {
+                        Constant.MyClassConstants.isPromotionsEnabled = false
+                        destinationPromotionSelected = false
+                    } else {
+                        Constant.MyClassConstants.isPromotionsEnabled = true
+                        destinationPromotionSelected = true
+                    }
                 }
                 
-                renewalsArray.removeAll()
-                renewalsArray = Constant.MyClassConstants.exchangeFees[0].renewals
-            }
-        } else {
-            if let selectedPromotion = Constant.MyClassConstants.rentalFees[0].rental?.selectedOfferName {
-                self.recapSelectedPromotion = selectedPromotion
-                if selectedPromotion == "" {
-                    Constant.MyClassConstants.isPromotionsEnabled = false
-                    destinationPromotionSelected = false
-                } else {
-                    Constant.MyClassConstants.isPromotionsEnabled = true
-                    destinationPromotionSelected = true
+                for renewal in exchangeFees.renewals {
+                    if renewal.isCoreProduct {
+                        renewalCoreProduct = Renewal()
+                        renewalCoreProduct?.id = renewal.id
+                        renewalCoreProduct?.productCode = renewal.productCode
+                    } else if !renewal.isCoreProduct {
+                        renewalNonCoreProduct = Renewal()
+                        renewalNonCoreProduct?.id = renewal.id
+                        renewalNonCoreProduct?.productCode = renewal.productCode
+                    }
                 }
             }
             
-            renewalsArray.removeAll()
-            renewalsArray = Constant.MyClassConstants.rentalFees[0].renewals
+        } else {
             
+            if let rentalFees = Constant.MyClassConstants.rentalFees, !rentalFees.renewals.isEmpty {
+                
+                if let rentalFee = rentalFees.rental, let selectedPromotion = rentalFee.selectedOfferName {
+                    self.recapSelectedPromotion = selectedPromotion
+                    if selectedPromotion == "" {
+                        Constant.MyClassConstants.isPromotionsEnabled = false
+                        destinationPromotionSelected = false
+                    } else {
+                        Constant.MyClassConstants.isPromotionsEnabled = true
+                        destinationPromotionSelected = true
+                    }
+                }
+                
+                for renewal in rentalFees.renewals {
+                    if renewal.isCoreProduct {
+                        renewalCoreProduct = Renewal()
+                        renewalCoreProduct?.id = renewal.id
+                        renewalCoreProduct?.productCode = renewal.productCode
+                    } else if !renewal.isCoreProduct {
+                        renewalNonCoreProduct = Renewal()
+                        renewalNonCoreProduct?.id = renewal.id
+                        renewalNonCoreProduct?.productCode = renewal.productCode
+                    }
+                }
+            }
         }
         
-        NotificationCenter.default.addObserver(self, selector: #selector(changeLabelStatus), name: NSNotification.Name(rawValue: Constant.notificationNames.changeSliderStatus), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(updateResortHoldingTime), name: NSNotification.Name(rawValue: Constant.notificationNames.updateResortHoldingTime), object: nil)
+        //FIXME(Frank): - what is this?
+        //NotificationCenter.default.addObserver(self, selector: #selector(changeLabelStatus), name: NSNotification.Name(rawValue: Constant.notificationNames.changeSliderStatus), object: nil)
+        //NotificationCenter.default.addObserver(self, selector: #selector(updateResortHoldingTime), name: NSNotification.Name(rawValue: Constant.notificationNames.updateResortHoldingTime), object: nil)
         
     }
     
@@ -131,6 +161,10 @@ class CheckOutIPadViewController: UIViewController {
             isAgreedToFees = true
         }
         
+        if let currentProfile = Session.sharedSession.contact, let countryCodeValue = currentProfile.getCountryCode() {
+            countryCode = countryCodeValue
+        }
+        
         Constant.MyClassConstants.additionalAdvisementsArray.removeAll()
         Constant.MyClassConstants.generalAdvisementsArray.removeAll()
         if Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange() || Constant.MyClassConstants.searchBothExchange {
@@ -146,47 +180,43 @@ class CheckOutIPadViewController: UIViewController {
                 }
             }
             
-            if !Constant.MyClassConstants.exchangeFees.isEmpty {
-                if let _ = Constant.MyClassConstants.exchangeFees[0].insurance?.insuranceOfferHTML {
+            if let exchangeFees = Constant.MyClassConstants.exchangeFees {
+                
+                if let insuranceFee = exchangeFees.insurance, let insuranceOfferHTML = insuranceFee.insuranceOfferHTML {
                     showInsurance = true
                 } else {
                     showInsurance = false
                 }
                 
-                if let eplusSelect = Constant.MyClassConstants.exchangeFees[0].eplus?.selected {
-                    if eplusSelect {
-                        eplusAdded = true
-                    }
+                if let eplusFee = exchangeFees.eplus, let eplusSelected = eplusFee.selected, eplusSelected == true {
+                    eplusAdded = true
                 } else {
                     eplusAdded = false
                 }
                 
-                guard let curCode = Constant.MyClassConstants.exchangeFees[0].currencyCode else { return }
-                let currencyHelper = CurrencyHelper()
-                let countryCode = Session.sharedSession.contact?.getCountryCode() ?? ""
+                guard let curCode = exchangeFees.currencyCode else { return }
+                currencyCode = curCode
                 
-                currencyCode = ("\(currencyHelper.getCurrencyFriendlySymbol(currencyCode: curCode, countryCode: countryCode))")
-            }
-        } else {
-            for advisement in (Constant.MyClassConstants.viewResponse.resort?.advisements)! {
-                
-                if advisement.title == Constant.MyClassConstants.additionalAdv {
-                    Constant.MyClassConstants.additionalAdvisementsArray.append(advisement)
-                } else {
-                    Constant.MyClassConstants.generalAdvisementsArray.append(advisement)
-                }
-            }
-            if let _: String? = Constant.MyClassConstants.rentalFees[0].insurance?.insuranceOfferHTML! {
-                showInsurance = true
             } else {
-                showInsurance = false
+                
+                for advisement in (Constant.MyClassConstants.viewResponse.resort?.advisements)! {
+                    
+                    if advisement.title == Constant.MyClassConstants.additionalAdv {
+                        Constant.MyClassConstants.additionalAdvisementsArray.append(advisement)
+                    } else {
+                        Constant.MyClassConstants.generalAdvisementsArray.append(advisement)
+                    }
+                }
+                
+                if let _: String? = Constant.MyClassConstants.rentalFees?.insurance?.insuranceOfferHTML! {
+                    showInsurance = true
+                } else {
+                    showInsurance = false
+                }
+            
+                guard let curCode = Constant.MyClassConstants.rentalFees?.currencyCode else { return }
+                currencyCode = curCode
             }
-            
-            guard let curCode = Constant.MyClassConstants.rentalFees[0].currencyCode else { return }
-            let currencyHelper = CurrencyHelper()
-            let countryCode = Session.sharedSession.contact?.getCountryCode() ?? ""
-            
-            currencyCode = ("\(currencyHelper.getCurrencyFriendlySymbol(currencyCode: curCode, countryCode: countryCode))")
             
         }
         
@@ -206,8 +236,8 @@ class CheckOutIPadViewController: UIViewController {
         if let count = Session.sharedSession.contact?.creditcards?.count {
             creditCardsCount = count
         }
-        if let code = Constant.MyClassConstants.selectedResort.resortCode {
-            resortCode = code
+        if let selectedResort = Constant.MyClassConstants.selectedAvailabilityResort {
+            resortCode = selectedResort.code
         }
         
         // omniture tracking with event 38
@@ -429,9 +459,9 @@ class CheckOutIPadViewController: UIViewController {
     func addTripProtection(shouldAddTripProtection: Bool) {
         
         if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
-            Constant.MyClassConstants.exchangeFees.last?.insurance?.selected = shouldAddTripProtection
+            Constant.MyClassConstants.exchangeFees?.insurance?.selected = shouldAddTripProtection
             let exchangeRecalculateRequest = ExchangeProcessRecalculateRequest()
-            exchangeRecalculateRequest.fees = Constant.MyClassConstants.exchangeFees.last
+            exchangeRecalculateRequest.fees = Constant.MyClassConstants.exchangeFees
             showHudAsync()
             ExchangeProcessClient.recalculateFees(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.exchangeBookingLastStartedProcess, request: exchangeRecalculateRequest, onSuccess: {
                 response in
@@ -439,14 +469,14 @@ class CheckOutIPadViewController: UIViewController {
                 self.tripRequestInProcess = false
                 Constant.MyClassConstants.exchangeContinueToCheckoutResponse = response
                 if let totalFees = response.view?.fees?.total {
-                    Constant.MyClassConstants.exchangeFees[0].total = totalFees
+                    Constant.MyClassConstants.exchangeFees?.total = totalFees
                 }
                 self.bookingTableView.reloadSections(IndexSet(integer: 0), with:.automatic)
                 self.bookingTableView.reloadData()
                 self.hideHudAsync()
                 
             }, onError: { [weak self] error in
-                Constant.MyClassConstants.exchangeFees.last?.insurance?.selected = !shouldAddTripProtection
+                Constant.MyClassConstants.exchangeFees?.insurance?.selected = !shouldAddTripProtection
                 self?.tripRequestInProcess = false
                 self?.isTripProtectionEnabled = false
                 self?.bookingTableView.reloadData()
@@ -454,16 +484,16 @@ class CheckOutIPadViewController: UIViewController {
                 self?.presentErrorAlert(UserFacingCommonError.handleError(error))
             })
         } else {
-            Constant.MyClassConstants.rentalFees.last?.insurance?.selected = shouldAddTripProtection
+            Constant.MyClassConstants.rentalFees?.insurance?.selected = shouldAddTripProtection
             let rentalRecalculateRequest = RentalProcessRecapRecalculateRequest()
-            rentalRecalculateRequest.fees = Constant.MyClassConstants.rentalFees.last
+            rentalRecalculateRequest.fees = Constant.MyClassConstants.rentalFees
             
             showHudAsync()
             RentalProcessClient.addTripProtection(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.getawayBookingLastStartedProcess, request: rentalRecalculateRequest, onSuccess: { response in
                 self.tripRequestInProcess = false
                 Constant.MyClassConstants.continueToCheckoutResponse = response
                 if let totalFees = response.view?.fees?.total {
-                    Constant.MyClassConstants.rentalFees[0].total = totalFees
+                    Constant.MyClassConstants.rentalFees?.total = totalFees
                 }
                 self.bookingTableView.reloadSections(IndexSet(integer: 0), with: .automatic)
                 self.hideHudAsync()
@@ -507,14 +537,14 @@ class CheckOutIPadViewController: UIViewController {
     @IBAction func checkBoxClicked(_ sender: IUIKCheckbox) {
         
         let exchangeRecalculateRequest = ExchangeProcessRecalculateRequest()
-        exchangeRecalculateRequest.fees = Constant.MyClassConstants.exchangeFees.last
+        exchangeRecalculateRequest.fees = Constant.MyClassConstants.exchangeFees
         exchangeRecalculateRequest.fees?.eplus?.selected = sender.checked
         showHudAsync()
         ExchangeProcessClient.recalculateFees(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.exchangeBookingLastStartedProcess, request: exchangeRecalculateRequest, onSuccess: { recapResponse in
             
             self.eplusAdded = sender.checked
             if let fees = recapResponse.view?.fees {
-                Constant.MyClassConstants.exchangeFees = [fees]
+                Constant.MyClassConstants.exchangeFees = fees
             }
             self.checkSectionsForFees()
             self.bookingTableView.reloadData()
@@ -522,7 +552,7 @@ class CheckOutIPadViewController: UIViewController {
             self.hideHudAsync()
         }, onError: { [weak self] error in
             self?.eplusAdded = !sender.checked
-            Constant.MyClassConstants.exchangeFees[0].eplus?.selected = sender.checked
+            Constant.MyClassConstants.exchangeFees?.eplus?.selected = sender.checked
             self?.hideHudAsync()
             self?.presentErrorAlert(UserFacingCommonError.handleError(error))
             self?.checkSectionsForFees()
@@ -547,17 +577,17 @@ class CheckOutIPadViewController: UIViewController {
                 totalFeesArray.add(Constant.MyClassConstants.taxesTitle)
             }
             
-            if let ePlusSelect = Constant.MyClassConstants.exchangeFees[0].eplus?.selected {
+            if let ePlusSelect = Constant.MyClassConstants.exchangeFees?.eplus?.selected {
                 if ePlusSelect {
                     totalFeesArray.add(Constant.MyClassConstants.eplus)
                 }
             }
             
-            if Constant.MyClassConstants.exchangeFees[0].unitSizeUpgrade != nil {
+            if Constant.MyClassConstants.exchangeFees?.unitSizeUpgrade != nil {
                 totalFeesArray.add(Constant.MyClassConstants.upgradeCost)
             }
             
-            if !Constant.MyClassConstants.exchangeFees[0].renewals.isEmpty {
+            if !(Constant.MyClassConstants.exchangeFees?.renewals.isEmpty)! {
                 totalFeesArray.add(Constant.MyClassConstants.renewals)
             }
             
@@ -569,7 +599,7 @@ class CheckOutIPadViewController: UIViewController {
                 totalFeesArray.add(Constant.MyClassConstants.taxesTitle)
             }
             
-            if !Constant.MyClassConstants.rentalFees[0].renewals.isEmpty {
+            if !(Constant.MyClassConstants.rentalFees?.renewals.isEmpty)! {
                 totalFeesArray.add(Constant.MyClassConstants.renewals)
             }
         }
@@ -678,7 +708,7 @@ class CheckOutIPadViewController: UIViewController {
                 processResort.processId = Constant.MyClassConstants.exchangeProcessStartResponse.processId
                 
                 let shopExchange = ShopExchange()
-                shopExchange.selectedOfferName = Constant.MyClassConstants.exchangeFees[0].shopExchange?.selectedOfferName
+                shopExchange.selectedOfferName = Constant.MyClassConstants.exchangeFees?.shopExchange?.selectedOfferName
                 
                 let fees = ExchangeFees()
                 fees.shopExchange = shopExchange
@@ -697,7 +727,7 @@ class CheckOutIPadViewController: UIViewController {
                     }
                     
                     if let total = response.view?.fees?.total {
-                        Constant.MyClassConstants.exchangeFees[0].total = total
+                        Constant.MyClassConstants.exchangeFees?.total = total
                         self.recapFeesTotal = total
                     }
                     
@@ -712,7 +742,7 @@ class CheckOutIPadViewController: UIViewController {
             } else {
                 
                 let rental = Rental()
-                if let offerName = Constant.MyClassConstants.rentalFees[0].rental?.selectedOfferName {
+                if let offerName = Constant.MyClassConstants.rentalFees?.rental?.selectedOfferName {
                     rental.selectedOfferName = offerName
                 }
                 
@@ -749,7 +779,7 @@ class CheckOutIPadViewController: UIViewController {
         }
         self.present(promotionsNav, animated: true, completion: nil)
     }
-    
+
 }
 
 // MARK: - Table View Delegate
@@ -924,7 +954,7 @@ extension CheckOutIPadViewController: UITableViewDataSource {
                 if !Constant.MyClassConstants.isFromExchange {
                     return 0
                 } else {
-                    if Constant.MyClassConstants.exchangeFees[0].eplus == nil {
+                    if Constant.MyClassConstants.exchangeFees?.eplus == nil {
                         return 0
                     } else {
                         return 130
@@ -933,8 +963,8 @@ extension CheckOutIPadViewController: UITableViewDataSource {
             case 4:
                 if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
                     
-                    if !Constant.MyClassConstants.exchangeFees.isEmpty {
-                        guard let myString = Constant.MyClassConstants.exchangeFees[0].insurance?.insuranceOfferHTML, !myString.isEmpty else {
+                    if let exchangeFees = Constant.MyClassConstants.exchangeFees {
+                        guard let myString = exchangeFees.insurance?.insuranceOfferHTML, !myString.isEmpty else {
                             showInsurance = false
                             return 0
                         }
@@ -944,7 +974,7 @@ extension CheckOutIPadViewController: UITableViewDataSource {
                         return 0
                     }
                 } else {
-                    guard let myString = Constant.MyClassConstants.rentalFees[0].insurance?.insuranceOfferHTML, !myString.isEmpty else {
+                    guard let myString = Constant.MyClassConstants.rentalFees?.insurance?.insuranceOfferHTML, !myString.isEmpty else {
                         showInsurance = false
                         return 0
                     }
@@ -1000,22 +1030,23 @@ extension CheckOutIPadViewController: UITableViewDataSource {
                         
                     case Constant.MyClassConstants.exchangeFeeTitle:
                         
-                        if let exchangeFees = Constant.MyClassConstants.exchangeFees[0].shopExchange?.rentalPrice?.price {
-                            cell.setTotalPrice(with: currencyCode, and: exchangeFees)
+                        //FIXME(Frank): - all UIViewController for iPad should be removed
+                        if let exchangeFees = Constant.MyClassConstants.exchangeFees?.shopExchange?.inventoryPrice?.price {
+                            cell.setTotalPrice(with: currencyCode, and: exchangeFees, and: nil)
                         }
                         cell.priceLabel.text = Constant.MyClassConstants.exchangeFeeTitle
                         
                     case Constant.MyClassConstants.getawayFee:
                         
-                        if let rentalPrice = Constant.MyClassConstants.rentalFees[0].rental?.rentalPrice?.price {
-                            cell.setTotalPrice(with: currencyCode, and: rentalPrice)
+                        if let rentalPrice = Constant.MyClassConstants.rentalFees?.rental?.rentalPrice?.price {
+                            cell.setTotalPrice(with: currencyCode, and: rentalPrice, and: nil)
                         }
                         cell.priceLabel.text = Constant.MyClassConstants.getawayFee
                         
                     case Constant.MyClassConstants.eplus:
                         
-                        if let ePlusPrice = Constant.MyClassConstants.exchangeFees[0].eplus?.price {
-                            cell.setTotalPrice(with: currencyCode, and: ePlusPrice)
+                        if let ePlusPrice = Constant.MyClassConstants.exchangeFees?.eplus?.price {
+                            cell.setTotalPrice(with: currencyCode, and: ePlusPrice, and: nil)
                         }
                         cell.priceLabel.text = Constant.MyClassConstants.eplus
                         
@@ -1023,13 +1054,13 @@ extension CheckOutIPadViewController: UITableViewDataSource {
                         
                         cell.priceLabel.text = Constant.MyClassConstants.taxesTitle
                         if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
-                            if let tax = Constant.MyClassConstants.exchangeContinueToCheckoutResponse.view?.fees?.shopExchange?.prices[0].tax {
-                                cell.setTotalPrice(with: currencyCode, and: tax)
+                            if let tax = Constant.MyClassConstants.exchangeContinueToCheckoutResponse.view?.fees?.shopExchange?.inventoryPrice?.tax {
+                                cell.setTotalPrice(with: currencyCode, and: tax, and: nil)
                             }
                         } else {
                             
                             if let tax = Constant.MyClassConstants.continueToCheckoutResponse.view?.fees?.rental?.rentalPrice?.tax {
-                                cell.setTotalPrice(with: currencyCode, and: tax)
+                                cell.setTotalPrice(with: currencyCode, and: tax, and: nil)
                             }
                         }
                         
@@ -1052,10 +1083,10 @@ extension CheckOutIPadViewController: UITableViewDataSource {
                                 let viewModel = ChargeSummaryViewModel(charge: dataSet,
                                                                        headerTitle: "Detailed Tax Information".localized(),
                                                                        descriptionTitle: "Tax Description".localized(),
-                                                                       currency: currencyDescription.localized(),
                                                                        totalTitle: "Total Tax Amount".localized(),
-                                                                       currencySymbol: self.currencyCode)
-                                
+                                                                       currencyCode: currencyDescription.localized(),
+                                                                       countryCode: nil)
+                     
                                 let chargeSummaryViewController = ChargeSummaryViewController(viewModel: viewModel)
                                 chargeSummaryViewController.doneButtonPressed = { chargeSummaryViewController.dismiss(animated: true) }
                                 self.navigationController?.present(chargeSummaryViewController, animated: true)
@@ -1065,31 +1096,47 @@ extension CheckOutIPadViewController: UITableViewDataSource {
                         cell.setCell(callBack: cellTapped)
                         
                     case Constant.MyClassConstants.upgradeCost:
-                        if let upgradeCost = Constant.MyClassConstants.exchangeFees[0].unitSizeUpgrade?.price {
-                            cell.setTotalPrice(with: currencyCode, and: upgradeCost)
+                        if let upgradeCost = Constant.MyClassConstants.exchangeFees?.unitSizeUpgrade?.price {
+                            cell.setTotalPrice(with: currencyCode, and: upgradeCost, and: nil)
                         }
                         cell.priceLabel.text = Constant.MyClassConstants.upgradeCost
                         
                     default:
                         
-                        var renewalIndex = 0
-                        
                         cell.priceLabel.numberOfLines = 0
-                        if renewalsArray.count > 1 {
-                            renewalIndex = 1
-                            cell.priceLabel.text = "\(String(describing: renewalsArray[renewalIndex].displayName?.capitalized ?? "")) Package".localized()
-                            let packagePrice = renewalsArray[renewalIndex].price + renewalsArray[0].price
-                            cell.setTotalPrice(with: currencyCode, and: packagePrice)
-                        } else {
-                            if let displayName = renewalsArray[renewalIndex].displayName {
-                                if displayName.caseInsensitiveCompare("INTERVAL") == ComparisonResult.orderedSame {
-                                    cell.priceLabel.text = "\(displayName) Membership".capitalized.localized()
+                        
+                        if let coreProduct = renewalCoreProduct, let nonCoreProduct = renewalNonCoreProduct {
+                            // TODO: Combo or Both Products by individuals
+                            let comboPrice = coreProduct.price + nonCoreProduct.price
+                            cell.setTotalPrice(with: currencyCode, and: comboPrice, and: countryCode)
+                            
+                            if let nonCoreProductDisplayName = nonCoreProduct.displayName {
+                                cell.priceLabel.text = "\(nonCoreProductDisplayName) Package".localized()
+                            } else {
+                                cell.priceLabel.text = "Combo Package".localized()
+                            }
+                            
+                        } else if let coreProduct = renewalCoreProduct {
+                            // TODO: Core Product (BSC|CIG)
+                            cell.setTotalPrice(with: currencyCode, and: coreProduct.price, and: countryCode)
+                            
+                            if let coreProductDisplayName = coreProduct.displayName {
+                                if coreProductDisplayName.caseInsensitiveCompare("INTERVAL") == ComparisonResult.orderedSame {
+                                    cell.priceLabel.text = "\(coreProductDisplayName) Membership".capitalized.localized()
                                 } else {
-                                    cell.priceLabel.text = "\(String(describing: renewalsArray[renewalIndex].displayName?.capitalized ?? ""))".localized()
+                                    cell.priceLabel.text = "\(coreProductDisplayName)".localized()
                                 }
                             }
-                            cell.setTotalPrice(with: currencyCode, and: renewalsArray[renewalIndex].price)
+                            
+                        } else if let nonCoreProduct = renewalNonCoreProduct {
+                            // TODO: Non-Core Product (GLD|PLT)
+                            cell.setTotalPrice(with: currencyCode, and: nonCoreProduct.price, and: countryCode)
+                            
+                            if let nonCoreProductDisplayName = nonCoreProduct.displayName {
+                                cell.priceLabel.text = "\(nonCoreProductDisplayName)".localized()
+                            }
                         }
+ 
                     }
                 } else {
                     
@@ -1116,18 +1163,18 @@ extension CheckOutIPadViewController: UITableViewDataSource {
                     if indexPath.row == 0 && self.isTripProtectionEnabled {
                         cell.priceLabel.text = Constant.MyClassConstants.insurance
                         if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
-                            if let insurancePrice = Constant.MyClassConstants.exchangeFees[0].insurance?.price {
-                                cell.setTotalPrice(with: currencyCode, and: insurancePrice)
+                            if let insurancePrice = Constant.MyClassConstants.exchangeFees?.insurance?.price {
+                                cell.setTotalPrice(with: currencyCode, and: insurancePrice, and: nil)
                             }
                         } else {
-                            if let insurancePrice = Constant.MyClassConstants.rentalFees[indexPath.row].insurance?.price {
-                                cell.setTotalPrice(with: currencyCode, and: insurancePrice)
+                            if let insurancePrice = Constant.MyClassConstants.rentalFees?.insurance?.price {
+                                cell.setTotalPrice(with: currencyCode, and: insurancePrice, and: nil)
                             }
                         }
                     } else {
                         cell.priceLabel.text = Constant.MyClassConstants.guestCertificateTitle
-                        if let guestPrice = Constant.MyClassConstants.rentalFees[indexPath.row].guestCertificate?.guestCertificatePrice?.price {
-                            cell.setTotalPrice(with: currencyCode, and: guestPrice)
+                        if let guestPrice = Constant.MyClassConstants.rentalFees?.guestCertificate?.guestCertificatePrice?.price {
+                            cell.setTotalPrice(with: currencyCode, and: guestPrice, and: nil)
                         }
                     }
                 } else {
@@ -1151,7 +1198,7 @@ extension CheckOutIPadViewController: UITableViewDataSource {
                     }
                     cell.discountLabel.text = recapSelectedPromotion
                     for promotion in Constant.MyClassConstants.recapPromotionsArray where promotion.offerName == recapSelectedPromotion {
-                        cell.setPromotionPrice(with: currencyCode, and: promotion.amount)
+                        cell.setPromotionPrice(with: currencyCode, and: promotion.amount, and: nil)
                     }
                 } else {
                     isHeightZero = false
@@ -1166,14 +1213,14 @@ extension CheckOutIPadViewController: UITableViewDataSource {
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.customCellNibNames.totalCostCell, for: indexPath) as? TotalCostCell else { return UITableViewCell() }
                 if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
                     
-                    cell.setTotalPrice(with: currencyCode, and: (Constant.MyClassConstants.exchangeFees[0].total))
+                    cell.setTotalPrice(with: currencyCode, and: (Constant.MyClassConstants.exchangeFees?.total)!, and: nil)
                     if let total = recapFeesTotal {
-                        cell.setTotalPrice(with: currencyCode, and: total)
+                        cell.setTotalPrice(with: currencyCode, and: total, and: nil)
                     }
                 } else {
-                    cell.setTotalPrice(with: currencyCode, and: (Constant.MyClassConstants.rentalFees[0].total))
+                    cell.setTotalPrice(with: currencyCode, and: (Constant.MyClassConstants.rentalFees?.total)!, and: nil)
                     if let total = recapFeesTotal {
-                        cell.setTotalPrice(with: currencyCode, and: total)
+                        cell.setTotalPrice(with: currencyCode, and: total, and: nil)
                     }
                 }
                 
@@ -1196,17 +1243,20 @@ extension CheckOutIPadViewController: UITableViewDataSource {
                 cell.resortDetailsButton.tag = indexPath.row
                 if indexPath.row == 0 {
                     cell.resortImageView?.image = UIImage(named: Constant.assetImageNames.resortImage)
-                    cell.resortName?.text = Constant.MyClassConstants.selectedResort.resortName
+                    if let selectedResort = Constant.MyClassConstants.selectedAvailabilityResort {
+                        cell.resortName?.text = selectedResort.name
+                    } else {
+                        cell.resortName?.text = ""
+                    }
                 } else {
                     if Constant.MyClassConstants.isCIGAvailable {
                         cell.resortDetailsButton.isHidden = true
                         cell.lblHeading.text = "CIG Points".localized()
-                        let numberFormatter = NumberFormatter()
-                        numberFormatter.numberStyle = .decimal
-                        if let pointsCost = Constant.MyClassConstants.selectedExchangePointsCost, let availablePoints = numberFormatter.string(from: pointsCost) {
-                            cell.resortName?.text = "\(availablePoints)".localized()
+
+                        if let selectedBucket = Constant.MyClassConstants.selectedAvailabilityInventoryBucket, let pointsCost = selectedBucket.exchangePointsCost {
+                            cell.resortName?.text = "\(pointsCost)".localized()
                         } else {
-                            cell.resortName?.text = "\(0)".localized()
+                             cell.resortName?.text = "\(0)".localized()
                         }
                     } else {
                         cell.resortDetailsButton.addTarget(self, action: #selector(WhoWillBeCheckingInViewController.resortDetailsClicked(_:)), for: .touchUpInside)
@@ -1298,12 +1348,12 @@ extension CheckOutIPadViewController: UITableViewDataSource {
                     tapRecognizer.numberOfTapsRequired = 1
                     tapRecognizer.delegate = self
                     cellWebView.addGestureRecognizer(tapRecognizer)
-                    if showInsurance && !Constant.MyClassConstants.exchangeFees.isEmpty {
-                        if let str = Constant.MyClassConstants.exchangeFees[0].insurance?.insuranceOfferHTML {
+                    if showInsurance, let exchangeFees = Constant.MyClassConstants.exchangeFees {
+                        if let str = exchangeFees.insurance?.insuranceOfferHTML {
                             cellWebView.loadHTMLString(str, baseURL: nil)
                         }
                     } else {
-                        if let str = Constant.MyClassConstants.rentalFees[0].insurance?.insuranceOfferHTML {
+                        if let str = Constant.MyClassConstants.rentalFees?.insurance?.insuranceOfferHTML {
                             cellWebView.loadHTMLString(str, baseURL: nil)
                         }
                     }
@@ -1450,7 +1500,7 @@ extension CheckOutIPadViewController: UITableViewDataSource {
                 if !Constant.MyClassConstants.isFromExchange || !Constant.MyClassConstants.searchBothExchange {
                     return 0
                 } else {
-                    if Constant.MyClassConstants.exchangeFees[0].eplus == nil {
+                    if Constant.MyClassConstants.exchangeFees?.eplus == nil {
                         return 0
                     } else {
                         return 50
