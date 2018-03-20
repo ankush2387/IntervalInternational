@@ -4096,7 +4096,7 @@ to confirm a larger unit.</string>
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="71"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Destinations Promotion" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8KE-Gb-6Bo">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Destination Promotions" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8KE-Gb-6Bo">
                                                     <rect key="frame" x="27" y="11" width="271" height="14"/>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
                                                     <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.61568627450000002" alpha="1" colorSpace="calibratedRGB"/>
@@ -4143,7 +4143,7 @@ to confirm a larger unit.</string>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Applied" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2a1-y6-iaO">
-                                                    <rect key="frame" x="20" y="42" width="297" height="14"/>
+                                                    <rect key="frame" x="28" y="42" width="289" height="14"/>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
                                                     <color key="textColor" red="0.25098040700000002" green="0.50196081400000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -4165,7 +4165,7 @@ to confirm a larger unit.</string>
                                                 <constraint firstAttribute="bottom" secondItem="2a1-y6-iaO" secondAttribute="bottom" constant="5" id="kT7-ux-VUy"/>
                                                 <constraint firstItem="zwD-cP-ocN" firstAttribute="leading" secondItem="8KE-Gb-6Bo" secondAttribute="trailing" constant="20" id="pTU-nH-4Jt"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="Wkk-fO-a71" secondAttribute="trailing" constant="14" id="sGU-mJ-czi"/>
-                                                <constraint firstItem="2a1-y6-iaO" firstAttribute="leading" secondItem="ypC-Ha-Ysa" secondAttribute="leading" constant="20" id="ySo-qP-QNy"/>
+                                                <constraint firstItem="2a1-y6-iaO" firstAttribute="leading" secondItem="ypC-Ha-Ysa" secondAttribute="leading" constant="28" id="ySo-qP-QNy"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>

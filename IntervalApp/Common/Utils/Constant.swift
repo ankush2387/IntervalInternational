@@ -406,6 +406,7 @@ class Constant: NSObject {
         static var memberCreditCardList = [Creditcard]()
         //FIXME(Frank) - why this is an array?
         static var selectedCreditCard = [Creditcard]()
+        static var selectedDestinationPromotionOfferName: String?
         static var selectedDestinationPromotionDisplayName: String?
   
         //Relinquishment selection date for float and avaialable tool

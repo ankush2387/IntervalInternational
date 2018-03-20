@@ -443,6 +443,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
                         Constant.MyClassConstants.exchangeFeeOriginalPrice = shopExchangePrice.price
                     }
                     
+                    Constant.MyClassConstants.selectedDestinationPromotionOfferName = nil
                     Constant.MyClassConstants.selectedDestinationPromotionDisplayName = nil
                     
                     if let promotions = response.view?.fees?.shopExchange?.promotions {
@@ -546,6 +547,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
                         Constant.MyClassConstants.rentalFeeOriginalPrice = rentalPrice.price
                     }
                     
+                    Constant.MyClassConstants.selectedDestinationPromotionOfferName = nil
                     Constant.MyClassConstants.selectedDestinationPromotionDisplayName = nil
                     
                     //FIXME(Frank): Missing nil handeling

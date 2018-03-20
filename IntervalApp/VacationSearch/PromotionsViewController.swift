@@ -43,28 +43,39 @@ extension PromotionsViewController: UITableViewDelegate {
         
         if indexPath.section == 0 {
             Constant.MyClassConstants.isPromotionsEnabled = true
+            let promotion = promotionsArray[indexPath.row]
 
+            // TODO: to Handle the "No Thanks" option selection
+            Constant.MyClassConstants.selectedDestinationPromotionOfferName = promotion.offerName
+            
             if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
+                Constant.MyClassConstants.exchangeFees?.shopExchange?.selectedOfferName = promotion.offerName
+                
                 if let shopExchangeFees = Constant.MyClassConstants.exchangeFees, let currencyCode = shopExchangeFees.currencyCode, let exchangeOriginalPrice = Constant.MyClassConstants.exchangeFeeOriginalPrice  {
-                    Constant.MyClassConstants.selectedDestinationPromotionDisplayName = Helper.resolveDestinationPromotionDisplayName(currencyCode: currencyCode, originalPrice: exchangeOriginalPrice, promotion: promotionsArray[indexPath.row])
+                    Constant.MyClassConstants.selectedDestinationPromotionDisplayName = Helper.resolveDestinationPromotionDisplayName(currencyCode: currencyCode, originalPrice: exchangeOriginalPrice, promotion: promotion)
                 }
-                Constant.MyClassConstants.exchangeFees?.shopExchange?.selectedOfferName = promotionsArray[indexPath.row].offerName
+                
             } else {
+                
+                Constant.MyClassConstants.rentalFees?.rental?.selectedOfferName = promotion.offerName
+                
                 if let rentalFees = Constant.MyClassConstants.rentalFees, let currencyCode = rentalFees.currencyCode, let rentalOriginalPrice = Constant.MyClassConstants.rentalFeeOriginalPrice  {
-                    Constant.MyClassConstants.selectedDestinationPromotionDisplayName = Helper.resolveDestinationPromotionDisplayName(currencyCode: currencyCode, originalPrice: rentalOriginalPrice, promotion: promotionsArray[indexPath.row])
+                    Constant.MyClassConstants.selectedDestinationPromotionDisplayName = Helper.resolveDestinationPromotionDisplayName(currencyCode: currencyCode, originalPrice: rentalOriginalPrice, promotion: promotion)
                 }
-                Constant.MyClassConstants.rentalFees?.rental?.selectedOfferName = promotionsArray[indexPath.row].offerName
             }
 
         } else {
+            
+            // TODO: Handle the "No Thanks" option
             Constant.MyClassConstants.isPromotionsEnabled = false
             
             if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
-               Constant.MyClassConstants.exchangeFees?.shopExchange?.selectedOfferName = "No Thanks".localized()
+                Constant.MyClassConstants.exchangeFees?.shopExchange?.selectedOfferName = "No Thanks".localized()
             } else {
                 Constant.MyClassConstants.rentalFees?.rental?.selectedOfferName = "No Thanks".localized()
             }
             
+            Constant.MyClassConstants.selectedDestinationPromotionOfferName = "No Thanks".localized()
             Constant.MyClassConstants.selectedDestinationPromotionDisplayName = "No Thanks".localized()
         }
         
@@ -95,23 +106,26 @@ extension PromotionsViewController: UITableViewDataSource {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "PromotionCell", for: indexPath) as? PromotionsCell else { return UITableViewCell() }
             
             cell.selectionStyle = .none
+            cell.promotionSelectionCheckBox.checked = false
    
             if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
                 if let shopExchangeFees = Constant.MyClassConstants.exchangeFees, let currencyCode = shopExchangeFees.currencyCode, let exchangeOriginalPrice = Constant.MyClassConstants.exchangeFeeOriginalPrice  {
                     cell.promotionTextLabel.text = Helper.resolveDestinationPromotionDisplayName(currencyCode: currencyCode, originalPrice: exchangeOriginalPrice, promotion: promotion)
+                    
+                    if let shopExchangeFee = shopExchangeFees.shopExchange, let selectedOfferName = shopExchangeFee.selectedOfferName, promotion.offerName == selectedOfferName {
+                        cell.promotionSelectionCheckBox.checked = true
+                    }
                 }
             } else {
                 if let rentalFees = Constant.MyClassConstants.rentalFees, let currencyCode = rentalFees.currencyCode, let rentalOriginalPrice = Constant.MyClassConstants.rentalFeeOriginalPrice  {
                     cell.promotionTextLabel.text = Helper.resolveDestinationPromotionDisplayName(currencyCode: currencyCode, originalPrice: rentalOriginalPrice, promotion: promotion)
+
+                    if let rentalFee = rentalFees.rental, let selectedOfferName = rentalFee.selectedOfferName, promotion.offerName == selectedOfferName {
+                        cell.promotionSelectionCheckBox.checked = true
+                    }
                 }
             }
  
-            if cell.promotionTextLabel.text == Constant.MyClassConstants.selectedDestinationPromotionDisplayName {
-                cell.promotionSelectionCheckBox.checked = true
-            } else {
-                cell.promotionSelectionCheckBox.checked = false
-            }
-            
             cell.promotionSelectionCheckBox.isUserInteractionEnabled = false
             cell.promotionSelectionCheckBox.addTarget(self, action: #selector(PromotionsViewController.promotionCellSelected), for: .touchUpInside)
             return cell
@@ -119,13 +133,13 @@ extension PromotionsViewController: UITableViewDataSource {
         } else {
             
            guard let cell = promotionsTableView.dequeueReusableCell(withIdentifier: "PromotionCell", for: indexPath) as? PromotionsCell else { return UITableViewCell() }
-            cell.promotionTextLabel.text = "No Thanks".localized()
+            
             cell.selectionStyle = .none
+            cell.promotionSelectionCheckBox.checked = false
+            cell.promotionTextLabel.text = "No Thanks".localized()
 
-            if cell.promotionTextLabel.text == Constant.MyClassConstants.selectedDestinationPromotionDisplayName {
+            if cell.promotionTextLabel.text == Constant.MyClassConstants.selectedDestinationPromotionOfferName {
                 cell.promotionSelectionCheckBox.checked = true
-            } else {
-                cell.promotionSelectionCheckBox.checked = false
             }
 
             cell.promotionSelectionCheckBox.isUserInteractionEnabled = false

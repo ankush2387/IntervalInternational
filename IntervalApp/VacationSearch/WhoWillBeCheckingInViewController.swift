@@ -624,6 +624,7 @@ class WhoWillBeCheckingInViewController: UIViewController {
                         Constant.MyClassConstants.rentalFeeOriginalPrice = rentalPrice.price
                     }
                     
+                    Constant.MyClassConstants.selectedDestinationPromotionOfferName = nil
                     Constant.MyClassConstants.selectedDestinationPromotionDisplayName = nil
                     
                     if let promotions = response.view?.fees?.rental?.promotions {
