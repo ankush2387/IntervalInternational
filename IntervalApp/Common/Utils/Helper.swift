@@ -2096,9 +2096,14 @@ public class Helper {
                 }
             }
         } else if let rewardType = promotion.rewardType, rewardType.caseInsensitiveCompare("PR") == ComparisonResult.orderedSame, let offerContent = promotion.offerContentFragment, let cleanOfferContent = offerContent.trim() {
-            let percent = Int(promotion.amount / originalPrice * 100)
-            displayName = "\(percent)% " + cleanOfferContent
-        } else if let rewardType = promotion.rewardType, rewardType.caseInsensitiveCompare("PM") == ComparisonResult.orderedSame, let offerContent = promotion.offerContentFragment, let cleanOfferContent = offerContent.trim() {
+            if originalPrice > 0 {
+                let percent = Int(ceil(promotion.amount / originalPrice * 100))
+                displayName = "\(percent)% " + cleanOfferContent
+            } else {
+                displayName = "0% " + cleanOfferContent
+            }
+        } else if let offerContent = promotion.offerContentFragment, let cleanOfferContent = offerContent.trim() {
+            // TODO: Apply for reward types - PM, CT, etc
             displayName = cleanOfferContent
         }
         
