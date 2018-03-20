@@ -505,16 +505,19 @@ class CheckOutViewController: UIViewController {
         return emailTest.evaluate(with: testStr)
     }
     
-    func checkBoxCheckedAtIndex(_ sender: IUIKCheckbox) {
+    func showPromotions(_ index: Int) {
         
-        self.promotionSelectedIndex = sender.tag
+        self.promotionSelectedIndex = index
         Constant.MyClassConstants.isPromotionsEnabled = true
         self.bookingCostRequiredRows = 1
         
         let storyboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+        
         guard let promotionsNav = storyboard.instantiateViewController(withIdentifier: "DepositPromotionsNav") as? UINavigationController else { return }
         guard let promotionsVC = promotionsNav.viewControllers.first as? PromotionsViewController else { return }
+        
         promotionsVC.promotionsArray = Constant.MyClassConstants.recapViewPromotionCodeArray
+        
         promotionsVC.completionHandler = { selected in
             self.showHudAsync()
             //Creating Request to recap with Promotion
@@ -535,8 +538,13 @@ class CheckOutViewController: UIViewController {
                 let processRequest = ExchangeProcessRecalculateRequest()
                 processRequest.fees = fees
                 ExchangeProcessClient.recalculateFees(Session.sharedSession.userAccessToken, process: processResort, request: processRequest, onSuccess: { response in
-                    Constant.MyClassConstants.recapPromotionsArray.removeAll()
                     
+                    Constant.MyClassConstants.inventoryPriceTaxBreakdown = nil
+                    if let taxBreakdown = response.view?.fees?.shopExchange?.inventoryPrice?.taxBreakdown {
+                        Constant.MyClassConstants.inventoryPriceTaxBreakdown = taxBreakdown
+                    }
+                    
+                    Constant.MyClassConstants.recapPromotionsArray.removeAll()
                     if let promotions = response.view?.fees?.shopExchange?.promotions {
                         Constant.MyClassConstants.recapPromotionsArray = promotions
                     }
@@ -583,6 +591,12 @@ class CheckOutViewController: UIViewController {
                     if let updatedFees = response.view?.fees {
                         Constant.MyClassConstants.rentalFees? = updatedFees
                     }
+                    
+                    Constant.MyClassConstants.inventoryPriceTaxBreakdown = nil
+                    if let taxBreakdown = response.view?.fees?.rental?.rentalPrice?.taxBreakdown {
+                        Constant.MyClassConstants.inventoryPriceTaxBreakdown = taxBreakdown
+                    }
+                    
                     Constant.MyClassConstants.recapPromotionsArray.removeAll()
                     if let promotions = response.view?.fees?.rental?.promotions {
                         Constant.MyClassConstants.recapPromotionsArray = promotions
@@ -606,6 +620,10 @@ class CheckOutViewController: UIViewController {
             }
         }
         present(promotionsNav, animated: true)
+    }
+    
+    func checkBoxCheckedAtIndex(_ sender: IUIKCheckbox) {
+        showPromotions(sender.tag)
     }
     
     //***** Function called when cross button is clicked in email text field. *****//
@@ -737,6 +755,11 @@ class CheckOutViewController: UIViewController {
                     self.tripRequestInProcess = false
                     Constant.MyClassConstants.exchangeContinueToCheckoutResponse = response
                     
+                    Constant.MyClassConstants.inventoryPriceTaxBreakdown = nil
+                    if let taxBreakdown = response.view?.fees?.shopExchange?.inventoryPrice?.taxBreakdown {
+                        Constant.MyClassConstants.inventoryPriceTaxBreakdown = taxBreakdown
+                    }
+                    
                     if let exchangeTotalFees = response.view?.fees?.total {
                         Constant.MyClassConstants.exchangeFees?.total = exchangeTotalFees
                         self.recapFeesTotal = exchangeTotalFees
@@ -779,6 +802,11 @@ class CheckOutViewController: UIViewController {
                     self.tripRequestInProcess = false
                     
                     Constant.MyClassConstants.continueToCheckoutResponse = response
+                    
+                    Constant.MyClassConstants.inventoryPriceTaxBreakdown = nil
+                    if let taxBreakdown = response.view?.fees?.rental?.rentalPrice?.taxBreakdown {
+                        Constant.MyClassConstants.inventoryPriceTaxBreakdown = taxBreakdown
+                    }
                     
                     if let rentalFeesTotal = response.view?.fees?.total {
                         Constant.MyClassConstants.rentalFees?.total = rentalFeesTotal
@@ -824,6 +852,12 @@ class CheckOutViewController: UIViewController {
                 if let recalculateExchangeFees = recapResponse.view?.fees {
                     Constant.MyClassConstants.exchangeFees = recalculateExchangeFees
                 }
+                
+                Constant.MyClassConstants.inventoryPriceTaxBreakdown = nil
+                if let taxBreakdown = recapResponse.view?.fees?.shopExchange?.inventoryPrice?.taxBreakdown {
+                    Constant.MyClassConstants.inventoryPriceTaxBreakdown = taxBreakdown
+                }
+                
                 self.hideHudAsync()
                 self.checkSectionsForFees()
                 self.checkoutOptionTBLview.reloadData()
@@ -1177,21 +1211,27 @@ extension CheckOutViewController: UITableViewDataSource {
             }
         case 2 :
             guard let cell = tableView.dequeueReusableCell(withIdentifier: CheckOutViewController.checkoutPromotionCell, for: indexPath) as? CheckoutPromotionCell else { return UITableViewCell() }
+            
             if isDepositPromotionAvailable && indexPath.row == 0 {
                 cell.setupDepositPromotion()
                 cell.promotionSelectionCheckBox.tag = indexPath.row
                 cell.selectionStyle = .none
                 return cell
+                
             } else {
-                cell.setupCell(selectedPromotion: destinationPromotionSelected)
+ 
+                cell.setupCell(selectedPromotion: destinationPromotionSelected) { [weak self] in
+                    self?.showPromotions(indexPath.row)
+                }
                 cell.promotionSelectionCheckBox.tag = indexPath.row
+                
                 if cell.promotionSelectionCheckBox.isHidden {
                     cell.forwardArrowButton.addTarget(self, action: #selector(CheckOutViewController.checkBoxCheckedAtIndex(_:)), for: .touchUpInside)
                 } else {
                     isPromotionApplied = true
                     cell.promotionSelectionCheckBox.addTarget(self, action: #selector(CheckOutViewController.checkBoxCheckedAtIndex(_:)), for: .touchUpInside)
                 }
-                
+            
                 cell.selectionStyle = .none
                 return cell
             }
@@ -1292,11 +1332,11 @@ extension CheckOutViewController: UITableViewDataSource {
                             cell.setTotalPrice(with: currencyCode, and: rentalPrice.tax, and: countryCode)
                         }
                     }
-                    
+     
                     cell.priceLabel.text = Constant.MyClassConstants.taxesTitle
                     
                     let cellTapped: CallBack = { [unowned self] in
-                        if let taxBreakdown = Constant.MyClassConstants.continueToCheckoutResponse.view?.fees?.rental?.rentalPrice?.taxBreakdown {
+                        if let taxBreakdown = Constant.MyClassConstants.inventoryPriceTaxBreakdown {
                             
                             let dataSet = taxBreakdown
                                 .filter { !$0.description.unwrappedString.isEmpty }

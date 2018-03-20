@@ -513,8 +513,14 @@ class WhoWillBeCheckingInViewController: UIViewController {
                     
                     if let view = response.view, let exchangeFees = view.fees, let shopExchangeFee = exchangeFees.shopExchange, let shopExchangePrice = shopExchangeFee.inventoryPrice {
                         Constant.MyClassConstants.exchangeFeeOriginalPrice = shopExchangePrice.price
+                        
+                        Constant.MyClassConstants.inventoryPriceTaxBreakdown = nil
+                        if !shopExchangePrice.taxBreakdown.isEmpty {
+                            Constant.MyClassConstants.inventoryPriceTaxBreakdown = shopExchangePrice.taxBreakdown
+                        }
                     }
                     
+                    Constant.MyClassConstants.selectedDestinationPromotionOfferName = nil
                     Constant.MyClassConstants.selectedDestinationPromotionDisplayName = nil
                     
                     //FIXME(Frank) - If we already have exchangeContinueToCheckoutResponse as global then why the next block of code?
@@ -524,8 +530,9 @@ class WhoWillBeCheckingInViewController: UIViewController {
                         if let fees = view.fees {
                             //FIXME(Frank) - why an array? - what is this?
                             Constant.MyClassConstants.exchangeFees = fees
-                            
+                   
                             if let shopExchangeFee = fees.shopExchange {
+                                Constant.MyClassConstants.recapViewPromotionCodeArray.removeAll()
                                 if !shopExchangeFee.promotions.isEmpty {
                                     //FIXME(Frank): recapViewPromotionCodeArray is confuse - these are "destinationPromotions"
                                     Constant.MyClassConstants.recapViewPromotionCodeArray = shopExchangeFee.promotions
@@ -622,11 +629,17 @@ class WhoWillBeCheckingInViewController: UIViewController {
                     
                     if let view = response.view, let rentalFees = view.fees, let rentalFee = rentalFees.rental, let rentalPrice = rentalFee.rentalPrice {
                         Constant.MyClassConstants.rentalFeeOriginalPrice = rentalPrice.price
+                        
+                        Constant.MyClassConstants.inventoryPriceTaxBreakdown = nil
+                        if !rentalPrice.taxBreakdown.isEmpty {
+                            Constant.MyClassConstants.inventoryPriceTaxBreakdown = rentalPrice.taxBreakdown
+                        }
                     }
                     
                     Constant.MyClassConstants.selectedDestinationPromotionOfferName = nil
                     Constant.MyClassConstants.selectedDestinationPromotionDisplayName = nil
                     
+                    Constant.MyClassConstants.recapViewPromotionCodeArray.removeAll()
                     if let promotions = response.view?.fees?.rental?.promotions {
                         Constant.MyClassConstants.recapViewPromotionCodeArray = promotions
                     }

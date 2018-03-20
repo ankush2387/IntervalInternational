@@ -441,11 +441,17 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
                     
                     if let view = response.view, let exchangeFees = view.fees, let shopExchangeFee = exchangeFees.shopExchange, let shopExchangePrice = shopExchangeFee.inventoryPrice {
                         Constant.MyClassConstants.exchangeFeeOriginalPrice = shopExchangePrice.price
+                        
+                        Constant.MyClassConstants.inventoryPriceTaxBreakdown = nil
+                        if !shopExchangePrice.taxBreakdown.isEmpty {
+                            Constant.MyClassConstants.inventoryPriceTaxBreakdown = shopExchangePrice.taxBreakdown
+                        }
                     }
                     
                     Constant.MyClassConstants.selectedDestinationPromotionOfferName = nil
                     Constant.MyClassConstants.selectedDestinationPromotionDisplayName = nil
                     
+                    Constant.MyClassConstants.recapViewPromotionCodeArray.removeAll()
                     if let promotions = response.view?.fees?.shopExchange?.promotions {
                         Constant.MyClassConstants.recapViewPromotionCodeArray = promotions
                     }
@@ -545,12 +551,18 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
                     
                     if let view = response.view, let rentalFees = view.fees, let rentalFee = rentalFees.rental, let rentalPrice = rentalFee.rentalPrice {
                         Constant.MyClassConstants.rentalFeeOriginalPrice = rentalPrice.price
+                        
+                        Constant.MyClassConstants.inventoryPriceTaxBreakdown = nil
+                        if !rentalPrice.taxBreakdown.isEmpty {
+                            Constant.MyClassConstants.inventoryPriceTaxBreakdown = rentalPrice.taxBreakdown
+                        }
                     }
                     
                     Constant.MyClassConstants.selectedDestinationPromotionOfferName = nil
                     Constant.MyClassConstants.selectedDestinationPromotionDisplayName = nil
                     
                     //FIXME(Frank): Missing nil handeling
+                    Constant.MyClassConstants.recapViewPromotionCodeArray.removeAll()
                     if let promotions = response.view?.fees?.rental?.promotions {
                         Constant.MyClassConstants.recapViewPromotionCodeArray = promotions
                     }

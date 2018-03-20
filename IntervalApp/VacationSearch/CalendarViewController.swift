@@ -40,9 +40,20 @@ class CalendarViewController: UIViewController {
         fsCalendar.appearance.caseOptions = [.headerUsesUpperCase, .weekdayUsesUpperCase]
         fsCalendar.delegate = self
         fsCalendar.dataSource = self
-        //fsCalendar.formatter = Helper.createDateFormatter("yyyy/MM/dd")
-        //fsCalendar.calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
         
+        //FIXME(FRANK): Remove this code
+        //fsCalendar.formatter = Helper.createDateFormatter("yyyy/MM/dd")
+        var calendar = Calendar.current
+        if let timeZone = TimeZone(identifier: "UTC") {
+            if var myCalendar = fsCalendar.calendar {
+                myCalendar.timeZone = timeZone
+            }
+        } else {
+            if var myCalendar = fsCalendar.calendar {
+                myCalendar.timeZone = NSTimeZone.local
+            }
+        }
+
         if !datesToAllow.isEmpty {
             fsCalendar.select(Date())
         } else {

@@ -408,6 +408,7 @@ class Constant: NSObject {
         static var selectedCreditCard = [Creditcard]()
         static var selectedDestinationPromotionOfferName: String?
         static var selectedDestinationPromotionDisplayName: String?
+        static var inventoryPriceTaxBreakdown: [InventoryPriceTax]?
   
         //Relinquishment selection date for float and avaialable tool
         static var  relinquishmentAvalableToolSelectedDate: Date?

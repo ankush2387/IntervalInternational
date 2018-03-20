@@ -27,7 +27,7 @@ class PromotionsDiscountCell: UITableViewCell {
     
      // MARK: - Public properties
     func setPromotionPrice(with currencyCode: String, and chargeAmount: Float, and countryCode: String?) {
-        if let attributedAmount = chargeAmount.currencyFormatter(for:currencyCode, for: countryCode) {
+        if chargeAmount > 0, let attributedAmount = chargeAmount.currencyFormatter(for:currencyCode, for: countryCode) {
             amountLabel.attributedText = attributedAmount
         }
     }
