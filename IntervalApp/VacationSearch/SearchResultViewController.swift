@@ -210,14 +210,17 @@ class SearchResultViewController: UIViewController {
                 Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request.checkInToDate = calendarItem.intervalEndDate?.dateFromShortFormat()
                 
                 RentalClient.searchDates(Session.sharedSession.userAccessToken, request: Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request,
-                                         onSuccess: { (response) in
+                                         onSuccess: { [weak self] (response) in
                                             
                                             Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.response = response
                                             // Update active interval
                                             Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
-                                            Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
-                                            self.searchResultColelctionView.reloadData()
-                                            self.hideHudAsync()
+                                            Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch) {
+                                                DispatchQueue.main.async {
+                                                    self?.searchResultColelctionView.reloadSections(IndexSet(integer: 0))
+                                                    self?.hideHudAsync()
+                                                }
+                                            }
                 },
                                          onError: { [weak self] error in
                                             self?.hideHudAsync()
@@ -236,7 +239,7 @@ class SearchResultViewController: UIViewController {
                                             
                                             Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                                             self.hideHudAsync()
-                                            self.searchResultColelctionView.reloadData()
+                                            self.searchResultColelctionView.reloadSections(IndexSet(integer: 0))
                 },
                                            
                                            onError: { [weak self] error in
@@ -278,7 +281,7 @@ class SearchResultViewController: UIViewController {
         } else {
             hideHudAsync()
             Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
-            self.searchResultColelctionView.reloadData()
+            self.searchResultColelctionView.reloadSections(IndexSet(integer: 0))
             myActivityIndicator.stopAnimating()
             cell.alpha = 1.0
         }
@@ -287,7 +290,6 @@ class SearchResultViewController: UIViewController {
     //*****Function for more button press *****//
     func intervalDateItemClicked(_ calendarItem: CalendarItem) {
         showHudAsync()
-        searchResultColelctionView.reloadData()
         
         if let exactMatchSection = availabilityExactMatchSection, let surroundingMatchSection = availabilitySurroundingMatchSection, exactMatchSection.items.isEmpty, surroundingMatchSection.items.isEmpty {
             intervalPrint("All empty")
@@ -305,7 +307,7 @@ class SearchResultViewController: UIViewController {
             guard let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval() else { return }
             Constant.MyClassConstants.initialVacationSearch.searchCheckInDate = calendarItem.checkInDate
             
-            self.searchResultColelctionView.reloadData()
+            self.searchResultColelctionView.reloadSections(IndexSet(integer: 0))
             
             switch Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType {
             case VacationSearchType.RENTAL:
@@ -648,7 +650,6 @@ class SearchResultViewController: UIViewController {
         } else {
             checkDateCellSelectionColor()
         }
-        searchResultColelctionView.reloadData()
     }
     
     // Common method to get the rental collection view cell

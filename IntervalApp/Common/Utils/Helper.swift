@@ -1775,15 +1775,10 @@ public class Helper {
         DarwinSDK.logger.info("Show the Not Availability Screen.")
     }
 
-    static func showScrollingCalendar(vacationSearch: VacationSearch) {
+    static func showScrollingCalendar(vacationSearch: VacationSearch, completionBlock: CallBack? = nil) {
         DarwinSDK.logger.info("-- Create Calendar based on Booking Window Intervals --")
-        Constant.MyClassConstants.calendarDatesArray.removeAll()
-        let calendar = vacationSearch.createCalendar()
-        
-        // Show up the Scrolling Calendar in UI
-        for calendarItem in calendar {
-            Constant.MyClassConstants.calendarDatesArray.append(calendarItem)
-        }
+        Constant.MyClassConstants.calendarDatesArray = vacationSearch.createCalendar()
+        completionBlock?()
     }
 
     static func showNearestCheckInDateSelectedMessage() {
