@@ -199,7 +199,7 @@ class Constant: NSObject {
         static var certificateDetailsCellTitle = "Certificate Details".localized()
         
         //***** Vacation search screen constant string header array *****//
-        static var threeSegmentHeaderTextArray = ["Where do you want to go".localized(), "Check in closest to".localized(), "Who is travelling".localized()]
+        static var threeSegmentHeaderTextArray = ["Where do you want to go?".localized(), "Check in closest to?".localized(), "Who is travelling?".localized()]
         
         //***** Who will be checking-In header text array *****//
         static var whoWillBeCheckingInHeaderTextArray = ["From the list below, who on your membership will be checking in?".localized(), "", "Guest Name".localized(), "Guest Address", "Guest Contact info".localized(), ""]
@@ -211,7 +211,7 @@ class Constant: NSObject {
         //***** Initializing plicy list table cell content array *****//
         static var policyListTblCellContentArray = ["Terms & Conditions".localized(), "Privacy Policy".localized(), "Legal Information".localized(), "Contact Us".localized(), "Email Us".localized(), "Our Offices".localized(), "Interval World".localized(), "Version \(Helper.getBuildVersion())".localized()]
         
-        static var fourSegmentHeaderTextArray = ["Where do you want to go".localized(), "What do you want to trade".localized(), "Check in closest to".localized(), "Who is travelling".localized()]
+        static var fourSegmentHeaderTextArray = ["Where do you want to go?".localized(), "What do you want to trade?".localized(), "Check in closest to?".localized(), "Who is travelling?".localized()]
         
         static var headerTextFlexchangeDestination = "Your selected Flexchange Destination".localized()
         
@@ -397,13 +397,17 @@ class Constant: NSObject {
         static var exchangeContinueToPayResponse = ExchangeProcessEndResponse()
         static var recapViewPromotionCodeArray = [Promotion]()
         static var allowedCreditCardType = [AllowedCreditCardType]()
-        static var rentalFees = [RentalFees]()
-        static var exchangeFees = [ExchangeFees]()
-        static var memberCreditCardList = [Creditcard]()
-        static var selectedCreditCard = [Creditcard]()
-        static var guestCertificate: GuestCertificate?
         static var allowedCurrencies = [String]()
-        
+        static var rentalFeeOriginalPrice: Float?
+        static var rentalFees: RentalFees?
+        static var exchangeFeeOriginalPrice: Float?
+        static var exchangeFees: ExchangeFees?
+        static var guestCertificate: GuestCertificate?
+        static var memberCreditCardList = [Creditcard]()
+        //FIXME(Frank) - why this is an array?
+        static var selectedCreditCard = [Creditcard]()
+        static var selectedDestinationPromotionDisplayName: String?
+  
         //Relinquishment selection date for float and avaialable tool
         static var  relinquishmentAvalableToolSelectedDate: Date?
         static var  relinquishmentFloatDetialSelectedDate: Date?
@@ -436,10 +440,15 @@ class Constant: NSObject {
         static var nearbyDictKey = "Nearby"
         static var status = "true"
         
-        static var inventoryPrice = [InventoryPrice]()
-        static var selectedResort = Resort()
-        static var selectedExchangePointsCost : NSNumber?
-        static var selectedExchange = ""
+        //static var selectedAvailabilitySectionItem: AvailabilitySectionItem?
+        static var selectedAvailabilityResort: AvailabilitySectionItemResort?
+        static var selectedAvailabilityInventoryBucket: AvailabilitySectionItemInventoryBucket?
+        static var selectedAvailabilityInventoryBucketIndex = 0
+        // FIXME(Frank) - Remove next 4
+        static var rentalPrices = [InventoryPrice]()
+        //static var selectedResort = Resort()
+        //static var selectedExchangePointsCost : NSNumber?
+        //static var selectedExchange = ""
         
         static var paymentMethodTitle = "Payment Method".localized()
         static var webViewGetElementById = "document.getElementById('WASCInsuranceOfferOption0').checked == true;"
@@ -469,6 +478,7 @@ class Constant: NSObject {
         static var dateTimeFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
         
         //use for no Availability Cell
+        //FIXME(Frank): what mean this? - can showNearestCheckInDateSelectedMessage?
         static var isShowAvailability = false
         
         static var isTrue = "true"
@@ -481,6 +491,7 @@ class Constant: NSObject {
         static var alertsSearchDatesDictionary = NSMutableDictionary()
         static var headerArray = ["Getaway Alerts".localized(), "My Upcoming Trips".localized()]
         
+        //FIXME(Frank): what is this? - a hard-coded confirmation number?
         static var transactionNumber = "021638132"
         static var pointMatrixDictionary = NSMutableDictionary()
         static var clubIntervalDictionary = NSMutableDictionary()
@@ -526,10 +537,10 @@ class Constant: NSObject {
         //Header for search results
         static var searchResultHeader = "Nearest Check-in Date selected.\nWe found availibility close to your desired date.".localized()
         static var isFromExchange = false
+         static var isFromSearchBoth = false
         static var isFromExchangeAllAvailable = false
         static var isFromRentalAllAvailable = false
         static var isFromWhatToUse = false
-        static var isFromSearchBoth = false
         static var travelPartyInfo = TravelParty()
         static var bucketsArray = [ExchangeBucket]()
         static var exchangeInventory = [ExchangeInventory]()
@@ -560,8 +571,7 @@ class Constant: NSObject {
         //Global App Settings
         static var appSettings = AppSettings()
         static var noAvailabilityView = false
-        static var selectedUnitIndex = 0
-        
+
         // Search both check for rental and exchange
         
         static var rentalHasNotAvailableCheckInDatesForInitial: Bool = false
@@ -662,9 +672,12 @@ class Constant: NSObject {
         static var user_id = "User ID".localized()
         static var user_password = "Password".localized()
         static var sign_in = "Sign In".localized()
+        static var totalString = " Total".localized()
         static var privateString = " Private".localized()
         static var exactString = "Resorts in ".localized()
         static var surroundingString = "Resorts near ".localized()
+        static var cigPointsString = "CIG Points".localized()
+        static var clubPointsString = "Club Points".localized()
         
         static var contactName = "contactname"
         static var cardName = "cardname"

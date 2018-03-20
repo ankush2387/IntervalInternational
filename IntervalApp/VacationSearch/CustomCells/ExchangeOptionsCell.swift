@@ -17,24 +17,32 @@ class ExchangeOptionsCell: UITableViewCell {
     @IBOutlet weak var primaryPriceLabel: UILabel!
     @IBOutlet weak var priceCheckBox: IUIKCheckbox!
 
-    func setTotalPrice(with currencyDisplayes: String, and chargeAmount: Float) {
-
-        if let attributedAmount = chargeAmount.currencyFormatter(for:currencyDisplayes) {
+    func setTotalPrice(with currencyCode: String, and chargeAmount: Float, and countryCode: String?) {
+        if let attributedAmount = chargeAmount.currencyFormatter(for:currencyCode, for: countryCode) {
             primaryPriceLabel.attributedText = attributedAmount
         }
     }
 
     func setupCell(selectedEplus: Bool) {
         
-        if let currencyCode = Constant.MyClassConstants.exchangeFees[0].currencyCode {
-            let currencyHelper = CurrencyHelper()
-            let currencySymbol = currencyHelper.getCurrencyFriendlySymbol(currencyCode: currencyCode)
-            if !Constant.MyClassConstants.exchangeFees.isEmpty && Constant.MyClassConstants.exchangeFees[0].eplus != nil {
-                if let eplus = Constant.MyClassConstants.exchangeFees[0].eplus?.price, let selectedTrue = Constant.MyClassConstants.exchangeFees[0].eplus?.selected {
-                    priceCheckBox.checked = selectedTrue
-                    setTotalPrice(with: currencySymbol, and: eplus)
-                }
-            }
+        //FIXME(Frank) - why we need Constant.MyClassConstants.exchangeFees as a global?
+        // Why Constant.MyClassConstants.exchangeFees is an array?
+        // if let currencyCode = Constant.MyClassConstants.exchangeFees?.currencyCode {
+        
+        var currencyCode = "USD"
+        if let selectedBucket = Constant.MyClassConstants.selectedAvailabilityInventoryBucket, let currencyCodeValue = selectedBucket.currencyCode {
+            currencyCode = currencyCodeValue
+        }
+        
+        var countryCode: String?
+        if let currentProfile = Session.sharedSession.contact {
+            countryCode = currentProfile.getCountryCode()
+        }
+        
+        //FIXME(Frank) - why the exchangeFees is an array? - this is BAD
+        if let exchangeFees = Constant.MyClassConstants.exchangeFees, let eplusFee = exchangeFees.eplus, let selectedEplus = eplusFee.selected {
+            priceCheckBox.checked = selectedEplus
+            setTotalPrice(with: currencyCode, and: eplusFee.price, and: countryCode)
         }
     }
 }

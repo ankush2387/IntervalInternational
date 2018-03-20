@@ -18,7 +18,7 @@ public enum Tier : String {
     case SelectBoutique = "selectboutique"              // weigth = 3
     case Affiliate = "affiliate"                        // weigth = 2
     case Unknown = "unknown"                            // weigth = 1
-   
+    
     static let weigthMapper: [Tier: Int] = [
         .PreferedResidence: 7,
         .Premier: 6,
@@ -70,9 +70,13 @@ public enum Tier : String {
     public func isSelectBoutique() -> Bool {
         return isThis(name: "selectboutique")
     }
-
+    
     public func isAffiliate() -> Bool {
         return isThis(name: "affiliate")
+    }
+    
+    public func isUnknown() -> Bool {
+        return isThis(name: "unknown")
     }
     
     public static func fromName(name : String?) -> Tier {
@@ -84,7 +88,7 @@ public enum Tier : String {
             } else if Tier.PremierBoutique.name == thatName {
                 return Tier.PremierBoutique
             } else if Tier.Elite.name == thatName {
-            return Tier.Elite
+                return Tier.Elite
             } else if Tier.EliteBoutique.name == thatName {
                 return Tier.EliteBoutique
             } else if Tier.Select.name == thatName {
@@ -99,3 +103,4 @@ public enum Tier : String {
     }
     
 }
+

@@ -20,12 +20,12 @@ open class Resort {
     open var checkInTime : String?
     open var checkOutTime : String?
     open var regionCode : Int = 0
-	open var areaCode : Int = 0
-	open var groupCode : String?
+    open var areaCode : Int = 0
+    open var groupCode : String?
     open var rating : ResortRating?
     open var tdiUrl : String?
     open var webUrl : String?
-	open var tier : String?
+    open var tier : String?
     open var qualityResortRating : String?
     open var nearestAiport : Airport?
     open var coordinates : Coordinates?
@@ -41,21 +41,21 @@ open class Resort {
     open lazy var advisements = [Advisement]()
     open var inventory : Inventory?
     open lazy var children = [Resort]()
-
-	public init() {
-	}
-
+    
+    public init() {
+    }
+    
     public convenience init(resortCode:String?) {
         self.init()
         self.resortCode = resortCode
     }
-
-
-	// This init method will intialize a resort object
-	// given a summary JSON object
-	//
-	public convenience init(summaryJSON:JSON) {
-		self.init()
+    
+    
+    // This init method will intialize a resort object
+    // given a summary JSON object
+    //
+    public convenience init(summaryJSON:JSON) {
+        self.init()
         
         if let value = summaryJSON["code"].string {
             self.resortCode = value
@@ -70,15 +70,15 @@ open class Resort {
         }
         
         self.areaCode = summaryJSON["areaCode"].intValue
-		self.regionCode = summaryJSON["regionCode"].intValue
+        self.regionCode = summaryJSON["regionCode"].intValue
         self.groupCode = summaryJSON["groupCode"].string
-		self.tier = summaryJSON["tier"].string
+        self.tier = summaryJSON["tier"].string?.lowercased()
         self.qualityResortRating = summaryJSON["qualityResortRating"].string
         self.allInclusive = summaryJSON["allInclusive"].boolValue
         self.allInclusiveChargesText = summaryJSON["allInclusiveChargesText"].string
         self.additionalCharges = summaryJSON["additionalCharges"].boolValue
         self.locked = summaryJSON["locked"].boolValue
-
+        
         if let gpsJSON = summaryJSON["gps"] as JSON? {
             self.coordinates = Coordinates(json: gpsJSON)
         }
@@ -101,14 +101,14 @@ open class Resort {
             let childrenArrary:[JSON] = summaryJSON["children"].arrayValue
             self.children = childrenArrary.map { Resort(summaryJSON:$0) }
         }
-	}
+    }
     
-	// This init method will intialize a resort object
-	// given a detailed JSON object
-	//
-	public convenience init(detailJSON:JSON) {
-		self.init(summaryJSON:detailJSON)
-		
+    // This init method will intialize a resort object
+    // given a detailed JSON object
+    //
+    public convenience init(detailJSON:JSON) {
+        self.init(summaryJSON:detailJSON)
+        
         self.description = detailJSON["description"].string
         self.allInclusive = detailJSON["allInclusive"].boolValue
         self.allInclusiveChargesText = detailJSON["allInclusiveChargesText"].string
@@ -117,10 +117,10 @@ open class Resort {
         self.hasVideos = detailJSON["hasVideos"].boolValue
         self.phone = detailJSON["phone"].string
         self.fax = detailJSON["fax"].string
-		self.checkInTime = detailJSON["checkInTime"].string
-		self.checkOutTime = detailJSON["checkOutTime"].string
-		self.tdiUrl = detailJSON["tdiUrl"].string
-		self.webUrl = detailJSON["webUrl"].string
+        self.checkInTime = detailJSON["checkInTime"].string
+        self.checkOutTime = detailJSON["checkOutTime"].string
+        self.tdiUrl = detailJSON["tdiUrl"].string
+        self.webUrl = detailJSON["webUrl"].string
         
         if detailJSON["inventory"].exists() {
             let inventoryJSON = detailJSON["inventory"] as JSON!
@@ -136,11 +136,11 @@ open class Resort {
             let airportJSON = detailJSON["nearestAirport"] as JSON!
             self.nearestAiport = Airport(json: airportJSON!)
         }
-
-		if detailJSON["amenities"].exists() {
-        	let amenitiesArray:[JSON] = detailJSON["amenities"].arrayValue
-			self.amenities = amenitiesArray.map { ResortAmenity(json:$0) }
-		}
+        
+        if detailJSON["amenities"].exists() {
+            let amenitiesArray:[JSON] = detailJSON["amenities"].arrayValue
+            self.amenities = amenitiesArray.map { ResortAmenity(json:$0) }
+        }
         
         if detailJSON["advisements"].exists() {
             let advisementsArray:[JSON] = detailJSON["advisements"].arrayValue
@@ -151,7 +151,7 @@ open class Resort {
             let videosArrary:[JSON] = detailJSON["videos"].arrayValue
             self.videos = videosArrary.map { Video(json:$0) }
         }
-	}
+    }
     
     open func getImages( _ size:ImageSize ) -> [Image]? {
         return self.images.filter { $0.size == size.rawValue }
@@ -161,5 +161,18 @@ open class Resort {
         return self.images.filter { $0.size == size.rawValue }.first
     }
     
+    open func getDefaultImage() -> Image? {
+        if let image = getDefaultImage(ImageSize.XLARGE) {
+            return image
+        } else if let image = getDefaultImage(ImageSize.LARGE) {
+            return image
+        } else if let image = getDefaultImage(ImageSize.THUMBNAIL) {
+            return image
+        } else if let image = getDefaultImage(ImageSize.TYNY) {
+            return image
+        } else {
+            return nil
+        }
+    }
+    
 }
-

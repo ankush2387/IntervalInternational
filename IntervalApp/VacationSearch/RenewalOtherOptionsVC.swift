@@ -18,11 +18,10 @@ class RenewalOtherOptionsVC: UIViewController {
     @IBOutlet weak var renewalOtherOptionsTableView: UITableView!
     
     // class variables
-    var forceRenewals = ForceRenewals()
     public var selectAction: ((String, ForceRenewals, ExchangeRelinquishment) -> ())?
     var selectedRelinquishment = ExchangeRelinquishment()
-    var currencyHelper = CurrencyHelper()
-    
+    var forceRenewals = ForceRenewals()
+
     // MARK: - lifecycle
     
     override func viewDidLoad() {
@@ -127,13 +126,20 @@ extension RenewalOtherOptionsVC: UITableViewDataSource {
                         cell.renewelCoreImageView?.isHidden = false
                         cell.renewelnonCoreImageView?.isHidden = false
                         
-                        // currency code
-                        var currencyCodeWithSymbol = ""
-                        if let currencyCode = forceRenewals.currencyCode {
-                            if let countryCode = Session.sharedSession.contact?.getCountryCode() {
-                                currencyCodeWithSymbol = currencyHelper.getCurrencyFriendlySymbol(currencyCode: currencyCode, countryCode: countryCode)
-                            }
+                        var currencyCode = "USD"
+                        if let currencyCodeValue = forceRenewals.currencyCode {
+                            currencyCode = currencyCodeValue
                         }
+         
+                        let currencyHelper = CurrencyHelperLocator.sharedInstance.provideHelper()
+                        var currencyCodeWithSymbol = ""
+                    
+                        if let currentProfile = Session.sharedSession.contact, let countryCode = currentProfile.getCountryCode() {
+                            currencyCodeWithSymbol = currencyHelper.getCurrencyFriendlySymbol(currencyCode: currencyCode, countryCode: countryCode)
+                        } else {
+                            currencyCodeWithSymbol = currencyHelper.getCurrencyFriendlySymbol(currencyCode: currencyCode)
+                        }
+                    
                         if renewalComboProduct.isCoreProduct {
                             if let productCode = renewalComboProduct.productCode {
                                 cell.renewelCoreImageView?.image = UIImage(named: productCode)
@@ -144,8 +150,8 @@ extension RenewalOtherOptionsVC: UITableViewDataSource {
                             priceAndCurrency = currencyCodeWithSymbol + "\(price)"
                             
                             // formatted string
-                    
-                            let mainString = Helper.returnIntervalMembershipString(displayName: renewalComboProduct.displayName ?? "", price: priceAndCurrency, term: term)
+                            guard let displayName = renewalComboProduct.displayName?.capitalized else { return cell }
+                            let mainString = Helper.returnIntervalMembershipStringWithDisplayName2(displayName: displayName, price: priceAndCurrency, term: term)
                             
                             let range = (mainString as NSString).range(of: priceAndCurrency)
                             
@@ -197,37 +203,46 @@ extension RenewalOtherOptionsVC: UITableViewDataSource {
             term = "\((lowestTerm ?? 12) / 12)-year"
             for coreProduct in forceRenewals.products where coreProduct.term == lowestTerm {
                 
-                    // hide core and non core image here
-                    cell.renewelCoreImageView?.isHidden = true
-                    cell.renewelnonCoreImageView?.isHidden = true
+                // hide core and non core image here
+                cell.renewelCoreImageView?.isHidden = true
+                cell.renewelnonCoreImageView?.isHidden = true
                     
                     // show only non core image
                 if let productCode = coreProduct.productCode {
                     cell.renewelImageView?.image = UIImage(named:productCode)
                 }
-                    var currencyCodeWithSymbol = ""
-                    if let currencyCode = forceRenewals.currencyCode {
-                        if let countryCode = Session.sharedSession.contact?.getCountryCode() {
-                            currencyCodeWithSymbol = currencyHelper.getCurrencyFriendlySymbol(currencyCode: currencyCode, countryCode: countryCode)
-                        }
-                    }
-                    guard let displayName = coreProduct.displayName?.capitalized, let currencyCode = forceRenewals.currencyCode else { return cell }
-                    let price = String(format: "%.0f", coreProduct.price)
-                    priceAndCurrency = currencyCodeWithSymbol + "\(price)"
-                    
-                    // formatted string
-                    let mainString = Helper.returnIntervalMembershipStringWithDisplayName5(displayName: displayName, price: priceAndCurrency, term: term)
-                    
-                    let range = (mainString as NSString).range(of: priceAndCurrency)
-                    
-                    let attributeString = NSMutableAttributedString(string: mainString)
-                    
-                    attributeString.setAttributes([NSFontAttributeName: UIFont(name: Constant.fontName.helveticaNeueMedium, size: CGFloat(20.0))!, NSForegroundColorAttributeName: UIColor(red: 0.0 / 255.0, green: 201.0 / 255.0, blue: 11.0 / 255.0, alpha: 1.0)], range: range)
-                    cell.renewelLbl?.attributedText = attributeString
-                    
-                    // set button select tag
-                    cell.buttonSelect.tag = indexPath.section
-                    break
+                
+                var currencyCode = "USD"
+                if let currencyCodeValue = forceRenewals.currencyCode {
+                    currencyCode = currencyCodeValue
+                }
+                
+                let currencyHelper = CurrencyHelperLocator.sharedInstance.provideHelper()
+                var currencyCodeWithSymbol = ""
+                
+                if let currentProfile = Session.sharedSession.contact, let countryCode = currentProfile.getCountryCode() {
+                    currencyCodeWithSymbol = currencyHelper.getCurrencyFriendlySymbol(currencyCode: currencyCode, countryCode: countryCode)
+                } else {
+                    currencyCodeWithSymbol = currencyHelper.getCurrencyFriendlySymbol(currencyCode: currencyCode)
+                }
+        
+                guard let displayName = coreProduct.displayName?.capitalized else { return cell }
+                let price = String(format: "%.0f", coreProduct.price)
+                priceAndCurrency = currencyCodeWithSymbol + "\(price)"
+                
+                // formatted string
+                let mainString = Helper.returnIntervalMembershipStringWithDisplayName5(displayName: displayName, price: priceAndCurrency, term: term)
+                
+                let range = (mainString as NSString).range(of: priceAndCurrency)
+                
+                let attributeString = NSMutableAttributedString(string: mainString)
+                
+                attributeString.setAttributes([NSFontAttributeName: UIFont(name: Constant.fontName.helveticaNeueMedium, size: CGFloat(20.0))!, NSForegroundColorAttributeName: UIColor(red: 0.0 / 255.0, green: 201.0 / 255.0, blue: 11.0 / 255.0, alpha: 1.0)], range: range)
+                cell.renewelLbl?.attributedText = attributeString
+                
+                // set button select tag
+                cell.buttonSelect.tag = indexPath.section
+                break
         }
         return cell
     }

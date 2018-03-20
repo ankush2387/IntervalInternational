@@ -196,10 +196,10 @@ class MembershipIPadViewController: UIViewController {
                 
                 let rentalSearchDatesRequest = RentalSearchDatesRequest()
                 if let checkInTodate = rentalAlert.latestCheckInDate {
-                    rentalSearchDatesRequest.checkInToDate = Helper.convertStringToDate(dateString:checkInTodate, format:Constant.MyClassConstants.dateFormat)
+                    rentalSearchDatesRequest.checkInToDate = checkInTodate.dateFromShortFormat()
                 }
                 if let checkInFromdate = rentalAlert.earliestCheckInDate {
-                    rentalSearchDatesRequest.checkInFromDate = Helper.convertStringToDate(dateString:checkInFromdate, format:Constant.MyClassConstants.dateFormat)
+                    rentalSearchDatesRequest.checkInFromDate = checkInFromdate.dateFromShortFormat()
                 }
                 rentalSearchDatesRequest.resorts = rentalAlert.resorts
                 rentalSearchDatesRequest.destinations = rentalAlert.destinations

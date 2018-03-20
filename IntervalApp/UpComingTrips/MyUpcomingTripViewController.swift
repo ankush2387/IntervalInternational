@@ -34,8 +34,8 @@ class MyUpcomingTripViewController: UIViewController {
             showHudAsync()
             Helper.getUpcomingTripsForUser {[weak self] error in
                 self?.hideHudAsync()
-                if let Error = error {
-                    self?.presentErrorAlert(UserFacingCommonError.handleError(Error))
+                if let upcomingTripLoadError = error {
+                    self?.presentErrorAlert(UserFacingCommonError.handleError(upcomingTripLoadError))
                 } else {
                     self?.myUpcommingTBL.reloadData()
                 }
@@ -133,7 +133,7 @@ extension MyUpcomingTripViewController: UITableViewDataSource {
                 Constant.MyClassConstants.transactionNumber = "\(exchangeNumber)"
             }
             if let exchangeStatus = upComingTrip.exchangeStatus {
-                cell.headerStatusLabel.text = exchangeStatus.localized()
+                cell.headerStatusLabel.text = ExchangeStatus.fromName(name: exchangeStatus).friendlyNameForUpcomingTrip().localized()
             }
 
             if let tripType = upComingTrip.type {
@@ -169,18 +169,24 @@ extension MyUpcomingTripViewController: UITableViewDataSource {
             }
             cell.footerViewDetailedButton.contentHorizontalAlignment = .left
             cell.footerViewDetailedButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 0)
-            if let checkInDate = upComingTrip.unit?.checkInDate, let checkOutDate = upComingTrip.unit?.checkOutDate {
+            if let checkInDate = upComingTrip.unit?.checkInDate, let checkOutDate = upComingTrip.unit?.checkOutDate, let myCheckInDate = checkInDate.dateFromShortFormat() {
                 
-                let checkInDate = Helper.convertStringToDate(dateString:checkInDate, format: Constant.MyClassConstants.dateFormat)
-                let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
-                let myComponents = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: checkInDate)
+                //FIXME(FRANK): AGAIN ?
+                //let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
+                let myCalendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
+                
+                let myComponents = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: myCheckInDate)
+                
                 if let weekday = myComponents.weekday, let month = myComponents.month, let day = myComponents.day, let year = myComponents.year {
                     let formatedCheckInDate = "\(Helper.getWeekdayFromInt(weekDayNumber: weekday)) \(Helper.getMonthnameFromInt(monthNumber: month)). \(day), \(year)"
-                    let checkOutDate = Helper.convertStringToDate(dateString: checkOutDate, format: Constant.MyClassConstants.dateFormat)
-                    let myComponents1 = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: checkOutDate)
-                    if let weekday = myComponents1.weekday, let month = myComponents1.month, let day = myComponents1.day, let year = myComponents1.year {
-                        let formatedCheckOutDate = "\(Helper.getWeekdayFromInt(weekDayNumber: weekday)) \(Helper.getMonthnameFromInt(monthNumber: month)). \(day), \(year)"
-                        cell.tripDateLabel.text = "\(formatedCheckInDate) - \(formatedCheckOutDate)".localized()
+                    
+                    if let checkOutDate = checkOutDate.dateFromShortFormat() {
+                        let myComponents1 = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: checkOutDate)
+                        
+                        if let weekday = myComponents1.weekday, let month = myComponents1.month, let day = myComponents1.day, let year = myComponents1.year {
+                            let formatedCheckOutDate = "\(Helper.getWeekdayFromInt(weekDayNumber: weekday)) \(Helper.getMonthnameFromInt(monthNumber: month)). \(day), \(year)"
+                            cell.tripDateLabel.text = "\(formatedCheckInDate) - \(formatedCheckOutDate)".localized()
+                        }
                     }
                 }
             }
@@ -228,7 +234,7 @@ extension MyUpcomingTripViewController: UITableViewDataSource {
             self.performSegue(withIdentifier:Constant.segueIdentifiers.upcomingDetailSegue, sender:nil)
         }) { error in
             self.hideHudAsync()
-            self.presentErrorAlert(UserFacingCommonError.generic)
+            self.presentErrorAlert(UserFacingCommonError.handleError(error))
         }
     }
     

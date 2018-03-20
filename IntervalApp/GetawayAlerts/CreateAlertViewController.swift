@@ -181,8 +181,8 @@ class CreateAlertViewController: UIViewController {
                 
                 showHudAsync()
                 let rentalAlert = RentalAlert()
-                rentalAlert.earliestCheckInDate = Helper.convertDateToString(date: startDate, format: Constant.MyClassConstants.dateFormat)
-                rentalAlert.latestCheckInDate = Helper.convertDateToString(date: endDate, format: Constant.MyClassConstants.dateFormat)
+                rentalAlert.earliestCheckInDate = startDate.stringWithShortFormatForJSON()
+                rentalAlert.latestCheckInDate = endDate.stringWithShortFormatForJSON()
                 
                 rentalAlert.name = alertName
                 rentalAlert.enabled = true

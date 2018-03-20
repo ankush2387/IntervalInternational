@@ -45,6 +45,9 @@ open class Address {
     }
 
     open func postalAddresAsString() -> String {
+        return [cityName, territoryCode, countryCode].flatMap { $0 }.joined(separator: ", ")
+        
+        /*
         var s = ""
 
         if let cityName = self.cityName {
@@ -64,8 +67,9 @@ open class Address {
             }
             s += countryCode
         }
-        
+         
         return s
+        */
     }
     
 }

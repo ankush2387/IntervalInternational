@@ -166,10 +166,10 @@ class GetawayAlertsIPhoneViewController: UIViewController {
                 
                 let rentalSearchDatesRequest = RentalSearchDatesRequest()
                 if let checkInTodate = rentalAlert.latestCheckInDate {
-                    rentalSearchDatesRequest.checkInToDate = Helper.convertStringToDate(dateString:checkInTodate, format:Constant.MyClassConstants.dateFormat)
+                    rentalSearchDatesRequest.checkInToDate = checkInTodate.dateFromShortFormat()
                 }
                 if let checkInFromdate = rentalAlert.earliestCheckInDate {
-                    rentalSearchDatesRequest.checkInFromDate = Helper.convertStringToDate(dateString:checkInFromdate, format:Constant.MyClassConstants.dateFormat)
+                    rentalSearchDatesRequest.checkInFromDate = checkInFromdate.dateFromShortFormat()
                 }
                 rentalSearchDatesRequest.resorts = rentalAlert.resorts
                 rentalSearchDatesRequest.destinations = rentalAlert.destinations
@@ -263,7 +263,7 @@ class GetawayAlertsIPhoneViewController: UIViewController {
     func rentalSearchAvailability(activeInterval: BookingWindowInterval) {
         Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
         Helper.helperDelegate = self
-        Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate:  Helper.convertStringToDate(dateString: Constant.MyClassConstants.initialVacationSearch.searchCheckInDate ?? "", format: Constant.MyClassConstants.dateFormat), senderViewController: self)
+        Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate:  Constant.MyClassConstants.initialVacationSearch.searchCheckInDate?.dateFromShortFormat(), senderViewController: self)
         
     }
     
@@ -291,12 +291,12 @@ class GetawayAlertsIPhoneViewController: UIViewController {
         let checkInDate = alert.getCheckInDate()
         
         let searchCriteria = VacationSearchCriteria(searchType: VacationSearchType.RENTAL)
-        searchCriteria.checkInDate = Helper.convertStringToDate(dateString: checkInDate, format: Constant.MyClassConstants.dateFormat)
+        searchCriteria.checkInDate = checkInDate.dateFromShortFormat()
         if let earliestCheckInDate = alert.earliestCheckInDate {
-            searchCriteria.checkInFromDate = Helper.convertStringToDate(dateString: earliestCheckInDate, format: Constant.MyClassConstants.dateFormat)
+            searchCriteria.checkInFromDate = earliestCheckInDate.dateFromShortFormat()
         }
         if let latestCheckInDate = alert.latestCheckInDate {
-            searchCriteria.checkInToDate = Helper.convertStringToDate(dateString: latestCheckInDate, format: Constant.MyClassConstants.dateFormat)
+            searchCriteria.checkInToDate = latestCheckInDate.dateFromShortFormat() 
         }
         getDestinationsResortsForAlert(alert:alert, searchCriteria: searchCriteria)
         alertFilterOptionsArray.removeAll()
@@ -420,11 +420,7 @@ extension GetawayAlertsIPhoneViewController: UITableViewDelegate {
             return []
         }
         
-        guard let alertCheckInDate = getawayAlert.earliestCheckInDate?.dateFromFormat(Constant.MyClassConstants.dateFormat) else {
-           return []
-        }
-        
-        if !alertStatus && alertCheckInDate.isAfter(Date()) {
+        if !alertStatus {
             let activate = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: Constant.buttonTitles.activate) { (action, index) -> Void in
                 self.showHudAsync()
                 let editedAlert = getawayAlert
@@ -496,15 +492,14 @@ extension GetawayAlertsIPhoneViewController: UITableViewDataSource {
         cell.selectionStyle = UITableViewCellSelectionStyle.none
         cell.alertNameLabel.text = getawayAlert.name
         
-        let alertFromDate = Helper.convertStringToDate(dateString: getawayAlert.earliestCheckInDate!, format: Constant.MyClassConstants.dateFormat)
-        let fromDate = (Helper.getWeekDay(dateString: alertFromDate, getValue: "Month")).appendingFormat(". ").appending(Helper.getWeekDay(dateString: alertFromDate, getValue: "Date")).appending(", ").appending(Helper.getWeekDay(dateString: alertFromDate, getValue: "Year"))
-        let alertToDate = Helper.convertStringToDate(dateString: getawayAlert.latestCheckInDate!, format: Constant.MyClassConstants.dateFormat)
-        let toDate = Helper.getWeekDay(dateString: alertToDate, getValue: "Month").appending(". ").appending(Helper.getWeekDay(dateString: alertToDate, getValue: "Date")).appending(", ").appending(Helper.getWeekDay(dateString: alertToDate, getValue: "Year"))
+        if let alertFromDate = getawayAlert.earliestCheckInDate?.dateFromShortFormat(), let alertToDate = getawayAlert.latestCheckInDate?.dateFromShortFormat() {
+            let fromDate = (Helper.getWeekDay(dateString: alertFromDate, getValue: "Month")).appendingFormat(". ").appending(Helper.getWeekDay(dateString: alertFromDate, getValue: "Date")).appending(", ").appending(Helper.getWeekDay(dateString: alertFromDate, getValue: "Year"))
+            let toDate = Helper.getWeekDay(dateString: alertToDate, getValue: "Month").appending(". ").appending(Helper.getWeekDay(dateString: alertToDate, getValue: "Date")).appending(", ").appending(Helper.getWeekDay(dateString: alertToDate, getValue: "Year"))
         
-        let dateRange = fromDate.appending(" - " + toDate)
-        
-        cell.alertDateLabel.text = dateRange
-        
+            let dateRange = fromDate.appending(" - " + toDate)
+            cell.alertDateLabel.text = dateRange
+        }
+ 
         if getawayAlert.enabled ?? false {
             cell.alertStatusButton.isHidden = true
             cell.alertStatusButton.backgroundColor = UIColor(red: 240.0 / 255.0, green: 111.0 / 255.0, blue: 54.0 / 255.0, alpha: 1.0)
@@ -567,7 +562,7 @@ extension GetawayAlertsIPhoneViewController: HelperDelegate {
     func resortSearchComplete() {
         hideHudAsync()
         // Check if not has availability in the desired check-In date.
-        if Constant.MyClassConstants.initialVacationSearch.searchCheckInDate != Helper.convertDateToString(date: Constant.MyClassConstants.vacationSearchShowDate, format: Constant.MyClassConstants.dateFormat) {
+        if Constant.MyClassConstants.initialVacationSearch.searchCheckInDate != Constant.MyClassConstants.vacationSearchShowDate.stringWithShortFormatForJSON() {
             Helper.showNearestCheckInDateSelectedMessage()
         }
         navigateToSearchResults()

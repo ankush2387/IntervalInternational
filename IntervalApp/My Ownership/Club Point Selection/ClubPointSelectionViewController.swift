@@ -134,6 +134,7 @@ class ClubPointSelectionViewController: UIViewController {
         pointMatrixType.fromDate = Constant.MyClassConstants.fromdatearray[selectedViewIndex] as? String
         pointMatrixType.toDate = Constant.MyClassConstants.todatearray[selectedViewIndex] as? String
         pointMatrixType.clubPointsMatrixGridRowLabel = processClubPointMatrixRowLable(for: indexPath)
+        //FIXME(Frank): what is this?
         _ = Constant.MyClassConstants.relinquishmentSelectedWeek.unit
         intervalPrint(Constant.MyClassConstants.matrixDataArray)
         intervalPrint(segmentSelectedString)
@@ -150,6 +151,9 @@ class ClubPointSelectionViewController: UIViewController {
             let clubPoints = ClubPoints()
             clubPoints.isPointsMatrix = true
             clubPoints.pointsSpent = invenUnit.clubPoints
+            
+            Constant.MyClassConstants.isClubPointsAvailable = true
+            
             self?.hideHudAsync()
             self?.didSave?(clubPoints)
          }, onError: { [weak self] error in
@@ -402,10 +406,10 @@ class ClubPointSelectionViewController: UIViewController {
         guard let toStartDateString = Constant.MyClassConstants.fromdatearray[0] as? String else { return }
         guard let fromEndDateString = Constant.MyClassConstants.todatearray.lastObject as? String else { return }
         guard let toEndDateString = Constant.MyClassConstants.fromdatearray.lastObject as? String else { return }
-        let fromStartComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: Helper.convertStringToDate(dateString: fromStartDateString, format: "yyyy-MM-dd"))
-        let toStartComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: Helper.convertStringToDate(dateString: toStartDateString, format: "yyyy-MM-dd"))
-        let fromEndComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: Helper.convertStringToDate(dateString: fromEndDateString, format: "yyyy-MM-dd"))
-        let toEndComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: Helper.convertStringToDate(dateString: toEndDateString, format: Constant.MyClassConstants.dateFormat))
+        let fromStartComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: fromStartDateString.dateFromShortFormat())
+        let toStartComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: toStartDateString.dateFromShortFormat())
+        let fromEndComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: fromEndDateString.dateFromShortFormat())
+        let toEndComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: toEndDateString.dateFromShortFormat())
         
         startdatefirstbtn.text = String(describing: toStartComponents.day!)
         enddatefirstbtn.text = String(describing: fromStartComponents.day!)
@@ -413,16 +417,16 @@ class ClubPointSelectionViewController: UIViewController {
         startdatesecondbtn.text = String(describing: toEndComponents.day!)
         enddatesecondbtn.text = String(describing: fromEndComponents.day!)
         
-        if startdatefirstbtn.text!.characters.count == 1 {
+        if startdatefirstbtn.text!.count == 1 {
             startdatefirstbtn.text = "0\( startdatefirstbtn.text!)"
         }
-        if startdatesecondbtn.text!.characters.count == 1 {
+        if startdatesecondbtn.text!.count == 1 {
             startdatesecondbtn.text = "0\( startdatesecondbtn.text!)"
         }
-        if enddatefirstbtn.text!.characters.count == 1 {
+        if enddatefirstbtn.text!.count == 1 {
             enddatefirstbtn.text = "0\( enddatefirstbtn.text!)"
         }
-        if enddatesecondbtn.text!.characters.count == 1 {
+        if enddatesecondbtn.text!.count == 1 {
             enddatesecondbtn.text = "0\( enddatesecondbtn.text!)"
         }
         startmonthfirstbtn.text = "\(Helper.getMonthnameFromInt(monthNumber: toStartComponents.month!)) \(toStartComponents.year!)"

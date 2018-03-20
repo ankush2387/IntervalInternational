@@ -1485,6 +1485,7 @@ extension VacationSearchViewController: SearchTableViewCellDelegate {
                 searchType = VacationSearchType.RENTAL
                 
             default:
+                //FIXME(Frank): SearchRegions is incomplete for COMBINED
                 requestRental.setCheckInToDate(checkInToDate)
                 searchType = VacationSearchType.COMBINED
             }
@@ -1588,7 +1589,7 @@ extension VacationSearchViewController: SearchTableViewCellDelegate {
                             Constant.MyClassConstants.initialVacationSearch = VacationSearch(settings, rentalSearchCriteria)
                         }
                         
-                        RentalClient.searchDates(Session.sharedSession.userAccessToken, request: Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request, onSuccess: { (response) in
+                        RentalClient.searchDates(Session.sharedSession.userAccessToken, request: Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request, onSuccess: { response in
                             
                             sender.isEnabled = true
                             Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.response = response
@@ -1603,13 +1604,15 @@ extension VacationSearchViewController: SearchTableViewCellDelegate {
                             (activeInterval.hasCheckInDates()) ? self.rentalSearchAvailability(activeInterval: activeInterval) : self.noAvailabilityResults()
                             
                         },
-                                                 onError: { (_) in
+                                                 onError: { error in
                                                     self.hideHudAsync()
                                                     sender.isEnabled = true
-                                                    self.presentErrorAlert(UserFacingCommonError.generic)
+                                                    self.presentErrorAlert(UserFacingCommonError.handleError(error))
                         }
                         )}
+                    
                     Constant.MyClassConstants.isFromExchange = false
+                    Constant.MyClassConstants.isFromSearchBoth = false
                 }
                 
             case Constant.segmentControlItems.exchange:
@@ -1648,12 +1651,13 @@ extension VacationSearchViewController: SearchTableViewCellDelegate {
                             // Check not available checkIn dates for the active interval
                             activeInterval.hasCheckInDates() ? self.exchangeSearchAvailability(activeInterval: activeInterval) : self.noAvailabilityResults()
                             
-                        }, onError: { _ in
+                        }, onError: { error in
                             sender.isEnabled = true
                             self.hideHudAsync()
-                            self.presentErrorAlert(UserFacingCommonError.generic)
+                            self.presentErrorAlert(UserFacingCommonError.handleError(error))
                         })
                     }
+                    
                     hideHudAsync()
                     Constant.MyClassConstants.isFromExchange = true
                     Constant.MyClassConstants.isFromSearchBoth = false
@@ -1695,7 +1699,7 @@ extension VacationSearchViewController: SearchTableViewCellDelegate {
                                 Helper.executeExchangeSearchDates(senderVC: self)
                             } else {
                                 Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
-                                let checkInDate = Helper.convertStringToDate(dateString: Constant.MyClassConstants.initialVacationSearch.searchCheckInDate ?? "", format: Constant.MyClassConstants.dateFormat)
+                                let checkInDate = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate?.dateFromShortFormat()
                                 Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: checkInDate, senderViewController: self)
                                 
                                 sender.isEnabled = true
@@ -1703,9 +1707,9 @@ extension VacationSearchViewController: SearchTableViewCellDelegate {
                                 Constant.MyClassConstants.isFromExchange = false
                             }
                             
-                        }) { _ in
+                        }) { error in
                             self.hideHudAsync()
-                            self.presentErrorAlert(UserFacingCommonError.generic)
+                            self.presentErrorAlert(UserFacingCommonError.handleError(error))
                         }
                     }
                     hideHudAsync()
@@ -1732,10 +1736,11 @@ extension VacationSearchViewController: SearchTableViewCellDelegate {
     func rentalSearchAvailability(activeInterval: BookingWindowInterval) {
         
         Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
-        let searchDate = Helper.convertStringToDate(dateString: Constant.MyClassConstants.initialVacationSearch.searchCheckInDate ?? "", format: Constant.MyClassConstants.dateFormat)
-        debugPrint(searchDate)
-        Helper.helperDelegate = self
-        Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: searchDate, senderViewController: self)
+        if let searchDate = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate?.dateFromShortFormat() {
+            debugPrint(searchDate)
+            Helper.helperDelegate = self
+            Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: searchDate, senderViewController: self)
+        }
     }
     
     // MARK: Function for exchange search availability
@@ -1744,8 +1749,9 @@ extension VacationSearchViewController: SearchTableViewCellDelegate {
         
         Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
         if let searchDate = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate {
-            let checkInDate = Helper.convertStringToDate(dateString: searchDate, format: Constant.MyClassConstants.dateFormat)
-            Helper.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: checkInDate, senderViewController: self)
+            if let checkInDate = searchDate.dateFromShortFormat() {
+                Helper.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: checkInDate, senderViewController: self)
+            }
         }
         
     }
@@ -1834,7 +1840,8 @@ extension VacationSearchViewController: HelperDelegate {
     func resortSearchComplete() {
         self.hideHudAsync()
         // Check if not has availability in the desired check-In date.
-        let userSelectedCheckInDate = Helper.convertDateToString(date: Constant.MyClassConstants.vacationSearchShowDate, format: Constant.MyClassConstants.dateFormat)
+        let userSelectedCheckInDate = Constant.MyClassConstants.vacationSearchShowDate.stringWithShortFormatForJSON()
+        
         if Constant.MyClassConstants.initialVacationSearch.searchCheckInDate != userSelectedCheckInDate {
             Helper.showNearestCheckInDateSelectedMessage()
         }

@@ -21,7 +21,6 @@ class ExchangeInventoryCVCell: UICollectionViewCell {
     @IBOutlet private weak var bedRoomType: UILabel!
     @IBOutlet private weak var sleeps: UILabel!
     @IBOutlet private weak var kitchenType: UILabel!
-    
     @IBOutlet private weak var promotionsView: UIView!
     @IBOutlet private weak var exchangeStackView: UIStackView!
     @IBOutlet private weak var pointsStackView: UIStackView!
@@ -31,70 +30,64 @@ class ExchangeInventoryCVCell: UICollectionViewCell {
     @IBOutlet private weak var forwardNavArrow: UIImageView!
     @IBOutlet private weak var exchangeTitleLabel: UILabel!
     
-    func setUpExchangeCell(invetoryItem: ExchangeInventory, indexPath: IndexPath) {
+    func setBucket(bucket: AvailabilitySectionItemInventoryBucket) {
+    
+        // Setup UI controls
+        pointsTitleLabel.textColor = UIColor.lightGray
+        pointsTitleLabel.font = UIFont.systemFont(ofSize: 10.0)
+        //color = Light Gray Color
+        //Font = system - system, style = regular
+        //size = 10.0
         
-        guard let unit = (invetoryItem.buckets[indexPath.item].unit) else { return }
+        self.bedRoomType.text = " \(String(describing: Helper.getBrEnums(brType: bucket.unit.unitSize.rawValue)))"
+        self.kitchenType.text = " \(String(describing: Helper.getKitchenEnums(kitchenType: bucket.unit.kitchenType.rawValue)))"
         
-        // bedroom details
-        var bedRoomDetails = ""
-        if let bedType = unit.unitSize {
-            bedRoomDetails.append(" \(String(describing: Helper.getBrEnums(brType: bedType)))")
+        var totalSleepCapacity = ""
+        if bucket.unit.publicSleepCapacity > 0 {
+            totalSleepCapacity += "\(bucket.unit.publicSleepCapacity)" + Constant.CommonLocalisedString.totalString + ", ".localized()
         }
-        
-        self.bedRoomType.text = bedRoomDetails
-        
-        var kitchenDetails = ""
-        if let kitchenType = unit.kitchenType {
-            kitchenDetails.append(" \(String(describing: Helper.getKitchenEnums(kitchenType: kitchenType)))")
+        if bucket.unit.privateSleepCapacity > 0 {
+            totalSleepCapacity += "\(bucket.unit.privateSleepCapacity)" + Constant.CommonLocalisedString.privateString + "".localized()
         }
+        sleeps.text = totalSleepCapacity
         
-        self.kitchenType.text = kitchenDetails
+        // Default state
+        exchangeStackView.isHidden = false
+        exchangeImageView.image = #imageLiteral(resourceName: "ExchangeIcon")
+        exchangeTitleLabel.isHidden = false
+        exchangeImageView.isUserInteractionEnabled = false
+        pointsStackView.isHidden = true
+        forwardNavArrow.isHidden = false
         
-        var totalSleepCapacity = String()
-        
-        if unit.publicSleepCapacity > 0 {
-            
-            totalSleepCapacity = "\(unit.publicSleepCapacity) total, ".localized()
-            
-        }
-        
-        if unit.privateSleepCapacity > 0 {
-
-            self.sleeps.text = totalSleepCapacity + String(unit.privateSleepCapacity) + Constant.CommonLocalisedString.privateString
-        }
-        
-        if Constant.MyClassConstants.isCIGAvailable && invetoryItem.buckets[indexPath.row].pointsCost != invetoryItem.buckets[indexPath.row].memberPointsRequired {
-            pointsStackView.isHidden = true
-            exchangeStackView.isHidden = false
-            exchangeImageView.image = #imageLiteral(resourceName: "InfoIcon")
-            exchangeImageView.isUserInteractionEnabled = true
-            exchangeTitleLabel.isHidden = true
-            forwardNavArrow.isHidden = true
-            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapBlurButton))
-            self.addGestureRecognizer(tapGesture)
-        } else {
-            if  invetoryItem.buckets[indexPath.row].pointsCost != 0 && (Constant.MyClassConstants.isCIGAvailable || Constant.MyClassConstants.isClubPointsAvailable) {
-                let availablePoints = invetoryItem.buckets[indexPath.row].pointsCost as NSNumber
-                exchangeStackView.isHidden = true
-                let numberFormatter = NumberFormatter()
-                numberFormatter.numberStyle = .decimal
+        if let exchangePointsCost = bucket.exchangePointsCost, let exchangeMemberPointsRequired = bucket.exchangeMemberPointsRequired {
+            if Constant.MyClassConstants.isCIGAvailable && exchangePointsCost != exchangeMemberPointsRequired {
+                exchangeImageView.image = #imageLiteral(resourceName: "InfoIcon")
+                exchangeImageView.isUserInteractionEnabled = true
+                forwardNavArrow.isHidden = true
                 
-                if let availablePoints = numberFormatter.string(from: availablePoints) {
-                    pointsCountLabel.text = "\(availablePoints)".localized()
-                } else { pointsCountLabel.text = "\(0)".localized() }
-                
-                if Constant.MyClassConstants.isCIGAvailable {
-                    pointsTitleLabel.text = "CIG Points"
-                } else if Constant.MyClassConstants.isClubPointsAvailable {
-                    pointsTitleLabel.text = "Club Points"
-                }
+                let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapBlurButton))
+                self.addGestureRecognizer(tapGesture)
             } else {
-                pointsStackView.isHidden = true
+                if exchangePointsCost > 0 {
+                    exchangeStackView.isHidden = true
+                    pointsStackView.isHidden = false
+                    
+                    pointsCountLabel.text = "\(String(describing: exchangePointsCost))".localized()
+                    
+                    // Clean the label
+                    pointsTitleLabel.text = ""
+                    
+                    if Constant.MyClassConstants.isCIGAvailable {
+                        pointsTitleLabel.text = Constant.CommonLocalisedString.cigPointsString
+                    } else if Constant.MyClassConstants.isClubPointsAvailable {
+                        pointsTitleLabel.text = Constant.CommonLocalisedString.clubPointsString
+                    }
+                }
             }
         }
-    
-        let promotions = invetoryItem.buckets[indexPath.item].promotions
-        if (promotions.count) > 0 {
+
+        // Promotions
+        if let promotions = bucket.promotions, promotions.count > 0 {
             for view in self.promotionsView.subviews {
                 view.removeFromSuperview()
             }
@@ -104,7 +97,7 @@ class ExchangeInventoryCVCell: UICollectionViewCell {
                 let imgV = UIImageView(frame: CGRect(x: 10, y: yPosition, width: 15, height: 15))
                 imgV.image = UIImage(named: Constant.assetImageNames.promoImage)
                 let promLabel = UILabel(frame: CGRect(x: 30, y: yPosition, width: self.promotionsView.bounds.width, height: 15))
-                promLabel.text = promotion.offerName
+                promLabel.text = promotion.offerContentFragment
                 promLabel.adjustsFontSizeToFitWidth = true
                 promLabel.minimumScaleFactor = 0.7
                 promLabel.numberOfLines = 0
@@ -121,3 +114,4 @@ class ExchangeInventoryCVCell: UICollectionViewCell {
         exchangeCellDelegate?.infoIconPressed()
     }
 }
+

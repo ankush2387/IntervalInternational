@@ -512,7 +512,7 @@ class VacationSearchIPadViewController: UIViewController, UITableViewDelegate, U
                     
                 } else {
                     Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
-                    Helper.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: Constant.MyClassConstants.initialVacationSearch.searchCheckInDate ?? "", format: Constant.MyClassConstants.dateFormat), senderViewController: self)
+                    Helper.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: Constant.MyClassConstants.initialVacationSearch.searchCheckInDate?.dateFromShortFormat(), senderViewController: self)
                     
                 }
         },
@@ -817,10 +817,11 @@ extension VacationSearchIPadViewController: SearchTableViewCellDelegate {
                                 self.noAvailabilityResults(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                             } else {
                                 Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
-                                let searchCheckInDate = Helper.convertStringToDate(dateString: Constant.MyClassConstants.initialVacationSearch.searchCheckInDate ?? "", format: Constant.MyClassConstants.dateFormat)
-                                sender.isEnabled = true
-                                Helper.helperDelegate = self
-                                Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: searchCheckInDate, senderViewController: self)
+                                if let searchCheckInDate = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate?.dateFromShortFormat() {
+                                    sender.isEnabled = true
+                                    Helper.helperDelegate = self
+                                    Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: searchCheckInDate, senderViewController: self)
+                                }
                             }
                             
                         },
@@ -913,7 +914,7 @@ extension VacationSearchIPadViewController: SearchTableViewCellDelegate {
                                 Helper.executeExchangeSearchDates(senderVC: self)
                             } else {
                                 Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
-                                Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: Constant.MyClassConstants.initialVacationSearch.searchCheckInDate ?? "", format: Constant.MyClassConstants.dateFormat), senderViewController: self)
+                                Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: Constant.MyClassConstants.initialVacationSearch.searchCheckInDate?.dateFromShortFormat(), senderViewController: self)
                                 
                             }
                             Constant.MyClassConstants.checkInDates = response.checkInDates
@@ -935,8 +936,7 @@ extension VacationSearchIPadViewController: SearchTableViewCellDelegate {
     func exchangeSearchAvailability(activeInterval: BookingWindowInterval) {
         
         Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
-        if let searchDate = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate {
-            let checkInDate = Helper.convertStringToDate(dateString: searchDate, format: Constant.MyClassConstants.dateFormat)
+        if let searchDate = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate, let checkInDate = searchDate.dateFromShortFormat() {
             Helper.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: checkInDate, senderViewController: self)
         }
         
@@ -1056,7 +1056,8 @@ extension VacationSearchIPadViewController: UICollectionViewDataSource {
             
             let priceLabel = UILabel(frame: CGRect(x: 10, y: 35, width: centerView.frame.size.width - 20, height: 20))
             if let pricefrom = topTenDeals.price?.fromPrice, let currencyCode = topTenDeals.price?.currencySymbol {
-                if let attributedAmount = pricefrom.currencyFormatter(for: currencyCode, baseLineOffSet: 0) {
+                //FIXME(Frank): - all UIViewController for iPad should be removed
+                if let attributedAmount = pricefrom.currencyFormatter(for: currencyCode, for: nil, baseLineOffSet: 0) {
                     let fromAttributedString = NSMutableAttributedString(string: "From ", attributes: nil)
                     let wkAttributedString = NSAttributedString(string: " Wk.", attributes: nil)
                     fromAttributedString.append(attributedAmount)

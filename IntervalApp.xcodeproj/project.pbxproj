@@ -1070,8 +1070,9 @@
 		3A892F2C1CD3902F00AE6F45 /* CustomCells */ = {
 			isa = PBXGroup;
 			children = (
-				3A930BCE1F4D86300052BE2A /* SearchBothInventoryCVCell.swift */,
+				3A202C721F3B0ABA00678C50 /* RentalInventoryCVCell.swift */,
 				3AA88B531F44DAD8001ADC4C /* ExchangeInventoryCVCell.swift */,
+				3A930BCE1F4D86300052BE2A /* SearchBothInventoryCVCell.swift */,
 				0887C9781F6A80ED007F57C3 /* FlexchangeDestinationCell.swift */,
 				3AD822C91F3A046A00CD68C6 /* AvailabilityCollectionViewCell.swift */,
 				3A5BDCB21F34DD1800FDA672 /* FilterCell.swift */,
@@ -1138,7 +1139,6 @@
 				3AE81DBE1E814DF7005C2CEA /* clubPointCell.swift */,
 				E95A30BA1EF9693700AB64DB /* CheckoutPromotionCell.swift */,
 				3A59DE191F015FDE005280D3 /* SortingOptionCell.swift */,
-				3A202C721F3B0ABA00678C50 /* RentalInventoryCVCell.swift */,
 				0887C97A1F6A99F5007F57C3 /* SearchFlexchangeButtonCell.swift */,
 				3A06663D1F912EE3002AA92A /* RenewalAdditionalCell.swift */,
 			);
@@ -2752,7 +2752,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer: Aylwing Olivas (BK2HSFRB8Y)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 102;
+				CURRENT_PROJECT_VERSION = 105;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 4CR2ZD7GRK;
 				ENABLE_BITCODE = NO;
@@ -2792,7 +2792,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer: Aylwing Olivas (BK2HSFRB8Y)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 102;
+				CURRENT_PROJECT_VERSION = 105;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 4CR2ZD7GRK;
 				ENABLE_BITCODE = NO;

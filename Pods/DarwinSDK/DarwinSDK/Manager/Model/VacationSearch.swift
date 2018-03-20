@@ -293,78 +293,51 @@ open class VacationSearch {
                     if sectionsMap[exchangeSection.header] == nil {
                         sectionsMap[exchangeSection.header] = exchangeSection
                     } else {
-                        // Section with same header already exists? -> then Merge
-                        for exchangeSectionItem in exchangeSection.items {
-                            if let exchangeAvailability = exchangeSectionItem.exchangeAvailability, let resort = exchangeAvailability.resort,
-                                let exchangeResortCode = resort.resortCode {
-                                
-                                // Get Rental section items from map
-                                var rentalSectionItems = sectionsMap[exchangeSection.header]?.items
-                                
-                                var exchangeSectionItemsMap = [String: AvailabilitySectionItem]()
-                                
-                                // Compare ResortCode and UnitInfo
-                                for rentalSectionItem in rentalSectionItems! {
-                                    if let rentalResortCode = rentalSectionItem.rentalAvailability?.resortCode, exchangeResortCode.caseInsensitiveCompare(rentalResortCode) == ComparisonResult.orderedSame {
-                                        // Resort Match
-                                        DarwinSDK.logger.info("Resort Match: \(String(describing: rentalSectionItem.rentalAvailability?.resortCode!))")
-
-                                        checkMatchBuckets((rentalSectionItem.rentalAvailability?.inventory?.units)!, (exchangeAvailability.inventory?.buckets)!)
-                                        
-                                        for exchangeBucket in (exchangeAvailability.inventory?.buckets)! {
-                                            if let unit = exchangeBucket.unit, unit.vacationSearchType.isCombined() {
-                                                // Combined item
-                                                rentalSectionItem.exchangeAvailability = exchangeAvailability
-                                            } else {
-                                                // Only Exchange item
-                                                //exchangeSectionItemsMap[exchangeResortCode] = AvailabilitySectionItem(exchangeAvailability: exchangeAvailability)
-                                            }
-                                        }
-                                    } else {
-                                        // Only Exchange item
-                                        exchangeSectionItemsMap[exchangeResortCode] = AvailabilitySectionItem(exchangeAvailability: exchangeAvailability)
-                                    }
-                                }
-                                
-                                rentalSectionItems?.append(contentsOf: exchangeSectionItemsMap.values)
-                                sectionsMap[exchangeSection.header]?.items = rentalSectionItems!
-                            }
-                        }
+                        // Section with same header already exists? -> then merge the section items (Resort->Buckets)
+                        sectionsMap[exchangeSection.header]?.items = mergeSectionItems(sectionsMap[exchangeSection.header]?.items, exchangeSection.items)
                     }
                 }
             }
             
             var sections = [AvailabilitySection]()
-            for section in sectionsMap.values {
-                sections.append(section)
-            }
+            sections.append(contentsOf: sectionsMap.values)
             sections.sort(by:{$0.exactMatch && !$1.exactMatch})
-            
             return sections
         }
     }
     
-    private func checkMatchBuckets(_ rentalBuckets: [InventoryUnit], _ exchangeBuckets: [ExchangeBucket]) {
-        for exchangeBucket in exchangeBuckets {
-            for rentalBucket in rentalBuckets {
-                if rentalBucket.unitSize == exchangeBucket.unit?.unitSize &&
-                    rentalBucket.kitchenType == exchangeBucket.unit?.kitchenType &&
-                    rentalBucket.publicSleepCapacity == exchangeBucket.unit?.publicSleepCapacity &&
-                    rentalBucket.privateSleepCapacity == exchangeBucket.unit?.privateSleepCapacity {
-                    
-                    // Bucket Match
-                    DarwinSDK.logger.info("   Bucket Match: \(String(describing: self.resolveUnitInfo(unit: rentalBucket)))")
-                    
-                    rentalBucket.vacationSearchType = VacationSearchType.COMBINED
-                    exchangeBucket.unit?.vacationSearchType = VacationSearchType.COMBINED
+    private func mergeSectionItems(_ rentalSectionItems: [AvailabilitySectionItem]?, _ exchangeSectionItems: [AvailabilitySectionItem]?) -> [AvailabilitySectionItem] {
+        var groupByResortCode = [String: AvailabilitySectionItem]()
+        
+        if let items = rentalSectionItems {
+            for rentalSectionItem in items {
+                if let rentalAvailability = rentalSectionItem.rentalAvailability, let rentalResortCode = rentalAvailability.resortCode {
+                    groupByResortCode[rentalResortCode] = rentalSectionItem
                 }
             }
         }
+        
+        if let items = exchangeSectionItems {
+            for exchangeSectionItem in items {
+                if let exchangeAvailability = exchangeSectionItem.exchangeAvailability, let exchangeResort = exchangeAvailability.resort, let exchangeResortCode = exchangeResort.resortCode {
+                    if let group = groupByResortCode[exchangeResortCode] {
+                        // Mean the same ResortCode has availability for Rental and Exchange
+                        group.exchangeAvailability = exchangeSectionItem.exchangeAvailability
+                    } else {
+                        groupByResortCode[exchangeResortCode] = exchangeSectionItem
+                    }
+                }
+            }
+        }
+        
+        var sectionItems = [AvailabilitySectionItem]()
+        sectionItems.append(contentsOf: groupByResortCode.values)
+        return sectionItems
     }
     
     private func sortSections(sections:[AvailabilitySection]) -> [AvailabilitySection] {
         for section in sections {
-            section.items.sort(by: {self.resolveHighestSearchType($0.getInventoryBuckets()) > self.resolveHighestSearchType($1.getInventoryBuckets())})
+            section.items.sort(by: {self.resolveHighestSearchType($0.getInventoryBuckets() ?? []) > self.resolveHighestSearchType($1.getInventoryBuckets() ?? [])})
         }
         return sections
     }
@@ -399,4 +372,3 @@ open class VacationSearch {
     }
     
 }
-

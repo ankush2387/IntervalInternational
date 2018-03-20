@@ -85,21 +85,25 @@ class ShareActivityMessage: NSObject, UIActivityItemSource {
             location.append("\(countryCode)")
         }
         message.append("Location: \(location)\n")
+        
+        //FIXME(Frank): what is this?
         if (Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.unit?.checkInDate) != nil {
-            let checkInDate = Helper.convertStringToDate(dateString: Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.unit?.checkInDate ?? "", format: Constant.MyClassConstants.dateFormat)
-            let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
-            let myComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: checkInDate)
-            let formatedCheckInDate = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month ?? 0))/\(myComponents.day ?? 0)/\(myComponents.year ?? 0)"
-            message.append("CheckIn: \(formatedCheckInDate)\n")
+            if let checkInDate = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.unit?.checkInDate?.dateFromShortFormat() {
+                let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
+                let myComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: checkInDate)
+                let formatedCheckInDate = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month ?? 0))/\(myComponents.day ?? 0)/\(myComponents.year ?? 0)"
+                message.append("CheckIn: \(formatedCheckInDate)\n")
+            }
         }
         
-        //format CheckOut Date
+        //FIXME(Frank): what is this?
         if (Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.unit?.checkOutDate) != nil {
-        let checkOutDate = Helper.convertStringToDate(dateString: Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.unit?.checkOutDate ?? "", format: Constant.MyClassConstants.dateFormat)
-        let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
-        let myComponents1 = calendar.dateComponents([.day, .weekday, .month, .year], from: checkOutDate)
-        let formatedCheckOutDate = "\(Helper.getMonthnameFromInt(monthNumber: myComponents1.month ?? 0))/\(myComponents1.day ?? 0)/\(myComponents1.year ?? 0)"
-        message.append("CheckOut: \(formatedCheckOutDate)\n")
+            if let checkOutDate = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.unit?.checkOutDate?.dateFromShortFormat() {
+                let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
+                let myComponents1 = calendar.dateComponents([.day, .weekday, .month, .year], from: checkOutDate)
+                let formatedCheckOutDate = "\(Helper.getMonthnameFromInt(monthNumber: myComponents1.month ?? 0))/\(myComponents1.day ?? 0)/\(myComponents1.year ?? 0)"
+                message.append("CheckOut: \(formatedCheckOutDate)\n")
+            }
         }
 
         self.messageStr = message

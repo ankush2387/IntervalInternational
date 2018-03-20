@@ -31,6 +31,7 @@ open class AvailabilitySection {
      */
     public init(items:[AvailabilitySectionItem], resortNames:[String]) {
         self.items.append(contentsOf: items)
+        self.exactMatch = true
         
         // Resolve the header
         if !resortNames.isEmpty {
@@ -43,6 +44,7 @@ open class AvailabilitySection {
      */
     public init(items:[AvailabilitySectionItem], areaName:String) {
         self.items.append(contentsOf: items)
+        self.exactMatch = true
         
         // Resolve the header
         self.header = areaName

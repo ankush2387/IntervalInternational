@@ -158,10 +158,10 @@ class DashboardTableViewController: UITableViewController {
                 
                 let rentalSearchDatesRequest = RentalSearchDatesRequest()
                 if let checkInTodate = rentalAlert.latestCheckInDate {
-                    rentalSearchDatesRequest.checkInToDate = Helper.convertStringToDate(dateString:checkInTodate, format:Constant.MyClassConstants.dateFormat)
+                    rentalSearchDatesRequest.checkInToDate = checkInTodate.dateFromShortFormat()
                 }
                 if let checkInFromdate = rentalAlert.earliestCheckInDate {
-                    rentalSearchDatesRequest.checkInFromDate = Helper.convertStringToDate(dateString:checkInFromdate, format:Constant.MyClassConstants.dateFormat)
+                    rentalSearchDatesRequest.checkInFromDate = checkInFromdate.dateFromShortFormat()
                 }
                 rentalSearchDatesRequest.resorts = rentalAlert.resorts
                 rentalSearchDatesRequest.destinations = rentalAlert.destinations
@@ -369,12 +369,13 @@ class DashboardTableViewController: UITableViewController {
                 }
                 
                 if let tripDate = upcomingTrip.unit?.checkInDate {
-                    let upcomingTripDate = Helper.convertStringToDate(dateString: tripDate, format: Constant.MyClassConstants.dateFormat)
-                    cell.dayDateLabel.text = Helper.getWeekDay(dateString: upcomingTripDate, getValue: Constant.MyClassConstants.date)
-                    
-                    var dayNameYearText = "\(Helper.getWeekDay(dateString: upcomingTripDate, getValue: Constant.MyClassConstants.weekDay))\n\(Helper.getWeekDay(dateString: upcomingTripDate, getValue: Constant.MyClassConstants.month))"
-                    dayNameYearText = "\(dayNameYearText) \(Helper.getWeekDay(dateString: upcomingTripDate, getValue: Constant.MyClassConstants.year))"
-                    cell.dayNameYearLabel.text = dayNameYearText
+                    if let upcomingTripDate = tripDate.dateFromShortFormat() {
+                        cell.dayDateLabel.text = Helper.getWeekDay(dateString: upcomingTripDate, getValue: Constant.MyClassConstants.date)
+                        
+                        var dayNameYearText = "\(Helper.getWeekDay(dateString: upcomingTripDate, getValue: Constant.MyClassConstants.weekDay))\n\(Helper.getWeekDay(dateString: upcomingTripDate, getValue: Constant.MyClassConstants.month))"
+                        dayNameYearText = "\(dayNameYearText) \(Helper.getWeekDay(dateString: upcomingTripDate, getValue: Constant.MyClassConstants.year))"
+                        cell.dayNameYearLabel.text = dayNameYearText
+                    }
                 }
                 
                 cell.selectionStyle = UITableViewCellSelectionStyle.none
@@ -581,8 +582,7 @@ class DashboardTableViewController: UITableViewController {
     func rentalSearchAvailability(activeInterval: BookingWindowInterval) {
         Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
         Helper.helperDelegate = self
-        Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate:  Helper.convertStringToDate(dateString: Constant.MyClassConstants.initialVacationSearch.searchCheckInDate ?? "", format: Constant.MyClassConstants.dateFormat), senderViewController: self)
-        
+        Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: Constant.MyClassConstants.initialVacationSearch.searchCheckInDate?.dateFromShortFormat(), senderViewController: self)
     }
     
     func createSearchCriteriaFor(alert: RentalAlert) -> VacationSearchCriteria {
@@ -590,13 +590,15 @@ class DashboardTableViewController: UITableViewController {
         let checkInDate = alert.getCheckInDate()
         
         let searchCriteria = VacationSearchCriteria(searchType: VacationSearchType.RENTAL)
-        searchCriteria.checkInDate = Helper.convertStringToDate(dateString: checkInDate, format: Constant.MyClassConstants.dateFormat)
+        searchCriteria.checkInDate = checkInDate.dateFromShortFormat()
+        
         if let earliestCheckInDate = alert.earliestCheckInDate {
-            searchCriteria.checkInFromDate = Helper.convertStringToDate(dateString: earliestCheckInDate, format: Constant.MyClassConstants.dateFormat)
+            searchCriteria.checkInFromDate = earliestCheckInDate.dateFromShortFormat()
         }
         if let latestCheckInDate = alert.latestCheckInDate {
-            searchCriteria.checkInToDate = Helper.convertStringToDate(dateString: latestCheckInDate, format: Constant.MyClassConstants.dateFormat)
+            searchCriteria.checkInToDate = latestCheckInDate.dateFromShortFormat()
         }
+        
         getDestinationsResortsForAlert(alert:alert, searchCriteria: searchCriteria)
         alertFilterOptionsArray.removeAll()
         
@@ -605,7 +607,7 @@ class DashboardTableViewController: UITableViewController {
             if let destinationName = destination.destinationName {
                 dest.destinationName = destinationName
             } else {
-                // FIXME (Frank): Why hard coded ?
+                //FIXME(FRANK): what is this?
                 dest.destinationName = "Cancun"
             }
             dest.aoiId = destination.aoiId
@@ -649,7 +651,7 @@ extension DashboardTableViewController: HelperDelegate {
     func resortSearchComplete() {
         hideHudAsync()
         // Check if not has availability in the desired check-In date.
-        if Constant.MyClassConstants.initialVacationSearch.searchCheckInDate != Helper.convertDateToString(date: Constant.MyClassConstants.vacationSearchShowDate, format: Constant.MyClassConstants.dateFormat) {
+        if Constant.MyClassConstants.initialVacationSearch.searchCheckInDate != Constant.MyClassConstants.vacationSearchShowDate.stringWithShortFormatForJSON() {
             Helper.showNearestCheckInDateSelectedMessage()
         }
         
@@ -839,25 +841,22 @@ extension DashboardTableViewController: UICollectionViewDataSource {
                     cell.alertTitle.text = alertTitle
                 }
                 
+                //FIXME(FRANK): what is this?
                 var fromDate = ""
                 var toDate = ""
-                if let earliestCheckInDate = alert.earliestCheckInDate {
-                    
-                    let alertFromDate = Helper.convertStringToDate(dateString:earliestCheckInDate, format: Constant.MyClassConstants.dateFormat)
-                    
+                if let earliestCheckInDate = alert.earliestCheckInDate, let alertFromDate = earliestCheckInDate.dateFromShortFormat() {
                     fromDate = (Helper.getWeekDay(dateString: alertFromDate, getValue: Constant.MyClassConstants.month)).appendingFormat(". ").appending(Helper.getWeekDay(dateString: alertFromDate, getValue: Constant.MyClassConstants.date)).appending(", ").appending(Helper.getWeekDay(dateString: alertFromDate, getValue: Constant.MyClassConstants.year))
                 }
                 
-                if let latestCheckInDate = alert.latestCheckInDate {
-                    
-                    let alertToDate = Helper.convertStringToDate(dateString: latestCheckInDate, format: Constant.MyClassConstants.dateFormat)
-                    
+                if let latestCheckInDate = alert.latestCheckInDate, let alertToDate = latestCheckInDate.dateFromShortFormat() {
                     toDate = Helper.getWeekDay(dateString: alertToDate, getValue: "Month").appending(". ").appending(Helper.getWeekDay(dateString: alertToDate, getValue: "Date")).appending(", ").appending(Helper.getWeekDay(dateString: alertToDate, getValue: "Year"))
                 }
                 
                 let dateRange = fromDate.appending(" - " + toDate)
                 cell.alertDate.text = dateRange
-                if let alertID = alert.alertId {
+                
+                //FIXME(FRANK): what is this?
+                if let _ = alert.alertId {
                     if !searchDatesResponse.checkInDates.isEmpty {
                         cell.alertStatus.text = Constant.buttonTitles.viewResults
                         cell.alertStatus.textColor = .white
@@ -902,11 +901,13 @@ extension UIViewController {
             deal.header = header
         }
         deal.fromDate = Constant.MyClassConstants.topDeals[selectedIndexPath.row].fromDate
+        
         guard let areacode = Constant.MyClassConstants.topDeals[selectedIndexPath.row].areaCodes.first else {
             return presentErrorAlert(UserFacingCommonError.noData)
         }
         
         deal.areaCodes = [areacode]
+        
         let searchCriteria = Helper.createSearchCriteriaForRentalDeal(deal: deal)
         
         if let settings = Session.sharedSession.appSettings {
@@ -956,7 +957,7 @@ extension UIViewController {
                 
                 if activeInterval.hasCheckInDates() {
                     Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
-                    let initialSearchCheckInDate = Helper.convertStringToDate(dateString:Constant.MyClassConstants.initialVacationSearch.searchCheckInDate!, format:Constant.MyClassConstants.dateFormat)
+                    let initialSearchCheckInDate = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate?.dateFromShortFormat()
                     Constant.MyClassConstants.checkInDates = response.checkInDates
                     //sender.isEnabled = true
                     Helper.helperDelegate = self as? HelperDelegate

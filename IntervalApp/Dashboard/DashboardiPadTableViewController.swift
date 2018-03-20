@@ -143,10 +143,10 @@ class DashboardIPadTableViewController: UITableViewController {
                 
                 let rentalSearchDatesRequest = RentalSearchDatesRequest()
                 if let checkInTodate = rentalAlert.latestCheckInDate {
-                    rentalSearchDatesRequest.checkInToDate = Helper.convertStringToDate(dateString:checkInTodate, format:Constant.MyClassConstants.dateFormat)
+                    rentalSearchDatesRequest.checkInToDate = checkInTodate.dateFromShortFormat()
                 }
                 if let checkInFromdate = rentalAlert.earliestCheckInDate {
-                    rentalSearchDatesRequest.checkInFromDate = Helper.convertStringToDate(dateString:checkInFromdate, format:Constant.MyClassConstants.dateFormat)
+                    rentalSearchDatesRequest.checkInFromDate = checkInFromdate.dateFromShortFormat()
                 }
                 rentalSearchDatesRequest.resorts = rentalAlert.resorts
                 rentalSearchDatesRequest.destinations = rentalAlert.destinations
@@ -302,12 +302,13 @@ class DashboardIPadTableViewController: UITableViewController {
         let checkInDate = alert.getCheckInDate()
         
         let searchCriteria = VacationSearchCriteria(searchType: VacationSearchType.RENTAL)
-        searchCriteria.checkInDate = Helper.convertStringToDate(dateString: checkInDate, format: Constant.MyClassConstants.dateFormat)
+        searchCriteria.checkInDate = checkInDate.dateFromShortFormat()
+        
         if let earliestCheckInDate = alert.earliestCheckInDate {
-            searchCriteria.checkInFromDate = Helper.convertStringToDate(dateString: earliestCheckInDate, format: Constant.MyClassConstants.dateFormat)
+            searchCriteria.checkInFromDate = earliestCheckInDate.dateFromShortFormat()
         }
         if let latestCheckInDate = alert.latestCheckInDate {
-            searchCriteria.checkInToDate = Helper.convertStringToDate(dateString: latestCheckInDate, format: Constant.MyClassConstants.dateFormat)
+            searchCriteria.checkInToDate = latestCheckInDate.dateFromShortFormat()
         }
         getDestinationsResortsForAlert(alert:alert, searchCriteria: searchCriteria)
         alertFilterOptionsArray.removeAll()
@@ -337,7 +338,7 @@ class DashboardIPadTableViewController: UITableViewController {
     func rentalSearchAvailability(activeInterval: BookingWindowInterval) {
         Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
         Helper.helperDelegate = self
-        Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate:  Helper.convertStringToDate(dateString: Constant.MyClassConstants.initialVacationSearch.searchCheckInDate ?? "", format: Constant.MyClassConstants.dateFormat), senderViewController: self)
+        Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: Constant.MyClassConstants.initialVacationSearch.searchCheckInDate?.dateFromShortFormat(), senderViewController: self)
     }
     
     //Function for no results availability
@@ -733,7 +734,8 @@ extension DashboardIPadTableViewController: UICollectionViewDataSource {
             let priceLabel = UILabel(frame: CGRect(x: 10, y: 35, width: centerView.frame.size.width - 20, height: 20))
             if let price = topTenDeals.price?.fromPrice, let currencyCode = topTenDeals.price?.currencySymbol {
                 priceLabel.text = "From $" + String(price) + " Wk.".localized()
-                if let attributedAmount = price.currencyFormatter(for: "From \(currencyCode) Wk.", baseLineOffSet: 0) {
+                //FIXME(Frank): - all UIViewController for iPad should be removed
+                if let attributedAmount = price.currencyFormatter(for: "From \(currencyCode) Wk.", for: nil, baseLineOffSet: 0) {
                     let fromAttributedString = NSMutableAttributedString(string: "From ", attributes: nil)
                     let wkAttributedString = NSAttributedString(string: " Wk.", attributes: nil)
                     fromAttributedString.append(attributedAmount)
@@ -765,19 +767,14 @@ extension DashboardIPadTableViewController: UICollectionViewDataSource {
                     cell.alertTitle.text = alertTitle
                 }
                 
+                //FIXME(FRANK): what is this?
                 var fromDate = ""
                 var toDate = ""
-                if let earliestCheckInDate = alert.earliestCheckInDate {
-                    
-                    let alertFromDate = Helper.convertStringToDate(dateString:earliestCheckInDate, format: Constant.MyClassConstants.dateFormat)
-                    
+                if let earliestCheckInDate = alert.earliestCheckInDate, let alertFromDate = earliestCheckInDate.dateFromShortFormat() {
                     fromDate = (Helper.getWeekDay(dateString: alertFromDate, getValue: Constant.MyClassConstants.month)).appendingFormat(". ").appending(Helper.getWeekDay(dateString: alertFromDate, getValue: Constant.MyClassConstants.date)).appending(", ").appending(Helper.getWeekDay(dateString: alertFromDate, getValue: Constant.MyClassConstants.year))
                 }
                 
-                if let latestCheckInDate = alert.latestCheckInDate {
-                    
-                    let alertToDate = Helper.convertStringToDate(dateString: latestCheckInDate, format: Constant.MyClassConstants.dateFormat)
-                    
+                if let latestCheckInDate = alert.latestCheckInDate, let alertToDate = latestCheckInDate.dateFromShortFormat() {
                     toDate = Helper.getWeekDay(dateString: alertToDate, getValue: "Month").appending(". ").appending(Helper.getWeekDay(dateString: alertToDate, getValue: "Date")).appending(", ").appending(Helper.getWeekDay(dateString: alertToDate, getValue: "Year"))
                 }
                 
@@ -818,21 +815,21 @@ extension DashboardIPadTableViewController: UICollectionViewDataSource {
                 }
                 var formatedCheckInDate = ""
                 var formatedCheckOutDate = ""
-                if let unitCheckInDate = upcomingTrip.unit?.checkInDate {
+                if let unitCheckInDate = upcomingTrip.unit?.checkInDate, let checkInDate = unitCheckInDate.dateFromShortFormat() {
+                    //FIXME(FRANK): AGAIN creating a wrong Calendar - how it's possible?
+                    //let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
+                    let myCalendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
                     
-                    let checkInDate = Helper.convertStringToDate(dateString:unitCheckInDate, format: Constant.MyClassConstants.dateFormat)
-                    
-                    let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
                     let myComponents = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: checkInDate)
                     
                     formatedCheckInDate = "\(Helper.getWeekdayFromInt(weekDayNumber:myComponents.weekday ?? 0)) \(Helper.getMonthnameFromInt(monthNumber: myComponents.month ?? 0)). \(myComponents.day ?? 0), \(myComponents.year ?? 0)"
-                    
                 }
                 
-                if let unitCheckOutDate = upcomingTrip.unit?.checkOutDate {
+                if let unitCheckOutDate = upcomingTrip.unit?.checkOutDate, let checkOutDate = unitCheckOutDate.dateFromShortFormat() {
+                    //FIXME(FRANK): AGAIN creating a wrong Calendar - how it's possible?
+                    //let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
+                    let myCalendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
                     
-                    let checkOutDate = Helper.convertStringToDate(dateString: unitCheckOutDate, format: Constant.MyClassConstants.dateFormat)
-                    let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
                     let myComponents1 = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: checkOutDate)
                     
                     formatedCheckOutDate = "\(Helper.getWeekdayFromInt(weekDayNumber: myComponents1.weekday ?? 0)) \(Helper.getMonthnameFromInt(monthNumber: myComponents1.month ?? 0)). \(myComponents1.day ?? 0), \(myComponents1.year ?? 0)"

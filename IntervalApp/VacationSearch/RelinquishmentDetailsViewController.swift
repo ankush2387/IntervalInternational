@@ -13,8 +13,10 @@ import SDWebImage
 class RelinquishmentDetailsViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
-    var resort: Resort?
-    var filterRelinquishment = ExchangeRelinquishment()
+    
+    var selectedRelinquishment = ExchangeRelinquishment()
+    var selectedAvailabilityResort: AvailabilitySectionItemResort?
+
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.estimatedRowHeight = 80
@@ -25,7 +27,7 @@ class RelinquishmentDetailsViewController: UIViewController {
         //self.tableView.layer.masksToBounds = true
         self.tableView.layer.borderColor = UIColor.lightGray.cgColor
         
-        resort = Constant.MyClassConstants.resortsDescriptionArray
+        selectedAvailabilityResort = Constant.MyClassConstants.selectedAvailabilityResort
         tableView.reloadData()
     }
 
@@ -52,46 +54,32 @@ extension RelinquishmentDetailsViewController: UITableViewDataSource, UITableVie
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let objRelinquishment = filterRelinquishment
-        
         if indexPath.section == 0 {
             
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "RelinquishmentDetailsCell", for: indexPath) as? RelinquishmentDetailsCell else { return UITableViewCell() }
             
-            if let resortImages = resort?.images {
-                for largeResortImage in resortImages where largeResortImage.size == Constant.MyClassConstants.imageSizeXL {
-                    if let urlString = largeResortImage.url {
-                        cell.resortImage.setImageWith(URL(string: urlString), usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
-                    } else {
-                        cell.resortImage.image = #imageLiteral(resourceName: "NoImageIcon")
-                    }
+            if let resort = selectedAvailabilityResort, let image = resort.getDefaultImage(), let imageUrl = image.url {
+                cell.resortImage.setImageWith(URL(string: imageUrl), usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
+                cell.resortCode.text = resort.code
+                cell.resortName.text = resort.name
+                
+                if let address = resort.address {
+                    cell.resortCountry.text = address.postalAddresAsString()
                 }
             } else {
                 cell.resortImage.image = #imageLiteral(resourceName: "NoImageIcon")
             }
-            
-            cell.resortName.text = resort?.resortName
-            
-            if let city = resort?.address?.cityName {
-                
-                cell.resortCountry.text = city
-            }
-            if let Country = resort?.address?.countryCode {
-                
-                cell.resortCountry.text?.append(", \(Country)")
-            }
 
-            cell.resortCode.text = resort?.resortCode
-            
             cell.gradientView.frame = CGRect(x: cell.gradientView.frame.origin.x, y: cell.gradientView.frame.origin.y, width: cell.contentView.frame.width, height: cell.gradientView.frame.height)
             Helper.addLinearGradientToView(view: cell.gradientView, colour: UIColor.white, transparntToOpaque: true, vertical: true)
             return cell
             
         } else {
+            
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "ExchangeCell1", for: indexPath) as? RelinquishmentSelectionOpenWeeksCell else { return UITableViewCell() }
             cell.selectionStyle = UITableViewCellSelectionStyle.none
             
-            if let clubPoints = objRelinquishment.clubPoints {
+            if let clubPoints = selectedRelinquishment.clubPoints {
                 cell.dayAndDateLabel.text = ""
                 if let pointsSpent = clubPoints.pointsSpent {
                     cell.yearLabel.text = "\(pointsSpent))"
@@ -104,7 +92,8 @@ extension RelinquishmentDetailsViewController: UITableViewDataSource, UITableVie
                 cell.resortName.text = clubPoints.resort?.resortName
                 cell.bedroomSizeAndKitchenClient.text = ""
                 cell.totalSleepAndPrivate.text = ""
-            } else if let openWeek = objRelinquishment.openWeek {
+                
+            } else if let openWeek = selectedRelinquishment.openWeek {
                 
                 if let checkInDate = Date.dateFromString(openWeek.checkInDate.unwrappedString)?.formatDateAs("MM-dd"),
                     let month = checkInDate.split(separator: "-").first,
@@ -125,15 +114,15 @@ extension RelinquishmentDetailsViewController: UITableViewDataSource, UITableVie
                 if let resortName = openWeek.resort?.resortName {
                     cell.resortName.text = resortName
                 }
-                if let unitSize = objRelinquishment.openWeek?.unit?.unitSize, let kitchenType = objRelinquishment.openWeek?.unit?.kitchenType {
+                if let unitSize = selectedRelinquishment.openWeek?.unit?.unitSize, let kitchenType = selectedRelinquishment.openWeek?.unit?.kitchenType {
                     cell.bedroomSizeAndKitchenClient.text = "\(Helper.getBedroomNumbers(bedroomType:unitSize)), \(Helper.getKitchenEnums(kitchenType: kitchenType))"
                 }
                 
-                if let publicSleeps = objRelinquishment.openWeek?.unit?.publicSleepCapacity, let privateSleeps = objRelinquishment.openWeek?.unit?.privateSleepCapacity {
+                if let publicSleeps = selectedRelinquishment.openWeek?.unit?.publicSleepCapacity, let privateSleeps = selectedRelinquishment.openWeek?.unit?.privateSleepCapacity {
                    cell.totalSleepAndPrivate.text = "Sleeps \(publicSleeps), \(privateSleeps) Private"
                 }
                 
-            } else if let deposits = objRelinquishment.deposit {
+            } else if let deposits = selectedRelinquishment.deposit {
                 
                 if let checkInDate = Date.dateFromString(deposits.checkInDate.unwrappedString)?.formatDateAs("MM-dd"),
                     let month = checkInDate.split(separator: "-").first,

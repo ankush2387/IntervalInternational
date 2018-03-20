@@ -144,12 +144,10 @@ extension CertificateViewController: UITableViewDataSource {
         }
         
         if let fromDate = Constant.MyClassConstants.certificateArray[indexPath.row].travelWindow?.fromDate,
-            let toDate = Constant.MyClassConstants.certificateArray[indexPath.row].travelWindow?.toDate {
-            
-            let calendarFromDate = Helper.convertStringToDate(dateString: fromDate, format: Constant.MyClassConstants.dateFormat)
-            let calendarToDate = Helper.convertStringToDate(dateString: toDate, format: Constant.MyClassConstants.dateFormat)
-   
+            let toDate = Constant.MyClassConstants.certificateArray[indexPath.row].travelWindow?.toDate, let calendarFromDate = fromDate.dateFromShortFormat(), let calendarToDate = toDate.dateFromShortFormat() {
+         
             let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
+            
             let startComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: calendarFromDate)
             let endComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: calendarToDate)
             if let year = startComponents.year, let month = startComponents.month, let day = startComponents.day, let weekDay = startComponents.weekday {
@@ -167,6 +165,8 @@ extension CertificateViewController: UITableViewDataSource {
 
         var status: String = Constant.MyClassConstants.certificateArray[indexPath.row].certificateStatus ?? ""
         status = status.replacingOccurrences(of: "_", with: " ", options: .literal, range: nil)
+        
+        //FIXME(FRANK) - what is this?
         // all of the statuses translate perfect only unredeem needs to be changed to unredeemed
         // maybe move this to SDK at some point
         if status == "UNREDEEM" {
@@ -174,6 +174,7 @@ extension CertificateViewController: UITableViewDataSource {
         }
         status = status.capitalized
         cell.statusLbl.text = status
+        
         Helper.applyShadowOnUIView(view: cell.cellBaseView, shadowcolor: UIColor.black, shadowopacity: 0.4, shadowradius: 1.0)
         cell.selectionStyle = UITableViewCellSelectionStyle.none
         

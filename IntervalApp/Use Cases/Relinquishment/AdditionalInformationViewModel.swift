@@ -271,7 +271,9 @@ final class AdditionalInformationViewModel {
     private func setResortDetailViewModel() -> Promise<Void> {
         return Promise { [unowned self] resolve, reject in
 
-            guard let imageEntity = self.relinquishment.resort?.images.first(where: { $0.size == "XLARGE" }),
+            //FIXME(Frank): Resort XLARGE images are optionals
+            //guard let imageEntity = self.relinquishment.resort?.images.first(where: { $0.size == "XLARGE" }),
+            guard let imageEntity = self.relinquishment.resort?.getDefaultImage(),
                 let url = URL(string: imageEntity.url.unwrappedString) else {
                 reject(CommonErrors.parsingError)
                 return
@@ -288,6 +290,7 @@ final class AdditionalInformationViewModel {
                                                                                          resortImage: image)]
             }
 
+            //FIXME(Frank): Ummm - Why this call?
             self.imageAPIStore.readImage(for: url)
                 .then(createResortDetailViewModel)
                 .then(resolve)

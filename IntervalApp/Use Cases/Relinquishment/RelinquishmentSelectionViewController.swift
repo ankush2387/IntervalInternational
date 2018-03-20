@@ -341,10 +341,11 @@ class RelinquishmentSelectionViewController: UIViewController {
             let storedata = OpenWeeksStorage()
             let membership = Session.sharedSession.selectedMembership
             let relinquishmentList = TradeLocalData()
-            
+
             let selectedClubPoint = ClubPoints()
             if let relinquishmentId = Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId {
                 selectedClubPoint.relinquishmentId = relinquishmentId
+                Constant.MyClassConstants.isClubPointsAvailable = true
             }
             
             selectedClubPoint.isPointsMatrix = false
@@ -443,11 +444,12 @@ class RelinquishmentSelectionViewController: UIViewController {
             //Realm local storage for selected relinquishment
             let storedata = OpenWeeksStorage()
             let relinquishmentList = TradeLocalData()
-            let rlmPProgram = rlmPointsProgram()
             
+            Constant.MyClassConstants.isCIGAvailable = true
+            
+            let rlmPProgram = rlmPointsProgram()
             rlmPProgram.availablePoints = Constant.MyClassConstants.relinquishmentProgram.availablePoints!
             rlmPProgram.code = Constant.MyClassConstants.relinquishmentProgram.code!
-            
             rlmPProgram.relinquishmentId = relinquishmentId
             
             relinquishmentList.pProgram.append(rlmPProgram)
@@ -1031,23 +1033,26 @@ extension RelinquishmentSelectionViewController: UITableViewDataSource {
                     
                     cell.resortName.text = "\(openWeek.resort!.resortName!)"
                     cell.yearLabel.text = "\(openWeek.relinquishmentYear!)"
+                    
+                    //FIXME(FRANK) - what is this?
                     let date = openWeek.checkInDates
                     if date.count > 0 {
                         
                         let dateString = date[0]
-                        let date = Helper.convertStringToDate(dateString: dateString, format: Constant.MyClassConstants.dateFormat)
-                        let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
-                        let myComponents = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: date)
-                        let day = myComponents.day!
-                        var month = ""
-                        if day < 10 {
-                            month = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month!)) 0\(day)"
-                        } else {
-                            month = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month!)) \(day)"
+                        if let date = dateString.dateFromShortFormat() {
+                            let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
+                            let myComponents = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: date)
+                            let day = myComponents.day!
+                            var month = ""
+                            if day < 10 {
+                                month = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month!)) 0\(day)"
+                            } else {
+                                month = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month!)) \(day)"
+                            }
+                            
+                            cell.dayAndDateLabel.text = month.uppercased()
                         }
-                        
-                        cell.dayAndDateLabel.text = month.uppercased()
-                        
+       
                     } else {
                         
                         cell.dayAndDateLabel.text = ""
@@ -1111,21 +1116,22 @@ extension RelinquishmentSelectionViewController: UITableViewDataSource {
                 intervalWeekCell.yearLabel.text = "\(openWeek.relinquishmentYear!)"
                 let date = openWeek.checkInDates
                 if date.count > 0 {
-                    
+                    //FIXME(FRANK) - what is this?
                     let dateString = date[0]
-                    let date = Helper.convertStringToDate(dateString: dateString, format: Constant.MyClassConstants.dateFormat)
-                    let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
-                    let myComponents = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: date)
-                    let day = myComponents.day!
-                    var month = ""
-                    if day < 10 {
-                        month = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month!)) 0\(day)"
-                    } else {
-                        month = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month!)) \(day)"
+                    if let date = dateString.dateFromShortFormat() {
+                        let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
+                        let myComponents = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: date)
+                        let day = myComponents.day!
+                        var month = ""
+                        if day < 10 {
+                            month = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month!)) 0\(day)"
+                        } else {
+                            month = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month!)) \(day)"
+                        }
+                        
+                        intervalWeekCell.dayAndDateLabel.text = month.uppercased()
                     }
-                    
-                    intervalWeekCell.dayAndDateLabel.text = month.uppercased()
-                    
+
                 } else {
                     
                     intervalWeekCell.dayAndDateLabel.text = " "

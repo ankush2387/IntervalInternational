@@ -13,7 +13,7 @@ import DarwinSDK
 import SVProgressHUD
 
 protocol WhoWillBeCheckInDelegate: class {
-    func navigateToWhoWillBeCheckIn(renewalArray: [Renewal], selectedRow: Int, selectedRelinquishment: ExchangeRelinquishment)
+    func navigateToWhoWillBeCheckIn(renewalCoreProduct: Renewal?, renewalNonCoreProduct: Renewal?, selectedRow: Int, selectedRelinquishment: ExchangeRelinquishment)
 }
 
 class WhatToUseViewController: UIViewController {
@@ -32,7 +32,6 @@ class WhatToUseViewController: UIViewController {
     var selectedRowSection = -1
     var showInfoIcon = false
     var hasbothSearchAvailability = true
-    var currencyCode = ""
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
@@ -41,7 +40,6 @@ class WhatToUseViewController: UIViewController {
         selectedRow = -1
         tableView.reloadData()
         navigationController?.setNavigationBarHidden(false, animated: true)
-        
     }
     
     override func viewDidLoad() {
@@ -51,9 +49,6 @@ class WhatToUseViewController: UIViewController {
         let menuButton = UIBarButtonItem(image: #imageLiteral(resourceName: "BackArrowNav"), style: .plain, target: self, action:#selector(AccomodationCertsDetailController.menuBackButtonPressed(_:)))
         menuButton.tintColor = UIColor.white
         self.navigationItem.leftBarButtonItem = menuButton
-        guard let currencycode = Constant.MyClassConstants.selectedResort.inventory?.currencyCode else { return }
-        let currencyHelper = CurrencyHelper()
-        currencyCode = currencyHelper.getCurrencyFriendlySymbol(currencyCode: currencycode)
     }
     
     override func didReceiveMemoryWarning() {
@@ -62,14 +57,13 @@ class WhatToUseViewController: UIViewController {
     }
     
     func menuBackButtonPressed(_ sender: UIBarButtonItem) {
-        
         self.navigationController?.popViewController(animated: true)
         // self.dismiss(animated: true, completion: nil)
     }
     
     @IBAction func checkBoxPressed(_ sender: IUIKCheckbox) {
-        
-        Constant.MyClassConstants.searchBothExchange = true
+
+        //Constant.MyClassConstants.searchBothExchange = true
         selectedRow = sender.tag
         selectedRowSection = sender.accessibilityElements?.first as? Int ?? 0
         let indexPath = NSIndexPath(row:selectedRow, section:selectedRowSection)
@@ -101,7 +95,7 @@ class WhatToUseViewController: UIViewController {
                     
                 } else if Constant.MyClassConstants.filterRelinquishments[self.selectedRow - 1].pointsProgram != nil {
                     processRequest.relinquishmentId = Constant.MyClassConstants.filterRelinquishments[self.selectedRow - 1].pointsProgram?.relinquishmentId
-                    Constant.MyClassConstants.isCIGAvailable = true
+                    //Constant.MyClassConstants.isCIGAvailable = true
                 }
             } else {
                 if Constant.MyClassConstants.filterRelinquishments[self.selectedRow].openWeek != nil {
@@ -115,7 +109,7 @@ class WhatToUseViewController: UIViewController {
                     
                 } else if Constant.MyClassConstants.filterRelinquishments[self.selectedRow].pointsProgram != nil {
                     processRequest.relinquishmentId = Constant.MyClassConstants.filterRelinquishments[self.selectedRow].pointsProgram?.relinquishmentId
-                    Constant.MyClassConstants.isCIGAvailable = true
+                    //Constant.MyClassConstants.isCIGAvailable = true
                 }
             }
         
@@ -134,8 +128,9 @@ class WhatToUseViewController: UIViewController {
                 Constant.MyClassConstants.nearbyArray.removeAllObjects()
                 
                 if let exchangeFees = response.view?.fees {
-                    Constant.MyClassConstants.exchangeFees = [exchangeFees]
+                    Constant.MyClassConstants.exchangeFees = exchangeFees
                 }
+                
                 if let resortAmenities = response.view?.destination?.resort?.amenities {
                     for amenity in resortAmenities {
                         if let amentityName = amenity.amenityName {
@@ -192,9 +187,9 @@ class WhatToUseViewController: UIViewController {
                         guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: "WhoWillBeCheckingInViewController") as? WhoWillBeCheckingInViewController else { return }
                         if let selectedRow = self?.selectedRow {
                             if count > 1 {
-                                viewController.filterRelinquishments = Constant.MyClassConstants.filterRelinquishments[selectedRow - 1]
+                                viewController.selectedRelinquishment = Constant.MyClassConstants.filterRelinquishments[selectedRow - 1]
                             } else {
-                                viewController.filterRelinquishments = Constant.MyClassConstants.filterRelinquishments[selectedRow]
+                                viewController.selectedRelinquishment = Constant.MyClassConstants.filterRelinquishments[selectedRow]
                             }
                         }
                         
@@ -225,6 +220,133 @@ class WhatToUseViewController: UIViewController {
         }
     }
     
+    // MARK: - SDK calls
+    func startRentalProcess(_ selectedAvailabilityResort: AvailabilitySectionItemResort, _ selectedAvailabilityBucket: AvailabilitySectionItemInventoryBucket) {
+        // FIXME(Frank) - Why we need this new global definition? - we already have the resort that was selected
+        Constant.MyClassConstants.hasAdditionalCharges = selectedAvailabilityResort.allInclusive
+        
+        // Create the RentalProcessStartRequest
+        let resort = Resort()
+        resort.resortCode = selectedAvailabilityResort.code
+        
+        let unit = InventoryUnit()
+        unit.checkInDate = selectedAvailabilityBucket.checkInDate
+        unit.checkOutDate = selectedAvailabilityBucket.checkOutDate
+        unit.kitchenType = selectedAvailabilityBucket.unit.kitchenType.rawValue
+        unit.unitSize = selectedAvailabilityBucket.unit.unitSize.rawValue
+        
+        let rentalProcessStartRequest = RentalProcessStartRequest()
+        rentalProcessStartRequest.resort = resort
+        rentalProcessStartRequest.unit = unit
+        
+        RentalProcessClient.start(Session.sharedSession.userAccessToken, process: RentalProcess(), request: rentalProcessStartRequest,
+          onSuccess: { [weak self] response in
+            Constant.MyClassConstants.processStartResponse = response
+
+            let rentalProcess = RentalProcess()
+            rentalProcess.processId = response.processId
+            rentalProcess.currentStep = response.step
+            rentalProcess.holdUnitStartTimeInMillis = Constant.holdingTime
+            
+            Constant.MyClassConstants.getawayBookingLastStartedProcess = rentalProcess
+            
+            if let view = response.view {
+                Constant.MyClassConstants.viewResponse = view
+                
+                if let rentalFees = view.fees {
+                    //FIXME(Frank) - If you already has a global for the "view" that contains the rentalFees then why have a new one global for the fees?
+                    //FIXME(Frank) - Why rentalFees is an array? - The same is happen with exchangeFees - this is not GOOD
+                    Constant.MyClassConstants.rentalFees = rentalFees
+                    
+                    if let guestCertificate = rentalFees.guestCertificate {
+                        //FIXME(Frank) - If you already has a global for the "view" then why have a new one global for the guestCertificate?
+                        Constant.MyClassConstants.guestCertificate = guestCertificate
+                    }
+                }
+            }
+            
+            //FIXME(Frank) - more of the same BAD use of globals for everything - this is madness
+            Constant.MyClassConstants.onsiteArray.removeAllObjects()
+            Constant.MyClassConstants.nearbyArray.removeAllObjects()
+            guard let resortAmenities = response.view?.resort?.amenities else { return }
+            for amenity in resortAmenities {
+                guard let amenityName = amenity.amenityName else { return }
+                if !amenity.nearby {
+                    Constant.MyClassConstants.onsiteArray.add(amenityName)
+                    Constant.MyClassConstants.onsiteString = Constant.MyClassConstants.onsiteString.appending(amenityName)
+                    Constant.MyClassConstants.onsiteString = Constant.MyClassConstants.onsiteString.appending("\n")
+                } else {
+                    Constant.MyClassConstants.nearbyArray.add(amenityName)
+                    Constant.MyClassConstants.nearbyString = Constant.MyClassConstants.nearbyString.appending(amenityName)
+                    Constant.MyClassConstants.nearbyString = Constant.MyClassConstants.nearbyString.appending("\n")
+                }
+            }
+            
+            self?.hideHudAsync()
+            
+            // MARK: - Check forced renewals and redirect user to what to user or who will be checking In
+            self?.checkForceRenewals(response: response)
+          },
+          onError: { [weak self] error in
+            self?.selectedRow = -1
+            self?.selectedRowSection = -1
+            self?.tableView.reloadData()
+            self?.hideHudAsync()
+            self?.presentErrorAlert(UserFacingCommonError.handleError(error))
+        })
+    }
+    
+    func checkForceRenewals(response: RentalProcessPrepareResponse) {
+        let forceRenewals = response.view?.forceRenewals
+        
+        if forceRenewals != nil {
+            
+            if Constant.RunningDevice.deviceIdiom == .phone {
+                
+                let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+                
+                // Navigate to Renewals Screen
+                let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.RenewelViewController) as! RenewelViewController
+                viewController.delegate = self
+                Constant.MyClassConstants.isFromWhatToUse = true
+                self.present(viewController, animated:true, completion: nil)
+                
+                return
+            } else {
+                
+                let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
+                let transitionManager = TransitionManager()
+                self.navigationController?.transitioningDelegate = transitionManager
+                
+                // Navigate to Who Will Be Checking in Screen
+                let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.RenewelViewController) as! RenewelViewController
+                viewController.delegate = self
+                Constant.MyClassConstants.isFromWhatToUse = true
+                self.present(viewController, animated:true, completion: nil)
+                
+                return
+            }
+            
+        } else {
+            if Constant.RunningDevice.deviceIdiom == .phone {
+                let mainStoryboard: UIStoryboard = UIStoryboard(name:  Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+                let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInViewController) as! WhoWillBeCheckingInViewController
+                
+                let transitionManager = TransitionManager()
+                self.navigationController?.transitioningDelegate = transitionManager
+                self.navigationController!.pushViewController(viewController, animated: true)
+            } else {
+                let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
+                guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInIpadViewController) as? WhoWillBeCheckingInIPadViewController else { return }
+                
+                let transitionManager = TransitionManager()
+                self.navigationController?.transitioningDelegate = transitionManager
+                self.navigationController?.pushViewController(viewController, animated: true)
+            }
+            
+        }
+    }
+    
     @IBAction func checkBoxGetawayPressed(_ sender: IUIKCheckbox) {
         
         Constant.MyClassConstants.searchBothExchange = false
@@ -233,131 +355,11 @@ class WhatToUseViewController: UIViewController {
         
         let indexPath = NSIndexPath(row:selectedRow, section:selectedRowSection)
         tableView.reloadRows(at: [indexPath as IndexPath], with: UITableViewRowAnimation.none)
-        
-        showHudAsync()
-        var inventoryDict = Inventory()
-        inventoryDict = Constant.MyClassConstants.selectedResort.inventory!
-        let invent = inventoryDict
-        let units = invent.units
-        Constant.MyClassConstants.inventoryPrice = invent.units[indexPath.item].prices
-        
-        let processResort = RentalProcess()
-        processResort.holdUnitStartTimeInMillis = Constant.holdingTime
-        
-        let processRequest = RentalProcessStartRequest()
-        processRequest.resort = Constant.MyClassConstants.selectedResort
-        if Constant.MyClassConstants.selectedResort.allInclusive {
-            Constant.MyClassConstants.hasAdditionalCharges = true
-        } else {
-            Constant.MyClassConstants.hasAdditionalCharges = false
+
+        if let selectedResort = Constant.MyClassConstants.selectedAvailabilityResort, let selectedBucket = Constant.MyClassConstants.selectedAvailabilityInventoryBucket {
+            showHudAsync()
+            self.startRentalProcess(selectedResort, selectedBucket)
         }
-        processRequest.unit = units[indexPath.item]
-        
-        let processRequest1 = RentalProcessStartRequest.init(resortCode: Constant.MyClassConstants.selectedResort.resortCode!, checkInDate: invent.checkInDate!, checkOutDate: invent.checkOutDate!, unitSize: UnitSize(rawValue: units[indexPath.item].unitSize!)!, kitchenType: KitchenType(rawValue: units[indexPath.item].kitchenType!)!)
-        RentalProcessClient.start(Session.sharedSession.userAccessToken, process: processResort, request: processRequest1, onSuccess: {(response) in
-            
-            self.hideHudAsync()
-            let processResort = RentalProcess()
-            processResort.processId = response.processId
-            Constant.MyClassConstants.getawayBookingLastStartedProcess = processResort
-            
-            // store response
-            Constant.MyClassConstants.processStartResponse = response
-            
-            self.hideHudAsync()
-            Constant.MyClassConstants.viewResponse = response.view!
-            Constant.MyClassConstants.rentalFees = [(response.view?.fees)!]
-            Constant.MyClassConstants.guestCertificate = response.view?.fees?.guestCertificate
-            Constant.MyClassConstants.onsiteArray.removeAllObjects()
-            Constant.MyClassConstants.nearbyArray.removeAllObjects()
-            
-            for amenity in (response.view?.resort?.amenities)! {
-                if amenity.nearby == false {
-                    Constant.MyClassConstants.onsiteArray.add(amenity.amenityName ?? "")
-                    Constant.MyClassConstants.onsiteString = Constant.MyClassConstants.onsiteString.appending(amenity.amenityName ?? "")
-                    Constant.MyClassConstants.onsiteString = Constant.MyClassConstants.onsiteString.appending("\n")
-                } else {
-                    Constant.MyClassConstants.nearbyArray.add(amenity.amenityName ?? "")
-                    Constant.MyClassConstants.nearbyString = Constant.MyClassConstants.nearbyString.appending(amenity.amenityName ?? "")
-                    Constant.MyClassConstants.nearbyString = Constant.MyClassConstants.nearbyString.appending("\n")
-                }
-            }
-            UserClient.updateSessionAndGetCurrentMembership(Session.sharedSession.userAccessToken, membershipNumber: Session.sharedSession.selectedMembership?.memberNumber ?? "", onSuccess: { membership in
-                Session.sharedSession.selectedMembership = membership
-                
-                // Got an access token!  Save it for later use.
-                self.hideHudAsync()
-                Constant.MyClassConstants.membershipContactArray = membership.contacts!
-                
-                // check force renewals here
-                let forceRenewals = Constant.MyClassConstants.processStartResponse.view?.forceRenewals
-                
-                if forceRenewals != nil {
-                    
-                    if Constant.RunningDevice.deviceIdiom == .phone {
-                    
-                        let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
-                        
-                        // Navigate to Renewals Screen
-                        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.RenewelViewController) as! RenewelViewController
-                        viewController.delegate = self
-                        Constant.MyClassConstants.isFromWhatToUse = true
-                        self.present(viewController, animated:true, completion: nil)
-                        
-                        return
-                    } else {
-                        
-                        let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
-                        let transitionManager = TransitionManager()
-                        self.navigationController?.transitioningDelegate = transitionManager
-                        
-                        // Navigate to Who Will Be Checking in Screen
-                        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.RenewelViewController) as! RenewelViewController
-                        viewController.delegate = self
-                        Constant.MyClassConstants.isFromWhatToUse = true
-                        self.present(viewController, animated:true, completion: nil)
-                        
-                        return
-                    }
-                    
-                } else {
-                    if Constant.RunningDevice.deviceIdiom == .phone {
-                        let mainStoryboard: UIStoryboard = UIStoryboard(name:  Constant.storyboardNames.vacationSearchIphone, bundle: nil)
-                        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInViewController) as! WhoWillBeCheckingInViewController
-                        
-                        let transitionManager = TransitionManager()
-                        self.navigationController?.transitioningDelegate = transitionManager
-                        self.navigationController!.pushViewController(viewController, animated: true)
-                    } else {
-                        let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
-                        guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInIpadViewController) as? WhoWillBeCheckingInIPadViewController else { return }
-                        
-                        let transitionManager = TransitionManager()
-                        self.navigationController?.transitioningDelegate = transitionManager
-                        self.navigationController?.pushViewController(viewController, animated: true)
-                    }
-                    
-                }
-                
-            }, onError: { [weak self] error in
-                
-                self?.hideHudAsync()
-                self?.selectedRow = -1
-                self?.selectedRowSection = -1
-                self?.tableView.reloadData()
-                self?.presentErrorAlert(UserFacingCommonError.handleError(error))
-                
-            })
-            
-        }, onError: { [weak self] error in
-            
-            self?.selectedRow = -1
-            self?.selectedRowSection = -1
-            self?.tableView.reloadData()
-            self?.hideHudAsync()
-            self?.presentErrorAlert(UserFacingCommonError.handleError(error))
-        })
-        
     }
     
     func pushLikeModalViewController(controller: UIViewController) {
@@ -374,8 +376,8 @@ class WhatToUseViewController: UIViewController {
         // set isFrom Search false
         Constant.MyClassConstants.isFromSearchResult = false
         showHudAsync()
-        if let resortCode = Constant.MyClassConstants.selectedResort.resortCode {
-            Helper.getResortWithResortCode(code:resortCode, viewcontroller:self)
+        if let selectedResort = Constant.MyClassConstants.selectedAvailabilityResort {
+            Helper.getResortWithResortCode(code: selectedResort.code, viewcontroller:self)
         }
     }
     
@@ -383,25 +385,26 @@ class WhatToUseViewController: UIViewController {
         self.performSegue(withIdentifier: "pointsInfoSegue", sender: nil)
     }
     
-    func selectedRenewal(selectedRenewal: String, forceRenewals: ForceRenewals, filterRelinquishment: ExchangeRelinquishment) {
-        var renewalArray = [Renewal]()
-        renewalArray.removeAll()
+    func selectedRenewal(selectedRenewal: String, forceRenewals: ForceRenewals, selectedRelinquishment: ExchangeRelinquishment) {
+        var renewalCoreProduct: Renewal?
+        var renewalNonCoreProduct: Renewal?
+
         if selectedRenewal == "Core" {
             // Selected core renewal
+            //FIXME(Frank) - why the forceRenewals.products[0].term is the lowest term?
             let lowestTerm = forceRenewals.products[0].term
             for renewal in forceRenewals.products where renewal.term == lowestTerm {
-                let renewalItem = Renewal()
-                renewalItem.id = renewal.id
-                renewalArray.append(renewalItem)
+                renewalCoreProduct = Renewal()
+                renewalCoreProduct?.id = renewal.id
                 break
             }
         } else {
             // Selected non core renewal
+            //FIXME(Frank) - why the forceRenewals.crossSelling[0].term is the lowest term?
             let lowestTerm = forceRenewals.crossSelling[0].term
             for renewal in forceRenewals.crossSelling where renewal.term == lowestTerm {
-                let renewalItem = Renewal()
-                renewalItem.id = renewal.id
-                renewalArray.append(renewalItem)
+                renewalNonCoreProduct = Renewal()
+                renewalNonCoreProduct?.id = renewal.id
                 break
             }
         }
@@ -411,8 +414,9 @@ class WhatToUseViewController: UIViewController {
         guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: "WhoWillBeCheckingInViewController") as? WhoWillBeCheckingInViewController else { return }
         
         viewController.isFromRenewals = true
-        viewController.renewalsArray = renewalArray
-        viewController.filterRelinquishments = filterRelinquishment
+        viewController.renewalCoreProduct = renewalCoreProduct
+        viewController.renewalNonCoreProduct = renewalNonCoreProduct
+        viewController.selectedRelinquishment = selectedRelinquishment
         navigationController?.pushViewController(viewController, animated: true)
     }
 }
@@ -547,8 +551,10 @@ extension WhatToUseViewController: UITableViewDataSource {
             
             cell.destinationImageView.image = #imageLiteral(resourceName: "RST_CO")
             
-            if let resortName = Constant.MyClassConstants.selectedResort.resortName {
-                cell.resortName.text = resortName
+            if let selectedResort = Constant.MyClassConstants.selectedAvailabilityResort {
+                cell.resortName.text = selectedResort.name
+            } else {
+                cell.resortName.text = ""
             }
             
             cell.selectionStyle = UITableViewCellSelectionStyle.none
@@ -564,8 +570,10 @@ extension WhatToUseViewController: UITableViewDataSource {
                 cell.textLabel?.textAlignment = .center
                 return cell
             }
+            
             let exchange = count > 1 ?
                 Constant.MyClassConstants.filterRelinquishments[indexPath.row - 1] : Constant.MyClassConstants.filterRelinquishments[indexPath.row]
+            
             if exchange.pointsProgram != nil {
                 
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: "ExchangeCell0", for: indexPath) as? AvailablePointCell else { return UITableViewCell() }
@@ -579,13 +587,12 @@ extension WhatToUseViewController: UITableViewDataSource {
                 let numberFormatter = NumberFormatter()
                 numberFormatter.numberStyle = .decimal
                 
-                //let availablePointsNumber = Constant.MyClassConstants.selectedExchangeCigPoints as NSNumber
-                if let pointsCost = Constant.MyClassConstants.selectedExchangePointsCost, let availablePoints = numberFormatter.string(from: pointsCost) {
-                    cell.availablePointValueLabel.text = "\(availablePoints)".localized()
+                if let selectedBucket = Constant.MyClassConstants.selectedAvailabilityInventoryBucket, let pointsCost = selectedBucket.exchangePointsCost {
+                    cell.availablePointValueLabel.text = "\(pointsCost)".localized()
                 } else {
                     cell.availablePointValueLabel.text = "\(0)".localized()
                 }
-                
+              
                 if showInfoIcon {
                     cell.infoButton.isHidden = false
                     cell.checkBOx.isHidden = true
@@ -821,30 +828,36 @@ extension WhatToUseViewController: UITableViewDataSource {
                 cell.checkbox.checked = false
             }
             
-            cell.bedRoomType.text = Constant.MyClassConstants.selectedResort.inventory?.units[Constant.MyClassConstants.selectedUnitIndex].unitSize
-            
-            if let roomSize = (Constant.MyClassConstants.selectedResort.inventory?.units[Constant.MyClassConstants.selectedUnitIndex].unitSize) {
-                cell.bedRoomType.text = Helper.getBrEnums(brType: UnitSize(rawValue: roomSize)!.rawValue)
-            }
-            
-            if let kitchenSize = (Constant.MyClassConstants.selectedResort.inventory?.units[Constant.MyClassConstants.selectedUnitIndex].kitchenType) {
-                let kitchenType = KitchenType(rawValue: kitchenSize)
-                cell.kitchenType.text = Helper.getKitchenEnums(kitchenType: kitchenType!.rawValue)
-            }
-            
-            if let publicSleep = Constant.MyClassConstants.selectedResort.inventory?.units[Constant.MyClassConstants.selectedUnitIndex].publicSleepCapacity {
+            if let selectedBucket = Constant.MyClassConstants.selectedAvailabilityInventoryBucket {
+                cell.bedRoomType.text = Helper.getBrEnums(brType: selectedBucket.unit.unitSize.rawValue)
+                cell.kitchenType.text = Helper.getKitchenEnums(kitchenType: selectedBucket.unit.kitchenType.rawValue)
                 
-                if let privateSleep = Constant.MyClassConstants.selectedResort.inventory?.units[Constant.MyClassConstants.selectedUnitIndex].privateSleepCapacity {
-                    cell.sleeps.text = "\(publicSleep) Total, \(privateSleep) Private".localized()
+                var sleepCapacity = ""
+                if selectedBucket.unit.publicSleepCapacity > 0 {
+                    sleepCapacity += "\(selectedBucket.unit.publicSleepCapacity)" + Constant.CommonLocalisedString.totalString + ", ".localized()
+                }
+                if selectedBucket.unit.privateSleepCapacity > 0 {
+                    sleepCapacity += "\(selectedBucket.unit.privateSleepCapacity)" + Constant.CommonLocalisedString.privateString + "".localized()
+                }
+                cell.sleeps.text = sleepCapacity
+                
+                var currencyCode = "USD"
+                if let currencyCodeValue = selectedBucket.currencyCode {
+                    currencyCode = currencyCodeValue
+                }
+                
+                var countryCode: String?
+                if let currentProfile = Session.sharedSession.contact {
+                    countryCode = currentProfile.getCountryCode()
+                }
+
+                if let currentMembership = Session.sharedSession.selectedMembership, let rentalPrices = selectedBucket.rentalPrices, let bestRentalPrice = IntervalHelper.getBestRentalPrice(currentMembership, prices: rentalPrices) {
+                    cell.setGetawayPrice(with: currencyCode, and: bestRentalPrice.price, and: countryCode)
                 }
             }
-            if let price = Constant.MyClassConstants.selectedResort.inventory?.units[Constant.MyClassConstants.selectedUnitIndex].prices[0].price {
-                cell.setGetawayPrice(with: currencyCode, and: price)
-            }
-            
+
             cell.selectionStyle = UITableViewCellSelectionStyle.none
             return cell
-            
         }
     }
 }
@@ -854,15 +867,16 @@ extension WhatToUseViewController: UITableViewDataSource {
 // Implementing custom delegate method definition
 extension WhatToUseViewController: RenewelViewControllerDelegate {
     
-    func selectedRenewalFromWhoWillBeCheckingIn(renewalArray: [Renewal], selectedRelinquishment: ExchangeRelinquishment) {
+    func selectedRenewalFromWhoWillBeCheckingIn(renewalCoreProduct: Renewal?, renewalNonCoreProduct: Renewal?, selectedRelinquishment: ExchangeRelinquishment) {
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
         guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: "WhoWillBeCheckingInViewController") as? WhoWillBeCheckingInViewController else { return }
         if Constant.MyClassConstants.filterRelinquishments.count > 1 {
-            viewController.filterRelinquishments = Constant.MyClassConstants.filterRelinquishments[self.selectedRow - 1]
+            viewController.selectedRelinquishment = Constant.MyClassConstants.filterRelinquishments[self.selectedRow - 1]
         } else {
-             viewController.filterRelinquishments = Constant.MyClassConstants.filterRelinquishments[self.selectedRow]
+             viewController.selectedRelinquishment = Constant.MyClassConstants.filterRelinquishments[self.selectedRow]
         }
-        viewController.renewalsArray = renewalArray
+        viewController.renewalCoreProduct = renewalCoreProduct
+        viewController.renewalNonCoreProduct = renewalNonCoreProduct
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
@@ -870,17 +884,17 @@ extension WhatToUseViewController: RenewelViewControllerDelegate {
         self.dismiss(animated: true, completion: nil)
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
         guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: "WhoWillBeCheckingInViewController") as? WhoWillBeCheckingInViewController else { return }
-        viewController.filterRelinquishments = selectedRelinquishment
+        viewController.selectedRelinquishment = selectedRelinquishment
         self.navigationController?.pushViewController(viewController, animated: true)
         
     }
     
-    func dismissWhatToUse(renewalArray: [Renewal]) {
+    func dismissWhatToUse(renewalCoreProduct: Renewal?, renewalNonCoreProduct: Renewal?) {
         self.dismiss(animated: true, completion: nil)
         if Constant.MyClassConstants.filterRelinquishments.count > 1 {
-            self.delegate?.navigateToWhoWillBeCheckIn(renewalArray: renewalArray, selectedRow: self.selectedRow, selectedRelinquishment: Constant.MyClassConstants.filterRelinquishments[selectedRow - 1])
+            self.delegate?.navigateToWhoWillBeCheckIn(renewalCoreProduct: renewalCoreProduct, renewalNonCoreProduct: renewalNonCoreProduct, selectedRow: self.selectedRow, selectedRelinquishment: Constant.MyClassConstants.filterRelinquishments[selectedRow - 1])
         } else {
-            self.delegate?.navigateToWhoWillBeCheckIn(renewalArray: renewalArray, selectedRow: self.selectedRow, selectedRelinquishment: Constant.MyClassConstants.filterRelinquishments[selectedRow])
+            self.delegate?.navigateToWhoWillBeCheckIn(renewalCoreProduct: renewalCoreProduct, renewalNonCoreProduct: renewalNonCoreProduct, selectedRow: self.selectedRow, selectedRelinquishment: Constant.MyClassConstants.filterRelinquishments[selectedRow])
         }
     }
     
@@ -892,7 +906,7 @@ extension WhatToUseViewController: RenewelViewControllerDelegate {
             let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
             guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: "RenewalOtherOptionsVC") as? RenewalOtherOptionsVC else { return }
             viewController.selectAction = { [weak self] (selectedType, renewal, relinquishment) in
-                self?.selectedRenewal(selectedRenewal: selectedType, forceRenewals: renewal, filterRelinquishment: relinquishment)
+                self?.selectedRenewal(selectedRenewal: selectedType, forceRenewals: renewal, selectedRelinquishment: relinquishment)
             }
             viewController.forceRenewals = forceRenewals
             if Constant.MyClassConstants.filterRelinquishments.count > 1 {
@@ -908,7 +922,7 @@ extension WhatToUseViewController: RenewelViewControllerDelegate {
             let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
             guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: "RenewalOtherOptionsVC") as? RenewalOtherOptionsVC else { return }
             viewController.selectAction = { [weak self] (selectedType, renewal, relinquishment) in
-                self?.selectedRenewal(selectedRenewal: selectedType, forceRenewals: renewal, filterRelinquishment: relinquishment)
+                self?.selectedRenewal(selectedRenewal: selectedType, forceRenewals: renewal, selectedRelinquishment: relinquishment)
             }
             viewController.forceRenewals = forceRenewals
             if Constant.MyClassConstants.filterRelinquishments.count > 1 {

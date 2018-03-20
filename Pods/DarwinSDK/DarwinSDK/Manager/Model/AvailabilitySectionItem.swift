@@ -45,28 +45,29 @@ open class AvailabilitySectionItem {
     
     open func getResort() -> AvailabilitySectionItemResort? {
         if let rentalResort = self.rentalAvailability {
-            return AvailabilitySectionItemResort(code: rentalResort.resortCode ?? "Unknown",
-                                                 name: rentalResort.resortName ?? "Unknown",
+            return AvailabilitySectionItemResort(code: rentalResort.resortCode ?? "",
+                                                 name: rentalResort.resortName ?? "",
                                                  tier: Tier.fromName(name: rentalResort.tier),
                                                  address: rentalResort.address,
                                                  rating: rentalResort.rating,
                                                  images: rentalResort.images,
-                                                 videos: rentalResort.videos)
+                                                 videos: rentalResort.videos,
+                                                 allInclusive: rentalResort.allInclusive)
         } else  if let exchangeAvailability = self.exchangeAvailability, let exchangeResort = exchangeAvailability.resort {
-            return AvailabilitySectionItemResort(code: exchangeResort.resortCode ?? "Unknown",
-                                                 name: exchangeResort.resortName ?? "Unknown",
+            return AvailabilitySectionItemResort(code: exchangeResort.resortCode ?? "",
+                                                 name: exchangeResort.resortName ?? "",
                                                  tier: Tier.fromName(name: exchangeResort.tier),
                                                  address: exchangeResort.address,
                                                  rating: exchangeResort.rating,
                                                  images: exchangeResort.images,
-                                                 videos: exchangeResort.videos)
+                                                 videos: exchangeResort.videos,
+                                                 allInclusive: exchangeResort.allInclusive)
         }
-        
         return nil
     }
     
-    open func getInventoryBuckets() -> [AvailabilitySectionItemInventoryBucket] {
-        var inventoryBuckets: [AvailabilitySectionItemInventoryBucket] = [AvailabilitySectionItemInventoryBucket]()
+    open func getInventoryBuckets() -> [AvailabilitySectionItemInventoryBucket]? {
+        var inventoryBuckets = [String: AvailabilitySectionItemInventoryBucket]()
         
         if let rentalResort = self.rentalAvailability, let inventory = rentalResort.inventory, !inventory.units.isEmpty {
             for unit in inventory.units {
@@ -77,15 +78,19 @@ open class AvailabilitySectionItem {
                                                                                      platinumScape: unit.platinumScape,
                                                                                      priorityViewing: unit.priorityViewing)
                 
-                let inventoryBucket = AvailabilitySectionItemInventoryBucket(vacationSearchType: unit.vacationSearchType,
+                let inventoryBucket = AvailabilitySectionItemInventoryBucket(key: inventoryBucketUnit.generateKey(),
+                                                                             vacationSearchType: unit.vacationSearchType,
                                                                              trackCodeCategory: TrackCodeCategory.fromName(name: unit.trackCodeCategory),
-                                                                             promotions: unit.promotions,
+                                                                             checkInDate: inventory.checkInDate!,
+                                                                             checkOutDate: inventory.checkOutDate!,
                                                                              unit: inventoryBucketUnit,
+                                                                             promotions: unit.promotions,
                                                                              rentalPrices: unit.prices,
+                                                                             currencyCode: inventory.currencyCode,
                                                                              exchangePointsCost: nil,
                                                                              exchangeMemberPointsRequired: nil)
                 
-                inventoryBuckets.append(inventoryBucket)
+                inventoryBuckets[inventoryBucket.key] = inventoryBucket
             }
         }
         
@@ -99,50 +104,101 @@ open class AvailabilitySectionItem {
                                                                                          platinumScape: unit.platinumScape,
                                                                                          priorityViewing: unit.priorityViewing);
                     
-                    let inventoryBucket = AvailabilitySectionItemInventoryBucket(vacationSearchType: unit.vacationSearchType,
+                    let inventoryBucket = AvailabilitySectionItemInventoryBucket(key: inventoryBucketUnit.generateKey(),
+                                                                                 vacationSearchType: unit.vacationSearchType,
                                                                                  trackCodeCategory: TrackCodeCategory.fromName(name: bucket.trackCodeCategory),
-                                                                                 promotions: bucket.promotions,
+                                                                                 checkInDate: inventory.checkInDate!,
+                                                                                 checkOutDate: inventory.checkOutDate!,
                                                                                  unit: inventoryBucketUnit,
+                                                                                 promotions: bucket.promotions,
                                                                                  rentalPrices: nil,
+                                                                                 currencyCode: nil,
                                                                                  exchangePointsCost: bucket.pointsCost,
                                                                                  exchangeMemberPointsRequired: bucket.memberPointsRequired)
                     
-                    inventoryBuckets.append(inventoryBucket)
+                    if var bucket = inventoryBuckets[inventoryBucket.key] {
+                        bucket.vacationSearchType = VacationSearchType.COMBINED
+                        bucket.exchangePointsCost = inventoryBucket.exchangePointsCost
+                        bucket.exchangeMemberPointsRequired = inventoryBucket.exchangeMemberPointsRequired
+                        inventoryBuckets[inventoryBucket.key] = bucket
+                    } else {
+                        inventoryBuckets[inventoryBucket.key] = inventoryBucket
+                    }
                 }
             }
         }
         
-        return inventoryBuckets
+        var buckets = [AvailabilitySectionItemInventoryBucket]()
+        buckets.append(contentsOf: inventoryBuckets.values)
+    
+        if buckets.isEmpty {
+            return nil
+        } else {
+            return buckets
+        }
     }
     
 }
 
 public struct AvailabilitySectionItemResort {
-    let code: String
-    let name: String
-    let tier: Tier
-    let address: Address?
-    let rating: ResortRating?
-    let images: [Image]
-    let videos: [Video]
+    public let code: String
+    public let name: String
+    public let tier: Tier
+    public let address: Address?
+    public let rating: ResortRating?
+    public let images: [Image]
+    public let videos: [Video]
+    public let allInclusive: Bool
+    
+    public func getDefaultImage(_ size:ImageSize) -> Image? {
+        return self.images.filter { $0.size == size.rawValue }.first
+    }
+   
+    public func getDefaultImage() -> Image? {
+        if let image = getDefaultImage(ImageSize.XLARGE) {
+            return image
+        } else if let image = getDefaultImage(ImageSize.LARGE) {
+            return image
+        } else if let image = getDefaultImage(ImageSize.THUMBNAIL) {
+            return image
+        } else if let image = getDefaultImage(ImageSize.TYNY) {
+            return image
+        } else {
+            return nil
+        }
+    }
+
 }
 
 public struct AvailabilitySectionItemInventoryBucket {
-    let vacationSearchType: VacationSearchType
-    let trackCodeCategory: TrackCodeCategory
-    let promotions: [Promotion]
-    let unit: AvailabilitySectionItemInventoryBucketUnit
-    let rentalPrices: [InventoryPrice]?
-    let exchangePointsCost: Int?
-    let exchangeMemberPointsRequired: Int?
+    public let key: String
+    public var vacationSearchType: VacationSearchType
+    public let trackCodeCategory: TrackCodeCategory
+    public let checkInDate: String
+    public let checkOutDate: String
+    public let unit: AvailabilitySectionItemInventoryBucketUnit
+    public let promotions: [Promotion]?
+    public let rentalPrices: [InventoryPrice]?
+    public let currencyCode: String?
+    public var exchangePointsCost: Int?
+    public var exchangeMemberPointsRequired: Int?
 }
 
 public struct AvailabilitySectionItemInventoryBucketUnit {
-    let unitSize: UnitSize
-    let kitchenType: KitchenType
-    let publicSleepCapacity: Int
-    let privateSleepCapacity: Int
-    let platinumScape: Bool
-    let priorityViewing: Bool
+    public let unitSize: UnitSize
+    public let kitchenType: KitchenType
+    public let publicSleepCapacity: Int
+    public let privateSleepCapacity: Int
+    public let platinumScape: Bool
+    public let priorityViewing: Bool
+    
+    public func generateKey() -> String {
+        var key = ""
+        key += unitSize.rawValue
+        key += kitchenType.rawValue
+        key += "\(publicSleepCapacity)"
+        key += "\(privateSleepCapacity)"
+        return key
+    }
 }
 
