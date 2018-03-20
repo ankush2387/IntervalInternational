@@ -288,50 +288,58 @@ final class RelinquishmentViewModel {
         }
     }
     
+    private func hasNonSelectedLockOffUnits(relinquishment: Relinquishment, and openWeeksStorage: Results<OpenWeeksStorage>) -> Bool {
+        if let lockOffUnits = relinquishment.unit?.lockOffUnits {
+            
+            let lockedOffUnits: [String] = openWeeksStorage
+                .flatMap { $0.openWeeks }
+                .flatMap { $0.openWeeks }
+                .filter {
+                    $0.relinquishmentID == relinquishment.relinquishmentId.unwrappedString ||
+                    relinquishment.unit?.lockOffUnits.flatMap { $0.relinquishmentId }.contains($0.relinquishmentID) ?? false
+                }
+                .flatMap { $0.unitDetails }
+                .flatMap { $0.kitchenType }
+            
+            let lockOffUnitSet = Set(lockOffUnits.flatMap { $0.unitDetailsUIFormatted })
+            let lockedOffUnitSet = Set(lockedOffUnits)
+            
+            if relinquishment.requireAdditionalInfo() && lockedOffUnitSet.count > 0 {
+                return false
+            } else {
+                return lockOffUnitSet.subtracting(lockedOffUnitSet).count > 0
+            }
+        }
+        
+        return false
+    }
+    
     private func filterStored(_ relinquishments: [Relinquishment]) -> Promise<[Relinquishment]> {
         return Promise { [unowned self] resolve, reject in
             
             self.entityDataStore.readObjectsFromDisk(type: OpenWeeksStorage.self, predicate: nil, encoding: .decrypted)
-                .then { openWeeksStore in
+                .then { openWeeksStorage in
                     
-                    let depositedWeeksRelinquishmentIDs = openWeeksStore
+                    let depositedWeeksRelinquishmentIDs = openWeeksStorage
                         .flatMap { $0.openWeeks }
                         .flatMap { $0.deposits }
                         .flatMap { $0.relinquishmentID }
                     
-                    let depositedOpenWeeksRelinquishmentIDs = openWeeksStore
+                    let depositedOpenWeeksRelinquishmentIDs = openWeeksStorage
                         .flatMap { $0.openWeeks }
                         .flatMap { $0.openWeeks }
                         .flatMap { $0.relinquishmentID }
                     
-                    let depositedClubPointsRelinquishmentIDs = openWeeksStore
+                    let depositedClubPointsRelinquishmentIDs = openWeeksStorage
                         .flatMap { $0.openWeeks }
                         .flatMap { $0.clubPoints }
                         .flatMap { $0.relinquishmentId }
                     
                     let relinquishmentIDs = depositedWeeksRelinquishmentIDs + depositedOpenWeeksRelinquishmentIDs + depositedClubPointsRelinquishmentIDs
-                    let hasNonSelectedLockOffUnits = { (relinquishment: Relinquishment) -> Bool in
-                        
-                        if let lockOffUnits = relinquishment.unit?.lockOffUnits {
-                            
-                            let lockedOffUnits: [String] = openWeeksStore
-                                .flatMap { $0.openWeeks }
-                                .flatMap { $0.openWeeks }
-                                .filter { $0.relinquishmentID == relinquishment.relinquishmentId.unwrappedString }
-                                .flatMap { $0.unitDetails }
-                                .flatMap { $0.kitchenType }
-                            
-                            let lockOffUnitSet = Set(lockOffUnits.flatMap { $0.unitDetailsUIFormatted })
-                            let lockedOffUnitSet = Set(lockedOffUnits)
-                            return lockOffUnitSet.subtracting(lockedOffUnitSet).count > 0
-                        }
-                        
-                        return false
-                    }
                     
                     let filteredRelinquishments = relinquishments.filter {
                         if $0.hasLockOffUnits {
-                            return hasNonSelectedLockOffUnits($0)
+                            return self.hasNonSelectedLockOffUnits(relinquishment: $0, and: openWeeksStorage)
                         } else {
                             return !relinquishmentIDs.contains($0.relinquishmentId.unwrappedString)
                         }

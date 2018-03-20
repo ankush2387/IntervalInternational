@@ -137,34 +137,30 @@ final class RelinquishmentViewController: UIViewController {
                 .finally(hideHudAsync)
 
         } else if relinquishment.hasLockOffUnits && relinquishment.requireAdditionalInfo() {
-            
-            viewModel.readPreviouslySelectedLockOffUnits(for: relinquishment).then { [weak self] lockedOffUnits in
-                guard let strongSelf = self, let units = strongSelf.viewModel.processLockOffUnits(for: relinquishment) else {
-                    self?.presentErrorAlert(UserFacingCommonError.generic)
-                    return
-                }
 
-                strongSelf.pushSingleSelectionView(title: "Select lock-off portion".localized(),
-                                                   with: units.map(strongSelf.createCellModel)) { selectedIndex in
+            defer { hideHudAsync() }
+            guard let units = viewModel.processLockOffUnits(for: relinquishment) else {
+                presentErrorAlert(UserFacingCommonError.generic)
+                return
+            }
 
+                pushSingleSelectionView(title: "Select lock-off portion".localized(),
+                                                   with: units.map(createCellModel)) { [weak self] selectedIndex in
+
+                                                    guard let strongSelf = self else { return }
                                                     let selectedUnit = units[selectedIndex]
                                                     relinquishment.relinquishmentId = selectedUnit.relinquishmentId
                                                     relinquishment.fixWeekReservation?.unit = selectedUnit
                                                     strongSelf.pushAdditionalInformationView(for: relinquishment,
                                                                                              didUpdateFixWeekReservation: {
 
-                                    strongSelf.navigationController?.popToViewController(strongSelf, animated: false)
                                     strongSelf.viewModel.relinquish(relinquishment)
                                         .then(strongSelf.popToRelinquishmentViewController)
                                         .then(strongSelf.popFromRelinquishmentViewController)
                                         .onViewError(strongSelf.presentErrorAlert)
                     })
                 }
-                }
-                
-                .onViewError(presentErrorAlert)
-                .finally(hideHudAsync)
-            
+
         } else if relinquishment.requireAdditionalInfo() {
             defer { hideHudAsync() }
             pushAdditionalInformationView(for: relinquishment) { [weak self] in
