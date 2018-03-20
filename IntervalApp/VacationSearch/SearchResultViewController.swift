@@ -291,12 +291,7 @@ class SearchResultViewController: UIViewController {
     func intervalDateItemClicked(_ calendarItem: CalendarItem) {
         showHudAsync()
         
-        if let exactMatchSection = availabilityExactMatchSection, let surroundingMatchSection = availabilitySurroundingMatchSection, exactMatchSection.items.isEmpty, surroundingMatchSection.items.isEmpty {
-            intervalPrint("All empty")
-        } else {
-            let indexPath = IndexPath(row: 0, section: 0)
-            searchResultTableView.scrollToRow(at: indexPath, at: .top, animated: true)
-        }
+        searchResultTableView.reloadData()
         
         if let selectedDate = calendarItem.checkInDate?.dateFromShortFormat() {
             intervalPrint(selectedDate)
@@ -1723,22 +1718,8 @@ extension SearchResultViewController: HelperDelegate {
         
         hideHudAsync()
         createSections()
-        
         searchResultTableView.reloadData()
-        
-        if let exactMatchSection = availabilityExactMatchSection, exactMatchSection.items.isEmpty,
-            let surroundingMatchSection = availabilitySurroundingMatchSection, surroundingMatchSection.items.isEmpty {
-           intervalPrint("All empty")
-        } else {
-            let indexPath = IndexPath(row: 0, section: 0)
-            searchResultTableView.scrollToRow(at: indexPath, at: .top, animated: true)
-        }
     }
-    
-    func resetCalendar() {
-        
-    }
-    
 }
 
 // Implementing custom delegate method definition
