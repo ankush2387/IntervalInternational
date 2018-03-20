@@ -2098,6 +2098,8 @@ public class Helper {
         } else if let rewardType = promotion.rewardType, rewardType.caseInsensitiveCompare("PR") == ComparisonResult.orderedSame, let offerContent = promotion.offerContentFragment, let cleanOfferContent = offerContent.trim() {
             let percent = Int(promotion.amount / originalPrice * 100)
             displayName = "\(percent)% " + cleanOfferContent
+        } else if let rewardType = promotion.rewardType, rewardType.caseInsensitiveCompare("PM") == ComparisonResult.orderedSame, let offerContent = promotion.offerContentFragment, let cleanOfferContent = offerContent.trim() {
+            displayName = cleanOfferContent
         }
         
         //FIXME(Frank): Temporal solution until I review it with Business
