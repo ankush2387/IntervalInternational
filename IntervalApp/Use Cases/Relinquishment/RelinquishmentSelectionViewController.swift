@@ -315,7 +315,7 @@ class RelinquishmentSelectionViewController: UIViewController {
             selectedOpenWeek.resort.append(resort)
             relinquishmentList.openWeeks.append(selectedOpenWeek)
             storedata.openWeeks.append(relinquishmentList)
-            storedata.membeshipNumber = Membership!.memberNumber!
+            storedata.contactID = Session.sharedSession.contactID
             let realm = try! Realm()
             try! realm.write {
                 realm.add(storedata)
@@ -359,7 +359,7 @@ class RelinquishmentSelectionViewController: UIViewController {
             relinquishmentList.clubPoints.append(selectedClubPoint)
             storedata.openWeeks.append(relinquishmentList)
             if let memberNumber = membership?.memberNumber {
-                storedata.membeshipNumber = memberNumber
+                storedata.contactID = Session.sharedSession.contactID
             }
             
             do {
@@ -455,7 +455,7 @@ class RelinquishmentSelectionViewController: UIViewController {
             relinquishmentList.pProgram.append(rlmPProgram)
             storedata.openWeeks.append(relinquishmentList)
             if let memberNumber = Session.sharedSession.selectedMembership?.memberNumber {
-                storedata.membeshipNumber = memberNumber
+                storedata.contactID = Session.sharedSession.contactID
             }
             
             do {
@@ -557,7 +557,7 @@ class RelinquishmentSelectionViewController: UIViewController {
                 relinquishmentList.openWeeks.append(selectedOpenWeek)
                 storedata.openWeeks.append(relinquishmentList)
                 if let memberNumber = Session.sharedSession.selectedMembership?.memberNumber {
-                    storedata.membeshipNumber = memberNumber
+                    storedata.contactID = Session.sharedSession.contactID
                 }
                 do {
                     let realm = try Realm()
@@ -696,7 +696,7 @@ class RelinquishmentSelectionViewController: UIViewController {
         storedata.openWeeks.append(relinquishmentList)
         Constant.MyClassConstants.whatToTradeArray.add(selectedOpenWeek)
         if let membershipNumber = Session.sharedSession.selectedMembership?.memberNumber {
-            storedata.membeshipNumber = membershipNumber
+            storedata.contactID = Session.sharedSession.contactID
         }
         do {
             let realm = try Realm()
@@ -1226,7 +1226,7 @@ extension RelinquishmentSelectionViewController: BedroomSizeViewControllerDelega
                 relinquishmentList.openWeeks.append(selectedOpenWeek)
                 
                 storedata.openWeeks.append(relinquishmentList)
-                storedata.membeshipNumber = Membership!.memberNumber!
+                storedata.contactID = Session.sharedSession.contactID
                 
                 let realm = try! Realm()
                 try! realm.write {

@@ -513,9 +513,9 @@ public class Helper {
         if let membernumber = SelectedMembershipNumber {
             requiredMemberNumber = membernumber
         }
-        guard let realmLocalStorage = realm?.objects(RealmLocalStorage.self).filter("membeshipNumber == '\(requiredMemberNumber)'") else {
+        guard let realmLocalStorage = realm?.objects(RealmLocalStorage.self).filter("contactID == '\(Session.sharedSession.contactID)'") else {
             // As reults object cannot be instantiated. Returning an empty count.
-            let falseCount = realm?.objects(RealmLocalStorage.self).filter("membeshipNumber == '\("")'")
+            let falseCount = realm?.objects(RealmLocalStorage.self).filter("contactID == '\("")'")
             return falseCount!
         }
         
@@ -543,7 +543,7 @@ public class Helper {
         if let membernumber = SelectedMembershipNumber {
             requiredMemberNumber = membernumber
         }
-        let realmLocalStorage = realm.objects(OpenWeeksStorage.self).filter("membeshipNumber == '\(requiredMemberNumber)'")
+        let realmLocalStorage = realm.objects(OpenWeeksStorage.self).filter("contactID == '\(Session.sharedSession.contactID)'")
         
         return realmLocalStorage
         
@@ -593,7 +593,7 @@ public class Helper {
         if let membernumber = SelectedMembershipNumber {
             requiredMemberNumber = membernumber
         }
-        let realmLocalStorage = realm.objects(RealmLocalStorage.self).filter("membeshipNumber == '\(requiredMemberNumber)'")
+        let realmLocalStorage = realm.objects(RealmLocalStorage.self).filter("contactID == '\(Session.sharedSession.contactID)'")
         if (realmLocalStorage.count > 0) {
             for obj in realmLocalStorage {
                 let destination = obj.destinations
@@ -650,7 +650,7 @@ public class Helper {
             if let membernumber = SelectedMembershipNumber {
                 requiredMemberNumber = membernumber
             }
-            let realmLocalStorage = realm.objects(OpenWeeksStorage.self).filter("membeshipNumber == '\(requiredMemberNumber)'")
+            let realmLocalStorage = realm.objects(OpenWeeksStorage.self).filter("contactID == '\(Session.sharedSession.contactID)'")
             if (!realmLocalStorage.isEmpty) {
                 for obj in realmLocalStorage {
                     let openWeeks = obj.openWeeks
@@ -754,7 +754,7 @@ public class Helper {
         if let membernumber = SelectedMembershipNumber {
             requiredMemberNumber = membernumber
         }
-        let realmLocalStorage = realm.objects(RealmLocalStorage.self).filter("membeshipNumber == '\(requiredMemberNumber)'")
+        let realmLocalStorage = realm.objects(RealmLocalStorage.self).filter("contactID == '\(Session.sharedSession.contactID)'")
         if (realmLocalStorage.count > 0) {
             
             for obj in realmLocalStorage {
@@ -784,7 +784,7 @@ public class Helper {
         if let membernumber = SelectedMembershipNumber {
             requiredMemberNumber = membernumber
         }
-        let realmLocalStorage = realm.objects(RealmLocalStorage.self).filter("membeshipNumber == '\(requiredMemberNumber)'")
+        let realmLocalStorage = realm.objects(RealmLocalStorage.self).filter("contactID == '\(Session.sharedSession.contactID)'")
         if (realmLocalStorage.count > 0) {
             
             for obj in realmLocalStorage {

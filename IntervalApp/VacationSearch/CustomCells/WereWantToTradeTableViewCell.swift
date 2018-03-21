@@ -296,7 +296,7 @@ extension WereWantToTradeTableViewCell: WhereToGoCollectionViewCellDelegate {
                                     selectedOpenWeek.resort.append(resort)
                                     relinquishmentList.openWeeks.append(selectedOpenWeek)
                                     storedata.openWeeks.append(relinquishmentList)
-                                    storedata.membeshipNumber = Membership!.memberNumber!
+                                    storedata.contactID = Session.sharedSession.contactID
                                     
                                     let realm = try! Realm()
                                     try! realm.write {

@@ -145,7 +145,7 @@ final class RelinquishmentViewModel {
                     selectedOpenWeek.resort.append(resort)
                     relinquishmentList.openWeeks.append(selectedOpenWeek)
                     storedata.openWeeks.append(relinquishmentList)
-                    storedata.membeshipNumber = self.sessionStore.selectedMembership?.memberNumber ?? ""
+                    storedata.contactID = self.sessionStore.contactID
                     self.entityDataStore.writeToDisk(storedata, encoding: .decrypted).onError(reject)
                 }
                 
@@ -156,12 +156,7 @@ final class RelinquishmentViewModel {
     }
     
     func relinquish(_ clubPoints: ClubPoints) -> Promise<Void> {
-        return Promise { resolve, reject in
-            
-            guard let membershipNumber = self.sessionStore.selectedMembership?.memberNumber else {
-                reject(UserFacingCommonError.invalidSession)
-                return
-            }
+        return Promise { [unowned self] resolve, reject in
             
             let openWeeksEntity = OpenWeeksStorage()
             let tradeLocalDataEntity = TradeLocalData()
@@ -171,7 +166,7 @@ final class RelinquishmentViewModel {
             tradeLocalDataEntity.clubPoints.append(clubPoints)
             
             openWeeksEntity.openWeeks.append(tradeLocalDataEntity)
-            openWeeksEntity.membeshipNumber = membershipNumber
+            openWeeksEntity.contactID = self.sessionStore.contactID
             
             self.entityDataStore.writeToDisk(openWeeksEntity, encoding: .decrypted)
                 .then(resolve)
@@ -184,8 +179,7 @@ final class RelinquishmentViewModel {
             
             guard let relinquishmentID = relinquishmentID,
                 let availablePoints = availablePoints,
-                let code = code,
-                let memberNumber = self.sessionStore.selectedMembership?.memberNumber else {
+                let code = code else {
                     reject(UserFacingCommonError.generic)
                     return
             }
@@ -200,7 +194,7 @@ final class RelinquishmentViewModel {
             
             tradeLocalDataEntity.pProgram.append(pointsEntity)
             openWeeksEntity.openWeeks.append(tradeLocalDataEntity)
-            openWeeksEntity.membeshipNumber = memberNumber
+            openWeeksEntity.contactID = self.sessionStore.contactID
             
             self.entityDataStore.writeToDisk(openWeeksEntity, encoding: .decrypted)
                 .then(resolve)
@@ -359,7 +353,7 @@ final class RelinquishmentViewModel {
             }
             
             self.entityDataStore.readObjectsFromDisk(type: OpenWeeksStorage.self,
-                                                     predicate: "membeshipNumber == '\(self.sessionStore.selectedMembership?.memberNumber ?? "")'",
+                                                     predicate: "contactID == '\(self.sessionStore.contactID)'",
                 encoding: .decrypted)
                 
                 .then { openWeeksStorage in
@@ -573,7 +567,7 @@ final class RelinquishmentViewModel {
             selectedOpenWeek.resort.append(resort)
             relinquishmentList.deposits.append(selectedOpenWeek)
             storedata.openWeeks.append(relinquishmentList)
-            storedata.membeshipNumber = self.sessionStore.selectedMembership?.memberNumber ?? ""
+            storedata.contactID = self.sessionStore.contactID
             self.entityDataStore.writeToDisk(storedata, encoding: .decrypted)
                 .then(resolve)
                 .onError { _ in reject(UserFacingCommonError.generic) }
@@ -600,7 +594,7 @@ final class RelinquishmentViewModel {
             selectedOpenWeek.resort.append(resort)
             relinquishmentList.openWeeks.append(selectedOpenWeek)
             storedata.openWeeks.append(relinquishmentList)
-            storedata.membeshipNumber = self.sessionStore.selectedMembership?.memberNumber ?? ""
+            storedata.contactID = self.sessionStore.contactID
             self.entityDataStore.writeToDisk(storedata, encoding: .decrypted)
                 .then(resolve)
                 .onError { _ in reject(UserFacingCommonError.generic) }

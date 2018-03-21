@@ -12,17 +12,15 @@ import DarwinSDK
 import DarwinSDK.Swift
 
 class RealmLocalStorage: Object {
-    
     var resorts = List<ResortList>()
     var destinations = List<DestinationList>()
-    dynamic var membeshipNumber = ""
-    
+    dynamic var contactID = ""
 }
 
 final class OpenWeeksStorage: Object {
     var resorts = List<ResortList>()
     var openWeeks = List<TradeLocalData>()
-    var membeshipNumber = ""
+    dynamic var contactID = ""
 }
 
 final class DestinationList: Object {

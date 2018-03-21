@@ -61,7 +61,7 @@ class FlexchangeSearchViewController: UIViewController {
         if let membernumber = selectedMembershipNumber {
             requiredMemberNumber = membernumber
         }
-        let predicate = "membeshipNumber == '\(requiredMemberNumber)'"
+        let predicate = "contactID == '\(Session.sharedSession.contactID)'"
         entityStore.readObjectsFromDisk(type: OpenWeeksStorage.self, predicate: predicate, encoding: .decrypted)
             .then { openWeeksStorage in
                 self.availableRelinquishmentIdArray.append(contentsOf: openWeeksStorage

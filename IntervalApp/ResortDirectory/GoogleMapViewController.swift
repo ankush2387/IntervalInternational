@@ -318,7 +318,7 @@ class GoogleMapViewController: UIViewController {
                             desList.territorrycode = ""
                         }
                         storedata.destinations.append(desList)
-                        storedata.membeshipNumber = Membership?.memberNumber ?? ""
+                        storedata.contactID = Session.sharedSession.contactID
                         Constant.MyClassConstants.realmStoredDestIdOrCodeArray.add(dictValue.destinationId)
                         
                         let realm = try! Realm()
@@ -355,7 +355,7 @@ class GoogleMapViewController: UIViewController {
                 resortList.territorrycode = address?.territoryCode ?? ""
                 Constant.MyClassConstants.realmStoredDestIdOrCodeArray.add(dict.resortCode ?? "")
                 storedata.resorts.append(resortList)
-                storedata.membeshipNumber = Membership?.memberNumber ?? ""
+                storedata.contactID = Session.sharedSession.contactID
                 let realm = try! Realm()
                 try! realm.write {
                     realm.add(storedata)
@@ -586,7 +586,6 @@ class GoogleMapViewController: UIViewController {
         if sourceController == Constant.MyClassConstants.vacationSearch {
             
             let storedata = RealmLocalStorage()
-            let Membership = Session.sharedSession.selectedMembership
             let resortList = ResortList()
             
             for object in  Constant.MyClassConstants.resortsArray {
@@ -601,7 +600,7 @@ class GoogleMapViewController: UIViewController {
             }
             if Constant.MyClassConstants.resortsArray.count > 0 {
                 Constant.MyClassConstants.realmStoredDestIdOrCodeArray.add(Constant.MyClassConstants.resortsArray[0].resortCode as Any)
-                storedata.membeshipNumber = Membership!.memberNumber!
+                storedata.contactID = Session.sharedSession.contactID
             }
             
             storedata.resorts.append(resortList)

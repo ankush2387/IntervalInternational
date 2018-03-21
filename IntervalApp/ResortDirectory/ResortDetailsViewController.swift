@@ -338,7 +338,7 @@ class ResortDetailsViewController: UIViewController {
                 }
                 
                 storedata.resorts.append(resortList)
-                storedata.membeshipNumber = membership.memberNumber ?? ""
+                storedata.contactID = Session.sharedSession.contactID
                 
                 try realm.write {
                     realm.add(storedata)

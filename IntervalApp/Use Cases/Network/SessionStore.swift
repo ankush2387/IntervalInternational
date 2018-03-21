@@ -10,6 +10,7 @@ import Foundation
 import DarwinSDK
 
 protocol SessionStore {
+    var contactID: String { get }
     var contact: Contact? { get set }
     var appSettings: Settings? { get set }
     var selectedMembership: Membership? { get set }

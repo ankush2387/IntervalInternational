@@ -24,6 +24,8 @@ final class Session: SessionStore {
     var appSettings: Settings?
     var selectedMembership: Membership?
 
+    var contactID: String { return String(contact?.contactId ?? -1) }
+    
     var clientAccessToken: DarwinAccessToken? {
         get { return clientToken }
         set { clientToken = newValue }
