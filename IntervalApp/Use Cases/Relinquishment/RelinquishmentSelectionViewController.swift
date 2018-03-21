@@ -342,7 +342,7 @@ class RelinquishmentSelectionViewController: UIViewController {
             let membership = Session.sharedSession.selectedMembership
             let relinquishmentList = TradeLocalData()
 
-            let selectedClubPoint = ClubPoints()
+            let selectedClubPoint = ClubPointsEntity()
             if let relinquishmentId = Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId {
                 selectedClubPoint.relinquishmentId = relinquishmentId
                 Constant.MyClassConstants.isClubPointsAvailable = true

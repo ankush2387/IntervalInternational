@@ -76,7 +76,7 @@ final class TradeLocalData: Object {
     var openWeeks = List<OpenWeeks>()
     var pProgram = List<rlmPointsProgram>()
     var deposits = List<Deposits>()
-    var clubPoints = List<ClubPoints>()
+    var clubPoints = List<ClubPointsEntity>()
 }
 
 final class rlmPointsProgram: Object {
@@ -119,7 +119,7 @@ final class Deposits: Object {
     var floatDetails = List<ResortFloatDetails>()
 }
 
-final class ClubPoints: Object {
+final class ClubPointsEntity: Object {
     dynamic var relinquishmentId = ""
     var resort = List<ResortList>()
     dynamic var pointsSpent = 0

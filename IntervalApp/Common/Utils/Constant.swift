@@ -625,7 +625,7 @@ class Constant: NSObject {
     // Enum to store openWeek types
     enum RelinquishmentTypes {
         case Deposit(Deposits)
-        case ClubPoints(ClubPoints)
+        case ClubPoints(ClubPointsEntity)
         case CIGPoints(rlmPointsProgram)
         case FixedWeek(OpenWeeks)
     }

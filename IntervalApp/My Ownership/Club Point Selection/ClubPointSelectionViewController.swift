@@ -49,7 +49,7 @@ class ClubPointSelectionViewController: UIViewController {
     
     @IBOutlet private weak var insidesecondview: UIView!
 
-    var didSave: ((ClubPoints) -> Void)?
+    var didSave: ((ClubPointsEntity) -> Void)?
 
     let infoImageView = UIImageView()
     var selectedViewIndex = 0
@@ -148,7 +148,7 @@ class ClubPointSelectionViewController: UIViewController {
         
                 pointMatrixType.unit = invenUnit
          ExchangeClient.updatePointsMatrixReservation(Session.sharedSession.userAccessToken, relinquishmentId: relinquishmentID, reservation: pointMatrixType, onSuccess: { [weak self] (response) in
-            let clubPoints = ClubPoints()
+            let clubPoints = ClubPointsEntity()
             clubPoints.isPointsMatrix = true
             clubPoints.pointsSpent = invenUnit.clubPoints
             

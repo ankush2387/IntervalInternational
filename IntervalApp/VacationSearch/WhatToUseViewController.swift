@@ -63,7 +63,7 @@ class WhatToUseViewController: UIViewController {
     
     @IBAction func checkBoxPressed(_ sender: IUIKCheckbox) {
 
-        //Constant.MyClassConstants.searchBothExchange = true
+        Constant.MyClassConstants.searchBothExchange = true
         selectedRow = sender.tag
         selectedRowSection = sender.accessibilityElements?.first as? Int ?? 0
         let indexPath = NSIndexPath(row:selectedRow, section:selectedRowSection)
@@ -617,154 +617,86 @@ extension WhatToUseViewController: UITableViewDataSource {
                 
                 return cell
                 
-            } else if (exchange.clubPoints) != nil {
+            } else if let clubPoints = exchange.clubPoints {
                 
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.exchangeCell0, for: indexPath) as? AvailablePointCell else { return UITableViewCell() }
-                
                 cell.tag = indexPath.row
                 cell.checkBOx.tag = indexPath.row
                 cell.checkBOx.isUserInteractionEnabled = false
-                cell.pointsInfoLabel.text = exchange.clubPoints?.resort?.resortName
-                
-                guard let points = exchange.clubPoints?.pointsSpent else {
-                    return cell
-                }
-                
-                cell.availablePointValueLabel.text = String(points)
-                
                 cell.checkBOx.accessibilityElements = [indexPath.section]
+                cell.setupClubPointsCell(clubPoints: clubPoints)
                 
                 if self.selectedRow == indexPath.row && self.selectedRowSection == indexPath.section {
-                    
                     cell.mainView.layer.cornerRadius = 7
                     cell.mainView.layer.borderWidth = 2
                     cell.mainView.layer.borderColor = UIColor.orange.cgColor
                     cell.checkBOx.checked = true
                 } else {
-                    
                     cell.mainView.layer.cornerRadius = 7
                     cell.mainView.layer.borderWidth = 2
                     cell.mainView.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
                     cell.checkBOx.checked = false
                 }
+                
                 cell.layer.cornerRadius = 7
                 cell.selectionStyle = UITableViewCellSelectionStyle.none
                 return cell
                 
-            } else if (exchange.openWeek) != nil {
+            } else if let openWeek = exchange.openWeek {
                 
                 if showUpgrade == true {
                     
-                    guard let cell = tableView.dequeueReusableCell(withIdentifier: "ExchangeCell2", for: indexPath) as? RelinquishmentSelectionOpenWeeksCellWithUpgrade else { return UITableViewCell() }
+                    guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.exchangeCell2, for: indexPath) as? RelinquishmentSelectionOpenWeeksCellWithUpgrade else { return UITableViewCell() }
                     cell.tag = indexPath.row
                     cell.checkBox.tag = indexPath.row
                     cell.checkBox.accessibilityElements = [indexPath.section]
                     cell.checkBox.isUserInteractionEnabled = false
+                    cell.setupOpenWeekCell(openWeek: openWeek)
+                    
                     if self.selectedRow == indexPath.row && self.selectedRowSection == indexPath.section {
-                        
                         cell.mainView.layer.cornerRadius = 7
                         cell.mainView.layer.borderWidth = 2
                         cell.mainView.layer.borderColor = UIColor.orange.cgColor
                         cell.checkBox.checked = true
                     } else {
-                        
                         cell.mainView.layer.cornerRadius = 7
                         cell.mainView.layer.borderWidth = 2
                         cell.mainView.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
                         cell.checkBox.checked = false
                     }
-                    
-                    cell.resortName.text = exchange.openWeek?.resort?.resortName ?? "".localized()
-                    cell.yearLabel.text = "\(String(describing: exchange.openWeek?.relinquishmentYear ?? 0))".localized()
-                    cell.totalWeekLabel.text = "Week \(Constant.getWeekNumber(weekType: exchange.openWeek?.weekNumber ?? ""))".localized()
-                    cell.bedroomSizeAndKitchenClient.text = "\(String(describing: Helper.getBedroomNumbers(bedroomType:exchange.openWeek?.unit?.unitSize ?? ""))), \(Helper.getKitchenEnums(kitchenType:exchange.openWeek?.unit?.kitchenType ?? ""))".localized()
-                    if let unit = exchange.openWeek?.unit {
-                        cell.totalSleepAndPrivate.text = "Sleeps \(unit.publicSleepCapacity) total, \(unit.privateSleepCapacity) Private".localized()
-                    }
-                    guard let dateString = exchange.openWeek?.checkInDate else {
-                        return cell
-                    }
-                    guard let date = dateString.dateFromString(for: Constant.MyClassConstants.dateFormat) else {
-                        cell.dayAndDateLabel.text = nil
-                        return cell
-                    }
-                    let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
-                    let myComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: date)
-                    let day = myComponents.day ?? 0
-                    var month = ""
-                    if day < 10 {
-                        month = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month ?? 0)) 0\(day)"
-                    } else {
-                        month = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month ?? 0)) \(day)"
-                    }
-                    
-                    cell.dayAndDateLabel.text = month.uppercased()
+       
                     cell.selectionStyle = UITableViewCellSelectionStyle.none
                     return cell
                     
                 } else {
                     
                     guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.exchangeCell1, for: indexPath) as? RelinquishmentSelectionOpenWeeksCell else { return UITableViewCell() }
-                    
                     cell.tag = indexPath.row
                     cell.checkBox.tag = indexPath.row
                     cell.checkBox.accessibilityElements = [indexPath.section]
+                    cell.setupOpenWeekCell(openWeek: openWeek)
+                    
                     if self.selectedRow == indexPath.row && self.selectedRowSection == indexPath.section {
-                        
                         cell.mainView.layer.cornerRadius = 7
                         cell.mainView.layer.borderWidth = 2
                         cell.mainView.layer.borderColor = UIColor.orange.cgColor
                         cell.checkBox.checked = true
                     } else {
-                        
                         cell.mainView.layer.cornerRadius = 7
                         cell.mainView.layer.borderWidth = 2
                         cell.mainView.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
                         cell.checkBox.checked = false
                     }
-                    
-                    cell.resortName.text = exchange.openWeek?.resort?.resortName ?? ""
-                    cell.yearLabel.text = "\(String(describing: exchange.openWeek?.relinquishmentYear ?? 0))".localized()
-                    cell.totalWeekLabel.text = "Week \(Constant.getWeekNumber(weekType: exchange.openWeek?.weekNumber ?? ""))".localized()
-                    cell.bedroomSizeAndKitchenClient.text = "\(String(describing: Helper.getBedroomNumbers(bedroomType:exchange.openWeek?.unit?.unitSize ?? ""))), \(Helper.getKitchenEnums(kitchenType:exchange.openWeek?.unit?.kitchenType ?? ""))".localized()
-                    if let unit = exchange.openWeek?.unit {
-                        cell.totalSleepAndPrivate.text = "Sleeps \(unit.publicSleepCapacity) total, \(unit.privateSleepCapacity) Private".localized()
-                    }
-                    
-                    guard let dateString = exchange.openWeek?.checkInDate else {
-                        return cell
-                    }
-                    guard let date = dateString.dateFromString(for: Constant.MyClassConstants.dateFormat) else {
-                        cell.dayAndDateLabel.text = nil
-                        return cell
-                    }
-                    let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
-                    let myComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: date)
-                    let day = myComponents.day ?? 0
-                    var month = ""
-                    if day < 10 {
-                        month = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month ?? 0)) 0\(day)"
-                    } else {
-                        month = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month ?? 0)) \(day)"
-                    }
-                    
-                    //display Promotion
-                    if let promotion = exchange.openWeek?.promotion {
-                        cell.promLabel.text = promotion.offerName
-                        cell.promImgView.image = UIImage(named: "PromoImage")
-                    } else {
-                        cell.promLabel.text = ""
-                        cell.promImgView.image = nil
-                    }
-                    cell.dayAndDateLabel.text = month.uppercased()
+
                     cell.selectionStyle = UITableViewCellSelectionStyle.none
                     return cell
                 }
-            } else if let deposits = exchange.deposit {
+                
+            } else if let deposit = exchange.deposit {
                 
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.exchangeCell1, for: indexPath) as! RelinquishmentSelectionOpenWeeksCell
                 cell.tag = indexPath.row
-                cell.setupDepositedCell(deposit: deposits)
+                cell.setupDepositedCell(deposit: deposit)
                 
                 if self.selectedRow == indexPath.row && self.selectedRowSection == indexPath.section {
                     cell.mainView.layer.cornerRadius = 7
@@ -783,22 +715,21 @@ extension WhatToUseViewController: UITableViewDataSource {
             } else {
                 
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.exchangeCell0, for: indexPath) as! AvailablePointCell
-                
                 cell.tag = indexPath.row
                 cell.checkBOx.tag = indexPath.row
                 cell.checkBOx.accessibilityElements = [indexPath.section]
                 cell.checkBOx.isUserInteractionEnabled = false
                 
+                //FIXME(Frank): Why empty ?
                 cell.availablePointValueLabel.text = ""
+                //cell.pointsInfoLabel.text = ""
                 
                 if self.selectedRow == indexPath.row && self.selectedRowSection == indexPath.section {
-                    
                     cell.mainView.layer.cornerRadius = 7
                     cell.mainView.layer.borderWidth = 2
                     cell.mainView.layer.borderColor = UIColor.orange.cgColor
                     cell.checkBOx.checked = true
                 } else {
-                    
                     cell.mainView.layer.cornerRadius = 7
                     cell.mainView.layer.borderWidth = 2
                     cell.mainView.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
@@ -811,7 +742,7 @@ extension WhatToUseViewController: UITableViewDataSource {
         default :
             
             //***** Configure and return search vacation cell *****//
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "GetawaysCell", for: indexPath) as? GetawayCell else { return UITableViewCell() }
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.getawaysCell, for: indexPath) as? GetawayCell else { return UITableViewCell() }
             cell.tag = indexPath.row
             cell.checkbox.tag = indexPath.row
             cell.checkbox.accessibilityElements = [indexPath.section]

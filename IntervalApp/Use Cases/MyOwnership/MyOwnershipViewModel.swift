@@ -167,7 +167,7 @@ final class MyOwnershipViewModel {
         }
     }
 
-    func relinquish(_ clubPoints: ClubPoints) -> Promise<Void> {
+    func relinquish(_ clubPoints: ClubPointsEntity) -> Promise<Void> {
         return Promise { resolve, reject in
 
             guard let membershipNumber = self.sessionStore.selectedMembership?.memberNumber else {

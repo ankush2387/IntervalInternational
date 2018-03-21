@@ -155,9 +155,14 @@ final class RelinquishmentViewModel {
         }
     }
     
-    func relinquish(_ clubPoints: ClubPoints) -> Promise<Void> {
+    func relinquish(_ clubPoints: ClubPointsEntity) -> Promise<Void> {
         return Promise { [unowned self] resolve, reject in
-            
+
+            guard let membershipNumber = self.sessionStore.selectedMembership?.memberNumber else {
+                reject(UserFacingCommonError.invalidSession)
+                return
+            }
+
             let openWeeksEntity = OpenWeeksStorage()
             let tradeLocalDataEntity = TradeLocalData()
             let pointsEntity = rlmPointsProgram()

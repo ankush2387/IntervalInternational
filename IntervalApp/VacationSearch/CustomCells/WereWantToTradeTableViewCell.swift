@@ -135,9 +135,9 @@ extension WereWantToTradeTableViewCell: UICollectionViewDataSource {
                         cell.lblTitle.text = "\(deposits.resort[0].resortName)/ \(deposits.relinquishmentYear)"
                     }
                     
-                } else if object.isKind(of: List<ClubPoints>.self) {
+                } else if object.isKind(of: List<ClubPointsEntity>.self) {
                     
-                    guard let clubPoints = object as? List<ClubPoints> else { return cell }
+                    guard let clubPoints = object as? List<ClubPointsEntity> else { return cell }
                     
                     if clubPoints[0].isPointsMatrix == false {
                         let resortNameWithYear = "\(clubPoints[0].resort[0].resortName)/\(clubPoints[0].relinquishmentYear)"
