@@ -16,111 +16,149 @@ fastlane_version "2.39.1"
 default_platform :ios
 desc "Updates the provisioning profile on computer"
 lane :certs do
-cert
-sigh(force: true)
+  cert
+  sigh(force: true)
 end
 
 lane :incrementBuild do
-# Increment project build number
-increment_build_number(xcodeproj: "/Users/aolivas/interval-app-ios/IntervalApp.xcodeproj")
-buildNumber = get_build_number
+  # Increment project build number
+  increment_build_number(xcodeproj: "/Users/aolivas/interval-app-ios/IntervalApp.xcodeproj")
+  buildNumber = get_build_number
 
-# Commit build number bump
-commit_version_bump(force: true, message: "Auto-increment build version: " + buildNumber)
-push_to_git_remote(remote: "origin", local_branch: "HEAD", remote_branch: "develop", force: true, tags: true)
+  # Commit build number bump
+  commit_version_bump(force: true, message: "Auto-increment build version: " + buildNumber)
+  push_to_git_remote(remote: "origin", local_branch: "HEAD", remote_branch: "develop", force: true, tags: true)
 end
 
 desc "Builds development target and uploads to HockeyApp"
 lane :development do
 
-# Run Unit Tests
-scan(scheme: "IntervalApp")
+  # Run Unit Tests
+  scan(scheme: "IntervalApp")
 
-# Increment project build number
-increment_build_number(xcodeproj: "/Users/aolivas/bamboo-agent-home/xml-data/build-dir/IM-IMB-BLD/IntervalApp.xcodeproj")
-buildNumber = get_build_number
+  # Increment project build number
+  increment_build_number(xcodeproj: "/Users/aolivas/bamboo-agent-home/xml-data/build-dir/IM-IMB-BLD/IntervalApp.xcodeproj")
+  buildNumber = get_build_number
 
-# Commit build number bump
-commit_version_bump(force: true, message: "Auto-increment build version: " + buildNumber)
+  # Commit build number bump
+  commit_version_bump(force: true, message: "Auto-increment build version: " + buildNumber)
 
-# Push to remote version bump
-sh("git remote set-url --push origin https://aolivas@bitbucket.iilg.com/scm/iimob/interval-app-ios.git")
-sh("git remote -v")
-sh("git push")
+  # Push to remote version bump
+  sh("git remote set-url --push origin https://aolivas@bitbucket.iilg.com/scm/iimob/interval-app-ios.git")
+  sh("git remote -v")
+  sh("git push")
 
-# Shut down ethernet connection
-sh("sudo ifconfig en0 down")
+  # Shut down ethernet connection
+  sh("sudo ifconfig en0 down")
 
-# Package IPA with release configurations
-gym(workspace: "IntervalApp.xcworkspace",
-configuration: "Release",
-scheme: "IntervalApp",
-silent: true,
-clean: true,
-export_method: "development"
-)
+  # Package IPA with release configurations
+  gym(workspace: "IntervalApp.xcworkspace",
+    configuration: "Release",
+    scheme: "IntervalApp",
+    silent: true,
+    clean: true,
+    export_method: "development"
+  )
 
-# Upload newly created IPA to HockeyApp
-hockey(api_token: "98ee87f6ff104da086210a5ff4597b44",
-public_identifier: "bde61378ac204256b1e52748bd34f688",
-notes: "Changelog",
-notify: '1',
-status: "2",
-mandatory: "1",
-notes: "Develop Build (Uploaded via fastlane)."
-)
+  # Upload newly created IPA to HockeyApp
+  hockey(api_token: "98ee87f6ff104da086210a5ff4597b44",
+    public_identifier: "bde61378ac204256b1e52748bd34f688",
+    notes: "Changelog",
+    notify: '1',
+    status: "2",
+    mandatory: "1",
+    notes: "Develop Build (Uploaded via fastlane)."
+  )
 
-# Activate ethernet connection
-sh("sudo ifconfig en0 up")
+  # Activate ethernet connection
+  sh("sudo ifconfig en0 up")
 
 end
 
 desc "Uploads a quick build to hockey"
 lane :beta do
 
-# Increment project build number
-increment_build_number(xcodeproj: "./IntervalApp.xcodeproj")
-buildNumber = get_build_number
+  # Increment project build number
+  increment_build_number(xcodeproj: "./IntervalApp.xcodeproj")
+  buildNumber = get_build_number
 
-# Commit build number bump
-commit_version_bump(force: true, message: "Auto-increment build version: " + buildNumber)
-push_to_git_remote(remote: "origin", local_branch: "HEAD", remote_branch: "develop", force: true, tags: true)
+  # Commit build number bump
+  commit_version_bump(force: true, message: "Auto-increment build version: " + buildNumber)
+  push_to_git_remote(remote: "origin", local_branch: "HEAD", remote_branch: "develop", force: true, tags: true)
 
-# Shut down ethernet connection
-sh("sudo ifconfig en0 down")
+  # Shut down ethernet connection
+  sh("sudo ifconfig en0 down")
 
-# Package IPA with release configurations
-gym(workspace: "IntervalApp.xcworkspace",
-configuration: "Release",
-scheme: "IntervalApp",
-silent: true,
-clean: true,
-export_method: "development"
-)
+  # Package IPA with release configurations
+  gym(workspace: "IntervalApp.xcworkspace",
+    configuration: "Release",
+    scheme: "IntervalApp",
+    silent: true,
+    clean: true,
+    export_method: "development"
+  )
 
-# Upload newly created IPA to HockeyApp
-hockey(api_token: "98ee87f6ff104da086210a5ff4597b44",
-public_identifier: "bde61378ac204256b1e52748bd34f688",
-notes: "Changelog",
-notify: '1',
-status: "2",
-mandatory: "1",
-notes: "Develop Build (Uploaded via fastlane)."
-)
+  # Upload newly created IPA to HockeyApp
+  hockey(api_token: "98ee87f6ff104da086210a5ff4597b44",
+    public_identifier: "bde61378ac204256b1e52748bd34f688",
+    notes: "Changelog",
+    notify: '1',
+    status: "2",
+    mandatory: "1",
+    notes: "Develop Build (Uploaded via fastlane)."
+  )
 
-# Activate ethernet connection
-sh("sudo ifconfig en0 up")
+  # Activate ethernet connection
+  sh("sudo ifconfig en0 up")
+
+end
+
+desc "Uploads a quick build to hockey using VPN. Remember do a manual push."
+lane :betavpn do
+
+  # Increment project build number
+  increment_build_number(xcodeproj: "./IntervalApp.xcodeproj")
+  buildNumber = get_build_number
+
+  # Commit build number bump
+  commit_version_bump(force: true, message: "Auto-increment build version: " + buildNumber)
+  #push_to_git_remote(remote: "origin", local_branch: "HEAD", remote_branch: "develop", force: true, tags: true)
+
+  # Shut down ethernet connection
+  #sh("sudo ifconfig en0 down")
+
+  # Package IPA with release configurations
+  gym(workspace: "IntervalApp.xcworkspace",
+    configuration: "Release",
+    scheme: "IntervalApp",
+    silent: true,
+    clean: true,
+    export_method: "development"
+  )
+
+  # Upload newly created IPA to HockeyApp
+  hockey(api_token: "98ee87f6ff104da086210a5ff4597b44",
+    public_identifier: "bde61378ac204256b1e52748bd34f688",
+    notes: "Changelog",
+    notify: '1',
+    status: "2",
+    mandatory: "1",
+    notes: "Develop Build (Uploaded via fastlane)."
+  )
+
+  # Activate ethernet connection
+  #sh("sudo ifconfig en0 up")
 
 end
 
 platform :ios do
-before_all do
-cocoapods
-end
+  before_all do
+    cocoapods
+  end
 
-desc "Runs all the tests"
-lane :test do
-scan(scheme: "IntervalApp", output_types: "junit")
-end
+  desc "Runs all the tests"
+  lane :test do
+    scan(scheme: "IntervalApp", output_types: "junit")
+  end
 end
 
