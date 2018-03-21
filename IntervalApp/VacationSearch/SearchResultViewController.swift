@@ -156,11 +156,29 @@ class SearchResultViewController: UIViewController {
         }
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        scrollToActiveDate()
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
+    private func scrollToActiveDate() {
+        let numberOfRecords = Constant.MyClassConstants.calendarDatesArray.count
+        let vacationSearchCheckInDate = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate
+
+        for index in 0..<numberOfRecords {
+            let calendarItemCheckInDate = Constant.MyClassConstants.calendarDatesArray[index].checkInDate
+            if vacationSearchCheckInDate == calendarItemCheckInDate {
+                searchResultColelctionView.scrollToItem(at: IndexPath(row: index, section: 0), at: .centeredHorizontally, animated: true)
+                break
+            }
+        }
+    }
+
     func getSavedDestinationsResorts(storedData: Results <RealmLocalStorage>, searchCriteria: VacationSearchCriteria) {
         //if let storedData = storedData.count {}
         if let firstDestination = storedData.first?.destinations[0] {
