@@ -71,12 +71,12 @@ class CreateAlertViewController: UIViewController {
         let menuButton = UIBarButtonItem(image: #imageLiteral(resourceName: "BackArrowNav"), style: .plain, target: self, action: #selector(menuBackButtonPressed(sender:)))
         menuButton.tintColor = UIColor.white
         
-        self.navigationItem.leftBarButtonItem = menuButton
+        navigationItem.leftBarButtonItem = menuButton
         
-        self.textfieldBorderView.layer.cornerRadius = 7
-        self.textfieldBorderView.layer.borderWidth = 2
-        self.textfieldBorderView.layer.borderColor = Constant.RGBColorCode.textFieldBorderRGB
-        self.nameTextField.delegate = self
+        textfieldBorderView.layer.cornerRadius = 7
+        textfieldBorderView.layer.borderWidth = 2
+        textfieldBorderView.layer.borderColor = Constant.RGBColorCode.textFieldBorderRGB
+        nameTextField.delegate = self
         
         guard let iPadFont = UIFont(name: Constant.fontName.helveticaNeueBold, size: 25) else { return }
         var attributes = [
@@ -93,59 +93,48 @@ class CreateAlertViewController: UIViewController {
             
         }
         
-        self.nameTextField.attributedPlaceholder = NSAttributedString(string: Constant.textFieldTitles.alertNamePlaceholder, attributes: attributes)
+        nameTextField.attributedPlaceholder = NSAttributedString(string: Constant.textFieldTitles.alertNamePlaceholder, attributes: attributes)
         
     }
     override func viewWillAppear(_ animated: Bool) {
-        
-        self.bedroomSize.text = Constant.MyClassConstants.selectedBedRoomSize
+        super.viewWillAppear(true)
+        bedroomSize.text = Constant.MyClassConstants.selectedBedRoomSize
         guard let startDate = Constant.MyClassConstants.alertWindowStartDate else {
-            self.travelWindowEndDateSelectionButton.isEnabled = false
+            travelWindowEndDateSelectionButton.isEnabled = false
             reloadView()
             return
         }
         
-        let endDate = Constant.MyClassConstants.alertWindowEndDate ?? Date()
-        
         let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
         
         let startDateComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: startDate)
-        let endDateComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: endDate)
         
-        self.travelWindowEndDateSelectionButton.isEnabled = true
+        travelWindowEndDateSelectionButton.isEnabled = true
         if let day = startDateComponents.day {
-            self.startDateDayLabel.text = String(describing: day)
+            startDateDayLabel.text = String(describing: day)
         }
         
         if let weekDay = startDateComponents.weekday {
-            self.startDateDayNameLabel.text = "\(Helper.getWeekdayFromInt(weekDayNumber: weekDay))"
+            startDateDayNameLabel.text = "\(Helper.getWeekdayFromInt(weekDayNumber: weekDay))"
         }
         
         if let month = startDateComponents.month, let year = startDateComponents.year {
-            self.startDateMonthYearLabel.text = "\(Helper.getMonthnameFromInt(monthNumber: month)) \(year)"
+            startDateMonthYearLabel.text = "\(Helper.getMonthnameFromInt(monthNumber: month)) \(year)"
         }
         
-        if startDate.isLessThanDate(endDate) {
-            if let day = endDateComponents.day {
-                self.endDateDayLabel.text = String(describing: day)
-            }
-            if let weekDay = endDateComponents.weekday {
-                self.endDateDayNameLabel.text = "\(Helper.getWeekdayFromInt(weekDayNumber: weekDay))"
-            }
-            if let month = endDateComponents.month, let year = endDateComponents.year {
-                self.endDateMonthYearLabel.text = "\(Helper.getMonthnameFromInt(monthNumber: month)) \(year)"
-            }
-        } else {
-            if let day = startDateComponents.day {
-                self.endDateDayLabel.text = String(describing: day)
-            }
-            if let weekDay = startDateComponents.weekday {
-                self.endDateDayNameLabel.text = "\(Helper.getWeekdayFromInt(weekDayNumber: weekDay))"
-            }
-            if let month = startDateComponents.month, let year = startDateComponents.year {
-                self.endDateMonthYearLabel.text = "\(Helper.getMonthnameFromInt(monthNumber: month)) \(year)"
-            }
+        if let endDate = Constant.MyClassConstants.alertWindowEndDate {
+            let endDateComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: endDate)
+                if let day = endDateComponents.day {
+                    endDateDayLabel.text = String(describing: day)
+                }
+                if let weekDay = endDateComponents.weekday {
+                    endDateDayNameLabel.text = "\(Helper.getWeekdayFromInt(weekDayNumber: weekDay))"
+                }
+                if let month = endDateComponents.month, let year = endDateComponents.year {
+                    endDateMonthYearLabel.text = "\(Helper.getMonthnameFromInt(monthNumber: month)) \(year)"
+                }
         }
+        
         reloadView()
     }
     
@@ -162,7 +151,7 @@ class CreateAlertViewController: UIViewController {
         
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.getawayAlertsIpad, bundle: nil)
         if let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.infoDetailViewController) as? InfoDetailViewController {
-            viewController.selectedIndex = self.selectedIndex
+            viewController.selectedIndex = selectedIndex
             navigationController?.present(viewController, animated: true, completion: nil)
         }
         
@@ -171,7 +160,7 @@ class CreateAlertViewController: UIViewController {
     //***** function to create new alert *****//
     @IBAction func createAlertButtonPresseded(_ sender: AnyObject) {
         
-        let trimmedUsername = self.nameTextField.text?.trimmingCharacters(in: .whitespaces)
+        let trimmedUsername = nameTextField.text?.trimmingCharacters(in: .whitespaces)
         guard let startDate = Constant.MyClassConstants.alertWindowStartDate else { return  presentAlert(with: Constant.AlertPromtMessages.createAlertTitle, message: Constant.AlertMessages
             .editAlertEmptyWidowStartDateMessage) }
         guard let endDate = Constant.MyClassConstants.alertWindowEndDate else { return presentAlert(with: Constant.AlertPromtMessages.createAlertTitle, message: Constant.AlertMessages
@@ -197,7 +186,7 @@ class CreateAlertViewController: UIViewController {
                     for selectedSize in Constant.MyClassConstants.alertSelectedUnitSizeArray {
                         
                         let bedroomSize = Helper.bedRoomSizeToStringInteger(bedRoomSize: selectedSize)
-                        self.anlyticsBedroomSize = self.anlyticsBedroomSize.appending(bedroomSize)
+                        anlyticsBedroomSize = anlyticsBedroomSize.appending(bedroomSize)
                         if let selectedUnitSize = UnitSize(rawValue: selectedSize) {
                             unitsizearray.append(selectedUnitSize)
                         }
@@ -207,7 +196,7 @@ class CreateAlertViewController: UIViewController {
                     
                     for unitsize in Constant.MyClassConstants.bedRoomSize {
                         let bedroomSize = Helper.bedRoomSizeToStringInteger(bedRoomSize: unitsize )
-                        self.anlyticsBedroomSize = self.anlyticsBedroomSize.appending("\(bedroomSize), ")
+                        anlyticsBedroomSize = anlyticsBedroomSize.appending("\(bedroomSize), ")
                         if let selectedUnitSize = UnitSize(rawValue: unitsize ) {
                             unitsizearray.append(selectedUnitSize)
                         }
@@ -235,7 +224,7 @@ class CreateAlertViewController: UIViewController {
                     .editAlertEmptyNameMessage)
             }
         } else {
-            self.presentAlert(with: Constant.AlertPromtMessages.createAlertTitle, message: Constant.AlertMessages.editAlertdetinationrequiredMessage)
+            presentAlert(with: Constant.AlertPromtMessages.createAlertTitle, message: Constant.AlertMessages.editAlertdetinationrequiredMessage)
         }
         
     }
@@ -243,7 +232,7 @@ class CreateAlertViewController: UIViewController {
     //***** function to dismiss present view controller on back button pressed *****//
     func menuBackButtonPressed(sender: UIBarButtonItem) {
         
-        self.dismiss(animated: true, completion: nil)
+        dismiss(animated: true, completion: nil)
         
     }
     //***** function to call calendar screen to select travel start date *****//
@@ -356,7 +345,7 @@ extension CreateAlertViewController: UICollectionViewDelegate {
             selectedIndex = -1
             collectionView.reloadData()
         } else {
-            self.selectedIndex = indexPath.row
+            selectedIndex = indexPath.row
             collectionView.reloadData()
         }
     }
@@ -594,7 +583,7 @@ extension CreateAlertViewController: WhereToGoCollectionViewCellDelegate {
             selectedIndex = -1
         }
         let deletionIndexPath = IndexPath(item: Index, section: 0)
-        self.createAlertCollectionView.deleteItems(at: [deletionIndexPath])
+        createAlertCollectionView.deleteItems(at: [deletionIndexPath])
         
     }
     
