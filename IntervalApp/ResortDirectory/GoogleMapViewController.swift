@@ -1441,12 +1441,6 @@ extension GoogleMapViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if tableView.tag == 1 {
             return UITableViewAutomaticDimension
-           /* switch indexPath.section {
-            case 0:
-                return 56
-            default:
-                return 66
-            }*/
         } else {
             return 252
         }
