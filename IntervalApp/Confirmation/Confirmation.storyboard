@@ -254,7 +254,7 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
-                                    <action selector="UpComingTripDetailsPressed:" destination="LJR-Ak-fYO" eventType="touchUpInside" id="QM3-24-pRU"/>
+                                    <action selector="goToUpComingTripListPressed:" destination="LJR-Ak-fYO" eventType="touchUpInside" id="kLd-4v-JjB"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please review your confirmation details below" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r9t-qJ-IpX">
@@ -312,29 +312,11 @@
                         <outlet property="memberNumber" destination="jDE-GM-umt" id="OTL-sz-vCB"/>
                         <outlet property="transactionDate" destination="8um-pB-t7Z" id="BTh-qy-0Xq"/>
                         <outlet property="viewTripDetailsButton" destination="aZ8-u7-fc5" id="keO-Sa-VGr"/>
-                        <segue destination="GDu-GD-gmf" kind="show" identifier="confirmationViewTripSegue" id="aWe-7a-ifI"/>
-                        <segue destination="uJD-iZ-xA9" kind="show" identifier="confirmationUpcomingTripSegue" id="4VL-VL-wNv"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Mdx-1p-rfD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="12093.6" y="90.404797601199405"/>
-        </scene>
-        <!--MyUpcomingTripIphone-->
-        <scene sceneID="ppd-cb-IA3">
-            <objects>
-                <viewControllerPlaceholder storyboardName="MyUpcomingTripIphone" id="GDu-GD-gmf" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Vsy-ie-UbP" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="12718" y="-29"/>
-        </scene>
-        <!--MyUpcomingTripIphone-->
-        <scene sceneID="hqg-Vt-Yay">
-            <objects>
-                <viewControllerPlaceholder storyboardName="MyUpcomingTripIphone" id="uJD-iZ-xA9" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="CbA-0j-ROv" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="12718" y="217"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="EM2-i4-pNj">

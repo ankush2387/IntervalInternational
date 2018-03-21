@@ -46,13 +46,6 @@ class MyUpcommingTripIpadViewController: UIViewController {
         upcommingTripTblView.isScrollEnabled = false
         title = Constant.ControllerTitles.myUpcomingTripViewController
         
-        if Constant.MyClassConstants.upcomingOriginationPoint == "dashboard" || Constant.MyClassConstants.upcomingOriginationPoint == "confirmation"{
-            showHudAsync()
-            let button = IUIKButton()
-            button.tag = Constant.MyClassConstants.dashbaordUpcomingSelectedIndex + 1
-            viewTripDetailsPressed(button)
-        }
-        
         //***** Setup the hamburger menu.  This will reveal the side menu. *****//
         if let rvc = self.revealViewController() {
             //set SWRevealViewController's Delegate

@@ -23,13 +23,6 @@ class MyUpcomingTripViewController: UIViewController {
         
         title = Constant.ControllerTitles.myUpcomingTripViewController
         
-        if Constant.MyClassConstants.upcomingOriginationPoint == "dashboard" || Constant.MyClassConstants.upcomingOriginationPoint == "confirmation"{
-            showHudAsync()
-            let button = UIButton()
-            button.tag = Constant.MyClassConstants.dashbaordUpcomingSelectedIndex
-            viewTripDetailsClicked(button)
-        }
-        
         if Constant.MyClassConstants.upcomingTripsArray.isEmpty {
             showHudAsync()
             Helper.getUpcomingTripsForUser {[weak self] error in

@@ -99,8 +99,6 @@ class Constant: NSObject {
         static var filterSearchResult = "Filter Search Result".localized()
         static var loginOriginationPoint: String = ""
         static var vacationSearchResultHeaderLabel: String = ""
-        static var upcomingOriginationPoint: String = ""
-        static var dashbaordUpcomingSelectedIndex = 0
         static var loginType: String = ""
         static var selectedDestinationNames: String = ""
         static var addressStringForCardDetailSection = "Address"

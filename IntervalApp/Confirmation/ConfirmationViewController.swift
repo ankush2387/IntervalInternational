@@ -25,17 +25,6 @@ class ConfirmationViewController: UIViewController {
     var moreButton: UIBarButtonItem?
     var exchangeNum: String = ""
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
-        NotificationCenter.default.addObserver(self, selector: #selector(showTripDetails), name: NSNotification.Name(rawValue: Constant.notificationNames.reloadTripDetailsNotification), object: nil)
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        NotificationCenter.default
-            .removeObserver(self, name: NSNotification.Name(rawValue:Constant.notificationNames.reloadTripDetailsNotification), object: nil)
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -114,47 +103,37 @@ class ConfirmationViewController: UIViewController {
         
     }
     
-    //***** Method called when notification for trip details is fired. ****//
-    func showTripDetails() {
-        
-        let isRunningOnIphone = UIDevice.current.userInterfaceIdiom == .phone
-        let storyboardName = isRunningOnIphone ? Constant.storyboardNames.myUpcomingTripIphone : Constant.storyboardNames.myUpcomingTripIpad
-        let storyBoard = UIStoryboard(name: storyboardName, bundle: nil)
-        let viewController = storyBoard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.upcomingTripsViewController)
-        
-        if let navController = storyBoard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.tripDetailsViewController) as? UINavigationController {
-            navController.setViewControllers([viewController], animated: true)
-            navigationController?.present(navController, animated: true, completion: nil)
-        }
-    }
-    
     //***** Function called when view trip details button is pressed. ******//
     @IBAction func viewTripDetailsPressed(_ sender: IUIKButton) {
         showHudAsync()
-        Helper.getUpcomingTripsForUser {[weak self] error in
-            if let Error = error {
-                self?.hideHudAsync()
-                self?.presentErrorAlert(UserFacingCommonError.handleError(Error))
-            } else {
-                let excNumber = Int64(self?.exchangeNum ?? "")
-                if let index = Constant.MyClassConstants.upcomingTripsArray.index(where: { $0.exchangeNumber == excNumber }) {
-                    Constant.MyClassConstants.dashbaordUpcomingSelectedIndex = index
-                }
-                self?.hideHudAsync()
-                Constant.MyClassConstants.upcomingOriginationPoint = "confirmation"
-                let isRunningOnIphone = UIDevice.current.userInterfaceIdiom == .phone
-                let storyboardName = isRunningOnIphone ? Constant.storyboardNames.myUpcomingTripIphone : Constant.storyboardNames.myUpcomingTripIpad
-                if let initialViewController = UIStoryboard(name: storyboardName, bundle: nil).instantiateInitialViewController() {
-                    self?.navigationController?.pushViewController(initialViewController, animated: true)
-                }
-            }
+        
+        ExchangeClient.getExchangeTripDetails(Session.sharedSession.userAccessToken, confirmationNumber: exchangeNum, onSuccess: {[weak self] exchangeResponse in
+            
+            Constant.MyClassConstants.upcomingTripsArray.removeAll()
+            Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails = exchangeResponse
+            self?.hideHudAsync()
+            let isRunningOnIphone = UIDevice.current.userInterfaceIdiom == .phone
+            let storyboardName = isRunningOnIphone ? Constant.storyboardNames.myUpcomingTripIphone : Constant.storyboardNames.myUpcomingTripIpad
+            let storyBoard = UIStoryboard(name: storyboardName, bundle: nil)
+            let detailViewController = storyBoard.instantiateViewController(withIdentifier: "UpComingTripDetailController")
+             self?.navigationController?.pushViewController(detailViewController, animated: true)
+            
+        }) { [weak self]error in
+            self?.hideHudAsync()
+            self?.presentErrorAlert(UserFacingCommonError.handleError(error))
         }
     }
     
     //***** Function called when upcoming trip details button is pressed. *****//
-    @IBAction func UpComingTripDetailsPressed(_ sender: IUIKButton) {
+    @IBAction func goToUpComingTripListPressed(_ sender: IUIKButton) {
+       
+        navigationController?.isNavigationBarHidden = true
+        Constant.MyClassConstants.upcomingTripsArray.removeAll()
+        let isRunningOnIphone = UIDevice.current.userInterfaceIdiom == .phone
+        let storyboardName = isRunningOnIphone ? Constant.storyboardNames.myUpcomingTripIphone : Constant.storyboardNames.myUpcomingTripIpad
+        guard let initialViewController = UIStoryboard(name: storyboardName, bundle: nil).instantiateInitialViewController() else { return }
+        navigationController?.pushViewController(initialViewController, animated: true)
         
-        performSegue(withIdentifier: Constant.segueIdentifiers.confirmationUpcomingTripSegue, sender: self)
     }
     
     override func didReceiveMemoryWarning() {
