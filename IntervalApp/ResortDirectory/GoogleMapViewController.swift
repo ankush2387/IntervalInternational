@@ -51,7 +51,7 @@ class GoogleMapViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        searchDisplayTableView.estimatedRowHeight = 66
+        
         //used to not remove observers if going to map or weather view
         Constant.MyClassConstants.goingToMapOrWeatherView = false
 
@@ -1442,7 +1442,13 @@ extension GoogleMapViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if tableView.tag == 1 {
-            return UITableViewAutomaticDimension
+            
+            switch indexPath.section {
+            case 0:
+                return 56
+            default:
+                return 66
+            }
         } else {
             return 252
         }
@@ -1588,15 +1594,14 @@ extension GoogleMapViewController: UITableViewDataSource {
                 cell.addDestinationButton.addTarget(self, action: #selector(destinationSelectedAtIndex(sender:)), for: .touchUpInside)
                 cell.destinationMapIcon.addTarget(self, action: #selector(resortShowMapPressedAtIndex(sender:)), for: .touchUpInside)
                 cell.tag = indexPath.section
+                let dicValue = Constant.MyClassConstants.destinations![indexPath.row]
+                cell.resortLocationName.text = dicValue.destinationName
                 
-                if let destinationName = Constant.MyClassConstants.destinations?[indexPath.row].destinationName {
-                    if let territoryCode = Constant.MyClassConstants.destinations?[indexPath.row].address?.territoryCode {
-                        cell.resortLocationName.text = "\(destinationName), \(territoryCode)"
-                    } else if let countryCode = Constant.MyClassConstants.destinations?[indexPath.row].address?.countryCode {
-                        cell.resortLocationName.text = "\(destinationName), \(countryCode)"
-                    } else {
-                        cell.resortLocationName.text = destinationName
-                   }
+                //TODO (jhon) - aplication was crashing when lookin for resort name (Paris, Cancun)
+                if let territoryCode = dicValue.address?.territoryCode {
+                    cell.resortCodeLabel.text = territoryCode
+                } else {
+                    cell.resortCodeLabel.text = dicValue.address?.countryCode
                 }
                 
                 return cell
