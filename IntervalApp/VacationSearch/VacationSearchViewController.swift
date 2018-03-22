@@ -103,12 +103,6 @@ class VacationSearchViewController: UIViewController {
     func readSavedRelinquishments() {
         
         self.availableRelinquishmentIdArray.removeAll()
-        let membership = Session.sharedSession.selectedMembership
-        let selectedMembershipNumber = membership?.memberNumber
-        var requiredMemberNumber = ""
-        if let membernumber = selectedMembershipNumber {
-            requiredMemberNumber = membernumber
-        }
         let predicate = "contactID == '\(Session.sharedSession.contactID)'"
         entityStore.readObjectsFromDisk(type: OpenWeeksStorage.self, predicate: predicate, encoding: .decrypted)
             .then { openWeeksStorage in

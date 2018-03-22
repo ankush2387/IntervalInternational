@@ -22,9 +22,8 @@ extension NSMutableAttributedString {
     }
     
     @discardableResult func normal(_ text: String?) -> NSMutableAttributedString {
-        let normal =  NSAttributedString(string: text.unwrappedString)
+        let normal = NSAttributedString(string: text.unwrappedString)
         self.append(normal)
         return self
     }
 }
-

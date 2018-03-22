@@ -152,11 +152,11 @@ final class RelinquishmentViewController: UIViewController {
                                                     strongSelf.pushAdditionalInformationView(for: relinquishment,
                                                                                              didUpdateFixWeekReservation: {
 
-                                    strongSelf.navigationController?.popToViewController(strongSelf, animated: false)
-                                    strongSelf.viewModel.relinquish(relinquishment)
+                                    strongSelf.viewModel.relinquish(relinquishment, with: [selectedUnit])
                                         .then(strongSelf.popToRelinquishmentViewController)
                                         .then(strongSelf.popFromRelinquishmentViewController)
                                         .onViewError(strongSelf.presentErrorAlert)
+                                        .finally(strongSelf.hideHudAsync)
                     })
                 }
                 }
