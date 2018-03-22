@@ -30,7 +30,10 @@ open class ClubPoints {
         
         if json["pointsSpent"].exists() {
             self.pointsSpent = json["pointsSpent"].intValue
+        } else if json["points"].exists() {
+            self.pointsSpent = json["points"].intValue
         }
+
     }
     
 }
