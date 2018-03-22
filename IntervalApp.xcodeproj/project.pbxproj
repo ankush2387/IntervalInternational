@@ -2750,9 +2750,9 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = IntervalApp/IntervalApp.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Frank Nogueiras (438L8U78T7)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Frank Nogueiras (438L8U78T7)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 110;
+				CURRENT_PROJECT_VERSION = 111;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 4CR2ZD7GRK;
 				ENABLE_BITCODE = NO;
@@ -2771,7 +2771,7 @@
 				"OTHER_SWIFT_FLAGS[arch=*]" = "-DDEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.intervalintl.Interval;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "745602f6-5ebe-4f19-a395-0e030b24b21a";
+				PROVISIONING_PROFILE = "908137d2-95b0-44ef-8f5d-84c1e7092546";
 				PROVISIONING_PROFILE_SPECIFIER = "IntervalApp-DEV";
 				SWIFT_OBJC_BRIDGING_HEADER = "IntervalApp/IntervalApp-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -2790,9 +2790,9 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = IntervalApp/IntervalApp.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Frank Nogueiras (438L8U78T7)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Frank Nogueiras (438L8U78T7)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 110;
+				CURRENT_PROJECT_VERSION = 111;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 4CR2ZD7GRK;
 				ENABLE_BITCODE = NO;
@@ -2811,7 +2811,7 @@
 				"OTHER_SWIFT_FLAGS[arch=*]" = "-DRELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = com.intervalintl.Interval;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "745602f6-5ebe-4f19-a395-0e030b24b21a";
+				PROVISIONING_PROFILE = "908137d2-95b0-44ef-8f5d-84c1e7092546";
 				PROVISIONING_PROFILE_SPECIFIER = "IntervalApp-DEV";
 				SWIFT_OBJC_BRIDGING_HEADER = "IntervalApp/IntervalApp-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
