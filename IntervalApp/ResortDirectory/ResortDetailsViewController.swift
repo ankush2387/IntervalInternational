@@ -774,12 +774,9 @@ extension ResortDetailsViewController: UITableViewDataSource {
                 Helper.addLinearGradientToView(view: cell.resortNameGradientView, colour: UIColor.white, transparntToOpaque: true, vertical: false)
                 cell.resortCollectionView.collectionViewLayout.invalidateLayout()
                 
-                
                 cell.detailsPageControl.transform = CGAffineTransform(scaleX: 1.5, y: 1.5)
-                cell.detailsPageControl.activeImage = UIImage(named: "selected")
-                
-                cell.detailsPageControl.inactiveImage = UIImage(named: "unselected")
-                
+                cell.detailsPageControl.activeImage = #imageLiteral(resourceName: "selected")
+                cell.detailsPageControl.inactiveImage = #imageLiteral(resourceName: "unselected")
                 cell.resortCollectionView.reloadData()
                 if Constant.MyClassConstants.imagesArray.isEmpty {
                     cell.detailsPageControl.isHidden = true
@@ -788,7 +785,9 @@ extension ResortDetailsViewController: UITableViewDataSource {
                 }
                 cell.detailsPageControl.numberOfPages = Constant.MyClassConstants.imagesArray.count
                 cell.resortName.text = Constant.MyClassConstants.resortsDescriptionArray.resortName
-                cell.resortAddress.text = Constant.MyClassConstants.resortsDescriptionArray.address?.cityName
+                if let address = Constant.MyClassConstants.resortsDescriptionArray.address {
+                    cell.resortAddress.text = address.postalAddresAsString()
+                }
                 cell.resortCode.text = Constant.MyClassConstants.resortsDescriptionArray.resortCode
                 if let tier = Constant.MyClassConstants.resortsDescriptionArray.tier {
                     let imageStr = Helper.getTierImageName(tier:tier.uppercased())
