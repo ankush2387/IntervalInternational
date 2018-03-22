@@ -159,37 +159,3 @@ extension ClientAPI: DirectoryClientAPIStore {
         }
     }
 }
-
-extension ClientAPI: ImageAPIStore {
-
-    func readImage(for url: URL) -> Promise<UIImage> {
-        return Promise { resolve, reject in
-            URLSession.shared.dataTask(with: url) { data, _, error in
-
-                if let error = error {
-                    reject(error)
-                    return
-                }
-
-                guard let data = data, let image = UIImage(data: data) else {
-                    reject(CommonErrors.emptyDataError)
-                    return
-                }
-
-                resolve(image)
-
-                }.resume()
-        }
-    }
-    
-    func readResortDefaultImage() -> Promise<UIImage> {
-        return Promise { resolve, reject in
-            if let image = UIImage(named: Constant.MyClassConstants.noImage) {
-                resolve(image)
-            } else {
-                reject(CommonErrors.nilDataError)
-            }
-        }
-    }
-    
-}

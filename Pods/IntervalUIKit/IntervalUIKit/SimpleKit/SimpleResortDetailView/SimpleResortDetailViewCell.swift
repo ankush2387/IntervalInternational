@@ -42,7 +42,7 @@ final public class SimpleResortDetailViewCell: SimpleTableViewCell {
         gradient.colors = [UIColor.black.cgColor, UIColor.clear.cgColor]
         gradient.locations = [0.8, 1]
         resortImageView.layer.mask = gradient
-        
+
         [resortNameLabel, resortLocationLabel].forEach {
             $0?.textColor = IntervalThemeFactory.deviceTheme.textColorBlack
         }
@@ -50,13 +50,25 @@ final public class SimpleResortDetailViewCell: SimpleTableViewCell {
         resortCodeLabel.textColor = IntervalThemeFactory.deviceTheme.textColorLightOrange
         resortDetailBackgroundView.backgroundColor = IntervalThemeFactory.deviceTheme.backgroundColorWhite.withAlphaComponent(0.7)
     }
-    
+
     private func setImage(image: UIImage?) {
-        resortImageView.image = image
+        if case .some = image {
+            resortImageView.backgroundColor = .clear
+            resortImageView.contentMode = .scaleToFill
+            resortImageView.image = image
+        } else {
+            resortImageView.backgroundColor = .gray
+            resortImageView.contentMode = .scaleAspectFit
+            resortImageView.image = viewModel?.placeholderImage.value
+        }
     }
-    
+
     private func downloadImage(url: String?) {
         guard let url = url, let imageURL = URL(string: url) else { return }
-        resortImageView.sd_setImage(with: imageURL, placeholderImage: viewModel?.placeholderImage.value)
+        resortImageView.sd_setImage(with: imageURL,
+                                    placeholderImage: viewModel?.placeholderImage.value,
+                                    options: []) { [unowned self] downloadedImage, _, _, _ in
+                                        self.viewModel?.resortImage.next(downloadedImage)
+        }
     }
 }

@@ -305,7 +305,6 @@
 		616302812014ED360067A9DC /* AuthProviderClientAPIStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 616302802014ED360067A9DC /* AuthProviderClientAPIStore.swift */; };
 		616302832014ED610067A9DC /* RentalClientAPIStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 616302822014ED610067A9DC /* RentalClientAPIStore.swift */; };
 		616302852014ED7F0067A9DC /* ExchangeClientAPIStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 616302842014ED7F0067A9DC /* ExchangeClientAPIStore.swift */; };
-		616302872014EDC80067A9DC /* ImageAPIStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 616302862014EDC80067A9DC /* ImageAPIStore.swift */; };
 		616302892014F4970067A9DC /* DirectoryClientAPIStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 616302882014F4970067A9DC /* DirectoryClientAPIStore.swift */; };
 		61698B361F997DA4004BB6AF /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61698B351F997DA4004BB6AF /* AppState.swift */; };
 		617434731F8EFE89006292E0 /* String+Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617434721F8EFE89006292E0 /* String+Localization.swift */; };
@@ -738,7 +737,6 @@
 		616302802014ED360067A9DC /* AuthProviderClientAPIStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthProviderClientAPIStore.swift; sourceTree = "<group>"; };
 		616302822014ED610067A9DC /* RentalClientAPIStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RentalClientAPIStore.swift; sourceTree = "<group>"; };
 		616302842014ED7F0067A9DC /* ExchangeClientAPIStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExchangeClientAPIStore.swift; sourceTree = "<group>"; };
-		616302862014EDC80067A9DC /* ImageAPIStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageAPIStore.swift; sourceTree = "<group>"; };
 		616302882014F4970067A9DC /* DirectoryClientAPIStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectoryClientAPIStore.swift; sourceTree = "<group>"; };
 		61698B351F997DA4004BB6AF /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		617434721F8EFE89006292E0 /* String+Localization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Localization.swift"; sourceTree = "<group>"; };
@@ -1604,7 +1602,6 @@
 				616302882014F4970067A9DC /* DirectoryClientAPIStore.swift */,
 				616302822014ED610067A9DC /* RentalClientAPIStore.swift */,
 				616302842014ED7F0067A9DC /* ExchangeClientAPIStore.swift */,
-				616302862014EDC80067A9DC /* ImageAPIStore.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -2308,7 +2305,6 @@
 				3AC5720F1E2A2A5000969CF7 /* AvailablePointCell.swift in Sources */,
 				3A892F461CD3902F00AE6F45 /* EligibleDestinationCell.swift in Sources */,
 				6156D1A11F9265B500FAC4A0 /* UserFacingCommonErrors.swift in Sources */,
-				616302872014EDC80067A9DC /* ImageAPIStore.swift in Sources */,
 				3AEF71091DDF1B0A00FA076D /* DestinationResortViewController.swift in Sources */,
 				3A4006A21CA1618A0014DBF3 /* ResortBedroomDetailExchangeCell.swift in Sources */,
 				3C58DD5F1F8D3D04003C5791 /* UserDafaultsWrapper.swift in Sources */,

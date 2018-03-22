@@ -36,7 +36,6 @@ final class AdditionalInformationViewModel {
     private let disposeBag = DisposeBag()
     private let sessionStore: SessionStore
     private let relinquishment: Relinquishment
-    private let imageAPIStore: ImageAPIStore
     private let exchangeClientAPIStore: ExchangeClientAPIStore
     private let directoryClientAPIStore: DirectoryClientAPIStore
     private let sectionTitle = [nil, "Resort Unit Details".localized(), "Reservation Details".localized()]
@@ -46,13 +45,11 @@ final class AdditionalInformationViewModel {
     // MARK: - Init
     init(relinquishment: Relinquishment,
          sessionStore: SessionStore = Session.sharedSession,
-         imageAPIStore: ImageAPIStore = ClientAPI.sharedInstance,
          directoryClientAPIStore: DirectoryClientAPIStore = ClientAPI.sharedInstance,
          exchangeClientAPIStore: ExchangeClientAPIStore = ClientAPI.sharedInstance) {
 
         self.sessionStore = sessionStore
         self.relinquishment = relinquishment
-        self.imageAPIStore = imageAPIStore
         self.directoryClientAPIStore = directoryClientAPIStore
         self.exchangeClientAPIStore = exchangeClientAPIStore
     }
@@ -269,33 +266,17 @@ final class AdditionalInformationViewModel {
     }
 
     private func setResortDetailViewModel() -> Promise<Void> {
-        return Promise { [unowned self] resolve, reject in
+        let resort = self.relinquishment.resort
+        let defaultResortImage = resort?.getDefaultImage()
+        let resortLocationText = [resort?.address?.cityName, resort?.address?.territoryCode].flatMap { $0 }.joined(separator: ", ")
 
-            let createResortDetailViewModel = { (image: UIImage?) in
-                let resort = self.relinquishment.resort
-                let resortLocationText = [resort?.address?.cityName, resort?.address?.territoryCode].flatMap { $0 }.joined(separator: ", ")
-                
-                self.simpleCellViewModels[.resortDetails] = [SimpleSeperatorCellViewModel(),
-                                                             SimpleResortDetailViewModel(resortNameLabelText: resort?.resortName,
-                                                                                         resortLocationLabelText: resortLocationText,
-                                                                                         resortCodeLabelText: resort?.resortCode,
-                                                                                         resortImage: image)]
-            }
-
-            //TODO: Resorts images are optional. Use placeholder "NoImageIcon" if images are not available.
-            if let imageEntity = self.relinquishment.resort?.getDefaultImage(),
-                let url = URL(string: imageEntity.url.unwrappedString) {
-                self.imageAPIStore.readImage(for: url)
-                    .then(createResortDetailViewModel)
-                    .then(resolve)
-                    .onError(reject)
-            } else {
-                self.imageAPIStore.readResortDefaultImage()
-                    .then(createResortDetailViewModel)
-                    .then(resolve)
-                    .onError(reject)
-            }
-        }
+        self.simpleCellViewModels[.resortDetails] = [SimpleSeperatorCellViewModel(),
+                                                     SimpleResortDetailViewModel(resortNameLabelText: resort?.resortName,
+                                                                                 resortLocationLabelText: resortLocationText,
+                                                                                 resortCodeLabelText: resort?.resortCode,
+                                                                                 resortImageURL: defaultResortImage?.url,
+                                                                                 placeholderImage: #imageLiteral(resourceName: "NoImageIcon"))]
+        return Promise.resolve()
     }
 
     private func setResortUnitDetailsViewModel() -> Promise<Void> {

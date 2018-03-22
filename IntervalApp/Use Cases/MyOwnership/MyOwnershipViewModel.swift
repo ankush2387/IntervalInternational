@@ -22,7 +22,6 @@ final class MyOwnershipViewModel {
     enum ActionType { case call, search }
 
     // MARK: - Private properties
-    private let imageAPIStore: ImageAPIStore
     private let clientAPI: ExchangeClientAPIStore
     private let directoryClientAPIStore: DirectoryClientAPIStore
     private let sessionStore: SessionStore
@@ -39,12 +38,10 @@ final class MyOwnershipViewModel {
          directoryClientAPIStore: DirectoryClientAPIStore,
          sessionStore: SessionStore,
          entityDataStore: EntityDataStore,
-         relinquishmentManager: RelinquishmentManager,
-         imageAPIStore: ImageAPIStore) {
+         relinquishmentManager: RelinquishmentManager) {
 
         self.clientAPI = clientAPI
         self.sessionStore = sessionStore
-        self.imageAPIStore = imageAPIStore
         self.entityDataStore = entityDataStore
         self.relinquishmentManager = relinquishmentManager
         self.directoryClientAPIStore = directoryClientAPIStore
@@ -55,8 +52,7 @@ final class MyOwnershipViewModel {
                   directoryClientAPIStore: ClientAPI.sharedInstance,
                   sessionStore: Session.sharedSession,
                   entityDataStore: EntityDataSource.sharedInstance,
-                  relinquishmentManager: RelinquishmentManager(),
-                  imageAPIStore: ClientAPI.sharedInstance)
+                  relinquishmentManager: RelinquishmentManager())
     }
 
     // MARK: - Public functions
@@ -305,13 +301,11 @@ final class MyOwnershipViewModel {
         relinquishmentGroups.forEach { [unowned self] relinquishmentGroup in
             if let resort = relinquishmentGroup.resort {
                 sectionRelinquishments.append(nil)
-                let imageEntity = resort.images.first(where: { $0.size == "XLARGE" })
                 let resortLocationText = [resort.address?.cityName, resort.address?.territoryCode].flatMap { $0 }.joined(separator: ", ")
-
                 sectionSimpleCellViewModels.append(SimpleResortDetailViewModel(resortNameLabelText: resort.resortName,
                                                                                resortLocationLabelText: resortLocationText,
                                                                                resortCodeLabelText: resort.resortCode,
-                                                                               resortImageURL: imageEntity?.url,
+                                                                               resortImageURL: resort.getDefaultImage()?.url,
                                                                                placeholderImage: #imageLiteral(resourceName: "NoImageIcon")))
             }
 
