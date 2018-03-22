@@ -99,18 +99,12 @@ extension CalendarViewController: FSCalendarDelegate {
     
     func calendar(_ calendar: FSCalendar, didSelect date: Date) {
 
-        //FIXME(Frank): what is this?
         let df = DateFormatter()
             df.dateFormat = "yyyy/MM/dd"
         let dateStr = df.string(from: date)
-            df.timeZone = Helper.createTimezone()
+            df.timeZone = Helper.createTimeZone()
         let selectedDate = df.date(from: dateStr)
  
-        
-       /* let dateFormatter = Helper.createDateFormatter("yyyy/MM/dd")
-        let dateStr = dateFormatter.string(from: date)
-        let selectedDate = dateFormatter.date(from: dateStr)*/
-        
         if self.requestedController == Constant.MyClassConstants.relinquishment {
             
             Constant.MyClassConstants.relinquishmentAvalableToolSelectedDate = selectedDate

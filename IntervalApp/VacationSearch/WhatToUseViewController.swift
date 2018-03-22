@@ -62,7 +62,6 @@ class WhatToUseViewController: UIViewController {
     }
     
     @IBAction func checkBoxPressed(_ sender: IUIKCheckbox) {
-
         Constant.MyClassConstants.searchBothExchange = true
         selectedRow = sender.tag
         selectedRowSection = sender.accessibilityElements?.first as? Int ?? 0

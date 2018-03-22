@@ -66,8 +66,8 @@ public class Helper {
     //TODO: Need to revisit this code, and dynamically get locale identifier from server, or a decision should be made to calculate this information on the client
     static func getWeekDay(dateString: Date, getValue: String) -> String {
         let dateFormatter = DateFormatter()
-            dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-            dateFormatter.timeZone = TimeZone(identifier: "UTC")
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+        dateFormatter.timeZone = TimeZone(identifier: "UTC")
         switch getValue {
         case "Date":
             dateFormatter.dateFormat = "d"
@@ -317,10 +317,10 @@ public class Helper {
             UserClient.getFavoriteResorts(Session.sharedSession.userAccessToken, onSuccess: { response in
                 Constant.MyClassConstants.favoritesResortArray.removeAll()
                 for item in response {
-                        if let resort = item.resort, let code = resort.resortCode {
-                            Constant.MyClassConstants.favoritesResortCodeArray.append(code)
-                            Constant.MyClassConstants.favoritesResortArray.append(resort)
-                        }
+                    if let resort = item.resort, let code = resort.resortCode {
+                        Constant.MyClassConstants.favoritesResortCodeArray.append(code)
+                        Constant.MyClassConstants.favoritesResortArray.append(resort)
+                    }
                     
                 }
                 NotificationCenter.default.post(name:NSNotification.Name(rawValue: Constant.notificationNames.reloadFavoritesTabNotification), object: nil)
@@ -490,11 +490,11 @@ public class Helper {
         }
         
     }
-
+    
     static func storeInConstants(myUnits: MyUnits) {
         Constant.MyClassConstants.relinquishmentDeposits = myUnits.deposits
         Constant.MyClassConstants.relinquishmentOpenWeeks = myUnits.openWeeks
-
+        
         if let pointsProgram = myUnits.pointsProgram {
             Constant.MyClassConstants.relinquishmentProgram = pointsProgram
             if let availablePoints = pointsProgram.availablePoints {
@@ -721,7 +721,7 @@ public class Helper {
                             }
                             
                             Constant.MyClassConstants.isClubPointsAvailable = true
-
+                            
                         } else if !openWk.pProgram.isEmpty {
                             
                             Constant.MyClassConstants.whatToTradeArray.add(openWk.pProgram)
@@ -841,7 +841,7 @@ public class Helper {
             return Constant.kitchenType.unKnown
         }
     }
-
+    
     //***** function to return unitsize kitchen type in lower case with space form server kitchen type *****//
     static func getBedroomNumbers(bedroomType: String) -> String {
         
@@ -1033,7 +1033,7 @@ public class Helper {
             if resortCalendar.count > 0 {
                 Constant.MyClassConstants.relinquishmentFloatDetialMinDate = resortCalendar[0].checkInDate?.dateFromShortFormat()
                 Constant.MyClassConstants.relinquishmentFloatDetialMaxDate = resortCalendar.last?.checkInDate?.dateFromShortFormat()
-       
+                
                 for calendarDetails in resortCalendar {
                     Constant.MyClassConstants.floatDetailsCalendarDateArray.append((calendarDetails.checkInDate?.dateFromShortFormat())!)
                     Constant.MyClassConstants.floatDetailsCalendarWeekArray.add(calendarDetails.weekNumber!)
@@ -1084,11 +1084,11 @@ public class Helper {
         let titleLabel = UILabel()
         let detailView = UIView()
         let detailLabel = UILabel()
-
+        
         noResortView.frame = CGRect(x: 0, y: 150, width: UIScreen.main.bounds.width, height: 140)
         noResortView.backgroundColor = UIColor(red: 209.0 / 255.0, green: 226.0 / 255.0, blue: 237.0 / 255.0, alpha: 1.0)
         senderView.addSubview(noResortView)
-
+        
         titleView.frame = CGRect(x: 0, y: 0, width: noResortView.frame.size.width, height: 40)
         titleView.backgroundColor = UIColor.darkGray
         noResortView.addSubview(titleView)
@@ -1403,29 +1403,29 @@ public class Helper {
     //FIXME(Frank) - DO NOT USE this - use the SDK
     // function to return date string from date
     /*
-    static func convertDateToString(date: Date, format: String) -> String {
-        
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = format
-        dateFormatter.timeZone = TimeZone.current
-        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-        let dateStr = dateFormatter.string(from: date)
-        return dateStr
-    }
+     static func convertDateToString(date: Date, format: String) -> String {
+     
+     let dateFormatter = DateFormatter()
+     dateFormatter.dateFormat = format
+     dateFormatter.timeZone = TimeZone.current
+     dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+     let dateStr = dateFormatter.string(from: date)
+     return dateStr
+     }
      */
     
     //FIXME(Frank) - DO NOT USE this - use the SDK
     // function to return date from dateString
     /*
-    static func convertStringToDate(dateString: String, format: String) -> Date {
-        
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = format
-        dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
-        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-        let date = dateFormatter.date(from: dateString)
-        return date ?? Date()
-    }
+     static func convertStringToDate(dateString: String, format: String) -> Date {
+     
+     let dateFormatter = DateFormatter()
+     dateFormatter.dateFormat = format
+     dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
+     dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+     let date = dateFormatter.date(from: dateString)
+     return date ?? Date()
+     }
      */
     
     // mapping function to return unit details header string with space
@@ -1607,7 +1607,7 @@ public class Helper {
         let request = RentalSearchResortsRequest()
         request.checkInDate = checkInDate
         request.resortCodes = activeInterval.resortCodes
-
+        
         RentalClient.searchResorts(Session.sharedSession.userAccessToken, request: request, onSuccess: { (response) in
             // Update Rental inventory
             Constant.MyClassConstants.resortsArray.removeAll()
@@ -1615,7 +1615,7 @@ public class Helper {
             
             Constant.MyClassConstants.initialVacationSearch.rentalSearch?.inventory = response.resorts
             showScrollingCalendar(vacationSearch:Constant.MyClassConstants.initialVacationSearch)
-
+            
             if Constant.MyClassConstants.isFromSorting == false && Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType != VacationSearchType.COMBINED {
                 helperDelegate?.resortSearchComplete()
             } else {
@@ -1624,11 +1624,11 @@ public class Helper {
             Constant.MyClassConstants.isFromSorting = false
             Constant.MyClassConstants.noAvailabilityView = false
         },
-           onError: { error in
-            Constant.MyClassConstants.noAvailabilityView = true
-            Constant.MyClassConstants.isFromSorting = false
-            senderViewController.hideHudAsync()
-            senderViewController.presentErrorAlert(UserFacingCommonError.handleError(error))
+                                   onError: { error in
+                                    Constant.MyClassConstants.noAvailabilityView = true
+                                    Constant.MyClassConstants.isFromSorting = false
+                                    senderViewController.hideHudAsync()
+                                    senderViewController.presentErrorAlert(UserFacingCommonError.handleError(error))
         }
         )
     }
@@ -1639,7 +1639,7 @@ public class Helper {
     
     static func executeExchangeSearchAvailability(activeInterval: BookingWindowInterval!, checkInDate: Date!, senderViewController: UIViewController) {
         senderViewController.showHudAsync()
-
+        
         let request = ExchangeSearchAvailabilityRequest()
         request.checkInDate = checkInDate
         request.resortCodes = activeInterval.resortCodes ?? [""]
@@ -1663,7 +1663,7 @@ public class Helper {
             }
             showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
             senderViewController.hideHudAsync()
-
+            
             if senderViewController.isKind(of: VacationSearchResultIPadController.self) || senderViewController.isKind(of: SearchResultViewController.self) || senderViewController.isKind(of: SortingViewController.self) || senderViewController.isKind(of:AllAvailableDestinationViewController.self) || senderViewController.isKind(of: AllAvailableDestinationsIpadViewController.self) || senderViewController.isKind(of: FlexChangeSearchIpadViewController.self) || senderViewController.isKind(of: FlexchangeSearchViewController.self) {
                 helperDelegate?.resortSearchComplete()
                 
@@ -1672,21 +1672,21 @@ public class Helper {
                 helperDelegate?.resortSearchComplete()
                 
                 /*
-                let isRunningOnIphone = UIDevice.current.userInterfaceIdiom == .phone
-                let storyboardName = isRunningOnIphone ? Constant.storyboardNames.vacationSearchIphone : Constant.storyboardNames.vacationSearchIPad
-                let mainStoryboard: UIStoryboard = UIStoryboard(name: storyboardName, bundle: nil)
-                var viewController: UIViewController
-                if isRunningOnIphone {
-                    guard let Controller = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.vacationSearchController) as? SearchResultViewController else { return }
-                    viewController = Controller
-                } else {
-                    guard let Controller = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.vacationSearchController) as? VacationSearchResultIPadController else { return }
-                    viewController = Controller
-                }
- 
-                let transitionManager = TransitionManager()
-                senderViewController.navigationController?.transitioningDelegate = transitionManager
-                senderViewController.navigationController?.pushViewController(viewController, animated: true)
+                 let isRunningOnIphone = UIDevice.current.userInterfaceIdiom == .phone
+                 let storyboardName = isRunningOnIphone ? Constant.storyboardNames.vacationSearchIphone : Constant.storyboardNames.vacationSearchIPad
+                 let mainStoryboard: UIStoryboard = UIStoryboard(name: storyboardName, bundle: nil)
+                 var viewController: UIViewController
+                 if isRunningOnIphone {
+                 guard let Controller = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.vacationSearchController) as? SearchResultViewController else { return }
+                 viewController = Controller
+                 } else {
+                 guard let Controller = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.vacationSearchController) as? VacationSearchResultIPadController else { return }
+                 viewController = Controller
+                 }
+                 
+                 let transitionManager = TransitionManager()
+                 senderViewController.navigationController?.transitioningDelegate = transitionManager
+                 senderViewController.navigationController?.pushViewController(viewController, animated: true)
                  */
             }
             
@@ -1702,7 +1702,7 @@ public class Helper {
         ExchangeClient.searchDates(Session.sharedSession.userAccessToken, request: Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request, onSuccess: { (response) in
             
             Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.response = response
-           // Get activeInterval
+            // Get activeInterval
             guard let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval() else { return senderVC.showHudAsync()}
             // Update active interval
             Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
@@ -1710,7 +1710,7 @@ public class Helper {
             
             // Check not available checkIn dates for the active interval
             if activeInterval.fetchedBefore  && !activeInterval.hasCheckInDates()  {
-               senderVC.hideHudAsync()
+                senderVC.hideHudAsync()
                 Helper.showNotAvailabilityResults()
                 helperDelegate?.resortSearchComplete()
                 
@@ -1718,11 +1718,11 @@ public class Helper {
                 Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
                 executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: Constant.MyClassConstants.initialVacationSearch.searchCheckInDate?.dateFromShortFormat(), senderViewController: senderVC) }
         },
-           onError: { error in
-            senderVC.hideHudAsync()
-            senderVC.presentErrorAlert(UserFacingCommonError.handleError(error))
-    })
-}
+                                   onError: { error in
+                                    senderVC.hideHudAsync()
+                                    senderVC.presentErrorAlert(UserFacingCommonError.handleError(error))
+        })
+    }
     /*
      * Execute Exchange Search Dates After Select Interval
      */
@@ -1730,18 +1730,18 @@ public class Helper {
         
         ExchangeClient.searchDates(Session.sharedSession.userAccessToken, request: Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request,
                                    onSuccess: { (response) in
-                Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.response = response
-                
-                // Update active interval
-                Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
-                self.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
-                datesCV.reloadData()
-                senderVC.hideHudAsync()
+                                    Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.response = response
+                                    
+                                    // Update active interval
+                                    Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
+                                    self.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                                    datesCV.reloadData()
+                                    senderVC.hideHudAsync()
         },
-               onError: { error in
-                datesCV.reloadData()
-                senderVC.hideHudAsync()
-                senderVC.presentErrorAlert(UserFacingCommonError.handleError(error))
+                                   onError: { error in
+                                    datesCV.reloadData()
+                                    senderVC.hideHudAsync()
+                                    senderVC.presentErrorAlert(UserFacingCommonError.handleError(error))
         }
         )
     }
@@ -1759,13 +1759,13 @@ public class Helper {
         request.relinquishmentsIds = Constant.MyClassConstants.initialVacationSearch.searchCriteria.relinquishmentsIds.unsafelyUnwrapped
         
         ExchangeClient.searchAvailability(Session.sharedSession.userAccessToken, request: request,
-          onSuccess: { (response) in
-            // Update Exchange inventory
-            Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.inventory = response
-            helperDelegate?.resortSearchComplete()
+                                          onSuccess: { (response) in
+                                            // Update Exchange inventory
+                                            Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.inventory = response
+                                            helperDelegate?.resortSearchComplete()
         },
-          onError: { error in
-            senderVC.presentErrorAlert(UserFacingCommonError.handleError(error))
+                                          onError: { error in
+                                            senderVC.presentErrorAlert(UserFacingCommonError.handleError(error))
         }
         )
     }
@@ -1774,13 +1774,13 @@ public class Helper {
         Constant.MyClassConstants.noAvailabilityView = true
         DarwinSDK.logger.info("Show the Not Availability Screen.")
     }
-
+    
     static func showScrollingCalendar(vacationSearch: VacationSearch, completionBlock: CallBack? = nil) {
         DarwinSDK.logger.info("-- Create Calendar based on Booking Window Intervals --")
         Constant.MyClassConstants.calendarDatesArray = vacationSearch.createCalendar()
         completionBlock?()
     }
-
+    
     static func showNearestCheckInDateSelectedMessage() {
         Constant.MyClassConstants.isShowAvailability = true
         DarwinSDK.logger.info("NEAREST CHECK-IN DATE SELECTED - We found availability close to your desired Check-in Date")
@@ -1900,7 +1900,7 @@ public class Helper {
         travelParty.children = children
         return travelParty
     }
-
+    
     static func createSearchCriteriaForRentalDeal(deal: RentalDeal) -> VacationSearchCriteria {
         let area = Area()
         area.areaCode = deal.areaCodes[0]
@@ -2012,7 +2012,7 @@ public class Helper {
     }
     
     static func diffInDaysCalculation( _ daysDiffrence: String) -> String {
-
+        
         if daysDiffrence == "0" {
             return "Today"
         } else if daysDiffrence == "1" {
@@ -2055,10 +2055,12 @@ public class Helper {
         }
     }
     
-    //set timeZone here
-    static func createTimezone() -> TimeZone {
-        if let timezone = TimeZone(identifier: "UTC") {
-            return timezone
+    //
+    // Resolve the TimeZone
+    //
+    static func createTimeZone() -> TimeZone {
+        if let timeZone = TimeZone(identifier: "UTC") {
+            return timeZone
         } else {
             return NSTimeZone.local
         }
@@ -2070,11 +2072,7 @@ public class Helper {
     static func createDateFormatter(_ format:String) -> DateFormatter {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = format
-        if let timeZone = TimeZone(identifier: "UTC") {
-            dateFormatter.timeZone = timeZone
-        } else {
-            dateFormatter.timeZone = NSTimeZone.local
-        }
+        dateFormatter.timeZone = createTimeZone()
         return dateFormatter
     }
     

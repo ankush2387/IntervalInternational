@@ -992,13 +992,11 @@ extension CheckOutViewController: UITableViewDataSource {
             if !Constant.MyClassConstants.searchBothExchange {
                 return 0
             } else {
-                if let exchangeFees = Constant.MyClassConstants.exchangeFees, let eplusFee = exchangeFees.eplus {
+                if let exchangeFees = Constant.MyClassConstants.exchangeFees, exchangeFees.eplus != nil {
                     return 50
                 } else {
                     return 0
                 }
-               
-                return 0
             }
         case 3 :
             if !showInsurance {
