@@ -115,7 +115,9 @@ final class RelinquishmentViewModel {
                     let lockedOffUnits: [OpenWeeks] = openWeeksStorage
                         .flatMap { $0.openWeeks }
                         .flatMap { $0.openWeeks }
-                        .filter { $0.relinquishmentID == relinquishment.relinquishmentId.unwrappedString }
+                        .filter { $0.relinquishmentID == relinquishment.relinquishmentId.unwrappedString ||
+                            relinquishment.unit?.lockOffUnits.flatMap { $0.relinquishmentId }.contains($0.relinquishmentID) ?? false
+                    }
                     
                     resolve(lockedOffUnits)
                 }
@@ -124,7 +126,7 @@ final class RelinquishmentViewModel {
     }
     
     func relinquish(_ relinquishment: Relinquishment, with lockOffUnits: [InventoryUnit]) -> Promise<Void> {
-        
+
         return Promise { [unowned self] resolve, reject in
             self.resetLockOffUnitsInDisk(for: relinquishment).then {
                 lockOffUnits.forEach {
@@ -134,7 +136,7 @@ final class RelinquishmentViewModel {
                     let relinquishmentList = TradeLocalData()
                     selectedOpenWeek.isLockOff = true
                     selectedOpenWeek.weekNumber = relinquishment.weekNumber.unwrappedString
-                    selectedOpenWeek.relinquishmentID = relinquishment.relinquishmentId.unwrappedString
+                    selectedOpenWeek.relinquishmentID = $0.relinquishmentId.unwrappedString
                     selectedOpenWeek.relinquishmentYear = relinquishment.relinquishmentYear ?? 0
                     let unitDetails = ResortUnitDetails()
                     unitDetails.kitchenType = $0.unitDetailsUIFormatted
@@ -287,29 +289,15 @@ final class RelinquishmentViewModel {
         }
     }
     
-    private func hasNonSelectedLockOffUnits(relinquishment: Relinquishment, and openWeeksStorage: Results<OpenWeeksStorage>) -> Bool {
+    private func hasNonSelectedLockOffUnits(relinquishment: Relinquishment, and storedRelinquishmentIDs: [String]) -> Bool {
         if let lockOffUnits = relinquishment.unit?.lockOffUnits {
-            
-            let lockedOffUnits: [String] = openWeeksStorage
-                .flatMap { $0.openWeeks }
-                .flatMap { $0.openWeeks }
-                .filter {
-                    $0.relinquishmentID == relinquishment.relinquishmentId.unwrappedString ||
-                    relinquishment.unit?.lockOffUnits.flatMap { $0.relinquishmentId }.contains($0.relinquishmentID) ?? false
-                }
-                .flatMap { $0.unitDetails }
-                .flatMap { $0.kitchenType }
-            
-            let lockOffUnitSet = Set(lockOffUnits.flatMap { $0.unitDetailsUIFormatted })
-            let lockedOffUnitSet = Set(lockedOffUnits)
-            
-            if relinquishment.requireAdditionalInfo() && lockedOffUnitSet.count > 0 {
-                return false
-            } else {
-                return lockOffUnitSet.subtracting(lockedOffUnitSet).count > 0
-            }
+            let primaryRelinquishmentID = relinquishment.relinquishmentId.unwrappedString
+            var lockOffUnitSet = Set(lockOffUnits.flatMap { $0.relinquishmentId })
+            lockOffUnitSet.insert(primaryRelinquishmentID)
+            let lockedOffUnitSet = Set(storedRelinquishmentIDs)
+            return lockOffUnitSet.subtracting(lockedOffUnitSet).count > 0
         }
-        
+
         return false
     }
     
@@ -338,7 +326,7 @@ final class RelinquishmentViewModel {
                     
                     let filteredRelinquishments = relinquishments.filter {
                         if $0.hasLockOffUnits {
-                            return self.hasNonSelectedLockOffUnits(relinquishment: $0, and: openWeeksStorage)
+                            return self.hasNonSelectedLockOffUnits(relinquishment: $0, and: relinquishmentIDs)
                         } else {
                             return !relinquishmentIDs.contains($0.relinquishmentId.unwrappedString)
                         }

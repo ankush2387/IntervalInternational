@@ -75,11 +75,6 @@ final class RelinquishmentViewController: UIViewController {
                                           cellSubtitle: inventoryUnit.unitCapacityUIFormatted)
     }
 
-    private func createCellModel(for resortUnitDetails: ResortUnitDetails) -> MultipleSelectionCellModel {
-        return MultipleSelectionCellModel(cellTitle: resortUnitDetails.kitchenType,
-                                          cellSubtitle: resortUnitDetails.unitSize)
-    }
-    
     fileprivate func seperatorSection() -> UIView {
         let view = UIView()
         view.backgroundColor = IntervalThemeFactory.deviceTheme.backgroundColorGray
@@ -138,28 +133,36 @@ final class RelinquishmentViewController: UIViewController {
 
         } else if relinquishment.hasLockOffUnits && relinquishment.requireAdditionalInfo() {
 
-            defer { hideHudAsync() }
-            guard let units = viewModel.processLockOffUnits(for: relinquishment) else {
-                presentErrorAlert(UserFacingCommonError.generic)
-                return
-            }
+            viewModel.readPreviouslySelectedLockOffUnits(for: relinquishment).then { [weak self] lockedOffUnits in
+                guard let strongSelf = self, let units = strongSelf.viewModel.processLockOffUnits(for: relinquishment) else {
+                    self?.presentErrorAlert(UserFacingCommonError.generic)
+                    return
+                }
 
-                pushSingleSelectionView(title: "Select lock-off portion".localized(),
-                                                   with: units.map(createCellModel)) { [weak self] selectedIndex in
+                let nonSelectedLockOffUnits = units.filter {
+                    !lockedOffUnits.flatMap { $0.relinquishmentID }.contains($0.relinquishmentId.unwrappedString)
+                }
 
-                                                    guard let strongSelf = self else { return }
-                                                    let selectedUnit = units[selectedIndex]
+                strongSelf.pushSingleSelectionView(title: "Select lock-off portion".localized(),
+                                                   with: nonSelectedLockOffUnits.map(strongSelf.createCellModel)) { selectedIndex in
+
+                                                    let selectedUnit = nonSelectedLockOffUnits[selectedIndex]
                                                     relinquishment.relinquishmentId = selectedUnit.relinquishmentId
                                                     relinquishment.fixWeekReservation?.unit = selectedUnit
                                                     strongSelf.pushAdditionalInformationView(for: relinquishment,
                                                                                              didUpdateFixWeekReservation: {
 
+                                    strongSelf.navigationController?.popToViewController(strongSelf, animated: false)
                                     strongSelf.viewModel.relinquish(relinquishment)
                                         .then(strongSelf.popToRelinquishmentViewController)
                                         .then(strongSelf.popFromRelinquishmentViewController)
                                         .onViewError(strongSelf.presentErrorAlert)
                     })
                 }
+                }
+
+                .onViewError(presentErrorAlert)
+                .finally(hideHudAsync)
 
         } else if relinquishment.requireAdditionalInfo() {
             defer { hideHudAsync() }
@@ -179,15 +182,20 @@ final class RelinquishmentViewController: UIViewController {
                     self?.presentErrorAlert(UserFacingCommonError.generic)
                     return
                 }
-                let previousSelectionDataSet = lockedOffUnits.flatMap { $0.unitDetails }.map { strongSelf.createCellModel(for: $0) }
+
+                let nonSelectedLockOffUnits = units.filter {
+                    !lockedOffUnits.flatMap { $0.relinquishmentID }.contains($0.relinquishmentId.unwrappedString)
+                }
+
                 strongSelf.pushMultipleSelectionView(title: "Select lock-off portion".localized(),
-                                                     with: units.map(strongSelf.createCellModel),
-                                                     previousSelectionDataSet: previousSelectionDataSet) { [weak self] selectedLockedOffUnits in
+                                                     with: nonSelectedLockOffUnits.map(strongSelf.createCellModel)) {
+                                                        [weak self] selectedLockedOffUnits in
                                                         guard let strongSelf = self else { return }
                                                         strongSelf.showHudAsync()
-                                                        let inventoryUnitsToRelinquish = units.filter {
+                                                        let inventoryUnitsToRelinquish = nonSelectedLockOffUnits.filter {
                                                             return selectedLockedOffUnits.map { $0.cellTitle }.contains($0.unitDetailsUIFormatted)
                                                         }
+
                                                         strongSelf.viewModel.relinquish(relinquishment, with: inventoryUnitsToRelinquish)
                                                             .then(strongSelf.popToRelinquishmentViewController)
                                                             .then(strongSelf.popFromRelinquishmentViewController)
