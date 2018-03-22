@@ -63,11 +63,12 @@ class GoogleMapViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(displaySearchedResort), name: NSNotification.Name(rawValue: Constant.notificationNames.addMarkerWithRactangleRequestNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(updateMapMarkers), name: NSNotification.Name(rawValue: Constant.notificationNames.reloadMapForApply), object: nil)
         
-        googleMapSearchBar.placeholder = Constant.buttonTitles.searchVacation
         if Constant.MyClassConstants.runningFunctionality != Constant.MyClassConstants.resortFunctionalityCheck {
             navigationItem.title = Constant.ControllerTitles.vacationSearchDestinationController
+            googleMapSearchBar.placeholder = Constant.buttonTitles.searchVacationVs
         } else {
             navigationItem.title = Constant.MyClassConstants.resortDirectoryTitle
+            googleMapSearchBar.placeholder = Constant.buttonTitles.searchVacationRd
         }
 
         //***** Condition for maintaining the back button and hamberger menu according to logged in or pre login *****//

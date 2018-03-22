@@ -854,6 +854,8 @@ class Constant: NSObject {
         static var viewAllAlerts = "Edit Alerts".localized()
         static var viewAllTrips = "View All Trips".localized()
         static var searchVacation = "Search Vacations".localized()
+        static var searchVacationRd = "Type resort or pinch & zoom".localized()
+        static var searchVacationVs = "Type destination or resort, or pinch & zoom".localized()
         static var favoritesTitle = "Favorites".localized()
         static var resortTitle = "Resort Directory".localized()
         static var magazineTitle = "Magazines".localized()
