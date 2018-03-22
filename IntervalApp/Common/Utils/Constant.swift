@@ -911,7 +911,7 @@ class Constant: NSObject {
         static var sideMenuInitialController = "RevialViewController"
         
         static var home = "Home".localized()
-        static var searchVacation = "Search Vacation".localized()
+        static var searchVacation = "Vacation Search".localized()
         static var upcomingTrips = "Upcoming Trips".localized()
         static var getawayAlerts = "Getaway Alerts".localized()
         static var favorites = "Favorites".localized()
