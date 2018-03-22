@@ -63,7 +63,7 @@ class WhatToUseViewController: UIViewController {
     
     @IBAction func checkBoxPressed(_ sender: IUIKCheckbox) {
 
-        //Constant.MyClassConstants.searchBothExchange = true
+        Constant.MyClassConstants.searchBothExchange = true
         selectedRow = sender.tag
         selectedRowSection = sender.accessibilityElements?.first as? Int ?? 0
         let indexPath = NSIndexPath(row:selectedRow, section:selectedRowSection)
@@ -348,7 +348,6 @@ class WhatToUseViewController: UIViewController {
     }
     
     @IBAction func checkBoxGetawayPressed(_ sender: IUIKCheckbox) {
-        
         Constant.MyClassConstants.searchBothExchange = false
         selectedRow = sender.tag
         selectedRowSection = sender.accessibilityElements?.first as? Int ?? 0

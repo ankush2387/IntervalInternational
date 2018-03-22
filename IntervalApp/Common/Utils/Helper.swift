@@ -2055,6 +2055,15 @@ public class Helper {
         }
     }
     
+    //set timeZone here
+    static func createTimezone() -> TimeZone {
+        if let timezone = TimeZone(identifier: "UTC") {
+            return timezone
+        } else {
+            return NSTimeZone.local
+        }
+    }
+    
     //
     // Resolve the DateFormatter
     //
