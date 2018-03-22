@@ -11,4 +11,5 @@ import UIKit
 
 protocol ImageAPIStore {
     func readImage(for url: URL) -> Promise<UIImage>
+    func readResortDefaultImage() -> Promise<UIImage>
 }

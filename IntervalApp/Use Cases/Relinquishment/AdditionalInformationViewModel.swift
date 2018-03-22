@@ -271,15 +271,7 @@ final class AdditionalInformationViewModel {
     private func setResortDetailViewModel() -> Promise<Void> {
         return Promise { [unowned self] resolve, reject in
 
-            //FIXME(Frank): Resort XLARGE images are optionals
-            //guard let imageEntity = self.relinquishment.resort?.images.first(where: { $0.size == "XLARGE" }),
-            guard let imageEntity = self.relinquishment.resort?.getDefaultImage(),
-                let url = URL(string: imageEntity.url.unwrappedString) else {
-                reject(CommonErrors.parsingError)
-                return
-            }
-
-            let createResortDetailViewModel = { (image: UIImage) in
+            let createResortDetailViewModel = { (image: UIImage?) in
                 let resort = self.relinquishment.resort
                 let resortLocationText = [resort?.address?.cityName, resort?.address?.territoryCode].flatMap { $0 }.joined(separator: ", ")
                 
@@ -290,11 +282,19 @@ final class AdditionalInformationViewModel {
                                                                                          resortImage: image)]
             }
 
-            //FIXME(Frank): Ummm - Why this call?
-            self.imageAPIStore.readImage(for: url)
-                .then(createResortDetailViewModel)
-                .then(resolve)
-                .onError(reject)
+            //TODO: Resorts images are optional. Use placeholder "NoImageIcon" if images are not available.
+            if let imageEntity = self.relinquishment.resort?.getDefaultImage(),
+                let url = URL(string: imageEntity.url.unwrappedString) {
+                self.imageAPIStore.readImage(for: url)
+                    .then(createResortDetailViewModel)
+                    .then(resolve)
+                    .onError(reject)
+            } else {
+                self.imageAPIStore.readResortDefaultImage()
+                    .then(createResortDetailViewModel)
+                    .then(resolve)
+                    .onError(reject)
+            }
         }
     }
 

@@ -181,4 +181,15 @@ extension ClientAPI: ImageAPIStore {
                 }.resume()
         }
     }
+    
+    func readResortDefaultImage() -> Promise<UIImage> {
+        return Promise { resolve, reject in
+            if let image = UIImage(named: Constant.MyClassConstants.noImage) {
+                resolve(image)
+            } else {
+                reject(CommonErrors.nilDataError)
+            }
+        }
+    }
+    
 }
