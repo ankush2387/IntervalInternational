@@ -241,7 +241,9 @@ class GoogleMapViewController: UIViewController {
                     Constant.MyClassConstants.addResortSelectedIndex.append(i)
                     i = i + 1
                 }
-                self.navigationItem.rightBarButtonItem?.isEnabled = true
+                if !Constant.MyClassConstants.resortsArray.isEmpty {
+                   self.navigationItem.rightBarButtonItem?.isEnabled = true
+                }
                 Constant.MyClassConstants.googleMarkerArray.removeAll()
                 if !Constant.MyClassConstants.resortsArray.isEmpty {
                     
