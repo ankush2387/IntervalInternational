@@ -156,13 +156,13 @@ class CreateActionSheet: UITableViewController {
                 }
             
             },
-           onError: {[unowned self] _ in
-            self.hideHudAsync()
+           onError: {[weak self] _ in
+            self?.hideHudAsync()
             if let controller = Constant.MyClassConstants.signInRequestedController {
                 controller.dismiss(animated: true, completion: nil)
             }
             
-            self.presentAlert(with: Constant.AlertErrorMessages.loginFailed, message: "\(Constant.AlertPromtMessages.membershipFailureMessage) \(Session.sharedSession.selectedMembership?.memberNumber ?? ""))")
+            self?.presentAlert(with: Constant.AlertErrorMessages.loginFailed, message: "\(Constant.AlertPromtMessages.membershipFailureMessage) \(Session.sharedSession.selectedMembership?.memberNumber ?? ""))")
            }
         )
     }

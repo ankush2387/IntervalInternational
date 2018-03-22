@@ -989,7 +989,7 @@ extension CheckOutViewController: UITableViewDataSource {
                 return 50
             }
         case 2 :
-            if Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental() {
+            if !Constant.MyClassConstants.searchBothExchange {
                 return 0
             } else {
                 if let exchangeFees = Constant.MyClassConstants.exchangeFees, let eplusFee = exchangeFees.eplus {

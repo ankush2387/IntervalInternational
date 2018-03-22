@@ -348,7 +348,6 @@ class WhatToUseViewController: UIViewController {
     }
     
     @IBAction func checkBoxGetawayPressed(_ sender: IUIKCheckbox) {
-        
         Constant.MyClassConstants.searchBothExchange = false
         selectedRow = sender.tag
         selectedRowSection = sender.accessibilityElements?.first as? Int ?? 0
