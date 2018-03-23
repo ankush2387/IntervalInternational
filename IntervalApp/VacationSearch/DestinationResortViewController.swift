@@ -351,16 +351,17 @@ extension DestinationResortViewController: UITableViewDataSource {
             if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
                 
                 cell.resortName?.text = Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.resortName
-                var addressArray = [String]()
-                addressArray.append(Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.address?.cityName ?? "" )
-                addressArray.append(Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.address?.territoryCode ?? "")
-                cell.resortAddress?.text = addressArray.joined(separator: ", ")
+                if let address = Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.address {
+                    cell.resortAddress?.text = address.postalAddresAsString()
+                }
                 cell.resortCode?.text = Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.resortCode
                 
             } else {
                 
                 cell.resortName?.text = Constant.MyClassConstants.viewResponse.resort?.resortName
-                cell.resortAddress?.text = Constant.MyClassConstants.viewResponse.resort?.address?.cityName?.appending(", ").appending(Constant.MyClassConstants.viewResponse.resort?.address?.territoryCode ?? "")
+                if let address = Constant.MyClassConstants.viewResponse.resort?.address {
+                    cell.resortAddress?.text = address.postalAddresAsString()
+                }
                 cell.resortCode?.text = Constant.MyClassConstants.viewResponse.resort?.resortCode
             }
             return cell

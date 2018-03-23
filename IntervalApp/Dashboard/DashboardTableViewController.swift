@@ -364,7 +364,7 @@ class DashboardTableViewController: UITableViewController {
                     cell.resortNameLabel.text = resort.resortName
                     
                     if let address = resort.address {
-                        cell.resortLocationLabel.text = "\(address.cityName ?? ""), \(address.territoryCode ?? "") \(address.countryCode ?? "")".localized()
+                        cell.resortLocationLabel.text = address.postalAddresAsString().localized()
                     }
                 }
                 
