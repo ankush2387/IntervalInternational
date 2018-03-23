@@ -28,6 +28,7 @@ open class OpenWeek {
     open var bulkAssignment : Bool? = false
     open var memberUnitLocked : Bool? = false
     open var payback : Bool? = false
+    open var waitList : Bool? = false
     open var waitListNumber : Int = 0
     open lazy var reservationAttributes = [String]() // ReservationAttribute
     open lazy var virtualWeekActions = [String]() // VirtualWeekAction
@@ -75,6 +76,7 @@ open class OpenWeek {
         self.bulkAssignment = json["bulkAssignment"].boolValue
         self.memberUnitLocked = json["memberUnitLocked"].boolValue
         self.payback = json["payback"].boolValue
+        self.waitList = json["waitlist"].boolValue
         self.waitListNumber = json["waitListNumber"].intValue
         
         if json["reservationAttributes"].exists() {

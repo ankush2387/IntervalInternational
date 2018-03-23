@@ -53,7 +53,7 @@ open class Relinquishment {
     // Extra
     open var saved : Bool = false
 
-    public init(openWeek:OpenWeek) {
+    public init(openWeek: OpenWeek) {
         relinquishmentId = openWeek.relinquishmentId
         actions = openWeek.actions
         relinquishmentYear = openWeek.relinquishmentYear
@@ -85,8 +85,10 @@ open class Relinquishment {
         if let value = openWeek.payback {
             payback = value
         }
-        waitList = openWeek.waitListNumber > 0
-        
+        if let value = openWeek.waitList {
+            waitList = value
+        }
+       
         // OpenWeek: Additional Info
         reservationAttributes = openWeek.reservationAttributes
         if !reservationAttributes.isEmpty {
@@ -110,7 +112,7 @@ open class Relinquishment {
         masterUnitNumber = openWeek.masterUnitNumber
     }
     
-    public init(deposit:Deposit) {
+    public init(deposit: Deposit) {
         relinquishmentId = deposit.relinquishmentId
         actions = deposit.actions
         relinquishmentYear = deposit.relinquishmentYear
@@ -127,7 +129,9 @@ open class Relinquishment {
         virtualWeekActions = deposit.virtualWeekActions
         
         // Deposit: Flags
-        waitList = deposit.waitListNumber > 0
+        if let value = deposit.waitList {
+            waitList = value
+        }
         if let value = deposit.supplementalWeek {
             supplementalWeek = value
         }

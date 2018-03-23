@@ -26,6 +26,7 @@ open class Deposit {
     open var resort : Resort?
     open var unit : InventoryUnit?
     open var supplementalWeek : Bool? = false
+    open var waitList : Bool? = false
     open var waitListNumber : Int = 0
     open var insurancePurchase : String?
     open lazy var virtualWeekActions = [String]() // VirtualWeekAction
@@ -73,6 +74,7 @@ open class Deposit {
         }
 
         self.supplementalWeek = json["supplementalWeek"].boolValue
+        self.waitList = json["waitlist"].boolValue
         self.waitListNumber = json["waitListNumber"].intValue
         self.insurancePurchase = json["insurancePurchase"].string ?? ""
        
