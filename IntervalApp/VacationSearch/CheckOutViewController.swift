@@ -693,7 +693,7 @@ class CheckOutViewController: UIViewController {
         
         if Constant.MyClassConstants.searchBothExchange || Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange() {
             
-            ExchangeProcessClient.backToChooseExchange(accessToken,
+            ExchangeProcessClient.backToWhoIsChecking(accessToken,
                                                        process: lastProcessStarted,
                                                        onSuccess: onSuccess,
                                                        onError: onError)

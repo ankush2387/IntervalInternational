@@ -268,7 +268,7 @@ class CheckOutIPadViewController: UIViewController {
         showHudAsync()
         
         if Constant.MyClassConstants.searchBothExchange || Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange() {
-            ExchangeProcessClient.backToChooseExchange(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.exchangeBookingLastStartedProcess, onSuccess: { _ in
+            ExchangeProcessClient.backToWhoIsChecking(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.exchangeBookingLastStartedProcess, onSuccess: { _ in
                 _ = self.navigationController?.popViewController(animated: true)
                 self.hideHudAsync()
             }, onError: {[weak self] error in
