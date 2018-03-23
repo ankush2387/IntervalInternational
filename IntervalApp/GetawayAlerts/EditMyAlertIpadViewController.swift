@@ -562,23 +562,14 @@ extension EditMyAlertIpadViewController: UITableViewDataSource {
                 
             case .destination(let dest):
                 var destinationName = ""
-                var destinationAddress = ""
-                
                 if let destName = dest.destinationName {
                     destinationName = destName
                 }
-                if let address = dest.address {
-                    destinationAddress = address.postalAddresAsString()
+                guard let address = dest.address else {
+                    cell.whereTogoTextLabel.text = destinationName
+                    return cell
                 }
-                if !destinationName.isEmpty && !destinationAddress.isEmpty {
-                    cell.whereTogoTextLabel.text = "\(destinationName), \(destinationAddress)".localized()
-                } else {
-                    if !destinationName.isEmpty {
-                        cell.whereTogoTextLabel.text = destinationName
-                    } else {
-                        cell.whereTogoTextLabel.text = ""
-                    }
-                }
+                cell.whereTogoTextLabel.text = [destinationName, address.postalAddresAsString()].flatMap { $0 }.joined(separator: ", ").localized()
             }
             cell.selectionStyle = UITableViewCellSelectionStyle.none
             

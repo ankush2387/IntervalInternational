@@ -601,7 +601,8 @@ public class Helper {
                     if destname.territorrycode == "" {
                         Constant.MyClassConstants.whereTogoContentArray.add("\(destname.destinationName)")
                     } else {
-                        Constant.MyClassConstants.whereTogoContentArray.add("\(destname.destinationName), \(destname.territorrycode)")
+                        Constant.MyClassConstants.whereTogoContentArray.add([destname.destinationName, destname.territorrycode, destname.countryCode].flatMap { $0 }.joined(separator: ", "))
+                        
                     }
                     
                     Constant.MyClassConstants.selectedDestinationNames = Constant.MyClassConstants.selectedDestinationNames.appending("\(destname.destinationName) \(destname.territorrycode) ,")
