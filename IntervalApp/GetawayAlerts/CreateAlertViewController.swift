@@ -97,42 +97,26 @@ class CreateAlertViewController: UIViewController {
         
     }
     override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
+        super.viewWillAppear(animated)
         bedroomSize.text = Constant.MyClassConstants.selectedBedRoomSize
-        guard let startDate = Constant.MyClassConstants.alertWindowStartDate else {
+        let startDate = Constant.MyClassConstants.alertWindowStartDate
+        let endDate = Constant.MyClassConstants.alertWindowEndDate
             travelWindowEndDateSelectionButton.isEnabled = false
             reloadView()
-            return
+
+        if let date = (startDate)?.formatDateAs("EEEE MM dd YYYY") {
+            let startDateAlert = date.split(separator: " ")
+            startDateDayNameLabel.text = String(startDateAlert[0])
+            startDateMonthYearLabel.text = "\(Helper.getMonthnameFromInt(monthNumber: Int(startDateAlert[1]) ?? 0)) \(String(startDateAlert[3]))"
+            startDateDayLabel.text = String(startDateAlert[2])
+            
         }
-        
-        let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
-        
-        let startDateComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: startDate)
-        
-        travelWindowEndDateSelectionButton.isEnabled = true
-        if let day = startDateComponents.day {
-            startDateDayLabel.text = String(describing: day)
-        }
-        
-        if let weekDay = startDateComponents.weekday {
-            startDateDayNameLabel.text = "\(Helper.getWeekdayFromInt(weekDayNumber: weekDay))"
-        }
-        
-        if let month = startDateComponents.month, let year = startDateComponents.year {
-            startDateMonthYearLabel.text = "\(Helper.getMonthnameFromInt(monthNumber: month)) \(year)"
-        }
-        
-        if let endDate = Constant.MyClassConstants.alertWindowEndDate {
-            let endDateComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: endDate)
-                if let day = endDateComponents.day {
-                    endDateDayLabel.text = String(describing: day)
-                }
-                if let weekDay = endDateComponents.weekday {
-                    endDateDayNameLabel.text = "\(Helper.getWeekdayFromInt(weekDayNumber: weekDay))"
-                }
-                if let month = endDateComponents.month, let year = endDateComponents.year {
-                    endDateMonthYearLabel.text = "\(Helper.getMonthnameFromInt(monthNumber: month)) \(year)"
-                }
+
+        if let date = (endDate)?.formatDateAs("EEEE MM dd YYYY") {
+            let endDateAlert = date.split(separator: " ")
+            endDateDayNameLabel.text = String(endDateAlert[0])
+            endDateMonthYearLabel.text = "\(Helper.getMonthnameFromInt(monthNumber: Int(endDateAlert[1]) ?? 0)) \(String(endDateAlert[3]))"
+            endDateDayLabel.text = String(endDateAlert[2])
         }
         
         reloadView()
