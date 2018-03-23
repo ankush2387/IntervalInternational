@@ -1603,7 +1603,6 @@ extension GoogleMapViewController: UITableViewDataSource {
                 } else {
                     cell.resortCodeLabel.text = dicValue.address?.countryCode
                 }
-                
                 return cell
                 
             } else {

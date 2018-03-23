@@ -422,25 +422,25 @@ extension EditMyAlertIpadViewController: UICollectionViewDataSource {
         switch Constant.MyClassConstants.selectedGetawayAlertDestinationArray[indexPath.row] {
         case .resort(let resort):
             var resortNm = ""
-            var resortCode = ""
+            var resortAddress = ""
             if let restName = resort.resortName {
                 resortNm = restName
             }
-            if let restcode = resort.resortCode {
-                resortCode = restcode
+            if let address = resort.address {
+                resortAddress = address.postalAddresAsString()
             }
-            cell.lblTitle.text = "\(resortNm) (\(resortCode))".localized()
+            cell.lblTitle.text = "\(resortNm) (\(resortAddress))".localized()
             
         case .resorts(let resorts):
             var resortNm = ""
-            var resortCode = ""
+            var resortAddress = ""
             if let restName = resorts[0].resortName {
                 resortNm = restName
             }
-            if let restcode = resorts[0].resortCode {
-                resortCode = restcode
+            if let address = resorts[0].address {
+                resortAddress = address.postalAddresAsString()
             }
-            var resortNameString = "\(resortNm) (\(resortCode))"
+            var resortNameString = "\(resortNm) (\(resortAddress))"
             if resorts.count > 1 {
                 resortNameString = resortNameString.appending(" and \(resorts.count - 1) more")
             }
@@ -536,25 +536,25 @@ extension EditMyAlertIpadViewController: UITableViewDataSource {
             switch Constant.MyClassConstants.selectedGetawayAlertDestinationArray[indexPath.row] {
             case .resort(let resort):
                 var resortNm = ""
-                var resortCode = ""
+                var resortAddress = ""
                 if let restName = resort.resortName {
                     resortNm = restName
                 }
-                if let restcode = resort.resortCode {
-                    resortCode = restcode
+                if let address = resort.address {
+                    resortAddress = address.postalAddresAsString()
                 }
-                cell.whereTogoTextLabel.text = "\(resortNm) (\(resortCode))".localized()
+                cell.whereTogoTextLabel.text = "\(resortNm) (\(resortAddress))".localized()
                 
             case .resorts(let resorts):
                 var resortNm = ""
-                var resortCode = ""
+                var resortAddress = ""
                 if let restName = resorts[0].resortName {
                     resortNm = restName
                 }
-                if let restcode = resorts[0].resortCode {
-                    resortCode = restcode
+                if let address = resorts[0].address {
+                    resortAddress = address.postalAddresAsString()
                 }
-                var resortNameString = "\(resortNm) (\(resortCode))"
+                var resortNameString = "\(resortNm) (\(resortAddress))"
                 if resorts.count > 1 {
                     resortNameString = resortNameString.appending(" and \(resorts.count - 1) more")
                 }
@@ -562,16 +562,16 @@ extension EditMyAlertIpadViewController: UITableViewDataSource {
                 
             case .destination(let dest):
                 var destinationName = ""
-                var teritorycode = ""
+                var destinationAddress = ""
                 
                 if let destName = dest.destinationName {
                     destinationName = destName
                 }
-                if let terocode = dest.address?.territoryCode {
-                    teritorycode = terocode
+                if let address = dest.address {
+                    destinationAddress = address.postalAddresAsString()
                 }
-                if !destinationName.isEmpty && !teritorycode.isEmpty {
-                    cell.whereTogoTextLabel.text = "\(destinationName), \(teritorycode)".localized()
+                if !destinationName.isEmpty && !destinationAddress.isEmpty {
+                    cell.whereTogoTextLabel.text = "\(destinationName), \(destinationAddress)".localized()
                 } else {
                     if !destinationName.isEmpty {
                         cell.whereTogoTextLabel.text = destinationName
