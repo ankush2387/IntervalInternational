@@ -533,7 +533,7 @@ final class MyOwnershipViewModel {
                      (relinquishment.memberUnitLocked, "Locked".localized()),
                      (relinquishment.bulkAssignment, "Bulk Week".localized()),
                      (relinquishment.supplementalWeek, "Supplemental Week".localized()),
-                     (relinquishment.waitList, "Waitlist".localized())]
+                     (relinquishment.waitList, "Unit currently unavailable for exchange".localized())]
 
         let processFlags = { (flag: (isActive: Bool, message: String)) in
             if flag.isActive {
