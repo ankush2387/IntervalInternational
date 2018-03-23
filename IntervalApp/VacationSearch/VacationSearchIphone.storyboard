@@ -1805,6 +1805,10 @@ transaction.</string>
                                                                 <rect key="frame" x="0.0" y="0.0" width="374" height="80"/>
                                                                 <autoresizingMask key="autoresizingMask"/>
                                                                 <subviews>
+                                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aUP-D6-ypF" customClass="CellPromotionView" customModule="IntervalApp" customModuleProvider="target">
+                                                                        <rect key="frame" x="0.0" y="0.0" width="374" height="80"/>
+                                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                    </view>
                                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bfu-94-ViL">
                                                                         <rect key="frame" x="15" y="2" width="361" height="1"/>
                                                                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
@@ -1903,26 +1907,31 @@ transaction.</string>
                                                                 <constraint firstItem="j9q-Wi-Nz7" firstAttribute="leading" secondItem="rq8-q6-poG" secondAttribute="trailing" constant="5" id="0bK-bQ-blS"/>
                                                                 <constraint firstAttribute="trailingMargin" secondItem="bhP-bW-zZo" secondAttribute="trailing" constant="1" id="0dL-dl-ZcR"/>
                                                                 <constraint firstItem="rq8-q6-poG" firstAttribute="top" secondItem="iur-lH-CIF" secondAttribute="topMargin" id="2RG-FR-Aj5"/>
+                                                                <constraint firstAttribute="bottom" secondItem="aUP-D6-ypF" secondAttribute="bottom" id="3Fo-Qx-ufi"/>
                                                                 <constraint firstItem="gY6-S0-Ob3" firstAttribute="leading" secondItem="xru-gj-w8L" secondAttribute="trailing" constant="-13" id="6sn-Pa-erV"/>
                                                                 <constraint firstItem="j9q-Wi-Nz7" firstAttribute="top" secondItem="9gf-3G-wBO" secondAttribute="bottom" constant="-2" id="9Ms-lL-mam"/>
                                                                 <constraint firstItem="rq8-q6-poG" firstAttribute="leading" secondItem="iur-lH-CIF" secondAttribute="leadingMargin" id="9yU-BM-f9O"/>
                                                                 <constraint firstItem="bfu-94-ViL" firstAttribute="leading" secondItem="iur-lH-CIF" secondAttribute="leadingMargin" constant="7" id="AiS-xy-aBT"/>
                                                                 <constraint firstItem="xru-gj-w8L" firstAttribute="top" secondItem="iur-lH-CIF" secondAttribute="topMargin" constant="7" id="FZI-Mf-Vv3"/>
                                                                 <constraint firstItem="bhP-bW-zZo" firstAttribute="top" secondItem="rq8-q6-poG" secondAttribute="bottom" constant="1" id="IbI-jW-82e"/>
+                                                                <constraint firstItem="aUP-D6-ypF" firstAttribute="top" secondItem="iur-lH-CIF" secondAttribute="top" id="OWI-ZY-CWE"/>
                                                                 <constraint firstItem="j9q-Wi-Nz7" firstAttribute="centerY" secondItem="rq8-q6-poG" secondAttribute="centerY" constant="10.5" id="QZb-uH-6OD"/>
                                                                 <constraint firstItem="9gf-3G-wBO" firstAttribute="leading" secondItem="rq8-q6-poG" secondAttribute="trailing" constant="5" id="TR5-3Q-4tf"/>
                                                                 <constraint firstItem="bhP-bW-zZo" firstAttribute="leading" secondItem="iur-lH-CIF" secondAttribute="leadingMargin" id="VPv-P6-0s0"/>
                                                                 <constraint firstItem="gY6-S0-Ob3" firstAttribute="top" secondItem="iur-lH-CIF" secondAttribute="topMargin" constant="7" id="ZSQ-RK-CMM"/>
+                                                                <constraint firstAttribute="trailing" secondItem="aUP-D6-ypF" secondAttribute="trailing" id="afV-cc-7Za"/>
                                                                 <constraint firstAttribute="bottomMargin" secondItem="xru-gj-w8L" secondAttribute="bottom" constant="7" id="bZ4-Ur-KQa"/>
                                                                 <constraint firstAttribute="bottomMargin" secondItem="bhP-bW-zZo" secondAttribute="bottom" id="fRq-tJ-Fq4"/>
                                                                 <constraint firstAttribute="bottomMargin" secondItem="gY6-S0-Ob3" secondAttribute="bottom" constant="27" id="fn7-hw-Fi1"/>
                                                                 <constraint firstAttribute="trailingMargin" secondItem="gY6-S0-Ob3" secondAttribute="trailing" constant="5" id="k2u-Ng-u1P"/>
                                                                 <constraint firstItem="bfu-94-ViL" firstAttribute="top" secondItem="iur-lH-CIF" secondAttribute="topMargin" constant="-6" id="ssG-HP-gRa"/>
                                                                 <constraint firstAttribute="trailingMargin" secondItem="bfu-94-ViL" secondAttribute="trailing" constant="-10" id="wYQ-5p-a4c"/>
+                                                                <constraint firstItem="aUP-D6-ypF" firstAttribute="leading" secondItem="iur-lH-CIF" secondAttribute="leading" id="x3k-96-XGs"/>
                                                             </constraints>
                                                             <size key="customSize" width="374" height="80"/>
                                                             <connections>
                                                                 <outlet property="bedRoomType" destination="rq8-q6-poG" id="FGM-tS-zZy"/>
+                                                                <outlet property="cellPromotionView" destination="aUP-D6-ypF" id="Lem-eX-eGm"/>
                                                                 <outlet property="getawayNameLabel" destination="Ev5-il-u0b" id="HuM-nc-Bpr"/>
                                                                 <outlet property="getawayPrice" destination="9ur-qh-rof" id="pNK-rz-FzJ"/>
                                                                 <outlet property="imgViewGetaway" destination="vgI-kj-OmP" id="2kU-tJ-eML"/>
@@ -1938,6 +1947,10 @@ transaction.</string>
                                                                 <rect key="frame" x="0.0" y="0.0" width="375" height="80"/>
                                                                 <autoresizingMask key="autoresizingMask"/>
                                                                 <subviews>
+                                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Iwv-HY-O5o" customClass="CellPromotionView" customModule="IntervalApp" customModuleProvider="target">
+                                                                        <rect key="frame" x="0.0" y="0.0" width="375" height="80"/>
+                                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                    </view>
                                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uTe-Gr-LWQ">
                                                                         <rect key="frame" x="15" y="0.0" width="360" height="1"/>
                                                                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
@@ -2061,16 +2074,20 @@ transaction.</string>
                                                             <constraints>
                                                                 <constraint firstItem="1VK-Lm-7mL" firstAttribute="top" secondItem="UQI-YQ-65C" secondAttribute="bottom" constant="8" id="3iY-Xv-rif"/>
                                                                 <constraint firstItem="Gt2-rb-Iyk" firstAttribute="top" secondItem="uTe-Gr-LWQ" secondAttribute="bottom" constant="10" id="97u-Zn-jEL"/>
+                                                                <constraint firstItem="Iwv-HY-O5o" firstAttribute="leading" secondItem="5A6-8e-lZJ" secondAttribute="leading" id="9Cm-t2-sBT"/>
                                                                 <constraint firstAttribute="trailing" secondItem="uTe-Gr-LWQ" secondAttribute="trailing" id="CRe-Kc-4WM"/>
                                                                 <constraint firstItem="1VK-Lm-7mL" firstAttribute="top" secondItem="n4Y-qV-NN9" secondAttribute="bottom" constant="1" id="E9o-1i-xub"/>
                                                                 <constraint firstItem="1VK-Lm-7mL" firstAttribute="leading" secondItem="5A6-8e-lZJ" secondAttribute="leading" constant="10" id="EMF-Mw-w4b"/>
+                                                                <constraint firstItem="Iwv-HY-O5o" firstAttribute="top" secondItem="5A6-8e-lZJ" secondAttribute="top" id="OAU-XF-75P"/>
                                                                 <constraint firstItem="naf-5H-lDv" firstAttribute="leading" secondItem="Gt2-rb-Iyk" secondAttribute="trailing" constant="8" id="Q4q-zr-mjX"/>
+                                                                <constraint firstAttribute="bottom" secondItem="Iwv-HY-O5o" secondAttribute="bottom" id="RPD-Ec-4HH"/>
                                                                 <constraint firstItem="naf-5H-lDv" firstAttribute="leading" secondItem="Gt2-rb-Iyk" secondAttribute="trailing" constant="8" id="SKN-Cj-oVT"/>
                                                                 <constraint firstAttribute="trailingMargin" secondItem="JVU-4c-wcG" secondAttribute="trailing" constant="5" id="U9z-5E-aF4"/>
                                                                 <constraint firstItem="uTe-Gr-LWQ" firstAttribute="top" secondItem="5A6-8e-lZJ" secondAttribute="top" id="VJV-Fp-jbF"/>
                                                                 <constraint firstItem="UQI-YQ-65C" firstAttribute="top" secondItem="uTe-Gr-LWQ" secondAttribute="bottom" constant="4" id="VyL-A7-8f9"/>
                                                                 <constraint firstItem="Q35-A7-5O6" firstAttribute="leading" secondItem="naf-5H-lDv" secondAttribute="trailing" constant="8" id="XBI-X8-y50"/>
                                                                 <constraint firstAttribute="trailing" secondItem="1VK-Lm-7mL" secondAttribute="trailing" constant="10" id="XkM-WH-tqn"/>
+                                                                <constraint firstAttribute="trailing" secondItem="Iwv-HY-O5o" secondAttribute="trailing" id="YwB-Pc-Cj7"/>
                                                                 <constraint firstItem="naf-5H-lDv" firstAttribute="centerY" secondItem="Q35-A7-5O6" secondAttribute="centerY" id="dpG-cX-ppY"/>
                                                                 <constraint firstItem="JVU-4c-wcG" firstAttribute="centerY" secondItem="5A6-8e-lZJ" secondAttribute="centerY" constant="-10" id="jsR-VI-mPJ"/>
                                                                 <constraint firstItem="n4Y-qV-NN9" firstAttribute="top" secondItem="uTe-Gr-LWQ" secondAttribute="bottom" constant="1" id="kIh-J0-KPz"/>
@@ -2084,6 +2101,7 @@ transaction.</string>
                                                             <size key="customSize" width="375" height="80"/>
                                                             <connections>
                                                                 <outlet property="bedRoomType" destination="n4Y-qV-NN9" id="owQ-1S-kRk"/>
+                                                                <outlet property="cellPromotionView" destination="Iwv-HY-O5o" id="Imq-ho-iAS"/>
                                                                 <outlet property="imgViewExchange" destination="8UF-gw-3LO" id="unR-CC-10F"/>
                                                                 <outlet property="imgViewGetaway" destination="cT2-eD-Qq4" id="JOh-Zf-4PZ"/>
                                                                 <outlet property="kitchenType" destination="zAK-xR-dQD" id="3aS-d0-en8"/>
@@ -2098,6 +2116,10 @@ transaction.</string>
                                                                 <rect key="frame" x="0.0" y="0.0" width="375" height="100"/>
                                                                 <autoresizingMask key="autoresizingMask"/>
                                                                 <subviews>
+                                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="e1m-lS-b1i" customClass="CellPromotionView" customModule="IntervalApp" customModuleProvider="target">
+                                                                        <rect key="frame" x="0.0" y="0.0" width="375" height="100"/>
+                                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                    </view>
                                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iGX-rC-YGJ">
                                                                         <rect key="frame" x="15" y="0.0" width="361" height="1"/>
                                                                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
@@ -2194,6 +2216,7 @@ transaction.</string>
                                                             </view>
                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                             <constraints>
+                                                                <constraint firstAttribute="bottom" secondItem="e1m-lS-b1i" secondAttribute="bottom" id="0rI-Z5-1C8"/>
                                                                 <constraint firstItem="pnb-bQ-omS" firstAttribute="leading" secondItem="ev1-Wv-ytS" secondAttribute="trailing" constant="1" id="5cS-Lf-tNF"/>
                                                                 <constraint firstItem="ALN-mR-xqN" firstAttribute="leading" secondItem="ffm-wg-B2E" secondAttribute="leadingMargin" id="68g-rU-UCG"/>
                                                                 <constraint firstItem="pnb-bQ-omS" firstAttribute="top" secondItem="iGX-rC-YGJ" secondAttribute="bottom" constant="25" id="9Q6-35-2IU"/>
@@ -2209,12 +2232,16 @@ transaction.</string>
                                                                 <constraint firstItem="lI3-Ug-eVC" firstAttribute="centerY" secondItem="ffm-wg-B2E" secondAttribute="centerY" id="o6d-1R-URe"/>
                                                                 <constraint firstItem="ev1-Wv-ytS" firstAttribute="centerY" secondItem="ffm-wg-B2E" secondAttribute="centerY" id="rt7-pT-5a8"/>
                                                                 <constraint firstItem="pnb-bQ-omS" firstAttribute="leading" secondItem="lI3-Ug-eVC" secondAttribute="trailing" constant="12.5" id="rwq-QZ-eTW"/>
+                                                                <constraint firstAttribute="trailing" secondItem="e1m-lS-b1i" secondAttribute="trailing" id="suj-LP-L5p"/>
                                                                 <constraint firstAttribute="bottomMargin" secondItem="sPj-qU-VYt" secondAttribute="bottom" constant="-1" id="unF-py-3Wn"/>
+                                                                <constraint firstItem="e1m-lS-b1i" firstAttribute="leading" secondItem="ffm-wg-B2E" secondAttribute="leading" id="w92-RR-vsg"/>
+                                                                <constraint firstItem="e1m-lS-b1i" firstAttribute="top" secondItem="ffm-wg-B2E" secondAttribute="top" id="wlt-1W-itd"/>
                                                                 <constraint firstAttribute="trailingMargin" secondItem="iGX-rC-YGJ" secondAttribute="trailing" constant="-9" id="ykc-Xw-kNT"/>
                                                             </constraints>
                                                             <size key="customSize" width="375" height="100"/>
                                                             <connections>
                                                                 <outlet property="bedRoomType" destination="sPj-qU-VYt" id="2YP-s1-ZiH"/>
+                                                                <outlet property="cellPromotionView" destination="e1m-lS-b1i" id="2HP-He-Yeu"/>
                                                                 <outlet property="exchangeImageView" destination="g5k-HH-XDm" id="Jck-Ad-swD"/>
                                                                 <outlet property="exchangeStackView" destination="ev1-Wv-ytS" id="9CV-8E-YCd"/>
                                                                 <outlet property="exchangeTitleLabel" destination="pE2-af-lvE" id="1Kb-HV-pUl"/>
@@ -2350,7 +2377,7 @@ transaction.</string>
                     <inset key="sectionInset" minX="5" minY="5" maxX="0.0" maxY="0.0"/>
                 </collectionViewFlowLayout>
             </objects>
-            <point key="canvasLocation" x="2285.5999999999999" y="283.35832083958024"/>
+            <point key="canvasLocation" x="2284" y="282.4587706146927"/>
         </scene>
         <!--My Certificates-->
         <scene sceneID="9zn-o3-OWi">

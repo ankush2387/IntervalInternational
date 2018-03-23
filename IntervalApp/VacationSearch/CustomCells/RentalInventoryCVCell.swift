@@ -11,6 +11,7 @@ import DarwinSDK
 
 class RentalInventoryCVCell: UICollectionViewCell {
     
+    @IBOutlet private weak var cellPromotionView: CellPromotionView!
     @IBOutlet weak var getawayNameLabel: UILabel!
     @IBOutlet weak var getawayPrice: UILabel!
     @IBOutlet weak var bedRoomType: UILabel!
@@ -70,6 +71,8 @@ class RentalInventoryCVCell: UICollectionViewCell {
                 yPosition += 15
             }
         }
+
+        cellPromotionView.setPromotionUI(for: bucket.unit)
     }
     
     fileprivate func getFormatedRentalPrice(bucket: AvailabilitySectionItemInventoryBucket) -> NSAttributedString? {

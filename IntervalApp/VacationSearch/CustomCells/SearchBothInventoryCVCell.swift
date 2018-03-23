@@ -13,14 +13,15 @@ class SearchBothInventoryCVCell: UICollectionViewCell {
     
     //***** Custom cell delegate to access the delegate method *****//
     weak var exchangeCellDelegate: ExchangeInventoryCVCellDelegate?
-    
+
+    @IBOutlet private weak var cellPromotionView: CellPromotionView!
     @IBOutlet weak var bedRoomType: UILabel!
     @IBOutlet weak var sleeps: UILabel!
     @IBOutlet weak var kitchenType: UILabel!
     @IBOutlet weak var promotionsView: UIView!
     @IBOutlet weak var imgViewGetaway: UIImageView!
     @IBOutlet weak var imgViewExchange: UIImageView!
-    
+
     func setBucket(bucket: AvailabilitySectionItemInventoryBucket) {
         
         bedRoomType.text = Helper.getBrEnums(brType: bucket.unit.unitSize.rawValue)
@@ -90,6 +91,8 @@ class SearchBothInventoryCVCell: UICollectionViewCell {
                 yPosition += 15
             }
         }
+
+        cellPromotionView.setPromotionUI(for: bucket.unit)
     }
     
     func tapBlurButton() {

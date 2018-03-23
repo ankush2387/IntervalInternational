@@ -322,6 +322,10 @@
 		61B9AF5820198AAA003C45C0 /* SingleSelectionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61B9AF5620198AAA003C45C0 /* SingleSelectionTableViewCell.swift */; };
 		61B9AF5920198AAA003C45C0 /* SingleSelectionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 61B9AF5720198AAA003C45C0 /* SingleSelectionTableViewCell.xib */; };
 		61C025091F929CFC003BFF55 /* PromiseErrorConversionSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C025081F929CFC003BFF55 /* PromiseErrorConversionSpec.swift */; };
+		61DA55C62065A55600DE43F3 /* CellPromotionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61DA55C52065A55600DE43F3 /* CellPromotionView.swift */; };
+		61DA55C92065A5F800DE43F3 /* PromotionBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61DA55C82065A5F800DE43F3 /* PromotionBackgroundView.swift */; };
+		61EF716D2066A49C00281A34 /* PromotionTypeUIConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61EF716C2066A49C00281A34 /* PromotionTypeUIConfiguration.swift */; };
+		61EF716F2066A4B500281A34 /* PromotionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61EF716E2066A4B500281A34 /* PromotionType.swift */; };
 		61F1D4D7203E3DC400ECBEBB /* MyOwnershipViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F1D4D6203E3DC400ECBEBB /* MyOwnershipViewModel.swift */; };
 		61F1D4DA203E3E4900ECBEBB /* InventoryUnit+UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F1D4D9203E3E4900ECBEBB /* InventoryUnit+UI.swift */; };
 		61F1D4DC203E3E7E00ECBEBB /* Relinquishment+Flags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F1D4DB203E3E7E00ECBEBB /* Relinquishment+Flags.swift */; };
@@ -754,6 +758,10 @@
 		61B9AF5620198AAA003C45C0 /* SingleSelectionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleSelectionTableViewCell.swift; sourceTree = "<group>"; };
 		61B9AF5720198AAA003C45C0 /* SingleSelectionTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SingleSelectionTableViewCell.xib; sourceTree = "<group>"; };
 		61C025081F929CFC003BFF55 /* PromiseErrorConversionSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromiseErrorConversionSpec.swift; sourceTree = "<group>"; };
+		61DA55C52065A55600DE43F3 /* CellPromotionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellPromotionView.swift; sourceTree = "<group>"; };
+		61DA55C82065A5F800DE43F3 /* PromotionBackgroundView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PromotionBackgroundView.swift; sourceTree = "<group>"; };
+		61EF716C2066A49C00281A34 /* PromotionTypeUIConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromotionTypeUIConfiguration.swift; sourceTree = "<group>"; };
+		61EF716E2066A4B500281A34 /* PromotionType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromotionType.swift; sourceTree = "<group>"; };
 		61F1D4D6203E3DC400ECBEBB /* MyOwnershipViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyOwnershipViewModel.swift; sourceTree = "<group>"; };
 		61F1D4D9203E3E4900ECBEBB /* InventoryUnit+UI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InventoryUnit+UI.swift"; sourceTree = "<group>"; };
 		61F1D4DB203E3E7E00ECBEBB /* Relinquishment+Flags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Relinquishment+Flags.swift"; sourceTree = "<group>"; };
@@ -1156,6 +1164,7 @@
 		3AAA59F61C720F4500A5EA6D /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				61DA55C72065A5DD00DE43F3 /* ViewGrid */,
 				3C291A311FBCEA0300F294FD /* TableViewCells */,
 				3C9186F31FA25DF200F484ED /* TypeAliases */,
 				61C0250A1F92CF8D003BFF55 /* View Controllers */,
@@ -1679,6 +1688,17 @@
 				3C9186F71FA2697A00F484ED /* Charge Summary ViewController */,
 			);
 			path = "View Controllers";
+			sourceTree = "<group>";
+		};
+		61DA55C72065A5DD00DE43F3 /* ViewGrid */ = {
+			isa = PBXGroup;
+			children = (
+				61EF716C2066A49C00281A34 /* PromotionTypeUIConfiguration.swift */,
+				61EF716E2066A4B500281A34 /* PromotionType.swift */,
+				61DA55C82065A5F800DE43F3 /* PromotionBackgroundView.swift */,
+				61DA55C52065A55600DE43F3 /* CellPromotionView.swift */,
+			);
+			path = ViewGrid;
 			sourceTree = "<group>";
 		};
 		61F1D4D8203E3E0A00ECBEBB /* Extensions */ = {
@@ -2348,6 +2368,7 @@
 				3A892F501CD3902F00AE6F45 /* WereWantToTradeTableViewCell.swift in Sources */,
 				61A420C11FA9819F00B06708 /* Data+EncryptionKey.swift in Sources */,
 				087A87581E951A17009B1387 /* TdiCollectionViewCell.swift in Sources */,
+				61DA55C92065A5F800DE43F3 /* PromotionBackgroundView.swift in Sources */,
 				3AF7CC081C8450FF00FB9AC6 /* TransitionManager.swift in Sources */,
 				3A45F5C21CA051FE0045B2EF /* MyownershipClubIntervalGoldPointsTableViewCell.swift in Sources */,
 				3AAA5A431C720F4500A5EA6D /* LoginLowerButtonCell.swift in Sources */,
@@ -2374,6 +2395,7 @@
 				3A7858E61FB1B7170027E7EC /* Print+IntervalDebug.swift in Sources */,
 				DC7EF4CA1D709E9600E9E360 /* ClubPointPageItemViewController.swift in Sources */,
 				DC04BB421DB829F100227FF5 /* IntervalHDTabController.swift in Sources */,
+				61DA55C62065A55600DE43F3 /* CellPromotionView.swift in Sources */,
 				DC7EF50B1D709F8800E9E360 /* ResortCollectionViewCell.swift in Sources */,
 				3C68B2AD20338222006BF970 /* SingleSelectionCellModel.swift in Sources */,
 				3ACC27951DDDC2BA0057B809 /* SelectPaymentMethodCell.swift in Sources */,
@@ -2427,6 +2449,7 @@
 				DC7EF5061D709F8800E9E360 /* CustomTextField.swift in Sources */,
 				3C2EABEC1FB21DBE00BD2B2D /* SettingsViewController.swift in Sources */,
 				3A892F411CD3902F00AE6F45 /* CaledarDateCell.swift in Sources */,
+				61EF716F2066A4B500281A34 /* PromotionType.swift in Sources */,
 				61F1D4D7203E3DC400ECBEBB /* MyOwnershipViewModel.swift in Sources */,
 				DC7EF4D41D709EBF00E9E360 /* CommonMembership.swift in Sources */,
 				08A4D4321F69A51B00C63CDC /* FlexchangeSearchViewController.swift in Sources */,
@@ -2519,6 +2542,7 @@
 				3A05D4501C7B7CF400258C72 /* CertificateViewController.swift in Sources */,
 				3AAA5A2B1C720F4500A5EA6D /* Constant.swift in Sources */,
 				3A06C0A61CA9385A009A9574 /* AvailableDestinationPlaceTableViewCell.swift in Sources */,
+				61EF716D2066A49C00281A34 /* PromotionTypeUIConfiguration.swift in Sources */,
 				DC7EF4F11D709F2900E9E360 /* FeaturedDestinationsTableViewCell.swift in Sources */,
 				3A932D561C8868DC004BF665 /* GuestCertificateCell.swift in Sources */,
 				616302832014ED610067A9DC /* RentalClientAPIStore.swift in Sources */,
