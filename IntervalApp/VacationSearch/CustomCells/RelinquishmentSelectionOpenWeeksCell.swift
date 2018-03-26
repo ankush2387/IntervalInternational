@@ -54,10 +54,15 @@ class RelinquishmentSelectionOpenWeeksCell: UITableViewCell {
         resortName.text = openWeek.resort?.resortName ?? ""
         yearLabel.text = "\(String(describing: openWeek.relinquishmentYear ?? 0))".localized()
         totalWeekLabel.text = "Week \(Constant.getWeekNumber(weekType: openWeek.weekNumber ?? ""))".localized()
-        bedroomSizeAndKitchenClient.text = "\(String(describing: Helper.getBedroomNumbers(bedroomType: openWeek.unit?.unitSize ?? ""))), \(Helper.getKitchenEnums(kitchenType: openWeek.unit?.kitchenType ?? ""))".localized()
         
-        if let unit = openWeek.unit {
-            totalSleepAndPrivate.text = "Sleeps \(unit.publicSleepCapacity) Total, \(unit.privateSleepCapacity) Private".localized()
+        bedroomSizeAndKitchenClient.text = "\(String(describing: Helper.getBedroomNumbers(bedroomType: openWeek.unit?.unitSize ?? ""))), \(Helper.getKitchenEnums(kitchenType: openWeek.unit?.kitchenType ?? "")), \(openWeek.unit?.unitNumber ?? "")".localized()
+
+        if let sleepCapacity = openWeek.unit?.publicSleepCapacity {
+            totalSleepAndPrivate.text = "Sleeps \(sleepCapacity) Total".localized()
+        }
+        
+        if let privateSleepCap = openWeek.unit?.privateSleepCapacity {
+            totalSleepAndPrivate.text?.append(", \(privateSleepCap) Private".localized())
         }
         
         if let checkInDate = openWeek.checkInDate, let formattedCheckInDate = checkInDate.dateFromString(for: Constant.MyClassConstants.dateFormat) {
@@ -108,17 +113,14 @@ class RelinquishmentSelectionOpenWeeksCell: UITableViewCell {
             yearLabel.text = "\(relinquishmentYear)".localized()
         }
 
-        if let kitchenType = deposit.unit?.kitchenType, let unitNumber = deposit.unit?.unitNumber, let unitSize = deposit.unit?.unitSize {
-            
+        if let unitSize = deposit.unit?.unitSize, let kitchenType = deposit.unit?.kitchenType, let unitNumber = deposit.unit?.unitNumber {
             let unitSizeString = "\(Helper.getBedroomNumbers(bedroomType: unitSize)), \(Helper.getKitchenEnums(kitchenType: kitchenType)), \(unitNumber)"
-            let range = (unitSizeString as NSString).range(of: unitNumber)
             let attributedString = NSMutableAttributedString(string:unitSizeString)
-            attributedString.addAttribute(NSForegroundColorAttributeName, value: UIColor.red, range: range)
             bedroomSizeAndKitchenClient.attributedText = attributedString
         }
         
         if let sleepCapacity = deposit.unit?.publicSleepCapacity {
-            totalSleepAndPrivate.text = "Sleeps \(sleepCapacity) total".localized()
+            totalSleepAndPrivate.text = "Sleeps \(sleepCapacity) Total".localized()
         }
         
         if let privateSleepCap = deposit.unit?.privateSleepCapacity {

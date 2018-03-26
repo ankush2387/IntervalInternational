@@ -442,15 +442,10 @@ class Constant: NSObject {
         static var nearbyDictKey = "Nearby"
         static var status = "true"
         
-        //static var selectedAvailabilitySectionItem: AvailabilitySectionItem?
         static var selectedAvailabilityResort: AvailabilitySectionItemResort?
         static var selectedAvailabilityInventoryBucket: AvailabilitySectionItemInventoryBucket?
         static var selectedAvailabilityInventoryBucketIndex = 0
-        // FIXME(Frank) - Remove next 4
         static var rentalPrices = [InventoryPrice]()
-        //static var selectedResort = Resort()
-        //static var selectedExchangePointsCost : NSNumber?
-        //static var selectedExchange = ""
         
         static var paymentMethodTitle = "Payment Method".localized()
         static var webViewGetElementById = "document.getElementById('WASCInsuranceOfferOption0').checked == true;"
@@ -553,6 +548,7 @@ class Constant: NSObject {
         
         // Choose relinquishments
         static var filterRelinquishments = [ExchangeRelinquishment]()
+        static var filterDestinations = [ExchangeDestination]()
         
         //UserDefaults
         static var userName = "userName"
