@@ -168,15 +168,17 @@ class RenewelViewController: UIViewController {
                         renewalCoreProduct = Renewal()
                         renewalCoreProduct?.id = renewalPairA.id
                         renewalCoreProduct?.productCode = renewalPairA.productCode
-                    } else if !renewalPairA.isCoreProduct {
+                    } else {
                         renewalNonCoreProduct = Renewal()
                         renewalNonCoreProduct?.id = renewalPairA.id
                         renewalNonCoreProduct?.productCode = renewalPairA.productCode
-                    } else if renewalPairB.isCoreProduct {
+                    }
+
+                    if renewalPairB.isCoreProduct {
                         renewalCoreProduct = Renewal()
                         renewalCoreProduct?.id = renewalPairB.id
                         renewalCoreProduct?.productCode = renewalPairB.productCode
-                    } else if !renewalPairB.isCoreProduct {
+                    } else {
                         renewalNonCoreProduct = Renewal()
                         renewalNonCoreProduct?.id = renewalPairB.id
                         renewalNonCoreProduct?.productCode = renewalPairB.productCode
@@ -215,30 +217,12 @@ class RenewelViewController: UIViewController {
             }
         }
         
-        //FIXME(Frank): what is this?
-        if Constant.RunningDevice.deviceIdiom == .phone || Constant.RunningDevice.deviceIdiom == .pad {
-            
-            if Constant.MyClassConstants.noThanksForNonCore {
-                //FIXME(Frank): what is the difference with block of code in the esle?
-                if Constant.MyClassConstants.isFromWhatToUse {
-                    self.delegate?.dismissWhatToUse(renewalCoreProduct: renewalCoreProduct, renewalNonCoreProduct: renewalNonCoreProduct)
-                } else {
-                    delegate?.selectedRenewalFromWhoWillBeCheckingIn(renewalCoreProduct: renewalCoreProduct, renewalNonCoreProduct: renewalNonCoreProduct, selectedRelinquishment: filterRelinquishment)
-                }
-                
-            } else {
-                //FIXME(Frank): what is the difference with the previous block of code?
-                if Constant.MyClassConstants.isFromWhatToUse {
-                    self.delegate?.dismissWhatToUse(renewalCoreProduct: renewalCoreProduct, renewalNonCoreProduct: renewalNonCoreProduct)
-                } else {
-                    delegate?.selectedRenewalFromWhoWillBeCheckingIn(renewalCoreProduct: renewalCoreProduct, renewalNonCoreProduct: renewalNonCoreProduct, selectedRelinquishment: filterRelinquishment)
-                    
-                }
-                
-            }
-            
+        if Constant.MyClassConstants.isFromWhatToUse {
+            self.delegate?.dismissWhatToUse(renewalCoreProduct: renewalCoreProduct, renewalNonCoreProduct: renewalNonCoreProduct)
+        } else {
+            delegate?.selectedRenewalFromWhoWillBeCheckingIn(renewalCoreProduct: renewalCoreProduct, renewalNonCoreProduct: renewalNonCoreProduct, selectedRelinquishment: filterRelinquishment)
         }
-        
+
     }
     
     @IBAction func cancelClicked(_ sender: UIButton) {
