@@ -334,11 +334,12 @@ class UpComingTripDetailController: UIViewController, UITextViewDelegate {
     
     func showWeatherDetail() {
         guard let resortCode = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.resort?.resortCode else { return }
-        guard let resortName = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.resort?.resortName else { return }
+        guard let resortCity = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.resort?.address?.cityName else { return }
         guard let countryCode = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.resort?.address?.countryCode else { return }
         showHudAsync()
-        displayWeatherView(resortCode: resortCode, resortName: resortName, countryCode: countryCode, presentModal: true, completionHandler: { (_) in
-            self.hideHudAsync()
+        displayWeatherView(resortCode: resortCode, resortCity: resortCity, countryCode: countryCode, presentModal: true, completionHandler: { [weak self] _ in
+            guard let strongSelf = self else { return }
+            strongSelf.hideHudAsync()
         })
     }
 }

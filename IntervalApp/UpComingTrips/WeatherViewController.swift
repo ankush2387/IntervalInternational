@@ -174,25 +174,25 @@ class WeatherViewController: UIViewController {
 }
 
 extension UIViewController {
-    func displayWeatherView(resortCode: String, resortName: String, countryCode: String, presentModal: Bool, completionHandler: @escaping (_ response: Bool) -> Void) {
-        DirectoryClient.getResortWeather(Constant.MyClassConstants.systemAccessToken, resortCode: resortCode, onSuccess: { (response) in
-            if let weatherResponse = response as? ResortWeather {
-                let storyboard = UIStoryboard(name: "MyUpcomingTripIphone", bundle: nil)
-                let weatherDetailsNav = storyboard.instantiateViewController(withIdentifier: "weatherNav") as! UINavigationController
-                let weatherVC = weatherDetailsNav.viewControllers.first as! WeatherViewController
-                weatherVC.resortWeather = weatherResponse
-                weatherVC.countryCode = countryCode
-                weatherVC.resortName = resortName
-                
-                if presentModal {
-                    self.present(weatherDetailsNav, animated: true, completion: nil)
-                } else {
-                self.navigationController?.view.layer.add(Helper.bottomToTopTransition(), forKey: nil); self.navigationController?.pushViewController(weatherVC, animated: false)
-                    weatherVC.presentedModally = false
-                }
-
-                completionHandler(true)
+    func displayWeatherView(resortCode: String, resortCity: String, countryCode: String, presentModal: Bool, completionHandler: @escaping (_ response: Bool) -> Void) {
+        DirectoryClient.getResortWeather(Constant.MyClassConstants.systemAccessToken, resortCode: resortCode, onSuccess: { [weak self] response in
+            guard let strongSelf = self else { return }
+            let weatherResponse = response
+            let storyboard = UIStoryboard(name: "MyUpcomingTripIphone", bundle: nil)
+            guard let weatherDetailsNav = storyboard.instantiateViewController(withIdentifier: "weatherNav") as? UINavigationController else { return }
+            guard let weatherVC = weatherDetailsNav.viewControllers.first as? WeatherViewController else { return }
+            weatherVC.resortWeather = weatherResponse
+            weatherVC.countryCode = countryCode
+            weatherVC.resortName = resortCity
+            
+            if presentModal {
+                strongSelf.present(weatherDetailsNav, animated: true, completion: nil)
+            } else {
+                strongSelf.navigationController?.view.layer.add(Helper.bottomToTopTransition(), forKey: nil); strongSelf.navigationController?.pushViewController(weatherVC, animated: false)
+                weatherVC.presentedModally = false
             }
+            
+            completionHandler(true)
             
         }) {[unowned self] error in
             completionHandler(false)
