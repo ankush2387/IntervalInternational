@@ -1817,7 +1817,7 @@ transaction.</string>
                                                                         </constraints>
                                                                     </view>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3BR" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rq8-q6-poG">
-                                                                        <rect key="frame" x="8" y="8" width="65" height="44"/>
+                                                                        <rect key="frame" x="18" y="8" width="65" height="44"/>
                                                                         <constraints>
                                                                             <constraint firstAttribute="width" constant="65" id="YR9-HS-VSm"/>
                                                                         </constraints>
@@ -1826,7 +1826,7 @@ transaction.</string>
                                                                         <nil key="highlightedColor"/>
                                                                     </label>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Limited Kitchen" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9gf-3G-wBO">
-                                                                        <rect key="frame" x="78" y="15.5" width="120" height="20"/>
+                                                                        <rect key="frame" x="88" y="15.5" width="120" height="20"/>
                                                                         <constraints>
                                                                             <constraint firstAttribute="height" constant="20" id="3qx-me-zxf"/>
                                                                             <constraint firstAttribute="width" constant="120" id="LZv-ur-uzv"/>
@@ -1836,7 +1836,7 @@ transaction.</string>
                                                                         <nil key="highlightedColor"/>
                                                                     </label>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="8 Total, 6 Private" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j9q-Wi-Nz7">
-                                                                        <rect key="frame" x="78" y="33" width="120" height="15"/>
+                                                                        <rect key="frame" x="88" y="33" width="120" height="15"/>
                                                                         <constraints>
                                                                             <constraint firstAttribute="height" constant="15" id="B9o-b7-lb1"/>
                                                                             <constraint firstAttribute="width" constant="120" id="jwX-MV-U8d"/>
@@ -1894,7 +1894,7 @@ transaction.</string>
                                                                         </constraints>
                                                                     </imageView>
                                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bhP-bW-zZo">
-                                                                        <rect key="frame" x="8" y="53" width="357" height="19"/>
+                                                                        <rect key="frame" x="18" y="53" width="347" height="19"/>
                                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                                         <constraints>
                                                                             <constraint firstAttribute="height" constant="19" id="mVt-9n-4BH"/>
@@ -1910,14 +1910,14 @@ transaction.</string>
                                                                 <constraint firstAttribute="bottom" secondItem="aUP-D6-ypF" secondAttribute="bottom" id="3Fo-Qx-ufi"/>
                                                                 <constraint firstItem="gY6-S0-Ob3" firstAttribute="leading" secondItem="xru-gj-w8L" secondAttribute="trailing" constant="-13" id="6sn-Pa-erV"/>
                                                                 <constraint firstItem="j9q-Wi-Nz7" firstAttribute="top" secondItem="9gf-3G-wBO" secondAttribute="bottom" constant="-2" id="9Ms-lL-mam"/>
-                                                                <constraint firstItem="rq8-q6-poG" firstAttribute="leading" secondItem="iur-lH-CIF" secondAttribute="leadingMargin" id="9yU-BM-f9O"/>
+                                                                <constraint firstItem="rq8-q6-poG" firstAttribute="leading" secondItem="iur-lH-CIF" secondAttribute="leadingMargin" constant="10" id="9yU-BM-f9O"/>
                                                                 <constraint firstItem="bfu-94-ViL" firstAttribute="leading" secondItem="iur-lH-CIF" secondAttribute="leadingMargin" constant="7" id="AiS-xy-aBT"/>
                                                                 <constraint firstItem="xru-gj-w8L" firstAttribute="top" secondItem="iur-lH-CIF" secondAttribute="topMargin" constant="7" id="FZI-Mf-Vv3"/>
                                                                 <constraint firstItem="bhP-bW-zZo" firstAttribute="top" secondItem="rq8-q6-poG" secondAttribute="bottom" constant="1" id="IbI-jW-82e"/>
                                                                 <constraint firstItem="aUP-D6-ypF" firstAttribute="top" secondItem="iur-lH-CIF" secondAttribute="top" id="OWI-ZY-CWE"/>
                                                                 <constraint firstItem="j9q-Wi-Nz7" firstAttribute="centerY" secondItem="rq8-q6-poG" secondAttribute="centerY" constant="10.5" id="QZb-uH-6OD"/>
                                                                 <constraint firstItem="9gf-3G-wBO" firstAttribute="leading" secondItem="rq8-q6-poG" secondAttribute="trailing" constant="5" id="TR5-3Q-4tf"/>
-                                                                <constraint firstItem="bhP-bW-zZo" firstAttribute="leading" secondItem="iur-lH-CIF" secondAttribute="leadingMargin" id="VPv-P6-0s0"/>
+                                                                <constraint firstItem="bhP-bW-zZo" firstAttribute="leading" secondItem="iur-lH-CIF" secondAttribute="leadingMargin" constant="10" id="VPv-P6-0s0"/>
                                                                 <constraint firstItem="gY6-S0-Ob3" firstAttribute="top" secondItem="iur-lH-CIF" secondAttribute="topMargin" constant="7" id="ZSQ-RK-CMM"/>
                                                                 <constraint firstAttribute="trailing" secondItem="aUP-D6-ypF" secondAttribute="trailing" id="afV-cc-7Za"/>
                                                                 <constraint firstAttribute="bottomMargin" secondItem="xru-gj-w8L" secondAttribute="bottom" constant="7" id="bZ4-Ur-KQa"/>
@@ -1959,7 +1959,7 @@ transaction.</string>
                                                                         </constraints>
                                                                     </view>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3BR" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n4Y-qV-NN9">
-                                                                        <rect key="frame" x="10" y="2" width="65" height="55"/>
+                                                                        <rect key="frame" x="20" y="2" width="65" height="55"/>
                                                                         <constraints>
                                                                             <constraint firstAttribute="width" constant="65" id="wf3-TN-AOj"/>
                                                                         </constraints>
@@ -1968,7 +1968,7 @@ transaction.</string>
                                                                         <nil key="highlightedColor"/>
                                                                     </label>
                                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UQI-YQ-65C" userLabel="View Price">
-                                                                        <rect key="frame" x="76" y="5" width="105" height="45"/>
+                                                                        <rect key="frame" x="86" y="5" width="105" height="45"/>
                                                                         <subviews>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Limited Kitchen" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zAK-xR-dQD">
                                                                                 <rect key="frame" x="0.0" y="10" width="105" height="18"/>
@@ -1994,7 +1994,7 @@ transaction.</string>
                                                                         </constraints>
                                                                     </view>
                                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1VK-Lm-7mL">
-                                                                        <rect key="frame" x="10" y="58" width="355" height="19"/>
+                                                                        <rect key="frame" x="20" y="58" width="345" height="19"/>
                                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                                         <constraints>
                                                                             <constraint firstAttribute="height" constant="19" id="uRz-RO-ddj"/>
@@ -2077,7 +2077,7 @@ transaction.</string>
                                                                 <constraint firstItem="Iwv-HY-O5o" firstAttribute="leading" secondItem="5A6-8e-lZJ" secondAttribute="leading" id="9Cm-t2-sBT"/>
                                                                 <constraint firstAttribute="trailing" secondItem="uTe-Gr-LWQ" secondAttribute="trailing" id="CRe-Kc-4WM"/>
                                                                 <constraint firstItem="1VK-Lm-7mL" firstAttribute="top" secondItem="n4Y-qV-NN9" secondAttribute="bottom" constant="1" id="E9o-1i-xub"/>
-                                                                <constraint firstItem="1VK-Lm-7mL" firstAttribute="leading" secondItem="5A6-8e-lZJ" secondAttribute="leading" constant="10" id="EMF-Mw-w4b"/>
+                                                                <constraint firstItem="1VK-Lm-7mL" firstAttribute="leading" secondItem="5A6-8e-lZJ" secondAttribute="leading" constant="20" id="EMF-Mw-w4b"/>
                                                                 <constraint firstItem="Iwv-HY-O5o" firstAttribute="top" secondItem="5A6-8e-lZJ" secondAttribute="top" id="OAU-XF-75P"/>
                                                                 <constraint firstItem="naf-5H-lDv" firstAttribute="leading" secondItem="Gt2-rb-Iyk" secondAttribute="trailing" constant="8" id="Q4q-zr-mjX"/>
                                                                 <constraint firstAttribute="bottom" secondItem="Iwv-HY-O5o" secondAttribute="bottom" id="RPD-Ec-4HH"/>
@@ -2094,7 +2094,7 @@ transaction.</string>
                                                                 <constraint firstAttribute="bottom" secondItem="1VK-Lm-7mL" secondAttribute="bottom" constant="3" id="lHP-JV-aew"/>
                                                                 <constraint firstItem="JVU-4c-wcG" firstAttribute="leading" secondItem="Q35-A7-5O6" secondAttribute="trailing" constant="5" id="otX-6j-q2r"/>
                                                                 <constraint firstItem="UQI-YQ-65C" firstAttribute="leading" secondItem="n4Y-qV-NN9" secondAttribute="trailing" constant="1" id="pfY-O5-4LO"/>
-                                                                <constraint firstItem="n4Y-qV-NN9" firstAttribute="leading" secondItem="5A6-8e-lZJ" secondAttribute="leading" constant="10" id="qUZ-QG-Ppm"/>
+                                                                <constraint firstItem="n4Y-qV-NN9" firstAttribute="leading" secondItem="5A6-8e-lZJ" secondAttribute="leading" constant="20" id="qUZ-QG-Ppm"/>
                                                                 <constraint firstItem="uTe-Gr-LWQ" firstAttribute="leading" secondItem="5A6-8e-lZJ" secondAttribute="leading" constant="15" id="twm-n6-VNV"/>
                                                                 <constraint firstItem="Q35-A7-5O6" firstAttribute="top" secondItem="uTe-Gr-LWQ" secondAttribute="bottom" constant="10" id="vHb-3d-z2D"/>
                                                             </constraints>
