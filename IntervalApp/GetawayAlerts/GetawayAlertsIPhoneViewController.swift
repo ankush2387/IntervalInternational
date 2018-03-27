@@ -416,7 +416,7 @@ extension GetawayAlertsIPhoneViewController: UITableViewDelegate {
         }
         delete.backgroundColor = UIColor(red: 224 / 255.0, green: 96.0 / 255.0, blue: 84.0 / 255.0, alpha: 1.0)
         
-        guard let alertStatus =  getawayAlert.enabled else {
+        guard let alertStatus = getawayAlert.enabled else {
             return []
         }
         
@@ -428,6 +428,7 @@ extension GetawayAlertsIPhoneViewController: UITableViewDelegate {
                 RentalClient.updateAlert(Session.sharedSession.userAccessToken, alert: editedAlert, onSuccess: { [weak self] _ in
                     self?.hideHudAsync()
                     self?.presentAlert(with: "", message: "Alert updated sucessfully".localized())
+                    self?.alertDisplayTableView.reloadData()
                 }) { [weak self] error in
                     self?.hideHudAsync()
                     self?.presentErrorAlert(UserFacingCommonError.handleError(error))
@@ -530,12 +531,21 @@ extension GetawayAlertsIPhoneViewController: UITableViewDataSource {
             } else {
                 
                 cell.alertStatusButton.isHidden = false
-                cell.alertStatusButton.setTitle(Constant.buttonTitles.viewResults, for: .normal)
-                cell.alertStatusButton.removeTarget(self, action: #selector(self.nothingYetClicked), for: .touchUpInside)
-                cell.alertStatusButton.addTarget(self, action: #selector(self.viewResultsClicked(_:)), for: .touchUpInside)
-                cell.alertNameLabel.textColor = IUIKColorPalette.primaryB.color
-                cell.activityIndicator.isHidden = true
-                cell.alertStatusButton.layer.borderColor = UIColor(red: 240.0 / 255.0, green: 111.0 / 255.0, blue: 54.0 / 255.0, alpha: 1.0).cgColor
+                if getawayAlert.enabled == true {
+                    cell.alertStatusButton.setTitle(Constant.buttonTitles.viewResults, for: .normal)
+                    cell.alertStatusButton.removeTarget(self, action: #selector(self.nothingYetClicked), for: .touchUpInside)
+                    cell.alertStatusButton.addTarget(self, action: #selector(self.viewResultsClicked(_:)), for: .touchUpInside)
+                    cell.alertNameLabel.textColor = IUIKColorPalette.primaryB.color
+                    cell.activityIndicator.isHidden = true
+                    cell.alertStatusButton.layer.borderColor = UIColor(red: 240.0 / 255.0, green: 111.0 / 255.0, blue: 54.0 / 255.0, alpha: 1.0).cgColor
+                } else {
+                    cell.alertStatusButton.setTitle("Inactive", for: .normal)
+                    cell.alertStatusButton.isEnabled = true
+                    cell.alertStatusButton.setTitleColor(UIColor.white, for: .normal)
+                    cell.alertNameLabel.textColor = IUIKColorPalette.primaryB.color
+                    cell.alertStatusButton.layer.borderColor = UIColor(red: 211.0 / 255.0, green: 211.0 / 255.0, blue: 211.0 / 255.0, alpha: 1.0).cgColor
+                    cell.alertStatusButton.backgroundColor = UIColor.lightGray
+                }
             }
         } else {
             cell.alertStatusButton.isHidden = false
