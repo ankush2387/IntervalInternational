@@ -209,7 +209,7 @@ class Constant: NSObject {
         static var checkOutScreenHeaderIPadTextArray = ["", "Promotions".localized(), "Exchange Options".localized(), "Add Trip Protection(Recommended)".localized(), "Payment Method".localized(), "Confirmation Email".localized(), "", "", "", ""]
         
         //***** Initializing plicy list table cell content array *****//
-        static var policyListTblCellContentArray = ["Terms & Conditions".localized(), "Privacy Policy".localized(), "Legal Information".localized(), "Contact Us".localized(), "Email Us".localized(), "Our Offices".localized(), "Interval World".localized(), "Version \(Helper.getBuildVersion())".localized()]
+        static var policyListTblCellContentArray = ["Terms & Conditions".localized(), "Privacy Policy".localized(), "Legal Information".localized(), "Contact Us".localized(), "Email Us".localized(), "Our Offices".localized(), "Version \(Helper.getBuildVersion())".localized()]
         
         static var fourSegmentHeaderTextArray = ["Where do you want to go?".localized(), "What do you want to trade?".localized(), "Check in closest to?".localized(), "Who is travelling?".localized()]
         

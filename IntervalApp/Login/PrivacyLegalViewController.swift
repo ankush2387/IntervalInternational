@@ -55,7 +55,7 @@ extension  PrivacyLegalViewController: UITableViewDelegate {
     //table view delegate method to identify  row selection from tableview
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        if((indexPath as NSIndexPath).row != 7) {
+        if indexPath.row != 6 {
             
             Constant.MyClassConstants.requestedWebviewURL = ""
             Constant.MyClassConstants.webviewTtile = ""
