@@ -18,7 +18,7 @@ class WhoWillBeCheckingInViewController: UIViewController {
     //Outlets
     @IBOutlet private weak var resortHoldingTimeLabel: UILabel!
     @IBOutlet fileprivate weak var checkingInUserTBLview: UITableView!
-    @IBOutlet private weak var proceedToCheckoutButton: IUIKButton!
+    @IBOutlet fileprivate weak var proceedToCheckoutButton: IUIKButton!
     @IBOutlet private var keyboardHeightLayoutConstraint: NSLayoutConstraint?
 
     //Class variables
@@ -297,35 +297,6 @@ class WhoWillBeCheckingInViewController: UIViewController {
                 
             })
         }
-    }
-    
-    //***** Select member who will be checking in? *****//
-    func checkBoxCheckedAtIndex(_ sender: IUIKCheckbox) {
-        
-        self.whoWillBeCheckingInSelectedIndex = sender.tag
-        if sender.tag == Constant.MyClassConstants.membershipContactArray.count {
-            
-            requiredSectionIntTBLview = 6
-            checkingInUserTBLview.reloadData()
-            let indexPath = NSIndexPath(row: 0, section: 2)
-            checkingInUserTBLview.scrollToRow(at: indexPath as IndexPath, at: .top, animated: true)
-            proceedToCheckoutButton.isEnabled = false
-            proceedToCheckoutButton.alpha = 0.5
-            guard let systemAccessToken = Constant.MyClassConstants.systemAccessToken else { return }
-            LookupClient.getCountries(systemAccessToken, onSuccess: { (response) in
-                Constant.countryListArray = response
-                
-            }, onError: { [weak self] _ in
-                self?.presentErrorAlert(UserFacingCommonError.generic)
-            })
-        } else {
-            requiredSectionIntTBLview = 2
-            checkingInUserTBLview.reloadData()
-            self.proceedToCheckoutButton.isEnabled = true
-            self.proceedToCheckoutButton.alpha = 1.0
-            Constant.MyClassConstants.enableGuestCertificate = false
-        }
-        
     }
     
     //***** Drop down button pressed method *****//
@@ -845,7 +816,7 @@ extension WhoWillBeCheckingInViewController: UITableViewDataSource {
             cell.contentBorderView.layer.borderWidth = 2
             cell.contentBorderView.layer.cornerRadius = 7
             cell.checkBox.tag = indexPath.row
-            cell.checkBox.addTarget(self, action: #selector(WhoWillBeCheckingInViewController.checkBoxCheckedAtIndex(_:)), for: .touchUpInside)
+            cell.checkBox.isUserInteractionEnabled = false
             cell.selectionStyle = .none
             return cell
             
@@ -1078,6 +1049,35 @@ extension WhoWillBeCheckingInViewController: UITableViewDataSource {
                 return cell
             }
         }
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        if indexPath.section == 1 {
+        self.whoWillBeCheckingInSelectedIndex = indexPath.row
+        if indexPath.row == Constant.MyClassConstants.membershipContactArray.count {
+            
+            requiredSectionIntTBLview = 6
+            checkingInUserTBLview.reloadData()
+            let indexPath = NSIndexPath(row: 0, section: 2)
+            checkingInUserTBLview.scrollToRow(at: indexPath as IndexPath, at: .top, animated: true)
+            proceedToCheckoutButton.isEnabled = false
+            proceedToCheckoutButton.alpha = 0.5
+            guard let systemAccessToken = Constant.MyClassConstants.systemAccessToken else { return }
+            LookupClient.getCountries(systemAccessToken, onSuccess: { (response) in
+                Constant.countryListArray = response
+                
+            }, onError: { [weak self] _ in
+                self?.presentErrorAlert(UserFacingCommonError.generic)
+            })
+        } else {
+            requiredSectionIntTBLview = 2
+            checkingInUserTBLview.reloadData()
+            self.proceedToCheckoutButton.isEnabled = true
+            self.proceedToCheckoutButton.alpha = 1.0
+            Constant.MyClassConstants.enableGuestCertificate = false
+        }
+      }
     }
 }
 
