@@ -28,135 +28,102 @@ class MemberShipDetailTableViewCell: UITableViewCell {
     @IBOutlet weak var activememberOutOfTotalMemberLabel: UILabel!
     @IBOutlet private weak var productExternalView: UIView!
     @IBOutlet private weak var ExternalViewHeightConstraint: NSLayoutConstraint!
-    
-    // MARK: get MembershipCell using informations
-    /**
-        Configure Cell Components.
-        - parameter membershipDetailDictionary : Dictionary with String key and String Value.
-        - returns : No value is return
-    */
-    func getCell(contactInfo: Contact, products: [Product]) {
+
+    func setupCell(profile: Contact, membership: Membership) {
         setPropertiesTocellElements()
         
-        var firstName = ""
-        var lastName = ""
-        var loginID = ""
-        var emailAddress = ""
-        var status = ""
-        var dateString = ""
-        var membershipsAmount = 0
+        let fullName = [profile.firstName, profile.lastName].flatMap { $0 }.joined(separator: " ")
 
-        if let name = contactInfo.firstName {
-            firstName = name
+        var loginId = ""
+        if let login = profile.userName {
+            loginId = login
         }
         
-        if let lastname = contactInfo.lastName {
-            lastName = lastname
-        }
-        
-        if let login = contactInfo.userName {
-            loginID = login
-        }
-        
-        if let email = contactInfo.emailAddress {
+        var emailAddress = ""
+        if let email = profile.emailAddress {
             emailAddress = email
         }
         
-        if contactInfo.isPrimary == true {
-            let memberStatus = "Primary Contact"
-            status = memberStatus
+        var status = ""
+        if profile.isPrimary == true {
+            status = "Primary Contact"
         }
         
-        if let memberSinceDate = contactInfo.memberships?[0].sinceDate {
-            dateString = memberSinceDate.stringWithShortFormatForJSON()
+        var dateString = ""
+        if let sinceDate = membership.sinceDate {
+            dateString = sinceDate.stringWithShortFormatForJSON()
         }
-        
-        if let count = contactInfo.memberships?.count {
-            membershipsAmount = count
-        }
-
-        updateCell(contactName: "\(firstName) \(lastName)", loginID: loginID, email: emailAddress, status: status, date: dateString, memberships: membershipsAmount, products: products)
-        
-    }
-    // MARK: Update value according to server response
-    /**
-        Update label text.
-    
-        - parameter membershipDetailDictionary: Dictionary with String Key and String Value.
-        - returns: No return value.
-    */
-    fileprivate func updateCell(contactName: String, loginID: String, email: String, status: String, date: String, memberships: Int, products: [Product]) {
         
         // Update label text
         contactnameInfoLabel.text = Constant.memberShipViewController.membershipDetailTableViewCell.contactnameInfoLabelText
         loginInfoLabel.text = Constant.textFieldTitles.usernamePlaceholder
-         emailInfoLabel.text = Constant.memberShipViewController.membershipDetailTableViewCell.emailInfoLabelText
+        emailInfoLabel.text = Constant.memberShipViewController.membershipDetailTableViewCell.emailInfoLabelText
         memberNumberInfoLabel.text = Constant.memberShipViewController.membershipDetailTableViewCell.memberNumberInfoLabelText
         switchMembershipButton.setTitle(Constant.memberShipViewController.membershipDetailTableViewCell.switchMembershipButtonTitle, for: .normal)
-        activememberOutOfTotalMemberLabel.text = "1 of \(memberships)"
         
-        contactNameLabel.text = contactName
-         loginIdLabel.text = loginID
-         emailLabel.text = email
-         memberNumberLabel.text = Constant.MyClassConstants.memberNumber
+        if let memberships = profile.memberships, !memberships.isEmpty {
+            activememberOutOfTotalMemberLabel.text = "1 of \(memberships.count)"
+        }
+
+        contactNameLabel.text = fullName
+        loginIdLabel.text = loginId
+        emailLabel.text = emailAddress
+        memberNumberLabel.text = membership.memberNumber
         
-        if let expDate = date.dateFromString(for: Constant.MyClassConstants.dateFormat) {
-             memberSinceDateLabel.text = Helper.getWeekDay(dateString: expDate , getValue: Constant.MyClassConstants.month).appending(". ").appending(Helper.getWeekDay(dateString: expDate, getValue: Constant.MyClassConstants.date)).appending(", ").appending(Helper.getWeekDay(dateString: expDate, getValue: Constant.MyClassConstants.year))
+        if let expDate = dateString.dateFromString(for: Constant.MyClassConstants.dateFormat) {
+            memberSinceDateLabel.text = Helper.getWeekDay(dateString: expDate , getValue: Constant.MyClassConstants.month).appending(". ").appending(Helper.getWeekDay(dateString: expDate, getValue: Constant.MyClassConstants.date)).appending(", ").appending(Helper.getWeekDay(dateString: expDate, getValue: Constant.MyClassConstants.year))
         }
         
         activeLabel.text = status
         //setup Products View depending on number of Products
-        let size = products.count //amount of products to display
+        let size = membership.products?.count ?? 0 //amount of products to display
         var yPosition = 5 // yPosition of view
         let height = 80 // height of each view
         ExternalViewHeightConstraint.constant = CGFloat((80 * size) + 10)
-
+        
         var count = 0
-        for prod in products {
-            let prodView = nonCoreProductView()
-            prodView.initializeView()
-            
-            if let productCode = prod.productCode {
-                prodView.productImageView.image = UIImage(named: productCode)
-            }
-            if prod.coreProduct {
-                prodView.productImageView.isHidden = false
-                prodView.triangleView.isHidden = true
-                prodView.externalView.backgroundColor = UIColor.white
-            }
-
-            if count > 1 {
-                prodView.triangleView.isHidden = true
-            }
-            
-            if !prod.billingEntity.unwrappedString.contains("NON") {
-                prodView.expirationDateLabel.text = nil
-                prodView.expireLabel.isHidden = true
-            } else {
+        if let products = membership.products {
+            for prod in products {
+                let prodView = nonCoreProductView()
+                prodView.initializeView()
                 
-                if let expDate = prod.expirationDate {
-                    prodView.expirationDateLabel.text = Helper.getWeekDay(dateString: expDate, getValue: Constant.MyClassConstants.month).appending(". ").appending(Helper.getWeekDay(dateString: expDate, getValue: Constant.MyClassConstants.date)).appending(", ").appending(Helper.getWeekDay(dateString: expDate, getValue: Constant.MyClassConstants.year))
+                if let productCode = prod.productCode {
+                    prodView.productImageView.image = UIImage(named: productCode)
                 }
-                prodView.expirationDateLabel.font = UIFont(name: Constant.fontName.helveticaNeue, size: 15)
+                if prod.coreProduct {
+                    prodView.productImageView.isHidden = false
+                    prodView.triangleView.isHidden = true
+                    prodView.externalView.backgroundColor = UIColor.white
+                }
+                
+                if count > 1 {
+                    prodView.triangleView.isHidden = true
+                }
+                
+                if !prod.billingEntity.unwrappedString.contains("NON") {
+                    prodView.expirationDateLabel.text = nil
+                    prodView.expireLabel.isHidden = true
+                } else {
+                    
+                    if let expDate = prod.expirationDate {
+                        prodView.expirationDateLabel.text = Helper.getWeekDay(dateString: expDate, getValue: Constant.MyClassConstants.month).appending(". ").appending(Helper.getWeekDay(dateString: expDate, getValue: Constant.MyClassConstants.date)).appending(", ").appending(Helper.getWeekDay(dateString: expDate, getValue: Constant.MyClassConstants.year))
+                    }
+                    prodView.expirationDateLabel.font = UIFont(name: Constant.fontName.helveticaNeue, size: 15)
+                }
+         
+                prodView.productNameLabel.text = Helper.getDisplayNameFor(membership: membership, product: membership.getProductWithHighestTier())
+                prodView.productNameLabel.font = UIFont(name: Constant.fontName.helveticaNeue, size: 20)
+                prodView.productNameLabel.textColor = UIColor.black
+                
+                prodView.frame = CGRect(x:5, y: yPosition, width: Int(productExternalView.frame.width - 10), height: height)
+                productExternalView.addSubview(prodView)
+                yPosition += height
+                count += 1
             }
-            if let name = prod.productName?.capitalized {
-                    prodView.productNameLabel.text = "\(name) Membership".localized()
-                     prodView.productNameLabel.font = UIFont(name: Constant.fontName.helveticaNeue, size: 20)
-            }
-            prodView.productNameLabel.textColor = UIColor.black
-            prodView.frame = CGRect(x:5, y: yPosition, width: Int(productExternalView.frame.width - 10), height: height)
-            productExternalView.addSubview(prodView)
-            yPosition += height
-            count += 1
         }
         productExternalView.layer.cornerRadius = 7
     }
-    // MARK: set commonPrperties to cell
-    /**
-    Set  properties to Cell components
-    - parameter No parameter:
-    - returns : No return value
-    */
+
     fileprivate func setPropertiesTocellElements() {
         
         switchMembershipButton.layer.cornerRadius = 4

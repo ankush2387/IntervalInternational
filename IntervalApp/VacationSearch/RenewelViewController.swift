@@ -85,7 +85,6 @@ class RenewelViewController: UIViewController {
                 forceRenewals = forceRenewalsFromExchange
             }
         } else {
-            
             if let forceRenewalsFromRental = Constant.MyClassConstants.processStartResponse.view?.forceRenewals {
                 forceRenewals = forceRenewalsFromRental
             }
@@ -120,17 +119,13 @@ class RenewelViewController: UIViewController {
         if sender.tag == 0 && isNonCombo {
             let lowestTerm = forceRenewals.products[0].term
             for renewal in forceRenewals.products where renewal.term == lowestTerm {
-                renewalCoreProduct = Renewal()
-                renewalCoreProduct?.id = renewal.id
-                renewalCoreProduct?.productCode = renewal.productCode
+                renewalCoreProduct = renewal
                 break
             }
             
             let lowestCrossSellingTerm = forceRenewals.crossSelling[0].term
             for renewal in forceRenewals.crossSelling where renewal.term == lowestCrossSellingTerm {
-                renewalNonCoreProduct = Renewal()
-                renewalNonCoreProduct?.id = renewal.id
-                renewalNonCoreProduct?.productCode = renewal.productCode
+                renewalNonCoreProduct = renewal
                 break
             }
             
@@ -138,10 +133,8 @@ class RenewelViewController: UIViewController {
             
             let lowestTerm = forceRenewals.products[0].term
             for renewal in forceRenewals.products where renewal.term == lowestTerm {
-                renewalCoreProduct = Renewal()
-                renewalCoreProduct?.id = renewal.id
-                renewalCoreProduct?.productCode = renewal.productCode
-                
+                renewalCoreProduct = renewal
+               
                 // show guest certificate
                 let lowestTerm = forceRenewals.crossSelling[0].term
                 for renewal in forceRenewals.crossSelling {
@@ -165,21 +158,15 @@ class RenewelViewController: UIViewController {
                     let renewalPairB = firstRenewComboProduct.renewalComboProducts[1]
                     
                     if renewalPairA.isCoreProduct {
-                        renewalCoreProduct = Renewal()
-                        renewalCoreProduct?.id = renewalPairA.id
-                        renewalCoreProduct?.productCode = renewalPairA.productCode
+                        renewalCoreProduct = renewalPairA
                     } else if !renewalPairA.isCoreProduct {
-                        renewalNonCoreProduct = Renewal()
-                        renewalNonCoreProduct?.id = renewalPairA.id
-                        renewalNonCoreProduct?.productCode = renewalPairA.productCode
-                    } else if renewalPairB.isCoreProduct {
-                        renewalCoreProduct = Renewal()
-                        renewalCoreProduct?.id = renewalPairB.id
-                        renewalCoreProduct?.productCode = renewalPairB.productCode
+                        renewalNonCoreProduct = renewalPairA
+                    }
+                    
+                    if renewalPairB.isCoreProduct {
+                        renewalCoreProduct = renewalPairB
                     } else if !renewalPairB.isCoreProduct {
-                        renewalNonCoreProduct = Renewal()
-                        renewalNonCoreProduct?.id = renewalPairB.id
-                        renewalNonCoreProduct?.productCode = renewalPairB.productCode
+                        renewalNonCoreProduct = renewalPairB
                     }
                 }
             }
@@ -188,9 +175,7 @@ class RenewelViewController: UIViewController {
             
             let lowestTerm = forceRenewals.crossSelling[0].term
             for renewal in forceRenewals.crossSelling where renewal.term == lowestTerm {
-                renewalNonCoreProduct = Renewal()
-                renewalNonCoreProduct?.id = renewal.id
-                renewalNonCoreProduct?.productCode = renewal.productCode
+                renewalNonCoreProduct = renewal
 
                 //FIXME(Frank): - what is this?
                 for renewal in forceRenewals.crossSelling {
@@ -200,7 +185,6 @@ class RenewelViewController: UIViewController {
                         Constant.MyClassConstants.noThanksForNonCore = false
                     }
                 }
-                
                 break
             }
             
@@ -208,9 +192,7 @@ class RenewelViewController: UIViewController {
             
             let lowestTerm = forceRenewals.products[0].term
             for renewal in forceRenewals.products where renewal.term == lowestTerm {
-                renewalCoreProduct = Renewal()
-                renewalCoreProduct?.id = renewal.id
-                renewalCoreProduct?.productCode = renewal.productCode
+                renewalCoreProduct = renewal
                 break
             }
         }
@@ -227,14 +209,13 @@ class RenewelViewController: UIViewController {
                 }
                 
             } else {
+                
                 //FIXME(Frank): what is the difference with the previous block of code?
                 if Constant.MyClassConstants.isFromWhatToUse {
                     self.delegate?.dismissWhatToUse(renewalCoreProduct: renewalCoreProduct, renewalNonCoreProduct: renewalNonCoreProduct)
                 } else {
                     delegate?.selectedRenewalFromWhoWillBeCheckingIn(renewalCoreProduct: renewalCoreProduct, renewalNonCoreProduct: renewalNonCoreProduct, selectedRelinquishment: filterRelinquishment)
-                    
                 }
-                
             }
             
         }

@@ -131,15 +131,15 @@ final class LoginViewModel {
     func readCurrentProfileForAccessToken(accessToken: DarwinAccessToken) -> Promise<Void> {
         return Promise { [unowned self] resolve, reject in
             self.userClientAPIStore.readCurrentProfile(for: accessToken)
-                .then { user in
+                .then { profile in
                     
-                    guard let memberships = user.memberships, user.hasMembership() else {
+                    guard let memberships = profile.memberships, profile.hasMembership() else {
                         reject(CommonErrors.errorWithSpecificMessage("No active membership"))
                         return
                     }
                     
                     // TODO: FRANK MAKE SURE MULTIPLE MEMEBERSHIPS ARE BEING SET
-                    self.sessionStore.contact = user
+                    self.sessionStore.contact = profile
                     self.fetchedMoreThanOneMembership = memberships.count > 1
                     resolve()
                 }

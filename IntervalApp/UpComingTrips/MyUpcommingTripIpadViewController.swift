@@ -331,10 +331,7 @@ extension MyUpcommingTripIpadViewController: UICollectionViewDataSource {
             
             if let checkInDateForUpcomingTrips = upcomingTrip.unit?.checkInDate, let checkInDate = checkInDateForUpcomingTrips.dateFromShortFormat() {
             
-            //FIXME(FRANK) - how is this possible?
-            //let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
             let myCalendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
-                
             let myComponents = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: checkInDate)
             
             if let weekday = myComponents.weekday, let month = myComponents.month, let day = myComponents.day, let year = myComponents.year {

@@ -118,7 +118,6 @@ final class AppCoordinator {
         Constant.MyClassConstants.isLoginSuccessfull = false
         Constant.MyClassConstants.sideMenuOptionSelected = Constant.MyClassConstants.resortFunctionalityCheck
         
-        Constant.MyClassConstants.memberCreditCardList.removeAll()
         Constant.MyClassConstants.upcomingTripsArray.removeAll()
         Constant.MyClassConstants.enableGuestCertificate = false
         

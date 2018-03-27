@@ -172,11 +172,15 @@ extension SideMenuTableViewController: UITableViewDataSource {
             
             guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.loginScreenReusableIdentifiers.memberCell, for: indexPath) as? MemberCell else { return UITableViewCell() }
             
-            let membership = Session.sharedSession.selectedMembership
-            let Product = membership?.getProductWithHighestTier()
-            if let productname = Product?.productName {
-                cell.customTextLabel.text = "\(Constant.MyClassConstants.member)\(memberId) \(productname)"
+            if let membership = Session.sharedSession.selectedMembership, let highestTierProduct = membership.getProductWithHighestTier(), let productName = highestTierProduct.productName {
+                if productName == "INTERVAL" {
+                    let fixProductName = productName + " Membership"
+                    cell.customTextLabel.text = "\(Constant.MyClassConstants.member)\(memberId) \(fixProductName.capitalized)"
+                } else {
+                     cell.customTextLabel.text = "\(Constant.MyClassConstants.member)\(memberId) \(productName.capitalized)"
+                }
             }
+            
             cell.iconImageView.image = smi.image
             cell.selectionStyle = UITableViewCellSelectionStyle.none
             return cell

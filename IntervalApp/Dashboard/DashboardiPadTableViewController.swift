@@ -816,20 +816,14 @@ extension DashboardIPadTableViewController: UICollectionViewDataSource {
                 var formatedCheckInDate = ""
                 var formatedCheckOutDate = ""
                 if let unitCheckInDate = upcomingTrip.unit?.checkInDate, let checkInDate = unitCheckInDate.dateFromShortFormat() {
-                    //FIXME(FRANK): AGAIN creating a wrong Calendar - how it's possible?
-                    //let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
                     let myCalendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
-                    
                     let myComponents = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: checkInDate)
                     
                     formatedCheckInDate = "\(Helper.getWeekdayFromInt(weekDayNumber:myComponents.weekday ?? 0)) \(Helper.getMonthnameFromInt(monthNumber: myComponents.month ?? 0)). \(myComponents.day ?? 0), \(myComponents.year ?? 0)"
                 }
                 
                 if let unitCheckOutDate = upcomingTrip.unit?.checkOutDate, let checkOutDate = unitCheckOutDate.dateFromShortFormat() {
-                    //FIXME(FRANK): AGAIN creating a wrong Calendar - how it's possible?
-                    //let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
                     let myCalendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
-                    
                     let myComponents1 = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: checkOutDate)
                     
                     formatedCheckOutDate = "\(Helper.getWeekdayFromInt(weekDayNumber: myComponents1.weekday ?? 0)) \(Helper.getMonthnameFromInt(monthNumber: myComponents1.month ?? 0)). \(myComponents1.day ?? 0), \(myComponents1.year ?? 0)"

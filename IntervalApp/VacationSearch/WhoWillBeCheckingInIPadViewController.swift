@@ -143,7 +143,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
             
             ExchangeProcessClient.backToChooseExchange(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.exchangeBookingLastStartedProcess, onSuccess: {(_) in
                 
-                Constant.MyClassConstants.selectedCreditCard.removeAll()
+                Constant.MyClassConstants.selectedCreditCard = nil
                 self.hideHudAsync()
                 
                 // pop and dismiss view according to conditions
@@ -165,7 +165,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
             Constant.holdingTimer?.invalidate()
             RentalProcessClient.backToChooseRental(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.getawayBookingLastStartedProcess, onSuccess: {(_) in
                 
-                Constant.MyClassConstants.selectedCreditCard.removeAll()
+                Constant.MyClassConstants.selectedCreditCard = nil
                 self.hideHudAsync()
                 
                 // pop and dismiss view according to conditions
@@ -469,13 +469,12 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
                     } else {
                         Constant.MyClassConstants.enableTaxes = false
                     }
-                    if let creditCards = Session.sharedSession.contact?.creditcards {
-                        Constant.MyClassConstants.memberCreditCardList = creditCards
-                    }
-                    
+            
                     let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
                     guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.checkOutViewController) as? CheckOutIPadViewController else { return }
                     viewController.filterRelinquishments = self.filterRelinquishments
+                    viewController.renewalCoreProduct = self.renewalCoreProduct
+                    viewController.renewalNonCoreProduct = self.renewalNonCoreProduct
                     
                     let transitionManager = TransitionManager()
                     self.navigationController?.transitioningDelegate = transitionManager
@@ -573,9 +572,11 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
                     } else {
                         Constant.MyClassConstants.enableTaxes = false
                     }
-                    Constant.MyClassConstants.memberCreditCardList = Session.sharedSession.contact?.creditcards ?? []
+    
                     let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
                     guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.checkOutViewController) as? CheckOutIPadViewController else { return }
+                    viewController.renewalCoreProduct = self.renewalCoreProduct
+                    viewController.renewalNonCoreProduct = self.renewalNonCoreProduct
                     
                     let transitionManager = TransitionManager()
                     self.navigationController?.transitioningDelegate = transitionManager

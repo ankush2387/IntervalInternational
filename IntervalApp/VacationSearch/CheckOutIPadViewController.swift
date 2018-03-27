@@ -294,6 +294,7 @@ class CheckOutIPadViewController: UIViewController {
         
     }
     
+    //FIXME(Frank) - what is this?
     func changeLabelStatus(notification: NSNotification) {
         
         guard let imageSlider = notification.object as? UIImageView else { return }
@@ -309,10 +310,10 @@ class CheckOutIPadViewController: UIViewController {
             let strAccept = self.cellWebView.stringByEvaluatingJavaScript(from: jsStringAccept)
             let strReject = self.cellWebView.stringByEvaluatingJavaScript(from: jsStringReject)
             
-            if (isAgreedToFees || !Constant.MyClassConstants.hasAdditionalCharges) && (strAccept == Constant.MyClassConstants.status || strReject == Constant.MyClassConstants.status || !showInsurance) && !Constant.MyClassConstants.selectedCreditCard.isEmpty && (isPromotionApplied || Constant.MyClassConstants.recapViewPromotionCodeArray.isEmpty) {
+            if (isAgreedToFees || !Constant.MyClassConstants.hasAdditionalCharges) && (strAccept == Constant.MyClassConstants.status || strReject == Constant.MyClassConstants.status || !showInsurance) && Constant.MyClassConstants.selectedCreditCard != nil && (isPromotionApplied || Constant.MyClassConstants.recapViewPromotionCodeArray.isEmpty) {
                 
                 let continueToPayRequest = RentalProcessRecapContinueToPayRequest()
-                continueToPayRequest.creditCard = Constant.MyClassConstants.selectedCreditCard.last!
+                continueToPayRequest.creditCard = Constant.MyClassConstants.selectedCreditCard
                 continueToPayRequest.confirmationDelivery = confirmationDelivery
                 
                 showHudAsync()
@@ -322,7 +323,7 @@ class CheckOutIPadViewController: UIViewController {
                 if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
                     
                     let continueToPayRequest = ExchangeProcessContinueToPayRequest()
-                    continueToPayRequest.creditCard = Constant.MyClassConstants.selectedCreditCard.last!
+                    continueToPayRequest.creditCard = Constant.MyClassConstants.selectedCreditCard
                     continueToPayRequest.confirmationDelivery = confirmationDelivery
                     continueToPayRequest.acceptTermsAndConditions = true
                     continueToPayRequest.acknowledgeAndAgreeResortFees = true
@@ -331,11 +332,9 @@ class CheckOutIPadViewController: UIViewController {
                         
                         Constant.MyClassConstants.exchangeBookingLastStartedProcess = nil
                         Constant.MyClassConstants.exchangeContinueToPayResponse = response
+                        
                         let selectedCard = Constant.MyClassConstants.selectedCreditCard
-                        if selectedCard[0].saveCardIndicator == true {
-                            Session.sharedSession.contact?.creditcards?.append(selectedCard[0])
-                        }
-                        Constant.MyClassConstants.selectedCreditCard.removeAll()
+                        
                         Helper.removeStoredGuestFormDetials()
                         self.isAgreed = true
                         self.hideHudAsync()
@@ -353,7 +352,7 @@ class CheckOutIPadViewController: UIViewController {
                 } else {
                     
                     let continueToPayRequest = RentalProcessRecapContinueToPayRequest()
-                    continueToPayRequest.creditCard = Constant.MyClassConstants.selectedCreditCard.last!
+                    continueToPayRequest.creditCard = Constant.MyClassConstants.selectedCreditCard
                     continueToPayRequest.confirmationDelivery = confirmationDelivery
                     continueToPayRequest.acceptTermsAndConditions = true
                     continueToPayRequest.acknowledgeAndAgreeResortFees = true
@@ -362,10 +361,7 @@ class CheckOutIPadViewController: UIViewController {
                         Constant.MyClassConstants.getawayBookingLastStartedProcess = nil
                         Constant.MyClassConstants.continueToPayResponse = response
                         let selectedCard = Constant.MyClassConstants.selectedCreditCard
-                        if selectedCard[0].saveCardIndicator == true {
-                            Session.sharedSession.contact?.creditcards?.append(selectedCard[0])
-                        }
-                        Constant.MyClassConstants.selectedCreditCard.removeAll()
+                        Constant.MyClassConstants.selectedCreditCard = nil
                         self.isAgreed = true
                         self.hideHudAsync()
                         self.checkoutTableView.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with: .automatic)
@@ -1188,19 +1184,17 @@ extension CheckOutIPadViewController: UITableViewDataSource {
                         cell.priceLabel.text = Constant.MyClassConstants.eplus
                         
                     case Constant.MyClassConstants.taxesTitle:
-                        
-                        cell.priceLabel.text = Constant.MyClassConstants.taxesTitle
+                        var tax: Float = 0.0
                         if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
-                            if let tax = Constant.MyClassConstants.exchangeContinueToCheckoutResponse.view?.fees?.shopExchange?.inventoryPrice?.tax {
-                                cell.setTotalPrice(with: currencyCode, and: tax, and: nil)
+                            if let taxAmount = Constant.MyClassConstants.exchangeContinueToCheckoutResponse.view?.fees?.shopExchange?.inventoryPrice?.tax {
+                                tax = taxAmount
                             }
                         } else {
-                            
-                            if let tax = Constant.MyClassConstants.continueToCheckoutResponse.view?.fees?.rental?.rentalPrice?.tax {
-                                cell.setTotalPrice(with: currencyCode, and: tax, and: nil)
+                            if let taxAmount = Constant.MyClassConstants.continueToCheckoutResponse.view?.fees?.rental?.rentalPrice?.tax {
+                                tax = taxAmount
                             }
                         }
-                        
+        
                         let cellTapped: CallBack = { [unowned self] in
                             if let taxBreakdown = Constant.MyClassConstants.continueToCheckoutResponse.view?.fees?.rental?.rentalPrice?.taxBreakdown {
                                 
@@ -1230,7 +1224,9 @@ extension CheckOutIPadViewController: UITableViewDataSource {
                             }
                         }
                         
-                        cell.setCell(callBack: cellTapped)
+                        cell.setTotalPrice(with: currencyCode, and: tax, and: nil)
+                        cell.priceLabel.text = Constant.MyClassConstants.taxesTitle
+                        cell.setCell(callBack: cellTapped, and: tax)
                         
                     case Constant.MyClassConstants.upgradeCost:
                         if let upgradeCost = Constant.MyClassConstants.exchangeFees?.unitSizeUpgrade?.price {
@@ -1523,8 +1519,8 @@ extension CheckOutIPadViewController: UITableViewDataSource {
                 paymentMethodLabel.textColor = IUIKColorPalette.primary1.color
                 
                 let selectPamentMethodLabel = UILabel(frame: CGRect(x: 20, y: 25, width: cell.contentView.frame.width - 90, height: 20))
-                if !Constant.MyClassConstants.selectedCreditCard.isEmpty {
-                    let creditcard = Constant.MyClassConstants.selectedCreditCard[0]
+                if let selectedCreditCard = Constant.MyClassConstants.selectedCreditCard {
+                    let creditcard = selectedCreditCard
                     if let cardNumber = creditcard.cardNumber, let code = creditcard.typeCode {
                         let last4 = cardNumber.substring(from: (cardNumber.index((cardNumber.endIndex), offsetBy: -4)))
                         let cardType = Helper.cardTypeCodeMapping(cardType: code)
