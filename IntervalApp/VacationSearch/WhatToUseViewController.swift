@@ -26,7 +26,6 @@ class WhatToUseViewController: UIViewController {
     
     // Class variables
     var isCheckedBox = false
-    var showUpgrade = false
     var selectedUnitIndex = 0
     var selectedRow = -1
     var selectedRowSection = -1
@@ -569,10 +568,12 @@ extension WhatToUseViewController: UITableViewDataSource {
                 return cell
             }
             
-            let exchange = count > 1 ?
+            let exchangeRelinquishment = count > 1 ?
                 Constant.MyClassConstants.filterRelinquishments[indexPath.row - 1] : Constant.MyClassConstants.filterRelinquishments[indexPath.row]
+            let exchangeDestination = count > 1 ?
+                Constant.MyClassConstants.filterDestinations[indexPath.row - 1] : Constant.MyClassConstants.filterDestinations[indexPath.row]
             
-            if exchange.pointsProgram != nil {
+            if exchangeRelinquishment.pointsProgram != nil {
                 
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: "ExchangeCell0", for: indexPath) as? AvailablePointCell else { return UITableViewCell() }
                 
@@ -615,7 +616,7 @@ extension WhatToUseViewController: UITableViewDataSource {
                 
                 return cell
                 
-            } else if let clubPoints = exchange.clubPoints {
+            } else if let clubPoints = exchangeRelinquishment.clubPoints {
                 
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.exchangeCell0, for: indexPath) as? AvailablePointCell else { return UITableViewCell() }
                 cell.tag = indexPath.row
@@ -640,16 +641,16 @@ extension WhatToUseViewController: UITableViewDataSource {
                 cell.selectionStyle = UITableViewCellSelectionStyle.none
                 return cell
                 
-            } else if let openWeek = exchange.openWeek {
+            } else if let openWeek = exchangeRelinquishment.openWeek {
                 
-                if showUpgrade == true {
+                if let unitSizeUpgradeFeeCost = exchangeDestination.upgradeCost {
                     
                     guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.exchangeCell2, for: indexPath) as? RelinquishmentSelectionOpenWeeksCellWithUpgrade else { return UITableViewCell() }
                     cell.tag = indexPath.row
                     cell.checkBox.tag = indexPath.row
                     cell.checkBox.accessibilityElements = [indexPath.section]
                     cell.checkBox.isUserInteractionEnabled = false
-                    cell.setupOpenWeekCell(openWeek: openWeek)
+                    cell.setupOpenWeekCell(openWeek: openWeek, unitSizeUpgradeFeeCost: unitSizeUpgradeFeeCost)
                     
                     if self.selectedRow == indexPath.row && self.selectedRowSection == indexPath.section {
                         cell.mainView.layer.cornerRadius = 7
@@ -690,7 +691,7 @@ extension WhatToUseViewController: UITableViewDataSource {
                     return cell
                 }
                 
-            } else if let deposit = exchange.deposit {
+            } else if let deposit = exchangeRelinquishment.deposit {
                 
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.exchangeCell1, for: indexPath) as! RelinquishmentSelectionOpenWeeksCell
                 cell.tag = indexPath.row

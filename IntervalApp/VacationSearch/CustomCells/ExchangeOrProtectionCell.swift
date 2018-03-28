@@ -27,15 +27,22 @@ class ExchangeOrProtectionCell: UITableViewCell {
     private var callBack: CallBack?
     
     // MARK: - Public functions
-    func setCell(callBack: @escaping CallBack) {
-        
-        self.callBack = callBack
-        let cellTap = UITapGestureRecognizer(target: self, action: #selector(cellTapped))
-        cellContentView.addGestureRecognizer(cellTap)
-        let titleAttributes: [String: Any] = [NSUnderlineStyleAttributeName: NSUnderlineStyle.styleSingle.rawValue,
-                                               NSForegroundColorAttributeName: #colorLiteral(red: 0.3423708081, green: 0.5919493437, blue: 0.7394192815, alpha: 1)]
-        
-        priceLabel.attributedText = NSAttributedString(string: priceLabel.text.unwrappedString, attributes: titleAttributes)
+    func setCell(callBack: @escaping CallBack, and chargeAmount: Float) {
+        if chargeAmount > 0 {
+            let titleAttributes: [String: Any] = [NSUnderlineStyleAttributeName: NSUnderlineStyle.styleSingle.rawValue,
+                                                  NSForegroundColorAttributeName: #colorLiteral(red: 0.3423708081, green: 0.5919493437, blue: 0.7394192815, alpha: 1)]
+            priceLabel.attributedText = NSAttributedString(string: priceLabel.text.unwrappedString, attributes: titleAttributes)
+            
+            self.callBack = callBack
+            let cellTap = UITapGestureRecognizer(target: self, action: #selector(cellTapped))
+            cellContentView.addGestureRecognizer(cellTap)
+        } else {
+            let titleAttributes: [String: Any] = [NSUnderlineStyleAttributeName: NSUnderlineStyle.styleNone.rawValue,
+                                                  NSForegroundColorAttributeName: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)]
+            priceLabel.attributedText = NSAttributedString(string: priceLabel.text.unwrappedString, attributes: titleAttributes)
+            
+            self.callBack = nil
+        }
     }
     
     func setTotalPrice(with currencyCode: String, and chargeAmount: Float, and countryCode: String?) {

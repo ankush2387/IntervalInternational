@@ -146,7 +146,7 @@ final class LoginCoordinator: ComputationHelper {
                 .map { (membership: $0, product: $0.getProductWithHighestTier()) }
                 .flatMap { (membership: Membership, product: Product?) -> MembershipSelectionTableViewCell? in
                     if let productCode = product?.productCode,
-                        let productName = product?.productName,
+                        let productName = Helper.getDisplayNameFor(membership: membership, product: product),
                         let membershipNumber = membership.memberNumber,
                         let image = UIImage(named: productCode) {
                         let cell = MembershipSelectionTableViewCell()

@@ -212,21 +212,24 @@ class AddDebitOrCreditCardViewController: UIViewController {
             
             var isNewCard = true
             
-            for creditCard in Constant.MyClassConstants.memberCreditCardList {
-                
-                let cardNumber = creditCard.cardNumber!
-                let last4 = cardNumber.substring(from: (cardNumber.index((cardNumber.endIndex), offsetBy: -4)))
-                let enteredCardLastDigit = Constant.GetawaySearchResultCardFormDetailData.cardNumber.substring(from: (Constant.GetawaySearchResultCardFormDetailData.cardNumber.index((Constant.GetawaySearchResultCardFormDetailData.cardNumber.endIndex), offsetBy: -4)))
-                
-                if last4 == enteredCardLastDigit {
+            if let currentProfile = Session.sharedSession.contact, let creditCards = currentProfile.creditcards {
+                for creditCard in creditCards {
+                    let cardNumber = creditCard.cardNumber!
+                    let last4 = cardNumber.substring(from: (cardNumber.index((cardNumber.endIndex), offsetBy: -4)))
+                    let enteredCardLastDigit = Constant.GetawaySearchResultCardFormDetailData.cardNumber.substring(from: (Constant.GetawaySearchResultCardFormDetailData.cardNumber.index((Constant.GetawaySearchResultCardFormDetailData.cardNumber.endIndex), offsetBy: -4)))
+                    
+                    if last4 == enteredCardLastDigit {
                         isNewCard = false
+                    }
                 }
             }
-           
+ 
             if isNewCard {
                 let newCreditCard = Creditcard()
+                newCreditCard.creditcardId = 0
                 newCreditCard.cardHolderName = Constant.GetawaySearchResultCardFormDetailData.nameOnCard
                 newCreditCard.cardNumber = Constant.GetawaySearchResultCardFormDetailData.cardNumber
+                
                 //creating date component with new exp date
                 let dateComp = expServerDate.components(separatedBy: "-")
                 var year = ""
@@ -240,11 +243,13 @@ class AddDebitOrCreditCardViewController: UIViewController {
                 dateComponents.year = Int(year)
                 dateComponents.month = Int(month)
                 dateComponents.day = 1
+                
                 let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
                 let date = calendar.date(from: dateComponents)
                 let dateFor = DateFormatter()
                 dateFor.dateFormat = Constant.MyClassConstants.dateTimeFormat
-                dateFor.timeZone = TimeZone(identifier: "UTC")
+                dateFor.timeZone = Helper.createTimeZone()
+                
                 let expString: String = dateFor.string(from: date ?? Date())
                 debugPrint(expString)
                 newCreditCard.expirationDate = expString
@@ -264,6 +269,7 @@ class AddDebitOrCreditCardViewController: UIViewController {
                 newCreditCard.typeCode = Helper.cardNameMapping(cardName: Constant.GetawaySearchResultCardFormDetailData.cardType)
                 newCreditCard.autoRenew = false
                 newCreditCard.preferredCardIndicator = false
+                
                 if saveCardCheckBoxChecked {
                     newCreditCard.saveCardIndicator = true
                 } else {
@@ -276,33 +282,52 @@ class AddDebitOrCreditCardViewController: UIViewController {
                 CreditCardTokenizeClient.tokenize(Session.sharedSession.userAccessToken, creditCardNumber: newCreditCard.cardNumber!, onSuccess: {[weak self](response) in
                     guard let strongSelf = self else { return }
                     ADBMobile.trackAction(Constant.omnitureEvents.event59, data: nil)
-                    Constant.MyClassConstants.selectedCreditCard.removeAll()
-                    newCreditCard.creditcardId = 0
+                    
+                    Constant.MyClassConstants.selectedCreditCard = nil
+
+                    //TODO: Update card number with card token
                     if let cardToken = response.cardToken {
                         newCreditCard.cardNumber = cardToken
                     }
+                    
                     if strongSelf.saveCardCheckBoxChecked {
+                        //TODO: Save the new Credit Card
+                        
                         guard let accessToken = Session.sharedSession.userAccessToken else {
                             strongSelf.hideHudAsync()
                             strongSelf.presentErrorAlert(UserFacingCommonError.generic)
                             return
                         }
-                        UserClient.createCreditCard(accessToken, creditCard: newCreditCard, onSuccess: {[weak self](cc) in
-                            // unfortunately we have to re-add the cvv since the service call removes it
-                            cc.cvv = Constant.GetawaySearchResultCardFormDetailData.cvv
-                            Constant.MyClassConstants.selectedCreditCard.append(cc)
+                        
+                        UserClient.createCreditCard(accessToken, creditCard: newCreditCard, onSuccess: {[weak self](savedCreditCard) in
+                            //TODO: Unfortunately we have to re-add the cvv since the service call removes it
+                            savedCreditCard.cvv = Constant.GetawaySearchResultCardFormDetailData.cvv
                             
+                            //TODO: Add the saved Credit Card to the Member credit cards list
+                            Session.sharedSession.contact?.creditcards?.append(savedCreditCard)
+                            
+                            //TODO: Set the saved Credit Card as the selected
+                            Constant.MyClassConstants.selectedCreditCard = savedCreditCard
+                            
+                            //FIXME(Frank) - what is this?
                             strongSelf.resetCreditCardDetails()
+                            
                             strongSelf.hideHudAsync()
                             strongSelf.performSegue(withIdentifier: "unwindToCheckout", sender: self)
                         }, onError: {(error) in
                             strongSelf.hideHudAsync()
                             strongSelf.presentErrorAlert(UserFacingCommonError.handleError(error))
                         })
+                        
                     } else {
-                        Constant.MyClassConstants.selectedCreditCard.append(newCreditCard)
-                        strongSelf.hideHudAsync()
+                  
+                        //TODO: Set the new Credit Card as the selected
+                        Constant.MyClassConstants.selectedCreditCard = newCreditCard
+                        
+                        //FIXME(Frank) - what is this?
                         strongSelf.resetCreditCardDetails()
+                        
+                        strongSelf.hideHudAsync()
                         strongSelf.performSegue(withIdentifier: "unwindToCheckout", sender: self)
                     }
                     

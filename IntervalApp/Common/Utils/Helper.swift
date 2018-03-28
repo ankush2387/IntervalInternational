@@ -67,7 +67,8 @@ public class Helper {
     static func getWeekDay(dateString: Date, getValue: String) -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-        dateFormatter.timeZone = TimeZone(identifier: "UTC")
+        dateFormatter.timeZone = createTimeZone()
+        
         switch getValue {
         case "Date":
             dateFormatter.dateFormat = "d"
@@ -1922,7 +1923,7 @@ public class Helper {
     
     static func returnIntervalMembershipString(displayName: String, price: String, term: String) -> String {
         
-        let mainString = "Your \(displayName) membership expires before your travel date.To continue, a \(term) membership fee of \n\(price)\nwill be included with this transaction."
+        let mainString = "Your \(displayName) membership expires before your travel date. To continue, a \(term) membership fee of \n\(price)\nwill be included with this transaction."
         
         return mainString
     }
@@ -2132,6 +2133,22 @@ public class Helper {
         } else {
             return nil
         }
+    }
+    
+    static func getDisplayNameFor(membership: Membership, product: Product?) -> String? {
+        if let ownerships = membership.ownerships, let firstOwnership = ownerships.first,
+            let resort = firstOwnership.resort, let resortName = resort.resortName {
+            return resortName.capitalized
+        } else if let highestTierProduct = product, let productName = highestTierProduct.productName {
+            //FIXME(Frank): Move this hack to the SDK. API limitations.
+            if productName == "INTERVAL" {
+                let fixProductName = productName + " Membership"
+                return fixProductName.capitalized
+            } else {
+                return productName.capitalized
+            }
+        }
+        return nil
     }
     
 }

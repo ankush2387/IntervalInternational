@@ -26,7 +26,7 @@ open class Membership {
         self.memberNumber = json["number"].string
         
         if let dateStr = json["sinceDate"].string {
-            self.sinceDate = dateStr.dateFromLongFormat()
+            self.sinceDate = dateStr.dateFromShortFormat()
         }
         
         self.membershipTypeCode = json["membershipTypeCode"].string

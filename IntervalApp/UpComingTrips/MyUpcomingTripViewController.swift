@@ -171,10 +171,7 @@ extension MyUpcomingTripViewController: UITableViewDataSource {
             cell.footerViewDetailedButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 0)
             if let checkInDate = upComingTrip.unit?.checkInDate, let checkOutDate = upComingTrip.unit?.checkOutDate, let myCheckInDate = checkInDate.dateFromShortFormat() {
                 
-                //FIXME(FRANK): AGAIN ?
-                //let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
                 let myCalendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
-                
                 let myComponents = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: myCheckInDate)
                 
                 if let weekday = myComponents.weekday, let month = myComponents.month, let day = myComponents.day, let year = myComponents.year {

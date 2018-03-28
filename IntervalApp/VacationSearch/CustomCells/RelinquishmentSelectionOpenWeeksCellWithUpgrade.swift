@@ -40,15 +40,19 @@ class RelinquishmentSelectionOpenWeeksCellWithUpgrade: UITableViewCell {
     
     //FIXME(Frank): Where is the Promotion?
     // OpenWeek can have a Promotion an UnitSize Upgrade Fee at the same time
-    func setupOpenWeekCell(openWeek: OpenWeek) {
+    func setupOpenWeekCell(openWeek: OpenWeek, unitSizeUpgradeFeeCost: Money) {
         
         resortName.text = openWeek.resort?.resortName ?? "".localized()
         yearLabel.text = "\(String(describing: openWeek.relinquishmentYear ?? 0))".localized()
         totalWeekLabel.text = "Week \(Constant.getWeekNumber(weekType: openWeek.weekNumber ?? ""))".localized()
         bedroomSizeAndKitchenClient.text = "\(String(describing: Helper.getBedroomNumbers(bedroomType: openWeek.unit?.unitSize ?? ""))), \(Helper.getKitchenEnums(kitchenType: openWeek.unit?.kitchenType ?? ""))".localized()
         
-        if let unit = openWeek.unit {
-            totalSleepAndPrivate.text = "Sleeps \(unit.publicSleepCapacity) total, \(unit.privateSleepCapacity) Private".localized()
+        if let sleepCapacity = openWeek.unit?.publicSleepCapacity {
+            totalSleepAndPrivate.text = "Sleeps \(sleepCapacity) Total".localized()
+        }
+        
+        if let privateSleepCap = openWeek.unit?.privateSleepCapacity {
+            totalSleepAndPrivate.text?.append(", \(privateSleepCap) Private".localized())
         }
         
         if let checkInDate = openWeek.checkInDate, let formattedCheckInDate = checkInDate.dateFromString(for: Constant.MyClassConstants.dateFormat) {
@@ -64,6 +68,21 @@ class RelinquishmentSelectionOpenWeeksCellWithUpgrade: UITableViewCell {
             dayAndDateLabel.text = month.uppercased()
         } else {
             dayAndDateLabel.text = nil
+        }
+        
+        
+        var currencyCode = "USD"
+        if let currencyCodeValue = unitSizeUpgradeFeeCost.currencyCode  {
+            currencyCode = currencyCodeValue
+        }
+        
+        var countryCode: String?
+        if let currentProfile = Session.sharedSession.contact {
+            countryCode = currentProfile.getCountryCode()
+        }
+        
+        if let attributedAmount = unitSizeUpgradeFeeCost.amount.currencyFormatter(for:currencyCode, for: countryCode) {
+            lblFees.attributedText = attributedAmount
         }
     }
 

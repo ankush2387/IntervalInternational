@@ -201,42 +201,42 @@ class CheckOutViewController: UIViewController {
         
         guard let imageSlider = notification.object as? UIImageView else { return }
         if Constant.MyClassConstants.indexSlideButton == 12 {
-            
-            let confirmationDelivery = ConfirmationDelivery()
-            confirmationDelivery.emailAddress = self.emailTextToEnter
-            confirmationDelivery.updateProfile = false
-            
+     
             let jsStringAccept = "document.getElementById('WASCInsuranceOfferOption0').checked == true;"
             let jsStringReject = "document.getElementById('WASCInsuranceOfferOption1').checked == true;"
             
             let strAccept = self.cellWebView.stringByEvaluatingJavaScript(from: jsStringAccept)
             let strReject = self.cellWebView.stringByEvaluatingJavaScript(from: jsStringReject)
             
-            if (isAgreedToFees || !Constant.MyClassConstants.hasAdditionalCharges) && !Constant.MyClassConstants.selectedCreditCard.isEmpty && (strAccept == Constant.MyClassConstants.status || strReject == Constant.MyClassConstants.status || !showInsurance) && (isPromotionApplied || Constant.MyClassConstants.recapViewPromotionCodeArray.isEmpty) {
+            if (isAgreedToFees || !Constant.MyClassConstants.hasAdditionalCharges) && Constant.MyClassConstants.selectedCreditCard != nil && (strAccept == Constant.MyClassConstants.status || strReject == Constant.MyClassConstants.status || !showInsurance) && (isPromotionApplied || Constant.MyClassConstants.recapViewPromotionCodeArray.isEmpty) {
                 
                 showHudAsync()
                 imageSlider.isHidden = true
                 showLoader = true
                 
+                let confirmationDelivery = ConfirmationDelivery()
+                confirmationDelivery.emailAddress = self.emailTextToEnter
+                //FIXME(Frank) - why always false?
+                confirmationDelivery.updateProfile = false
+                
                 if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
                     self.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
                     
                     let continueToPayRequest = ExchangeProcessContinueToPayRequest()
-                    continueToPayRequest.creditCard = Constant.MyClassConstants.selectedCreditCard.last
+                    continueToPayRequest.creditCard = Constant.MyClassConstants.selectedCreditCard
                     continueToPayRequest.confirmationDelivery = confirmationDelivery
                     continueToPayRequest.acceptTermsAndConditions = true
+                    //FIXME(Frank) - why always true?
                     continueToPayRequest.acknowledgeAndAgreeResortFees = true
                     
                     ExchangeProcessClient.continueToPay(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.exchangeBookingLastStartedProcess, request: continueToPayRequest, onSuccess: { [weak self] response in
                         guard let strongSelf = self else { return }
                         Constant.MyClassConstants.exchangeBookingLastStartedProcess = nil
                         Constant.MyClassConstants.exchangeContinueToPayResponse = response
-                        let selectedCard = Constant.MyClassConstants.selectedCreditCard
-                        if selectedCard[0].saveCardIndicator == true {
-                            Session.sharedSession.contact?.creditcards?.append(selectedCard[0])
-                        }
-                        Constant.MyClassConstants.selectedCreditCard.removeAll()
+                        
+                        Constant.MyClassConstants.selectedCreditCard = nil
                         Helper.removeStoredGuestFormDetials()
+                        
                         strongSelf.isAgreed = true
                         strongSelf.hideHudAsync()
                         strongSelf.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
@@ -261,21 +261,20 @@ class CheckOutViewController: UIViewController {
                     self.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
                     
                     let continueToPayRequest = RentalProcessRecapContinueToPayRequest()
-                    continueToPayRequest.creditCard = Constant.MyClassConstants.selectedCreditCard.last
+                    continueToPayRequest.creditCard = Constant.MyClassConstants.selectedCreditCard
                     continueToPayRequest.confirmationDelivery = confirmationDelivery
                     continueToPayRequest.acceptTermsAndConditions = true
+                    //FIXME(Frank) - why always true?
                     continueToPayRequest.acknowledgeAndAgreeResortFees = true
 
                     RentalProcessClient.continueToPay(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.getawayBookingLastStartedProcess, request: continueToPayRequest, onSuccess: { [weak self] response in
                         guard let strongSelf = self else { return }
                         Constant.MyClassConstants.getawayBookingLastStartedProcess = nil
                         Constant.MyClassConstants.continueToPayResponse = response
-                        let selectedCard = Constant.MyClassConstants.selectedCreditCard
-                        if selectedCard[0].saveCardIndicator == true {
-                            Session.sharedSession.contact?.creditcards?.append(selectedCard[0])
-                        }
-                        Constant.MyClassConstants.selectedCreditCard.removeAll()
+
+                        Constant.MyClassConstants.selectedCreditCard = nil
                         Helper.removeStoredGuestFormDetials()
+                        
                         strongSelf.isAgreed = true
                         strongSelf.hideHudAsync()
                         Constant.MyClassConstants.transactionNumber = response.view?.fees?.rental?.confirmationNumber ?? ""
@@ -355,6 +354,7 @@ class CheckOutViewController: UIViewController {
                     }
                 }
                 
+                /* FIXME(Frank) - REMOVE ME
                 if !exchangeFees.renewals.isEmpty {
                     for renewal in exchangeFees.renewals {
                         if renewal.isCoreProduct {
@@ -368,6 +368,7 @@ class CheckOutViewController: UIViewController {
                         }
                     }
                 }
+                */
                 
             }
 
@@ -386,19 +387,17 @@ class CheckOutViewController: UIViewController {
                     }
                 }
                 
+                /* FIXME(Frank) - REMOVE ME
                 if !rentalFees.renewals.isEmpty {
                     for renewal in rentalFees.renewals {
                         if renewal.isCoreProduct {
-                            renewalCoreProduct = Renewal()
-                            renewalCoreProduct?.id = renewal.id
-                            renewalCoreProduct?.productCode = renewal.productCode
+                            renewalCoreProduct = renewal
                         } else if !renewal.isCoreProduct {
-                            renewalNonCoreProduct = Renewal()
-                            renewalNonCoreProduct?.id = renewal.id
-                            renewalNonCoreProduct?.productCode = renewal.productCode
+                            renewalNonCoreProduct = renewal
                         }
                     }
                 }
+                */
             }
  
         }
@@ -1321,40 +1320,40 @@ extension CheckOutViewController: UITableViewDataSource {
                     cell.priceLabel.text = Constant.MyClassConstants.eplus
                     
                 case Constant.MyClassConstants.taxesTitle:
+                    var tax: Float = 0.0
                     if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
                         if let shopExchangeFee = Constant.MyClassConstants.exchangeFees?.shopExchange, let exchangePrice = shopExchangeFee.inventoryPrice {
-                            cell.setTotalPrice(with: currencyCode, and: exchangePrice.tax, and: countryCode)
+                            tax = exchangePrice.tax
                         }
                     } else {
                         if let rentalFee = Constant.MyClassConstants.rentalFees?.rental, let rentalPrice = rentalFee.rentalPrice {
-                            cell.setTotalPrice(with: currencyCode, and: rentalPrice.tax, and: countryCode)
+                            tax = rentalPrice.tax
                         }
                     }
-     
-                    cell.priceLabel.text = Constant.MyClassConstants.taxesTitle
-                    
+
                     let cellTapped: CallBack = { [unowned self] in
                         if let taxBreakdown = Constant.MyClassConstants.inventoryPriceTaxBreakdown {
-                            
                             let dataSet = taxBreakdown
                                 .filter { !$0.description.unwrappedString.isEmpty }
                                 .map { ($0.description.unwrappedString, $0.amount) }
-
+                            
                             let viewModel = ChargeSummaryViewModel(charge: dataSet,
                                                                    headerTitle: "Detailed Tax Information".localized(),
                                                                    descriptionTitle: "Tax Description".localized(),
                                                                    totalTitle: "Total Tax Amount".localized(),
                                                                    currencyCode: self.currencyCode,
                                                                    countryCode: self.countryCode)
-
+                            
                             let chargeSummaryViewController = ChargeSummaryViewController(viewModel: viewModel)
                             chargeSummaryViewController.doneButtonPressed = { chargeSummaryViewController.dismiss(animated: true) }
                             self.navigationController?.present(chargeSummaryViewController, animated: true)
                         }
                     }
-                    
-                    cell.setCell(callBack: cellTapped)
-                    
+               
+                    cell.setTotalPrice(with: currencyCode, and: tax, and: countryCode)
+                    cell.priceLabel.text = Constant.MyClassConstants.taxesTitle
+                    cell.setCell(callBack: cellTapped, and: tax)
+                
                 case Constant.MyClassConstants.upgradeCost:
                     if let unitSizeUpgradeFee = Constant.MyClassConstants.exchangeFees?.unitSizeUpgrade {
                         cell.setTotalPrice(with: currencyCode, and: unitSizeUpgradeFee.price, and: countryCode)
@@ -1364,6 +1363,8 @@ extension CheckOutViewController: UITableViewDataSource {
                     
                 default:
         
+                    // Renewals
+                    
                     cell.priceLabel.numberOfLines = 0
 
                     if let coreProduct = renewalCoreProduct, let nonCoreProduct = renewalNonCoreProduct {
@@ -1372,7 +1373,7 @@ extension CheckOutViewController: UITableViewDataSource {
                         cell.setTotalPrice(with: currencyCode, and: comboPrice, and: countryCode)
                         
                         if let nonCoreProductDisplayName = nonCoreProduct.displayName {
-                            cell.priceLabel.text = "\(nonCoreProductDisplayName) Package".localized()
+                            cell.priceLabel.text = "\(nonCoreProductDisplayName.capitalized) Package".localized()
                         } else {
                             cell.priceLabel.text = "Combo Package".localized()
                         }
@@ -1383,9 +1384,9 @@ extension CheckOutViewController: UITableViewDataSource {
                      
                         if let coreProductDisplayName = coreProduct.displayName {
                             if coreProductDisplayName.caseInsensitiveCompare("INTERVAL") == ComparisonResult.orderedSame {
-                                cell.priceLabel.text = "\(coreProductDisplayName) Membership".capitalized.localized()
+                                cell.priceLabel.text = "\(coreProductDisplayName.capitalized) Membership".capitalized.localized()
                             } else {
-                                cell.priceLabel.text = "\(coreProductDisplayName)".localized()
+                                cell.priceLabel.text = "\(coreProductDisplayName.capitalized)".localized()
                             }
                         }
                         
@@ -1394,7 +1395,7 @@ extension CheckOutViewController: UITableViewDataSource {
                         cell.setTotalPrice(with: currencyCode, and: nonCoreProduct.price, and: countryCode)
                         
                         if let nonCoreProductDisplayName = nonCoreProduct.displayName {
-                            cell.priceLabel.text = "\(nonCoreProductDisplayName)".localized()
+                            cell.priceLabel.text = "\(nonCoreProductDisplayName.capitalized)".localized()
                         }
                     }
                     
@@ -1525,11 +1526,10 @@ extension CheckOutViewController: UITableViewDataSource {
             paymentMethodLabel.textColor = IUIKColorPalette.primary1.color
             
             let selectPamentMethodLabel = UILabel(frame: CGRect(x: 20, y: 30, width: cell.contentView.frame.width - 40, height: 20))
-            if !Constant.MyClassConstants.selectedCreditCard.isEmpty {
-                let creditcard = Constant.MyClassConstants.selectedCreditCard[0]
-                guard let cardNumber = creditcard.cardNumber else { return cell }
+            if let selectedCreditCard = Constant.MyClassConstants.selectedCreditCard {
+                guard let cardNumber = selectedCreditCard.cardNumber else { return cell }
                 let last4 = cardNumber.substring(from:(cardNumber.index((cardNumber.endIndex), offsetBy: -4)))
-                guard let cardType = creditcard.typeCode else { return cell }
+                guard let cardType = selectedCreditCard.typeCode else { return cell }
                 let ccType = Helper.cardTypeCodeMapping(cardType: cardType)
                 selectPamentMethodLabel.text = "\(ccType) ending in \(last4)"
             } else {

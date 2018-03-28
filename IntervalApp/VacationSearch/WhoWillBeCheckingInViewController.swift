@@ -256,7 +256,7 @@ class WhoWillBeCheckingInViewController: UIViewController {
             
             ExchangeProcessClient.backToChooseExchange(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.exchangeBookingLastStartedProcess, onSuccess: {(_) in
                 
-                Constant.MyClassConstants.selectedCreditCard.removeAll()
+                Constant.MyClassConstants.selectedCreditCard = nil
                 self.hideHudAsync()
                 
                 // pop and dismiss view according to conditions
@@ -278,7 +278,7 @@ class WhoWillBeCheckingInViewController: UIViewController {
             
             RentalProcessClient.backToChooseRental(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.getawayBookingLastStartedProcess, onSuccess: {(_) in
                 
-                Constant.MyClassConstants.selectedCreditCard.removeAll()
+                Constant.MyClassConstants.selectedCreditCard = nil
                 Helper.removeStoredGuestFormDetials()
                 self.hideHudAsync()
                 
@@ -547,12 +547,10 @@ class WhoWillBeCheckingInViewController: UIViewController {
                         }
                     }
 
-                    if let currentProfile = Session.sharedSession.contact, let creditCards = currentProfile.creditcards {
-                        Constant.MyClassConstants.memberCreditCardList = creditCards
-                    }
-                    
                     if let checkOutViewController = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil).instantiateViewController(withIdentifier: Constant.storyboardControllerID.checkOutViewController) as? CheckOutViewController {
                         checkOutViewController.selectedRelinquishment = self.selectedRelinquishment
+                        checkOutViewController.renewalCoreProduct = self.renewalCoreProduct
+                        checkOutViewController.renewalNonCoreProduct = self.renewalNonCoreProduct
                         self.navigationController?.pushViewController(checkOutViewController, animated: true)
                     }
                     
@@ -652,13 +650,11 @@ class WhoWillBeCheckingInViewController: UIViewController {
                     } else {
                         Constant.MyClassConstants.enableTaxes = false
                     }
-                    
-                    if let creditCardInfo = Session.sharedSession.contact?.creditcards {
-                        Constant.MyClassConstants.memberCreditCardList = creditCardInfo
-                    }
-                    
+                   
                     let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
                     guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.checkOutViewController) as? CheckOutViewController else { return }
+                    viewController.renewalCoreProduct = self.renewalCoreProduct
+                    viewController.renewalNonCoreProduct = self.renewalNonCoreProduct
                     
                     let transitionManager = TransitionManager()
                     self.navigationController?.transitioningDelegate = transitionManager

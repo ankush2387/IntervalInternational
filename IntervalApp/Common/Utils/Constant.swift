@@ -245,9 +245,9 @@ class Constant: NSObject {
         static var upcomingTripsArray = [UpcomingTrip]()
         static var transactionType = ""
         static var activeAlertsArray: NSMutableArray = []
-        static var membershipdetails = [Membership]()
+        //static var membershipdetails = [Membership]()
         static var memberdetailsarray: NSMutableArray = []
-        static var memberNumber: String = ""
+        //static var memberNumber: String = ""
         
         static var whereTogoContentArray: NSMutableArray = []
         static var whatToTradeArray: NSMutableArray = []
@@ -403,9 +403,7 @@ class Constant: NSObject {
         static var exchangeFeeOriginalPrice: Float?
         static var exchangeFees: ExchangeFees?
         static var guestCertificate: GuestCertificate?
-        static var memberCreditCardList = [Creditcard]()
-        //FIXME(Frank) - why this is an array?
-        static var selectedCreditCard = [Creditcard]()
+        static var selectedCreditCard: Creditcard?
         static var selectedDestinationPromotionOfferName: String?
         static var selectedDestinationPromotionDisplayName: String?
         static var inventoryPriceTaxBreakdown: [InventoryPriceTax]?
@@ -442,16 +440,11 @@ class Constant: NSObject {
         static var nearbyDictKey = "Nearby"
         static var status = "true"
         
-        //static var selectedAvailabilitySectionItem: AvailabilitySectionItem?
         static var selectedAvailabilityResort: AvailabilitySectionItemResort?
         static var selectedAvailabilityInventoryBucket: AvailabilitySectionItemInventoryBucket?
         static var selectedAvailabilityInventoryBucketIndex = 0
-        // FIXME(Frank) - Remove next 4
         static var rentalPrices = [InventoryPrice]()
-        //static var selectedResort = Resort()
-        //static var selectedExchangePointsCost : NSNumber?
-        //static var selectedExchange = ""
-        
+
         static var paymentMethodTitle = "Payment Method".localized()
         static var webViewGetElementById = "document.getElementById('WASCInsuranceOfferOption0').checked == true;"
         static var webViewGetElementById1 = "document.getElementById('WASCInsuranceOfferOption1').checked == true;"
@@ -553,6 +546,7 @@ class Constant: NSObject {
         
         // Choose relinquishments
         static var filterRelinquishments = [ExchangeRelinquishment]()
+        static var filterDestinations = [ExchangeDestination]()
         
         //UserDefaults
         static var userName = "userName"
@@ -892,7 +886,7 @@ class Constant: NSObject {
         static var type = "Card Type".localized()
         static var expirationDate = "Select Expiration Date".localized()
         static var cvv = NSLocalizedString("CVV", comment: "")
-        static var expirationDatePlaceHolder = "MM/YY".localized()
+        static var expirationDatePlaceHolder = "MM/YYYY".localized()
         static var country = "Country".localized()
         //Ownership text field placeholder
         static var reservationNumber = "Reservation Number".localized()

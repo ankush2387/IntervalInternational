@@ -484,6 +484,10 @@ class SearchResultViewController: UIViewController {
                 if let relinquishment = exchageDetail.relinquishment {
                     Constant.MyClassConstants.filterRelinquishments.append(relinquishment)
                 }
+                
+                if let destination = exchageDetail.destination {
+                    Constant.MyClassConstants.filterDestinations.append(destination)
+                }
             }
             
             // Apply Business Rules - https://jira.iilg.com/browse/MOBI-1834

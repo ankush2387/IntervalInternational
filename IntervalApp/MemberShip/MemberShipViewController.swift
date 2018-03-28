@@ -23,12 +23,8 @@ class MemberShipViewController: UIViewController {
     fileprivate let numberOfSection = 2
     fileprivate let numberOfRowInSection = 1
     var previousSelectedMembershipCellIndex: IndexPath?
-    var ownershipArray = [Ownership]()
-    var membershipProductsArray = [Product]()
-    var contactInfo = Contact()
     
     override func viewDidLoad() {
-        
         super.viewDidLoad()
         title = Constant.ControllerTitles.memberShipViewController
         displayMenuButton()
@@ -37,45 +33,39 @@ class MemberShipViewController: UIViewController {
     
     fileprivate func getContactMembershipInfo() {
         showHudAsync()
-        if let contact = Session.sharedSession.contact {
-            self.contactInfo = contact
-        }
         
-        if let memberships = contactInfo.memberships {
-            Constant.MyClassConstants.membershipdetails = memberships
-        }
-        if let memberNo = Session.sharedSession.selectedMembership?.memberNumber {
-            Constant.MyClassConstants.memberNumber = memberNo
-        }
         guard let accessToken = Session.sharedSession.userAccessToken else { return }
         
         ClientAPI.sharedInstance.readMembership(for: accessToken, and: Session.sharedSession.selectedMembership?.memberNumber ?? "")
             .then { newMembership in
-                Session.sharedSession.selectedMembership = newMembership
-                if let membershipContacts = newMembership.contacts {
-                    let contact = membershipContacts.filter {
-                        $0.firstName == self.contactInfo.firstName && $0.lastName == self.contactInfo.lastName }.last
+                //Session.sharedSession.selectedMembership = newMembership
+                
+                if let profile = Session.sharedSession.contact, let membershipContacts = newMembership.contacts {
+                    let contact = membershipContacts.filter { $0.firstName == profile.firstName && $0.lastName == profile.lastName }.last
                     Session.sharedSession.contact?.isPrimary = contact?.isPrimary
                 }
-                if let contact = Session.sharedSession.contact {
-                    self.contactInfo = contact
-                }
+    
                 if let ownerships = newMembership.ownerships {
-                    self.ownershipArray = ownerships
+                    Session.sharedSession.selectedMembership?.ownerships = ownerships
                 }
                 
                 if let products = newMembership.products {
-                    self.membershipProductsArray = products
-                }
-                
-                self.membershipProductsArray.sort { $0.coreProduct && !$1.coreProduct } //sort Array coreProduct First Element
-                //arrange array elements highestTier in second position
-                if self.membershipProductsArray.count > 2 {
-                    for (index, prod) in self.membershipProductsArray.enumerated()  where prod.highestTier == true {
-                        self.membershipProductsArray.remove(at: index)
-                        self.membershipProductsArray.insert(prod, at: 1)
+                    var copyOfProducts = products
+                    
+                    //sort Array coreProduct First Element
+                    copyOfProducts.sort { $0.coreProduct && !$1.coreProduct }
+                    
+                    //arrange array elements highestTier in second position
+                    if copyOfProducts.count > 2 {
+                        for (index, prod) in copyOfProducts.enumerated() where prod.highestTier == true {
+                            copyOfProducts.remove(at: index)
+                            copyOfProducts.insert(prod, at: 1)
+                        }
                     }
+                    
+                    Session.sharedSession.selectedMembership?.products = products
                 }
+  
                 self.tableView.reloadData()
                 self.hideHudAsync()
             }
@@ -84,6 +74,8 @@ class MemberShipViewController: UIViewController {
                 self.presentErrorAlert(UserFacingCommonError.handleError(error))
         }
     }
+    
+    
     // MARK: Display menu button
     fileprivate func displayMenuButton() {
         if let rvc = self.revealViewController() {
@@ -105,10 +97,10 @@ class MemberShipViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
     func membershipWasSelected() {
         
         //***** Update the API session for the current access token *****//
-        let context = Session.sharedSession
         UserClient.updateSessionAndGetCurrentMembership(Session.sharedSession.userAccessToken, membershipNumber: Session.sharedSession.selectedMembership?.memberNumber ?? "", onSuccess: { membership in
             Session.sharedSession.selectedMembership = membership
             if let membershipContacts = membership.contacts {
@@ -119,7 +111,7 @@ class MemberShipViewController: UIViewController {
             self.getContactMembershipInfo()
             },
         onError: {_ in
-            self.presentAlert(with: Constant.AlertErrorMessages.loginFailed, message: "Please contact your servicing office.  Could not select membership \(String(describing: context.selectedMembership?.memberNumber))")
+            self.presentAlert(with: Constant.AlertErrorMessages.loginFailed, message: "Please contact your servicing office.  Could not select membership \(String(describing: Session.sharedSession.selectedMembership?.memberNumber))")
             }
         )
     }
@@ -178,7 +170,7 @@ extension MemberShipViewController: UITableViewDataSource {
             return Session.sharedSession.contact?.memberships?.count ?? 0
         default:
             if section == 1 {
-                return ownershipArray.count
+                return Session.sharedSession.selectedMembership?.ownerships?.count ?? 0
             } else {
                 return numberOfRowInSection
             }
@@ -194,36 +186,49 @@ extension MemberShipViewController: UITableViewDataSource {
             guard let cell: ActionSheetTblCell = tableView.dequeueReusableCell(withIdentifier: Constant.loginScreenReusableIdentifiers.CustomCell, for: indexPath) as? ActionSheetTblCell else { return UITableViewCell() }
             
             if let memberships = Session.sharedSession.contact?.memberships {
+                let membership = memberships[indexPath.row]
+                
                 cell.membershipTextLabel.text = "Member No".localized()
-                cell.membershipNumber.text = memberships[indexPath.row].memberNumber
-                let product = memberships[indexPath.row].getProductWithHighestTier()
-                if let productcode = product?.productCode {
+                cell.membershipNumber.text = membership.memberNumber
+                cell.membershipName.text = Helper.getDisplayNameFor(membership: membership, product: membership.getProductWithHighestTier())
+                
+                if let highestTierProduct = membership.getProductWithHighestTier(), let productcode = highestTierProduct.productCode {
                     cell.memberImageView.image = UIImage(named: productcode)
                 }
-                cell.membershipName.text = product?.productName
             }
-            if Constant.MyClassConstants.memberNumber == cell.membershipNumber.text {
+        
+            if let membership = Session.sharedSession.selectedMembership, membership.memberNumber == cell.membershipNumber.text {
                 cell.selectedImageView.image = #imageLiteral(resourceName: "Select-On")
                 previousSelectedMembershipCellIndex = indexPath
             } else {
                 cell.selectedImageView.image = #imageLiteral(resourceName: "Select-Off")
             }
+        
             cell.delegate = self
             return cell
+        
         default:
             if indexPath.section == 1 {
                 guard let ownershipCell = tableView.dequeueReusableCell(withIdentifier: Constant.memberShipViewController.ownershipDetailCellIdentifier) as? OwnerShipDetailTableViewCell else { return UITableViewCell() }
-                let ownership = ownershipArray[indexPath.row]
-                ownershipCell.getCell(ownership: ownership)
+                
+                if let membership = Session.sharedSession.selectedMembership, let ownerships = membership.ownerships {
+                    ownershipCell.getCell(ownership: ownerships[indexPath.row])
+                }
+   
                 return ownershipCell
             } else {
                 guard let membershipCell = tableView.dequeueReusableCell(withIdentifier: Constant.memberShipViewController.membershipDetailCellIdentifier) as? MemberShipDetailTableViewCell else { return UITableViewCell() }
-                guard let contact = Session.sharedSession.contact else { return UITableViewCell() }
-                if contact.memberships?.count == 1 {
+                
+                guard let profile = Session.sharedSession.contact else { return UITableViewCell() }
+                guard let membership = Session.sharedSession.selectedMembership else { return UITableViewCell() }
+                
+                if profile.memberships?.count == 1 {
                     membershipCell.switchMembershipButton.isHidden = true
                     membershipCell.activememberOutOfTotalMemberLabel.isHidden = true
                 }
-                membershipCell.getCell(contactInfo: self.contactInfo, products: membershipProductsArray)
+                
+                membershipCell.setupCell(profile: profile, membership: membership)
+
                 return membershipCell
             }
         }
@@ -278,7 +283,7 @@ extension MemberShipViewController: UITableViewDelegate {
             
         default:
             if indexPath.section == 0 {
-                let extraViews = membershipProductsArray.count - 1
+                let extraViews = (Session.sharedSession.selectedMembership?.products?.count)! - 1
                 return CGFloat((80 * extraViews) + 440)
             } else {
                return 332
@@ -305,7 +310,7 @@ extension MemberShipViewController: UITableViewDelegate {
                 membership = memberShips[indexPath.row]
             }
             
-            if Constant.MyClassConstants.memberNumber != membership?.memberNumber {
+            if let selectedMembership = Session.sharedSession.selectedMembership, selectedMembership.memberNumber != membership?.memberNumber {
                 self.dismiss(animated: true, completion: nil)
                 let alert = UIAlertController(title: Constant.memberShipViewController.switchMembershipAlertTitle, message: Constant.memberShipViewController.switchMembershipAlertMessage, preferredStyle: .actionSheet)
                 let actionYes = UIAlertAction(title: "Yes", style: .destructive, handler: { (_) in

@@ -880,6 +880,8 @@ extension RelinquishmentSelectionViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let myCalendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
+        
         if indexPath.section == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.relinquishmentSelectionCIGCell, for: indexPath) as! RelinquishmentSelectionCIGCell
             cell.availablePointToolButton.addTarget(self, action: #selector(RelinquishmentSelectionViewController.availablePointToolButtonPressed(_:)), for: .touchUpInside)
@@ -1040,7 +1042,6 @@ extension RelinquishmentSelectionViewController: UITableViewDataSource {
                         
                         let dateString = date[0]
                         if let date = dateString.dateFromShortFormat() {
-                            let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
                             let myComponents = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: date)
                             let day = myComponents.day!
                             var month = ""
@@ -1113,13 +1114,13 @@ extension RelinquishmentSelectionViewController: UITableViewDataSource {
                     intervalWeekCell.addButton?.tag = indexPath.row
                     intervalWeekCell.addButton?.addTarget(self, action: #selector(RelinquishmentSelectionViewController.addIntervalWeekButtonPressed(_:)), for: .touchUpInside)
                 }
+                
                 intervalWeekCell.yearLabel.text = "\(openWeek.relinquishmentYear!)"
                 let date = openWeek.checkInDates
                 if date.count > 0 {
                     //FIXME(FRANK) - what is this?
                     let dateString = date[0]
                     if let date = dateString.dateFromShortFormat() {
-                        let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
                         let myComponents = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: date)
                         let day = myComponents.day!
                         var month = ""
