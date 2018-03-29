@@ -20,7 +20,7 @@ class GuestCertificatePriceCell: UITableViewCell {
     }
 
     func setPrice(with currencyCode: String, and chargeAmount: Float, and countryCode: String?) {
-        if let attributedAmount = chargeAmount.currencyFormatter(for:currencyCode, for: countryCode) {
+        if let attributedAmount = chargeAmount.currencyFormatter(for:currencyCode, for: countryCode, baseLineOffSet: 7) {
             certificatePriceLabel.attributedText = attributedAmount
         }
     }
