@@ -416,62 +416,62 @@ extension GetawayAlertsIPhoneViewController: UITableViewDelegate {
         }
         delete.backgroundColor = UIColor(red: 224 / 255.0, green: 96.0 / 255.0, blue: 84.0 / 255.0, alpha: 1.0)
         
-        guard let alertStatus = getawayAlert.enabled else {
-            return []
-        }
-        
-        if !alertStatus {
-            let activate = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: Constant.buttonTitles.activate) { (action, index) -> Void in
-                self.showHudAsync()
-                let editedAlert = getawayAlert
-                editedAlert.enabled = true
-                RentalClient.updateAlert(Session.sharedSession.userAccessToken, alert: editedAlert, onSuccess: { [weak self] _ in
-                    self?.hideHudAsync()
-                    self?.presentAlert(with: "", message: "Alert updated sucessfully".localized())
-                    self?.alertDisplayTableView.reloadData()
-                }) { [weak self] error in
-                    self?.hideHudAsync()
-                    self?.presentErrorAlert(UserFacingCommonError.handleError(error))
-                }
-            }
-            activate.backgroundColor = UIColor(red: 0 / 255.0, green: 119.0 / 255.0, blue: 190.0 / 255.0, alpha: 1.0)
-            return [delete, activate]
+        if let alertStatus = getawayAlert.enabled {
             
-        } else {
-            
-            let edit = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: Constant.buttonTitles.edit) { (action, index) -> Void in
-                Constant.MyClassConstants.selectedGetawayAlertDestinationArray.removeAll()
-                
-                Constant.selectedAlertToEdit = Constant.MyClassConstants.searchDateResponse[indexPath.row].0
-                Constant.MyClassConstants.bedRoomSizeSelectedIndexArray.removeAllObjects()
-                Constant.MyClassConstants.selectedGetawayAlertDestinationArray.removeAll()
-                guard let alertToEdit = Constant.selectedAlertToEdit else { return }
-                
-                for destination in alertToEdit.destinations {
-                    Constant.MyClassConstants.selectedGetawayAlertDestinationArray.append(Constant.selectedDestType.destination(destination))
+            if !alertStatus {
+                let activate = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: Constant.buttonTitles.activate) { (action, index) -> Void in
+                    self.showHudAsync()
+                    let editedAlert = getawayAlert
+                    editedAlert.enabled = true
+                    RentalClient.updateAlert(Session.sharedSession.userAccessToken, alert: editedAlert, onSuccess: { [weak self] _ in
+                        self?.hideHudAsync()
+                        self?.presentAlert(with: "", message: "Alert updated sucessfully".localized())
+                        self?.alertDisplayTableView.reloadData()
+                    }) { [weak self] error in
+                        self?.hideHudAsync()
+                        self?.presentErrorAlert(UserFacingCommonError.handleError(error))
+                    }
                 }
+                activate.backgroundColor = UIColor(red: 0 / 255.0, green: 119.0 / 255.0, blue: 190.0 / 255.0, alpha: 1.0)
+                return [delete, activate]
                 
-                for resort in alertToEdit.resorts {
-                 Constant.MyClassConstants.selectedGetawayAlertDestinationArray.append(Constant.selectedDestType.resort(resort))
-                }
+            } else {
                 
-                var selectedBedroomsizes = [String]()
-                for unitSize in alertToEdit.unitSizes {
-                    let friendlyName = unitSize.friendlyName()
-                    let bedroomSize = Helper.bedRoomSizeToStringInteger(bedRoomSize: friendlyName)
-                    selectedBedroomsizes.append(bedroomSize)
+                let edit = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: Constant.buttonTitles.edit) { (action, index) -> Void in
+                    Constant.MyClassConstants.selectedGetawayAlertDestinationArray.removeAll()
+                    
+                    Constant.selectedAlertToEdit = Constant.MyClassConstants.searchDateResponse[indexPath.row].0
+                    Constant.MyClassConstants.bedRoomSizeSelectedIndexArray.removeAllObjects()
+                    Constant.MyClassConstants.selectedGetawayAlertDestinationArray.removeAll()
+                    guard let alertToEdit = Constant.selectedAlertToEdit else { return }
+                    
+                    for destination in alertToEdit.destinations {
+                        Constant.MyClassConstants.selectedGetawayAlertDestinationArray.append(Constant.selectedDestType.destination(destination))
+                    }
+                    
+                    for resort in alertToEdit.resorts {
+                        Constant.MyClassConstants.selectedGetawayAlertDestinationArray.append(Constant.selectedDestType.resort(resort))
+                    }
+                    
+                    var selectedBedroomsizes = [String]()
+                    for unitSize in alertToEdit.unitSizes {
+                        let friendlyName = unitSize.friendlyName()
+                        let bedroomSize = Helper.bedRoomSizeToStringInteger(bedRoomSize: friendlyName)
+                        selectedBedroomsizes.append(bedroomSize)
+                    }
+                    if selectedBedroomsizes.count == 5 {
+                        Constant.MyClassConstants.selectedBedRoomSize = Constant.MyClassConstants.allBedrommSizes
+                    } else {
+                        Constant.MyClassConstants.selectedBedRoomSize = selectedBedroomsizes.joined(separator: ", ")
+                    }
+                    self.performSegue(withIdentifier: Constant.segueIdentifiers.editAlertSegue, sender: self)
+                    
                 }
-                if selectedBedroomsizes.count == 5 {
-                    Constant.MyClassConstants.selectedBedRoomSize = Constant.MyClassConstants.allBedrommSizes
-                } else {
-                    Constant.MyClassConstants.selectedBedRoomSize = selectedBedroomsizes.joined(separator: ", ")
-                }
-                self.performSegue(withIdentifier: Constant.segueIdentifiers.editAlertSegue, sender: self)
-                
+                edit.backgroundColor = #colorLiteral(red: 0, green: 0.4666666667, blue: 0.7450980392, alpha: 1)
+                return [delete, edit]
             }
-            edit.backgroundColor = #colorLiteral(red: 0, green: 0.4666666667, blue: 0.7450980392, alpha: 1)
-            return [delete, edit]
         }
+        return []
     }
 }
 
@@ -539,7 +539,7 @@ extension GetawayAlertsIPhoneViewController: UITableViewDataSource {
                     cell.activityIndicator.isHidden = true
                     cell.alertStatusButton.layer.borderColor = UIColor(red: 240.0 / 255.0, green: 111.0 / 255.0, blue: 54.0 / 255.0, alpha: 1.0).cgColor
                 } else {
-                    cell.alertStatusButton.setTitle("Inactive", for: .normal)
+                    cell.alertStatusButton.setTitle("Inactive".localized(), for: .normal)
                     cell.alertStatusButton.isEnabled = true
                     cell.alertStatusButton.setTitleColor(UIColor.white, for: .normal)
                     cell.alertNameLabel.textColor = IUIKColorPalette.primaryB.color

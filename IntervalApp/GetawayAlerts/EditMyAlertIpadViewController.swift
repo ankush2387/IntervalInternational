@@ -111,7 +111,7 @@ class EditMyAlertIpadViewController: UIViewController {
         Constant.MyClassConstants.isRunningOnIphone ? createAlertTBLView.reloadData() : createAlertCollectionView.reloadData()
         self.setupView()
         self.bedroomSize.text = Constant.MyClassConstants.selectedBedRoomSize
-        switchButtonState(AnyObject.self)
+        switchButtonState()
     }
     
     fileprivate func setupView() {
@@ -186,7 +186,7 @@ class EditMyAlertIpadViewController: UIViewController {
         }
     }
     
-    @IBAction func switchButtonState(_ sender: Any) {
+    @IBAction func switchButtonState() {
         if alertStatusButton.isOn {
             switchState = true
         } else {
