@@ -18,6 +18,7 @@ class ExchangeInventoryCVCell: UICollectionViewCell {
     //***** Custom cell delegate to access the delegate method *****//
     weak var exchangeCellDelegate: ExchangeInventoryCVCellDelegate?
     
+    @IBOutlet private weak var cellPromotionView: CellPromotionView!
     @IBOutlet private weak var bedRoomType: UILabel!
     @IBOutlet private weak var sleeps: UILabel!
     @IBOutlet private weak var kitchenType: UILabel!
@@ -31,7 +32,7 @@ class ExchangeInventoryCVCell: UICollectionViewCell {
     @IBOutlet private weak var exchangeTitleLabel: UILabel!
     
     func setBucket(bucket: AvailabilitySectionItemInventoryBucket) {
-    
+
         // Setup UI controls
         pointsTitleLabel.textColor = UIColor.lightGray
         pointsTitleLabel.font = UIFont.systemFont(ofSize: 10.0)
@@ -108,6 +109,8 @@ class ExchangeInventoryCVCell: UICollectionViewCell {
                 yPosition += 15
             }
         }
+
+        cellPromotionView.setPromotionUI(for: bucket.unit)
     }
     
     func tapBlurButton() {
