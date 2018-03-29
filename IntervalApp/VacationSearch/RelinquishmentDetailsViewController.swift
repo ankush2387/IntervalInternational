@@ -9,14 +9,16 @@
 import UIKit
 import DarwinSDK
 import SDWebImage
+import then
 
 class RelinquishmentDetailsViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
     
     var selectedRelinquishment = ExchangeRelinquishment()
-    var selectedAvailabilityResort: AvailabilitySectionItemResort?
-
+  
+    var resort: Resort = Resort()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.estimatedRowHeight = 80
@@ -26,11 +28,36 @@ class RelinquishmentDetailsViewController: UIViewController {
         self.tableView.layer.borderWidth = 2.0
         //self.tableView.layer.masksToBounds = true
         self.tableView.layer.borderColor = UIColor.lightGray.cgColor
+       
+        guard let accessToken = Session.sharedSession.userAccessToken else {
+            return
+        }
         
-        selectedAvailabilityResort = Constant.MyClassConstants.selectedAvailabilityResort
-        tableView.reloadData()
+        var element = self.selectedRelinquishment.deposit?.resort
+        if element == nil {
+            element = self.selectedRelinquishment.accommodationCertificate?.resort
+        }
+        if element == nil {
+            element = self.selectedRelinquishment.openWeek?.resort
+        }
+        if element == nil {
+            element = self.selectedRelinquishment.clubPoints?.resort
+        }
+        if element == nil {
+            element = self.selectedRelinquishment.accommodationCertificate?.resort
+        }
+        
+        guard let resortCode = element?.resortCode else {
+            return
+        }
+        
+        ClientAPI.sharedInstance.readResort(for: accessToken, and: resortCode)
+            .then { r in
+                self.resort = r
+                self.tableView.reloadData()
+            }
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -57,34 +84,18 @@ extension RelinquishmentDetailsViewController: UITableViewDataSource, UITableVie
         if indexPath.section == 0 {
             
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "RelinquishmentDetailsCell", for: indexPath) as? RelinquishmentDetailsCell else { return UITableViewCell() }
+           
+            cell.resortCode.text = resort.resortCode
+            cell.resortName.text = resort.resortName
             
-            var element = selectedRelinquishment.deposit?.resort
-            if element == nil {
-                element = selectedRelinquishment.accommodationCertificate?.resort
+            if let address = resort.address {
+                cell.resortCountry.text = address.postalAddresAsString()
             }
-            if element == nil {
-                element = selectedRelinquishment.openWeek?.resort
+            if let image = resort.getDefaultImage(), let imageUrl = image.url {
+                cell.resortImage.setImageWith(URL(string: imageUrl), usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
+            } else {
+                cell.resortImage.image = #imageLiteral(resourceName: "NoImageIcon")
             }
-            if element == nil {
-                element = selectedRelinquishment.clubPoints?.resort
-            }
-            if element == nil {
-                element = selectedRelinquishment.accommodationCertificate?.resort
-            }
-            if let resort = element {
-                cell.resortCode.text = resort.resortCode
-                cell.resortName.text = resort.resortName
-                
-                if let address = resort.address {
-                    cell.resortCountry.text = address.postalAddresAsString()
-                }
-                if let image = resort.getDefaultImage(), let imageUrl = image.url {
-                    cell.resortImage.setImageWith(URL(string: imageUrl), usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
-                } else {
-                    cell.resortImage.image = #imageLiteral(resourceName: "NoImageIcon")
-                }
-            }
-            
 
             cell.gradientView.frame = CGRect(x: cell.gradientView.frame.origin.x, y: cell.gradientView.frame.origin.y, width: cell.contentView.frame.width, height: cell.gradientView.frame.height)
             Helper.addLinearGradientToView(view: cell.gradientView, colour: UIColor.white, transparntToOpaque: true, vertical: true)
