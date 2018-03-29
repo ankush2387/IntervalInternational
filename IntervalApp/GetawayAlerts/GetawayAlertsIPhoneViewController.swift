@@ -98,20 +98,30 @@ class GetawayAlertsIPhoneViewController: UIViewController {
         attributedText.addAttribute(NSFontAttributeName, value: UIFont(name: Constant.fontName.helveticaNeueMedium, size: 16.0)!, range: range)
         actionSheetController.setValue(attributedText, forKey: Constant.actionSheetAttributedString.attributedTitle)
         //***** Create and add the View my recent search *****//
-        let searchAllMyAlertsNow: UIAlertAction = UIAlertAction(title:Constant.buttonTitles.searchAllMyAlertsNow, style: .default) { action -> Void in
-            //Just dismiss the action sheet
-            self.needToReloadAlerts()
+        if !Constant.MyClassConstants.searchDateResponse.isEmpty {
+            let searchAllMyAlertsNow: UIAlertAction = UIAlertAction(title:Constant.buttonTitles.searchAllMyAlertsNow, style: .default) { action -> Void in
+                //Just dismiss the action sheet
+                self.needToReloadAlerts()
+            }
+            actionSheetController.addAction(searchAllMyAlertsNow)
+            //***** Create and add the Reset my search *****//
+            let aboutGetawayAlerts: UIAlertAction = UIAlertAction(title: Constant.buttonTitles.aboutGetawayAlerts, style: .default) { action -> Void in
+                let storyboard = UIStoryboard(name: "GetawayAlertsIphone", bundle: nil)
+                let aboutNavigation = storyboard.instantiateViewController(withIdentifier: "AboutHelpNav") as! UINavigationController
+                
+                self.present(aboutNavigation, animated: true, completion: nil)
+            }
+            actionSheetController.addAction(aboutGetawayAlerts)
+        } else {
+            let aboutGetawayAlerts: UIAlertAction = UIAlertAction(title: Constant.buttonTitles.aboutGetawayAlerts, style: .default) { action -> Void in
+                let storyboard = UIStoryboard(name: "GetawayAlertsIphone", bundle: nil)
+                let aboutNavigation = storyboard.instantiateViewController(withIdentifier: "AboutHelpNav") as! UINavigationController
+                
+                self.present(aboutNavigation, animated: true, completion: nil)
+            }
+            actionSheetController.addAction(aboutGetawayAlerts)
         }
-        actionSheetController.addAction(searchAllMyAlertsNow)
-        //***** Create and add the Reset my search *****//
-        let aboutGetawayAlerts: UIAlertAction = UIAlertAction(title: Constant.buttonTitles.aboutGetawayAlerts, style: .default) { action -> Void in
-            let storyboard = UIStoryboard(name: "GetawayAlertsIphone", bundle: nil)
-            let aboutNavigation = storyboard.instantiateViewController(withIdentifier: "AboutHelpNav") as! UINavigationController
-            
-            self.present(aboutNavigation, animated: true, completion: nil)
-        }
-        actionSheetController.addAction(aboutGetawayAlerts)
-        
+
         //***** Create and add the cancel button *****//
         let cancelAction: UIAlertAction = UIAlertAction(title: Constant.buttonTitles.cancel, style: .cancel) { _ -> Void in
             //Just dismiss the action sheet
