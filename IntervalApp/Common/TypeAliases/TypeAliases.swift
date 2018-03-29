@@ -9,3 +9,4 @@
 import Foundation
 
 typealias CallBack = () -> Void
+typealias CompletionBlock = (Any?) -> Void
