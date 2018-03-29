@@ -26,7 +26,7 @@ class ResortDetails: NSObject, UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 252
+        return 290
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
