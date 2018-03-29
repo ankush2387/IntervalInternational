@@ -58,17 +58,33 @@ extension RelinquishmentDetailsViewController: UITableViewDataSource, UITableVie
             
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "RelinquishmentDetailsCell", for: indexPath) as? RelinquishmentDetailsCell else { return UITableViewCell() }
             
-            if let resort = selectedAvailabilityResort, let image = resort.getDefaultImage(), let imageUrl = image.url {
-                cell.resortImage.setImageWith(URL(string: imageUrl), usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
-                cell.resortCode.text = resort.code
-                cell.resortName.text = resort.name
+            var element = selectedRelinquishment.deposit?.resort
+            if element == nil {
+                element = selectedRelinquishment.accommodationCertificate?.resort
+            }
+            if element == nil {
+                element = selectedRelinquishment.openWeek?.resort
+            }
+            if element == nil {
+                element = selectedRelinquishment.clubPoints?.resort
+            }
+            if element == nil {
+                element = selectedRelinquishment.accommodationCertificate?.resort
+            }
+            if let resort = element {
+                cell.resortCode.text = resort.resortCode
+                cell.resortName.text = resort.resortName
                 
                 if let address = resort.address {
                     cell.resortCountry.text = address.postalAddresAsString()
                 }
-            } else {
-                cell.resortImage.image = #imageLiteral(resourceName: "NoImageIcon")
+                if let image = resort.getDefaultImage(), let imageUrl = image.url {
+                    cell.resortImage.setImageWith(URL(string: imageUrl), usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
+                } else {
+                    cell.resortImage.image = #imageLiteral(resourceName: "NoImageIcon")
+                }
             }
+            
 
             cell.gradientView.frame = CGRect(x: cell.gradientView.frame.origin.x, y: cell.gradientView.frame.origin.y, width: cell.contentView.frame.width, height: cell.gradientView.frame.height)
             Helper.addLinearGradientToView(view: cell.gradientView, colour: UIColor.white, transparntToOpaque: true, vertical: true)
