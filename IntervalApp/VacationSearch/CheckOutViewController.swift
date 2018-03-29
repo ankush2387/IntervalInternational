@@ -309,7 +309,7 @@ class CheckOutViewController: UIViewController {
             } else if !isPromotionApplied && !Constant.MyClassConstants.recapViewPromotionCodeArray.isEmpty {
                 imageSlider.isHidden = false
                 checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
-                self.presentAlert(with: Constant.AlertPromtMessages.failureTitle, message: Constant.AlertMessages.promotionsMessage)
+                presentAlert(with: "", message: Constant.AlertMessages.promotionsMessage, hideCancelButton: true)
             } else {
                 imageSlider.isHidden = true
                 self.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
