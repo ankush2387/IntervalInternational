@@ -553,8 +553,11 @@ extension CreateAlertViewController: UITableViewDataSource {
                 
             case .destination(let dest):
                 let destName = dest.destinationName ?? ""
-                let terocode = dest.address?.territoryCode ?? ""
-                cell.whereTogoTextLabel.text = "\(destName), \(String(describing: terocode))"
+                guard let address = dest.address else {
+                    cell.whereTogoTextLabel.text = "\(destName)"
+                    return cell
+                }
+                cell.whereTogoTextLabel.text = [destName, address.postalAddresAsString()].flatMap { $0 }.joined(separator: ", ").localized()
                 
             case .resorts(let resorts):
                 var resortNm = ""

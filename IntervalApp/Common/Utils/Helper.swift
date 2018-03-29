@@ -602,7 +602,12 @@ public class Helper {
                     if destname.territorrycode == "" {
                         Constant.MyClassConstants.whereTogoContentArray.add("\(destname.destinationName)")
                     } else {
-                        Constant.MyClassConstants.whereTogoContentArray.add("\(destname.destinationName), \(destname.territorrycode)")
+                        let address = Address()
+                        address.cityName = destname.destinationName
+                        address.territoryCode = destname.territorrycode
+                        address.countryCode = destname.countryCode
+                        Constant.MyClassConstants.whereTogoContentArray.add(address.postalAddresAsString())
+                        
                     }
                     
                     Constant.MyClassConstants.selectedDestinationNames = Constant.MyClassConstants.selectedDestinationNames.appending("\(destname.destinationName) \(destname.territorrycode) ,")

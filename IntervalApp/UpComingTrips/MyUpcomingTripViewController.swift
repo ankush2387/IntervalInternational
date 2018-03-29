@@ -200,17 +200,7 @@ extension MyUpcomingTripViewController: UITableViewDataSource {
             guard let addressDetails = upComingTrip.resort?.address else {
                 return cell
             }
-            var resortAddress = [String]()
-            if let city = addressDetails.cityName {
-                resortAddress.append(city)
-            }
-            if let state = addressDetails.territoryCode {
-                resortAddress.append(state)
-            }
-            if let countryCode = addressDetails.countryCode {
-                resortAddress.append(countryCode)
-            }
-            cell.resortLocationLabel.text = resortAddress.joined(separator: ", ").localized()
+            cell.resortLocationLabel.text = addressDetails.postalAddresAsString().localized()
             
             return cell
         }

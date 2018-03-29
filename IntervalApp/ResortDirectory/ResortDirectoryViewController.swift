@@ -621,8 +621,9 @@ extension ResortDirectoryViewController: UITableViewDataSource {
             cell.resortName.textColor = IUIKColorPalette.primary1.color
             cell.resortName.text = resort.resortName
             cell.favoriteButton.addTarget(self, action: #selector(favoriteButtonClicked(_:)), for: .touchUpInside)
-            
-            cell.resortCountry.text = [resort.address?.cityName, resort.address?.territoryCode.unwrappedString.stateForTerritoryCode].flatMap { $0 }.joined(separator: ", ")
+            if let address = resort.address {
+                cell.resortCountry.text = address.postalAddresAsString()
+            }
             cell.resortCode.text = resort.resortCode
             return cell
             

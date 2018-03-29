@@ -1594,8 +1594,11 @@ extension GoogleMapViewController: UITableViewDataSource {
                 cell.addDestinationButton.addTarget(self, action: #selector(destinationSelectedAtIndex(sender:)), for: .touchUpInside)
                 cell.destinationMapIcon.addTarget(self, action: #selector(resortShowMapPressedAtIndex(sender:)), for: .touchUpInside)
                 cell.tag = indexPath.section
-                let dicValue = Constant.MyClassConstants.destinations![indexPath.row]
-                cell.resortLocationName.text = dicValue.destinationName
+                if let dicValue = Constant.MyClassConstants.destinations?[indexPath.row] {
+                    cell.resortLocationName.text = dicValue.destinationName
+                    if let address = dicValue.address {
+                       cell.resortLocationName.text = [dicValue.destinationName, address.postalAddresAsString()].flatMap { $0 }.joined(separator: ", ")
+                    }
                 
                 //TODO (jhon) - aplication was crashing when lookin for resort name (Paris, Cancun)
                 if let territoryCode = dicValue.address?.territoryCode {
@@ -1603,7 +1606,7 @@ extension GoogleMapViewController: UITableViewDataSource {
                 } else {
                     cell.resortCodeLabel.text = dicValue.address?.countryCode
                 }
-                
+                }
                 return cell
                 
             } else {
