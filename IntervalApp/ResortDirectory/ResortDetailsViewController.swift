@@ -446,12 +446,13 @@ class ResortDetailsViewController: UIViewController {
         Constant.MyClassConstants.goingToMapOrWeatherView = true
         guard let resortCode = Constant.MyClassConstants.resortsDescriptionArray.resortCode else { return }
         
-        guard let resortName = Constant.MyClassConstants.resortsDescriptionArray.address?.cityName else { return }
+        guard let resortCity = Constant.MyClassConstants.resortsDescriptionArray.address?.cityName else { return }
         
         guard let countryCode = Constant.MyClassConstants.resortsDescriptionArray.address?.countryCode else { return }
         showHudAsync()
-        displayWeatherView(resortCode: resortCode, resortName: resortName, countryCode: countryCode, presentModal: presentViewModally, completionHandler: { (_) in
-            self.hideHudAsync()
+        displayWeatherView(resortCode: resortCode, resortCity: resortCity, countryCode: countryCode, presentModal: presentViewModally, completionHandler: { [weak self] _ in
+            guard let strongSelf = self else { return }
+            strongSelf.hideHudAsync()
         })
     }
     
