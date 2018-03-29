@@ -2325,6 +2325,7 @@ transaction.</string>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="375" height="950"/>
                     <connections>
+                        <outlet property="filterButton" destination="0Vz-2i-41i" id="Iqw-aZ-hYd"/>
                         <outlet property="searchResultColelctionView" destination="1aP-fE-BC0" id="fel-Q4-lef"/>
                         <outlet property="searchResultTableView" destination="l8b-fw-PuL" id="Fu1-G5-45A"/>
                         <segue destination="Wnj-OU-Bqx" kind="show" identifier="BookYourSelectionSegue" action="showDetailViewController:sender:" id="RZD-sH-6h9"/>

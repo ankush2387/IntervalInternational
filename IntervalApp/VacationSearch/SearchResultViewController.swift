@@ -17,6 +17,7 @@ class SearchResultViewController: UIViewController {
     //***** Outlets ****//
     @IBOutlet weak fileprivate var searchResultColelctionView: UICollectionView!
     @IBOutlet weak fileprivate var searchResultTableView: UITableView!
+    @IBOutlet weak fileprivate var filterButton: UIButton!
     
     //***** variable declaration *****//
     var selectedIndex = -1
@@ -63,6 +64,13 @@ class SearchResultViewController: UIViewController {
         createSections()
         self.searchResultTableView.reloadData()
         self.searchResultColelctionView.reloadData()
+        
+        // Filter options enable/disable check
+        if Constant.MyClassConstants.filterOptionsArray.count > 1 || alertFilterOptionsArray.count > 1 {
+            filterButton.isEnabled = true
+        } else {
+            filterButton.isEnabled = false
+        }
     }
     
     @IBAction func unwindToAvailabiity(_ segue: UIStoryboardSegue) {}
