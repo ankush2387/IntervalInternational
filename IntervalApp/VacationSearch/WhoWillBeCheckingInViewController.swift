@@ -46,7 +46,8 @@ class WhoWillBeCheckingInViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        
+        checkingInUserTBLview.estimatedRowHeight = 80
+        view.backgroundColor = IntervalThemeFactory.deviceTheme.textColorGray
         resortHoldingTimeLabel.text = "We are holding this unit for \(Constant.holdingTime) minutes".localized()
         navigationController?.navigationBar.isHidden = false
         
@@ -692,10 +693,8 @@ extension WhoWillBeCheckingInViewController: UITableViewDataSource {
         switch section {
         case 0 :
             return 80
-        case 2, 3, 4 :
-            return 30
         default :
-            return 0
+            return 30
         }
         
     }
@@ -704,24 +703,17 @@ extension WhoWillBeCheckingInViewController: UITableViewDataSource {
         switch section {
         case 0 :
             
-            let headerView = UIView(frame: CGRect(x: 0, y: 0, width: self.checkingInUserTBLview.frame.size.width, height: 80))
-            
-            let headerLabel = UILabel()
-            headerLabel.frame = CGRect(x: 20, y: 10, width: checkingInUserTBLview.frame.size.width - 40, height: 60)
-            headerLabel.text = Constant.MyClassConstants.whoWillBeCheckingInHeaderTextArray[section]
-            headerLabel.numberOfLines = 2
-            headerLabel.font = UIFont(name: Constant.fontName.helveticaNeueBold, size: 15)
-            headerView.addSubview(headerLabel)
-            
-            return headerView
+            let cell = tableView.dequeueReusableCell(withIdentifier: "ContactHeaderCell")
+            return cell
             
         case 2, 3, 4 :
             
-            let headerView = UIView(frame: CGRect(x: 0, y: 0, width: checkingInUserTBLview.frame.size.width, height: 30))
+            let headerView = UIView(frame: CGRect(x: 20, y: 0, width: checkingInUserTBLview.frame.size.width - 40, height: 30))
             headerView.backgroundColor = IUIKColorPalette.titleBackdrop.color
             let headerLabel = UILabel()
             headerLabel.frame = CGRect(x: 20, y: 5, width: checkingInUserTBLview.frame.size.width - 40, height: 20)
             headerLabel.text = Constant.MyClassConstants.whoWillBeCheckingInHeaderTextArray[section]
+            headerLabel.textColor = IntervalThemeFactory.deviceTheme.textColorGray
             headerView.addSubview(headerLabel)
             
             return headerView
@@ -740,7 +732,7 @@ extension WhoWillBeCheckingInViewController: UITableViewDataSource {
         case 0 :
             return 50
         case 3, 4, 5 :
-            return 50
+            return 60
         default :
             return 80
         }
@@ -901,6 +893,7 @@ extension WhoWillBeCheckingInViewController: UITableViewDataSource {
             
             cell.nameTF.text = ""
             cell.nameTF.delegate = self
+            cell.nameTF.textColor = IntervalThemeFactory.deviceTheme.textColorGray
             if indexPath.section == 3 {
                 
                 if indexPath.row == 0 {
