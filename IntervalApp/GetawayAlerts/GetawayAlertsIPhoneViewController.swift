@@ -521,11 +521,24 @@ extension GetawayAlertsIPhoneViewController: UITableViewDataSource {
             cell.activityIndicator.isHidden = true
         }
         
+        
         if !self.individualActivityIndicatorNeedToShow {
             if let alertId = getawayAlert.alertId {
                 cell.alertStatusButton.tag = Int(alertId)
             }
-            if searchDateResponse.checkInDates.isEmpty {
+            if getawayAlert.enabled == false {
+                cell.alertStatusButton.isHidden = false
+                cell.alertStatusButton.setTitle(Constant.buttonTitles.inactive, for: .normal)
+                cell.alertStatusButton.backgroundColor = UIColor(red: 245.0 / 255.0, green: 245.0 / 255.0, blue: 245.0 / 255.0, alpha: 1.0)
+                cell.alertStatusButton.setTitleColor(UIColor.lightGray, for: .normal)
+                
+                cell.alertNameLabel.textColor = UIColor.black
+                cell.alertStatusButton.layer.borderColor = UIColor.lightGray.cgColor
+                cell.alertStatusButton.removeTarget(self, action: #selector(self.viewResultsClicked(_:)), for: .touchUpInside)
+                cell.alertStatusButton.addTarget(self, action: #selector(self.nothingYetClicked), for: .touchUpInside)
+                cell.activityIndicator.isHidden = true
+            }
+            else if searchDateResponse.checkInDates.isEmpty {
                 
                 cell.alertStatusButton.isHidden = false
                 cell.alertStatusButton.setTitle(Constant.buttonTitles.noResultYet, for: .normal)

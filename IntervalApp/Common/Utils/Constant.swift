@@ -861,6 +861,7 @@ class Constant: NSObject {
         static var textTripTitle = "Text Trip Details".localized()
         static var purchaseInsuranceTitle = "Purchase Trip Protection".localized()
         static var viewResults = "View Results".localized()
+        static var inactive = "Inactive".localized()
         static var updateSwitchTitle = "Update email".localized()
     }
     
