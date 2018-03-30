@@ -88,14 +88,9 @@ final class LoginViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.navigationBar.isHidden = true
+        navigationController?.isNavigationBarHidden = true
         viewModel.password.next(nil)
         setUI()
-    }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        navigationController?.navigationBar.isHidden = false
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -199,13 +194,15 @@ final class LoginViewController: UIViewController {
 
     private func showLoginHelpWebView() {
         navigationController?.isNavigationBarHidden = false
-        let webView = SimpleFileViewController(load: "https://www.intervalworld.com/web/my/account/forgotSignInInfo")
+        let webView = SimpleFileViewController(load: "https://www.intervalworld.com/web/my/account/forgotSignInInfo",
+                                               shouldShowLoadingIndicator: true)
         show(webView, sender: self)
     }
 
     private func showJoinTodayWebView() {
         navigationController?.isNavigationBarHidden = false
-        let webView = SimpleFileViewController(load: "https://www.intervalworld.com/web/my/account/createProfileOrJoin")
+        let webView = SimpleFileViewController(load: "https://www.intervalworld.com/web/my/account/createProfileOrJoin",
+                                               shouldShowLoadingIndicator: true)
         show(webView, sender: self)
     }
     

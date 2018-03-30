@@ -173,16 +173,52 @@ class SearchResultViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
+
     private func scrollToActiveDate() {
         let numberOfRecords = Constant.MyClassConstants.calendarDatesArray.count
-        let vacationSearchCheckInDate = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate
+        let vacationSearchCheckInDate = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate.unwrappedString
+        var calendarItemWithActiveDates: (item: CalendarItem, index: Int)?
+        var foundMatch = false
 
         for index in 0..<numberOfRecords {
-            let calendarItemCheckInDate = Constant.MyClassConstants.calendarDatesArray[index].checkInDate
-            if vacationSearchCheckInDate == calendarItemCheckInDate {
+            let calendarItem = Constant.MyClassConstants.calendarDatesArray[index]
+            let calendarItemCheckInDate = calendarItem.checkInDate.unwrappedString
+
+            // Stores the first calendar item with valid check in/out intervals
+            if !calendarItem.intervalStartDate.unwrappedString.isEmpty
+                && !calendarItem.intervalEndDate.unwrappedString.isEmpty
+                && calendarItemWithActiveDates == nil {
+                calendarItemWithActiveDates = (calendarItem, index)
+            }
+
+            // Scrolls to active date cell if match is found
+            if vacationSearchCheckInDate == calendarItemCheckInDate,
+                !vacationSearchCheckInDate.isEmpty, !calendarItemCheckInDate.isEmpty {
                 searchResultColelctionView.scrollToItem(at: IndexPath(row: index, section: 0), at: .centeredHorizontally, animated: true)
+                foundMatch = true
                 break
+            }
+        }
+
+        // If no match is found; perform this horrible hack because of the bad dataset implementation in this view controller...
+        if let calendarItemWithActiveDates = calendarItemWithActiveDates,
+            let cell = searchResultColelctionView.cellForItem(at: IndexPath(row: calendarItemWithActiveDates.index, section: 0)),
+            !Constant.MyClassConstants.calendarDatesArray.isEmpty,
+            !foundMatch {
+            intervalBucketClicked(calendarItem: calendarItemWithActiveDates.item, cell: cell) { [weak self] error in
+                guard let strongSelf = self else { return }
+                strongSelf.showHudAsync()
+                // Delay to allow tableview collectionview to reload... :(
+                let delayInSeconds = 2.0
+                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + delayInSeconds) {
+
+                    if case .some = error {
+                        strongSelf.presentErrorAlert(UserFacingCommonError.handleError(error))
+                        return
+                    }
+
+                    strongSelf.intervalDateItemClicked(Constant.MyClassConstants.calendarDatesArray[0])
+                }
             }
         }
     }
@@ -218,7 +254,7 @@ class SearchResultViewController: UIViewController {
         }
     }
     
-    func intervalBucketClicked(calendarItem: CalendarItem, cell: UICollectionViewCell) {
+    func intervalBucketClicked(calendarItem: CalendarItem, cell: UICollectionViewCell, completionBlock: CompletionBlock? = nil) {
         
         myActivityIndicator.hidesWhenStopped = true
         intervalPrint(Constant.MyClassConstants.initialVacationSearch)
@@ -245,12 +281,14 @@ class SearchResultViewController: UIViewController {
                                                 DispatchQueue.main.async {
                                                     self?.searchResultColelctionView.reloadSections(IndexSet(integer: 0))
                                                     self?.hideHudAsync()
+                                                    completionBlock?(nil)
                                                 }
                                             }
                 },
                                          onError: { [weak self] error in
                                             self?.hideHudAsync()
                                             self?.presentErrorAlert(UserFacingCommonError.handleError(error))
+                                            completionBlock?(error)
                 })
                 
             case VacationSearchType.EXCHANGE:
@@ -266,11 +304,13 @@ class SearchResultViewController: UIViewController {
                                             Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                                             self.hideHudAsync()
                                             self.searchResultColelctionView.reloadSections(IndexSet(integer: 0))
+                                            completionBlock?(nil)
                 },
                                            
                                            onError: { [weak self] error in
                                             self?.hideHudAsync()
                                             self?.presentErrorAlert(UserFacingCommonError.handleError(error))
+                                            completionBlock?(error)
                 })
                 
             case VacationSearchType.COMBINED:
@@ -294,11 +334,13 @@ class SearchResultViewController: UIViewController {
                                             
                                             // Run Exchange Search Dates
                                             Helper.executeExchangeSearchDatesAfterSelectInterval(senderVC: self, datesCV: self.searchResultColelctionView, activeInterval: activeInterval)
+                                            completionBlock?(nil)
                                             
                 },
-                                         onError: { (_) in
+                                         onError: { error in
                                             // Run Exchange Search Dates
                                             Helper.executeExchangeSearchDatesAfterSelectInterval(senderVC: self, datesCV: self.searchResultColelctionView, activeInterval: activeInterval)
+                                            completionBlock?(error)
                 })
                 
             default:
@@ -310,6 +352,7 @@ class SearchResultViewController: UIViewController {
             self.searchResultColelctionView.reloadSections(IndexSet(integer: 0))
             myActivityIndicator.stopAnimating()
             cell.alpha = 1.0
+            completionBlock?(nil)
         }
     }
     
