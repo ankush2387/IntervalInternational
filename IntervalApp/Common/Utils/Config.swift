@@ -68,7 +68,7 @@ class Config {
         case "omniture":
             return Environment.omniture
             
-        case "qa":
+        case "qa1":
             return Environment.qa1
             
         case "qa2":
@@ -80,7 +80,7 @@ class Config {
         case "prod", "production":
             return Environment.production
             
-        case "qa_dns":
+        case "qa1_dns":
             return Environment.qa1_dns
             
         case "qa2_dns":
