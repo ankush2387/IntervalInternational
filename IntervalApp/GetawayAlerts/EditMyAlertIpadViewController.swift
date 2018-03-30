@@ -38,7 +38,6 @@ class EditMyAlertIpadViewController: UIViewController {
     var alertId = Int64()
     var selectedIndex: Int = -1
     var anlyticsBedroomSize: String = ""
-    var switchState = false
     
     //***** Constraints outlets *****//
     @IBOutlet weak private var leadingStartLabelConstraint: NSLayoutConstraint!
@@ -111,7 +110,6 @@ class EditMyAlertIpadViewController: UIViewController {
         Constant.MyClassConstants.isRunningOnIphone ? createAlertTBLView.reloadData() : createAlertCollectionView.reloadData()
         self.setupView()
         self.bedroomSize.text = Constant.MyClassConstants.selectedBedRoomSize
-        switchButtonState()
     }
     
     fileprivate func setupView() {
@@ -185,14 +183,7 @@ class EditMyAlertIpadViewController: UIViewController {
             navigationController?.pushViewController(viewController, animated: true)
         }
     }
-    
-    @IBAction func switchButtonState() {
-        if alertStatusButton.isOn {
-            switchState = true
-        } else {
-            switchState = false
-        }
-    }
+
     //***** function to call bedroom size screen to select bedroom size *****//
     @IBAction func selectRoomSizePressed(_ sender: AnyObject) {
         let mainStoryboard = UIStoryboard(name: Constant.storyboardNames.getawayAlertsIphone, bundle: nil)
@@ -231,7 +222,7 @@ class EditMyAlertIpadViewController: UIViewController {
             rentalAlert.alertId = self.alertId
             rentalAlert.earliestCheckInDate = startDate.stringWithShortFormatForJSON()
             rentalAlert.latestCheckInDate = endDate.stringWithShortFormatForJSON()
-            rentalAlert.enabled = switchState
+            rentalAlert.enabled = alertStatusButton.isOn
             rentalAlert.name = trimmedUsername
             
             for destination in Constant.MyClassConstants.selectedGetawayAlertDestinationArray {
