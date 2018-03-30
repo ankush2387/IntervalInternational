@@ -257,55 +257,6 @@ extension CalendarViewController: FSCalendarDelegateAppearance {
     func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, titleSelectionColorFor date: Date) -> UIColor? {
         return datesToAllow.isEmpty ? nil : .lightGray
     }
-
-    func calendar(_ fsCalendar: FSCalendar, appearance: FSCalendarAppearance, titleDefaultColorFor date: Date) -> UIColor? {
-
-        if !datesToAllow.isEmpty {
-            return dateIsAllowed(date) ? .blue : .lightGray
-        }
-
-         if self.requestedController == Constant.MyClassConstants.relinquishmentFlaotWeek {
-            if Constant.MyClassConstants.floatDetailsCalendarDateArray.contains(date) {
-                return UIColor.blue
-            } else {
-                return UIColor.lightGray
-            }
-         } else {
-            var startDT: Date
-            var endDT = Date()
-            let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
-            if self.requestedDateWindow == Constant.MyClassConstants.end {
-                startDT = Constant.MyClassConstants.alertWindowStartDate ?? Date()
-                if showNinetyDaysWindow {
-                    
-                    if let endDate = calendar.date(byAdding: .month, value: 3, to: startDT) {
-                        endDT = endDate
-                    }
-                    if let maxDate = calendar.date(byAdding: .month, value: 24, to: Date()) {
-                        if endDT.isGreaterThanDate(maxDate) {
-                            endDT = maxDate
-                        }
-                    }
-                    
-                    print("\(endDT.numberOfDaysElapsedFromToday)")
-                } else {
-                    if let endDate = calendar.date(byAdding: .month, value: 24, to: Date()) {
-                        endDT = endDate
-                    }
-                }
-            } else {
-                startDT = Date()
-                if let endDate = calendar.date(byAdding: .month, value: 24, to: Date()) {
-                    endDT = endDate
-                }
-            }
-            if (date .isLessThanDate(Date())) || (date .isLessThanDate(startDT)) || (date.isGreaterThanDate(endDT)) {
-                 return UIColor.lightGray
-            } else {
-                return UIColor.blue
-            }
-        }
-    }
     
     public func calendar(_ fsCalendar: FSCalendar, appearance: FSCalendarAppearance, subtitleDefaultColorFor date: Date) -> UIColor? {
 
