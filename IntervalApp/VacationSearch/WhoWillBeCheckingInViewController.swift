@@ -756,8 +756,14 @@ extension WhoWillBeCheckingInViewController: UITableViewDataSource {
                 
             } else {
                 cell.lblHeading.text = Constant.MyClassConstants.relinquishment
-                if let clubPoint = selectedRelinquishment.clubPoints {
-                    cell.resortName?.text = clubPoint.resort?.resortName
+                if selectedRelinquishment.clubPoints != nil {
+                    cell.resortDetailsButton.isHidden = true
+                    cell.lblHeading.text = "Club Points"
+                    if let selectedBucket = Constant.MyClassConstants.selectedAvailabilityInventoryBucket, let pointsCost = selectedBucket.exchangePointsCost {
+                        cell.resortName?.text = "\(pointsCost)".localized()
+                    } else {
+                        cell.resortName?.text = "\(0)".localized()
+                    }
                 } else if let openWeek = selectedRelinquishment.openWeek {
                     cell.resortName?.text = openWeek.resort?.resortName
                 } else if let deposits = selectedRelinquishment.deposit {

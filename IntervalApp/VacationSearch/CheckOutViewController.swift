@@ -1164,14 +1164,22 @@ extension CheckOutViewController: UITableViewDataSource {
                     }
                 } else {
                     cell.resortDetailsButton.addTarget(self, action: #selector(WhoWillBeCheckingInViewController.resortDetailsClicked(_:)), for: .touchUpInside)
-                    if let clubPoint = selectedRelinquishment.clubPoints {
-                        cell.resortName?.text = clubPoint.resort?.resortName
+                    if  selectedRelinquishment.clubPoints != nil {
+                        cell.resortDetailsButton.isHidden = true
+                        cell.lblHeading.text = "Club Points".localized()
+                        if let selectedBucket = Constant.MyClassConstants.selectedAvailabilityInventoryBucket, let pointsCost = selectedBucket.exchangePointsCost {
+                            cell.resortName?.text = "\(pointsCost)".localized()
+                        } else {
+                            cell.resortName?.text = "\(0)".localized()
+                        }
                     } else if let openWeek = selectedRelinquishment.openWeek {
                         cell.resortName?.text = openWeek.resort?.resortName
+                        cell.lblHeading.text = Constant.MyClassConstants.relinquishment
                     } else if let deposits = selectedRelinquishment.deposit {
                         cell.resortName?.text = deposits.resort?.resortName
+                        cell.lblHeading.text = Constant.MyClassConstants.relinquishment
                     }
-                    cell.lblHeading.text = Constant.MyClassConstants.relinquishment
+                    
                 }
                 cell.resortImageView?.image = UIImage(named: Constant.assetImageNames.relinquishmentImage)
             }
