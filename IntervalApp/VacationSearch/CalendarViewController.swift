@@ -58,13 +58,22 @@ class CalendarViewController: UIViewController {
             fsCalendar.select(Date())
         } else {
             if let date = Constant.MyClassConstants.relinquishmentFloatDetialSelectedDate {
-                fsCalendar.select(date)
+                let dateWithoutTimeZone = createDateWithoutTimeZone(for: date)
+                fsCalendar.select(dateWithoutTimeZone)
             } else {
-                fsCalendar.select(Constant.MyClassConstants.vacationSearchShowDate)
+                let dateWithoutTimeZone = createDateWithoutTimeZone(for: Constant.MyClassConstants.vacationSearchShowDate)
+                fsCalendar.select(dateWithoutTimeZone)
             }
             fsCalendar.deselect(Date())
         }
     }
+
+    private func createDateWithoutTimeZone(for date: Date) -> Date {
+        let format = Date.intervalShortDateFormat
+        let date = Constant.MyClassConstants.vacationSearchShowDate.formatDateAs(format)
+        return fsCalendar.date(from: date, format: format)
+    }
+
     //***** navigation back button action *****//
     func menuBackButtonPressed(_ sender: UIBarButtonItem) {
         

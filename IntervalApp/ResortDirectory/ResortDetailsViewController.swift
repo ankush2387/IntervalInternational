@@ -691,7 +691,7 @@ extension ResortDetailsViewController: UITableViewDataSource {
                             
                         case 5 :
                             if let categories = Constant.MyClassConstants.resortsDescriptionArray.rating?.categories {
-                                return categories.count > 0  ? categories.count + 1 : 0
+                                return categories.count > 0  ? categories.count + 2 : 0
                             } else { return  0 }
                             
                         case 6 :
@@ -918,44 +918,77 @@ extension ResortDetailsViewController: UITableViewDataSource {
                                 availableCountryCell?.infoLabel.text = amenityNearbyString.localized()
                             }
                         case 5 :
+
+                            // FIXME (AYLWING)
+                            // This is not correct. Creating a generic cell like this does not allow us to reuse this UI
+                            // Also the storyboard is wired incorrectly.
+                            // This screen has to be rewritten in order to comply with good coding practices/standards
+                            // More difficult than it should be to make small UI changes.
                             let ratingCell = UITableViewCell()
                             let resortCategory = Constant.MyClassConstants.resortsDescriptionArray.rating?.categories ?? []
-                            let categoryCode = resortCategory[indexPath.row - 1].categoryCode ?? ""
+                            let index = indexPath.row - 1
+                            if resortCategory.isEmpty || index >= resortCategory.count {
+                                let resortRating = Constant.MyClassConstants.resortsDescriptionArray.rating
+                                let numberOfMonths = resortRating?.months ?? 0
+                                let numberOfResponses = resortRating?.totalResponses ?? 0
+                                ratingCell.textLabel?.textColor = IntervalThemeFactory.deviceTheme.textColorGray
+                                if numberOfMonths < 0 {
+                                    ratingCell.textLabel?.text = "N/A".localized()
+                                } else if numberOfMonths == 0 {
+                                    ratingCell.textLabel?.text = "Number of responses this month: \(numberOfResponses)".localized()
+                                } else if numberOfMonths == 1 {
+                                    ratingCell.textLabel?.text = "Number of responses in the last month: \(numberOfResponses)".localized()
+                                } else {
+                                    ratingCell.textLabel?.text = "Number of responses in the last \(numberOfMonths) months: \(numberOfResponses)".localized()
+                                }
+
+                                return ratingCell
+                            }
+
+                            let categoryCode = resortCategory[index].categoryCode ?? ""
                              ratingCell.textLabel?.text = Helper.getRatingCategory(category: categoryCode)
                             
                             // to set cell background color
                             if indexPath.row % 2 != 0 {
                                 ratingCell.backgroundColor = #colorLiteral(red: 0.968627451, green: 0.968627451, blue: 0.968627451, alpha: 1)
                             }
-                            
+
+                            // FIXME (AYLWING)
+                            // This is an improvement over what was before
+                            // But we should come back here and do this in a cell XIB to remove code
+                            let halfOfCell = view.frame.width / 2
+                            let heightOfCell: CGFloat = 30
+                            let paddingOffSet: CGFloat = 20
+                            let frame = CGRect(x: halfOfCell + (paddingOffSet - 5),
+                                               y: (ratingCell.frame.height - heightOfCell) / 2,
+                                               width: halfOfCell - paddingOffSet,
+                                               height: heightOfCell)
+
+                            let horizontalStackView = UIStackView(frame: frame)
+                            horizontalStackView.spacing = 5
+                            horizontalStackView.axis = .horizontal
+                            horizontalStackView.distribution = .fillEqually
+                            ratingCell.addSubview(horizontalStackView)
+
                             let resortRating = resortCategory[indexPath.row - 1].rating
-                            var image_X: CGFloat = view.frame.size.width / 2 + 40
-                            var ratingImageArray = [UIImageView]()
-                            let startRatingIndex = 1, endRatingIndex = 5
+                            let startRatingIndex = 0, endRatingIndex = 5
                             
                             // to show empty circle image
-                            for _ in startRatingIndex...endRatingIndex {
-                                let ratingImageView = UIImageView(image: #imageLiteral(resourceName: "empty_circle"))
-                                ratingImageView.frame.origin.x = image_X
-                                ratingCell.contentView.addSubview(ratingImageView)
-                                image_X = image_X + ratingImageView.frame.size.width + 5
-                                ratingImageView.center.y = ratingCell.center.y + 3
-                                ratingImageArray.append(ratingImageView)
+                            for index in startRatingIndex..<endRatingIndex {
+                                let imageView = UIImageView(image: #imageLiteral(resourceName: "empty_circle"))
+                                horizontalStackView.insertArrangedSubview(imageView, at: index)
                             }
 
-                            // show full rating here
-                            let fullRating = Int(resortCategory[indexPath.row - 1].rating)
-                            var index = 0
-                            for _ in 0..<fullRating {
-                                ratingImageArray[index].image = #imageLiteral(resourceName: "full_filled_circle")
-                                index = index + 1
+                            let rating = parse(resortRating)
+                            for index in 0..<rating.wholeRating {
+                                if let imageView = horizontalStackView.arrangedSubviews[index] as? UIImageView {
+                                    imageView.image = #imageLiteral(resourceName: "full_filled_circle")
+                                    if index == rating.wholeRating - 1 && rating.hasHalfRating {
+                                        imageView.image = #imageLiteral(resourceName: "half_filled_circle")
+                                    }
+                                }
                             }
-                            
-                            // show hakf rating here
-                            let hasHalfrating = resortRating.truncatingRemainder(dividingBy: 1.0)
-                            if hasHalfrating > 0 {
-                                ratingImageArray[fullRating].image = #imageLiteral(resourceName: "half_filled_circle")
-                            }
+
                             return ratingCell
         
                         case 6 :
@@ -1010,6 +1043,15 @@ extension ResortDetailsViewController: UITableViewDataSource {
             }
         }
     }
+
+    private func parse(_ rating: Float) -> (wholeRating: Int, hasHalfRating: Bool) {
+        let parsedRating = String(rating).split(separator: ".")
+        let wholeRating = Int(parsedRating.first ?? "") ?? 0
+        let halfRating = Int(parsedRating.last ?? "")
+        let hasHalfRating = (halfRating ?? 0) > 0
+        return (wholeRating, hasHalfRating)
+    }
+
     
     func favoritesButtonClicked(_ sender: IUIKButton) {
         Constant.MyClassConstants.btnTag = -1

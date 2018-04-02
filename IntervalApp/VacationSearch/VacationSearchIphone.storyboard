@@ -1673,38 +1673,44 @@ transaction.</string>
                                                                                         <nil key="highlightedColor"/>
                                                                                     </label>
                                                                                     <imageView userInteractionEnabled="NO" tag="1" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="empty_circle" translatesAutoresizingMaskIntoConstraints="NO" id="xeX-XS-AbE">
-                                                                                        <rect key="frame" x="235" y="9" width="20" height="20"/>
+                                                                                        <rect key="frame" x="185" y="4" width="30" height="30"/>
                                                                                         <constraints>
-                                                                                            <constraint firstAttribute="height" constant="20" id="6cf-tq-FH6"/>
-                                                                                            <constraint firstAttribute="width" constant="20" id="yfv-YH-LEv"/>
+                                                                                            <constraint firstAttribute="height" constant="30" id="6cf-tq-FH6"/>
+                                                                                            <constraint firstAttribute="width" constant="30" id="yfv-YH-LEv"/>
                                                                                         </constraints>
                                                                                     </imageView>
                                                                                     <imageView userInteractionEnabled="NO" tag="2" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="empty_circle" translatesAutoresizingMaskIntoConstraints="NO" id="c38-55-KDf">
-                                                                                        <rect key="frame" x="260" y="9" width="20" height="20"/>
+                                                                                        <rect key="frame" x="220" y="4" width="30" height="30"/>
                                                                                         <constraints>
-                                                                                            <constraint firstAttribute="height" constant="20" id="kZ8-KM-Vkx"/>
-                                                                                            <constraint firstAttribute="width" constant="20" id="m1y-Ev-gWY"/>
+                                                                                            <constraint firstAttribute="height" constant="30" id="kZ8-KM-Vkx"/>
+                                                                                            <constraint firstAttribute="width" constant="30" id="m1y-Ev-gWY"/>
                                                                                         </constraints>
                                                                                     </imageView>
                                                                                     <imageView userInteractionEnabled="NO" tag="3" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="empty_circle" translatesAutoresizingMaskIntoConstraints="NO" id="2Gv-Gg-hsh">
-                                                                                        <rect key="frame" x="285" y="8.6666666666666856" width="20" height="20"/>
+
+                                                                                        <rect key="frame" x="255" y="3.5" width="30" height="30"/>
+
                                                                                         <constraints>
-                                                                                            <constraint firstAttribute="width" constant="20" id="caV-og-irU"/>
-                                                                                            <constraint firstAttribute="height" constant="20" id="jhm-fG-drY"/>
+                                                                                            <constraint firstAttribute="width" constant="30" id="caV-og-irU"/>
+                                                                                            <constraint firstAttribute="height" constant="30" id="jhm-fG-drY"/>
                                                                                         </constraints>
                                                                                     </imageView>
                                                                                     <imageView userInteractionEnabled="NO" tag="4" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="empty_circle" translatesAutoresizingMaskIntoConstraints="NO" id="mqE-ur-rcb">
-                                                                                        <rect key="frame" x="310" y="8.6666666666666856" width="20" height="20"/>
+
+                                                                                        <rect key="frame" x="290" y="3.5" width="30" height="30"/>
+                                                                                        
                                                                                         <constraints>
-                                                                                            <constraint firstAttribute="height" constant="20" id="Cez-B6-f52"/>
-                                                                                            <constraint firstAttribute="width" constant="20" id="TJv-vI-pBG"/>
+                                                                                            <constraint firstAttribute="height" constant="30" id="Cez-B6-f52"/>
+                                                                                            <constraint firstAttribute="width" constant="30" id="TJv-vI-pBG"/>
                                                                                         </constraints>
                                                                                     </imageView>
                                                                                     <imageView userInteractionEnabled="NO" tag="5" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="empty_circle" translatesAutoresizingMaskIntoConstraints="NO" id="XIC-PY-RsS">
-                                                                                        <rect key="frame" x="335" y="8.6666666666666856" width="20" height="20"/>
+
+                                                                                        <rect key="frame" x="325" y="3.5" width="30" height="30"/>
+
                                                                                         <constraints>
-                                                                                            <constraint firstAttribute="height" constant="20" id="fY6-fO-6Ny"/>
-                                                                                            <constraint firstAttribute="width" constant="20" id="kYn-rP-bGa"/>
+                                                                                            <constraint firstAttribute="height" constant="30" id="fY6-fO-6Ny"/>
+                                                                                            <constraint firstAttribute="width" constant="30" id="kYn-rP-bGa"/>
                                                                                         </constraints>
                                                                                     </imageView>
                                                                                 </subviews>
@@ -7657,7 +7663,7 @@ transaction.</string>
         <image name="SortIcon" width="30" height="30"/>
         <image name="WeatherIcon" width="30" height="30"/>
         <image name="all_inclusive_checked" width="24" height="24"/>
-        <image name="empty_circle" width="20" height="20"/>
+        <image name="empty_circle" width="55" height="56"/>
         <image name="input_clear" width="15" height="15"/>
         <image name="sanci_main01_r" width="1200" height="550"/>
     </resources>
