@@ -89,13 +89,13 @@
                             <rect key="frame" x="20" y="0.0" width="728" height="50"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rv3-6Q-gOW">
-                                    <rect key="frame" x="0.0" y="0.0" width="65" height="50"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="75" height="50"/>
+                                    <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="15"/>
                                     <state key="normal" title="Join Today"/>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ieR-sI-nH2">
-                                    <rect key="frame" x="639" y="0.0" width="89" height="50"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                    <rect key="frame" x="625" y="0.0" width="103" height="50"/>
+                                    <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="15"/>
                                     <state key="normal" title="Privacy / Legal"/>
                                 </button>
                             </subviews>
