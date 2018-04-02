@@ -641,9 +641,9 @@ extension UpComingTripDetailController: UITableViewDataSource {
        
                     cell.checkInMonthYearLabel.text = String(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment?.deposit?.relinquishmentYear ?? 0).localized()
                     
-                    cell.resortFixedWeekLabel.text = Constant.getWeekNumber(weekType: Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment?.deposit?.weekNumber ?? "").localized()
+                    cell.resortFixedWeekLabel.text = "week \(Constant.getWeekNumber(weekType: Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment?.deposit?.weekNumber ?? "").localized())".localized()
                     
-                    cell.bedRoomKitechenType.text =  "\(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment?.deposit?.unit?.unitSize ?? "") \(Helper.getKitchenEnums(kitchenType: (Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment?.deposit?.unit?.kitchenType) ?? ""))".localized()
+                    cell.bedRoomKitechenType.text =  "\(Helper.getBedroomNumbers(bedroomType: Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment?.deposit?.unit?.unitSize ?? "")) \(Helper.getKitchenEnums(kitchenType: (Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment?.deposit?.unit?.kitchenType) ?? ""))".localized()
                     
                     cell.sleepsTotalOrPrivate.text = "Sleeps \(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment?.deposit?.unit?.publicSleepCapacity ?? 0) total, \(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment?.deposit?.unit?.privateSleepCapacity ?? 0) Private".localized()
                     
