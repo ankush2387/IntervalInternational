@@ -123,7 +123,7 @@ class UpComingTripDetailController: UIViewController, UITextViewDelegate {
         let lblTitle = UILabel(frame: CGRect(x: 10, y: 5, width: actionSheet.view.bounds.size.width - 20, height: 25))
         lblTitle.font = UIFont(name: Constant.fontName.helveticaNeue, size: 18.0)
         lblTitle.backgroundColor = UIColor.clear
-        lblTitle.text = "Purchase Trip Protection"
+        lblTitle.text = "Purchase Trip Protection".localized()
         lblTitle.textAlignment = .center
         
         let lblMessage = UILabel(frame: CGRect(x: 10, y: 35, width: actionSheet.view.bounds.size.width - 20, height: 100))
