@@ -1849,9 +1849,10 @@ transaction.</string>
                                                                         <rect key="frame" x="243" y="15" width="111" height="50"/>
                                                                         <subviews>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1027" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9ur-qh-rof">
-                                                                                <rect key="frame" x="0.0" y="5" width="103" height="21"/>
+                                                                                <rect key="frame" x="39" y="5" width="64" height="21"/>
+                                                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                                                 <constraints>
-                                                                                    <constraint firstAttribute="width" constant="103" id="8qG-6o-JJs"/>
+                                                                                    <constraint firstAttribute="width" constant="64" id="8qG-6o-JJs"/>
                                                                                     <constraint firstAttribute="height" constant="21" id="x9S-OV-sQ3"/>
                                                                                 </constraints>
                                                                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="20"/>
@@ -1859,7 +1860,7 @@ transaction.</string>
                                                                                 <nil key="highlightedColor"/>
                                                                             </label>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Per Week" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ev5-il-u0b">
-                                                                                <rect key="frame" x="14" y="24" width="60" height="15"/>
+                                                                                <rect key="frame" x="46" y="24" width="60" height="15"/>
                                                                                 <constraints>
                                                                                     <constraint firstAttribute="width" constant="60" id="Skn-eH-bcg"/>
                                                                                     <constraint firstAttribute="height" constant="15" id="n9l-pi-DGi"/>
@@ -1869,7 +1870,7 @@ transaction.</string>
                                                                                 <nil key="highlightedColor"/>
                                                                             </label>
                                                                             <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Resorts-Getaway_Icon" translatesAutoresizingMaskIntoConstraints="NO" id="vgI-kj-OmP">
-                                                                                <rect key="frame" x="27" y="2" width="25" height="21"/>
+                                                                                <rect key="frame" x="58" y="2" width="25" height="21"/>
                                                                                 <constraints>
                                                                                     <constraint firstAttribute="width" constant="25" id="L5C-2K-zbl"/>
                                                                                     <constraint firstAttribute="height" constant="21" id="x5e-Sn-kn2"/>
@@ -1883,8 +1884,8 @@ transaction.</string>
                                                                             <constraint firstAttribute="trailing" secondItem="9ur-qh-rof" secondAttribute="trailing" constant="8" id="Ogp-RZ-Tut"/>
                                                                             <constraint firstItem="Ev5-il-u0b" firstAttribute="top" secondItem="9ur-qh-rof" secondAttribute="bottom" constant="-2" id="Otq-hS-wDL"/>
                                                                             <constraint firstItem="vgI-kj-OmP" firstAttribute="top" secondItem="xru-gj-w8L" secondAttribute="top" constant="2" id="VY5-eQ-SfN"/>
-                                                                            <constraint firstAttribute="trailing" secondItem="Ev5-il-u0b" secondAttribute="trailing" constant="37" id="iDW-wf-AfM"/>
-                                                                            <constraint firstItem="vgI-kj-OmP" firstAttribute="centerX" secondItem="xru-gj-w8L" secondAttribute="centerX" constant="-16" id="ucX-dQ-TM5"/>
+                                                                            <constraint firstAttribute="trailing" secondItem="Ev5-il-u0b" secondAttribute="trailing" constant="5" id="iDW-wf-AfM"/>
+                                                                            <constraint firstItem="vgI-kj-OmP" firstAttribute="centerX" secondItem="xru-gj-w8L" secondAttribute="centerX" constant="15" id="ucX-dQ-TM5"/>
                                                                         </constraints>
                                                                     </view>
                                                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ForwardArrowIcon" translatesAutoresizingMaskIntoConstraints="NO" id="gY6-S0-Ob3">
@@ -6114,7 +6115,7 @@ to confirm a larger unit.</string>
                                         <rect key="frame" x="0.0" y="28" width="355" height="278"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="YUH-P1-7Hm" id="EpQ-hL-E8x">
-                                            <rect key="frame" x="0.0" y="0.0" width="355" height="277.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="355" height="278"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9ha-mg-rWb">
@@ -6195,7 +6196,7 @@ to confirm a larger unit.</string>
                                         <rect key="frame" x="0.0" y="306" width="355" height="100"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="XbP-Go-j8O" id="GOP-TW-hhE">
-                                            <rect key="frame" x="0.0" y="0.0" width="355" height="99.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="355" height="100"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8or-JA-AwY">
@@ -7704,7 +7705,7 @@ transaction.</string>
         <segue reference="Gma-QI-cCT"/>
         <segue reference="Lp2-ch-oU8"/>
         <segue reference="KRw-si-7MT"/>
-        <segue reference="u0k-hc-uRI"/>
+        <segue reference="Rpo-cQ-qF4"/>
         <segue reference="4gU-cx-AAf"/>
         <segue reference="Uce-OZ-bfJ"/>
     </inferredMetricsTieBreakers>
