@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="x1F-lN-3Vb">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="x1F-lN-3Vb">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -7,6 +7,7 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -23,14 +24,11 @@
         <scene sceneID="YV4-kR-k7E">
             <objects>
                 <viewController storyboardIdentifier="RevialViewController" id="x1F-lN-3Vb" customClass="SWRevealViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="VGe-Aa-NTg"/>
-                        <viewControllerLayoutGuide type="bottom" id="CuF-QE-Tln"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="2nb-Nb-TZa">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <viewLayoutGuide key="safeArea" id="JWb-oz-a7H"/>
                     </view>
                     <connections>
                         <segue destination="UUJ-LS-zwG" kind="custom" identifier="sw_rear" customClass="SWRevealViewControllerSegueSetController" id="cy0-NN-1B2"/>
@@ -45,10 +43,6 @@
         <scene sceneID="DMy-sM-TWu">
             <objects>
                 <viewController id="UUJ-LS-zwG" customClass="SideMenuTableViewController" customModule="IntervalApp" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="jqm-HG-fOh"/>
-                        <viewControllerLayoutGuide type="bottom" id="clN-w7-URc"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="zWG-Yv-ZVn">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -82,11 +76,12 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="Mu3-nT-F4m" firstAttribute="top" secondItem="jqm-HG-fOh" secondAttribute="bottom" id="U2O-SJ-VtP"/>
-                            <constraint firstItem="clN-w7-URc" firstAttribute="top" secondItem="Mu3-nT-F4m" secondAttribute="bottom" id="gK8-OK-4ll"/>
-                            <constraint firstItem="Mu3-nT-F4m" firstAttribute="leading" secondItem="zWG-Yv-ZVn" secondAttribute="leading" id="gbd-B4-OiJ"/>
-                            <constraint firstAttribute="trailing" secondItem="Mu3-nT-F4m" secondAttribute="trailing" id="h7I-Yq-P3w"/>
+                            <constraint firstItem="Mu3-nT-F4m" firstAttribute="top" secondItem="Xpw-dl-ij0" secondAttribute="top" id="U2O-SJ-VtP"/>
+                            <constraint firstItem="Xpw-dl-ij0" firstAttribute="bottom" secondItem="Mu3-nT-F4m" secondAttribute="bottom" id="gK8-OK-4ll"/>
+                            <constraint firstItem="Mu3-nT-F4m" firstAttribute="leading" secondItem="Xpw-dl-ij0" secondAttribute="leading" id="gbd-B4-OiJ"/>
+                            <constraint firstItem="Xpw-dl-ij0" firstAttribute="trailing" secondItem="Mu3-nT-F4m" secondAttribute="trailing" id="h7I-Yq-P3w"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="Xpw-dl-ij0"/>
                     </view>
                     <connections>
                         <outlet property="sideMenuTable" destination="Mu3-nT-F4m" id="t1L-Ly-ehw"/>
@@ -101,10 +96,6 @@
         <scene sceneID="abM-b5-jzF">
             <objects>
                 <viewController storyboardIdentifier="ResortDirectoryViewController" automaticallyAdjustsScrollViewInsets="NO" id="egG-b6-qSt" customClass="GoogleMapViewController" customModule="IntervalApp" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="4vj-HY-GsD"/>
-                        <viewControllerLayoutGuide type="bottom" id="3Rb-ld-kRH"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="TNN-jr-Yyp">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -288,18 +279,19 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="qdr-9g-cte" secondAttribute="trailing" constant="-4" id="4S6-Te-HqA"/>
-                            <constraint firstItem="va3-wS-akl" firstAttribute="leading" secondItem="TNN-jr-Yyp" secondAttribute="leading" id="7OC-oe-OMl"/>
-                            <constraint firstItem="3Rb-ld-kRH" firstAttribute="top" secondItem="qdr-9g-cte" secondAttribute="bottom" id="E8m-dR-mG3"/>
-                            <constraint firstAttribute="trailing" secondItem="va3-wS-akl" secondAttribute="trailing" id="F7S-kS-HCv"/>
+                            <constraint firstItem="mpl-Bn-3jL" firstAttribute="trailing" secondItem="qdr-9g-cte" secondAttribute="trailing" constant="-4" id="4S6-Te-HqA"/>
+                            <constraint firstItem="va3-wS-akl" firstAttribute="leading" secondItem="mpl-Bn-3jL" secondAttribute="leading" id="7OC-oe-OMl"/>
+                            <constraint firstItem="mpl-Bn-3jL" firstAttribute="bottom" secondItem="qdr-9g-cte" secondAttribute="bottom" id="E8m-dR-mG3"/>
+                            <constraint firstItem="mpl-Bn-3jL" firstAttribute="trailing" secondItem="va3-wS-akl" secondAttribute="trailing" id="F7S-kS-HCv"/>
                             <constraint firstItem="MFk-sp-O0E" firstAttribute="leading" secondItem="TNN-jr-Yyp" secondAttribute="leadingMargin" constant="-20" id="MtZ-6w-6x6"/>
                             <constraint firstAttribute="trailingMargin" secondItem="MFk-sp-O0E" secondAttribute="trailing" constant="-20" id="QNB-7o-DMf"/>
                             <constraint firstAttribute="bottom" secondItem="va3-wS-akl" secondAttribute="bottom" id="aCW-4w-9v9"/>
-                            <constraint firstItem="MFk-sp-O0E" firstAttribute="top" secondItem="4vj-HY-GsD" secondAttribute="bottom" id="uTM-fL-33Z"/>
+                            <constraint firstItem="MFk-sp-O0E" firstAttribute="top" secondItem="mpl-Bn-3jL" secondAttribute="top" id="uTM-fL-33Z"/>
                             <constraint firstItem="qdr-9g-cte" firstAttribute="top" secondItem="MFk-sp-O0E" secondAttribute="bottom" id="uVu-xB-7pG"/>
-                            <constraint firstItem="qdr-9g-cte" firstAttribute="leading" secondItem="TNN-jr-Yyp" secondAttribute="leading" constant="-4" id="yxb-Gm-Py8"/>
+                            <constraint firstItem="qdr-9g-cte" firstAttribute="leading" secondItem="mpl-Bn-3jL" secondAttribute="leading" constant="-4" id="yxb-Gm-Py8"/>
                             <constraint firstItem="va3-wS-akl" firstAttribute="top" secondItem="MFk-sp-O0E" secondAttribute="bottom" id="zCc-4T-aFZ"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="mpl-Bn-3jL"/>
                     </view>
                     <navigationItem key="navigationItem" id="m76-yy-KE7"/>
                     <connections>
@@ -327,10 +319,6 @@
         <scene sceneID="UsW-8U-vTy">
             <objects>
                 <viewController storyboardIdentifier="SignInPreLoginViewController" id="tIf-eX-VDF" customClass="SignInPreLoginViewController" customModule="IntervalApp" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="h62-E3-v9z"/>
-                        <viewControllerLayoutGuide type="bottom" id="XJa-LH-Taf"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="GbB-OY-4gA">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -466,27 +454,28 @@
                             <constraint firstAttribute="trailingMargin" secondItem="Qsc-5a-TLe" secondAttribute="trailing" id="GXP-al-dfh"/>
                             <constraint firstItem="Qsc-5a-TLe" firstAttribute="top" secondItem="IgG-TZ-piO" secondAttribute="bottom" constant="28" id="HZn-vm-i20"/>
                             <constraint firstItem="Qsc-5a-TLe" firstAttribute="top" secondItem="Txv-HP-Trs" secondAttribute="bottom" constant="21" id="N4k-q1-O4z"/>
-                            <constraint firstItem="2YO-Cm-pZy" firstAttribute="centerX" secondItem="GbB-OY-4gA" secondAttribute="centerX" id="Nez-6P-3xa"/>
+                            <constraint firstItem="2YO-Cm-pZy" firstAttribute="centerX" secondItem="65G-ia-lDG" secondAttribute="centerX" id="Nez-6P-3xa"/>
                             <constraint firstItem="H96-KM-efE" firstAttribute="top" secondItem="31C-MC-g95" secondAttribute="bottom" constant="16" id="OhJ-QN-A8C"/>
                             <constraint firstItem="Txv-HP-Trs" firstAttribute="top" secondItem="BLq-zI-hot" secondAttribute="bottom" constant="17" id="Q0L-aO-xWs"/>
                             <constraint firstItem="BLq-zI-hot" firstAttribute="top" secondItem="H96-KM-efE" secondAttribute="bottom" constant="8" id="Q61-6q-iC4"/>
                             <constraint firstAttribute="trailingMargin" secondItem="nT3-eW-h6G" secondAttribute="trailing" id="WI6-ou-SRM"/>
-                            <constraint firstItem="Hud-AJ-QYn" firstAttribute="top" secondItem="h62-E3-v9z" secondAttribute="bottom" constant="3" id="WwL-An-Ti0"/>
+                            <constraint firstItem="Hud-AJ-QYn" firstAttribute="top" secondItem="65G-ia-lDG" secondAttribute="top" constant="3" id="WwL-An-Ti0"/>
                             <constraint firstItem="nT3-eW-h6G" firstAttribute="leading" secondItem="ihH-pe-kQX" secondAttribute="trailing" constant="8" id="aGq-cz-AEb"/>
                             <constraint firstAttribute="trailingMargin" secondItem="Hud-AJ-QYn" secondAttribute="trailing" constant="-17" id="bHB-Qi-CZj"/>
                             <constraint firstItem="nT3-eW-h6G" firstAttribute="top" secondItem="BLq-zI-hot" secondAttribute="bottom" constant="24" id="eLK-8E-3AR"/>
                             <constraint firstItem="31C-MC-g95" firstAttribute="top" secondItem="2YO-Cm-pZy" secondAttribute="bottom" constant="10" id="euT-Te-Kno"/>
                             <constraint firstItem="IgG-TZ-piO" firstAttribute="top" secondItem="BLq-zI-hot" secondAttribute="bottom" constant="17" id="g7p-3L-53R"/>
-                            <constraint firstItem="2YO-Cm-pZy" firstAttribute="top" secondItem="h62-E3-v9z" secondAttribute="bottom" constant="64" id="k9t-Hb-Haj"/>
+                            <constraint firstItem="2YO-Cm-pZy" firstAttribute="top" secondItem="65G-ia-lDG" secondAttribute="top" constant="64" id="k9t-Hb-Haj"/>
                             <constraint firstAttribute="leadingMargin" secondItem="H96-KM-efE" secondAttribute="leading" id="o5C-bz-h6t"/>
-                            <constraint firstItem="H96-KM-efE" firstAttribute="centerX" secondItem="GbB-OY-4gA" secondAttribute="centerX" id="onU-g3-jHK"/>
-                            <constraint firstItem="31C-MC-g95" firstAttribute="centerX" secondItem="GbB-OY-4gA" secondAttribute="centerX" id="ox0-xc-skU"/>
+                            <constraint firstItem="H96-KM-efE" firstAttribute="centerX" secondItem="65G-ia-lDG" secondAttribute="centerX" id="onU-g3-jHK"/>
+                            <constraint firstItem="31C-MC-g95" firstAttribute="centerX" secondItem="65G-ia-lDG" secondAttribute="centerX" id="ox0-xc-skU"/>
                             <constraint firstAttribute="leadingMargin" secondItem="IgG-TZ-piO" secondAttribute="leading" id="pw2-fv-BfU"/>
                             <constraint firstAttribute="trailingMargin" secondItem="BLq-zI-hot" secondAttribute="trailing" id="qei-UC-h2z"/>
-                            <constraint firstItem="BLq-zI-hot" firstAttribute="centerX" secondItem="GbB-OY-4gA" secondAttribute="centerX" id="sw9-57-aTn"/>
+                            <constraint firstItem="BLq-zI-hot" firstAttribute="centerX" secondItem="65G-ia-lDG" secondAttribute="centerX" id="sw9-57-aTn"/>
                             <constraint firstAttribute="trailingMargin" secondItem="Txv-HP-Trs" secondAttribute="trailing" id="wUe-qQ-FJ4"/>
                             <constraint firstAttribute="leadingMargin" secondItem="BLq-zI-hot" secondAttribute="leading" id="wfK-G7-nCu"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="65G-ia-lDG"/>
                     </view>
                     <navigationItem key="navigationItem" id="ErO-hy-Wt0"/>
                     <connections>
@@ -505,10 +494,6 @@
         <scene sceneID="yx7-BM-5Aw">
             <objects>
                 <viewController automaticallyAdjustsScrollViewInsets="NO" id="64w-t2-pae" customClass="ResortDirectoryViewController" customModule="IntervalApp" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="r9W-qL-19e"/>
-                        <viewControllerLayoutGuide type="bottom" id="MPf-Dg-dxj"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="jbA-Le-RAM">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -571,9 +556,10 @@
                         <constraints>
                             <constraint firstAttribute="trailingMargin" secondItem="8mL-UF-u8d" secondAttribute="trailing" constant="-20" id="40O-tD-eus"/>
                             <constraint firstItem="8mL-UF-u8d" firstAttribute="leading" secondItem="jbA-Le-RAM" secondAttribute="leadingMargin" constant="-20" id="DkF-0d-iuV"/>
-                            <constraint firstItem="MPf-Dg-dxj" firstAttribute="top" secondItem="8mL-UF-u8d" secondAttribute="bottom" id="GiW-FE-ks5"/>
-                            <constraint firstItem="8mL-UF-u8d" firstAttribute="top" secondItem="r9W-qL-19e" secondAttribute="bottom" id="w0R-zw-m6B"/>
+                            <constraint firstItem="TCQ-uF-HAY" firstAttribute="bottom" secondItem="8mL-UF-u8d" secondAttribute="bottom" id="GiW-FE-ks5"/>
+                            <constraint firstItem="8mL-UF-u8d" firstAttribute="top" secondItem="TCQ-uF-HAY" secondAttribute="top" id="w0R-zw-m6B"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="TCQ-uF-HAY"/>
                     </view>
                     <connections>
                         <segue destination="4Xs-2Q-FlG" kind="show" identifier="resortByAreaSegue" id="Le8-Vm-NHi">
@@ -589,10 +575,6 @@
         <scene sceneID="mWg-Eu-qax">
             <objects>
                 <viewController id="vpY-1i-zON" customClass="FevoritesResortController" customModule="IntervalApp" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="VvR-Nh-Ygp"/>
-                        <viewControllerLayoutGuide type="bottom" id="6Pq-pq-ksr"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="rAq-FJ-wuN">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -665,13 +647,14 @@
                         <constraints>
                             <constraint firstItem="Jbk-J9-c8S" firstAttribute="leading" secondItem="SPc-sT-sQe" secondAttribute="leading" id="1Wf-q1-cla"/>
                             <constraint firstItem="Jbk-J9-c8S" firstAttribute="top" secondItem="SPc-sT-sQe" secondAttribute="top" id="9pg-ja-6dg"/>
-                            <constraint firstAttribute="trailing" secondItem="Jbk-J9-c8S" secondAttribute="trailing" id="9rU-SZ-pFk"/>
-                            <constraint firstItem="SPc-sT-sQe" firstAttribute="bottom" secondItem="6Pq-pq-ksr" secondAttribute="top" id="EYJ-zg-sg5"/>
-                            <constraint firstItem="Jbk-J9-c8S" firstAttribute="bottom" secondItem="6Pq-pq-ksr" secondAttribute="top" id="WE5-vG-7Rn"/>
-                            <constraint firstItem="SPc-sT-sQe" firstAttribute="leading" secondItem="rAq-FJ-wuN" secondAttribute="leading" id="XlL-Uy-eRY"/>
-                            <constraint firstItem="Jbk-J9-c8S" firstAttribute="top" secondItem="VvR-Nh-Ygp" secondAttribute="bottom" id="fCv-uj-472"/>
+                            <constraint firstItem="Tvm-ce-5dB" firstAttribute="trailing" secondItem="Jbk-J9-c8S" secondAttribute="trailing" id="9rU-SZ-pFk"/>
+                            <constraint firstItem="SPc-sT-sQe" firstAttribute="bottom" secondItem="Tvm-ce-5dB" secondAttribute="bottom" id="EYJ-zg-sg5"/>
+                            <constraint firstItem="Jbk-J9-c8S" firstAttribute="bottom" secondItem="Tvm-ce-5dB" secondAttribute="bottom" id="WE5-vG-7Rn"/>
+                            <constraint firstItem="SPc-sT-sQe" firstAttribute="leading" secondItem="Tvm-ce-5dB" secondAttribute="leading" id="XlL-Uy-eRY"/>
+                            <constraint firstItem="Jbk-J9-c8S" firstAttribute="top" secondItem="Tvm-ce-5dB" secondAttribute="top" id="fCv-uj-472"/>
                             <constraint firstItem="Jbk-J9-c8S" firstAttribute="trailing" secondItem="SPc-sT-sQe" secondAttribute="trailing" id="xJP-UD-kAD"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="Tvm-ce-5dB"/>
                     </view>
                     <navigationItem key="navigationItem" id="NVO-fT-1G4"/>
                     <connections>
@@ -689,10 +672,6 @@
         <scene sceneID="BLy-50-YOQ">
             <objects>
                 <viewController automaticallyAdjustsScrollViewInsets="NO" id="4Xs-2Q-FlG" customClass="ResortDirectoryViewController" customModule="IntervalApp" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="XF7-W8-fWh"/>
-                        <viewControllerLayoutGuide type="bottom" id="7yF-gd-rU6"/>
-                    </layoutGuides>
                     <view key="view" tag="3" contentMode="scaleToFill" id="aKi-fU-EPB">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -710,9 +689,10 @@
                         <constraints>
                             <constraint firstItem="zOG-Hk-iJz" firstAttribute="leading" secondItem="aKi-fU-EPB" secondAttribute="leadingMargin" constant="-20" id="IoR-Ux-t1q"/>
                             <constraint firstAttribute="trailingMargin" secondItem="zOG-Hk-iJz" secondAttribute="trailing" constant="-20" id="dLN-i2-qlt"/>
-                            <constraint firstItem="zOG-Hk-iJz" firstAttribute="top" secondItem="XF7-W8-fWh" secondAttribute="bottom" id="hqx-7Y-rI9"/>
-                            <constraint firstItem="7yF-gd-rU6" firstAttribute="top" secondItem="zOG-Hk-iJz" secondAttribute="bottom" id="nR9-lk-XJj"/>
+                            <constraint firstItem="zOG-Hk-iJz" firstAttribute="top" secondItem="JEz-dm-nLv" secondAttribute="top" id="hqx-7Y-rI9"/>
+                            <constraint firstItem="JEz-dm-nLv" firstAttribute="bottom" secondItem="zOG-Hk-iJz" secondAttribute="bottom" id="nR9-lk-XJj"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="JEz-dm-nLv"/>
                     </view>
                     <connections>
                         <outlet property="resortTableView" destination="zOG-Hk-iJz" id="x9g-3b-ffB"/>
@@ -728,10 +708,6 @@
         <scene sceneID="Pdt-qi-RXX">
             <objects>
                 <viewController storyboardIdentifier="ResortDetailsViewController" automaticallyAdjustsScrollViewInsets="NO" id="EOV-dU-QDF" customClass="ResortDetailsViewController" customModule="IntervalApp" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="Uyu-k6-kxy"/>
-                        <viewControllerLayoutGuide type="bottom" id="Hyf-gk-1wL"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="XSJ-9B-c0K">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1206,18 +1182,19 @@
                         <constraints>
                             <constraint firstAttribute="trailingMargin" secondItem="dbp-4O-FJn" secondAttribute="trailing" constant="-20" id="7un-m4-odN"/>
                             <constraint firstItem="VJi-l6-MuQ" firstAttribute="top" secondItem="dbp-4O-FJn" secondAttribute="bottom" id="892-SF-AzD"/>
-                            <constraint firstItem="Hyf-gk-1wL" firstAttribute="top" secondItem="VJi-l6-MuQ" secondAttribute="bottom" id="8Tb-vs-epS"/>
+                            <constraint firstItem="TZs-aV-i3B" firstAttribute="bottom" secondItem="VJi-l6-MuQ" secondAttribute="bottom" id="8Tb-vs-epS"/>
                             <constraint firstItem="dbp-4O-FJn" firstAttribute="leading" secondItem="XSJ-9B-c0K" secondAttribute="leadingMargin" constant="-20" id="Afc-NY-iqA"/>
                             <constraint firstItem="VJi-l6-MuQ" firstAttribute="width" secondItem="XSJ-9B-c0K" secondAttribute="width" id="HSZ-Ub-RdF"/>
                             <constraint firstItem="VJi-l6-MuQ" firstAttribute="top" secondItem="dbp-4O-FJn" secondAttribute="bottom" id="KFO-34-1dY"/>
                             <constraint firstItem="VJi-l6-MuQ" firstAttribute="leading" secondItem="XSJ-9B-c0K" secondAttribute="leadingMargin" constant="-20" id="RTa-60-Zbb"/>
-                            <constraint firstAttribute="trailing" secondItem="VJi-l6-MuQ" secondAttribute="trailing" id="RVO-uN-7sg"/>
-                            <constraint firstItem="Hyf-gk-1wL" firstAttribute="top" secondItem="VJi-l6-MuQ" secondAttribute="bottom" id="RqH-Dy-uHd"/>
-                            <constraint firstItem="VJi-l6-MuQ" firstAttribute="leading" secondItem="XSJ-9B-c0K" secondAttribute="leading" id="T93-Wb-LAg"/>
+                            <constraint firstItem="TZs-aV-i3B" firstAttribute="trailing" secondItem="VJi-l6-MuQ" secondAttribute="trailing" id="RVO-uN-7sg"/>
+                            <constraint firstItem="TZs-aV-i3B" firstAttribute="bottom" secondItem="VJi-l6-MuQ" secondAttribute="bottom" id="RqH-Dy-uHd"/>
+                            <constraint firstItem="VJi-l6-MuQ" firstAttribute="leading" secondItem="TZs-aV-i3B" secondAttribute="leading" id="T93-Wb-LAg"/>
                             <constraint firstItem="dbp-4O-FJn" firstAttribute="top" secondItem="XSJ-9B-c0K" secondAttribute="topMargin" constant="20" id="bg4-lg-1zJ"/>
                             <constraint firstAttribute="trailingMargin" secondItem="VJi-l6-MuQ" secondAttribute="trailing" constant="-20" id="kAc-q8-SG7"/>
-                            <constraint firstItem="Hyf-gk-1wL" firstAttribute="top" secondItem="VJi-l6-MuQ" secondAttribute="bottom" id="x8Z-fq-ynr"/>
+                            <constraint firstItem="TZs-aV-i3B" firstAttribute="bottom" secondItem="VJi-l6-MuQ" secondAttribute="bottom" id="x8Z-fq-ynr"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="TZs-aV-i3B"/>
                         <variation key="default">
                             <mask key="constraints">
                                 <exclude reference="892-SF-AzD"/>
@@ -1244,14 +1221,11 @@
         <scene sceneID="bDz-z3-7sN">
             <objects>
                 <viewController id="CFK-xj-dWV" customClass="DetailMapViewController" customModule="IntervalApp" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="OCe-Cf-WW1"/>
-                        <viewControllerLayoutGuide type="bottom" id="RIE-c4-BJP"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Lp6-hJ-YDB">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <viewLayoutGuide key="safeArea" id="20O-Xg-26e"/>
                     </view>
                     <navigationItem key="navigationItem" id="Ing-Ur-C7M"/>
                 </viewController>
@@ -1263,10 +1237,6 @@
         <scene sceneID="h7p-1Y-HlO">
             <objects>
                 <viewController automaticallyAdjustsScrollViewInsets="NO" id="1qn-af-Ewz" customClass="ResortDirectoryViewController" customModule="IntervalApp" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="rjG-Rp-LlK"/>
-                        <viewControllerLayoutGuide type="bottom" id="VGD-vg-xN3"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="ban-bq-TCk">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1328,10 +1298,11 @@
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="ItW-yG-nhy" firstAttribute="leading" secondItem="ban-bq-TCk" secondAttribute="leadingMargin" constant="-20" id="bTF-lw-ybw"/>
-                            <constraint firstItem="VGD-vg-xN3" firstAttribute="top" secondItem="ItW-yG-nhy" secondAttribute="bottom" id="dtV-Tw-WzE"/>
+                            <constraint firstItem="MQW-Sk-58C" firstAttribute="bottom" secondItem="ItW-yG-nhy" secondAttribute="bottom" id="dtV-Tw-WzE"/>
                             <constraint firstAttribute="trailingMargin" secondItem="ItW-yG-nhy" secondAttribute="trailing" constant="-20" id="hv7-Jk-XxV"/>
-                            <constraint firstItem="ItW-yG-nhy" firstAttribute="top" secondItem="rjG-Rp-LlK" secondAttribute="bottom" id="rCH-E8-QE2"/>
+                            <constraint firstItem="ItW-yG-nhy" firstAttribute="top" secondItem="MQW-Sk-58C" secondAttribute="top" id="rCH-E8-QE2"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="MQW-Sk-58C"/>
                     </view>
                     <navigationItem key="navigationItem" id="U9f-Ll-BBr"/>
                     <connections>
@@ -1370,10 +1341,6 @@
         <scene sceneID="Ozg-fd-oC2">
             <objects>
                 <viewController automaticallyAdjustsScrollViewInsets="NO" id="S9g-lz-u7u" customClass="ResortDirectoryViewController" customModule="IntervalApp" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="Uyp-YA-tqJ"/>
-                        <viewControllerLayoutGuide type="bottom" id="3aE-yI-2K2"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="MtV-y1-CiA">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1437,9 +1404,10 @@
                         <constraints>
                             <constraint firstAttribute="trailingMargin" secondItem="1cH-PA-K9h" secondAttribute="trailing" constant="-20" id="9yW-8N-G8t"/>
                             <constraint firstItem="1cH-PA-K9h" firstAttribute="leading" secondItem="MtV-y1-CiA" secondAttribute="leadingMargin" constant="-20" id="QgF-9d-JwU"/>
-                            <constraint firstItem="3aE-yI-2K2" firstAttribute="top" secondItem="1cH-PA-K9h" secondAttribute="bottom" id="fgg-EA-elc"/>
-                            <constraint firstItem="1cH-PA-K9h" firstAttribute="top" secondItem="Uyp-YA-tqJ" secondAttribute="bottom" id="mkV-kd-tyL"/>
+                            <constraint firstItem="oNh-7w-zql" firstAttribute="bottom" secondItem="1cH-PA-K9h" secondAttribute="bottom" id="fgg-EA-elc"/>
+                            <constraint firstItem="1cH-PA-K9h" firstAttribute="top" secondItem="oNh-7w-zql" secondAttribute="top" id="mkV-kd-tyL"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="oNh-7w-zql"/>
                     </view>
                     <connections>
                         <segue destination="64w-t2-pae" kind="show" identifier="areaSegue" id="1yd-In-YGU">
@@ -1451,11 +1419,14 @@
             </objects>
             <point key="canvasLocation" x="883" y="1688"/>
         </scene>
-        <!--List-->
+        <!--Navigation Controller-->
         <scene sceneID="2wv-ke-JhU">
             <objects>
                 <navigationController storyboardIdentifier="ListNavigationController" automaticallyAdjustsScrollViewInsets="NO" id="EIu-tg-OFK" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" tag="1" title="List" id="dGZ-Jv-rdU"/>
+                    <tabBarItem key="tabBarItem" tag="1" title="" image="RD_List_Grey" selectedImage="RD_List_Blue" id="dGZ-Jv-rdU">
+                        <inset key="imageInsets" minX="0.0" minY="5" maxX="0.0" maxY="-5"/>
+                        <offsetWrapper key="titlePositionAdjustment" horizontal="0.0" vertical="0.0"/>
+                    </tabBarItem>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="qoS-eY-8yu">
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>
@@ -1470,11 +1441,13 @@
             </objects>
             <point key="canvasLocation" x="865" y="874"/>
         </scene>
-        <!--Favorites-->
+        <!--Navigation Controller-->
         <scene sceneID="TwC-hS-zam">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="7en-Uy-gN2" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" tag="2" title="Favorites" id="i2t-5Q-fUh"/>
+                    <tabBarItem key="tabBarItem" tag="2" image="RD_Fav_Grey" selectedImage="RD_Fav_Blue" id="i2t-5Q-fUh">
+                        <inset key="imageInsets" minX="0.0" minY="5" maxX="0.0" maxY="-5"/>
+                    </tabBarItem>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="YE2-xg-5Hn">
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>
@@ -1489,11 +1462,13 @@
             </objects>
             <point key="canvasLocation" x="2289" y="115"/>
         </scene>
-        <!--Map-->
+        <!--Navigation Controller-->
         <scene sceneID="B9E-Oa-gib">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="nRC-as-d50" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Map" id="Xsj-Rz-NIu"/>
+                    <tabBarItem key="tabBarItem" title="" image="RD_Map_Grey" selectedImage="RD_Map_Blue" id="Xsj-Rz-NIu">
+                        <inset key="imageInsets" minX="0.0" minY="5" maxX="0.0" maxY="-5"/>
+                    </tabBarItem>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="p9X-Zd-7Lv">
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>
@@ -1555,6 +1530,12 @@
         <image name="PinFocus" width="33" height="33"/>
         <image name="PinInactive" width="33" height="33"/>
         <image name="PlusIcon" width="33" height="33"/>
+        <image name="RD_Fav_Blue" width="30" height="30"/>
+        <image name="RD_Fav_Grey" width="30" height="30"/>
+        <image name="RD_List_Blue" width="30" height="30"/>
+        <image name="RD_List_Grey" width="30" height="30"/>
+        <image name="RD_Map_Blue" width="30" height="30"/>
+        <image name="RD_Map_Grey" width="30" height="30"/>
         <image name="TouchID-Off" width="36" height="36"/>
         <image name="WeatherIcon" width="30" height="30"/>
         <image name="close" width="32" height="32"/>
@@ -1563,6 +1544,6 @@
         <segue reference="v5y-Uh-olM"/>
         <segue reference="KTW-Os-bqS"/>
         <segue reference="1yd-In-YGU"/>
-        <segue reference="PVi-Ym-AGy"/>
+        <segue reference="9PH-NN-dM7"/>
     </inferredMetricsTieBreakers>
 </document>
