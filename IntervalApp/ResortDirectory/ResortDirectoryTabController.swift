@@ -58,21 +58,11 @@ class ResortDirectoryTabController: UITabBarController {
             }
         }
         if Constant.RunningDevice.deviceIdiom == .phone {
-            UITabBar.appearance().barTintColor = IUIKColorPalette.titleBackdrop.color
-            UITabBar.appearance().selectionIndicatorImage = UIImage().makeImageWithColorAndSize(UIColor.white, size: CGSize(width: UIScreen.main.bounds.width / 3, height: tabBar.frame.height))
+            tabBar.barTintColor = IUIKColorPalette.titleBackdrop.color
+            tabBar.selectionIndicatorImage = UIImage().makeImageWithColorAndSize(UIColor.white, size: CGSize(width: UIScreen.main.bounds.width / 3, height: tabBar.frame.height))
         }
-        
-        setUI()
     }
-    
-    private func setUI() {
-    
-        tabBar.items?.forEach { $0.title = nil }
-        tabBar.items?[0].image = #imageLiteral(resourceName: "RD_Map_Blue")
-        tabBar.items?[1].image = #imageLiteral(resourceName: "RD_List_Blue")
-        tabBar.items?[2].image = #imageLiteral(resourceName: "RD_Fav_Blue")
-    }
-    
+
     //***** Method called when navigaton back button pressed to dismis current controller from stack *****//
     func menuBackButtonPressed(_ sender: UIBarButtonItem) {
        navigationController?.dismiss(animated: true)
