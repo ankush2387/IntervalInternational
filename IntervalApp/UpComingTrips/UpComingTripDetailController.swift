@@ -58,6 +58,7 @@ class UpComingTripDetailController: UIViewController, UITextViewDelegate {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         title = ""
+       navigationController?.navigationBar.isHidden = true
         NotificationCenter.default
             .removeObserver(self, name: NSNotification.Name(rawValue:Constant.notificationNames.reloadTripDetailsNotification), object: nil)
     }
@@ -123,7 +124,7 @@ class UpComingTripDetailController: UIViewController, UITextViewDelegate {
         let lblTitle = UILabel(frame: CGRect(x: 10, y: 5, width: actionSheet.view.bounds.size.width - 20, height: 25))
         lblTitle.font = UIFont(name: Constant.fontName.helveticaNeue, size: 18.0)
         lblTitle.backgroundColor = UIColor.clear
-        lblTitle.text = "Purchase Trip Protection"
+        lblTitle.text = "Purchase Trip Protection".localized()
         lblTitle.textAlignment = .center
         
         let lblMessage = UILabel(frame: CGRect(x: 10, y: 35, width: actionSheet.view.bounds.size.width - 20, height: 100))
@@ -230,6 +231,15 @@ class UpComingTripDetailController: UIViewController, UITextViewDelegate {
         }
     }
     
+    func addTranstionAnimation(viewController: UIViewController) {
+        let transition: CATransition = CATransition()
+            let timeFunc: CAMediaTimingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseIn)
+            transition.duration = 0.5
+            transition.timingFunction = timeFunc
+            transition.type = kCATransitionPush
+            transition.subtype = kCATransitionFromLeft
+            viewController.view.layer.add(transition, forKey: kCATransition)
+    }
     //***** Reload table when notification for details fire. ******//
     func reloadDetailsTable() {
         upcomingTripDetailTbleview.reloadData()
@@ -237,24 +247,17 @@ class UpComingTripDetailController: UIViewController, UITextViewDelegate {
     
     //***** Action for left bar button item. *****//
     func menuBackButtonPressed(_ sender: UIBarButtonItem) {
-        
-        if let navigationCount = navigationController?.viewControllers.count, navigationCount > 1 {
-            navigationController?.popViewController(animated: true)
-        } else {
-            let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.myUpcomingTripIphone, bundle: nil)
-            guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.revialViewController) as? SWRevealViewController else { return }
             
-            //***** creating animation transition to show custom transition animation *****//
-            let transition: CATransition = CATransition()
-            let timeFunc: CAMediaTimingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
-            transition.duration = 0.25
-            transition.timingFunction = timeFunc
-            transition.type = kCATransitionPush
-            transition.subtype = kCATransitionFromLeft
-            viewController.view.layer.add(transition, forKey: Constant.MyClassConstants.switchToView)
-            UIApplication.shared.keyWindow?.rootViewController = viewController
-        }
-        
+        let isRunningOnIphone = UIDevice.current.userInterfaceIdiom == .phone
+        let storyboardName = isRunningOnIphone ? Constant.storyboardNames.myUpcomingTripIphone : Constant.storyboardNames.myUpcomingTripIpad
+        let storyBoard = UIStoryboard(name: storyboardName, bundle: nil)
+        guard let initialViewController = storyBoard.instantiateInitialViewController() else { return }
+        let transition = CATransition()
+        transition.duration = 0.25
+        transition.type = kCATransitionPush
+        transition.subtype = kCATransitionFromLeft
+        navigationController?.view.layer.add(transition, forKey: kCATransition)
+        navigationController?.pushViewController(initialViewController, animated: false)
     }
     
     //***** Action for right bar button item. *****//
@@ -641,9 +644,9 @@ extension UpComingTripDetailController: UITableViewDataSource {
        
                     cell.checkInMonthYearLabel.text = String(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment?.deposit?.relinquishmentYear ?? 0).localized()
                     
-                    cell.resortFixedWeekLabel.text = Constant.getWeekNumber(weekType: Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment?.deposit?.weekNumber ?? "").localized()
+                    cell.resortFixedWeekLabel.text = "week \(Constant.getWeekNumber(weekType: Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment?.deposit?.weekNumber ?? "").localized())".localized()
                     
-                    cell.bedRoomKitechenType.text =  "\(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment?.deposit?.unit?.unitSize ?? "") \(Helper.getKitchenEnums(kitchenType: (Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment?.deposit?.unit?.kitchenType) ?? ""))".localized()
+                    cell.bedRoomKitechenType.text =  "\(Helper.getBedroomNumbers(bedroomType: Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment?.deposit?.unit?.unitSize ?? "")) \(Helper.getKitchenEnums(kitchenType: (Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment?.deposit?.unit?.kitchenType) ?? ""))".localized()
                     
                     cell.sleepsTotalOrPrivate.text = "Sleeps \(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment?.deposit?.unit?.publicSleepCapacity ?? 0) total, \(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment?.deposit?.unit?.privateSleepCapacity ?? 0) Private".localized()
                     

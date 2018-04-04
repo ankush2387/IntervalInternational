@@ -81,12 +81,14 @@ class DashboardTableViewController: UITableViewController {
             }
         }
         Helper.getUpcomingTripsForUser {[weak self] error in
+            self?.showHudAsync()
             if error != nil {
+                self?.hideHudAsync()
                 self?.presentAlert(with: "Error".localized(), message: error?.localizedDescription ?? "")
             } else {
+                self?.hideHudAsync()
                 self?.getNumberOfSections()
                 self?.homeTableView.reloadData()
-                
             }
         }
         
@@ -237,12 +239,21 @@ class DashboardTableViewController: UITableViewController {
     //***** MARK: - Table view delegate methods *****//
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if dashboardArray[indexPath.section] == Constant.dashboardTableScreenReusableIdentifiers.upcoming {
-            Constant.MyClassConstants.dashbaordUpcomingSelectedIndex = indexPath.row
-            Constant.MyClassConstants.upcomingOriginationPoint = "dashboard"
-            let isRunningOnIphone = UIDevice.current.userInterfaceIdiom == .phone
-            let storyboardName = isRunningOnIphone ? Constant.storyboardNames.myUpcomingTripIphone : Constant.storyboardNames.myUpcomingTripIpad
-            if let initialViewController = UIStoryboard(name: storyboardName, bundle: nil).instantiateInitialViewController() {
-                navigationController?.pushViewController(initialViewController, animated: true)
+            let exchangeNumber = String(Constant.MyClassConstants.upcomingTripsArray[indexPath.row].exchangeNumber ?? 0)
+             showHudAsync()
+             ExchangeClient.getExchangeTripDetails(Session.sharedSession.userAccessToken, confirmationNumber: exchangeNumber, onSuccess: {[weak self] exchangeResponse in
+                
+                Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails = exchangeResponse
+                self?.hideHudAsync()
+                let isRunningOnIphone = UIDevice.current.userInterfaceIdiom == .phone
+                let storyboardName = isRunningOnIphone ? Constant.storyboardNames.myUpcomingTripIphone : Constant.storyboardNames.myUpcomingTripIpad
+                let storyBoard = UIStoryboard(name: storyboardName, bundle: nil)
+                let detailViewController = storyBoard.instantiateViewController(withIdentifier: "UpComingTripDetailController")
+                self?.navigationController?.pushViewController(detailViewController, animated: true)
+                
+            }) { [weak self]error in
+                self?.hideHudAsync()
+                self?.presentErrorAlert(UserFacingCommonError.handleError(error))
             }
         }
     }
@@ -501,7 +512,6 @@ class DashboardTableViewController: UITableViewController {
     //***** View all trip button action *****//
     func viewAllTripButtonPressed(_ sender: IUIKButton) {
         
-        Constant.MyClassConstants.upcomingOriginationPoint = Constant.omnitureCommonString.homeDashboard
         let storyboardName = Constant.storyboardNames.myUpcomingTripIphone
         if let initialViewController = UIStoryboard(name: storyboardName, bundle: nil).instantiateInitialViewController() {
             navigationController?.pushViewController(initialViewController, animated: true)

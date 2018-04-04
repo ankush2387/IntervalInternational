@@ -251,7 +251,6 @@ class DashboardIPadTableViewController: UITableViewController {
     //***** function to call trip list screen when view all trip button pressed *****//
     func viewAllTripButtonPressed(_ sender: IUIKButton) {
         
-        Constant.MyClassConstants.upcomingOriginationPoint = Constant.omnitureCommonString.homeDashboard
         let storyboardName = Constant.storyboardNames.myUpcomingTripIpad
         if let initialViewController = UIStoryboard(name: storyboardName, bundle: nil).instantiateInitialViewController() {
             navigationController?.pushViewController(initialViewController, animated: true)
@@ -619,7 +618,6 @@ extension DashboardIPadTableViewController: UICollectionViewDelegate {
             homeAlertSelected(indexPath: indexPath)
             
         case 4:
-            Constant.MyClassConstants.upcomingOriginationPoint = "dashboard"
             let storyboardName = Constant.storyboardNames.myUpcomingTripIpad
             if let initialViewController = UIStoryboard(name: storyboardName, bundle: nil).instantiateInitialViewController() {
                 navigationController?.pushViewController(initialViewController, animated: true)
