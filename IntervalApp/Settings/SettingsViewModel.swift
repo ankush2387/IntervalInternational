@@ -65,7 +65,7 @@ final class SettingsViewModel {
                                                                             switchOn: adobeConfigManager.customURLPathBeingUsed)
 
         viewModels.append(simpleLabelSwitchCellViewModel)
-        if adobeConfigManager.isRunningInTestingEnvironment {
+        if adobeConfigManager.isRunningInNonProdEnvironment {
             
             let omnitureConfigurationViewModel = SimpleLabelTextFieldLabelTextFieldButtonButtonCellViewModel(label1: "Server",
                                                                                                              textFieldValue1: adobeConfigManager.base,

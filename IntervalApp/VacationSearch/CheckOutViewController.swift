@@ -1154,7 +1154,7 @@ extension CheckOutViewController: UITableViewDataSource {
                 }
                 cell.resortImageView?.image = UIImage(named: Constant.assetImageNames.resortImage)
             } else {
-                if Constant.MyClassConstants.isCIGAvailable {
+                if selectedRelinquishment.pointsProgram != nil {
                     cell.resortDetailsButton.isHidden = true
                     cell.lblHeading.text = "CIG Points".localized()
                     if let selectedBucket = Constant.MyClassConstants.selectedAvailabilityInventoryBucket, let pointsCost = selectedBucket.exchangePointsCost {

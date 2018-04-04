@@ -59,14 +59,11 @@ class Config {
         let envStr = self.get(.Environment, defaultValue: "info").lowercased()
         
         switch envStr {
-        case "dev", "development":
-            return Environment.development
+        case "production":
+            return Environment.production
             
-        case "dev2", "development2":
-            return Environment.development2
-            
-        case "omniture":
-            return Environment.omniture
+        case "staging":
+            return Environment.staging
             
         case "qa1":
             return Environment.qa1
@@ -74,26 +71,26 @@ class Config {
         case "qa2":
             return Environment.qa2
             
-        case "staging":
-            return Environment.staging
+        case "dev1":
+            return Environment.dev1
             
-        case "prod", "production":
-            return Environment.production
+        case "dev2":
+            return Environment.dev2
+
+        case "production_mag":
+            return Environment.production_mag
+      
+        case "staging_mag":
+            return Environment.staging_mag
+
+        case "qa1_mag":
+            return Environment.qa1_mag
             
-        case "qa1_dns":
-            return Environment.qa1_dns
-            
-        case "qa2_dns":
-            return Environment.qa2_dns
-            
-        case "staging_dns":
-            return Environment.staging_dns
-            
-        case "prod_dns", "production_dns":
-            return Environment.production_dns
+        case "qa2_mag":
+            return Environment.qa2_mag
 
         default:
-            return Environment.production_dns
+            return Environment.production
         }
     }
     
