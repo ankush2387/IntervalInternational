@@ -763,7 +763,7 @@ extension WhoWillBeCheckingInViewController: UITableViewDataSource {
                 } else if let deposits = selectedRelinquishment.deposit {
                     cell.resortName?.text = deposits.resort?.resortName
                 } else {
-                    if Constant.MyClassConstants.isCIGAvailable {
+                    if selectedRelinquishment.pointsProgram != nil {
                         cell.resortDetailsButton.isHidden = true
                         cell.lblHeading.text = "CIG Points"
                         if let selectedBucket = Constant.MyClassConstants.selectedAvailabilityInventoryBucket, let pointsCost = selectedBucket.exchangePointsCost {
