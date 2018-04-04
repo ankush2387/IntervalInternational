@@ -11,24 +11,24 @@ import XCGLogger
 import SwiftyJSON
 
 public enum Environment {
-    case development
-    case development2
-    case omniture
+    case production
+    case staging
     case qa1
     case qa2
-    case staging
-    case production
-    case qa1_dns
-    case qa2_dns
-    case staging_dns
-    case production_dns
+    case dev1
+    case dev2
+    // Used only for internal validations/tests from the SDK
+    case production_mag
+    case staging_mag
+    case qa1_mag
+    case qa2_mag
 }
 
 open class DarwinSDK {
     open static var logger = XCGLogger()
     open static var sharedInstance = DarwinSDK()
     
-    var environment = Environment.development2
+    var environment = Environment.production
     var clientId : String = ""
     var clientSecret : String = ""
     
@@ -53,26 +53,26 @@ open class DarwinSDK {
     
     open func getApiUri(withContextAndVersion:Bool = true) -> String {
         switch self.environment {
-        case .development:
-            return withContextAndVersion ? "https://dev-mag.ii-apps.com/darwin/v1" : "https://dev-mag.ii-apps.com"
-        case .development2:
-            return withContextAndVersion ? "https://dev2-mag.ii-apps.com/darwin/v1" : "https://dev2-mag.ii-apps.com"
-        case .qa1:
-            return withContextAndVersion ? "https://qa1-mag.ii-apps.com/darwin/v1" : "https://qa1-mag.ii-apps.com"
-        case .qa2:
-            return withContextAndVersion ? "https://qa2-mag.ii-apps.com/darwin/v1" : "https://qa2-mag.ii-apps.com"
-        case .staging:
-            return withContextAndVersion ? "https://staging-mag.ii-apps.com/darwin/v1" : "https://staging-mag.ii-apps.com"
         case .production:
-            return withContextAndVersion ? "https://mag.ii-apps.com/darwin/v1" : "https://mag.ii-apps.com"
-        case .qa1_dns:
-            return withContextAndVersion ? "https://qa1-api.intervalintl.com/darwin/v1" : "https://qa1-api.intervalintl.com"
-        case .qa2_dns:
-            return withContextAndVersion ? "https://qa2-api.intervalintl.com/darwin/v1" : "https://qa2-api.intervalintl.com"
-        case .staging_dns:
-            return withContextAndVersion ? "https://staging-api.intervalintl.com/darwin/v1" : "https://staging-api.intervalintl.com"
-        case .production_dns:
             return withContextAndVersion ? "https://api.intervalintl.com/darwin/v1" : "https://api.intervalintl.com"
+        case .staging:
+            return withContextAndVersion ? "https://staging-api.intervalintl.com/darwin/v1" : "https://staging-api.intervalintl.com"
+        case .qa1:
+            return withContextAndVersion ? "https://qa1-api.intervalintl.com/darwin/v1" : "https://qa1-api.intervalintl.com"
+        case .qa2:
+            return withContextAndVersion ? "https://qa2-api.intervalintl.com/darwin/v1" : "https://qa2-api.intervalintl.com"
+        case .dev1:
+            return withContextAndVersion ? "https://dev-mag.ii-apps.com/darwin/v1" : "https://dev-mag.ii-apps.com"
+        case .dev2:
+            return withContextAndVersion ? "https://dev2-mag.ii-apps.com/darwin/v1" : "https://dev2-mag.ii-apps.com"
+        case .production_mag:
+            return withContextAndVersion ? "https://mag.ii-apps.com/darwin/v1" : "https://mag.ii-apps.com"
+        case .staging_mag:
+            return withContextAndVersion ? "https://staging-mag.ii-apps.com/darwin/v1" : "https://staging-mag.ii-apps.com"
+        case .qa1_mag:
+            return withContextAndVersion ? "https://qa1-mag.ii-apps.com/darwin/v1" : "https://qa1-mag.ii-apps.com"
+        case .qa2_mag:
+            return withContextAndVersion ? "https://qa2-mag.ii-apps.com/darwin/v1" : "https://qa2-mag.ii-apps.com"
         default:
             return withContextAndVersion ? "https://api.intervalintl.com/darwin/v1" : "https://api.intervalintl.com"
         }
@@ -80,26 +80,26 @@ open class DarwinSDK {
     
     open func getTokenizeApiUri(withContextAndVersion:Bool = true) -> String {
         switch self.environment {
-        case .development:
-            return withContextAndVersion ? "https://dev-mag.ii-apps.com/tokenize/v1" : "https://dev-mag.ii-apps.com"
-        case .development2:
-            return withContextAndVersion ? "https://dev2-mag.ii-apps.com/tokenize/v1" : "https://dev2-mag.ii-apps.com"
-        case .qa1:
-            return withContextAndVersion ? "https://qa1-mag.ii-apps.com/tokenize/v1" : "https://qa1-mag.ii-apps.com"
-        case .qa2:
-            return withContextAndVersion ? "https://qa2-mag.ii-apps.com/tokenize/v1" : "https://qa2-mag.ii-apps.com"
-        case .staging:
-            return withContextAndVersion ? "https://staging-mag.ii-apps.com/tokenize/v1" : "https://staging-mag.ii-apps.com"
         case .production:
-            return withContextAndVersion ? "https://mag.ii-apps.com/tokenize/v1" : "https://mag.ii-apps.com"
-        case .qa1_dns:
-            return withContextAndVersion ? "https://qa1-api.intervalintl.com/tokenize/v1" : "https://qa1-api.intervalintl.com"
-        case .qa2_dns:
-            return withContextAndVersion ? "https://qa2-api.intervalintl.com/tokenize/v1" : "https://qa2-api.intervalintl.com"
-        case .staging_dns:
-            return withContextAndVersion ? "https://staging-api.intervalintl.com/tokenize/v1" : "https://staging-api.intervalintl.com"
-        case .production_dns:
             return withContextAndVersion ? "https://api.intervalintl.com/tokenize/v1" : "https://api.intervalintl.com"
+        case .staging:
+            return withContextAndVersion ? "https://staging-api.intervalintl.com/tokenize/v1" : "https://staging-api.intervalintl.com"
+        case .qa1:
+            return withContextAndVersion ? "https://qa1-api.intervalintl.com/tokenize/v1" : "https://qa1-api.intervalintl.com"
+        case .qa2:
+            return withContextAndVersion ? "https://qa2-api.intervalintl.com/tokenize/v1" : "https://qa2-api.intervalintl.com"
+        case .dev1:
+            return withContextAndVersion ? "https://dev-mag.ii-apps.com/tokenize/v1" : "https://dev-mag.ii-apps.com"
+        case .dev2:
+            return withContextAndVersion ? "https://dev2-mag.ii-apps.com/tokenize/v1" : "https://dev2-mag.ii-apps.com"
+        case .production_mag:
+            return withContextAndVersion ? "https://mag.ii-apps.com/tokenize/v1" : "https://mag.ii-apps.com"
+        case .staging_mag:
+            return withContextAndVersion ? "https://staging-mag.ii-apps.com/tokenize/v1" : "https://staging-mag.ii-apps.com"
+        case .qa1_mag:
+            return withContextAndVersion ? "https://qa1-mag.ii-apps.com/tokenize/v1" : "https://qa1-mag.ii-apps.com"
+        case .qa2_mag:
+            return withContextAndVersion ? "https://qa2-mag.ii-apps.com/tokenize/v1" : "https://qa2-mag.ii-apps.com"
         default:
             return withContextAndVersion ? "https://api.intervalintl.com/tokenize/v1" : "https://api.intervalintl.com"
         }

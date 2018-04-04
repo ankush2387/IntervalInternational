@@ -349,7 +349,7 @@ extension PaymentSelectionViewController: UITableViewDataSource {
         if let currentProfile = Session.sharedSession.contact, let creditCards = currentProfile.creditcards, !creditCards.isEmpty {
             return creditCards.count + 1
         } else {
-            return 0
+            return 1
         }
     }
     
