@@ -1928,7 +1928,7 @@ public class Helper {
     
     static func returnIntervalMembershipString(displayName: String, price: String, term: String) -> String {
         
-        let mainString = "Your \(displayName) membership expires before your travel date.To continue, a \(term) membership fee of \n\(price)\nwill be included with this transaction."
+        let mainString = "Your \(displayName) membership expires before your travel date. To continue, a \(term) membership fee of \n\(price)\nwill be included with this transaction."
         
         return mainString
     }
