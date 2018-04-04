@@ -27,3 +27,5 @@ This repo contains the source code for the new Interval member-facing App, simpl
 curl -H "X-InstallrAppToken: K2Q18sJvZilygz8kds0BonCJW1N215gD"  https://www.installrapp.com/apps.json \
   -F 'qqfile=@IntervalApp.ipa'
 ```
+
+- Check the version in https://wwww.installrapp.com

@@ -1245,7 +1245,7 @@ public class Helper {
             buildVersion += ".\(build)"
         }
         
-        if (Config.sharedInstance.getEnvironment() != Environment.production && Config.sharedInstance.getEnvironment() != Environment.production_dns) {
+        if (Config.sharedInstance.getEnvironment() != Environment.production && Config.sharedInstance.getEnvironment() != Environment.production) {
             let env = Config.sharedInstance.get(.Environment, defaultValue: "NONE").uppercased()
             buildVersion += " (\(env))"
         }
