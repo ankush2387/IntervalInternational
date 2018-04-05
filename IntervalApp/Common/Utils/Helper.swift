@@ -2156,10 +2156,10 @@ public class Helper {
         return nil
     }
     
-    static func getProductNameForProduct(membership: Membership, product: Product?) -> String? {
+    static func getProductNameFromProduct(product: Product?) -> String? {
         if let highestTierProduct = product, let productName = highestTierProduct.productName {
             if productName == "INTERVAL" {
-                let fixProductName = productName + " Membership"
+                let fixProductName = "\(productName) Membership"
                 return fixProductName.capitalized
             } else {
                 return productName.capitalized
