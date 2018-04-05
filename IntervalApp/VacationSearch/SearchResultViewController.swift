@@ -1246,9 +1246,9 @@ extension SearchResultViewController: UICollectionViewDataSource {
                         
                     case VacationSearchType.COMBINED:
                         if let exactMatchSection = availabilityExactMatchSection, !exactMatchSection.items.isEmpty {
-                            return exactMatchSection.items.count
+                            return exactMatchSection.items[selectedRow].getInventoryBuckets()?.count ?? 0
                         } else if let surroundingMatchSection = availabilitySurroundingMatchSection, !surroundingMatchSection.items.isEmpty {
-                            return surroundingMatchSection.items.count
+                            return surroundingMatchSection.items[selectedRow].getInventoryBuckets()?.count ?? 0
                         } else {
                             return 0
                         }
