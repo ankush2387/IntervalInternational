@@ -332,7 +332,7 @@ public class Helper {
     }
     static func performSortingForMemberNumberWithViewResultAndNothingYet() {
         
-        Constant.activeAlertCount =  Constant.MyClassConstants.searchDateResponse.filter { $0.1.checkInDates.count > 0 }.count
+        Constant.activeAlertCount = Constant.MyClassConstants.searchDateResponse.filter { $0.1.checkInDates.count > 0 }.count
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
         Constant.MyClassConstants.searchDateResponse.sort {
@@ -343,7 +343,6 @@ public class Helper {
             }
             return false
         }
-        //Constant.MyClassConstants.searchDateResponse.sort { $0.1.checkInDates.count > $1.1.checkInDates.count }
         NotificationCenter.default.post(name:NSNotification.Name(rawValue: Constant.notificationNames.getawayAlertsNotification), object: nil)
     }
     
