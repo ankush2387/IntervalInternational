@@ -111,7 +111,9 @@ class MemberShipDetailTableViewCell: UITableViewCell {
                     prodView.expirationDateLabel.font = UIFont(name: Constant.fontName.helveticaNeue, size: 15)
                 }
          
-                prodView.productNameLabel.text = Helper.getDisplayNameFor(membership: membership, product: membership.getProductWithHighestTier())
+                prodView.productNameLabel.text = Helper.getProductNameForProduct(membership: membership, product: membership.getProductWithHighestTier())
+                
+                
                 prodView.productNameLabel.font = UIFont(name: Constant.fontName.helveticaNeue, size: 20)
                 prodView.productNameLabel.textColor = UIColor.black
                 
