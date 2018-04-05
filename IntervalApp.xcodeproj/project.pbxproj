@@ -161,6 +161,7 @@
 		3A9983DB1DE72A5A00CE44A5 /* MMSlidingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9983DA1DE72A5A00CE44A5 /* MMSlidingButton.swift */; };
 		3A9983E11DE7331C00CE44A5 /* Confirmation.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3A9983E01DE7331C00CE44A5 /* Confirmation.storyboard */; };
 		3A9AFE651F597A3500BDDD6D /* FloatLabelTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9AFE641F597A3500BDDD6D /* FloatLabelTextField.swift */; };
+		3AA499162073CC2D0000E880 /* AddButtonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA499152073CC2D0000E880 /* AddButtonTableViewCell.swift */; };
 		3AA6BC251EA8BD1A00B5DD7F /* CheckCollectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3AA6BC241EA8BD1A00B5DD7F /* CheckCollectionCell.xib */; };
 		3AA6BC271EA91CDB00B5DD7F /* HeaderCollectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3AA6BC261EA91CDB00B5DD7F /* HeaderCollectionCell.xib */; };
 		3AA88B541F44DAD8001ADC4C /* ExchangeInventoryCVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA88B531F44DAD8001ADC4C /* ExchangeInventoryCVCell.swift */; };
@@ -591,6 +592,7 @@
 		3A9983DA1DE72A5A00CE44A5 /* MMSlidingButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MMSlidingButton.swift; sourceTree = "<group>"; };
 		3A9983E01DE7331C00CE44A5 /* Confirmation.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Confirmation.storyboard; sourceTree = "<group>"; };
 		3A9AFE641F597A3500BDDD6D /* FloatLabelTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatLabelTextField.swift; sourceTree = "<group>"; };
+		3AA499152073CC2D0000E880 /* AddButtonTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddButtonTableViewCell.swift; sourceTree = "<group>"; };
 		3AA6BC241EA8BD1A00B5DD7F /* CheckCollectionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CheckCollectionCell.xib; sourceTree = "<group>"; };
 		3AA6BC261EA91CDB00B5DD7F /* HeaderCollectionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HeaderCollectionCell.xib; sourceTree = "<group>"; };
 		3AA88B531F44DAD8001ADC4C /* ExchangeInventoryCVCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExchangeInventoryCVCell.swift; sourceTree = "<group>"; };
@@ -1147,6 +1149,7 @@
 				3A59DE191F015FDE005280D3 /* SortingOptionCell.swift */,
 				0887C97A1F6A99F5007F57C3 /* SearchFlexchangeButtonCell.swift */,
 				3A06663D1F912EE3002AA92A /* RenewalAdditionalCell.swift */,
+				3AA499152073CC2D0000E880 /* AddButtonTableViewCell.swift */,
 			);
 			path = CustomCells;
 			sourceTree = "<group>";
@@ -2280,7 +2283,7 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-IntervalApp/Pods-IntervalApp-resources.sh",
 				"$PODS_CONFIGURATION_BUILD_DIR/Brightcove-Player-SDK/BCOVPUIResources.bundle",
 				"${PODS_ROOT}/GoogleMaps/Maps/Frameworks/GoogleMaps.framework/Versions/A/Resources/GoogleMaps.bundle",
-				"$PODS_CONFIGURATION_BUILD_DIR/HockeySDK/HockeySDKResources.bundle",
+				$PODS_CONFIGURATION_BUILD_DIR/HockeySDK/HockeySDKResources.bundle,
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
@@ -2589,6 +2592,7 @@
 				3AE1A6191F6AC5D50069A118 /* FlexChangeSearchIpadViewController.swift in Sources */,
 				3AA88B541F44DAD8001ADC4C /* ExchangeInventoryCVCell.swift in Sources */,
 				E9C5EF381F19555B00E658DA /* UIViewController+Swipe.swift in Sources */,
+				3AA499162073CC2D0000E880 /* AddButtonTableViewCell.swift in Sources */,
 				3C4F17291FA39204001EF71F /* Float+CurrencyFormatter.swift in Sources */,
 				3A59DE181F015E5F005280D3 /* SortingViewController.swift in Sources */,
 				3A0B25D81CD241790080BF3F /* PolicyListTBLCell.swift in Sources */,

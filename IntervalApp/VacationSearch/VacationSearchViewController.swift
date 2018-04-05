@@ -46,6 +46,8 @@ class VacationSearchViewController: UIViewController {
     var exchangeHasNotAvailableCheckInDates: Bool = false
     private let entityStore: EntityDataStore = EntityDataSource.sharedInstance
     fileprivate var availableRelinquishmentIdArray = [String]()
+    var addButtonPressed: CallBack?
+    public var selectAction: ((String, ForceRenewals, ExchangeRelinquishment) -> ())?
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
@@ -256,14 +258,12 @@ class VacationSearchViewController: UIViewController {
     }
     
     //***** Add location pressed action to show map screen with list of location to select *****//
-    func addLocationInSection0Pressed(_ sender: IUIKButton) {
+    @IBAction func addLocationInSection0Pressed(_ sender: IUIKButton) {
         Constant.MyClassConstants.selectionType = 0
-        let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.iphone, bundle: nil)
+        let mainStoryboard = UIStoryboard(name: Constant.storyboardNames.iphone, bundle: nil)
         let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.resortDirectoryViewController) as! GoogleMapViewController
         viewController.sourceController = Constant.MyClassConstants.vacationSearch
         Constant.MyClassConstants.runningFunctionality = Constant.MyClassConstants.vacationSearch
-        let transitionManager = TransitionManager()
-        navigationController?.transitioningDelegate = transitionManager
         navigationController?.pushViewController(viewController, animated: true)
     }
     
@@ -477,6 +477,7 @@ extension VacationSearchViewController: UITableViewDelegate {
             switch indexPath.section {
             case 0 :
                 if indexPath.row < Constant.MyClassConstants.whereTogoContentArray.count {
+                    //return 70
                     return UITableViewAutomaticDimension
                 } else {
                     return 60
@@ -589,11 +590,10 @@ extension VacationSearchViewController: UITableViewDelegate {
                         if Constant.MyClassConstants.whereTogoContentArray.count > 0 {
                             ADBMobile.trackAction(Constant.omnitureEvents.event7, data: nil)
                             Constant.MyClassConstants.whereTogoContentArray.removeObject(at: indexPath.row)
-                            
+                               tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
+                               tableView.reloadData()
                         }
-                        tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
-                        
-                    } catch {
+                 } catch {
                         self.presentErrorAlert(UserFacingCommonError.generic)
                     }
                 }
@@ -802,23 +802,8 @@ extension VacationSearchViewController: UITableViewDataSource {
                 if indexPath.section == 0 {
                     
                     if Constant.MyClassConstants.whereTogoContentArray.count == 0 || indexPath.row == Constant.MyClassConstants.whereTogoContentArray.count {
-                        
-                        let cell = tableView.dequeueReusableCell(withIdentifier: Constant.dashboardTableScreenReusableIdentifiers.cellIdentifier, for: indexPath)
-                        cell.selectionStyle = UITableViewCellSelectionStyle.none
-                        for subview in cell.subviews {
-                            subview.removeFromSuperview()
-                        }
-                        let cell_width = cell.contentView.bounds.width
-                        let addLocationButton = IUIKButton(frame: CGRect(x: cell_width / 2 - (cell_width / 5) / 2, y: 15, width: cell_width / 5, height: 30))
-                        addLocationButton.setTitle(Constant.buttonTitles.add, for: UIControlState.normal)
-                        addLocationButton.setTitleColor(IUIKColorPalette.primary3.color, for: UIControlState.normal)
-                        addLocationButton.layer.borderColor = IUIKColorPalette.primary3.color.cgColor
-                        addLocationButton.layer.cornerRadius = 6
-                        addLocationButton.layer.borderWidth = 2
-                        addLocationButton.addTarget(self, action: #selector(VacationSearchViewController.addLocationInSection0Pressed(_:)), for: .touchUpInside)
-                        cell.backgroundColor = UIColor.clear
-                        cell.addSubview(addLocationButton)
-                        
+                        guard let cell = tableView.dequeueReusableCell(withIdentifier: "AddButton", for: indexPath) as? AddButtonTableViewCell else { return UITableViewCell() }
+                        cell.addButton.addTarget(self, action: #selector(VacationSearchViewController.addLocationInSection0Pressed(_:)), for: .touchUpInside)
                         return cell
                     } else {
                         
@@ -826,9 +811,11 @@ extension VacationSearchViewController: UITableViewDataSource {
                         
                         if indexPath.row == destinationOrResort.count - 1 || destinationOrResort.count == 0 {
                             cell.sepratorOr.isHidden = true
+                            //cell.sepratorOrView.isHidden = true
                         } else {
                             
                             cell.sepratorOr.isHidden = false
+                            //cell.sepratorOrView.isHidden = false
                         }
                         
                         let object = Constant.MyClassConstants.whereTogoContentArray[indexPath.row] as AnyObject
@@ -865,7 +852,7 @@ extension VacationSearchViewController: UITableViewDataSource {
                             cell.whereTogoTextLabel.text = whereToGoText?.localized()
                         }
                         cell.selectionStyle = UITableViewCellSelectionStyle.none
-                        cell.backgroundColor = UIColor.clear
+                        //cell.backgroundColor = UIColor.clear
                         return cell
                     }
                 } else {
@@ -873,8 +860,10 @@ extension VacationSearchViewController: UITableViewDataSource {
                     //***** Checking array content to configure and return content cell or calendar cell *****//
                     
                     if Constant.MyClassConstants.whatToTradeArray.count == 0 || indexPath.row == Constant.MyClassConstants.whatToTradeArray.count {
-                        
-                        let cell = tableView.dequeueReusableCell(withIdentifier: Constant.dashboardTableScreenReusableIdentifiers.cellIdentifier, for: indexPath)
+                        guard let cell = tableView.dequeueReusableCell(withIdentifier: "AddButton", for: indexPath) as? AddButtonTableViewCell else { return UITableViewCell() }
+                        cell.addButton.addTarget(self, action: #selector(VacationSearchViewController.addRelinquishmentSectionButtonPressed(_:)), for: .touchUpInside)
+                        return cell
+                       /*let cell = tableView.dequeueReusableCell(withIdentifier: Constant.dashboardTableScreenReusableIdentifiers.cellIdentifier, for: indexPath)
                         cell.selectionStyle = UITableViewCellSelectionStyle.none
                         for subview in cell.subviews {
                             subview.removeFromSuperview()
@@ -890,7 +879,7 @@ extension VacationSearchViewController: UITableViewDataSource {
                         
                         cell.addSubview(addLocationButton)
                         cell.backgroundColor = UIColor.clear
-                        return cell
+                        return cell*/
                     } else {
                         
                         guard let cell = tableView.dequeueReusableCell(withIdentifier: "WhereToGoContentCell", for: indexPath) as? WhereToGoContentCell else { return UITableViewCell() }
