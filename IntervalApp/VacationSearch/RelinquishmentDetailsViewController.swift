@@ -33,28 +33,19 @@ class RelinquishmentDetailsViewController: UIViewController {
             return
         }
         
-        var element = self.selectedRelinquishment.deposit?.resort
-        if element == nil {
-            element = self.selectedRelinquishment.accommodationCertificate?.resort
-        }
-        if element == nil {
-            element = self.selectedRelinquishment.openWeek?.resort
-        }
-        if element == nil {
-            element = self.selectedRelinquishment.clubPoints?.resort
-        }
-        if element == nil {
-            element = self.selectedRelinquishment.accommodationCertificate?.resort
-        }
+        let element = self.selectedRelinquishment.deposit?.resort ?? self.selectedRelinquishment.accommodationCertificate?.resort ?? self.selectedRelinquishment.openWeek?.resort ?? self.selectedRelinquishment.clubPoints?.resort ?? self.selectedRelinquishment.accommodationCertificate?.resort
         
         guard let resortCode = element?.resortCode else {
             return
         }
         
         ClientAPI.sharedInstance.readResort(for: accessToken, and: resortCode)
-            .then { r in
-                self.resort = r
-                self.tableView.reloadData()
+            .then { resort in
+                self.resort = resort
+                self.reloadDataTable()
+            }
+            .onError { [weak self](error) in
+                self?.presentErrorAlert(UserFacingCommonError.handleError(error))
             }
     }
     
@@ -65,6 +56,12 @@ class RelinquishmentDetailsViewController: UIViewController {
     
     @IBAction func onClickDone(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
+    }
+    
+    func reloadDataTable(){
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
     }
     
 }
