@@ -11,9 +11,9 @@ import Foundation
 struct ADBMobileConfigManager {
 
     // MARK: - Public properties
-    var isRunningInTestingEnvironment: Bool {
+    var isRunningInNonProdEnvironment: Bool {
         switch intervalConfig.getEnvironment() {
-        case .staging_dns, .staging, .qa1_dns, .qa2_dns, .qa2, .qa1, .omniture, .development2, .development:
+        case  .staging, .qa1, .qa2, .dev1, .dev2, .production_mag, .staging_mag, .qa1_mag, .qa2_mag:
             return true
         default:
             return false

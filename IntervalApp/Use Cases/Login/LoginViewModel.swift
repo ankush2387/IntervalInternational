@@ -47,7 +47,7 @@ final class LoginViewModel {
         
         switch configuration.getEnvironment() {
             
-        case .production, .production_dns:
+        case .production:
             return (nil, true)
             
         default:
