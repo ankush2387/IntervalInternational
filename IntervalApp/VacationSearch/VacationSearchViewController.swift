@@ -46,8 +46,6 @@ class VacationSearchViewController: UIViewController {
     var exchangeHasNotAvailableCheckInDates: Bool = false
     private let entityStore: EntityDataStore = EntityDataSource.sharedInstance
     fileprivate var availableRelinquishmentIdArray = [String]()
-    var addButtonPressed: CallBack?
-    public var selectAction: ((String, ForceRenewals, ExchangeRelinquishment) -> ())?
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
@@ -477,7 +475,6 @@ extension VacationSearchViewController: UITableViewDelegate {
             switch indexPath.section {
             case 0 :
                 if indexPath.row < Constant.MyClassConstants.whereTogoContentArray.count {
-                    //return 70
                     return UITableViewAutomaticDimension
                 } else {
                     return 60
@@ -811,11 +808,9 @@ extension VacationSearchViewController: UITableViewDataSource {
                         
                         if indexPath.row == destinationOrResort.count - 1 || destinationOrResort.count == 0 {
                             cell.sepratorOr.isHidden = true
-                            //cell.sepratorOrView.isHidden = true
                         } else {
                             
                             cell.sepratorOr.isHidden = false
-                            //cell.sepratorOrView.isHidden = false
                         }
                         
                         let object = Constant.MyClassConstants.whereTogoContentArray[indexPath.row] as AnyObject
@@ -863,23 +858,7 @@ extension VacationSearchViewController: UITableViewDataSource {
                         guard let cell = tableView.dequeueReusableCell(withIdentifier: "AddButton", for: indexPath) as? AddButtonTableViewCell else { return UITableViewCell() }
                         cell.addButton.addTarget(self, action: #selector(VacationSearchViewController.addRelinquishmentSectionButtonPressed(_:)), for: .touchUpInside)
                         return cell
-                       /*let cell = tableView.dequeueReusableCell(withIdentifier: Constant.dashboardTableScreenReusableIdentifiers.cellIdentifier, for: indexPath)
-                        cell.selectionStyle = UITableViewCellSelectionStyle.none
-                        for subview in cell.subviews {
-                            subview.removeFromSuperview()
-                        }
-                        let cell_width = cell.contentView.bounds.width
-                        let addLocationButton = IUIKButton(frame: CGRect(x: cell_width / 2 - (cell_width / 5) / 2, y: 15, width: cell_width / 5, height: 30))
-                        addLocationButton.setTitle(Constant.buttonTitles.add, for: UIControlState.normal)
-                        addLocationButton.setTitleColor(IUIKColorPalette.primary3.color, for: UIControlState.normal)
-                        addLocationButton.layer.borderColor = IUIKColorPalette.primary3.color.cgColor
-                        addLocationButton.layer.cornerRadius = 6
-                        addLocationButton.layer.borderWidth = 2
-                        addLocationButton.addTarget(self, action: #selector(VacationSearchViewController.addRelinquishmentSectionButtonPressed(_:)), for: .touchUpInside)
                         
-                        cell.addSubview(addLocationButton)
-                        cell.backgroundColor = UIColor.clear
-                        return cell*/
                     } else {
                         
                         guard let cell = tableView.dequeueReusableCell(withIdentifier: "WhereToGoContentCell", for: indexPath) as? WhereToGoContentCell else { return UITableViewCell() }
