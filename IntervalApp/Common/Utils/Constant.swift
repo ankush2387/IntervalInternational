@@ -21,6 +21,7 @@ class Constant: NSObject {
     static var calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
     static var countryListArray = [Country]()
     static var stateListArray = [State]()
+    static var exchangePointType: ExchangePointType = ExchangePointType.UNKNOWN
     
     //***** common function to get device orientation *****//
     struct RunningDevice {
@@ -609,8 +610,6 @@ class Constant: NSObject {
         static var certifcateCount = 0
         static var certificateArray = [AccommodationCertificate]()
         static var noFilterOptions = false
-        static var isCIGAvailable = false
-        static var isClubPointsAvailable = false
         static var lowestTerm = 12
     }
     

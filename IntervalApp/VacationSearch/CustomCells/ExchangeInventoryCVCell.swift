@@ -61,29 +61,30 @@ class ExchangeInventoryCVCell: UICollectionViewCell {
         forwardNavArrow.isHidden = false
         
         if let exchangePointsCost = bucket.exchangePointsCost, let exchangeMemberPointsRequired = bucket.exchangeMemberPointsRequired {
-            if Constant.MyClassConstants.isCIGAvailable && exchangePointsCost != exchangeMemberPointsRequired {
-                exchangeImageView.image = #imageLiteral(resourceName: "InfoIcon")
-                exchangeImageView.isUserInteractionEnabled = true
-                forwardNavArrow.isHidden = true
-                
-                let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapBlurButton))
-                self.addGestureRecognizer(tapGesture)
-            } else {
-                if exchangePointsCost > 0 {
-                    exchangeStackView.isHidden = true
-                    pointsStackView.isHidden = false
-                    
-                    pointsCountLabel.text = "\(String(describing: exchangePointsCost))".localized()
-                    
-                    // Clean the label
-                    pointsTitleLabel.text = ""
-                    
-                    if Constant.MyClassConstants.isCIGAvailable {
-                        pointsTitleLabel.text = Constant.CommonLocalisedString.cigPointsString
-                    } else if Constant.MyClassConstants.isClubPointsAvailable {
-                        pointsTitleLabel.text = Constant.CommonLocalisedString.clubPointsString
-                    }
+            
+            switch Constant.exchangePointType {
+            case ExchangePointType.CIGPOINTS:
+                if exchangePointsCost >= exchangeMemberPointsRequired {
+                    exchangeImageView.image = #imageLiteral(resourceName: "InfoIcon")
+                    exchangeImageView.isUserInteractionEnabled = true
+                    forwardNavArrow.isHidden = true
+                    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapBlurButton))
+                    self.addGestureRecognizer(tapGesture)
+                } else {
+                   pointsTitleLabel.text = ExchangePointType.CIGPOINTS.name.localized()
+                   exchangeStackView.isHidden = true
+                   pointsStackView.isHidden = false
+                   pointsCountLabel.text = "\(exchangePointsCost)".localized()
                 }
+                
+            case ExchangePointType.CLUBPOINTS:
+               pointsTitleLabel.text = ExchangePointType.CLUBPOINTS.name.localized()
+               exchangeStackView.isHidden = true
+               pointsStackView.isHidden = false
+               pointsCountLabel.text = "\(exchangePointsCost)".localized()
+
+            case .UNKNOWN:
+                break
             }
         }
 

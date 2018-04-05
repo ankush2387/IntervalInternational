@@ -35,37 +35,19 @@ class SearchBothInventoryCVCell: UICollectionViewCell {
             totalSleepCapacity += "\(bucket.unit.privateSleepCapacity)" + Constant.CommonLocalisedString.privateString + "".localized()
         }
         sleeps.text = totalSleepCapacity
-        
-        // Default state
-        //exchangeStackView.isHidden = false
         imgViewExchange.image = #imageLiteral(resourceName: "ExchangeIcon")
-        //exchangeTitleLabel.isHidden = false
-        //exchangeImageView.isUserInteractionEnabled = false
-        //pointsStackView.isHidden = true
         
         if let exchangePointsCost = bucket.exchangePointsCost, let exchangeMemberPointsRequired = bucket.exchangeMemberPointsRequired {
-            if Constant.MyClassConstants.isCIGAvailable && exchangePointsCost != exchangeMemberPointsRequired {
-                imgViewExchange.image = #imageLiteral(resourceName: "InfoIcon")
-
-                //imgViewExchange.isUserInteractionEnabled = true
-                //let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapBlurButton))
-                //self.addGestureRecognizer(tapGesture)
-            } else {
-                if exchangePointsCost > 0 {
-                    //exchangeStackView.isHidden = true
-                    //pointsStackView.isHidden = false
-                    
-                    //pointsCountLabel.text = "\(String(describing: exchangePointsCost))".localized()
-                    
-                    // Clean the label
-                    //pointsTitleLabel.text = ""
-                    
-                    if Constant.MyClassConstants.isCIGAvailable {
-                        //pointsTitleLabel.text = Constant.CommonLocalisedString.cigPointsString
-                    } else if Constant.MyClassConstants.isClubPointsAvailable {
-                        //pointsTitleLabel.text = Constant.CommonLocalisedString.clubPointsString
-                    }
+            
+            switch Constant.exchangePointType {
+            case ExchangePointType.CIGPOINTS:
+                if exchangePointsCost <= exchangeMemberPointsRequired {
+                    imgViewExchange.image = #imageLiteral(resourceName: "InfoIcon")
                 }
+            case ExchangePointType.CLUBPOINTS:
+                intervalPrint(Constant.exchangePointType)
+            case ExchangePointType.UNKNOWN:
+                break
             }
         }
         

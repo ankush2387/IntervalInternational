@@ -70,7 +70,6 @@ class WhatToUseViewController: UIViewController {
        if showInfoIcon {
             self.performSegue(withIdentifier: "pointsInfoSegue", sender: self)
         } else {
-            Constant.MyClassConstants.isCIGAvailable = false
             //Exchange process request parameters
             showHudAsync()
             let processResort = ExchangeProcess()

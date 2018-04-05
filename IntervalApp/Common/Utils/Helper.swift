@@ -725,8 +725,7 @@ public class Helper {
                                     Constant.MyClassConstants.whatToTradeArray.add(openWk.clubPoints)
                                 }
                             }
-                            
-                            Constant.MyClassConstants.isClubPointsAvailable = true
+                            Constant.exchangePointType = ExchangePointType.CLUBPOINTS
                             
                         } else if !openWk.pProgram.isEmpty {
                             
@@ -736,7 +735,7 @@ public class Helper {
                             }
                             
                             Constant.MyClassConstants.relinquishmentAvailablePointsProgram = Int((openWk.pProgram[0].availablePoints))
-                            Constant.MyClassConstants.isCIGAvailable = true
+                            Constant.exchangePointType = ExchangePointType.CIGPOINTS
                         }
                     }
                 }

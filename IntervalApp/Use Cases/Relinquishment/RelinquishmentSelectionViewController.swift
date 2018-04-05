@@ -345,7 +345,7 @@ class RelinquishmentSelectionViewController: UIViewController {
             let selectedClubPoint = ClubPointsEntity()
             if let relinquishmentId = Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId {
                 selectedClubPoint.relinquishmentId = relinquishmentId
-                Constant.MyClassConstants.isClubPointsAvailable = true
+                Constant.exchangePointType = ExchangePointType.CLUBPOINTS
             }
             
             selectedClubPoint.isPointsMatrix = false
@@ -444,8 +444,8 @@ class RelinquishmentSelectionViewController: UIViewController {
             //Realm local storage for selected relinquishment
             let storedata = OpenWeeksStorage()
             let relinquishmentList = TradeLocalData()
-            
-            Constant.MyClassConstants.isCIGAvailable = true
+            Constant.exchangePointType = ExchangePointType.CIGPOINTS
+           
             
             let rlmPProgram = rlmPointsProgram()
             rlmPProgram.availablePoints = Constant.MyClassConstants.relinquishmentProgram.availablePoints!

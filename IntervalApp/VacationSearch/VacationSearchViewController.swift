@@ -690,7 +690,7 @@ extension VacationSearchViewController: UITableViewDelegate {
                             } else {
                                 Constant.MyClassConstants.whatToTradeArray.removeObject(at: indexPath.row)
                                 Constant.MyClassConstants.relinquishmentIdArray.remove(at: indexPath.row)
-                                Constant.MyClassConstants.isCIGAvailable = false
+                                Constant.exchangePointType = ExchangePointType.UNKNOWN
                                 realm.delete(storedData[indexPath.row])
                             }
                             
