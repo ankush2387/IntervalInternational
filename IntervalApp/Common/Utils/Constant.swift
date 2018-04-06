@@ -66,7 +66,7 @@ class Constant: NSObject {
     
     struct RGBColorCode {
         
-        static var centerViewRgb = UIColor(red: 176.0 / 255.0, green: 215.0 / 255.0, blue: 115.0 / 255.0, alpha: 1.0)
+        static var centerViewRgb = UIColor(red: 156.0 / 255.0, green: 210.0 / 255.0, blue: 116.0 / 255.0, alpha: 0.9)
         
         static var textFieldBorderRGB = UIColor(red: 241.0 / 255.0, green: 241.0 / 255.0, blue: 246.0 / 255.0, alpha: 1.0).cgColor
     }
