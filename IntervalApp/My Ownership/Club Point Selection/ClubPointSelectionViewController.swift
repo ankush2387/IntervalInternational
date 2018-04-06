@@ -151,11 +151,10 @@ class ClubPointSelectionViewController: UIViewController {
             let clubPoints = ClubPointsEntity()
             clubPoints.isPointsMatrix = true
             clubPoints.pointsSpent = invenUnit.clubPoints
-            
-            Constant.MyClassConstants.isClubPointsAvailable = true
-            
+            Constant.exchangePointType = ExchangePointType.CLUBPOINTS
             self?.hideHudAsync()
             self?.didSave?(clubPoints)
+            
          }, onError: { [weak self] error in
             self?.hideHudAsync()
             self?.presentErrorAlert(UserFacingCommonError.handleError(error))

@@ -755,23 +755,29 @@ extension WhoWillBeCheckingInViewController: UITableViewDataSource {
                 cell.resortImageView?.image = #imageLiteral(resourceName: "RST_CO")
                 
             } else {
-                cell.lblHeading.text = Constant.MyClassConstants.relinquishment
-                if let clubPoint = selectedRelinquishment.clubPoints {
-                    cell.resortName?.text = clubPoint.resort?.resortName
-                } else if let openWeek = selectedRelinquishment.openWeek {
+                
+                if let openWeek = selectedRelinquishment.openWeek {
                     cell.resortName?.text = openWeek.resort?.resortName
+                    cell.lblHeading.text = Constant.MyClassConstants.relinquishment
                 } else if let deposits = selectedRelinquishment.deposit {
                     cell.resortName?.text = deposits.resort?.resortName
-                } else {
-                    if selectedRelinquishment.pointsProgram != nil {
+                    cell.lblHeading.text = Constant.MyClassConstants.relinquishment
+                } else if let selectedBucket = Constant.MyClassConstants.selectedAvailabilityInventoryBucket, let pointsCost = selectedBucket.exchangePointsCost {
+                    switch Constant.exchangePointType {
+                    case ExchangePointType.CIGPOINTS:
+                        cell.resortName?.text = "\(pointsCost)".localized()
+                        cell.lblHeading.text = ExchangePointType.CIGPOINTS.name.localized()
                         cell.resortDetailsButton.isHidden = true
-                        cell.lblHeading.text = "CIG Points"
-                        if let selectedBucket = Constant.MyClassConstants.selectedAvailabilityInventoryBucket, let pointsCost = selectedBucket.exchangePointsCost {
-                            cell.resortName?.text = "\(pointsCost)".localized()
-                        } else {
-                            cell.resortName?.text = "\(0)".localized()
-                        }
+                    case ExchangePointType.CLUBPOINTS:
+                        cell.resortName?.text = "\(pointsCost)".localized()
+                        cell.lblHeading.text = ExchangePointType.CLUBPOINTS.name.localized()
+                        cell.resortDetailsButton.isHidden = true
+                    case ExchangePointType.UNKNOWN:
+                        break
                     }
+                } else {
+                    cell.resortName?.text = ""
+                    cell.lblHeading.text = ""
                 }
                 cell.resortDetailsButton.addTarget(self, action: #selector(WhoWillBeCheckingInViewController.resortDetailsClicked(_:)), for: .touchUpInside)
                 cell.resortDetailsButton.tag = indexPath.row

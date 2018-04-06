@@ -1154,24 +1154,30 @@ extension CheckOutViewController: UITableViewDataSource {
                 }
                 cell.resortImageView?.image = UIImage(named: Constant.assetImageNames.resortImage)
             } else {
-                if selectedRelinquishment.pointsProgram != nil {
-                    cell.resortDetailsButton.isHidden = true
-                    cell.lblHeading.text = "CIG Points".localized()
-                    if let selectedBucket = Constant.MyClassConstants.selectedAvailabilityInventoryBucket, let pointsCost = selectedBucket.exchangePointsCost {
-                        cell.resortName?.text = "\(pointsCost)".localized()
-                    } else {
-                        cell.resortName?.text = "\(0)".localized()
-                    }
-                } else {
-                    cell.resortDetailsButton.addTarget(self, action: #selector(WhoWillBeCheckingInViewController.resortDetailsClicked(_:)), for: .touchUpInside)
-                    if let clubPoint = selectedRelinquishment.clubPoints {
-                        cell.resortName?.text = clubPoint.resort?.resortName
-                    } else if let openWeek = selectedRelinquishment.openWeek {
-                        cell.resortName?.text = openWeek.resort?.resortName
-                    } else if let deposits = selectedRelinquishment.deposit {
-                        cell.resortName?.text = deposits.resort?.resortName
-                    }
+                if let openWeek = selectedRelinquishment.openWeek {
+                    cell.resortName?.text = openWeek.resort?.resortName
                     cell.lblHeading.text = Constant.MyClassConstants.relinquishment
+                    cell.resortDetailsButton.isHidden = false
+                    cell.resortDetailsButton.addTarget(self, action: #selector(WhoWillBeCheckingInViewController.resortDetailsClicked(_:)), for: .touchUpInside)
+                } else if let deposits = selectedRelinquishment.deposit {
+                    cell.resortName?.text = deposits.resort?.resortName
+                    cell.lblHeading.text = Constant.MyClassConstants.relinquishment
+                    cell.resortDetailsButton.isHidden = false
+                    cell.resortDetailsButton.addTarget(self, action: #selector(WhoWillBeCheckingInViewController.resortDetailsClicked(_:)), for: .touchUpInside)
+                } else if let selectedBucket = Constant.MyClassConstants.selectedAvailabilityInventoryBucket, let pointsCost = selectedBucket.exchangePointsCost {
+                    
+                    switch Constant.exchangePointType {
+                    case ExchangePointType.CIGPOINTS:
+                        cell.resortDetailsButton.isHidden = true
+                        cell.lblHeading.text = ExchangePointType.CIGPOINTS.name.localized()
+                        cell.resortName?.text = "\(pointsCost)".localized()
+                    case ExchangePointType.CLUBPOINTS:
+                        cell.resortDetailsButton.isHidden = true
+                        cell.lblHeading.text = ExchangePointType.CLUBPOINTS.name.localized()
+                        cell.resortName?.text = "\(pointsCost)".localized()
+                    case .UNKNOWN:
+                        break
+                    }
                 }
                 cell.resortImageView?.image = UIImage(named: Constant.assetImageNames.relinquishmentImage)
             }
