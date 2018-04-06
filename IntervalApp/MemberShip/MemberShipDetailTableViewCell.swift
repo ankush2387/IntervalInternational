@@ -85,7 +85,7 @@ class MemberShipDetailTableViewCell: UITableViewCell {
         if let products = membership.products {
             for prod in products {
                 let prodView = nonCoreProductView()
-                prodView.initializeView()
+                //prodView.initializeView()
                 
                 if let productCode = prod.productCode {
                     prodView.productImageView.image = UIImage(named: productCode)
