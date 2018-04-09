@@ -39,6 +39,19 @@ extension UIViewController {
         }
     }
 
+    func presentMessageAlert(message: String) {
+        
+        let alertViewController = UIAlertController(title: "",
+                                                    message: message,
+                                                    preferredStyle: .alert)
+        
+        alertViewController.addAction(UIAlertAction(title: "OK".localized(), style: .cancel))
+        
+        DispatchQueue.main.async { [weak self] in
+            self?.present(alertViewController, animated: true, completion: nil)
+        }
+    }
+    
     func presentErrorAlert(_ error: ViewError) {
 
         let alertViewController = UIAlertController(title: error.description.title,

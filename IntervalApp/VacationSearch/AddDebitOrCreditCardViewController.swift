@@ -340,7 +340,11 @@ class AddDebitOrCreditCardViewController: UIViewController {
             }
             
         } else {
-            self.presentAlert(with: Constant.MyClassConstants.newCardalertTitle, message: Constant.MyClassConstants.alertReqFieldMsg)
+            if Constant.GetawaySearchResultCardFormDetailData.cvv == "" {
+                self.presentMessageAlert(message: Constant.MyClassConstants.cvvMessage)
+            } else {
+                self.presentMessageAlert(message: Constant.MyClassConstants.alertReqFieldMsg)
+            }
         }
     }
     
