@@ -9,14 +9,7 @@
 import UIKit
 import DarwinSDK
 
-protocol ExchangeInventoryCVCellDelegate: class {
-    func infoIconPressed()
-}
-
 class ExchangeInventoryCVCell: UICollectionViewCell {
-    
-    //***** Custom cell delegate to access the delegate method *****//
-    weak var exchangeCellDelegate: ExchangeInventoryCVCellDelegate?
     
     @IBOutlet private weak var cellPromotionView: CellPromotionView!
     @IBOutlet private weak var bedRoomType: UILabel!
@@ -31,8 +24,14 @@ class ExchangeInventoryCVCell: UICollectionViewCell {
     @IBOutlet private weak var forwardNavArrow: UIImageView!
     @IBOutlet private weak var exchangeTitleLabel: UILabel!
     
+    var showNotEnoughPoint: (() -> Void)?
+    var notEnoughPoint = Bool () {
+        didSet {
+            showNotEnoughPoint?()
+        }
+    }
     func setBucket(bucket: AvailabilitySectionItemInventoryBucket) {
-
+        
         // Setup UI controls
         pointsTitleLabel.textColor = UIColor.lightGray
         pointsTitleLabel.font = UIFont.systemFont(ofSize: 10.0)
@@ -64,17 +63,18 @@ class ExchangeInventoryCVCell: UICollectionViewCell {
             
             switch Constant.exchangePointType {
             case ExchangePointType.CIGPOINTS:
-                if exchangePointsCost >= exchangeMemberPointsRequired {
+                if exchangePointsCost > exchangeMemberPointsRequired {
                     exchangeImageView.image = #imageLiteral(resourceName: "InfoIcon")
                     exchangeImageView.isUserInteractionEnabled = true
                     forwardNavArrow.isHidden = true
-                    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapBlurButton))
-                    self.addGestureRecognizer(tapGesture)
+                    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(showNotEnoughPointModel))
+                    addGestureRecognizer(tapGesture)
                 } else {
                    pointsTitleLabel.text = ExchangePointType.CIGPOINTS.name.localized()
                    exchangeStackView.isHidden = true
                    pointsStackView.isHidden = false
                    pointsCountLabel.text = "\(exchangePointsCost)".localized()
+                   gestureRecognizers?.removeAll()
                 }
                 
             case ExchangePointType.CLUBPOINTS:
@@ -110,12 +110,9 @@ class ExchangeInventoryCVCell: UICollectionViewCell {
                 yPosition += 15
             }
         }
-
         cellPromotionView.setPromotionUI(for: bucket.unit)
     }
-    
-    func tapBlurButton() {
-        exchangeCellDelegate?.infoIconPressed()
+    func showNotEnoughPointModel() {
+        notEnoughPoint = true
     }
 }
-
