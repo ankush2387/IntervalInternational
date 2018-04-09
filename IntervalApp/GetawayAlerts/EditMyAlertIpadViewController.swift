@@ -73,9 +73,10 @@ class EditMyAlertIpadViewController: UIViewController {
             }
             self.hideHudAsync()
             self.setupView()
+            alertStatusButton.isOn = alert.enabled ?? false
+        } else {
+            self.setupView()
         }
-        self.setupView()
-        
         // omniture tracking with event 40
         omnitureTrackingForEvent40()
         omnitureTrackingForEvent76()
