@@ -71,7 +71,7 @@ class MemberShipDetailTableViewCell: UITableViewCell {
         memberNumberLabel.text = membership.memberNumber
         
         if let expDate = dateString.dateFromString(for: Constant.MyClassConstants.dateFormat) {
-            memberSinceDateLabel.text = Helper.getWeekDay(dateString: expDate , getValue: Constant.MyClassConstants.month).appending(". ").appending(Helper.getWeekDay(dateString: expDate, getValue: Constant.MyClassConstants.date)).appending(", ").appending(Helper.getWeekDay(dateString: expDate, getValue: Constant.MyClassConstants.year))
+            memberSinceDateLabel.text = Helper.getWeekDay(dateString: expDate , getValue: Constant.MyClassConstants.month).appending("/").appending(Helper.getWeekDay(dateString: expDate, getValue: Constant.MyClassConstants.date)).appending("/").appending(Helper.getWeekDay(dateString: expDate, getValue: Constant.MyClassConstants.year))
         }
         activeLabel.text = status
     }

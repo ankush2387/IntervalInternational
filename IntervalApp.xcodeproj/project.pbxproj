@@ -51,6 +51,7 @@
 		3A31F26B1CA1547A0028C68F /* VacationOrResortTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A31F26A1CA1547A0028C68F /* VacationOrResortTableViewCell.swift */; };
 		3A341E901C9C2F2D007AC67D /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A341E8F1C9C2F2C007AC67D /* Helper.swift */; };
 		3A3663741F0F926F00951A88 /* RelinquishmentSelectionOpenWeeksCellWithUpgrade.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3663731F0F926F00951A88 /* RelinquishmentSelectionOpenWeeksCellWithUpgrade.swift */; };
+		3A394133207B8331002F1157 /* ProductCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A394132207B8330002F1157 /* ProductCell.swift */; };
 		3A39965B1E5B028600527A99 /* UpcomingTrip.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3A3996591E5B028600527A99 /* UpcomingTrip.xib */; };
 		3A39965C1E5B028600527A99 /* UpcomingTripsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A39965A1E5B028600527A99 /* UpcomingTripsCollectionViewCell.swift */; };
 		3A3A012D1C99BD0B00B7EC37 /* AvailablePointToolViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3A010F1C99BD0B00B7EC37 /* AvailablePointToolViewController.swift */; };
@@ -480,6 +481,7 @@
 		3A31F26A1CA1547A0028C68F /* VacationOrResortTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VacationOrResortTableViewCell.swift; sourceTree = "<group>"; };
 		3A341E8F1C9C2F2C007AC67D /* Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
 		3A3663731F0F926F00951A88 /* RelinquishmentSelectionOpenWeeksCellWithUpgrade.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelinquishmentSelectionOpenWeeksCellWithUpgrade.swift; sourceTree = "<group>"; };
+		3A394132207B8330002F1157 /* ProductCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductCell.swift; sourceTree = "<group>"; };
 		3A3996591E5B028600527A99 /* UpcomingTrip.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UpcomingTrip.xib; sourceTree = "<group>"; };
 		3A39965A1E5B028600527A99 /* UpcomingTripsCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpcomingTripsCollectionViewCell.swift; sourceTree = "<group>"; };
 		3A3A010F1C99BD0B00B7EC37 /* AvailablePointToolViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AvailablePointToolViewController.swift; sourceTree = "<group>"; };
@@ -1047,6 +1049,7 @@
 		3A3A01481C99BED600B7EC37 /* MemberShip */ = {
 			isa = PBXGroup;
 			children = (
+				3A394132207B8330002F1157 /* ProductCell.swift */,
 				DC7EF4C31D709E6B00E9E360 /* MembershipTableViewCell.swift */,
 				3A3A01491C99BED600B7EC37 /* MemberShipDetailTableViewCell.swift */,
 				3AF4AFD21CD35CC100554506 /* MembershipIPadViewController.swift */,
@@ -2280,7 +2283,7 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-IntervalApp/Pods-IntervalApp-resources.sh",
 				"$PODS_CONFIGURATION_BUILD_DIR/Brightcove-Player-SDK/BCOVPUIResources.bundle",
 				"${PODS_ROOT}/GoogleMaps/Maps/Frameworks/GoogleMaps.framework/Versions/A/Resources/GoogleMaps.bundle",
-				"$PODS_CONFIGURATION_BUILD_DIR/HockeySDK/HockeySDKResources.bundle",
+				$PODS_CONFIGURATION_BUILD_DIR/HockeySDK/HockeySDKResources.bundle,
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
@@ -2503,6 +2506,7 @@
 				3A8C7EB71C85A632000A4E46 /* JoinTodayViewController.swift in Sources */,
 				3A3663741F0F926F00951A88 /* RelinquishmentSelectionOpenWeeksCellWithUpgrade.swift in Sources */,
 				DC7EF5071D709F8800E9E360 /* DetailMapViewController.swift in Sources */,
+				3A394133207B8331002F1157 /* ProductCell.swift in Sources */,
 				616302852014ED7F0067A9DC /* ExchangeClientAPIStore.swift in Sources */,
 				3CBC6F362024E92800212B69 /* MultipleSelectionTableViewCell.swift in Sources */,
 				DC7EF5141D709F8800E9E360 /* ResortInfoTableViewCell.swift in Sources */,

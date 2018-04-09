@@ -40,7 +40,7 @@ class ProductCell: UITableViewCell {
                     triangleView.isHidden = true
                     innerView.backgroundColor = .white
                 } else {
-                   // innerViewTopConstraint.constant = 0
+                    //innerViewTopConstraint.constant = 0
                     innerView.layer.cornerRadius = 2
         }
                 if !prod.billingEntity.unwrappedString.contains("NON") {
@@ -48,7 +48,7 @@ class ProductCell: UITableViewCell {
                     lblExpire.isHidden = true
                 } else {
                     if let expDate = prod.expirationDate {
-                        lblExpireDate.text = Helper.getWeekDay(dateString: expDate, getValue: Constant.MyClassConstants.month).appending(". ").appending(Helper.getWeekDay(dateString: expDate, getValue: Constant.MyClassConstants.date)).appending(", ").appending(Helper.getWeekDay(dateString: expDate, getValue: Constant.MyClassConstants.year))
+                        lblExpireDate.text = Helper.getWeekDay(dateString: expDate, getValue: Constant.MyClassConstants.month).appending("/").appending(Helper.getWeekDay(dateString: expDate, getValue: Constant.MyClassConstants.date)).appending("/").appending(Helper.getWeekDay(dateString: expDate, getValue: Constant.MyClassConstants.year))
                     }
                     lblExpireDate.font = UIFont(name: Constant.fontName.helveticaNeue, size: 15)
                 }

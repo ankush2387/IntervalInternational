@@ -237,11 +237,10 @@ extension MemberShipViewController: UITableViewDataSource {
                 guard let memberProductCell = tableView.dequeueReusableCell(withIdentifier: Constant.memberShipViewController.membershipProductCellIdentifier) as? ProductCell else { return UITableViewCell() }
                 
                  guard let membership = Session.sharedSession.selectedMembership else { return UITableViewCell() }
-                
-                if let products = membership.products?[indexPath.row] {
-                    memberProductCell.setUpMemberProductData(membership: membership, prod: products)
+                if let products = membership.products {
+                   let sortedProducts =  products.sorted { $0.coreProduct && !$1.coreProduct}
+                   memberProductCell.setUpMemberProductData(membership: membership, prod: sortedProducts[indexPath.row])
                 }
-                
                 return memberProductCell
             }
         }
