@@ -35,12 +35,10 @@ class ProductCell: UITableViewCell {
                     productImageView.image = UIImage(named: productCode)
                 }
                 if prod.coreProduct {
-                    //innerViewTopConstraint.constant = 3
                     productImageView.isHidden = false
                     triangleView.isHidden = true
                     innerView.backgroundColor = .white
                 } else {
-                    //innerViewTopConstraint.constant = 0
                     innerView.layer.cornerRadius = 2
         }
                 if !prod.billingEntity.unwrappedString.contains("NON") {
