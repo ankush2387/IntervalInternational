@@ -84,9 +84,12 @@ class UpComingTripDetailController: UIViewController, UITextViewDelegate {
         
         let menuButton = UIBarButtonItem(image: UIImage(named: Constant.assetImageNames.backArrowNav), style: .plain, target: self, action: #selector(UpComingTripDetailController.menuBackButtonPressed(_:)))
         menuButton.tintColor = UIColor.white
-        
         navigationItem.leftBarButtonItem = menuButton
 
+        let moreButton = UIBarButtonItem(image: UIImage(named: Constant.assetImageNames.MoreNav), style: .plain, target: self, action: #selector(moreButtonPressed(_:)))
+        moreButton.tintColor = UIColor.white
+        navigationItem.rightBarButtonItem = moreButton
+        
         // Omniture tracking with event 74
         
         let userInfo: [String: String] = [
