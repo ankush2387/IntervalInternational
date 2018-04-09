@@ -238,7 +238,7 @@ extension MemberShipViewController: UITableViewDataSource {
                 
                  guard let membership = Session.sharedSession.selectedMembership else { return UITableViewCell() }
                 if let products = membership.products {
-                   let sortedProducts =  products.sorted { $0.coreProduct && !$1.coreProduct}
+                   let sortedProducts = products.sorted { $0.coreProduct && !$1.coreProduct }
                    memberProductCell.setUpMemberProductData(membership: membership, prod: sortedProducts[indexPath.row])
                 }
                 return memberProductCell
