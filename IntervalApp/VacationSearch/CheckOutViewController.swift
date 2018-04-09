@@ -979,7 +979,7 @@ extension CheckOutViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        
+
         switch section {
         case 1 :
             if Constant.MyClassConstants.recapViewPromotionCodeArray.isEmpty {
@@ -988,7 +988,7 @@ extension CheckOutViewController: UITableViewDataSource {
                 return 50
             }
         case 2 :
-            if !Constant.MyClassConstants.searchBothExchange {
+            if Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental() {
                 return 0
             } else {
                 if let exchangeFees = Constant.MyClassConstants.exchangeFees, exchangeFees.eplus != nil {
@@ -1008,14 +1008,14 @@ extension CheckOutViewController: UITableViewDataSource {
         default :
             return 0
         }
-        
+
     }
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        
+
         switch section {
         case  1, 2, 3, 4, 8, 9 :
-            
+
             let headerView = UIView(frame: CGRect(x: 0, y: 0, width: checkoutOptionTBLview.frame.size.width, height: 50))
             headerView.backgroundColor = IUIKColorPalette.titleBackdrop.color
             let headerLabel = UILabel()
@@ -1024,7 +1024,7 @@ extension CheckOutViewController: UITableViewDataSource {
             headerView.addSubview(headerLabel)
             headerView.backgroundColor = IUIKColorPalette.primary1.color
             headerLabel.textColor = UIColor.white
-            
+
             if section == 1 {
                 if Constant.MyClassConstants.recapViewPromotionCodeArray.isEmpty {
                     return nil
@@ -1034,12 +1034,12 @@ extension CheckOutViewController: UITableViewDataSource {
             } else {
                 return headerView
             }
-            
+
         default :
             return nil
-            
+
         }
-        
+
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -1152,7 +1152,13 @@ extension CheckOutViewController: UITableViewDataSource {
                 } else {
                     cell.resortName?.text = ""
                 }
+                
                 cell.resortImageView?.image = UIImage(named: Constant.assetImageNames.resortImage)
+                let sepratorYPosition: CGFloat = Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental() ? cell.contentView.frame.size.height - 5 : cell.contentView.frame.size.height - 2
+                let sepratorHeight: CGFloat = Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental() ? 5 : 1
+                let seprator = UIView(frame: CGRect(x: 0, y: sepratorYPosition, width: cell.contentView.frame.size.width, height: sepratorHeight))
+                seprator.backgroundColor = .lightGray
+                cell.addSubview(seprator)
             } else {
                 if let openWeek = selectedRelinquishment.openWeek {
                     cell.resortName?.text = openWeek.resort?.resortName
@@ -1180,6 +1186,9 @@ extension CheckOutViewController: UITableViewDataSource {
                     }
                 }
                 cell.resortImageView?.image = UIImage(named: Constant.assetImageNames.relinquishmentImage)
+                let seprator = UIView(frame: CGRect(x: 0, y: cell.contentView.frame.size.height - 5, width: cell.contentView.frame.size.width, height: 5))
+                seprator.backgroundColor = .lightGray
+                cell.addSubview(seprator)
             }
             cell.selectionStyle = .none
             return cell
