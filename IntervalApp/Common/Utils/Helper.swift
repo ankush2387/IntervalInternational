@@ -2140,6 +2140,8 @@ public class Helper {
     }
     
     static func getDisplayNameFor(membership: Membership, product: Product?) -> String? {
+        
+        // FIXME(Chris): I think this if will always be true so we dont ever go into the else block
         if let ownerships = membership.ownerships, let firstOwnership = ownerships.first,
             let resort = firstOwnership.resort, let resortName = resort.resortName {
             return resortName.capitalized
