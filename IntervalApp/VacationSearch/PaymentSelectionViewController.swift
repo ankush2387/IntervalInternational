@@ -24,7 +24,7 @@ class PaymentSelectionViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-         NotificationCenter.default.addObserver(self, selector: #selector(updateResortHoldingTime), name: NSNotification.Name(rawValue: Constant.notificationNames.updateResortHoldingTime), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(updateResortHoldingTime), name: NSNotification.Name(rawValue: Constant.notificationNames.updateResortHoldingTime), object: nil)
         
         showHudAsync()
         UserClient.getCreditCards(Session.sharedSession.userAccessToken!, onSuccess: { response in
@@ -59,7 +59,7 @@ class PaymentSelectionViewController: UIViewController {
             let alertController = UIAlertController(title: "", message: Constant.AlertMessages.holdingTimeLostMessage, preferredStyle: .alert)
             let Ok = UIAlertAction(title: "OK".localized(), style: .default) {[weak self] (_:UIAlertAction)  in
                 
-                 self?.performSegue(withIdentifier: "unwindToAvailabiity", sender: self)
+                self?.performSegue(withIdentifier: "unwindToAvailabiity", sender: self)
             }
             alertController.addAction(Ok)
             present(alertController, animated: true, completion:nil)
@@ -77,8 +77,8 @@ class PaymentSelectionViewController: UIViewController {
         }
     }
     
-    func isSelectedCreditCardExpired() -> Bool {
-        if let selectedCreditCard = Constant.MyClassConstants.selectedCreditCard, let expirationDateAsString = selectedCreditCard.expirationDate {
+    func isSelectedCreditCardExpired(selectedCreditCard: Creditcard) -> Bool {
+        if let expirationDateAsString = selectedCreditCard.expirationDate {
             
             let myCalendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
             let dateFormatter = DateFormatter()
@@ -119,16 +119,16 @@ class PaymentSelectionViewController: UIViewController {
         
         selectedCardIndex = sender.tag
         paymentSelectionTBLview.reloadData()
-
+        
         //FIXME(Frank): This code here is VERY VERY BAD - need to be refactored 100%
         if let currentProfile = Session.sharedSession.contact, let creditCards = currentProfile.creditcards {
             let selectedCreditCard = creditCards[selectedCardIndex]
-
+            
             let myCalendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = Constant.MyClassConstants.dateTimeFormat
             
-            let isCardExpired = isSelectedCreditCardExpired()
+            let isCardExpired = isSelectedCreditCardExpired(selectedCreditCard: selectedCreditCard)
             if isCardExpired == true {
                 var cvv: UITextField
                 var expiryDate: UITextField
@@ -221,7 +221,7 @@ class PaymentSelectionViewController: UIViewController {
                     dateComponents.year = Int(year)
                     dateComponents.month = Int(month)
                     dateComponents.day = 01
-    
+                    
                     if let expirationDate = myCalendar.date(from: dateComponents) {
                         let dateFormatter = DateFormatter()
                         dateFormatter.timeZone = Helper.createTimeZone()
@@ -235,7 +235,7 @@ class PaymentSelectionViewController: UIViewController {
                     //FIXME(Frank) - what is this?
                     if let creditCardCount = Session.sharedSession.contact?.creditcards?.count {
                         if self.selectedCardIndex < creditCardCount {
-                           
+                            
                             guard let accessToken = Session.sharedSession.userAccessToken else {
                                 self.navigationController?.popViewController(animated: true)
                                 return
@@ -299,7 +299,7 @@ class PaymentSelectionViewController: UIViewController {
                     
                 }
             }
-
+            
         }
     }
     
@@ -316,7 +316,7 @@ class PaymentSelectionViewController: UIViewController {
         // add a toolbar with a done button above the number pad
         textField.inputAccessoryView = keypadToolbar
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -360,7 +360,7 @@ extension PaymentSelectionViewController: UITableViewDataSource {
     
     @objc(tableView:heightForRowAtIndexPath:) func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
-         if let currentProfile = Session.sharedSession.contact, let creditCards = currentProfile.creditcards, indexPath.row == creditCards.count {
+        if let currentProfile = Session.sharedSession.contact, let creditCards = currentProfile.creditcards, indexPath.row == creditCards.count {
             
             if Constant.RunningDevice.deviceIdiom == .pad {
                 return 80
@@ -369,7 +369,7 @@ extension PaymentSelectionViewController: UITableViewDataSource {
             }
         } else {
             if Constant.RunningDevice.deviceIdiom == .pad {
-               return 150
+                return 150
             } else {
                 return 80
             }
@@ -378,7 +378,7 @@ extension PaymentSelectionViewController: UITableViewDataSource {
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-         if let currentProfile = Session.sharedSession.contact, let creditCards = currentProfile.creditcards, indexPath.row == creditCards.count {
+        if let currentProfile = Session.sharedSession.contact, let creditCards = currentProfile.creditcards, indexPath.row == creditCards.count {
             
             guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.addNewCreditCardCell, for: indexPath) as? AddNewCreditCardCell else {
                 
@@ -484,3 +484,4 @@ extension PaymentSelectionViewController:UITextFieldDelegate {
         return true
     }
 }
+
