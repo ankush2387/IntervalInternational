@@ -127,29 +127,29 @@ public class Helper {
         switch monthNumber {
             
         case 1:
-            return "Jan".localized()
+            return "Jan.".localized()
         case 2:
-            return "Feb".localized()
+            return "Feb.".localized()
         case 3:
-            return "Mar".localized()
+            return "Mar.".localized()
         case 4:
-            return "Apr".localized()
+            return "Apr.".localized()
         case 5:
             return "May".localized()
         case 6:
-            return "Jun".localized()
+            return "Jun.".localized()
         case 7:
-            return "Jul".localized()
+            return "Jul.".localized()
         case 8:
-            return "Aug".localized()
+            return "Aug.".localized()
         case 9:
-            return "Sep".localized()
+            return "Sep.".localized()
         case 10:
             return "Oct".localized()
         case 11:
-            return "Nov".localized()
+            return "Nov.".localized()
         case 12:
-            return "Dec".localized()
+            return "Dec.".localized()
         default:
             return ""
         }
