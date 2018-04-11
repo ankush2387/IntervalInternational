@@ -52,18 +52,20 @@ class WhoWillBeCheckingInViewController: UIViewController {
         navigationController?.navigationBar.isHidden = false
         
         //FIXME(Frank) - what is this?
-        Constant.GetawaySearchResultGuestFormDetailData.firstName = ""
-        Constant.GetawaySearchResultGuestFormDetailData.lastName = ""
-        Constant.GetawaySearchResultGuestFormDetailData.country = ""
-        Constant.GetawaySearchResultGuestFormDetailData.address1 = ""
-        Constant.GetawaySearchResultGuestFormDetailData.address2 = ""
-        Constant.GetawaySearchResultGuestFormDetailData.city = ""
-        Constant.GetawaySearchResultGuestFormDetailData.state = ""
-        Constant.GetawaySearchResultGuestFormDetailData.pinCode = ""
-        Constant.GetawaySearchResultGuestFormDetailData.email = ""
-        Constant.GetawaySearchResultGuestFormDetailData.homePhoneNumber = ""
-        Constant.GetawaySearchResultGuestFormDetailData.businessPhoneNumber = ""
-        
+        // checking if we are coming back from the checkout page to reset the fields or not
+        if !Constant.MyClassConstants.enableGuestCertificate {
+            Constant.GetawaySearchResultGuestFormDetailData.firstName = ""
+            Constant.GetawaySearchResultGuestFormDetailData.lastName = ""
+            Constant.GetawaySearchResultGuestFormDetailData.country = ""
+            Constant.GetawaySearchResultGuestFormDetailData.address1 = ""
+            Constant.GetawaySearchResultGuestFormDetailData.address2 = ""
+            Constant.GetawaySearchResultGuestFormDetailData.city = ""
+            Constant.GetawaySearchResultGuestFormDetailData.state = ""
+            Constant.GetawaySearchResultGuestFormDetailData.pinCode = ""
+            Constant.GetawaySearchResultGuestFormDetailData.email = ""
+            Constant.GetawaySearchResultGuestFormDetailData.homePhoneNumber = ""
+            Constant.GetawaySearchResultGuestFormDetailData.businessPhoneNumber = ""
+        }
         //FIXME(Frank) - what is this?
         NotificationCenter.default.addObserver(self, selector: #selector(updateResortHoldingTime), name: NSNotification.Name(rawValue: Constant.notificationNames.updateResortHoldingTime), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWasShown), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
