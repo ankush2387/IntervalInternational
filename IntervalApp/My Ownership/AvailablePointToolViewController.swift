@@ -53,8 +53,14 @@ class AvailablePointToolViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         
         if Constant.MyClassConstants.relinquishmentAvalableToolSelectedDate == nil {
-            presentAlert(with: Constant.ControllerTitles.availablePointToolViewController, message: Constant.AlertMessages.availablePointToolDefaultSelectedDateAlert)
-            
+            presentAlert(with: "",
+                         message: Constant.AlertMessages.availablePointToolDefaultSelectedDateAlert,
+                         hideCancelButton: true,
+                         cancelButtonTitle: "",
+                         acceptButtonTitle: "OK".localized(),
+                         acceptButtonStyle: .default,
+                         cancelHandler: nil,
+                         acceptHandler: nil)
             Constant.MyClassConstants.relinquishmentAvalableToolSelectedDate = Date()
         }
         
@@ -99,8 +105,11 @@ extension AvailablePointToolViewController: UITableViewDataSource {
                         let myComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: AblToolSelectedDate)
                         let year = "\(myComponents.year ?? 0)"
                         let weekDay = "\(Helper.getWeekdayFromInt(weekDayNumber: myComponents.weekday ?? 0))"
-                        let month = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month ?? 0)) \( myComponents.day ?? 0)"
-                        cell.dateLabel.text = "\(weekDay), \(month) \(year)".localized()
+                        if let day = myComponents.day {
+                            let formattedDay = day < 10 ? "0\(day)" : String(day)
+                            let month = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month ?? 0)) \( formattedDay)"
+                            cell.dateLabel.text = "\(weekDay), \(month), \(year)".localized()
+                        }
                     }
                     cell.selectionStyle = .none
                     return cell
