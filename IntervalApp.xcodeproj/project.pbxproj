@@ -197,6 +197,7 @@
 		3AB122CE1CD2859500204EB7 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3AB122CB1CD2859500204EB7 /* Localizable.strings */; };
 		3ABC81A21DF971FD003CE64A /* EmailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ABC81A11DF971FD003CE64A /* EmailTableViewCell.swift */; };
 		3ABF2E0D1E0A8522009FD072 /* GetawayAlertsIphone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DC27F7BF1DB81B6F00AA374F /* GetawayAlertsIphone.storyboard */; };
+		3AC21E1420762A7000BD6134 /* ExchangePointType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC21E1320762A7000BD6134 /* ExchangePointType.swift */; };
 		3AC5720D1E2A278E00969CF7 /* NotesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC5720C1E2A278E00969CF7 /* NotesCell.swift */; };
 		3AC5720F1E2A2A5000969CF7 /* AvailablePointCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC5720E1E2A2A5000969CF7 /* AvailablePointCell.swift */; };
 		3AC572111E2A2A6500969CF7 /* HeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC572101E2A2A6500969CF7 /* HeaderCell.swift */; };
@@ -630,6 +631,7 @@
 		3AB122CC1CD2859500204EB7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		3AB122CD1CD2859500204EB7 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		3ABC81A11DF971FD003CE64A /* EmailTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailTableViewCell.swift; sourceTree = "<group>"; };
+		3AC21E1320762A7000BD6134 /* ExchangePointType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExchangePointType.swift; sourceTree = "<group>"; };
 		3AC5720C1E2A278E00969CF7 /* NotesCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotesCell.swift; sourceTree = "<group>"; };
 		3AC5720E1E2A2A5000969CF7 /* AvailablePointCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AvailablePointCell.swift; sourceTree = "<group>"; };
 		3AC572101E2A2A6500969CF7 /* HeaderCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeaderCell.swift; sourceTree = "<group>"; };
@@ -1199,6 +1201,7 @@
 				3A9983DA1DE72A5A00CE44A5 /* MMSlidingButton.swift */,
 				3A9AFE641F597A3500BDDD6D /* FloatLabelTextField.swift */,
 				08B10A221FD18311008C737F /* Seprator.swift */,
+				3AC21E1320762A7000BD6134 /* ExchangePointType.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -2447,6 +2450,7 @@
 				3C2EABEC1FB21DBE00BD2B2D /* SettingsViewController.swift in Sources */,
 				3A892F411CD3902F00AE6F45 /* CaledarDateCell.swift in Sources */,
 				61EF716F2066A4B500281A34 /* PromotionType.swift in Sources */,
+				3AC21E1420762A7000BD6134 /* ExchangePointType.swift in Sources */,
 				61F1D4D7203E3DC400ECBEBB /* MyOwnershipViewModel.swift in Sources */,
 				DC7EF4D41D709EBF00E9E360 /* CommonMembership.swift in Sources */,
 				08A4D4321F69A51B00C63CDC /* FlexchangeSearchViewController.swift in Sources */,

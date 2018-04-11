@@ -743,7 +743,6 @@ class SearchResultViewController: UIViewController {
     // Common method to get exchange collection view cell
     func getExchangeCollectionCell(indexPath: IndexPath, collectionView: UICollectionView) -> ExchangeInventoryCVCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.reUsableIdentifiers.exchangeInventoryCell, for: indexPath) as? ExchangeInventoryCVCell else { return ExchangeInventoryCVCell() }
-        cell.exchangeCellDelegate = self
         return cell
     }
     
@@ -929,6 +928,11 @@ class SearchResultViewController: UIViewController {
         viewController.renewalNonCoreProduct = renewalNonCoreProduct
         viewController.selectedRelinquishment = selectedRelinquishment
         navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    //show not enough point model screen
+    func showNotEnoughPointModel() {
+        self.performSegue(withIdentifier: "pointsInfoSegue", sender: self)
     }
     
 }
@@ -1399,7 +1403,11 @@ extension SearchResultViewController: UICollectionViewDataSource {
                             if let inventoryBuckets = exactMatchSection.items[selectedRow].getInventoryBuckets() {
                                 let cell = self.getExchangeCollectionCell(indexPath: indexPath, collectionView: collectionView)
                                 if indexPath.item <= inventoryBuckets.count - 1 {
-                                    cell.setBucket(bucket: inventoryBuckets[indexPath.item])
+                                    let bucket = inventoryBuckets[indexPath.item]
+                                    cell.setBucket(bucket: bucket)
+                                    cell.showNotEnoughPoint = {
+                                        self.showNotEnoughPointModel()
+                                    }
                                 }
                                 return cell
                             }
@@ -1414,9 +1422,12 @@ extension SearchResultViewController: UICollectionViewDataSource {
                             if let inventoryBuckets = surroundingMatchSection.items[selectedRow].getInventoryBuckets() {
                                 let cell = self.getExchangeCollectionCell(indexPath: indexPath, collectionView: collectionView)
                                 if indexPath.item <= inventoryBuckets.count - 1 {
-                                    cell.setBucket(bucket: inventoryBuckets[indexPath.item])
+                                    let bucket = inventoryBuckets[indexPath.item]
+                                    cell.setBucket(bucket: bucket)
+                                    cell.showNotEnoughPoint = {
+                                        self.showNotEnoughPointModel()
+                                    }
                                 }
-                                cell.exchangeCellDelegate = self
                                 return cell
                             }
                         }
@@ -1434,9 +1445,12 @@ extension SearchResultViewController: UICollectionViewDataSource {
                             if let inventoryBuckets = surroundingMatchSection.items[selectedRow].getInventoryBuckets() {
                                 let cell = self.getExchangeCollectionCell(indexPath: indexPath, collectionView: collectionView)
                                 if indexPath.item <= inventoryBuckets.count - 1 {
-                                   cell.setBucket(bucket: inventoryBuckets[indexPath.item])
+                                    let bucket = inventoryBuckets[indexPath.item]
+                                    cell.setBucket(bucket: bucket)
+                                    cell.showNotEnoughPoint = {
+                                        self.showNotEnoughPointModel()
+                                    }
                                 }
-                                cell.exchangeCellDelegate = self
                                 return cell
                             }
                         }
@@ -1456,6 +1470,10 @@ extension SearchResultViewController: UICollectionViewDataSource {
                             }
                         } else {
                             if let inventoryBuckets = exactMatchSection.items[selectedRow].getInventoryBuckets() {
+                                //Gandhi: I am adding validation but this is not good
+                                // we need to return only number of inventory count + 1 for colleciotnview
+                                // right now its running accoring to resot count
+                                if indexPath.item <= inventoryBuckets.count - 1 {
                                 let bucket = inventoryBuckets[indexPath.item]
                                 
                                 if bucket.vacationSearchType.isCombined() {
@@ -1464,19 +1482,25 @@ extension SearchResultViewController: UICollectionViewDataSource {
                                     if collectionSuperviewTag == 0 {
                                         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.reUsableIdentifiers.searchBothInventoryCell, for: indexPath) as? SearchBothInventoryCVCell else { return UICollectionViewCell() }
                                         cell.setBucket(bucket: bucket)
-                                        cell.exchangeCellDelegate = self
                                         return cell
                                     }
      
                                 } else if bucket.vacationSearchType.isExchange() {
                                     let cell = self.getExchangeCollectionCell(indexPath: indexPath, collectionView: collectionView)
+                                    let bucket = inventoryBuckets[indexPath.item]
                                     cell.setBucket(bucket: bucket)
-                                    cell.exchangeCellDelegate = self
+                                    cell.showNotEnoughPoint = {
+                                        self.showNotEnoughPointModel()
+                                    }
                                     return cell
                                     
                                 } else if bucket.vacationSearchType.isRental() {
                                     let cell = self.getRentalCollectionCell(indexPath: indexPath, collectionView: collectionView)
                                     cell.setBucket(bucket: bucket)
+                                    return cell
+                                }
+                                } else {
+                                    guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.reUsableIdentifiers.searchBothInventoryCell, for: indexPath) as? SearchBothInventoryCVCell else { return UICollectionViewCell() }
                                     return cell
                                 }
                             }
@@ -1503,7 +1527,9 @@ extension SearchResultViewController: UICollectionViewDataSource {
                                 } else if bucket.vacationSearchType.isExchange() {
                                     let cell = self.getExchangeCollectionCell(indexPath: indexPath, collectionView: collectionView)
                                     cell.setBucket(bucket: bucket)
-                                    cell.exchangeCellDelegate = self
+                                    cell.showNotEnoughPoint = {
+                                        self.showNotEnoughPointModel()
+                                    }
                                     return cell
                                     
                                 } else if bucket.vacationSearchType.isRental() {
@@ -1539,7 +1565,9 @@ extension SearchResultViewController: UICollectionViewDataSource {
                                 } else if bucket.vacationSearchType.isExchange() {
                                     let cell = self.getExchangeCollectionCell(indexPath: indexPath, collectionView: collectionView)
                                     cell.setBucket(bucket: bucket)
-                                    cell.exchangeCellDelegate = self
+                                    cell.showNotEnoughPoint = {
+                                        self.showNotEnoughPointModel()
+                                    }
                                     return cell
                                     
                                 } else if bucket.vacationSearchType.isRental() {
@@ -1908,12 +1936,6 @@ extension SearchResultViewController: WhoWillBeCheckInDelegate {
         viewController.renewalNonCoreProduct = renewalNonCoreProduct
         viewController.selectedRelinquishment = selectedRelinquishment
         self.navigationController?.pushViewController(viewController, animated: true)
-    }
-}
-
-extension SearchResultViewController: ExchangeInventoryCVCellDelegate {
-    func infoIconPressed() {
-        self.performSegue(withIdentifier: "pointsInfoSegue", sender: self)
     }
 }
 

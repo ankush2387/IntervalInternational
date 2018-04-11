@@ -151,11 +151,10 @@ class ClubPointSelectionViewController: UIViewController {
             let clubPoints = ClubPointsEntity()
             clubPoints.isPointsMatrix = true
             clubPoints.pointsSpent = invenUnit.clubPoints
-            
-            Constant.MyClassConstants.isClubPointsAvailable = true
-            
+            Constant.exchangePointType = ExchangePointType.CLUBPOINTS
             self?.hideHudAsync()
             self?.didSave?(clubPoints)
+            
          }, onError: { [weak self] error in
             self?.hideHudAsync()
             self?.presentErrorAlert(UserFacingCommonError.handleError(error))
@@ -384,8 +383,10 @@ class ClubPointSelectionViewController: UIViewController {
             for units in clubIntervalRow.units {
                 clubPointsArray.add(units.clubPoints)
                 if let unitSize = units.unitSize {
-                    let bedRoomString = Helper.getBedroomNumbers(bedroomType: unitSize)
-                    Constant.MyClassConstants.clubPointMatrixHeaderArray.add(bedRoomString)
+                    
+                    if let bedRoomString = UnitSize(rawValue: unitSize)?.friendlyName() {
+                        Constant.MyClassConstants.clubPointMatrixHeaderArray.add(bedRoomString)
+                    }
                 }
                 
             }
@@ -435,9 +436,7 @@ class ClubPointSelectionViewController: UIViewController {
         endmonthsecondbtn.text = "\(Helper.getMonthnameFromInt(monthNumber: fromEndComponents.month!)) \(fromEndComponents.year!)"
         
         if startmonthfirstbtn.text == startmonthsecondbtn.text && endmonthfirstbtn.text == endmonthsecondbtn.text {
-            equalWidthsBetweenFirstAndSecondTravelWindow.priority = 250
             secondView.isHidden = true
-            firstTravelWindowWidth.constant = view.frame.width
         }
     }
     

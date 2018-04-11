@@ -1724,9 +1724,9 @@ extension VacationSearchResultIPadController: WhoWillBeCheckInDelegate {
     }
 }
 
-extension VacationSearchResultIPadController: ExchangeInventoryCVCellDelegate {
-    func infoIconPressed() {
-        self.performSegue(withIdentifier: "pointsInfoSegue", sender: self)
-    }
-}
+//extension VacationSearchResultIPadController: ExchangeInventoryCVCellDelegate {
+//    func infoIconPressed() {
+//        self.performSegue(withIdentifier: "pointsInfoSegue", sender: self)
+//    }
+//}
 

@@ -90,6 +90,7 @@ class CheckOutViewController: UIViewController {
             if let exchangeFees = Constant.MyClassConstants.exchangeFees {
  
                 if let insurance = exchangeFees.insurance {
+                    showInsurance = true
                     if let isInsuranceSelected = insurance.selected {
                         if isInsuranceSelected {
                             //FIXME(Frank): why 2 flags for the same? - what is this?
@@ -979,7 +980,7 @@ extension CheckOutViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        
+
         switch section {
         case 1 :
             if Constant.MyClassConstants.recapViewPromotionCodeArray.isEmpty {
@@ -988,7 +989,7 @@ extension CheckOutViewController: UITableViewDataSource {
                 return 50
             }
         case 2 :
-            if !Constant.MyClassConstants.searchBothExchange {
+            if Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental() {
                 return 0
             } else {
                 if let exchangeFees = Constant.MyClassConstants.exchangeFees, exchangeFees.eplus != nil {
@@ -1008,14 +1009,14 @@ extension CheckOutViewController: UITableViewDataSource {
         default :
             return 0
         }
-        
+
     }
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        
+
         switch section {
         case  1, 2, 3, 4, 8, 9 :
-            
+
             let headerView = UIView(frame: CGRect(x: 0, y: 0, width: checkoutOptionTBLview.frame.size.width, height: 50))
             headerView.backgroundColor = IUIKColorPalette.titleBackdrop.color
             let headerLabel = UILabel()
@@ -1024,7 +1025,7 @@ extension CheckOutViewController: UITableViewDataSource {
             headerView.addSubview(headerLabel)
             headerView.backgroundColor = IUIKColorPalette.primary1.color
             headerLabel.textColor = UIColor.white
-            
+
             if section == 1 {
                 if Constant.MyClassConstants.recapViewPromotionCodeArray.isEmpty {
                     return nil
@@ -1034,12 +1035,12 @@ extension CheckOutViewController: UITableViewDataSource {
             } else {
                 return headerView
             }
-            
+
         default :
             return nil
-            
+
         }
-        
+
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -1152,28 +1153,43 @@ extension CheckOutViewController: UITableViewDataSource {
                 } else {
                     cell.resortName?.text = ""
                 }
+                
                 cell.resortImageView?.image = UIImage(named: Constant.assetImageNames.resortImage)
+                let sepratorYPosition: CGFloat = Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental() ? cell.contentView.frame.size.height - 5 : cell.contentView.frame.size.height - 2
+                let sepratorHeight: CGFloat = Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental() ? 5 : 1
+                let seprator = UIView(frame: CGRect(x: 0, y: sepratorYPosition, width: cell.contentView.frame.size.width, height: sepratorHeight))
+                seprator.backgroundColor = .lightGray
+                cell.addSubview(seprator)
             } else {
-                if selectedRelinquishment.pointsProgram != nil {
-                    cell.resortDetailsButton.isHidden = true
-                    cell.lblHeading.text = "CIG Points".localized()
-                    if let selectedBucket = Constant.MyClassConstants.selectedAvailabilityInventoryBucket, let pointsCost = selectedBucket.exchangePointsCost {
-                        cell.resortName?.text = "\(pointsCost)".localized()
-                    } else {
-                        cell.resortName?.text = "\(0)".localized()
-                    }
-                } else {
-                    cell.resortDetailsButton.addTarget(self, action: #selector(WhoWillBeCheckingInViewController.resortDetailsClicked(_:)), for: .touchUpInside)
-                    if let clubPoint = selectedRelinquishment.clubPoints {
-                        cell.resortName?.text = clubPoint.resort?.resortName
-                    } else if let openWeek = selectedRelinquishment.openWeek {
-                        cell.resortName?.text = openWeek.resort?.resortName
-                    } else if let deposits = selectedRelinquishment.deposit {
-                        cell.resortName?.text = deposits.resort?.resortName
-                    }
+                if let openWeek = selectedRelinquishment.openWeek {
+                    cell.resortName?.text = openWeek.resort?.resortName
                     cell.lblHeading.text = Constant.MyClassConstants.relinquishment
+                    cell.resortDetailsButton.isHidden = false
+                    cell.resortDetailsButton.addTarget(self, action: #selector(WhoWillBeCheckingInViewController.resortDetailsClicked(_:)), for: .touchUpInside)
+                } else if let deposits = selectedRelinquishment.deposit {
+                    cell.resortName?.text = deposits.resort?.resortName
+                    cell.lblHeading.text = Constant.MyClassConstants.relinquishment
+                    cell.resortDetailsButton.isHidden = false
+                    cell.resortDetailsButton.addTarget(self, action: #selector(WhoWillBeCheckingInViewController.resortDetailsClicked(_:)), for: .touchUpInside)
+                } else if let selectedBucket = Constant.MyClassConstants.selectedAvailabilityInventoryBucket, let pointsCost = selectedBucket.exchangePointsCost {
+                    
+                    switch Constant.exchangePointType {
+                    case ExchangePointType.CIGPOINTS:
+                        cell.resortDetailsButton.isHidden = true
+                        cell.lblHeading.text = ExchangePointType.CIGPOINTS.name.localized()
+                        cell.resortName?.text = "\(pointsCost)".localized()
+                    case ExchangePointType.CLUBPOINTS:
+                        cell.resortDetailsButton.isHidden = true
+                        cell.lblHeading.text = ExchangePointType.CLUBPOINTS.name.localized()
+                        cell.resortName?.text = "\(pointsCost)".localized()
+                    case .UNKNOWN:
+                        break
+                    }
                 }
                 cell.resortImageView?.image = UIImage(named: Constant.assetImageNames.relinquishmentImage)
+                let seprator = UIView(frame: CGRect(x: 0, y: cell.contentView.frame.size.height - 5, width: cell.contentView.frame.size.width, height: 5))
+                seprator.backgroundColor = .lightGray
+                cell.addSubview(seprator)
             }
             cell.selectionStyle = .none
             return cell
@@ -1495,18 +1511,10 @@ extension CheckOutViewController: UITableViewDataSource {
                 if let exchnageFees = Constant.MyClassConstants.exchangeFees {
                     cell.setTotalPrice(with: currencyCode, and: exchnageFees.total, and: countryCode)
                 }
-                
-                if let total = recapFeesTotal {
-                    cell.setTotalPrice(with: currencyCode, and: total, and: countryCode)
-                }
             } else {
                 //FIXME(Frank) - what is this ? - why assign the cell.setTotalPrice(...) twice?
                 if let rentalFees = Constant.MyClassConstants.rentalFees {
                     cell.setTotalPrice(with: currencyCode, and: rentalFees.total, and: countryCode)
-                }
-                
-                if let total = recapFeesTotal {
-                    cell.setTotalPrice(with: currencyCode, and: total, and: countryCode)
                 }
             }
             return cell
