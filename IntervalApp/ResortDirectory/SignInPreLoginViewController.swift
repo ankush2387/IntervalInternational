@@ -179,10 +179,12 @@ class SignInPreLoginViewController: UIViewController {
         guard let password = passwordTF.text else { return }
         if !userId.isEmpty && !password.isEmpty {
             self.showHudAsync()
-            Helper.loginButtonPressed(sender: self, userName: userId, password: password, completionHandler: { [weak self] _ in
-                guard let strongSelf = self else { return }
-                Constant.MyClassConstants.loginOriginationPoint = "Resort Directory - Sign In Modal"
-                Helper.accessTokenDidChange(sender: strongSelf, isForSearch: (self?.isForSearchVacation)!)
+            Helper.loginButtonPressed(sender: self, userName: userId, password: password, completionHandler: { [weak self] completed in
+                if completed {
+                    guard let strongSelf = self else { return }
+                    Constant.MyClassConstants.loginOriginationPoint = "Resort Directory - Sign In Modal"
+                    Helper.accessTokenDidChange(sender: strongSelf, isForSearch: (self?.isForSearchVacation)!)
+                }
             })
         } else {
             if userId.isEmpty {
