@@ -26,7 +26,7 @@ class MemberShipViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.tableView.separatorColor = .clear
+        tableView.separatorColor = .clear
         title = Constant.ControllerTitles.memberShipViewController
         displayMenuButton()
         getContactMembershipInfo()
@@ -175,7 +175,7 @@ extension MemberShipViewController: UITableViewDataSource {
             } else if (section == 2) {
                 return numberOfRowInSection
             } else {
-                let extraViews = (Session.sharedSession.selectedMembership?.products?.count)!
+                let extraViews = (Session.sharedSession.selectedMembership?.products?.count ?? 0)
                 return extraViews
             }
         }
@@ -219,7 +219,7 @@ extension MemberShipViewController: UITableViewDataSource {
                 }
    
                 return ownershipCell
-            } else if (indexPath.section == 0) {
+            } else if indexPath.section == 0 {
                 guard let membershipCell = tableView.dequeueReusableCell(withIdentifier: Constant.memberShipViewController.membershipDetailCellIdentifier) as? MemberShipDetailTableViewCell else { return UITableViewCell() }
                 
                 guard let profile = Session.sharedSession.contact else { return UITableViewCell() }
@@ -308,10 +308,9 @@ extension MemberShipViewController: UITableViewDelegate {
             if indexPath.section == 0 {
                 return 338
                 
-            } else if (indexPath.section == 1) {
-                let extraViews = (Session.sharedSession.selectedMembership?.products?.count)! - 1
-                return CGFloat(80 * extraViews) + 5
-                
+            } else if indexPath.section == 1 {
+                let extraViews = (Session.sharedSession.selectedMembership?.products?.count ?? 0) - 1
+                    return CGFloat(80 * extraViews) + 5
             } else {
                return 332
             }

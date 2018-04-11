@@ -19,17 +19,7 @@ class ProductCell: UITableViewCell {
     @IBOutlet weak var lblExpireDate: UILabel!
     @IBOutlet weak var lblMembershipName: UILabel!
     @IBOutlet weak var productImageView: UIImageView!
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
-    
+ 
     func setUpMemberProductData(membership: Membership, prod: Product) {
                 if let productCode = prod.productCode {
                     productImageView.image = UIImage(named: productCode)
