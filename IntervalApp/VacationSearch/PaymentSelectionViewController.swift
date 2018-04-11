@@ -161,7 +161,7 @@ extension PaymentSelectionViewController: UITableViewDelegate {
                 let dateFormatter = DateFormatter()
                 dateFormatter.dateFormat = Constant.MyClassConstants.dateTimeFormat
                 
-                let isCardExpired = isSelectedCreditCardExpired()
+                let isCardExpired = isSelectedCreditCardExpired(selectedCreditCard: selectedCreditCard)
                 if let typeCode = selectedCreditCard.typeCode, let cardNumber = selectedCreditCard.cardNumber {
                 let cardType = Helper.cardTypeCodeMapping(cardType: typeCode)
                     lastFourDigitCardNumber = String(cardNumber.suffix(4))
