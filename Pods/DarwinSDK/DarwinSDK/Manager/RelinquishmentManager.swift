@@ -52,6 +52,7 @@ open class RelinquishmentManager {
                 if let resort = relinq.resort, let resortCode = resort.resortCode {
                     if var list = groupByResortDic[resortCode] {
                         list.append(relinq)
+                        groupByResortDic[resortCode] = list
                     } else {
                         var list = [Relinquishment]()
                         list.append(relinq)

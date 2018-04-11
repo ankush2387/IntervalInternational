@@ -20,7 +20,7 @@ open class SkyFloatingLabelTextFieldWithIcon: SkyFloatingLabelTextField {
     open var iconLabel: UILabel!
 
     /// A UIFont value that determines the font that the icon is using
-    @objc dynamic open var iconFont: UIFont? {
+    dynamic open var iconFont: UIFont? {
         didSet {
             iconLabel?.font = iconFont
         }
