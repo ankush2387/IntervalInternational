@@ -90,6 +90,7 @@ class CheckOutViewController: UIViewController {
             if let exchangeFees = Constant.MyClassConstants.exchangeFees {
  
                 if let insurance = exchangeFees.insurance {
+                    showInsurance = true
                     if let isInsuranceSelected = insurance.selected {
                         if isInsuranceSelected {
                             //FIXME(Frank): why 2 flags for the same? - what is this?
@@ -1510,18 +1511,10 @@ extension CheckOutViewController: UITableViewDataSource {
                 if let exchnageFees = Constant.MyClassConstants.exchangeFees {
                     cell.setTotalPrice(with: currencyCode, and: exchnageFees.total, and: countryCode)
                 }
-                
-                if let total = recapFeesTotal {
-                    cell.setTotalPrice(with: currencyCode, and: total, and: countryCode)
-                }
             } else {
                 //FIXME(Frank) - what is this ? - why assign the cell.setTotalPrice(...) twice?
                 if let rentalFees = Constant.MyClassConstants.rentalFees {
                     cell.setTotalPrice(with: currencyCode, and: rentalFees.total, and: countryCode)
-                }
-                
-                if let total = recapFeesTotal {
-                    cell.setTotalPrice(with: currencyCode, and: total, and: countryCode)
                 }
             }
             return cell
