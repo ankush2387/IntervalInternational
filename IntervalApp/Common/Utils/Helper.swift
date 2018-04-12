@@ -332,6 +332,7 @@ public class Helper {
     }
     static func performSortingForMemberNumberWithViewResultAndNothingYet() {
         
+        // FIXME (FRANK) maybe move this to SDK? see mobi-2044
         Constant.activeAlertCount = Constant.MyClassConstants.searchDateResponse.filter { $0.1.checkInDates.count > 0 }.count
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
