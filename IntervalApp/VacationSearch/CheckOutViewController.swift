@@ -23,6 +23,7 @@ class CheckOutViewController: UIViewController {
     //class variables
     var requiredSectionIntTBLview = 13
     var isTripProtectionEnabled = false
+    var isGuestCertificateEnabled = false
     var bookingCostRequiredRows = 1
     var promotionSelectedIndex = 0
     var isAgreed = false
@@ -73,6 +74,8 @@ class CheckOutViewController: UIViewController {
         }
         Constant.MyClassConstants.additionalAdvisementsArray.removeAll()
         Constant.MyClassConstants.generalAdvisementsArray.removeAll()
+        
+        self.isGuestCertificateEnabled = Constant.MyClassConstants.exchangeFees?.guestCertificate != nil || Constant.MyClassConstants.rentalFees?.guestCertificate != nil
         
         if Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange() || Constant.MyClassConstants.searchBothExchange {
             
@@ -236,7 +239,6 @@ class CheckOutViewController: UIViewController {
                         Constant.MyClassConstants.exchangeContinueToPayResponse = response
                         
                         Constant.MyClassConstants.selectedCreditCard = nil
-                        Helper.removeStoredGuestFormDetials()
                         
                         strongSelf.isAgreed = true
                         strongSelf.hideHudAsync()
@@ -274,7 +276,6 @@ class CheckOutViewController: UIViewController {
                         Constant.MyClassConstants.continueToPayResponse = response
 
                         Constant.MyClassConstants.selectedCreditCard = nil
-                        Helper.removeStoredGuestFormDetials()
                         
                         strongSelf.isAgreed = true
                         strongSelf.hideHudAsync()
@@ -947,9 +948,9 @@ extension CheckOutViewController: UITableViewDataSource {
             totalRowsInCost = totalFeesArray.count
             return totalRowsInCost
         case 6 :
-            if Constant.MyClassConstants.enableGuestCertificate && self.isTripProtectionEnabled {
+            if self.isGuestCertificateEnabled && self.isTripProtectionEnabled {
                 return 2
-            } else if Constant.MyClassConstants.enableGuestCertificate || self.isTripProtectionEnabled {
+            } else if self.isGuestCertificateEnabled || self.isTripProtectionEnabled {
                 return 1
             } else {
                 return 0
@@ -1096,7 +1097,7 @@ extension CheckOutViewController: UITableViewDataSource {
             }
             
         case 6 :
-            if !self.isTripProtectionEnabled && !Constant.MyClassConstants.enableGuestCertificate {
+            if !self.isTripProtectionEnabled && !self.isGuestCertificateEnabled {
                 isHeightZero = true
                 return 0
             } else {
@@ -1453,8 +1454,9 @@ extension CheckOutViewController: UITableViewDataSource {
                     
                 } else {
                     
-                    if let guestCertFee = Constant.MyClassConstants.rentalFees?.guestCertificate, let guestCertPrice = guestCertFee.guestCertificatePrice {
-                        cell.setTotalPrice(with: currencyCode, and: guestCertPrice.price, and: countryCode)
+                    let gc = Constant.MyClassConstants.rentalFees?.guestCertificate?.guestCertificatePrice ?? Constant.MyClassConstants.exchangeFees?.guestCertificate?.guestCertificatePrice
+                    if let price = gc?.price {
+                        cell.setTotalPrice(with: currencyCode, and: price, and: countryCode)
                     }
                     
                     cell.priceLabel.text = Constant.MyClassConstants.guestCertificateTitle
