@@ -189,7 +189,6 @@ class Constant: NSObject {
         
         //***** New creditcard screen constant string *****//
         static var newCardalertTitle = "Credit Card Information".localized()
-        static var newCardalertMess = "Card already exist.".localized()
         static var alertReqFieldMsg = "Please fill out all required fields.".localized()
         static var noResultError = "No Result".localized()
         static var tryAgainError = "Try Again".localized()
@@ -753,7 +752,7 @@ class Constant: NSObject {
         static var termsConditionMessage = "I have read and accepted the Terms and Conditions and Privacy Policy".localized()
         static var agreePayMessage = "Slide to Agree and Pay".localized()
         static var operationFailedMessage =  "Unable to perform back button operatin due to server error, Try again!".localized()
-        static var availablePointToolDefaultSelectedDateAlert =  "if no date is selected the Available Points Balance displayed is based on today's date.".localized()
+        static var availablePointToolDefaultSelectedDateAlert =  "If no date is selected, the Available Points Balance displayed is based on today's date.".localized()
         static var holdingTimeLostMessage = "The booking time has expired and your selection is no longer on hold. You will now be returned to the search results.".localized()
         static var searchVacationTitle = "Search Vacation".localized()
         static var searchVacationMessage = "Please select any destination or resort".localized()
@@ -923,7 +922,7 @@ class Constant: NSObject {
         static var privacyLegalViewController = "Privacy/Legal".localized()
         static var vacationSearchDestinationController = "Select Destinations or Resorts".localized()
         static var searchResultViewController = "Search Results".localized()
-        static var availablePointToolViewController = "Available Point Tool".localized()
+        static var availablePointToolViewController = "Available Points Tool".localized()
         static var floatDetailViewController = "Additional Unit Details".localized()
         static var clubresortsViewController = "Club Resorts".localized()
         static var bedroomSizeViewController = "Bedroom Size".localized()
@@ -1489,7 +1488,7 @@ class Constant: NSObject {
         static let expirationdateInformationLabelText = "Expiration Date:".localized()
         static let pointsearnedByInformationLabelText = "Points Earned by:".localized()
         static let availablePointsinformationLabelText = "Available Points".localized()
-        static let pointbalanceInformationlableText = "if no date is selected the Available Points Balance displayed is based on today's date.".localized()
+        static let pointbalanceInformationlableText = "If no date is selected, the Available Points Balance displayed is based on today's date.".localized()
         static let donebuttoncellIdentifier = "donebuttoncell"
         struct availablePointsAsOfTableViewCell {
             static let pointasOflabelText = "Points as of:".localized()

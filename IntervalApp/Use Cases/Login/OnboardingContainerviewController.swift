@@ -31,7 +31,7 @@ class OnboardingContainerviewController: UIViewController, UIPageViewControllerD
                            "Search Multiple Destinations".localized(),
                            "Upcoming Trips".localized(),
                            "Fast Touch Login".localized()]
-    let cardTopicDescription = ["This is what we call a game changer. Exclusively on the App, you can search for an exchange using any of your available weeks or points.".localized(),
+    let cardTopicDescription = ["This is what we call a game changer. Exclusively on the app, you can search for an exchange using any of your available weeks or points.".localized(),
                                 "We've made it easier to see your vacation options! Search for both exchanges and Getaways together, or search each separately.".localized(),
                                 "Search first, then decide the best way to book your vacation. Exchange using any of your available weeks or points - the rest is up to you.".localized(),
                                 "Choose one or more resorts or desinations by name, or select resorts from the map.".localized(),

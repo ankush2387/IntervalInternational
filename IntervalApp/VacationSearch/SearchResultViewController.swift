@@ -1253,6 +1253,7 @@ extension SearchResultViewController: UICollectionViewDataSource {
                     } else if let surroundingMatchSection = availabilitySurroundingMatchSection, !surroundingMatchSection.items.isEmpty {
                         let availabilityBucket = surroundingMatchSection.items[resorTableRow].getInventoryBuckets()
                         return availabilityBucket?.count ?? 0
+
                     }
                 case 1:
                     if let surroundingMatchSection = availabilitySurroundingMatchSection, !surroundingMatchSection.items.isEmpty {
