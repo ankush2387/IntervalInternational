@@ -11,9 +11,6 @@ import DarwinSDK
 
 class SearchBothInventoryCVCell: UICollectionViewCell {
     
-    //***** Custom cell delegate to access the delegate method *****//
-    weak var exchangeCellDelegate: ExchangeInventoryCVCellDelegate?
-
     @IBOutlet private weak var cellPromotionView: CellPromotionView!
     @IBOutlet weak var bedRoomType: UILabel!
     @IBOutlet weak var sleeps: UILabel!
@@ -35,37 +32,22 @@ class SearchBothInventoryCVCell: UICollectionViewCell {
             totalSleepCapacity += "\(bucket.unit.privateSleepCapacity)" + Constant.CommonLocalisedString.privateString + "".localized()
         }
         sleeps.text = totalSleepCapacity
-        
-        // Default state
-        //exchangeStackView.isHidden = false
         imgViewExchange.image = #imageLiteral(resourceName: "ExchangeIcon")
-        //exchangeTitleLabel.isHidden = false
-        //exchangeImageView.isUserInteractionEnabled = false
-        //pointsStackView.isHidden = true
         
         if let exchangePointsCost = bucket.exchangePointsCost, let exchangeMemberPointsRequired = bucket.exchangeMemberPointsRequired {
-            if Constant.MyClassConstants.isCIGAvailable && exchangePointsCost != exchangeMemberPointsRequired {
-                imgViewExchange.image = #imageLiteral(resourceName: "InfoIcon")
-
-                //imgViewExchange.isUserInteractionEnabled = true
-                //let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapBlurButton))
-                //self.addGestureRecognizer(tapGesture)
-            } else {
-                if exchangePointsCost > 0 {
-                    //exchangeStackView.isHidden = true
-                    //pointsStackView.isHidden = false
-                    
-                    //pointsCountLabel.text = "\(String(describing: exchangePointsCost))".localized()
-                    
-                    // Clean the label
-                    //pointsTitleLabel.text = ""
-                    
-                    if Constant.MyClassConstants.isCIGAvailable {
-                        //pointsTitleLabel.text = Constant.CommonLocalisedString.cigPointsString
-                    } else if Constant.MyClassConstants.isClubPointsAvailable {
-                        //pointsTitleLabel.text = Constant.CommonLocalisedString.clubPointsString
-                    }
+            
+            switch Constant.exchangePointType {
+            case ExchangePointType.CIGPOINTS:
+                if exchangePointsCost <= exchangeMemberPointsRequired {
+                    imgViewExchange.image = #imageLiteral(resourceName: "InfoIcon")
+                } else {
+                    //here also we need to update point and title according to new mockups
                 }
+            case ExchangePointType.CLUBPOINTS:
+                //need to update title and point according to new mockups
+                break
+            case ExchangePointType.UNKNOWN:
+                break
             }
         }
         
@@ -93,9 +75,5 @@ class SearchBothInventoryCVCell: UICollectionViewCell {
         }
 
         cellPromotionView.setPromotionUI(for: bucket.unit)
-    }
-    
-    func tapBlurButton() {
-        exchangeCellDelegate?.infoIconPressed()
     }
 }

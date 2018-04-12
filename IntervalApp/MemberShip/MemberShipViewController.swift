@@ -14,6 +14,10 @@ class MemberShipViewController: UIViewController {
     
     //** Outlets
     @IBOutlet weak var tableView: UITableView!
+    
+    let productCellHeight:CGFloat = 85.0
+    let memberShipCellHeight:CGFloat = 338.0
+    let ownerShipCellHeight:CGFloat = 332.0
 
     @IBAction func switchMemberShipButtonIsTapped(_ sender: UIButton) {
         CreateActionSheet()
@@ -238,6 +242,9 @@ extension MemberShipViewController: UITableViewDataSource {
                 
                  guard let membership = Session.sharedSession.selectedMembership else { return UITableViewCell() }
                 if let products = membership.products {
+                    if products.count > 1 {
+                        memberProductCell.bottomHorizontalSeparator.isHidden = true
+                    }
                    let sortedProducts = products.sorted { $0.coreProduct && !$1.coreProduct }
                    memberProductCell.setUpMemberProductData(membership: membership, prod: sortedProducts[indexPath.row])
                 }
@@ -306,13 +313,11 @@ extension MemberShipViewController: UITableViewDelegate {
             
         default:
             if indexPath.section == 0 {
-                return 338
-                
+                return memberShipCellHeight
             } else if indexPath.section == 1 {
-                let extraViews = (Session.sharedSession.selectedMembership?.products?.count ?? 0) - 1
-                    return CGFloat(80 * extraViews) + 5
+                return productCellHeight
             } else {
-               return 332
+               return ownerShipCellHeight
             }
         }
 	}

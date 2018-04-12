@@ -20,7 +20,7 @@ open class SkyFloatingLabelTextField: UITextField { // swiftlint:disable:this ty
      A Boolean value that determines if the language displayed is LTR. 
      Default value set automatically from the application language settings.
      */
-    open var isLTRLanguage: Bool = UIApplication.shared.userInterfaceLayoutDirection == .leftToRight {
+    open var isLTRLanguage = UIApplication.shared.userInterfaceLayoutDirection == .leftToRight {
         didSet {
            updateTextAligment()
         }
@@ -39,9 +39,9 @@ open class SkyFloatingLabelTextField: UITextField { // swiftlint:disable:this ty
     // MARK: Animation timing
 
     /// The value of the title appearing duration
-    @objc dynamic open var titleFadeInDuration: TimeInterval = 0.2
+    dynamic open var titleFadeInDuration: TimeInterval = 0.2
     /// The value of the title disappearing duration
-    @objc dynamic open var titleFadeOutDuration: TimeInterval = 0.3
+    dynamic open var titleFadeOutDuration: TimeInterval = 0.3
 
     // MARK: Colors
 
@@ -67,7 +67,7 @@ open class SkyFloatingLabelTextField: UITextField { // swiftlint:disable:this ty
     }
 
     /// A UIFont value that determines text color of the placeholder label
-    @objc dynamic open var placeholderFont: UIFont? {
+    dynamic open var placeholderFont: UIFont? {
         didSet {
             updatePlaceholder()
         }
@@ -75,24 +75,15 @@ open class SkyFloatingLabelTextField: UITextField { // swiftlint:disable:this ty
 
     fileprivate func updatePlaceholder() {
         if let placeholder = placeholder, let font = placeholderFont ?? font {
-            #if swift(>=4.0)
-                attributedPlaceholder = NSAttributedString(
-                    string: placeholder,
-                    attributes: [
-                        NSAttributedStringKey.foregroundColor: placeholderColor, NSAttributedStringKey.font: font
-                    ]
-                )
-            #else
                 attributedPlaceholder = NSAttributedString(
                     string: placeholder,
                     attributes: [NSForegroundColorAttributeName: placeholderColor, NSFontAttributeName: font]
                 )
-            #endif
         }
     }
 
     /// A UIFont value that determines the text font of the title label
-    @objc dynamic open var titleFont: UIFont = .systemFont(ofSize: 13) {
+    dynamic open var titleFont: UIFont = .systemFont(ofSize: 13) {
         didSet {
             updateTitleLabel()
         }
@@ -191,7 +182,7 @@ open class SkyFloatingLabelTextField: UITextField { // swiftlint:disable:this ty
     }
 
     /// The backing property for the highlighted property
-    fileprivate var _highlighted: Bool = false
+    fileprivate var _highlighted = false
 
     /**
      A Boolean value that determines whether the receiver is highlighted.
@@ -298,7 +289,7 @@ open class SkyFloatingLabelTextField: UITextField { // swiftlint:disable:this ty
     /**
      Invoked when the editing state of the textfield changes. Override to respond to this change.
      */
-    @objc open func editingChanged() {
+    open func editingChanged() {
         updateControl(true)
         updateTitleLabel(true)
     }
@@ -354,7 +345,7 @@ open class SkyFloatingLabelTextField: UITextField { // swiftlint:disable:this ty
      */
     @discardableResult
     override open func resignFirstResponder() -> Bool {
-        let result = super.resignFirstResponder()
+        let result =  super.resignFirstResponder()
         updateControl(true)
         return result
     }
@@ -434,7 +425,7 @@ open class SkyFloatingLabelTextField: UITextField { // swiftlint:disable:this ty
         updateTitleVisibility(animated)
     }
 
-    fileprivate var _titleVisible: Bool = false
+    fileprivate var _titleVisible = false
 
     /*
     *   Set this value to make the title visible

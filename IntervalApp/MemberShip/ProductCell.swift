@@ -20,6 +20,7 @@ class ProductCell: UITableViewCell {
     @IBOutlet weak var lblMembershipName: UILabel!
     @IBOutlet weak var productImageView: UIImageView!
  
+    @IBOutlet weak var bottomHorizontalSeparator: UIView!
     func setUpMemberProductData(membership: Membership, prod: Product) {
                 if let productCode = prod.productCode {
                     productImageView.image = UIImage(named: productCode)
@@ -31,7 +32,7 @@ class ProductCell: UITableViewCell {
                 } else {
                     innerView.layer.cornerRadius = 2
         }
-                if !prod.billingEntity.unwrappedString.contains("NON") {
+                if prod.billingEntity.unwrappedString.uppercased() != "NON" {
                     lblExpireDate.text = nil
                     lblExpire.isHidden = true
                 } else {
@@ -40,8 +41,7 @@ class ProductCell: UITableViewCell {
                     }
                     lblExpireDate.font = UIFont(name: Constant.fontName.helveticaNeue, size: 15)
                 }
-                
-                lblMembershipName.text = Helper.getDisplayNameFor(membership: membership, product: membership.getProductWithHighestTier())
+                lblMembershipName.text = Helper.getProductNameFromProduct(product: prod)
     }
 
 }

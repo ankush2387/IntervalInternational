@@ -42,24 +42,29 @@ class ViewDetailsTBLcell: UITableViewCell {
                 resortName?.text = ""
             }
         } else {
-            lblHeading.text = Constant.MyClassConstants.relinquishment
-            if let clubPoint = filterRelinquishments.clubPoints {
-                resortName?.text = clubPoint.resort?.resortName
-            } else if let openWeek = filterRelinquishments.openWeek {
+            
+            if let openWeek = filterRelinquishments.openWeek {
                 resortName?.text = openWeek.resort?.resortName
+                lblHeading.text = Constant.MyClassConstants.relinquishment
             } else if let deposits = filterRelinquishments.deposit {
                 resortName?.text = deposits.resort?.resortName
-            } else if filterRelinquishments.pointsProgram != nil {
-                if Constant.MyClassConstants.isCIGAvailable {
+                lblHeading.text = Constant.MyClassConstants.relinquishment
+            } else if let selectedBucket = Constant.MyClassConstants.selectedAvailabilityInventoryBucket, let pointsCost = selectedBucket.exchangePointsCost {
+                switch Constant.exchangePointType {
+                case ExchangePointType.CIGPOINTS:
+                    lblHeading.text = ExchangePointType.CIGPOINTS.name.localized()
+                    resortName?.text = "\(pointsCost)".localized()
                     resortDetailsButton.isHidden = true
-                    lblHeading.text = "CIG Points"
-                    
-                    if let selectedBucket = Constant.MyClassConstants.selectedAvailabilityInventoryBucket, let pointsCost = selectedBucket.exchangePointsCost {
-                         resortName?.text = "\(pointsCost)".localized()
-                    } else {
-                        resortName?.text = "\(0)".localized()
-                    }
+                case ExchangePointType.CLUBPOINTS:
+                    lblHeading.text = ExchangePointType.CLUBPOINTS.name.localized()
+                    resortName?.text = "\(pointsCost)".localized()
+                    resortDetailsButton.isHidden = true
+                case ExchangePointType.UNKNOWN:
+                    break
                 }
+            } else {
+                resortName?.text = ""
+                lblHeading.text = ""
             }
             resortDetailsButton.tag = indexPath.row
             resortImageView?.image = #imageLiteral(resourceName: "EXG_CO")
