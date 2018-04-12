@@ -354,7 +354,9 @@ transaction.</string>
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Z7H-la-zBu">
-                                <rect key="frame" x="0.0" y="132" width="375" height="646"/>
+
+                                <rect key="frame" x="0.0" y="108" width="375" height="510"/>
+
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="536" id="xAh-Ay-Djq"/>
@@ -671,7 +673,7 @@ transaction.</string>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="qVN-Ng-HPx">
-                                                    <rect key="frame" x="7" y="3" width="361" height="36"/>
+                                                    <rect key="frame" x="0.0" y="3" width="375" height="36"/>
                                                 </imageView>
                                             </subviews>
                                             <constraints>
@@ -3326,10 +3328,11 @@ transaction.</string>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="NoImageIcon" translatesAutoresizingMaskIntoConstraints="NO" id="fQ6-2D-KVE">
-                                                    <rect key="frame" x="20" y="15" width="40" height="35"/>
+                                                    <rect key="frame" x="20" y="10" width="40" height="40"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="40" id="GHJ-JK-hQF"/>
+                                                        <constraint firstAttribute="height" constant="40" id="gVt-Zh-GSl"/>
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Destination Resort" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ofI-ba-Fol">
@@ -3351,8 +3354,9 @@ transaction.</string>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tbq-Cs-22B" customClass="IUIKButton" customModule="IntervalUIKit">
-                                                    <rect key="frame" x="290" y="20" width="69" height="25"/>
+                                                    <rect key="frame" x="290" y="15" width="69" height="35"/>
                                                     <constraints>
+                                                        <constraint firstAttribute="height" constant="35" id="jQA-K0-2mo"/>
                                                         <constraint firstAttribute="width" constant="69" id="s8U-jf-d2h"/>
                                                     </constraints>
                                                     <state key="normal" title="Details">
@@ -3391,12 +3395,10 @@ transaction.</string>
                                                 <constraint firstItem="pUj-ht-XqV" firstAttribute="top" secondItem="a7B-wV-a74" secondAttribute="bottom" constant="15.5" id="Tni-xw-nfX"/>
                                                 <constraint firstAttribute="bottom" secondItem="pUj-ht-XqV" secondAttribute="bottom" id="YqZ-vx-HEV"/>
                                                 <constraint firstAttribute="trailing" secondItem="tbq-Cs-22B" secondAttribute="trailing" constant="16" id="ZEj-gj-1hh"/>
-                                                <constraint firstAttribute="bottom" secondItem="tbq-Cs-22B" secondAttribute="bottom" constant="20" id="ZGM-Eg-fyS"/>
                                                 <constraint firstItem="ofI-ba-Fol" firstAttribute="leading" secondItem="fQ6-2D-KVE" secondAttribute="trailing" constant="10" id="c1w-Xz-J5U"/>
-                                                <constraint firstAttribute="bottom" secondItem="fQ6-2D-KVE" secondAttribute="bottom" constant="15" id="dqx-OU-wih"/>
                                                 <constraint firstItem="a7B-wV-a74" firstAttribute="leading" secondItem="fQ6-2D-KVE" secondAttribute="trailing" constant="10" id="fjU-GI-roQ"/>
-                                                <constraint firstItem="fQ6-2D-KVE" firstAttribute="top" secondItem="7Tq-T9-Ue1" secondAttribute="top" constant="15" id="krJ-f3-g1F"/>
-                                                <constraint firstItem="tbq-Cs-22B" firstAttribute="top" secondItem="7Tq-T9-Ue1" secondAttribute="top" constant="20" id="nAc-IE-7s1"/>
+                                                <constraint firstItem="fQ6-2D-KVE" firstAttribute="top" secondItem="7Tq-T9-Ue1" secondAttribute="top" constant="10" id="krJ-f3-g1F"/>
+                                                <constraint firstItem="tbq-Cs-22B" firstAttribute="top" secondItem="7Tq-T9-Ue1" secondAttribute="top" constant="15" id="nAc-IE-7s1"/>
                                                 <constraint firstItem="pUj-ht-XqV" firstAttribute="leading" secondItem="7Tq-T9-Ue1" secondAttribute="leading" id="vpp-Uc-7l5"/>
                                             </constraints>
                                         </tableViewCellContentView>
@@ -3788,17 +3790,11 @@ to confirm a larger unit.</string>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qly-GI-vcY" userLabel="ViewP">
                                                             <rect key="frame" x="275" y="85" width="70" height="40"/>
                                                             <subviews>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="W6j-qN-bfE">
-                                                                    <rect key="frame" x="6" y="1" width="14" height="18"/>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pgl-oH-uBX">
+                                                                    <rect key="frame" x="0.0" y="5" width="62" height="20"/>
                                                                     <constraints>
-                                                                        <constraint firstAttribute="width" constant="14" id="345-DC-3Sa"/>
+                                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="62" id="mjy-iJ-3Qe"/>
                                                                     </constraints>
-                                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                                                    <color key="textColor" red="0.0" green="0.46666666666666667" blue="0.74509803921568629" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                    <nil key="highlightedColor"/>
-                                                                </label>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="299" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pgl-oH-uBX">
-                                                                    <rect key="frame" x="20" y="5" width="39" height="20"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                                                     <color key="textColor" red="0.0" green="0.46666666666666667" blue="0.74509803921568629" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                     <nil key="highlightedColor"/>
@@ -3817,12 +3813,9 @@ to confirm a larger unit.</string>
                                                                 <constraint firstAttribute="width" constant="70" id="067-Gu-352"/>
                                                                 <constraint firstItem="Pgl-oH-uBX" firstAttribute="top" secondItem="Qly-GI-vcY" secondAttribute="top" constant="5" id="4Is-f1-U5J"/>
                                                                 <constraint firstItem="VcR-pr-4uy" firstAttribute="top" secondItem="Pgl-oH-uBX" secondAttribute="bottom" id="69W-xh-S61"/>
-                                                                <constraint firstItem="W6j-qN-bfE" firstAttribute="leading" secondItem="Qly-GI-vcY" secondAttribute="leading" constant="6" id="EhA-yL-5iW"/>
-                                                                <constraint firstItem="VcR-pr-4uy" firstAttribute="top" secondItem="W6j-qN-bfE" secondAttribute="bottom" constant="6" id="Yh4-et-jtF"/>
-                                                                <constraint firstAttribute="trailing" secondItem="Pgl-oH-uBX" secondAttribute="trailing" constant="11" id="bnD-12-1IA"/>
+                                                                <constraint firstAttribute="trailing" secondItem="Pgl-oH-uBX" secondAttribute="trailing" constant="8" id="bnD-12-1IA"/>
                                                                 <constraint firstAttribute="trailing" secondItem="VcR-pr-4uy" secondAttribute="trailing" id="rd4-hO-Qgs"/>
                                                                 <constraint firstAttribute="height" constant="40" id="sgJ-dC-cBE"/>
-                                                                <constraint firstItem="Pgl-oH-uBX" firstAttribute="leading" secondItem="W6j-qN-bfE" secondAttribute="trailing" id="wMz-GJ-Jz0"/>
                                                                 <constraint firstItem="VcR-pr-4uy" firstAttribute="leading" secondItem="Qly-GI-vcY" secondAttribute="leading" id="xJv-m2-suB"/>
                                                                 <constraint firstAttribute="bottom" secondItem="VcR-pr-4uy" secondAttribute="bottom" id="zI8-er-3Sw"/>
                                                             </constraints>
@@ -7730,9 +7723,9 @@ transaction.</string>
         <segue reference="xan-e8-tse"/>
         <segue reference="Gma-QI-cCT"/>
         <segue reference="Lp2-ch-oU8"/>
-        <segue reference="KRw-si-7MT"/>
+        <segue reference="jTg-f9-AVL"/>
         <segue reference="Rpo-cQ-qF4"/>
-        <segue reference="4gU-cx-AAf"/>
+        <segue reference="sGp-zH-9TZ"/>
         <segue reference="Uce-OZ-bfJ"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
