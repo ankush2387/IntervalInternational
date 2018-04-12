@@ -30,21 +30,69 @@ class Constant: NSObject {
     }
     
     //Getaways SearchResult CardFormDetail Data
-    struct GetawaySearchResultGuestFormDetailData {
+    
+    class GuestCertificateFormData {
         
-        static var textFieldChangedInSection = -1
-        static var firstName = ""
-        static var lastName = ""
-        static var country = ""
-        static var address1 = ""
-        static var address2 = ""
-        static var city = ""
-        static var state = ""
-        static var pinCode = ""
-        static var email = ""
-        static var homePhoneNumber = ""
-        static var businessPhoneNumber = ""
+        var textFieldChangedInSection = -1
+        var firstName = ""
+        var lastName = ""
+        var country = ""
+        var countryCode = ""
+        var address1 = ""
+        var address2 = ""
+        var city = ""
+        var state = ""
+        var stateCode = ""
+        var pinCode = ""
+        var email = ""
+        var homePhoneNumber = ""
+        var businessPhoneNumber = ""
         
+        func isFilledOut() -> Bool {
+            return self.firstName != ""
+                && self.lastName != ""
+                && self.country != ""
+                && self.address1 != ""
+                && self.city != ""
+                && self.state != ""
+                && self.pinCode != ""
+                && self.email != ""
+                && self.homePhoneNumber != ""
+        }
+        
+        func toGuest() -> Guest {
+            let guest = Guest()
+            
+            guest.firstName = self.firstName
+            guest.lastName = self.lastName
+            guest.primaryTraveler = true
+            
+            let guestAddress = Address()
+            var address = [String]()
+            address.append(self.address1)
+            address.append(self.address2)
+            guestAddress.addressLines = address
+            
+            guestAddress.cityName = self.city
+            guestAddress.postalCode = self.pinCode
+            guestAddress.addressType = "HADDR"
+            guestAddress.territoryCode = self.stateCode
+            guestAddress.countryCode = self.countryCode
+            
+            var phoneNumbers = [Phone]()
+            let homePhoneNo = Phone()
+            homePhoneNo.phoneNumber = self.homePhoneNumber
+            // FIXME (FRANK/CHRIS) we need to get this data from the views
+            homePhoneNo.countryPhoneCode = "1"
+            homePhoneNo.phoneType = "HOME_PRIMARY"
+            homePhoneNo.areaCode = "305"
+            homePhoneNo.countryCode = self.countryCode
+            phoneNumbers.append(homePhoneNo)
+            
+            guest.phones = phoneNumbers
+            guest.address = guestAddress
+            return guest
+        }
     }
     
     struct AdditionalUnitDetailsData {
@@ -462,7 +510,6 @@ class Constant: NSObject {
         static var endingIn = "ending in"
         
         static var enableTaxes = false
-        static var enableGuestCertificate = false
         
         static var hasAdditionalCharges = false
         static var guestString = "guest"

@@ -25,6 +25,7 @@ class CheckOutIPadViewController: UIViewController {
     //Class variables
     var isPromotionsEnabled = true
     var isTripProtectionEnabled = false
+    var isGuestCertificateEnabled = false
     var bookingCostRequiredRows = 1
     var promotionSelectedIndex = 0
     var isAgreed: Bool = false
@@ -65,6 +66,7 @@ class CheckOutIPadViewController: UIViewController {
         
         self.emailTextToEnter = Session.sharedSession.contact?.emailAddress ?? ""
         self.checkoutTableView.reloadData()
+        self.isGuestCertificateEnabled = Constant.MyClassConstants.exchangeFees?.guestCertificate != nil || Constant.MyClassConstants.rentalFees?.guestCertificate != nil
         
         if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
             
@@ -334,8 +336,7 @@ class CheckOutIPadViewController: UIViewController {
                         Constant.MyClassConstants.exchangeContinueToPayResponse = response
                         
                         let selectedCard = Constant.MyClassConstants.selectedCreditCard
-                        
-                        Helper.removeStoredGuestFormDetials()
+                                                
                         self.isAgreed = true
                         self.hideHudAsync()
                         self.checkoutTableView.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with: .automatic)
@@ -952,10 +953,10 @@ extension CheckOutIPadViewController: UITableViewDataSource {
                 return totalRowsInCost
                 
             case 2:
-                if self.isTripProtectionEnabled && Constant.MyClassConstants.enableGuestCertificate {
+                if self.isTripProtectionEnabled && self.isGuestCertificateEnabled {
                     return 2
                     
-                } else if !self.isTripProtectionEnabled && !Constant.MyClassConstants.enableGuestCertificate {
+                } else if !self.isTripProtectionEnabled && !self.isGuestCertificateEnabled {
                     return 0
                 } else {
                     return 1
@@ -1033,7 +1034,7 @@ extension CheckOutIPadViewController: UITableViewDataSource {
         case 2:
             switch indexPath.section {
             case 2 :
-                if !self.isTripProtectionEnabled && !Constant.MyClassConstants.enableGuestCertificate {
+                if !self.isTripProtectionEnabled && !self.isGuestCertificateEnabled {
                     isHeightZero = true
                     return 0
                 } else {

@@ -38,6 +38,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
     var renewalNonCoreProduct: Renewal?
     
     var filterRelinquishments = ExchangeRelinquishment()
+    var guestCertFormDetail: Constant.GuestCertificateFormData?
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -107,17 +108,6 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
         
         let emailTest = NSPredicate(format: "SELF MATCHES %@", emailRegEx)
         return emailTest.evaluate(with: testStr)
-    }
-    
-    func guestFormCheckForDetails() -> Bool {
-        
-        if Constant.GetawaySearchResultGuestFormDetailData.firstName != "" && Constant.GetawaySearchResultGuestFormDetailData.lastName != "" && Constant.GetawaySearchResultGuestFormDetailData.country != "" && Constant.GetawaySearchResultGuestFormDetailData.address1 != "" && Constant.GetawaySearchResultGuestFormDetailData.address2 != "" && Constant.GetawaySearchResultGuestFormDetailData.city != "" && Constant.GetawaySearchResultGuestFormDetailData.state != "" && Constant.GetawaySearchResultGuestFormDetailData.pinCode != "" && Constant.GetawaySearchResultGuestFormDetailData.email != "" && Constant.GetawaySearchResultGuestFormDetailData.homePhoneNumber != "" && Constant.GetawaySearchResultGuestFormDetailData.businessPhoneNumber != "" {
-            proceedStatus = true
-        } else {
-            proceedStatus = false
-        }
-        
-        return proceedStatus
     }
     
     func addDoneButtonOnNumpad(textField: UITextField) {
@@ -356,7 +346,6 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
             let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
             let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.RenewelViewController) as! RenewelViewController
             viewController.delegate = self
-            Constant.MyClassConstants.enableGuestCertificate = false
             Constant.MyClassConstants.noThanksForNonCore = false
             let transitionManager = TransitionManager()
             self.navigationController?.transitioningDelegate = transitionManager
@@ -368,49 +357,9 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
                 
                 if self.whoWillBeCheckingInSelectedIndex == Constant.MyClassConstants.membershipContactArray.count {
                     
-                    let guest = Guest()
+                    let guest = guestCertFormDetail?.toGuest()
                     
-                    guest.firstName = Constant.GetawaySearchResultGuestFormDetailData.firstName
-                    guest.lastName = Constant.GetawaySearchResultGuestFormDetailData.lastName
-                    guest.primaryTraveler = true
-                    
-                    let guestAddress = Address()
-                    var address = [String]()
-                    address.append(Constant.GetawaySearchResultGuestFormDetailData.address1)
-                    address.append(Constant.GetawaySearchResultGuestFormDetailData.address2)
-                    guestAddress.addressLines = address
-                    
-                    guestAddress.cityName = Constant.GetawaySearchResultGuestFormDetailData.city
-                    guestAddress.postalCode = Constant.GetawaySearchResultGuestFormDetailData.pinCode
-                    guestAddress.addressType = "HADDR"
-                    guestAddress.territoryCode = "FL"
-                    guestAddress.countryCode = "USA"
-                    
-                    var phoneNumbers = [Phone]()
-                    let homePhoneNo = Phone()
-                    homePhoneNo.phoneNumber = Constant.GetawaySearchResultGuestFormDetailData.homePhoneNumber
-                    homePhoneNo.countryPhoneCode = "1"
-                    homePhoneNo.phoneType = "HOME_PRIMARY"
-                    homePhoneNo.areaCode = "305"
-                    homePhoneNo.countryCode = "FL"
-                    phoneNumbers.append(homePhoneNo)
-                    
-                    guest.phones = phoneNumbers
-                    guest.address = guestAddress
                     exchangeProcessRequest.guest = guest
-                    
-                    Constant.MyClassConstants.enableGuestCertificate = true
-                } else {
-                    Constant.MyClassConstants.enableGuestCertificate = false
-                    
-                    /*let guest = Guest()
-                     guest.firstName = ""
-                     guest.lastName = ""
-                     var phoneNumbers = [Phone]()
-                     guest.phones = phoneNumbers
-                     let guestAddress = Address()
-                     guest.address = guestAddress
-                     exchangeProcessRequest.guest = guest*/
                 }
                 
                 // Add selected renewals to the ExchangeProcessContinueToCheckoutRequest
@@ -488,38 +437,9 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
                 
                 if self.whoWillBeCheckingInSelectedIndex == Constant.MyClassConstants.membershipContactArray.count {
                     
-                    let guest = Guest()
+                    let guest = guestCertFormDetail?.toGuest()
                     
-                    guest.firstName = Constant.GetawaySearchResultGuestFormDetailData.firstName
-                    guest.lastName = Constant.GetawaySearchResultGuestFormDetailData.lastName
-                    guest.primaryTraveler = true
-                    
-                    let guestAddress = Address()
-                    var address = [String]()
-                    address.append(Constant.GetawaySearchResultGuestFormDetailData.address1)
-                    address.append(Constant.GetawaySearchResultGuestFormDetailData.address2)
-                    guestAddress.addressLines = address
-                    
-                    guestAddress.cityName = Constant.GetawaySearchResultGuestFormDetailData.city
-                    guestAddress.postalCode = Constant.GetawaySearchResultGuestFormDetailData.pinCode
-                    guestAddress.addressType = "HADDR"
-                    guestAddress.territoryCode = Constant.GetawaySearchResultCardFormDetailData.stateCode
-                    guestAddress.countryCode = Constant.GetawaySearchResultCardFormDetailData.countryCode
-                    
-                    var phoneNumbers = [Phone]()
-                    let homePhoneNo = Phone()
-                    homePhoneNo.phoneNumber = Constant.GetawaySearchResultGuestFormDetailData.homePhoneNumber
-                    homePhoneNo.countryPhoneCode = "1"
-                    homePhoneNo.phoneType = "HOME_PRIMARY"
-                    homePhoneNo.areaCode = "305"
-                    homePhoneNo.countryCode = Constant.GetawaySearchResultCardFormDetailData.countryCode
-                    phoneNumbers.append(homePhoneNo)
-                    
-                    guest.phones = phoneNumbers
-                    guest.address = guestAddress
                     processRequest1.guest = guest
-                    
-                    Constant.MyClassConstants.enableGuestCertificate = true
                 }
                 
                 // Add selected renewals to the RentalProcessPrepareContinueToCheckoutRequest
@@ -760,18 +680,18 @@ extension WhoWillBeCheckingInIPadViewController: UITableViewDataSource {
             if indexPath.section == 3 {
                 
                 if indexPath.row == 0 {
-                    if Constant.GetawaySearchResultGuestFormDetailData.firstName == "" {
+                    if guestCertFormDetail?.firstName == "" {
                         cell.nameTF.placeholder = Constant.textFieldTitles.guestFormFnamePlaceholder
                         
                     } else {
-                        cell.nameTF.text = Constant.GetawaySearchResultGuestFormDetailData.firstName
+                        cell.nameTF.text = guestCertFormDetail?.firstName
                     }
                 } else {
-                    if Constant.GetawaySearchResultGuestFormDetailData.lastName == "" {
+                    if guestCertFormDetail?.lastName == "" {
                         cell.nameTF.placeholder = Constant.textFieldTitles.guestFormLnamePlaceholder
                         
                     } else {
-                        cell.nameTF.text = Constant.GetawaySearchResultGuestFormDetailData.lastName
+                        cell.nameTF.text = guestCertFormDetail?.lastName
                     }
                 }
                 
@@ -779,27 +699,27 @@ extension WhoWillBeCheckingInIPadViewController: UITableViewDataSource {
                 
                 if indexPath.row == 0 {
                     
-                    if Constant.GetawaySearchResultGuestFormDetailData.email == "" {
+                    if guestCertFormDetail?.email == "" {
                         cell.nameTF.placeholder = Constant.textFieldTitles.guestFormEmail
                         
                     } else {
-                        cell.nameTF.text = Constant.GetawaySearchResultGuestFormDetailData.email
+                        cell.nameTF.text = guestCertFormDetail?.email
                     }
                 } else if indexPath.row == 1 {
                     
-                    if Constant.GetawaySearchResultGuestFormDetailData.homePhoneNumber == "" {
+                    if guestCertFormDetail?.homePhoneNumber == "" {
                         cell.nameTF.placeholder = Constant.textFieldTitles.guestFormHomePhoneNumber
                         
                     } else {
-                        cell.nameTF.text = Constant.GetawaySearchResultGuestFormDetailData.homePhoneNumber
+                        cell.nameTF.text = guestCertFormDetail?.homePhoneNumber
                     }
                 } else {
                     
-                    if Constant.GetawaySearchResultGuestFormDetailData.businessPhoneNumber == "" {
+                    if guestCertFormDetail?.businessPhoneNumber == "" {
                         cell.nameTF.placeholder = Constant.textFieldTitles.guestFormBusinessPhoneNumber
                         
                     } else {
-                        cell.nameTF.text = Constant.GetawaySearchResultGuestFormDetailData.businessPhoneNumber
+                        cell.nameTF.text = guestCertFormDetail?.businessPhoneNumber
                     }
                 }
                 
@@ -820,9 +740,9 @@ extension WhoWillBeCheckingInIPadViewController: UITableViewDataSource {
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.dropDownListCell, for: indexPath) as! DropDownListCell
                 if indexPath.row == 0 {
                     
-                    if Constant.GetawaySearchResultGuestFormDetailData.country != "" {
+                    if guestCertFormDetail?.country != "" {
                         
-                        cell.selectedTextLabel.text = Constant.GetawaySearchResultGuestFormDetailData.country
+                        cell.selectedTextLabel.text = guestCertFormDetail?.country
                     } else {
                         
                         cell.selectedTextLabel.text = Constant.textFieldTitles.guestFormSelectCountryPlaceholder
@@ -830,9 +750,9 @@ extension WhoWillBeCheckingInIPadViewController: UITableViewDataSource {
                     
                 } else {
                     
-                    if Constant.GetawaySearchResultGuestFormDetailData.state != "" {
+                    if guestCertFormDetail?.state != "" {
                         
-                        cell.selectedTextLabel.text = Constant.GetawaySearchResultGuestFormDetailData.state
+                        cell.selectedTextLabel.text = guestCertFormDetail?.state
                     } else {
                         
                         cell.selectedTextLabel.text = Constant.textFieldTitles.guestFormSelectState
@@ -894,11 +814,15 @@ extension WhoWillBeCheckingInIPadViewController: UIPickerViewDelegate {
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if self.dropDownSelectionRow == 0 {
             guard let countryName = Constant.countryListArray[row].countryName else { return }
-            Constant.GetawaySearchResultGuestFormDetailData.country = countryName
+            guard let countryCode = Constant.countryListArray[row].countryCode else { return }
+            guestCertFormDetail?.country = countryName
+            guestCertFormDetail?.countryCode = countryCode
             selectedCountryIndex = row
         } else {
             guard let stateName = Constant.stateListArray[row].name else { return }
-            Constant.GetawaySearchResultGuestFormDetailData.state = stateName
+            guard let stateCode = Constant.stateListArray[row].code else { return }
+            guestCertFormDetail?.state = stateName
+            guestCertFormDetail?.stateCode = stateCode
         }
     }
 }
@@ -946,9 +870,9 @@ extension WhoWillBeCheckingInIPadViewController: UITextFieldDelegate {
             }
             
             if textField.tag == 0 {
-                Constant.GetawaySearchResultGuestFormDetailData.firstName = txtAfterUpdate
+                guestCertFormDetail?.firstName = txtAfterUpdate
             } else {
-                Constant.GetawaySearchResultGuestFormDetailData.lastName = txtAfterUpdate
+                guestCertFormDetail?.lastName = txtAfterUpdate
             }
         case 4 :
             
@@ -956,22 +880,22 @@ extension WhoWillBeCheckingInIPadViewController: UITextFieldDelegate {
             case 0, 4 :
                 break
                 
-            case 1 : Constant.GetawaySearchResultGuestFormDetailData.address1 = txtAfterUpdate
+            case 1 : guestCertFormDetail?.address1 = txtAfterUpdate
             case 2 :
-                Constant.GetawaySearchResultGuestFormDetailData.address2 = txtAfterUpdate
+                guestCertFormDetail?.address2 = txtAfterUpdate
             case 3 :
-                Constant.GetawaySearchResultGuestFormDetailData.city = txtAfterUpdate
+                guestCertFormDetail?.city = txtAfterUpdate
             default :
-                Constant.GetawaySearchResultGuestFormDetailData.pinCode = txtAfterUpdate
+                guestCertFormDetail?.pinCode = txtAfterUpdate
             }
             
         default :
             
             switch textField.tag {
             case 0 :
-                Constant.GetawaySearchResultGuestFormDetailData.email = txtAfterUpdate
+                guestCertFormDetail?.email = txtAfterUpdate
                 
-                let eml = self.isValidEmail(testStr: Constant.GetawaySearchResultGuestFormDetailData.email)
+                let eml = self.isValidEmail(testStr: guestCertFormDetail?.email ?? "")
                 
                 if eml || !txtAfterUpdate.isEmpty {
                     textField.superview?.layer.borderColor = #colorLiteral(red: 0.9137254902, green: 0.9137254902, blue: 0.9215686275, alpha: 1).cgColor
@@ -979,11 +903,11 @@ extension WhoWillBeCheckingInIPadViewController: UITextFieldDelegate {
                     textField.superview?.layer.borderColor = UIColor.red.cgColor
                 }
                 
-            case 1 : Constant.GetawaySearchResultGuestFormDetailData.homePhoneNumber = txtAfterUpdate
-            default : Constant.GetawaySearchResultGuestFormDetailData.businessPhoneNumber = txtAfterUpdate
+            case 1 : guestCertFormDetail?.homePhoneNumber = txtAfterUpdate
+            default : guestCertFormDetail?.businessPhoneNumber = txtAfterUpdate
             }
         }
-        let detailStatus = guestFormCheckForDetails()
+        let detailStatus = guestCertFormDetail?.isFilledOut() ?? false
         enableGuestButton(status: detailStatus)
         return  true
     }
