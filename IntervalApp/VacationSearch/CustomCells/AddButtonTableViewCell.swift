@@ -2,7 +2,7 @@
 //  AddButtonTableViewCell.swift
 //  IntervalApp
 //
-//  Created by Kamalakanta Nayak on 03/04/18.
+//  Created by Abhilasha Thapliyal on 03/04/18.
 //  Copyright © 2018 Interval International. All rights reserved.
 //
 
