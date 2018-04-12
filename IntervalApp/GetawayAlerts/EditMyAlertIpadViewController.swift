@@ -73,9 +73,10 @@ class EditMyAlertIpadViewController: UIViewController {
             }
             self.hideHudAsync()
             self.setupView()
+            alertStatusButton.isOn = alert.enabled ?? false
+        } else {
+            self.setupView()
         }
-        self.setupView()
-        
         // omniture tracking with event 40
         omnitureTrackingForEvent40()
         omnitureTrackingForEvent76()
@@ -108,7 +109,6 @@ class EditMyAlertIpadViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         Constant.MyClassConstants.isRunningOnIphone ? createAlertTBLView.reloadData() : createAlertCollectionView.reloadData()
-        
         self.setupView()
         self.bedroomSize.text = Constant.MyClassConstants.selectedBedRoomSize
     }
@@ -184,7 +184,7 @@ class EditMyAlertIpadViewController: UIViewController {
             navigationController?.pushViewController(viewController, animated: true)
         }
     }
-    
+
     //***** function to call bedroom size screen to select bedroom size *****//
     @IBAction func selectRoomSizePressed(_ sender: AnyObject) {
         let mainStoryboard = UIStoryboard(name: Constant.storyboardNames.getawayAlertsIphone, bundle: nil)
@@ -223,9 +223,8 @@ class EditMyAlertIpadViewController: UIViewController {
             rentalAlert.alertId = self.alertId
             rentalAlert.earliestCheckInDate = startDate.stringWithShortFormatForJSON()
             rentalAlert.latestCheckInDate = endDate.stringWithShortFormatForJSON()
-            rentalAlert.enabled = true
-            rentalAlert.name = trimmedUsername
             rentalAlert.enabled = alertStatusButton.isOn
+            rentalAlert.name = trimmedUsername
             
             for destination in Constant.MyClassConstants.selectedGetawayAlertDestinationArray {
                 switch destination {

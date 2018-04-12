@@ -21,6 +21,7 @@ class Constant: NSObject {
     static var calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
     static var countryListArray = [Country]()
     static var stateListArray = [State]()
+    static var exchangePointType: ExchangePointType = ExchangePointType.UNKNOWN
     
     //***** common function to get device orientation *****//
     struct RunningDevice {
@@ -65,7 +66,7 @@ class Constant: NSObject {
     
     struct RGBColorCode {
         
-        static var centerViewRgb = UIColor(red: 176.0 / 255.0, green: 215.0 / 255.0, blue: 115.0 / 255.0, alpha: 1.0)
+        static var centerViewRgb = UIColor(red: 156.0 / 255.0, green: 210.0 / 255.0, blue: 116.0 / 255.0, alpha: 0.9)
         
         static var textFieldBorderRGB = UIColor(red: 241.0 / 255.0, green: 241.0 / 255.0, blue: 246.0 / 255.0, alpha: 1.0).cgColor
     }
@@ -99,8 +100,6 @@ class Constant: NSObject {
         static var filterSearchResult = "Filter Search Result".localized()
         static var loginOriginationPoint: String = ""
         static var vacationSearchResultHeaderLabel: String = ""
-        static var upcomingOriginationPoint: String = ""
-        static var dashbaordUpcomingSelectedIndex = 0
         static var loginType: String = ""
         static var selectedDestinationNames: String = ""
         static var addressStringForCardDetailSection = "Address"
@@ -190,7 +189,6 @@ class Constant: NSObject {
         
         //***** New creditcard screen constant string *****//
         static var newCardalertTitle = "Credit Card Information".localized()
-        static var newCardalertMess = "Card already exist.".localized()
         static var alertReqFieldMsg = "Please fill out all required fields.".localized()
         static var noResultError = "No Result".localized()
         static var tryAgainError = "Try Again".localized()
@@ -611,8 +609,6 @@ class Constant: NSObject {
         static var certifcateCount = 0
         static var certificateArray = [AccommodationCertificate]()
         static var noFilterOptions = false
-        static var isCIGAvailable = false
-        static var isClubPointsAvailable = false
         static var lowestTerm = 12
     }
     
@@ -747,7 +743,7 @@ class Constant: NSObject {
         static var editAlertdetinationMessage = "Select at least one Destination".localized()
         static var maximumLimitReachedMessage = "Maximum limit reached".localized()
         static var bedroomSizeAlertMessage = "Please select at least one master or lock-off portion. ".localized()
-        static var feesAlertMessage = "Slide to agree to fees. ".localized()
+        static var feesAlertMessage = "Slide to Agree to Fees ".localized()
         static var insuranceSelectionMessage = "Select trip protection or choose \("\"No I decline coverage.\"")".localized()
         static var paymentSelectionMessage = "Please enter a valid credit card. ".localized()
         static var promotionsMessage = "Please select any promotions. ".localized()
@@ -756,7 +752,7 @@ class Constant: NSObject {
         static var termsConditionMessage = "I have read and accepted the Terms and Conditions and Privacy Policy".localized()
         static var agreePayMessage = "Slide to Agree and Pay".localized()
         static var operationFailedMessage =  "Unable to perform back button operatin due to server error, Try again!".localized()
-        static var availablePointToolDefaultSelectedDateAlert =  "if no date is selected the Available Points Balance displayed is based on today's date.".localized()
+        static var availablePointToolDefaultSelectedDateAlert =  "If no date is selected, the Available Points Balance displayed is based on today's date.".localized()
         static var holdingTimeLostMessage = "The booking time has expired and your selection is no longer on hold. You will now be returned to the search results.".localized()
         static var searchVacationTitle = "Search Vacation".localized()
         static var searchVacationMessage = "Please select any destination or resort".localized()
@@ -861,6 +857,7 @@ class Constant: NSObject {
         static var textTripTitle = "Text Trip Details".localized()
         static var purchaseInsuranceTitle = "Purchase Trip Protection".localized()
         static var viewResults = "View Results".localized()
+        static var inactive = "Inactive".localized()
         static var updateSwitchTitle = "Update email".localized()
     }
     
@@ -925,7 +922,7 @@ class Constant: NSObject {
         static var privacyLegalViewController = "Privacy/Legal".localized()
         static var vacationSearchDestinationController = "Select Destinations or Resorts".localized()
         static var searchResultViewController = "Search Results".localized()
-        static var availablePointToolViewController = "Available Point Tool".localized()
+        static var availablePointToolViewController = "Available Points Tool".localized()
         static var floatDetailViewController = "Additional Unit Details".localized()
         static var clubresortsViewController = "Club Resorts".localized()
         static var bedroomSizeViewController = "Bedroom Size".localized()
@@ -1148,7 +1145,7 @@ class Constant: NSObject {
         static var acceptedTermAndConditionString = "I have read and accepted the Terms and Conditions and Privacy Policy".localized()
         static var acknowledgeAndAgreeString = "I acknowledge and agree that the Mandatory Resort Fees will be payable to the resort.".localized()
         static var agreedToFeesString = "Agreed to Fees".localized()
-        static var slideToAgreeToFeesString = "Slide to agree to Fees".localized()
+        static var slideToAgreeToFeesString = "Slide to Agree to Fees".localized()
         static var slideToAgreeAndPayString = "Slide to Agree and Pay".localized()
         static var selectYourPaymentMethodString = "Select your payment method".localized()
         static var paymentMethodLabelString = "Payment Method".localized()
@@ -1491,7 +1488,7 @@ class Constant: NSObject {
         static let expirationdateInformationLabelText = "Expiration Date:".localized()
         static let pointsearnedByInformationLabelText = "Points Earned by:".localized()
         static let availablePointsinformationLabelText = "Available Points".localized()
-        static let pointbalanceInformationlableText = "if no date is selected the Available Points Balance displayed is based on today's date.".localized()
+        static let pointbalanceInformationlableText = "If no date is selected, the Available Points Balance displayed is based on today's date.".localized()
         static let donebuttoncellIdentifier = "donebuttoncell"
         struct availablePointsAsOfTableViewCell {
             static let pointasOflabelText = "Points as of:".localized()

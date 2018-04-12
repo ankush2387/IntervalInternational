@@ -44,6 +44,8 @@ class SearchResultViewController: UIViewController {
     var availabilityExactMatchSection: AvailabilitySection?
     var availabilitySurroundingMatchSection: AvailabilitySection?
     var resortImageCellHeight = 310
+    var resortNameLabelHeight = 21
+    var defautResortNameLableHeight = 21
     
     // Only one section with surroundings found
     var onlySurroundingsFound = false
@@ -71,6 +73,18 @@ class SearchResultViewController: UIViewController {
         } else {
             filterButton.isEnabled = false
         }
+    }
+    
+    // function to calculate dynamic height for resort name label
+    func getHeightForResortName(text: String?) -> Int {
+        
+        let label: UILabel = UILabel(frame: CGRect(x: 20, y: 10, width: view.frame.size.width - 20, height: 0))
+        label.numberOfLines = 0
+        label.text = text
+        label.lineBreakMode = NSLineBreakMode.byWordWrapping
+        label.font = UIFont(name: Constant.fontName.helveticaNeueBold, size: 18.0)
+        label.sizeToFit()
+        return Int(label.frame.size.height)
     }
     
     @IBAction func unwindToAvailabiity(_ segue: UIStoryboardSegue) {}
@@ -366,7 +380,7 @@ class SearchResultViewController: UIViewController {
             intervalPrint(selectedDate)
             Constant.MyClassConstants.vacationSearchShowDate = selectedDate
             
-            Helper.helperDelegate = self as! HelperDelegate
+            Helper.helperDelegate = self as HelperDelegate
             
             guard let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval() else { return }
             Constant.MyClassConstants.initialVacationSearch.searchCheckInDate = calendarItem.checkInDate
@@ -729,7 +743,6 @@ class SearchResultViewController: UIViewController {
     // Common method to get exchange collection view cell
     func getExchangeCollectionCell(indexPath: IndexPath, collectionView: UICollectionView) -> ExchangeInventoryCVCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.reUsableIdentifiers.exchangeInventoryCell, for: indexPath) as? ExchangeInventoryCVCell else { return ExchangeInventoryCVCell() }
-        cell.exchangeCellDelegate = self
         return cell
     }
     
@@ -915,6 +928,11 @@ class SearchResultViewController: UIViewController {
         viewController.renewalNonCoreProduct = renewalNonCoreProduct
         viewController.selectedRelinquishment = selectedRelinquishment
         navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    //show not enough point model screen
+    func showNotEnoughPointModel() {
+        self.performSegue(withIdentifier: "pointsInfoSegue", sender: self)
     }
     
 }
@@ -1177,7 +1195,7 @@ extension SearchResultViewController: UICollectionViewDelegateFlowLayout {
             }
         } else {
             if indexPath.section == 0 {
-                return CGSize(width: UIScreen.main.bounds.width, height: CGFloat(resortImageCellHeight))
+                return CGSize(width: UIScreen.main.bounds.width, height: CGFloat(resortNameLabelHeight - defautResortNameLableHeight) + CGFloat(resortImageCellHeight))
             } else {
                 return CGSize(width: UIScreen.main.bounds.width, height: 80.0)
             }
@@ -1232,9 +1250,9 @@ extension SearchResultViewController: UICollectionViewDataSource {
                         
                     case VacationSearchType.COMBINED:
                         if let exactMatchSection = availabilityExactMatchSection, !exactMatchSection.items.isEmpty {
-                            return exactMatchSection.items.count
+                            return exactMatchSection.items[selectedRow].getInventoryBuckets()?.count ?? 0
                         } else if let surroundingMatchSection = availabilitySurroundingMatchSection, !surroundingMatchSection.items.isEmpty {
-                            return surroundingMatchSection.items.count
+                            return surroundingMatchSection.items[selectedRow].getInventoryBuckets()?.count ?? 0
                         } else {
                             return 0
                         }
@@ -1363,7 +1381,9 @@ extension SearchResultViewController: UICollectionViewDataSource {
                 } else {
                     if let buckets = availabilityBuckets {
                         let cell = self.getRentalCollectionCell(indexPath: indexPath, collectionView: collectionView)
-                        cell.setBucket(bucket: buckets[indexPath.item])
+                        if indexPath.item <= buckets.count - 1 {
+                            cell.setBucket(bucket: buckets[indexPath.item])
+                        }
                         return cell
                     }
                 }
@@ -1382,7 +1402,13 @@ extension SearchResultViewController: UICollectionViewDataSource {
                         } else {
                             if let inventoryBuckets = exactMatchSection.items[selectedRow].getInventoryBuckets() {
                                 let cell = self.getExchangeCollectionCell(indexPath: indexPath, collectionView: collectionView)
-                                cell.setBucket(bucket: inventoryBuckets[indexPath.item])
+                                if indexPath.item <= inventoryBuckets.count - 1 {
+                                    let bucket = inventoryBuckets[indexPath.item]
+                                    cell.setBucket(bucket: bucket)
+                                    cell.showNotEnoughPoint = {
+                                        self.showNotEnoughPointModel()
+                                    }
+                                }
                                 return cell
                             }
                         }
@@ -1395,8 +1421,13 @@ extension SearchResultViewController: UICollectionViewDataSource {
                         } else {
                             if let inventoryBuckets = surroundingMatchSection.items[selectedRow].getInventoryBuckets() {
                                 let cell = self.getExchangeCollectionCell(indexPath: indexPath, collectionView: collectionView)
-                                cell.setBucket(bucket: inventoryBuckets[indexPath.item])
-                                cell.exchangeCellDelegate = self
+                                if indexPath.item <= inventoryBuckets.count - 1 {
+                                    let bucket = inventoryBuckets[indexPath.item]
+                                    cell.setBucket(bucket: bucket)
+                                    cell.showNotEnoughPoint = {
+                                        self.showNotEnoughPointModel()
+                                    }
+                                }
                                 return cell
                             }
                         }
@@ -1413,8 +1444,13 @@ extension SearchResultViewController: UICollectionViewDataSource {
                         } else {
                             if let inventoryBuckets = surroundingMatchSection.items[selectedRow].getInventoryBuckets() {
                                 let cell = self.getExchangeCollectionCell(indexPath: indexPath, collectionView: collectionView)
-                                cell.setBucket(bucket: inventoryBuckets[indexPath.item])
-                                cell.exchangeCellDelegate = self
+                                if indexPath.item <= inventoryBuckets.count - 1 {
+                                    let bucket = inventoryBuckets[indexPath.item]
+                                    cell.setBucket(bucket: bucket)
+                                    cell.showNotEnoughPoint = {
+                                        self.showNotEnoughPointModel()
+                                    }
+                                }
                                 return cell
                             }
                         }
@@ -1434,6 +1470,10 @@ extension SearchResultViewController: UICollectionViewDataSource {
                             }
                         } else {
                             if let inventoryBuckets = exactMatchSection.items[selectedRow].getInventoryBuckets() {
+                                //Gandhi: I am adding validation but this is not good
+                                // we need to return only number of inventory count + 1 for colleciotnview
+                                // right now its running accoring to resot count
+                                if indexPath.item <= inventoryBuckets.count - 1 {
                                 let bucket = inventoryBuckets[indexPath.item]
                                 
                                 if bucket.vacationSearchType.isCombined() {
@@ -1442,19 +1482,25 @@ extension SearchResultViewController: UICollectionViewDataSource {
                                     if collectionSuperviewTag == 0 {
                                         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.reUsableIdentifiers.searchBothInventoryCell, for: indexPath) as? SearchBothInventoryCVCell else { return UICollectionViewCell() }
                                         cell.setBucket(bucket: bucket)
-                                        cell.exchangeCellDelegate = self
                                         return cell
                                     }
      
                                 } else if bucket.vacationSearchType.isExchange() {
                                     let cell = self.getExchangeCollectionCell(indexPath: indexPath, collectionView: collectionView)
+                                    let bucket = inventoryBuckets[indexPath.item]
                                     cell.setBucket(bucket: bucket)
-                                    cell.exchangeCellDelegate = self
+                                    cell.showNotEnoughPoint = {
+                                        self.showNotEnoughPointModel()
+                                    }
                                     return cell
                                     
                                 } else if bucket.vacationSearchType.isRental() {
                                     let cell = self.getRentalCollectionCell(indexPath: indexPath, collectionView: collectionView)
                                     cell.setBucket(bucket: bucket)
+                                    return cell
+                                }
+                                } else {
+                                    guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.reUsableIdentifiers.searchBothInventoryCell, for: indexPath) as? SearchBothInventoryCVCell else { return UICollectionViewCell() }
                                     return cell
                                 }
                             }
@@ -1481,7 +1527,9 @@ extension SearchResultViewController: UICollectionViewDataSource {
                                 } else if bucket.vacationSearchType.isExchange() {
                                     let cell = self.getExchangeCollectionCell(indexPath: indexPath, collectionView: collectionView)
                                     cell.setBucket(bucket: bucket)
-                                    cell.exchangeCellDelegate = self
+                                    cell.showNotEnoughPoint = {
+                                        self.showNotEnoughPointModel()
+                                    }
                                     return cell
                                     
                                 } else if bucket.vacationSearchType.isRental() {
@@ -1517,7 +1565,9 @@ extension SearchResultViewController: UICollectionViewDataSource {
                                 } else if bucket.vacationSearchType.isExchange() {
                                     let cell = self.getExchangeCollectionCell(indexPath: indexPath, collectionView: collectionView)
                                     cell.setBucket(bucket: bucket)
-                                    cell.exchangeCellDelegate = self
+                                    cell.showNotEnoughPoint = {
+                                        self.showNotEnoughPointModel()
+                                    }
                                     return cell
                                     
                                 } else if bucket.vacationSearchType.isRental() {
@@ -1618,10 +1668,14 @@ extension SearchResultViewController: UITableViewDelegate {
                     
                     if let exactMatchSection = availabilityExactMatchSection, !exactMatchSection.items.isEmpty,
                         let inventoryBuckets = exactMatchSection.items[selectedRow].getInventoryBuckets() {
-                        return CGFloat(inventoryBuckets.count * 80 + resortImageCellHeight + 10)
+                        let resort = exactMatchSection.items[selectedRow].getResort()
+                        resortNameLabelHeight = getHeightForResortName(text: resort?.name)
+                        return CGFloat(inventoryBuckets.count * 80 + resortImageCellHeight + resortNameLabelHeight)
                     } else if let surroundingMatchSection = availabilitySurroundingMatchSection, !surroundingMatchSection.items.isEmpty,
-                        let inventoryBuckets = surroundingMatchSection.items[selectedRow].getInventoryBuckets()  {
-                        return CGFloat(inventoryBuckets.count * 80 + resortImageCellHeight + 10)
+                        let inventoryBuckets = surroundingMatchSection.items[selectedRow].getInventoryBuckets() {
+                        let resort = surroundingMatchSection.items[selectedRow].getResort()
+                        resortNameLabelHeight = getHeightForResortName(text: resort?.name)
+                        return CGFloat(inventoryBuckets.count * 80 + resortImageCellHeight + resortNameLabelHeight)
                     }
                     
                     return 0
@@ -1632,10 +1686,14 @@ extension SearchResultViewController: UITableViewDelegate {
                     
                     if let exactMatchSection = availabilityExactMatchSection, !exactMatchSection.items.isEmpty,
                         let inventoryBuckets = exactMatchSection.items[selectedRow].getInventoryBuckets() {
-                        return CGFloat(inventoryBuckets.count * 80 + resortImageCellHeight + 10)
+                        let resort = exactMatchSection.items[selectedRow].getResort()
+                        resortNameLabelHeight = getHeightForResortName(text: resort?.name)
+                        return CGFloat(inventoryBuckets.count * 80 + resortImageCellHeight + resortNameLabelHeight)
                     } else if let surroundingMatchSection = availabilitySurroundingMatchSection, !surroundingMatchSection.items.isEmpty,
-                        let inventoryBuckets = surroundingMatchSection.items[selectedRow].getInventoryBuckets()  {
-                        return CGFloat(inventoryBuckets.count * 80 + resortImageCellHeight + 10)
+                        let inventoryBuckets = surroundingMatchSection.items[selectedRow].getInventoryBuckets() {
+                        let resort = surroundingMatchSection.items[selectedRow].getResort()
+                        resortNameLabelHeight = getHeightForResortName(text: resort?.name)
+                        return CGFloat(inventoryBuckets.count * 80 + resortImageCellHeight + resortNameLabelHeight)
                     }
                     
                     return 0
@@ -1648,10 +1706,14 @@ extension SearchResultViewController: UITableViewDelegate {
             
             if let exactMatchSection = availabilityExactMatchSection, !exactMatchSection.items.isEmpty,
                 let inventoryBuckets = exactMatchSection.items[selectedRow].getInventoryBuckets() {
-                return CGFloat(inventoryBuckets.count * 80 + resortImageCellHeight + 10)
+                let resort = exactMatchSection.items[selectedRow].getResort()
+                resortNameLabelHeight = getHeightForResortName(text: resort?.name)
+                return CGFloat(inventoryBuckets.count * 80 + resortImageCellHeight + resortNameLabelHeight)
             } else if let surroundingMatchSection = availabilitySurroundingMatchSection, !surroundingMatchSection.items.isEmpty,
-                let inventoryBuckets = surroundingMatchSection.items[selectedRow].getInventoryBuckets()  {
-                return CGFloat(inventoryBuckets.count * 80 + resortImageCellHeight + 10)
+                let inventoryBuckets = surroundingMatchSection.items[selectedRow].getInventoryBuckets() {
+                let resort = surroundingMatchSection.items[selectedRow].getResort()
+                resortNameLabelHeight = getHeightForResortName(text: resort?.name)
+                return CGFloat(inventoryBuckets.count * 80 + resortImageCellHeight + resortNameLabelHeight)
             }
             
             return 0
@@ -1874,12 +1936,6 @@ extension SearchResultViewController: WhoWillBeCheckInDelegate {
         viewController.renewalNonCoreProduct = renewalNonCoreProduct
         viewController.selectedRelinquishment = selectedRelinquishment
         self.navigationController?.pushViewController(viewController, animated: true)
-    }
-}
-
-extension SearchResultViewController: ExchangeInventoryCVCellDelegate {
-    func infoIconPressed() {
-        self.performSegue(withIdentifier: "pointsInfoSegue", sender: self)
     }
 }
 

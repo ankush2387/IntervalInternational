@@ -526,7 +526,7 @@ extension VacationSearchViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
         let headerView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 50))
-        let headerTextLabel = UILabel(frame: CGRect(x: 15, y: 5, width: self.view.bounds.width - 30, height: 50))
+        let headerTextLabel = UILabel(frame: CGRect(x: 15, y: 0, width: self.view.bounds.width - 30, height: 50))
         
         if segmentTitle != Constant.segmentControlItems.getaways {
             
@@ -554,13 +554,13 @@ extension VacationSearchViewController: UITableViewDelegate {
         
         if tableView.numberOfSections == 6 || tableView.numberOfSections == 7 {
             if section < 4 {
-                return 55
+                return 50
             } else {
                 return 0
             }
         } else {
             if section < 3 {
-                return 55
+                return 50
             } else {
                 return 0
             }
@@ -687,7 +687,7 @@ extension VacationSearchViewController: UITableViewDelegate {
                             } else {
                                 Constant.MyClassConstants.whatToTradeArray.removeObject(at: indexPath.row)
                                 Constant.MyClassConstants.relinquishmentIdArray.remove(at: indexPath.row)
-                                Constant.MyClassConstants.isCIGAvailable = false
+                                Constant.exchangePointType = ExchangePointType.UNKNOWN
                                 realm.delete(storedData[indexPath.row])
                             }
                             

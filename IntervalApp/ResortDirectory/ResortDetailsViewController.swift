@@ -779,6 +779,9 @@ extension ResortDetailsViewController: UITableViewDataSource {
                 cell.detailsPageControl.activeImage = #imageLiteral(resourceName: "selected")
                 cell.detailsPageControl.inactiveImage = #imageLiteral(resourceName: "unselected")
                 cell.resortCollectionView.reloadData()
+                
+                // it is used to hide separator of particular cell
+                cell.separatorInset = UIEdgeInsetsMake(0, cell.bounds.size.width, 0, 0)
                 if Constant.MyClassConstants.imagesArray.isEmpty {
                     cell.detailsPageControl.isHidden = true
                 } else {

@@ -70,7 +70,6 @@ class WhatToUseViewController: UIViewController {
        if showInfoIcon {
             self.performSegue(withIdentifier: "pointsInfoSegue", sender: self)
         } else {
-            Constant.MyClassConstants.isCIGAvailable = false
             //Exchange process request parameters
             showHudAsync()
             let processResort = ExchangeProcess()
@@ -568,12 +567,19 @@ extension WhatToUseViewController: UITableViewDataSource {
                 return cell
             }
             
-            let exchangeRelinquishment = count > 1 ?
-                Constant.MyClassConstants.filterRelinquishments[indexPath.row - 1] : Constant.MyClassConstants.filterRelinquishments[indexPath.row]
-            let exchangeDestination = count > 1 ?
-                Constant.MyClassConstants.filterDestinations[indexPath.row - 1] : Constant.MyClassConstants.filterDestinations[indexPath.row]
+            var exchangeRelinquishment: ExchangeRelinquishment?
+            var exchangeDestination: ExchangeDestination?
             
-            if exchangeRelinquishment.pointsProgram != nil {
+            if !Constant.MyClassConstants.filterRelinquishments.isEmpty {
+                exchangeRelinquishment = count > 1 ?
+                    Constant.MyClassConstants.filterRelinquishments[indexPath.row - 1] : Constant.MyClassConstants.filterRelinquishments[indexPath.row]
+            }
+            if !Constant.MyClassConstants.filterDestinations.isEmpty {
+                exchangeDestination = count > 1 ?
+                    Constant.MyClassConstants.filterDestinations[indexPath.row - 1] : Constant.MyClassConstants.filterDestinations[indexPath.row]
+            }
+            
+            if exchangeRelinquishment?.pointsProgram != nil {
                 
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: "ExchangeCell0", for: indexPath) as? AvailablePointCell else { return UITableViewCell() }
                 
@@ -616,7 +622,7 @@ extension WhatToUseViewController: UITableViewDataSource {
                 
                 return cell
                 
-            } else if let clubPoints = exchangeRelinquishment.clubPoints {
+            } else if let clubPoints = exchangeRelinquishment?.clubPoints {
                 
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.exchangeCell0, for: indexPath) as? AvailablePointCell else { return UITableViewCell() }
                 cell.tag = indexPath.row
@@ -641,9 +647,9 @@ extension WhatToUseViewController: UITableViewDataSource {
                 cell.selectionStyle = UITableViewCellSelectionStyle.none
                 return cell
                 
-            } else if let openWeek = exchangeRelinquishment.openWeek {
+            } else if let openWeek = exchangeRelinquishment?.openWeek {
                 
-                if let unitSizeUpgradeFeeCost = exchangeDestination.upgradeCost {
+                if let unitSizeUpgradeFeeCost = exchangeDestination?.upgradeCost {
                     
                     guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.exchangeCell2, for: indexPath) as? RelinquishmentSelectionOpenWeeksCellWithUpgrade else { return UITableViewCell() }
                     cell.tag = indexPath.row
@@ -691,7 +697,7 @@ extension WhatToUseViewController: UITableViewDataSource {
                     return cell
                 }
                 
-            } else if let deposit = exchangeRelinquishment.deposit {
+            } else if let deposit = exchangeRelinquishment?.deposit {
                 
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.exchangeCell1, for: indexPath) as! RelinquishmentSelectionOpenWeeksCell
                 cell.tag = indexPath.row

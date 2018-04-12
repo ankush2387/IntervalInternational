@@ -81,12 +81,14 @@ class DashboardTableViewController: UITableViewController {
             }
         }
         Helper.getUpcomingTripsForUser {[weak self] error in
+            self?.showHudAsync()
             if error != nil {
+                self?.hideHudAsync()
                 self?.presentAlert(with: "Error".localized(), message: error?.localizedDescription ?? "")
             } else {
+                self?.hideHudAsync()
                 self?.getNumberOfSections()
                 self?.homeTableView.reloadData()
-                
             }
         }
         
@@ -237,12 +239,21 @@ class DashboardTableViewController: UITableViewController {
     //***** MARK: - Table view delegate methods *****//
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if dashboardArray[indexPath.section] == Constant.dashboardTableScreenReusableIdentifiers.upcoming {
-            Constant.MyClassConstants.dashbaordUpcomingSelectedIndex = indexPath.row
-            Constant.MyClassConstants.upcomingOriginationPoint = "dashboard"
-            let isRunningOnIphone = UIDevice.current.userInterfaceIdiom == .phone
-            let storyboardName = isRunningOnIphone ? Constant.storyboardNames.myUpcomingTripIphone : Constant.storyboardNames.myUpcomingTripIpad
-            if let initialViewController = UIStoryboard(name: storyboardName, bundle: nil).instantiateInitialViewController() {
-                navigationController?.pushViewController(initialViewController, animated: true)
+            let exchangeNumber = String(Constant.MyClassConstants.upcomingTripsArray[indexPath.row].exchangeNumber ?? 0)
+             showHudAsync()
+             ExchangeClient.getExchangeTripDetails(Session.sharedSession.userAccessToken, confirmationNumber: exchangeNumber, onSuccess: {[weak self] exchangeResponse in
+                
+                Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails = exchangeResponse
+                self?.hideHudAsync()
+                let isRunningOnIphone = UIDevice.current.userInterfaceIdiom == .phone
+                let storyboardName = isRunningOnIphone ? Constant.storyboardNames.myUpcomingTripIphone : Constant.storyboardNames.myUpcomingTripIpad
+                let storyBoard = UIStoryboard(name: storyboardName, bundle: nil)
+                let detailViewController = storyBoard.instantiateViewController(withIdentifier: "UpComingTripDetailController")
+                self?.navigationController?.pushViewController(detailViewController, animated: true)
+                
+            }) { [weak self]error in
+                self?.hideHudAsync()
+                self?.presentErrorAlert(UserFacingCommonError.handleError(error))
             }
         }
     }
@@ -385,7 +396,6 @@ class DashboardTableViewController: UITableViewController {
         case Constant.dashboardTableScreenReusableIdentifiers.search :
             let cell = tableView.dequeueReusableCell(withIdentifier: Constant.dashboardTableScreenReusableIdentifiers.cellIdentifier, for: indexPath)
             cell.selectionStyle = UITableViewCellSelectionStyle.none
-            
             let searchVacation = IUIKButton()
             searchVacation.backgroundColor = UIColor(red: 224 / 255.0, green: 118 / 255.0, blue: 69 / 255.0, alpha: 1.0)
             searchVacation.setTitle(Constant.buttonTitles.searchVacation, for: UIControlState.normal)
@@ -420,13 +430,13 @@ class DashboardTableViewController: UITableViewController {
                     resortImageNameLabel.text = Constant.segmentControlItems.getawaysLabelText
                     
                     resortImageNameLabel.textColor = .black
-                    resortImageNameLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: 15)
+                    resortImageNameLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: 12)
                     cell.addSubview(resortImageNameLabel)
                 } else {
                     let resortImageNameLabel = UILabel(frame: CGRect(x: 10, y: 10, width: cell.contentView.frame.width - 20, height: 20))
                     resortImageNameLabel.text = Constant.segmentControlItems.flexchangeLabelText
                     resortImageNameLabel.textColor = .black
-                    resortImageNameLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: 15)
+                    resortImageNameLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: 12)
                     cell.addSubview(resortImageNameLabel)
                 }
             } else {
@@ -435,7 +445,7 @@ class DashboardTableViewController: UITableViewController {
                 resortImageNameLabel.text = Constant.segmentControlItems.getawaysLabelText
                 
                 resortImageNameLabel.textColor = .black
-                resortImageNameLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: 15)
+                resortImageNameLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: 12)
                 cell.addSubview(resortImageNameLabel)
             }
             
@@ -459,7 +469,7 @@ class DashboardTableViewController: UITableViewController {
             }
             
             homeTableCollectionView.isScrollEnabled = true
-            cell.backgroundColor = UIColor(red: 240.0 / 255.0, green: 239.0 / 255.0, blue: 244.0 / 255.0, alpha: 1.0)
+            cell.backgroundColor = UIColor(red: 0.93, green: 0.93, blue: 0.95, alpha: 1.0)
             cell.addSubview(homeTableCollectionView)
             
             return cell
@@ -501,7 +511,6 @@ class DashboardTableViewController: UITableViewController {
     //***** View all trip button action *****//
     func viewAllTripButtonPressed(_ sender: IUIKButton) {
         
-        Constant.MyClassConstants.upcomingOriginationPoint = Constant.omnitureCommonString.homeDashboard
         let storyboardName = Constant.storyboardNames.myUpcomingTripIphone
         if let initialViewController = UIStoryboard(name: storyboardName, bundle: nil).instantiateInitialViewController() {
             navigationController?.pushViewController(initialViewController, animated: true)
@@ -742,14 +751,14 @@ extension DashboardTableViewController: UICollectionViewDataSource {
             
             cell.addSubview(resortFlaxImageView)
             
-            let resortImageNameLabel = UILabel(frame: CGRect(x: 10, y: cell.contentView.frame.height - 50, width: cell.contentView.frame.width - 20, height: 60))
+            let resortImageNameLabel = UILabel(frame: CGRect(x: 0, y: cell.contentView.frame.height - 50, width: cell.contentView.frame.width, height: 50))
             
             resortImageNameLabel.text = flexDeal.name
             resortImageNameLabel.numberOfLines = 2
             resortImageNameLabel.textAlignment = NSTextAlignment.center
             resortImageNameLabel.textColor = .black
-            resortImageNameLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: 16)
-            resortImageNameLabel.backgroundColor = .clear
+            resortImageNameLabel.font = UIFont(name: Constant.fontName.helveticaNeue, size: 18)
+            resortImageNameLabel.backgroundColor = .white
             cell.addSubview(resortImageNameLabel)
             cell.layer.borderColor = UIColor.lightGray.cgColor
             cell.layer.borderWidth = 1.0
@@ -783,27 +792,26 @@ extension DashboardTableViewController: UICollectionViewDataSource {
             
             cell.addSubview(resortFlaxImageView)
             
-            let resortImageNameLabel = UILabel(frame: CGRect(x: 10, y: cell.contentView.frame.height - 50, width: cell.contentView.frame.width - 20, height: 60))
+            let resortImageNameLabel = UILabel(frame: CGRect(x: 0, y: cell.contentView.frame.height - 50, width: cell.contentView.frame.width, height: 50))
             if let header = topTenDeals.header {
                 resortImageNameLabel.text = header
             }
             resortImageNameLabel.numberOfLines = 2
-            resortImageNameLabel.backgroundColor = .orange
+            resortImageNameLabel.backgroundColor = .white
             resortImageNameLabel.textAlignment = NSTextAlignment.center
             resortImageNameLabel.textColor = .black
-            resortImageNameLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: 16)
-            resortImageNameLabel.backgroundColor = .clear
+            resortImageNameLabel.font = UIFont(name: Constant.fontName.helveticaNeue, size: 18)
             cell.addSubview(resortImageNameLabel)
             
-            let centerView = UIView(frame: CGRect(x: 0, y: 0, width: 150, height: 75))
+            let centerView = UIView(frame: CGRect(x: 0, y: 0, width: 150, height: 65))
             centerView.center = resortFlaxImageView.center
             centerView.backgroundColor = Constant.RGBColorCode.centerViewRgb
             
-            let unitLabel = UILabel(frame: CGRect(x: 10, y: 15, width: centerView.frame.size.width - 20, height: 25))
+            let unitLabel = UILabel(frame: CGRect(x: 10, y: 10, width: centerView.frame.size.width - 20, height: 25))
             unitLabel.text = topTenDeals.details
             unitLabel.numberOfLines = 2
             unitLabel.textAlignment = NSTextAlignment.center
-            unitLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: 12)
+            unitLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: 15)
             unitLabel.textColor = .white
             unitLabel.backgroundColor = .clear
             centerView.addSubview(unitLabel)

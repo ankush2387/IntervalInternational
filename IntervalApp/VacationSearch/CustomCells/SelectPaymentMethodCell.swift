@@ -15,19 +15,7 @@ class SelectPaymentMethodCell: UITableViewCell {
     @IBOutlet weak var cardLastFourDigitNumber: UILabel!
     @IBOutlet weak var expireDate: UILabel!
     @IBOutlet weak var cardHolderName: UILabel!
-    
-    @IBOutlet weak var expireDateLabel: UILabel!
-    @IBOutlet weak var cardType: UILabel!
     @IBOutlet weak var cardSelectionCheckBox: IUIKCheckbox!
-
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-        
-    }
+    @IBOutlet weak var backgroundCellView: UIView!
 
 }
