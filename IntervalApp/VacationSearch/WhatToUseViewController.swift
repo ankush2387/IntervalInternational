@@ -92,7 +92,7 @@ class WhatToUseViewController: UIViewController {
                     
                 } else if Constant.MyClassConstants.filterRelinquishments[self.selectedRow - 1].pointsProgram != nil {
                     processRequest.relinquishmentId = Constant.MyClassConstants.filterRelinquishments[self.selectedRow - 1].pointsProgram?.relinquishmentId
-                    //Constant.MyClassConstants.isCIGAvailable = true
+                    Constant.exchangePointType = ExchangePointType.CIGPOINTS
                 }
             } else {
                 if Constant.MyClassConstants.filterRelinquishments[self.selectedRow].openWeek != nil {
@@ -106,7 +106,7 @@ class WhatToUseViewController: UIViewController {
                     
                 } else if Constant.MyClassConstants.filterRelinquishments[self.selectedRow].pointsProgram != nil {
                     processRequest.relinquishmentId = Constant.MyClassConstants.filterRelinquishments[self.selectedRow].pointsProgram?.relinquishmentId
-                    //Constant.MyClassConstants.isCIGAvailable = true
+                    Constant.exchangePointType = ExchangePointType.CLUBPOINTS
                 }
             }
         
@@ -699,26 +699,47 @@ extension WhatToUseViewController: UITableViewDataSource {
                 
             } else if let deposit = exchangeRelinquishment?.deposit {
                 
-                let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.exchangeCell1, for: indexPath) as! RelinquishmentSelectionOpenWeeksCell
-                cell.tag = indexPath.row
-                cell.setupDepositedCell(deposit: deposit)
+                if let unitSizeUpgradeFeeCost = exchangeDestination?.upgradeCost {
+                    
+                    guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.exchangeCell2, for: indexPath) as? RelinquishmentSelectionOpenWeeksCellWithUpgrade else { return UITableViewCell() }
+                    cell.tag = indexPath.row
+                    cell.checkBox.tag = indexPath.row
+                    cell.checkBox.accessibilityElements = [indexPath.section]
+                    cell.checkBox.isUserInteractionEnabled = false
+                    cell.setupDepositCell(deposit: deposit, unitSizeUpgradeFeeCost: unitSizeUpgradeFeeCost)
+                    
+                    if self.selectedRow == indexPath.row && self.selectedRowSection == indexPath.section {
+                        cell.mainView.layer.cornerRadius = 7
+                        cell.mainView.layer.borderWidth = 2
+                        cell.mainView.layer.borderColor = UIColor.orange.cgColor
+                        cell.checkBox.checked = true
+                    } else {
+                        cell.mainView.layer.cornerRadius = 7
+                        cell.mainView.layer.borderWidth = 2
+                        cell.mainView.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
+                        cell.checkBox.checked = false
+                    }
+                    cell.selectionStyle = UITableViewCellSelectionStyle.none
+                    return cell
                 
-                if self.selectedRow == indexPath.row && self.selectedRowSection == indexPath.section {
-                    cell.mainView.layer.cornerRadius = 7
-                    cell.mainView.layer.borderWidth = 2
-                    cell.mainView.layer.borderColor = UIColor.orange.cgColor
-                    cell.checkBox.checked = true
                 } else {
-                    cell.mainView.layer.cornerRadius = 7
-                    cell.mainView.layer.borderWidth = 2
-                    cell.mainView.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
-                    cell.checkBox.checked = false
+                    let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.exchangeCell1, for: indexPath) as! RelinquishmentSelectionOpenWeeksCell
+                    cell.tag = indexPath.row
+                    cell.setupDepositedCell(deposit: deposit)
+                    if self.selectedRow == indexPath.row && self.selectedRowSection == indexPath.section {
+                        cell.mainView.layer.cornerRadius = 7
+                        cell.mainView.layer.borderWidth = 2
+                        cell.mainView.layer.borderColor = UIColor.orange.cgColor
+                        cell.checkBox.checked = true
+                    } else {
+                        cell.mainView.layer.cornerRadius = 7
+                        cell.mainView.layer.borderWidth = 2
+                        cell.mainView.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
+                        cell.checkBox.checked = false
+                    }
+                    return cell
                 }
-                
-                return cell
-                
             } else {
-                
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.exchangeCell0, for: indexPath) as! AvailablePointCell
                 cell.tag = indexPath.row
                 cell.checkBOx.tag = indexPath.row
@@ -740,7 +761,6 @@ extension WhatToUseViewController: UITableViewDataSource {
                     cell.mainView.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
                     cell.checkBOx.checked = false
                 }
-                
                 cell.selectionStyle = UITableViewCellSelectionStyle.none
                 return cell
             }
