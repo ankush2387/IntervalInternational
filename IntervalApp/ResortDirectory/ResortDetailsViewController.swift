@@ -494,6 +494,9 @@ extension ResortDetailsViewController: UITableViewDelegate {
                     return 200
                 }
                 
+            case 6, 7:
+                return UITableViewAutomaticDimension
+                
             default:
                 if let isOpen = tappedButtonDictionary[indexPath.section] {
                     if isOpen && indexPath.row > 0 {
