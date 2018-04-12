@@ -40,9 +40,9 @@ class RelinquishmentDetailsViewController: UIViewController {
         }
         
         ClientAPI.sharedInstance.readResort(for: accessToken, and: resortCode)
-            .then { resort in
-                self.resort = resort
-                self.reloadDataTable()
+            .then { [weak self] resort in
+                self?.resort = resort
+                self?.reloadDataTable()
             }
             .onError { [weak self](error) in
                 self?.presentErrorAlert(UserFacingCommonError.handleError(error))
