@@ -13,8 +13,8 @@ import DarwinSDK
 //***** Custom delegate method declaration *****//
 protocol RenewelViewControllerDelegate: class {
     
-    func selectedRenewalFromWhoWillBeCheckingIn(renewalCoreProduct: Renewal?, renewalNonCoreProduct: Renewal?, selectedRelinquishment: ExchangeRelinquishment)
-    func noThanks(selectedRelinquishment: ExchangeRelinquishment)
+    func selectedRenewalFromWhoWillBeCheckingIn(renewalCoreProduct: Renewal?, renewalNonCoreProduct: Renewal?, selectedRelinquishment: ExchangeRelinquishment?)
+    func noThanks(selectedRelinquishment: ExchangeRelinquishment?)
     func otherOptions(forceRenewals: ForceRenewals)
     func dismissWhatToUse(renewalCoreProduct: Renewal?, renewalNonCoreProduct: Renewal?)
 }
@@ -39,8 +39,8 @@ class RenewelViewController: UIViewController {
     //FIXME(Frank) - why 2 flags to handle the same?
     var isCore = false
     var isNonCore = false
-    //FIXME(Frank) - why is not optional?
-    var filterRelinquishment = ExchangeRelinquishment()
+    
+    var filterRelinquishment: ExchangeRelinquishment?
     //FIXME(Frank) - why we need here the forceRenewals? - why is not optional?
     var forceRenewals = ForceRenewals()
     var renewalCoreProduct: Renewal?
@@ -211,6 +211,7 @@ class RenewelViewController: UIViewController {
             self.delegate?.dismissWhatToUse(renewalCoreProduct: renewalCoreProduct, renewalNonCoreProduct: renewalNonCoreProduct)
         } else {
             delegate?.selectedRenewalFromWhoWillBeCheckingIn(renewalCoreProduct: renewalCoreProduct, renewalNonCoreProduct: renewalNonCoreProduct, selectedRelinquishment: filterRelinquishment)
+            
         }
     }
     
@@ -224,6 +225,7 @@ class RenewelViewController: UIViewController {
             self.dismiss(animated: true, completion: nil)
             Constant.MyClassConstants.noThanksForNonCore = false
             self.delegate?.noThanks(selectedRelinquishment: filterRelinquishment)
+            
         } else {
             
             if self.isCombo {
@@ -598,7 +600,7 @@ extension RenewelViewController: UITableViewDataSource {
                         
                         
                         // Create attributed string
-                        var mainString = filterRelinquishment.deposit == nil ? Helper.returnIntervalMembershipStringWithDisplayName3(displayName: displayName, price: priceAndCurrency, term: term) : Helper.returnIntervalMembershipStringWithDisplayName2(displayName: displayName, price: priceAndCurrency, term: term)
+                        var mainString = self.filterRelinquishment == nil ? Helper.returnIntervalMembershipStringWithDisplayName3(displayName: displayName, price: priceAndCurrency, term: term) : Helper.returnIntervalMembershipStringWithDisplayName2(displayName: displayName, price: priceAndCurrency, term: term)
                         
                         if Constant.MyClassConstants.noThanksForNonCore {
                             mainString = Helper.returnIntervalMembershipStringWithDisplayName4(displayName: displayName, price: priceAndCurrency, term: term)

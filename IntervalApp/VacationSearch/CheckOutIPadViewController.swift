@@ -47,7 +47,7 @@ class CheckOutIPadViewController: UIViewController {
     var recapFeesTotal: Float?
     var isDepositPromotionAvailable = false
     var totalFeesArray = NSMutableArray()
-    var filterRelinquishments = ExchangeRelinquishment()
+    var filterRelinquishments: ExchangeRelinquishment?
     var totalRowsInCost = 0
     var renewalCoreProduct: Renewal?
     var renewalNonCoreProduct: Renewal?
@@ -518,11 +518,11 @@ class CheckOutIPadViewController: UIViewController {
         if sender.tag == 0 {
             self.performSegue(withIdentifier: Constant.segueIdentifiers.showResortDetailsSegue, sender: nil)
         } else {
-            if let clubPointResortCode = filterRelinquishments.clubPoints?.resort?.resortCode {
+            if let clubPointResortCode = filterRelinquishments?.clubPoints?.resort?.resortCode {
                 getRelinquishmentDetails(resortCode: clubPointResortCode)
-            } else if let openWeekResortCode = filterRelinquishments.openWeek?.resort?.resortCode {
+            } else if let openWeekResortCode = filterRelinquishments?.openWeek?.resort?.resortCode {
                 getRelinquishmentDetails(resortCode: openWeekResortCode)
-            } else if let depositResortCode = filterRelinquishments.deposit?.resort?.resortCode {
+            } else if let depositResortCode = filterRelinquishments?.deposit?.resort?.resortCode {
                 getRelinquishmentDetails(resortCode: depositResortCode)
             }
         }
@@ -1384,12 +1384,12 @@ extension CheckOutIPadViewController: UITableViewDataSource {
                     }
                 } else {
                     
-                    if let openWeek = filterRelinquishments.openWeek {
+                    if let openWeek = filterRelinquishments?.openWeek {
                         cell.resortName?.text = openWeek.resort?.resortName
                         cell.lblHeading.text = Constant.MyClassConstants.relinquishment
                         cell.resortDetailsButton.isHidden = false
                         cell.resortDetailsButton.addTarget(self, action: #selector(WhoWillBeCheckingInViewController.resortDetailsClicked(_:)), for: .touchUpInside)
-                    } else if let deposits = filterRelinquishments.deposit {
+                    } else if let deposits = filterRelinquishments?.deposit {
                         cell.resortName?.text = deposits.resort?.resortName
                         cell.lblHeading.text = Constant.MyClassConstants.relinquishment
                         cell.resortDetailsButton.isHidden = false
