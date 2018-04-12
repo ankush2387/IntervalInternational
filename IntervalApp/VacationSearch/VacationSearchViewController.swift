@@ -22,7 +22,6 @@ class VacationSearchViewController: UIViewController {
     @IBOutlet weak var searchVacationTableView: UITableView!
     var homeTableCollectionView: UICollectionView!
     var getawayCollectionView: UICollectionView!
-    var addButtonCompletion: (() -> Void)?
     
     //***** Class variables *****//
     var addButtonCellTag: Int?
@@ -850,7 +849,7 @@ extension VacationSearchViewController: UITableViewDataSource {
                             cell.whereTogoTextLabel.text = whereToGoText?.localized()
                         }
                         cell.selectionStyle = UITableViewCellSelectionStyle.none
-                        //cell.backgroundColor = UIColor.clear
+                        cell.backgroundColor = UIColor.clear
                         return cell
                     }
                 } else {

@@ -12,7 +12,7 @@ import IntervalUIKit
 class AddButtonTableViewCell: UITableViewCell {
     
     static let identifier = "AddButtonTableViewCell"
-    public var addButtonTapped: (() -> Void)?
+    public var addButtonTapped: CallBack?
     
     @IBAction private func addTapped(_sender: IUIKButton) {
         addButtonTapped?()
