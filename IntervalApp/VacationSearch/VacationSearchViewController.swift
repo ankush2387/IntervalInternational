@@ -22,6 +22,7 @@ class VacationSearchViewController: UIViewController {
     @IBOutlet weak var searchVacationTableView: UITableView!
     var homeTableCollectionView: UICollectionView!
     var getawayCollectionView: UICollectionView!
+    var addButtonCompletion: (() -> Void)?
     
     //***** Class variables *****//
     var addButtonCellTag: Int?
@@ -256,7 +257,7 @@ class VacationSearchViewController: UIViewController {
     }
     
     //***** Add location pressed action to show map screen with list of location to select *****//
-    @IBAction func addLocationInSection0Pressed(_ sender: IUIKButton) {
+    func addLocationPressed() {
         Constant.MyClassConstants.selectionType = 0
         let mainStoryboard = UIStoryboard(name: Constant.storyboardNames.iphone, bundle: nil)
         let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.resortDirectoryViewController) as! GoogleMapViewController
@@ -266,7 +267,7 @@ class VacationSearchViewController: UIViewController {
     }
     
     //***** Add location pressed action to show map screen with list of location to select *****//
-    func addRelinquishmentSectionButtonPressed(_ sender: IUIKButton) {
+    func addRelinquishmentSectionButtonPressed() {
         showHudAsync()
         
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
@@ -799,8 +800,10 @@ extension VacationSearchViewController: UITableViewDataSource {
                 if indexPath.section == 0 {
                     
                     if Constant.MyClassConstants.whereTogoContentArray.count == 0 || indexPath.row == Constant.MyClassConstants.whereTogoContentArray.count {
-                        guard let cell = tableView.dequeueReusableCell(withIdentifier: "AddButton", for: indexPath) as? AddButtonTableViewCell else { return UITableViewCell() }
-                        cell.addButton.addTarget(self, action: #selector(VacationSearchViewController.addLocationInSection0Pressed(_:)), for: .touchUpInside)
+                        guard let cell = tableView.dequeueReusableCell(withIdentifier: AddButtonTableViewCell.identifier, for: indexPath) as? AddButtonTableViewCell else { return UITableViewCell() }
+                        cell.addButtonTapped = { [weak self] in
+                            self?.addLocationPressed()
+                        }
                         return cell
                     } else {
                         
@@ -855,8 +858,10 @@ extension VacationSearchViewController: UITableViewDataSource {
                     //***** Checking array content to configure and return content cell or calendar cell *****//
                     
                     if Constant.MyClassConstants.whatToTradeArray.count == 0 || indexPath.row == Constant.MyClassConstants.whatToTradeArray.count {
-                        guard let cell = tableView.dequeueReusableCell(withIdentifier: "AddButton", for: indexPath) as? AddButtonTableViewCell else { return UITableViewCell() }
-                        cell.addButton.addTarget(self, action: #selector(VacationSearchViewController.addRelinquishmentSectionButtonPressed(_:)), for: .touchUpInside)
+                        guard let cell = tableView.dequeueReusableCell(withIdentifier: AddButtonTableViewCell.identifier, for: indexPath) as? AddButtonTableViewCell else { return UITableViewCell() }
+                        cell.addButtonTapped = { [weak self] in
+                            self?.addRelinquishmentSectionButtonPressed()
+                        }
                         return cell
                         
                     } else {
@@ -1113,24 +1118,13 @@ extension VacationSearchViewController: UITableViewDataSource {
                 //***** Checking array content to configure and return content cell or add button cell *****//
                 
                 if Constant.MyClassConstants.whereTogoContentArray.count == 0 || indexPath.row == Constant.MyClassConstants.whereTogoContentArray.count {
-                    
-                    let cell = tableView.dequeueReusableCell(withIdentifier: Constant.dashboardTableScreenReusableIdentifiers.cellIdentifier, for: indexPath)
-                    
-                    cell.selectionStyle = UITableViewCellSelectionStyle.none
-                    for subview in cell.subviews {
-                        subview.removeFromSuperview()
+                    guard let cell = tableView.dequeueReusableCell(withIdentifier: AddButtonTableViewCell.identifier, for: indexPath) as? AddButtonTableViewCell else {
+                        return UITableViewCell()
                     }
-                    
-                    let cell_width = cell.contentView.bounds.width
-                    let addLocationButton = IUIKButton(frame: CGRect(x: cell_width / 2 - (cell_width / 5) / 2, y: 15, width: cell_width / 5, height: 30))
-                    addLocationButton.setTitle(Constant.buttonTitles.add, for: UIControlState.normal)
-                    addLocationButton.setTitleColor(IUIKColorPalette.primary3.color, for: UIControlState.normal)
-                    addLocationButton.layer.borderColor = IUIKColorPalette.primary3.color.cgColor
-                    addLocationButton.layer.cornerRadius = 4
-                    addLocationButton.layer.borderWidth = 2
-                    cell.addSubview(addLocationButton)
-                    cell.backgroundColor = UIColor.clear
-                    addLocationButton.addTarget(self, action: #selector(VacationSearchViewController.addLocationInSection0Pressed(_:)), for: .touchUpInside)
+                    cell.selectionStyle = UITableViewCellSelectionStyle.none
+                    cell.addButtonTapped = { [weak self] in
+                        self?.addLocationPressed()
+                    }
                     return cell
                 } else {
                     
