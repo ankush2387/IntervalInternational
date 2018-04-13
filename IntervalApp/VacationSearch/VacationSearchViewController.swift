@@ -1632,8 +1632,7 @@ extension VacationSearchViewController: SearchTableViewCellDelegate {
                             Constant.MyClassConstants.initialVacationSearch = VacationSearch(settings, exchangeSearchCriteria)
                         }
                         
-                        ExchangeClient.searchDates(Session.sharedSession.userAccessToken, request:Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request, onSuccess: { response in
-                            
+                        ExchangeClient.searchDates(Session.sharedSession.userAccessToken, request:Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request, onSuccess: { [weak self] response in
                             sender.isEnabled = true
                             Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.response = response
                             
@@ -1643,12 +1642,12 @@ extension VacationSearchViewController: SearchTableViewCellDelegate {
                             Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
                             Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                             // Check not available checkIn dates for the active interval
-                            activeInterval.hasCheckInDates() ? self.exchangeSearchAvailability(activeInterval: activeInterval) : self.noAvailabilityResults()
+                            activeInterval.hasCheckInDates() ? self?.exchangeSearchAvailability(activeInterval: activeInterval) : self?.noAvailabilityResults()
                             
-                        }, onError: { error in
+                        }, onError: { [weak self] error in
                             sender.isEnabled = true
-                            self.hideHudAsync()
-                            self.presentErrorAlert(UserFacingCommonError.handleError(error))
+                            self?.hideHudAsync()
+                            self?.presentErrorAlert(UserFacingCommonError.handleError(error))
                         })
                     }
                     
