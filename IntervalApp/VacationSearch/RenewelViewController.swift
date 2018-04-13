@@ -206,7 +206,6 @@ class RenewelViewController: UIViewController {
             }
         }
         
-
         if Constant.MyClassConstants.isFromWhatToUse {
             self.delegate?.dismissWhatToUse(renewalCoreProduct: renewalCoreProduct, renewalNonCoreProduct: renewalNonCoreProduct)
         } else {
@@ -317,15 +316,7 @@ extension RenewelViewController: UITableViewDataSource {
                         cell.renewelnonCoreImageView?.isHidden = true
                     
                     if let currencyCode = forceRenewals.currencyCode {
-                        if let currentProfile = Session.sharedSession.contact {
-                            var currencyCodeWithSymbol = currencyHelper.getCurrencyFriendlySymbol(currencyCode: currencyCode, countryCode: currentProfile.getCountryCode() ?? "")
-                            let price = String(format: "%.0f", crossSelling.price)
-                            priceAndCurrency = currencyCodeWithSymbol + "\(price)"
-                        } else {
-                            var currencyCodeWithSymbol = currencyHelper.getCurrencyFriendlySymbol(currencyCode: currencyCode)
-                            let price = String(format: "%.0f", crossSelling.price)
-                            priceAndCurrency = currencyCodeWithSymbol + "\(price)"
-                        }
+                        priceAndCurrency = Helper.createPriceAndCurrency(currencyCode: currencyCode, price: crossSelling.price)
                     }
                         
                         // make attributed string
@@ -359,19 +350,12 @@ extension RenewelViewController: UITableViewDataSource {
                             
                             // currency code
                         if let currencyCode = forceRenewals.currencyCode {
-                            
-                            var currencyCodeWithSymbol = currencyHelper.getCurrencyFriendlySymbol(currencyCode: currencyCode)
-                            if let countryCode = Session.sharedSession.contact?.getCountryCode() {
-                                currencyCodeWithSymbol = currencyHelper.getCurrencyFriendlySymbol(currencyCode: currencyCode, countryCode: countryCode)
-                            }
                             if renewalComboProduct.isCoreProduct {
                                 if let productCode = renewalComboProduct.productCode {
                                     cell.renewelCoreImageView?.image = UIImage(named: productCode)
                                 }
                                 
-                                let price = String(format: "%.0f", renewalComboProduct.price)
-                                
-                                priceAndCurrency = currencyCodeWithSymbol + "\(price)"
+                                priceAndCurrency = Helper.createPriceAndCurrency(currencyCode: currencyCode, price: renewalComboProduct.price)
                                 
                                 if let displayName = renewalComboProduct.displayName?.capitalized {
                                     //formatted string
@@ -389,11 +373,11 @@ extension RenewelViewController: UITableViewDataSource {
                                 
                             } else {
                                
-                                if let productCode = renewalComboProduct.productCode { cell.renewelnonCoreImageView?.image = UIImage(named: productCode)
+                                if let productCode = renewalComboProduct.productCode {
+                                    cell.renewelnonCoreImageView?.image = UIImage(named: productCode)
                                 }
                                 
-                                let price = String(format: "%.0f", renewalComboProduct.price)
-                                priceAndCurrency = currencyCodeWithSymbol + "\(price)"
+                                priceAndCurrency = Helper.createPriceAndCurrency(currencyCode: currencyCode, price: renewalComboProduct.price)
                                 var mainString = ""
                                 // Create attributed string
                                 
@@ -484,16 +468,8 @@ extension RenewelViewController: UITableViewDataSource {
                     if let currencyCode = forceRenewals.currencyCode,
                         let font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: CGFloat(20.0)) {
                         
-                        var currencyCodeWithSymbol: String?
-                        if let countryCode = Session.sharedSession.contact?.getCountryCode() {
-                            currencyCodeWithSymbol = currencyHelper.getCurrencyFriendlySymbol(currencyCode: currencyCode, countryCode: countryCode)
-                        } else {
-                            currencyCodeWithSymbol = currencyHelper.getCurrencyFriendlySymbol(currencyCode: currencyCode)
-                        }
-                        
-                        if let currencySymbol = currencyCodeWithSymbol, let displayName = product.displayName?.capitalized {
-                            let price = String(format: "%.0f", product.price)
-                            priceAndCurrency = currencySymbol + "\(price)"
+                        if let displayName = product.displayName?.capitalized {
+                            priceAndCurrency = Helper.createPriceAndCurrency(currencyCode: currencyCode, price: product.price)
                             let formattedString = Helper.returnIntervalMembershipString(displayName: displayName, price: priceAndCurrency, term: term)
                             let range = (formattedString as NSString).range(of: priceAndCurrency)
                             
@@ -525,10 +501,7 @@ extension RenewelViewController: UITableViewDataSource {
                         cell.renewelnonCoreImageView?.image = UIImage(named: productCode)
                     }
                     if let currencyCode = forceRenewals.currencyCode {
-                        let currencyCodeWithSymbol = currencyHelper.getCurrencyFriendlySymbol(currencyCode: currencyCode)
-                        let price = String(format: "%.0f", nonCoreProduct.price)
-                        
-                        priceAndCurrency = currencyCodeWithSymbol + "\(price)"
+                        priceAndCurrency = Helper.createPriceAndCurrency(currencyCode: currencyCode, price: nonCoreProduct.price)
                     }
                     
                     // formatted string
@@ -577,26 +550,21 @@ extension RenewelViewController: UITableViewDataSource {
                 let lowestTerm = forceRenewals.crossSelling[0].term
                 for nonCoreProduct in (forceRenewals.crossSelling) where nonCoreProduct.term == lowestTerm {
                         
-                        // show renewel image  here
-                        cell.renewelImageView?.isHidden = false
+                    // show renewel image  here
+                    cell.renewelImageView?.isHidden = false
                     if let productCode = nonCoreProduct.productCode {
                         cell.renewelImageView?.image = UIImage(named: productCode)
                     }
                         
                         // show core and non core image here
-                        cell.renewelCoreImageView?.isHidden = true
-                        cell.renewelnonCoreImageView?.isHidden = true
+                    cell.renewelCoreImageView?.isHidden = true
+                    cell.renewelnonCoreImageView?.isHidden = true
+                    
                     if let currencyCode = forceRenewals.currencyCode {
-                        let currencyCodeWithSymbol = currencyHelper.getCurrencyFriendlySymbol(currencyCode: currencyCode)
-                        
-                        let price = String(format: "%.0f", nonCoreProduct.price)
-                        
-                        priceAndCurrency = currencyCodeWithSymbol + "\(price)"
+                        priceAndCurrency = Helper.createPriceAndCurrency(currencyCode: currencyCode, price: nonCoreProduct.price)
                     }
                     
                     if let displayName = nonCoreProduct.displayName?.capitalized {
-                        
-                        
                         // Create attributed string
                         var mainString = filterRelinquishment.deposit == nil ? Helper.returnIntervalMembershipStringWithDisplayName3(displayName: displayName, price: priceAndCurrency, term: term) : Helper.returnIntervalMembershipStringWithDisplayName2(displayName: displayName, price: priceAndCurrency, term: term)
                         
