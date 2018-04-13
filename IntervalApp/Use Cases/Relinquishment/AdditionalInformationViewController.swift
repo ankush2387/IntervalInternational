@@ -87,7 +87,7 @@ final class AdditionalInformationViewController: UIViewController {
     }
     
     private func createModels(for resort: Resort) -> SingleSelectionCellModel {
-        return SingleSelectionCellModel(cellTitle: resort.resortName.unwrappedString)
+        return SingleSelectionCellModel(cellTitle: "\(resort.resortName.unwrappedString) - \(resort.resortCode.unwrappedString)")
     }
     
     private func createModels(for inventoryUnit: InventoryUnit) -> SingleSelectionCellModel {

@@ -210,21 +210,6 @@ class AddDebitOrCreditCardViewController: UIViewController {
         
         if Constant.GetawaySearchResultCardFormDetailData.nameOnCard != "" && Constant.GetawaySearchResultCardFormDetailData.cardNumber != "" && Constant.GetawaySearchResultCardFormDetailData.cardType != "" && Constant.GetawaySearchResultCardFormDetailData.expDate != "" && Constant.GetawaySearchResultCardFormDetailData.cvv != "" &&  Constant.GetawaySearchResultCardFormDetailData.country != "" &&  Constant.GetawaySearchResultCardFormDetailData.state != "" {
             
-            var isNewCard = true
-            
-            if let currentProfile = Session.sharedSession.contact, let creditCards = currentProfile.creditcards {
-                for creditCard in creditCards {
-                    let cardNumber = creditCard.cardNumber!
-                    let last4 = cardNumber.substring(from: (cardNumber.index((cardNumber.endIndex), offsetBy: -4)))
-                    let enteredCardLastDigit = Constant.GetawaySearchResultCardFormDetailData.cardNumber.substring(from: (Constant.GetawaySearchResultCardFormDetailData.cardNumber.index((Constant.GetawaySearchResultCardFormDetailData.cardNumber.endIndex), offsetBy: -4)))
-                    
-                    if last4 == enteredCardLastDigit {
-                        isNewCard = false
-                    }
-                }
-            }
- 
-            if isNewCard {
                 let newCreditCard = Creditcard()
                 newCreditCard.creditcardId = 0
                 newCreditCard.cardHolderName = Constant.GetawaySearchResultCardFormDetailData.nameOnCard
@@ -335,12 +320,9 @@ class AddDebitOrCreditCardViewController: UIViewController {
                     self?.presentErrorAlert(UserFacingCommonError.generic)
                     self?.hideHudAsync()
                 })
-            } else {
-                self.presentAlert(with: Constant.MyClassConstants.newCardalertTitle, message: Constant.MyClassConstants.newCardalertMess)
-            }
             
         } else {
-            self.presentAlert(with: Constant.MyClassConstants.newCardalertTitle, message: Constant.MyClassConstants.alertReqFieldMsg)
+            self.presentAlert(with: Constant.MyClassConstants.newCardalertTitle, message: Constant.MyClassConstants.alertReqFieldMsg, hideCancelButton: true)
         }
     }
     

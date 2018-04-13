@@ -461,6 +461,10 @@ final class RelinquishmentViewModel {
                 message : extraInformationText.unwrappedString + "\n" + message
         }
         
+        if relinquishment.isDeposit(), let expirationDate = relinquishment.expirationDate?.dateFromString(), expirationDate.numberOfDaysToToday() < 0 {
+            extraInformationText = "This feature is not available through the mobile app. To extend your week, visit intervalworld.com."
+        }
+        
         return extraInformationText?.localized()
     }
     

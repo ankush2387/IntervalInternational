@@ -70,9 +70,8 @@ class RelinquishmentSelectionOpenWeeksCellWithUpgrade: UITableViewCell {
             dayAndDateLabel.text = nil
         }
         
-        
         var currencyCode = "USD"
-        if let currencyCodeValue = unitSizeUpgradeFeeCost.currencyCode  {
+        if let currencyCodeValue = unitSizeUpgradeFeeCost.currencyCode {
             currencyCode = currencyCodeValue
         }
         
@@ -85,5 +84,49 @@ class RelinquishmentSelectionOpenWeeksCellWithUpgrade: UITableViewCell {
             lblFees.attributedText = attributedAmount
         }
     }
-
+    
+    func setupDepositCell(deposit: Deposit, unitSizeUpgradeFeeCost: Money) {
+        
+        resortName.text = deposit.resort?.resortName ?? "".localized()
+        yearLabel.text = "\(String(describing: deposit.relinquishmentYear ?? 0))".localized()
+        totalWeekLabel.text = "Week \(Constant.getWeekNumber(weekType: deposit.weekNumber ?? ""))".localized()
+        bedroomSizeAndKitchenClient.text = "\(String(describing: Helper.getBedroomNumbers(bedroomType: deposit.unit?.unitSize ?? ""))), \(Helper.getKitchenEnums(kitchenType: deposit.unit?.kitchenType ?? ""))".localized()
+        
+        if let sleepCapacity = deposit.unit?.publicSleepCapacity {
+            totalSleepAndPrivate.text = "Sleeps \(sleepCapacity) Total".localized()
+        }
+        
+        if let privateSleepCap = deposit.unit?.privateSleepCapacity {
+            totalSleepAndPrivate.text?.append(", \(privateSleepCap) Private".localized())
+        }
+        
+        if let checkInDate = deposit.checkInDate, let formattedCheckInDate = checkInDate.dateFromString(for: Constant.MyClassConstants.dateFormat) {
+            let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
+            let myComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: formattedCheckInDate)
+            let day = myComponents.day ?? 0
+            var month = ""
+            if day < 10 {
+                month = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month ?? 0)) 0\(day)"
+            } else {
+                month = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month ?? 0)) \(day)"
+            }
+            dayAndDateLabel.text = month.uppercased()
+        } else {
+            dayAndDateLabel.text = nil
+        }
+        
+        var currencyCode = "USD"
+        if let currencyCodeValue = unitSizeUpgradeFeeCost.currencyCode {
+            currencyCode = currencyCodeValue
+        }
+        
+        var countryCode: String?
+        if let currentProfile = Session.sharedSession.contact {
+            countryCode = currentProfile.getCountryCode()
+        }
+        
+        if let attributedAmount = unitSizeUpgradeFeeCost.amount.currencyFormatter(for:currencyCode, for: countryCode) {
+            lblFees.attributedText = attributedAmount
+        }
+    }
 }

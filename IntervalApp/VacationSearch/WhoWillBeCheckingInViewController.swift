@@ -720,7 +720,7 @@ extension WhoWillBeCheckingInViewController: UITableViewDataSource {
             
         default :
             
-            return nil
+            return UIView()
             
         }
         

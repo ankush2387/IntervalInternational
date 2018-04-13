@@ -127,29 +127,29 @@ public class Helper {
         switch monthNumber {
             
         case 1:
-            return "Jan".localized()
+            return "Jan.".localized()
         case 2:
-            return "Feb".localized()
+            return "Feb.".localized()
         case 3:
-            return "Mar".localized()
+            return "Mar.".localized()
         case 4:
-            return "Apr".localized()
+            return "Apr.".localized()
         case 5:
             return "May".localized()
         case 6:
-            return "Jun".localized()
+            return "Jun.".localized()
         case 7:
-            return "Jul".localized()
+            return "Jul.".localized()
         case 8:
-            return "Aug".localized()
+            return "Aug.".localized()
         case 9:
-            return "Sep".localized()
+            return "Sep.".localized()
         case 10:
             return "Oct".localized()
         case 11:
-            return "Nov".localized()
+            return "Nov.".localized()
         case 12:
-            return "Dec".localized()
+            return "Dec.".localized()
         default:
             return ""
         }
@@ -332,9 +332,18 @@ public class Helper {
     }
     static func performSortingForMemberNumberWithViewResultAndNothingYet() {
         
-        Constant.activeAlertCount =  Constant.MyClassConstants.searchDateResponse.filter { $0.1.checkInDates.count > 0 }.count
-        Constant.MyClassConstants.searchDateResponse.sort { $0.0.alertId ?? 0 > $1.0.alertId ?? 0 }
-        Constant.MyClassConstants.searchDateResponse.sort { $0.1.checkInDates.count > $1.1.checkInDates.count }
+        // FIXME (FRANK) maybe move this to SDK? see mobi-2044
+        Constant.activeAlertCount = Constant.MyClassConstants.searchDateResponse.filter { $0.1.checkInDates.count > 0 }.count
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        Constant.MyClassConstants.searchDateResponse.sort {
+            let date1 = dateFormatter.date(from: $0.0.getCheckInDate())
+            let date2 = dateFormatter.date(from: $1.0.getCheckInDate())
+            if let d1 = date1, let d2 = date2 {
+                return d1 < d2
+            }
+            return false
+        }
         NotificationCenter.default.post(name:NSNotification.Name(rawValue: Constant.notificationNames.getawayAlertsNotification), object: nil)
     }
     
@@ -2155,5 +2164,16 @@ public class Helper {
         return nil
     }
     
+    static func getProductNameFromProduct(product: Product?) -> String? {
+        guard let productName = product?.productName  else {
+            return nil
+        }
+        if productName == "INTERVAL" {
+            let fixProductName = "\(productName) Membership"
+            return fixProductName.capitalized
+        } else {
+            return productName.capitalized
+        }
+    }
 }
 
