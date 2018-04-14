@@ -19,8 +19,6 @@ open class Address {
     open var countryCode : String?
     open var postalCode : String?
     open var status : String?
-    open var statusChangeReason : String?
-    open var enterpriseCode : String?
 
     public init() {
         self.addressId = 0
@@ -40,36 +38,10 @@ open class Address {
         self.countryCode = json["countryCode"].string
         self.postalCode = json["postalCode"].string
         self.status = json["status"].string
-        self.statusChangeReason = json["statusChangeReason"].string
-        self.enterpriseCode = json["enterpriseCode"].string
     }
 
     open func postalAddresAsString() -> String {
         return [cityName, territoryCode, countryCode].flatMap { $0 }.joined(separator: ", ")
-        
-        /*
-        var s = ""
-
-        if let cityName = self.cityName {
-           s += cityName
-        }
-        
-        if let territoryCode = self.territoryCode {
-            if !s.isEmpty {
-                s += ", "
-            }
-            s += territoryCode
-        }
-
-        if let countryCode = self.countryCode {
-            if !s.isEmpty {
-                s += ", "
-            }
-            s += countryCode
-        }
-         
-        return s
-        */
     }
     
 }
