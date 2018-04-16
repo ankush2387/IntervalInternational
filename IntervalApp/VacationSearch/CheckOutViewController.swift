@@ -30,7 +30,7 @@ class CheckOutViewController: UIViewController {
     var isAgreedToFees = false
     let cellWebView = UIWebView()
     var showUpdateEmail = false
-    var updateEmailSwitchStauts = "off"
+    var updateEmail = false
     var emailTextToEnter = ""
     var tripRequestInProcess = false
     var isHeightZero = false
@@ -217,11 +217,15 @@ class CheckOutViewController: UIViewController {
                 showHudAsync()
                 imageSlider.isHidden = true
                 showLoader = true
-                
                 let confirmationDelivery = ConfirmationDelivery()
-                confirmationDelivery.emailAddress = self.emailTextToEnter
-                //FIXME(Frank) - why always false?
-                confirmationDelivery.updateProfile = false
+                if updateEmail {
+                    confirmationDelivery.emailAddress = self.emailTextToEnter
+                } else {
+                    if let email = Session.sharedSession.contact?.emailAddress {
+                      confirmationDelivery.emailAddress = email
+                    }
+                }
+                confirmationDelivery.updateProfile = updateEmail
                 
                 if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
                     self.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
@@ -483,17 +487,13 @@ class CheckOutViewController: UIViewController {
     
     //***** Function called switch state is 'On' so as to update user's email. *****//
     func udpateEmailSwitchPressed(_ sender: UISwitch) {
-        
-        let validEmail = isValidEmail(testStr: self.emailTextToEnter)
+        let validEmail = isValidEmail(testStr: emailTextToEnter)
         if validEmail {
-            if sender.isOn {
-                self.updateEmailSwitchStauts = "on"
-            } else {
-                self.updateEmailSwitchStauts = "off"
-            }
+            sender.isOn ? (updateEmail = true) : (updateEmail = false)
         } else {
+            updateEmail = false
             sender.setOn(false, animated: true)
-            self.presentAlert(with: Constant.buttonTitles.updateSwitchTitle, message: Constant.AlertErrorMessages.emailAlertMessage)
+            presentAlert(with: Constant.buttonTitles.updateSwitchTitle, message: Constant.AlertErrorMessages.emailAlertMessage)
         }
     }
     
