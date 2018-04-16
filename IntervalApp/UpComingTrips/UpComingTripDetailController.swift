@@ -489,12 +489,12 @@ extension UpComingTripDetailController: UITableViewDataSource {
                         cell.resortNameLabel.text = resortName.localized()
                     }
                     
+                    if let resortCode = resort.resortCode {
+                        cell.resortCodeLabel.text = resortCode
+                    }
+                    
                     if let address = resort.address {
                         cell.resortLocationLabel.text = address.postalAddresAsString().localized()
-                        
-                        if let countryCode = address.countryCode {
-                            cell.resortCodeLabel.text = countryCode.localized()
-                        }
                     }
                     
                     // Resort Unit info
