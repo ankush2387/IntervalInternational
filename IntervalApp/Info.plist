@@ -29,9 +29,9 @@
 		<key>DarwinClientKey</key>
 		<string>e7aaf348-f08a-11e1-9237-96c6dd6a022c</string>
 		<key>DarwinSecret</key>
-		<string>d8a2aa4e-3d47-45d0-a5a6-e729c1b139fe</string>
+		<string>ee9acaa2-f08a-11e1-bc20-96c6dd6a022c</string>
 		<key>Environment</key>
-		<string>STAGING</string>
+		<string>DEV2</string>
 		<key>LogLevel</key>
 		<string>Debug</string>
 	</dict>
