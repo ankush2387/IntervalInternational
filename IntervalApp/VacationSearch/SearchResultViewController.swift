@@ -485,7 +485,7 @@ class SearchResultViewController: UIViewController {
             //FIXME(Frank) - more of the same BAD use of globals for everything - this is madness
             Constant.MyClassConstants.onsiteArray.removeAllObjects()
             Constant.MyClassConstants.nearbyArray.removeAllObjects()
-            guard let resortAmenities = response.view?.resort?.amenities else { return }
+            guard let resortAmenities = response.view?.destination?.resort?.amenities else { return }
             for amenity in resortAmenities {
                 guard let amenityName = amenity.amenityName else { return }
                 if !amenity.nearby {
@@ -1803,7 +1803,7 @@ extension SearchResultViewController: RenewelViewControllerDelegate {
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
-    func selectedRenewalFromWhoWillBeCheckingIn(renewalCoreProduct: Renewal?, renewalNonCoreProduct: Renewal?, selectedRelinquishment: ExchangeRelinquishment) {
+    func selectedRenewalFromWhoWillBeCheckingIn(renewalCoreProduct: Renewal?, renewalNonCoreProduct: Renewal?, selectedRelinquishment: ExchangeRelinquishment?) {
         self.dismiss(animated: false, completion: nil)
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
         guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: SearchResultViewController.whoWillBeCheckingInViewController) as? WhoWillBeCheckingInViewController else { return }
@@ -1813,7 +1813,7 @@ extension SearchResultViewController: RenewelViewControllerDelegate {
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
-    func noThanks(selectedRelinquishment: ExchangeRelinquishment) {
+    func noThanks(selectedRelinquishment: ExchangeRelinquishment?) {
         self.dismiss(animated: true, completion: nil)
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
         guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: SearchResultViewController.whoWillBeCheckingInViewController) as? WhoWillBeCheckingInViewController else { return }

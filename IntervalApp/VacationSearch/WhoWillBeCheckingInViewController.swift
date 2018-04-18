@@ -39,7 +39,7 @@ class WhoWillBeCheckingInViewController: UIViewController {
     var selectedCountryIndex: Int?
     var noThanksSelected = false
     var isFromRenewals = false
-    var selectedRelinquishment = ExchangeRelinquishment()
+    var selectedRelinquishment: ExchangeRelinquishment?
     var renewalCoreProduct: Renewal?
     var renewalNonCoreProduct: Renewal?
     var guestCertFormDetail: Constant.GuestCertificateFormData?
@@ -645,7 +645,7 @@ extension WhoWillBeCheckingInViewController: UITableViewDataSource {
         case 3, 4, 5 :
             return 60
         default :
-            return 80
+            return 90
         }
         
     }
@@ -667,10 +667,10 @@ extension WhoWillBeCheckingInViewController: UITableViewDataSource {
                 
             } else {
                 
-                if let openWeek = selectedRelinquishment.openWeek {
+                if let openWeek = selectedRelinquishment?.openWeek {
                     cell.resortName?.text = openWeek.resort?.resortName
                     cell.lblHeading.text = Constant.MyClassConstants.relinquishment
-                } else if let deposits = selectedRelinquishment.deposit {
+                } else if let deposits = selectedRelinquishment?.deposit {
                     cell.resortName?.text = deposits.resort?.resortName
                     cell.lblHeading.text = Constant.MyClassConstants.relinquishment
                 } else if let selectedBucket = Constant.MyClassConstants.selectedAvailabilityInventoryBucket, let pointsCost = selectedBucket.exchangePointsCost {
@@ -1156,7 +1156,7 @@ extension WhoWillBeCheckingInViewController: RenewelViewControllerDelegate {
         
     }
     
-    func selectedRenewalFromWhoWillBeCheckingIn(renewalCoreProduct: Renewal?, renewalNonCoreProduct: Renewal?, selectedRelinquishment: ExchangeRelinquishment) {
+    func selectedRenewalFromWhoWillBeCheckingIn(renewalCoreProduct: Renewal?, renewalNonCoreProduct: Renewal?, selectedRelinquishment: ExchangeRelinquishment?) {
         self.renewalCoreProduct = renewalCoreProduct
         self.renewalNonCoreProduct = renewalNonCoreProduct
         Constant.MyClassConstants.noThanksForNonCore = false
@@ -1164,7 +1164,7 @@ extension WhoWillBeCheckingInViewController: RenewelViewControllerDelegate {
         proceedToCheckoutPressed(button)
     }
     
-    func noThanks(selectedRelinquishment: ExchangeRelinquishment) {
+    func noThanks(selectedRelinquishment: ExchangeRelinquishment?) {
         let messageString = "Guest Certificate Fee will be charged. To proceed further please click on OK button else click on cancel to select the renewal of membership.".localized()
         presentAlert(with: "Alert".localized(), message: messageString)
     }

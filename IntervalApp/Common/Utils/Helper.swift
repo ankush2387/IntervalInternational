@@ -2055,6 +2055,14 @@ public class Helper {
     }
     
     //
+    // Create the string of a price and currency
+    //
+    static func createPriceAndCurrency(currencyCode: String, price: Float) -> String {
+        let currencySymbol = Helper.resolveCurrencySymbol(currencyCode: currencyCode)
+        return String(format: "%@%.0f", currencySymbol, price)
+    }
+    
+    //
     // Resolve the TimeZone
     //
     static func createTimeZone() -> TimeZone {
