@@ -645,7 +645,7 @@ extension WhoWillBeCheckingInViewController: UITableViewDataSource {
         case 3, 4, 5 :
             return 60
         default :
-            return 80
+            return 90
         }
         
     }
