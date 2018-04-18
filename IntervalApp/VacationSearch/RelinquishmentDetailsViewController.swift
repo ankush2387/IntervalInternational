@@ -15,7 +15,7 @@ class RelinquishmentDetailsViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
     
-    var selectedRelinquishment = ExchangeRelinquishment()
+    var selectedRelinquishment: ExchangeRelinquishment?
   
     var resort: Resort = Resort()
     
@@ -33,7 +33,7 @@ class RelinquishmentDetailsViewController: UIViewController {
             return
         }
         
-        let element = self.selectedRelinquishment.deposit?.resort ?? self.selectedRelinquishment.accommodationCertificate?.resort ?? self.selectedRelinquishment.openWeek?.resort ?? self.selectedRelinquishment.clubPoints?.resort ?? self.selectedRelinquishment.accommodationCertificate?.resort
+        let element = self.selectedRelinquishment?.deposit?.resort ?? self.selectedRelinquishment?.accommodationCertificate?.resort ?? self.selectedRelinquishment?.openWeek?.resort ?? self.selectedRelinquishment?.clubPoints?.resort ?? self.selectedRelinquishment?.accommodationCertificate?.resort
         
         guard let resortCode = element?.resortCode else {
             return
@@ -103,7 +103,7 @@ extension RelinquishmentDetailsViewController: UITableViewDataSource, UITableVie
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "ExchangeCell1", for: indexPath) as? RelinquishmentSelectionOpenWeeksCell else { return UITableViewCell() }
             cell.selectionStyle = UITableViewCellSelectionStyle.none
             
-            if let clubPoints = selectedRelinquishment.clubPoints {
+            if let clubPoints = selectedRelinquishment?.clubPoints {
                 cell.dayAndDateLabel.text = ""
                 if let pointsSpent = clubPoints.pointsSpent {
                     cell.yearLabel.text = "\(pointsSpent))"
@@ -117,7 +117,7 @@ extension RelinquishmentDetailsViewController: UITableViewDataSource, UITableVie
                 cell.bedroomSizeAndKitchenClient.text = ""
                 cell.totalSleepAndPrivate.text = ""
                 
-            } else if let openWeek = selectedRelinquishment.openWeek {
+            } else if let openWeek = selectedRelinquishment?.openWeek {
                 
                 if let checkInDate = Date.dateFromString(openWeek.checkInDate.unwrappedString)?.formatDateAs("MM-dd"),
                     let month = checkInDate.split(separator: "-").first,
@@ -138,15 +138,15 @@ extension RelinquishmentDetailsViewController: UITableViewDataSource, UITableVie
                 if let resortName = openWeek.resort?.resortName {
                     cell.resortName.text = resortName
                 }
-                if let unitSize = selectedRelinquishment.openWeek?.unit?.unitSize, let kitchenType = selectedRelinquishment.openWeek?.unit?.kitchenType {
+                if let unitSize = selectedRelinquishment?.openWeek?.unit?.unitSize, let kitchenType = selectedRelinquishment?.openWeek?.unit?.kitchenType {
                     cell.bedroomSizeAndKitchenClient.text = "\(Helper.getBedroomNumbers(bedroomType:unitSize)), \(Helper.getKitchenEnums(kitchenType: kitchenType))"
                 }
                 
-                if let publicSleeps = selectedRelinquishment.openWeek?.unit?.publicSleepCapacity, let privateSleeps = selectedRelinquishment.openWeek?.unit?.privateSleepCapacity {
+                if let publicSleeps = selectedRelinquishment?.openWeek?.unit?.publicSleepCapacity, let privateSleeps = selectedRelinquishment?.openWeek?.unit?.privateSleepCapacity {
                    cell.totalSleepAndPrivate.text = "Sleeps \(publicSleeps), \(privateSleeps) Private"
                 }
                 
-            } else if let deposits = selectedRelinquishment.deposit {
+            } else if let deposits = selectedRelinquishment?.deposit {
                 
                 if let checkInDate = Date.dateFromString(deposits.checkInDate.unwrappedString)?.formatDateAs("MM-dd"),
                     let month = checkInDate.split(separator: "-").first,

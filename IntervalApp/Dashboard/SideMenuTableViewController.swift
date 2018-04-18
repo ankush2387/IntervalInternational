@@ -127,7 +127,7 @@ extension SideMenuTableViewController: UITableViewDelegate {
         
         //***** return height for  row in each section of tableview *****//
         var height = 0
-        (indexPath.row == 0) ? (height = 100) : (height = 50)
+        (indexPath.row == 0) ? (height = 140) : (height = 50)
         return CGFloat(height)
     }
     
@@ -160,7 +160,7 @@ extension SideMenuTableViewController: UITableViewDataSource {
             let imageview = UIImageView()
             let screenSize: CGRect = UIScreen.main.bounds
             let actualSizeRequired = CGFloat(screenSize.width) - 300
-            imageview.frame = CGRect(x: actualSizeRequired / 2, y: 0, width: 250, height: 88)
+            imageview.frame = CGRect(x: actualSizeRequired / 2, y: 20, width: 250, height: 88)
             imageview.image = UIImage(named: Constant.MyClassConstants.logoMenuImage)
             imageview.contentMode = UIViewContentMode.scaleAspectFit
             cell.contentView.addSubview(imageview)

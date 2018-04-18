@@ -3661,8 +3661,8 @@
                                                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Gift your resort stay to a friend or family member" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vg1-qD-ukh">
-                                                    <rect key="frame" x="17" y="50" width="532" height="35"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Share the gift of travel. Give your Exchange or Getaway vacation to friends and family." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vg1-qD-ukh">
+                                                    <rect key="frame" x="17" y="50" width="532" height="49"/>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="20"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -3725,7 +3725,7 @@
                                                 <constraint firstItem="s9L-Jd-hKo" firstAttribute="leading" secondItem="Cee-hN-C4b" secondAttribute="leadingMargin" constant="2" id="A9v-3l-zX1"/>
                                                 <constraint firstItem="K0x-Sq-lIV" firstAttribute="leading" secondItem="vg1-qD-ukh" secondAttribute="trailing" constant="8" id="Cix-PU-YtF"/>
                                                 <constraint firstItem="s9L-Jd-hKo" firstAttribute="top" secondItem="Cee-hN-C4b" secondAttribute="topMargin" constant="2" id="KTU-gY-tPF"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="vg1-qD-ukh" secondAttribute="bottom" constant="14" id="XdI-fE-dJ2"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="vg1-qD-ukh" secondAttribute="bottom" id="XdI-fE-dJ2"/>
                                                 <constraint firstItem="b8C-zD-Kaf" firstAttribute="top" secondItem="Cee-hN-C4b" secondAttribute="top" constant="20" id="bB9-Il-YWP"/>
                                                 <constraint firstItem="K0x-Sq-lIV" firstAttribute="leading" secondItem="b8C-zD-Kaf" secondAttribute="trailing" constant="8" id="hxn-Nn-c4y"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="K0x-Sq-lIV" secondAttribute="bottom" constant="18" id="oEA-f9-gNf"/>
@@ -5149,7 +5149,7 @@
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="170" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="UQr-UE-QNt">
-                                <rect key="frame" x="30" y="60" width="708" height="915"/>
+                                <rect key="frame" x="30" y="60" width="708" height="964"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="ViewDetailsTBLcell" rowHeight="130" id="nh8-hF-3hI" customClass="ViewDetailsTBLcell" customModule="IntervalApp" customModuleProvider="target">
@@ -10666,9 +10666,9 @@
         <image name="input_clear" width="15" height="15"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="bm5-1w-IwW"/>
+        <segue reference="AZs-HP-gzH"/>
         <segue reference="m4o-mh-cv9"/>
-        <segue reference="5di-wX-yoy"/>
+        <segue reference="sel-eD-RNr"/>
         <segue reference="qcI-7D-UcK"/>
         <segue reference="oBk-pI-NY0"/>
         <segue reference="hgo-Jq-z8A"/>

@@ -40,7 +40,7 @@ class CheckOutViewController: UIViewController {
     var destinationPromotionSelected = false
     var recapSelectedPromotion: String?
     var recapFeesTotal: Float?
-    var selectedRelinquishment = ExchangeRelinquishment()
+    var selectedRelinquishment: ExchangeRelinquishment?
     var isDepositPromotionAvailable = false
     var renewalCoreProduct: Renewal?
     var renewalNonCoreProduct: Renewal?
@@ -1162,12 +1162,12 @@ extension CheckOutViewController: UITableViewDataSource {
                 seprator.backgroundColor = .lightGray
                 cell.addSubview(seprator)
             } else {
-                if let openWeek = selectedRelinquishment.openWeek {
+                if let openWeek = selectedRelinquishment?.openWeek {
                     cell.resortName?.text = openWeek.resort?.resortName
                     cell.lblHeading.text = Constant.MyClassConstants.relinquishment
                     cell.resortDetailsButton.isHidden = false
                     cell.resortDetailsButton.addTarget(self, action: #selector(WhoWillBeCheckingInViewController.resortDetailsClicked(_:)), for: .touchUpInside)
-                } else if let deposits = selectedRelinquishment.deposit {
+                } else if let deposits = selectedRelinquishment?.deposit {
                     cell.resortName?.text = deposits.resort?.resortName
                     cell.lblHeading.text = Constant.MyClassConstants.relinquishment
                     cell.resortDetailsButton.isHidden = false
