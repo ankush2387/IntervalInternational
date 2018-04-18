@@ -644,7 +644,7 @@ extension UpComingTripDetailController: UITableViewDataSource {
        
                     cell.checkInMonthYearLabel.text = String(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment?.deposit?.relinquishmentYear ?? 0).localized()
                     
-                    cell.resortFixedWeekLabel.text = "week \(Constant.getWeekNumber(weekType: Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment?.deposit?.weekNumber ?? "").localized())".localized()
+                    cell.resortFixedWeekLabel.text = "Week \(Constant.getWeekNumber(weekType: Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment?.deposit?.weekNumber ?? "").localized())".localized()
                     
                     cell.bedRoomKitechenType.text =  "\(Helper.getBedroomNumbers(bedroomType: Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment?.deposit?.unit?.unitSize ?? "")) \(Helper.getKitchenEnums(kitchenType: (Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment?.deposit?.unit?.kitchenType) ?? ""))".localized()
                     
@@ -933,7 +933,7 @@ extension UpComingTripDetailController: UITableViewDataSource {
                 unitDetialsCellHeight = unitDetialsCellHeight + 20
             }
         }
-        detailsView?.frame = CGRect(x: 0, y: 20, width: Int(self.view.frame.size.width), height: self.unitDetialsCellHeight)
+        detailsView?.frame = CGRect(x: 8, y: 20, width: Int(self.view.frame.size.width), height: self.unitDetialsCellHeight)
         
         return detailsView!
     }

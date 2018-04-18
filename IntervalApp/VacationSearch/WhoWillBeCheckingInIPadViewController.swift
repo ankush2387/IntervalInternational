@@ -37,9 +37,9 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
     var renewalCoreProduct: Renewal?
     var renewalNonCoreProduct: Renewal?
     
-    var filterRelinquishments = ExchangeRelinquishment()
+    var filterRelinquishments: ExchangeRelinquishment?
     var guestCertFormDetail: Constant.GuestCertificateFormData?
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.isHidden = false
@@ -101,7 +101,6 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
         
     }
 
-    
     func isValidEmail(testStr: String) -> Bool {
         
         let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
@@ -231,19 +230,19 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
             self.performSegue(withIdentifier: Constant.segueIdentifiers.showResortDetailsSegue, sender: nil)
         } else {
             
-            if let openWeek = filterRelinquishments.openWeek {
+            if let openWeek = filterRelinquishments?.openWeek {
                 if let resortCode = openWeek.resort?.resortCode {
                     getRelinquishmentDetails(resortCode: resortCode)
                 }
             }
             
-            if let deposits = filterRelinquishments.deposit {
+            if let deposits = filterRelinquishments?.deposit {
                 if let resortCode = deposits.resort?.resortCode {
                     getRelinquishmentDetails(resortCode: resortCode)
                 }
             }
             
-            if let clubPoints = filterRelinquishments.clubPoints {
+            if let clubPoints = filterRelinquishments?.clubPoints {
                 if let resortCode = clubPoints.resort?.resortCode {
                     getRelinquishmentDetails(resortCode: resortCode)
                 }
@@ -608,7 +607,7 @@ extension WhoWillBeCheckingInIPadViewController: UITableViewDataSource {
         case 0 :
             
             guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.viewDetailsTBLcell, for: indexPath) as? ViewDetailsTBLcell else { return UITableViewCell() }
-            cell.setUpDetailsCell(indexPath: indexPath, filterRelinquishments: filterRelinquishments)
+            cell.setUpDetailsCell(indexPath: indexPath, filterRelinquishments: self.filterRelinquishments)
             
             return cell
         case 1 :
@@ -958,7 +957,7 @@ extension WhoWillBeCheckingInIPadViewController: RenewelViewControllerDelegate {
         
     }
     
-    func selectedRenewalFromWhoWillBeCheckingIn(renewalCoreProduct: Renewal?, renewalNonCoreProduct: Renewal?, selectedRelinquishment: ExchangeRelinquishment) {
+    func selectedRenewalFromWhoWillBeCheckingIn(renewalCoreProduct: Renewal?, renewalNonCoreProduct: Renewal?, selectedRelinquishment: ExchangeRelinquishment?) {
         self.renewalCoreProduct = renewalCoreProduct
         self.renewalNonCoreProduct = renewalNonCoreProduct
         Constant.MyClassConstants.noThanksForNonCore = false
@@ -966,7 +965,7 @@ extension WhoWillBeCheckingInIPadViewController: RenewelViewControllerDelegate {
         self.proceedToCheckoutPressed(button)
     }
     
-    func noThanks(selectedRelinquishment: ExchangeRelinquishment) {
+    func noThanks(selectedRelinquishment: ExchangeRelinquishment?) {
         self.dismiss(animated: true, completion: nil)
         let button = UIButton()
         Constant.MyClassConstants.isDismissWhoWillBeCheckin = true

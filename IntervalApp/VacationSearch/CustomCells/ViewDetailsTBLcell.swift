@@ -32,7 +32,7 @@ class ViewDetailsTBLcell: UITableViewCell {
         // Configure the view for the selected state
     }
     
-    func setUpDetailsCell (indexPath: IndexPath, filterRelinquishments: ExchangeRelinquishment) {
+    func setUpDetailsCell (indexPath: IndexPath, filterRelinquishments: ExchangeRelinquishment?) {
         if indexPath.row == 0 {
             resortDetailsButton.tag = indexPath.row
             lblHeading.text = "Resort Detail".localized()
@@ -43,10 +43,10 @@ class ViewDetailsTBLcell: UITableViewCell {
             }
         } else {
             
-            if let openWeek = filterRelinquishments.openWeek {
+            if let openWeek = filterRelinquishments?.openWeek {
                 resortName?.text = openWeek.resort?.resortName
                 lblHeading.text = Constant.MyClassConstants.relinquishment
-            } else if let deposits = filterRelinquishments.deposit {
+            } else if let deposits = filterRelinquishments?.deposit {
                 resortName?.text = deposits.resort?.resortName
                 lblHeading.text = Constant.MyClassConstants.relinquishment
             } else if let selectedBucket = Constant.MyClassConstants.selectedAvailabilityInventoryBucket, let pointsCost = selectedBucket.exchangePointsCost {
