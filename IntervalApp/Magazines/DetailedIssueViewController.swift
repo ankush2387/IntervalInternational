@@ -11,13 +11,13 @@ import UIKit
 class DetailedIssueViewController: UIViewController {
     
     internal var issueUrl: String?
-    internal var magazinTitile: String!
+    internal var magazinTitile: String?
     @IBOutlet weak var webView: UIWebView?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.title = self.magazinTitile!
+        self.title = magazinTitile
         
         //1. Load web site into my web view
         let myURL = NSURL(string: issueUrl!)
@@ -28,8 +28,8 @@ class DetailedIssueViewController: UIViewController {
         menuButton.tintColor = UIColor.white
         //self.tabBarController?.delegate = self
         self.navigationItem.leftBarButtonItem = menuButton
-
-        // Do any additional setup after loading the view.
+        webView?.scalesPageToFit = true
+        webView?.contentMode = .scaleAspectFit
     }
     
     //***** Dismiss progress bar if back button is pressed. *****//
