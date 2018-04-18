@@ -823,20 +823,18 @@ extension WhatToUseViewController: UITableViewDataSource {
 // Implementing custom delegate method definition
 extension WhatToUseViewController: RenewelViewControllerDelegate {
     
-    func selectedRenewalFromWhoWillBeCheckingIn(renewalCoreProduct: Renewal?, renewalNonCoreProduct: Renewal?, selectedRelinquishment: ExchangeRelinquishment) {
+    func selectedRenewalFromWhoWillBeCheckingIn(renewalCoreProduct: Renewal?, renewalNonCoreProduct: Renewal?, selectedRelinquishment: ExchangeRelinquishment?) {
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
         guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: "WhoWillBeCheckingInViewController") as? WhoWillBeCheckingInViewController else { return }
-        if Constant.MyClassConstants.filterRelinquishments.count > 1 {
-            viewController.selectedRelinquishment = Constant.MyClassConstants.filterRelinquishments[self.selectedRow - 1]
-        } else {
-             viewController.selectedRelinquishment = Constant.MyClassConstants.filterRelinquishments[self.selectedRow]
-        }
+        
+        // why wouldnt we just use the passed in selected Reliquishment here?
+        viewController.selectedRelinquishment = selectedRelinquishment
         viewController.renewalCoreProduct = renewalCoreProduct
         viewController.renewalNonCoreProduct = renewalNonCoreProduct
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
-    func noThanks(selectedRelinquishment: ExchangeRelinquishment) {
+    func noThanks(selectedRelinquishment: ExchangeRelinquishment?) {
         self.dismiss(animated: true, completion: nil)
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
         guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: "WhoWillBeCheckingInViewController") as? WhoWillBeCheckingInViewController else { return }
