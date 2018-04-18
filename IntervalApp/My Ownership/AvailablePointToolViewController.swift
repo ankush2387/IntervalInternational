@@ -215,7 +215,10 @@ extension AvailablePointToolViewController: UITableViewDelegate {
            
             let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
             if let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.calendarViewController) as? CalendarViewController {
-                viewController.requestedController = Constant.MyClassConstants.relinquishment
+                viewController.calendarContext = Constant.CalendarContext.availablePoits
+                viewController.didSelectDate = { selectedDate in
+                    Constant.MyClassConstants.relinquishmentAvalableToolSelectedDate = selectedDate
+                }
                 let transitionManager = TransitionManager()
                 navigationController?.transitioningDelegate = transitionManager
                 navigationController?.pushViewController(viewController, animated: true)

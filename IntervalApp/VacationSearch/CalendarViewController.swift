@@ -18,13 +18,11 @@ class CalendarViewController: UIViewController {
     
     //***** class variables *****//
     let defaults = UserDefaults.standard
-    var requestedDateWindow: String = ""
-    var requestedController = ""
-    var showNinetyDaysWindow = false
     
     var dateArray = [Date]()
     var datesToAllow = [Date]()
 
+    var calendarContext: Constant.CalendarContext?
     var didSelectDate: ((Date?) -> Void)?
     
     override func viewDidLoad() {
@@ -114,31 +112,8 @@ extension CalendarViewController: FSCalendarDelegate {
             df.timeZone = Helper.createTimeZone()
         let selectedDate = df.date(from: dateStr)
  
-        if self.requestedController == Constant.MyClassConstants.relinquishment {
-            
-            Constant.MyClassConstants.relinquishmentAvalableToolSelectedDate = selectedDate
-            _ = self.navigationController?.popViewController(animated: true)
-        } else if self.requestedController == Constant.MyClassConstants.relinquishmentFlaotWeek {
-            
-            Constant.MyClassConstants.relinquishmentFloatDetialSelectedDate = selectedDate
-            
-            _ = self.navigationController?.popViewController(animated: true)
-        } else {
-            
-            defaults.set(selectedDate, forKey: Constant.MyClassConstants.selectedDate)
-            Constant.MyClassConstants.vacationSearchShowDate = selectedDate.unsafelyUnwrapped
-            
-            if self.requestedDateWindow != "" && self.requestedDateWindow == Constant.MyClassConstants.start {
-                
-                Constant.MyClassConstants.alertWindowStartDate = selectedDate
-            } else if self.requestedDateWindow != "" && self.requestedDateWindow == Constant.MyClassConstants.end {
-                
-                Constant.MyClassConstants.alertWindowEndDate = selectedDate
-            }
-            _ = self.navigationController?.popViewController(animated: true)
-        }
-
-        didSelectDate?(date)
+        didSelectDate?(selectedDate)
+        _ = self.navigationController?.popViewController(animated: true)
     }
     
     func calendar(_ calendar: FSCalendar, boundingRectWillChange bounds: CGRect, animated: Bool) {
@@ -151,17 +126,16 @@ extension CalendarViewController: FSCalendarDelegate {
         if !datesToAllow.isEmpty {
             return dateIsAllowed(date)
         }
-
-         if self.requestedController == Constant.MyClassConstants.relinquishment {
-            return true
-        } else {
-            return true
-        }
+        return true
     }
 
 }
 
 extension CalendarViewController: FSCalendarDataSource {
+    
+    func getCalendar(for calendar: FSCalendar, andDate date: Date) -> Date {
+        return calendar.date(withYear: (date as NSDate).fs_year, month: (date as NSDate).fs_month, day: (date as NSDate).fs_day)
+    }
     
     func minimumDate(for calendar: FSCalendar) -> Date {
 
@@ -169,26 +143,20 @@ extension CalendarViewController: FSCalendarDataSource {
             return minimumDate
         }
 
-        if self.requestedController == Constant.MyClassConstants.relinquishmentFlaotWeek {
-            guard let date = Constant.MyClassConstants.relinquishmentFloatDetialMinDate else { return Date() }
-            return date
-            
+        if let context = calendarContext {
+            switch context {
+            case .additionalInformationFloatWeek:
+                guard let date = Constant.MyClassConstants.relinquishmentFloatDetialMinDate else { return Date() }
+                return date
+            case .alertEndDate:
+                return getCalendar(for: calendar, andDate: Constant.MyClassConstants.alertWindowStartDate ?? Date());
+            default:
+                return getCalendar(for: calendar, andDate: Date());
+            }
         } else {
-            
-            if self.requestedDateWindow == Constant.MyClassConstants.start {
-                let date = Date()
-                return calendar.date(withYear: (date as NSDate).fs_year, month: (date as NSDate).fs_month, day: (date as NSDate).fs_day)
-            } else if self.requestedDateWindow == Constant.MyClassConstants.end {
-                
-                if let date = Constant.MyClassConstants.alertWindowStartDate {
-                     return calendar.date(withYear: (date as NSDate).fs_year, month: (date as NSDate).fs_month, day: (date as NSDate).fs_day)
-                } else {
-                    return calendar.date(withYear: (Date() as NSDate).fs_year, month: (Date() as NSDate).fs_month, day: (Date() as NSDate).fs_day)
-            }
-            } else {
-                 return calendar.date(withYear: (Date() as NSDate).fs_year, month: (Date() as NSDate).fs_month, day: (Date() as NSDate).fs_day)
-            }
+            return getCalendar(for: calendar, andDate: Date());
         }
+        
     }
     
     func maximumDate(for fsCalendar: FSCalendar) -> Date {
@@ -199,55 +167,23 @@ extension CalendarViewController: FSCalendarDataSource {
 
         let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
         
-        if self.requestedController == Constant.MyClassConstants.relinquishmentFlaotWeek {
-            
-            guard let date = Constant.MyClassConstants.relinquishmentFloatDetialMaxDate else { return Date() }
-            return date
-            
-        } else if showNinetyDaysWindow {
-            if let alertWindowStartDate = Constant.MyClassConstants.alertWindowStartDate,
-                let dateAfter90Days = calendar.date(byAdding: .month, value: 3, to: alertWindowStartDate) {
-                return fsCalendar.date(withYear: (dateAfter90Days as NSDate).fs_year, month: (dateAfter90Days as NSDate).fs_month, day: (dateAfter90Days as NSDate).fs_day)
-            } else {
-                let date = Date()
-                return fsCalendar.date(withYear: (date as NSDate).fs_year, month: (date as NSDate).fs_month, day: (date as NSDate).fs_day)
+        if let context = calendarContext {
+            switch context {
+            case .additionalInformationFloatWeek:
+                guard let date = Constant.MyClassConstants.relinquishmentFloatDetialMaxDate else { return Date() }
+                return date
+            case .alertEndDate:
+                let date = Constant.MyClassConstants.alertWindowEndDate ?? Date()
+                let dateAfterTwoYear = calendar.date(byAdding: .month, value: 24, to: date) ?? Date()
+                return getCalendar(for: fsCalendar, andDate: dateAfterTwoYear)
+            default:
+                let dateAfterTwoYear = calendar.date(byAdding: .month, value: 24, to: Date()) ?? Date()
+                return getCalendar(for: fsCalendar, andDate: dateAfterTwoYear)
+                
             }
         } else {
-            
-            if self.requestedDateWindow == Constant.MyClassConstants.start {
-                if let dateAfterTwoYear = calendar.date(byAdding: .month, value: 24, to: Date()) {
-                    return fsCalendar.date(withYear: (dateAfterTwoYear as NSDate).fs_year, month: (dateAfterTwoYear as NSDate).fs_month, day: (dateAfterTwoYear as NSDate).fs_day)
-                } else {
-                    let date = Date()
-                    return fsCalendar.date(withYear: (date as NSDate).fs_year, month: (date as NSDate).fs_month, day: (date as NSDate).fs_day)
-                }
-            } else if self.requestedDateWindow == Constant.MyClassConstants.end {
-                
-                if let date = Constant.MyClassConstants.alertWindowEndDate {
-                   
-                    if let dateAfterTwoYear = calendar.date(byAdding: .month, value: 24, to: date) {
-                    return fsCalendar.date(withYear: (dateAfterTwoYear as NSDate).fs_year, month: (dateAfterTwoYear as NSDate).fs_month, day: (dateAfterTwoYear as NSDate).fs_day)
-                    } else {
-                        let date = Date()
-                        return fsCalendar.date(withYear: (date as NSDate).fs_year, month: (date as NSDate).fs_month, day: (date as NSDate).fs_day)
-                    }
-                } else {
-                    
-                    if let dateAfterTwoYear = calendar.date(byAdding: .month, value: 24, to: Date()) {
-                    return fsCalendar.date(withYear: (dateAfterTwoYear as NSDate).fs_year, month: (dateAfterTwoYear as NSDate).fs_month, day: (dateAfterTwoYear as NSDate).fs_day)
-                    } else {
-                        let date = Date()
-                        return fsCalendar.date(withYear: (date as NSDate).fs_year, month: (date as NSDate).fs_month, day: (date as NSDate).fs_day)
-                    }
-                }
-            } else {
-                if let dateAfterTwoYear = calendar.date(byAdding: .month, value: 24, to: Date()) {
-                    return fsCalendar.date(withYear: (dateAfterTwoYear as NSDate).fs_year, month: (dateAfterTwoYear as NSDate).fs_month, day: (dateAfterTwoYear as NSDate).fs_day)
-                } else {
-                    let date = Date()
-                    return fsCalendar.date(withYear: (date as NSDate).fs_year, month: (date as NSDate).fs_month, day: (date as NSDate).fs_day)
-                }
-            }
+            let dateAfterTwoYear = calendar.date(byAdding: .month, value: 24, to: Date()) ?? Date()
+            return getCalendar(for: fsCalendar, andDate: dateAfterTwoYear)
         }
     }
 
@@ -273,28 +209,28 @@ extension CalendarViewController: FSCalendarDelegateAppearance {
             return dateIsAllowed(date) ? .blue : .lightGray
         }
 
-        if self.requestedController == Constant.MyClassConstants.relinquishmentFlaotWeek {
-            if Constant.MyClassConstants.floatDetailsCalendarDateArray.contains(date) {
-                return UIColor.blue
-            } else {
-                return UIColor.lightGray
-            }
-        } else {
-            var startDT: Date
-            if self.requestedDateWindow == Constant.MyClassConstants.end {
+        var startDT: Date = Date()
+        if let context = calendarContext {
+            switch context {
+            case .additionalInformationFloatWeek:
+                if Constant.MyClassConstants.floatDetailsCalendarDateArray.contains(date) {
+                    return UIColor.blue
+                } else {
+                    return UIColor.lightGray
+                }
+            case .alertEndDate:
                 startDT = Constant.MyClassConstants.alertWindowStartDate ?? Date()
-            } else {
-                startDT = Date()
-            }
-            if date .isLessThanDate(Date()) {
-                return UIColor.lightGray
-            } else if date .isLessThanDate(startDT) {
-                return UIColor.lightGray
-            } else {
-                return UIColor.blue
+            default:
+                break
             }
         }
-        
+        if date .isLessThanDate(Date()) {
+            return UIColor.lightGray
+        } else if date .isLessThanDate(startDT) {
+            return UIColor.lightGray
+        } else {
+            return UIColor.blue
+        }
     }
 
 }

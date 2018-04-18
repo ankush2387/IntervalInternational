@@ -29,6 +29,13 @@ class Constant: NSObject {
         static var deviceIdiom = UIDevice().userInterfaceIdiom
     }
     
+    enum CalendarContext {
+        case additionalInformationFloatWeek
+        case alertStartDate
+        case alertEndDate
+        case availablePoits
+    }
+    
     //Getaways SearchResult CardFormDetail Data
     
     class GuestCertificateFormData {
@@ -1416,7 +1423,6 @@ class Constant: NSObject {
     struct segueIdentifiers {
         
         static var dashboradSegueIdentifier = "dashboardSegue"
-        static var CalendarViewSegue = "CalendarViewSegue"
         static var detailDestinationSegue = "DetailDestinationSegue"
         static var privacyPolicyWebviewSegue = "privacyPolicySegue"
         static var searchResultSegue = "SearchResultSegue"
