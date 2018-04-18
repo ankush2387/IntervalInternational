@@ -225,7 +225,6 @@ class SearchResultViewController: UIViewController {
                 // Delay to allow tableview collectionview to reload... :(
                 let delayInSeconds = 2.0
                 DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + delayInSeconds) {
-
                     if case .some = error {
                         strongSelf.presentErrorAlert(UserFacingCommonError.handleError(error))
                         return
@@ -310,14 +309,14 @@ class SearchResultViewController: UIViewController {
                 Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request.checkInToDate = calendarItem.intervalEndDate?.dateFromShortFormat()
                 
                 ExchangeClient.searchDates(Session.sharedSession.userAccessToken, request: Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request,
-                                           onSuccess: { (response) in
+                                           onSuccess: { [weak self](response) in
                                             
                                             Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.response = response
                                             Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
                                             
                                             Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
-                                            self.hideHudAsync()
-                                            self.searchResultColelctionView.reloadSections(IndexSet(integer: 0))
+                                            self?.hideHudAsync()
+                                            self?.searchResultColelctionView.reloadSections(IndexSet(integer: 0))
                                             completionBlock?(nil)
                 },
                                            
@@ -372,7 +371,7 @@ class SearchResultViewController: UIViewController {
     
     //*****Function for more button press *****//
     func intervalDateItemClicked(_ calendarItem: CalendarItem) {
-        showHudAsync()
+        self.showHudAsync()
         
         searchResultTableView.reloadData()
         
@@ -400,11 +399,12 @@ class SearchResultViewController: UIViewController {
                 request.resortCodes = activeInterval.resortCodes
                 
                 RentalClient.searchResorts(Session.sharedSession.userAccessToken, request: request,
-                                           onSuccess: { (response) in
+                                           onSuccess: { [weak self](response) in
+                                            guard let strongSelf = self else { return }
                                             // Update Rental inventory
                                             Constant.MyClassConstants.initialVacationSearch.rentalSearch?.inventory = response.resorts
                                             // Run Exchange Search Dates
-                                            Helper.executeExchangeSearchAvailabilityAfterSelectCheckInDate(activeInterval: activeInterval, checkInDate: selectedDate, senderVC: self)
+                                            Helper.executeExchangeSearchAvailabilityAfterSelectCheckInDate(activeInterval: activeInterval, checkInDate: selectedDate, senderVC: strongSelf)
                 },
                                            onError: { [weak self] error in
                                             self?.hideHudAsync()
@@ -413,6 +413,8 @@ class SearchResultViewController: UIViewController {
             default:
                 break
             }
+        } else {
+            self.hideHudAsync()
         }
 
     }
@@ -1803,7 +1805,7 @@ extension SearchResultViewController: RenewelViewControllerDelegate {
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
-    func selectedRenewalFromWhoWillBeCheckingIn(renewalCoreProduct: Renewal?, renewalNonCoreProduct: Renewal?, selectedRelinquishment: ExchangeRelinquishment) {
+    func selectedRenewalFromWhoWillBeCheckingIn(renewalCoreProduct: Renewal?, renewalNonCoreProduct: Renewal?, selectedRelinquishment: ExchangeRelinquishment?) {
         self.dismiss(animated: false, completion: nil)
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
         guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: SearchResultViewController.whoWillBeCheckingInViewController) as? WhoWillBeCheckingInViewController else { return }
@@ -1813,7 +1815,7 @@ extension SearchResultViewController: RenewelViewControllerDelegate {
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
-    func noThanks(selectedRelinquishment: ExchangeRelinquishment) {
+    func noThanks(selectedRelinquishment: ExchangeRelinquishment?) {
         self.dismiss(animated: true, completion: nil)
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
         guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: SearchResultViewController.whoWillBeCheckingInViewController) as? WhoWillBeCheckingInViewController else { return }

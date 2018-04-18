@@ -1,24 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="GhM-vd-SHY">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="GhM-vd-SHY">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
-    <customFonts key="customFonts">
-        <array key="HelveticaNeue.ttc">
-            <string>HelveticaNeue</string>
-            <string>HelveticaNeue-Bold</string>
-            <string>HelveticaNeue-Medium</string>
-        </array>
-        <array key="HelveticaNeueLights.ttc">
-            <string>HelveticaNeue-Light</string>
-        </array>
-    </customFonts>
     <scenes>
         <!--Reveal View Controller-->
         <scene sceneID="w99-L9-Snn">
@@ -824,7 +814,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JqH-OT-vdP">
-                                                    <rect key="frame" x="15" y="49" width="50" height="18"/>
+                                                    <rect key="frame" x="28" y="49" width="50" height="18"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="50" id="Y61-pk-Y43"/>
                                                     </constraints>
@@ -851,7 +841,7 @@
                                                 <constraint firstItem="5Ik-v7-n7S" firstAttribute="leading" secondItem="lb5-p9-Y81" secondAttribute="leadingMargin" constant="7" id="XGr-cd-MdM"/>
                                                 <constraint firstItem="JqH-OT-vdP" firstAttribute="top" secondItem="eeZ-0u-awt" secondAttribute="bottom" constant="2" id="Ylu-p2-SNH"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="5Ik-v7-n7S" secondAttribute="trailing" constant="15" id="cuR-nK-NtI"/>
-                                                <constraint firstItem="JqH-OT-vdP" firstAttribute="leading" secondItem="lb5-p9-Y81" secondAttribute="leading" constant="15" id="yOI-aG-RL5"/>
+                                                <constraint firstItem="JqH-OT-vdP" firstAttribute="leading" secondItem="lb5-p9-Y81" secondAttribute="leading" constant="28" id="yOI-aG-RL5"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
@@ -886,7 +876,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Week 52" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8ZO-u2-TjN">
-                                                    <rect key="frame" x="15" y="51" width="58" height="20"/>
+                                                    <rect key="frame" x="28" y="51" width="58" height="20"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="20" id="96e-aC-UVv"/>
                                                     </constraints>
@@ -908,7 +898,7 @@
                                                 </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="8ZO-u2-TjN" firstAttribute="leading" secondItem="NoI-AS-RnE" secondAttribute="leading" constant="15" id="0Ez-67-5ZF"/>
+                                                <constraint firstItem="8ZO-u2-TjN" firstAttribute="leading" secondItem="NoI-AS-RnE" secondAttribute="leading" constant="28" id="0Ez-67-5ZF"/>
                                                 <constraint firstItem="cdi-K9-Ep4" firstAttribute="top" secondItem="NoI-AS-RnE" secondAttribute="topMargin" constant="9" id="1dA-bz-eEm"/>
                                                 <constraint firstItem="luT-yI-R4r" firstAttribute="top" secondItem="OAE-wo-hhZ" secondAttribute="bottom" id="8U1-kS-lx3"/>
                                                 <constraint firstItem="OAE-wo-hhZ" firstAttribute="leading" secondItem="NoI-AS-RnE" secondAttribute="leadingMargin" constant="7" id="AT6-KG-zTw"/>
@@ -1168,7 +1158,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="#12345678" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MYE-67-5So">
-                                                    <rect key="frame" x="15" y="28.5" width="75.5" height="21.5"/>
+                                                    <rect key="frame" x="22" y="28.5" width="75.5" height="21.5"/>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -1179,7 +1169,7 @@
                                                 <constraint firstItem="MYE-67-5So" firstAttribute="top" secondItem="Nbp-Bt-aNS" secondAttribute="bottom" id="5EE-V4-cIS"/>
                                                 <constraint firstItem="Nbp-Bt-aNS" firstAttribute="leading" secondItem="dqU-bA-3EH" secondAttribute="leadingMargin" constant="7" id="Dqb-GG-IxR"/>
                                                 <constraint firstItem="Nbp-Bt-aNS" firstAttribute="top" secondItem="dqU-bA-3EH" secondAttribute="topMargin" id="O2b-A2-SyP"/>
-                                                <constraint firstItem="MYE-67-5So" firstAttribute="leading" secondItem="dqU-bA-3EH" secondAttribute="leading" constant="15" id="Rjm-B6-sdb"/>
+                                                <constraint firstItem="MYE-67-5So" firstAttribute="leading" secondItem="dqU-bA-3EH" secondAttribute="leading" constant="22" id="Rjm-B6-sdb"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
@@ -1194,42 +1184,42 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Deposit:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HzB-Ha-39i">
-                                                    <rect key="frame" x="15" y="8" width="160" height="20"/>
+                                                    <rect key="frame" x="22" y="8" width="160" height="20"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aDv-cD-53d">
-                                                    <rect key="frame" x="15" y="28" width="160" height="20"/>
+                                                    <rect key="frame" x="22" y="28" width="160" height="20"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Balance Due:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jSQ-AF-lXt">
-                                                    <rect key="frame" x="15" y="68" width="160" height="20"/>
+                                                    <rect key="frame" x="22" y="68" width="160" height="20"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gdU-M3-lND">
-                                                    <rect key="frame" x="15" y="88" width="160" height="20"/>
+                                                    <rect key="frame" x="22" y="88" width="160" height="20"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Balance Due Date:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UUb-bK-Ggi">
-                                                    <rect key="frame" x="15" y="128" width="160" height="20"/>
+                                                    <rect key="frame" x="22" y="128" width="160" height="20"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nyb-D9-QhB">
-                                                    <rect key="frame" x="15" y="148" width="160" height="20"/>
+                                                    <rect key="frame" x="22" y="148" width="160" height="20"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                                                     <nil key="textColor"/>
