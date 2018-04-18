@@ -84,9 +84,12 @@ class UpComingTripDetailController: UIViewController, UITextViewDelegate {
         
         let menuButton = UIBarButtonItem(image: UIImage(named: Constant.assetImageNames.backArrowNav), style: .plain, target: self, action: #selector(UpComingTripDetailController.menuBackButtonPressed(_:)))
         menuButton.tintColor = UIColor.white
-        
         navigationItem.leftBarButtonItem = menuButton
 
+        let moreButton = UIBarButtonItem(image: UIImage(named: Constant.assetImageNames.MoreNav), style: .plain, target: self, action: #selector(moreButtonPressed(_:)))
+        moreButton.tintColor = UIColor.white
+        navigationItem.rightBarButtonItem = moreButton
+        
         // Omniture tracking with event 74
         
         let userInfo: [String: String] = [
@@ -270,34 +273,38 @@ class UpComingTripDetailController: UIViewController, UITextViewDelegate {
         }
         actionSheetController.addAction(resendConfirmationAction)
         //***** Present ActivityViewController for share options *****//
-        let shareAction: UIAlertAction = UIAlertAction(title: "Share", style: .default) { _ -> Void in
+        let emailAction: UIAlertAction = UIAlertAction(title: "Email Trip Details", style: .default) { _ -> Void in
             Constant.MyClassConstants.whereTogoContentArray.removeAllObjects()
             Constant.MyClassConstants.realmStoredDestIdOrCodeArray.removeAllObjects()
             
             let message = ShareActivityMessage()
             message.upcomingTripDetailsMessage()
             
-            let shareActivityViewController = UIActivityViewController(activityItems: [message], applicationActivities: nil)
-            shareActivityViewController.completionWithItemsHandler = {(activityType, completed, returnItems, error) in
-                if completed {
-                    if activityType == UIActivityType.mail || activityType == UIActivityType.message {
-                        //Display message to confirm Message and Mail have been sent
-                        self.presentAlert(with: "Success".localized(), message: "Your Confirmation has been sent!".localized())
-                    }
-                }
-                
-                if error != nil {
-                    if activityType == UIActivityType.mail || activityType == UIActivityType.message {
-                        //Display message to let user know there was error
-                        self.presentAlert(with: "Error".localized(), message: "The Confirmation could not be sent. Please try again.".localized())
-                    }
-                }
-                
-            }
-            self.present(shareActivityViewController, animated: false, completion: nil)
+            let composeVC = MFMailComposeViewController()
+            composeVC.setSubject(message.subjectMessage ?? "")
+            composeVC.setMessageBody(message.messageStr ?? "", isHTML: false)
+            self.present(composeVC, animated: true, completion: nil)
             
         }
-        actionSheetController.addAction(shareAction)
+        if MFMailComposeViewController.canSendMail() {
+            actionSheetController.addAction(emailAction)
+        }
+            
+        let smsAction: UIAlertAction = UIAlertAction(title: "Text Trip Details", style: .default) { _ -> Void in
+            Constant.MyClassConstants.whereTogoContentArray.removeAllObjects()
+            Constant.MyClassConstants.realmStoredDestIdOrCodeArray.removeAllObjects()
+            
+            let message = ShareActivityMessage()
+            message.upcomingTripDetailsMessage()
+            
+            let composeVC = MFMessageComposeViewController()
+            composeVC.body = message.messageStr ?? ""
+            self.present(composeVC, animated: true, completion: nil)
+            
+        }
+        if MFMessageComposeViewController.canSendText() {
+            actionSheetController.addAction(smsAction)
+        }
         
         //***** Purchase trip insurance *****//
         let insuranceAction: UIAlertAction = UIAlertAction(title: Constant.buttonTitles.purchaseInsuranceTitle, style: .default) { _ -> Void in
