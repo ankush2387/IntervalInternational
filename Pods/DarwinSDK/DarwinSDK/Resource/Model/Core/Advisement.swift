@@ -13,27 +13,20 @@ open class Advisement {
     
     open var category : String?
     open var title : String?
-    open var description : String? = ""
+    open lazy var description = [String]()
     
     public init() {
     }
     
-    // DREPRECATED ? - Confirm with Chandhi
     public convenience init(json:JSON){
         self.init()
         
         self.category = json["category"].string ?? ""
         self.title = json["title"].string ?? ""
-        self.description = json["description"].string ?? ""
-    }
-    
-    public convenience init(key:String,json:JSON){
-        self.init()
         
-        self.category = json["category"].string ?? ""
-        self.title = json["title"].string ?? ""
-        for innerDescription in (json["description"].arrayValue) {
-            self.description = self.description?.appending(innerDescription.stringValue)
+        if json["description"].exists() {
+            let descriptionArray:[JSON] = json["description"].arrayValue
+            self.description = descriptionArray.map { $0.string! }
         }
     }
     

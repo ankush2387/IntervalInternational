@@ -23,6 +23,7 @@ class CheckOutViewController: UIViewController {
     //class variables
     var requiredSectionIntTBLview = 13
     var isTripProtectionEnabled = false
+    var isGuestCertificateEnabled = false
     var bookingCostRequiredRows = 1
     var promotionSelectedIndex = 0
     var isAgreed = false
@@ -74,6 +75,8 @@ class CheckOutViewController: UIViewController {
         Constant.MyClassConstants.additionalAdvisementsArray.removeAll()
         Constant.MyClassConstants.generalAdvisementsArray.removeAll()
         
+        self.isGuestCertificateEnabled = Constant.MyClassConstants.exchangeFees?.guestCertificate != nil || Constant.MyClassConstants.rentalFees?.guestCertificate != nil
+        
         if Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange() || Constant.MyClassConstants.searchBothExchange {
             
             if let advisementsArray = Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.advisements {
@@ -113,7 +116,7 @@ class CheckOutViewController: UIViewController {
             
         } else {
             
-            if let advisementsArray = Constant.MyClassConstants.viewResponse.resort?.advisements {
+            if let advisementsArray = Constant.MyClassConstants.viewResponse.destination?.resort?.advisements {
                 for advisement in advisementsArray {
                     
                     if advisement.title == Constant.MyClassConstants.additionalAdv {
@@ -236,7 +239,6 @@ class CheckOutViewController: UIViewController {
                         Constant.MyClassConstants.exchangeContinueToPayResponse = response
                         
                         Constant.MyClassConstants.selectedCreditCard = nil
-                        Helper.removeStoredGuestFormDetials()
                         
                         strongSelf.isAgreed = true
                         strongSelf.hideHudAsync()
@@ -274,7 +276,6 @@ class CheckOutViewController: UIViewController {
                         Constant.MyClassConstants.continueToPayResponse = response
 
                         Constant.MyClassConstants.selectedCreditCard = nil
-                        Helper.removeStoredGuestFormDetials()
                         
                         strongSelf.isAgreed = true
                         strongSelf.hideHudAsync()
@@ -947,9 +948,9 @@ extension CheckOutViewController: UITableViewDataSource {
             totalRowsInCost = totalFeesArray.count
             return totalRowsInCost
         case 6 :
-            if Constant.MyClassConstants.enableGuestCertificate && self.isTripProtectionEnabled {
+            if self.isGuestCertificateEnabled && self.isTripProtectionEnabled {
                 return 2
-            } else if Constant.MyClassConstants.enableGuestCertificate || self.isTripProtectionEnabled {
+            } else if self.isGuestCertificateEnabled || self.isTripProtectionEnabled {
                 return 1
             } else {
                 return 0
@@ -1056,7 +1057,7 @@ extension CheckOutViewController: UITableViewDataSource {
                 return 30
             } else if indexPath.row != (Constant.MyClassConstants.generalAdvisementsArray.count) + 1 {
                 guard let title = (Constant.MyClassConstants.generalAdvisementsArray[indexPath.row].title)?.capitalized else { return 0 }
-                guard let description = Constant.MyClassConstants.generalAdvisementsArray[indexPath.row].description else { return 0 }
+                let description = Constant.MyClassConstants.generalAdvisementsArray[indexPath.row].description.joined(separator: ". ")
                 let heightTitle = heightForView(title, font: font, width: view.frame.size.width - 40)
                 let heightDescription = heightForView(description, font: font, width: view.frame.size.width - 40)
                 return heightTitle + heightDescription + 40 // here 40 is used for padding
@@ -1065,7 +1066,7 @@ extension CheckOutViewController: UITableViewDataSource {
                 guard let title = (Constant.MyClassConstants.additionalAdvisementsArray[indexPath.row].title)?.capitalized else { return 0 }
                 guard let description = Constant.MyClassConstants.additionalAdvisementsArray.last?.description else { return 0 }
                 let heightTitle = heightForView(title, font: font, width: view.frame.size.width - 40)
-                let heightDescription = heightForView(description, font: font, width: view.frame.size.width - 40)
+                let heightDescription = heightForView(description.joined(separator: ". "), font: font, width: view.frame.size.width - 40)
                 return heightTitle + heightDescription + 40 // here 40 is used for padding
             }
             
@@ -1096,7 +1097,7 @@ extension CheckOutViewController: UITableViewDataSource {
             }
             
         case 6 :
-            if !self.isTripProtectionEnabled && !Constant.MyClassConstants.enableGuestCertificate {
+            if !self.isTripProtectionEnabled && !self.isGuestCertificateEnabled {
                 isHeightZero = true
                 return 0
             } else {
@@ -1209,10 +1210,10 @@ extension CheckOutViewController: UITableViewDataSource {
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.advisementsCell, for: indexPath) as? AdvisementsCell else { return UITableViewCell() }
                 if indexPath.row != (Constant.MyClassConstants.generalAdvisementsArray.count) + 1 {
                     cell.advisementType.text = (Constant.MyClassConstants.generalAdvisementsArray[indexPath.row].title)?.capitalized
-                    cell.advisementTextLabel.text = Constant.MyClassConstants.generalAdvisementsArray[indexPath.row].description
+                    cell.advisementTextLabel.text = Constant.MyClassConstants.generalAdvisementsArray[indexPath.row].description.joined(separator: ". ")
                 } else {
                     cell.advisementType.text = ""
-                    cell.advisementTextLabel.text = Constant.MyClassConstants.additionalAdvisementsArray.last?.description
+                    cell.advisementTextLabel.text = Constant.MyClassConstants.additionalAdvisementsArray.last?.description.joined(separator: ". ")
                 }
                 cell.advisementType.font = UIFont(name: Constant.fontName.helveticaNeue, size: 15.0)
                 cell.advisementTextLabel.font = UIFont(name: Constant.fontName.helveticaNeue, size: 15.0)
@@ -1453,8 +1454,9 @@ extension CheckOutViewController: UITableViewDataSource {
                     
                 } else {
                     
-                    if let guestCertFee = Constant.MyClassConstants.rentalFees?.guestCertificate, let guestCertPrice = guestCertFee.guestCertificatePrice {
-                        cell.setTotalPrice(with: currencyCode, and: guestCertPrice.price, and: countryCode)
+                    let gc = Constant.MyClassConstants.rentalFees?.guestCertificate?.guestCertificatePrice ?? Constant.MyClassConstants.exchangeFees?.guestCertificate?.guestCertificatePrice
+                    if let price = gc?.price {
+                        cell.setTotalPrice(with: currencyCode, and: price, and: countryCode)
                     }
                     
                     cell.priceLabel.text = Constant.MyClassConstants.guestCertificateTitle

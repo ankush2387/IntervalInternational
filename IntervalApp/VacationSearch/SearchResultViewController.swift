@@ -485,7 +485,7 @@ class SearchResultViewController: UIViewController {
             //FIXME(Frank) - more of the same BAD use of globals for everything - this is madness
             Constant.MyClassConstants.onsiteArray.removeAllObjects()
             Constant.MyClassConstants.nearbyArray.removeAllObjects()
-            guard let resortAmenities = response.view?.resort?.amenities else { return }
+            guard let resortAmenities = response.view?.destination?.resort?.amenities else { return }
             for amenity in resortAmenities {
                 guard let amenityName = amenity.amenityName else { return }
                 if !amenity.nearby {

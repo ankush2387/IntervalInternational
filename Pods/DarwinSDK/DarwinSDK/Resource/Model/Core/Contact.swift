@@ -10,8 +10,7 @@ import Foundation
 import SwiftyJSON
 
 open class Contact {
-    
-	open var contactId : Int64
+	open var contactId : Int64 = 0
     open var firstName : String?
     open var lastName : String?
     open var userName : String?
@@ -29,11 +28,15 @@ open class Contact {
     open var isPrimary : Bool?
 	
 	public init() {
-        self.contactId = 0
 	}
 	
 	public init(json:JSON) {
-		self.contactId = json["contactId"].int64Value
+        if json["contactId"].exists() {
+            self.contactId = json["contactId"].int64Value
+        } else if json["id"].exists()  {
+            self.contactId = json["id"].int64Value
+        }
+
         self.firstName = json["firstName"].string
         self.lastName = json["lastName"].string
 		self.userName = json["userName"].string
