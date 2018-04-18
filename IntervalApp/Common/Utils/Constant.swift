@@ -500,8 +500,8 @@ class Constant: NSObject {
         static var upgradeCost = "Unit-Size Upgrade".localized()
         static var guestCertificateTitle = "Guest Certificate".localized()
         static var renewals = "Renewals".localized()
-        static var exchangeFeeTitle = "Exchange"
-        static var getawayFee = "Getaway"
+        static var exchangeFeeTitle = "Exchange".localized()
+        static var getawayFee = "Getaway".localized()
         static var eplus = "EPlus"
         static var taxesTitle = "Taxes"
         static var emailRegex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
