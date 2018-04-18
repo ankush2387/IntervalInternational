@@ -252,7 +252,17 @@ class VacationSearchViewController: UIViewController {
     //***** Calendar icon pressed action to present calendar controller *****//
     func calendarIconClicked(_ sender: IUIKButton) {
         ADBMobile.trackAction(Constant.omnitureEvents.event66, data: nil)
-        self.performSegue(withIdentifier: Constant.segueIdentifiers.CalendarViewSegue, sender: nil)
+        
+        let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+        if let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.calendarViewController) as? CalendarViewController {
+            
+            viewController.didSelectDate = { [weak self] selectedDate in
+                self?.defaults.set(selectedDate, forKey: Constant.MyClassConstants.selectedDate)
+                Constant.MyClassConstants.vacationSearchShowDate = selectedDate.unsafelyUnwrapped
+
+            }
+            navigationController?.pushViewController(viewController, animated: true)
+        }
     }
     
     //***** Add location pressed action to show map screen with list of location to select *****//

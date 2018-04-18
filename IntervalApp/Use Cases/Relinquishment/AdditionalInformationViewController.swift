@@ -225,6 +225,7 @@ final class AdditionalInformationViewController: UIViewController {
             let format = "yyyy/MM/dd"
             var resortCalendars: [ResortCalendar]?
             
+            viewController.calendarContext = CalendarContext.additionalInformationFloatWeek
             viewController.didSelectDate = { [weak self] date in
                 guard let strongSelf = self else { return }
                 

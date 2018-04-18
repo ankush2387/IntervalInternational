@@ -393,6 +393,7 @@
 		DC7EF5131D709F8800E9E360 /* ResortFavoritesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC7EF5021D709F8800E9E360 /* ResortFavoritesTableViewCell.swift */; };
 		DC7EF5141D709F8800E9E360 /* ResortInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC7EF5031D709F8800E9E360 /* ResortInfoTableViewCell.swift */; };
 		DC7EF5151D709F8800E9E360 /* SignInPreLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC7EF5041D709F8800E9E360 /* SignInPreLoginViewController.swift */; };
+		E856E2992087B368000D1016 /* CalendarContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = E856E2982087B368000D1016 /* CalendarContext.swift */; };
 		E9057F911F02DDA000E20047 /* ShareActivityImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9057F901F02DDA000E20047 /* ShareActivityImage.swift */; };
 		E9057F931F02DDBA00E20047 /* ShareActivityMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9057F921F02DDBA00E20047 /* ShareActivityMessage.swift */; };
 		E9057F951F02DDCB00E20047 /* ShareActivityURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9057F941F02DDCB00E20047 /* ShareActivityURL.swift */; };
@@ -835,6 +836,7 @@
 		DC7EF5041D709F8800E9E360 /* SignInPreLoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInPreLoginViewController.swift; sourceTree = "<group>"; };
 		E2CBCD7E8490E488AB822061 /* Pods_IntervalApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_IntervalApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E2E6B03CA5A0D1EC27418E99 /* Pods-IntervalAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IntervalAppTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-IntervalAppTests/Pods-IntervalAppTests.debug.xcconfig"; sourceTree = "<group>"; };
+		E856E2982087B368000D1016 /* CalendarContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarContext.swift; sourceTree = "<group>"; };
 		E9057F901F02DDA000E20047 /* ShareActivityImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareActivityImage.swift; sourceTree = "<group>"; };
 		E9057F921F02DDBA00E20047 /* ShareActivityMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareActivityMessage.swift; sourceTree = "<group>"; };
 		E9057F941F02DDCB00E20047 /* ShareActivityURL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareActivityURL.swift; sourceTree = "<group>"; };
@@ -1202,6 +1204,7 @@
 				3A9AFE641F597A3500BDDD6D /* FloatLabelTextField.swift */,
 				08B10A221FD18311008C737F /* Seprator.swift */,
 				3AC21E1320762A7000BD6134 /* ExchangePointType.swift */,
+				E856E2982087B368000D1016 /* CalendarContext.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -2283,7 +2286,7 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-IntervalApp/Pods-IntervalApp-resources.sh",
 				"$PODS_CONFIGURATION_BUILD_DIR/Brightcove-Player-SDK/BCOVPUIResources.bundle",
 				"${PODS_ROOT}/GoogleMaps/Maps/Frameworks/GoogleMaps.framework/Versions/A/Resources/GoogleMaps.bundle",
-				"$PODS_CONFIGURATION_BUILD_DIR/HockeySDK/HockeySDKResources.bundle",
+				$PODS_CONFIGURATION_BUILD_DIR/HockeySDK/HockeySDKResources.bundle,
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
@@ -2532,6 +2535,7 @@
 				DC7EF5151D709F8800E9E360 /* SignInPreLoginViewController.swift in Sources */,
 				E95A30BB1EF9693700AB64DB /* CheckoutPromotionCell.swift in Sources */,
 				3AAA5A2E1C720F4500A5EA6D /* CustomCollectionCell.swift in Sources */,
+				E856E2992087B368000D1016 /* CalendarContext.swift in Sources */,
 				DC7EF4F01D709F2900E9E360 /* FeaturedDestinationsCell.swift in Sources */,
 				3A892F531CD3902F00AE6F45 /* WhoIsTravelingCell.swift in Sources */,
 				3A3F91CF1CF07A2300FDA975 /* GetawayCell.swift in Sources */,
