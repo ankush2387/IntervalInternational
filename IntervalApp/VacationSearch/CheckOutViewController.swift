@@ -72,85 +72,27 @@ class CheckOutViewController: UIViewController {
         if !Constant.MyClassConstants.hasAdditionalCharges {
             isAgreedToFees = true
         }
+        
         Constant.MyClassConstants.additionalAdvisementsArray.removeAll()
         Constant.MyClassConstants.generalAdvisementsArray.removeAll()
         
         self.isGuestCertificateEnabled = Constant.MyClassConstants.exchangeFees?.guestCertificate != nil || Constant.MyClassConstants.rentalFees?.guestCertificate != nil
         
-        if Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange() || Constant.MyClassConstants.searchBothExchange {
-            
-            if let advisementsArray = Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.advisements {
-                for advisement in advisementsArray {
-                    
-                    if advisement.title == Constant.MyClassConstants.additionalAdv {
-                        Constant.MyClassConstants.additionalAdvisementsArray.append(advisement)
-                    } else {
-                        Constant.MyClassConstants.generalAdvisementsArray.append(advisement)
-                    }
-                }
-            }
-            
-            if let exchangeFees = Constant.MyClassConstants.exchangeFees {
- 
-                if let insurance = exchangeFees.insurance {
-                    showInsurance = true
-                    if let isInsuranceSelected = insurance.selected {
-                        if isInsuranceSelected {
-                            //FIXME(Frank): why 2 flags for the same? - what is this?
-                            showInsurance = true
-                            self.isTripProtectionEnabled = true
-                        } else {
-                            showInsurance = false
-                            self.isTripProtectionEnabled = false
-                        }
-                    }
-                } else {
-                    showInsurance = false
-                    self.isTripProtectionEnabled = false
-                }
-                
-                if let curencyCodeValue = exchangeFees.currencyCode {
-                    currencyCode = curencyCodeValue
-                }
-            }
-            
-        } else {
-            
-            if let advisementsArray = Constant.MyClassConstants.viewResponse.destination?.resort?.advisements {
-                for advisement in advisementsArray {
-                    
-                    if advisement.title == Constant.MyClassConstants.additionalAdv {
-                        Constant.MyClassConstants.additionalAdvisementsArray.append(advisement)
-                    } else {
-                        Constant.MyClassConstants.generalAdvisementsArray.append(advisement)
-                    }
-                }
-            }
-            
-            if let rentalFees = Constant.MyClassConstants.rentalFees {
-           
-                if let insurance = rentalFees.insurance {
-
-                    showInsurance = true
-                    if let isInsuranceSelected = insurance.selected {
-                        if isInsuranceSelected {
-                            //FIXME(Frank): why 2 flags for the same? - what is this?
-                            showInsurance = true
-                            self.isTripProtectionEnabled = true
-                        } else {
-                            showInsurance = false
-                            self.isTripProtectionEnabled = false
-                        }
-                    }
-                } else {
-                    showInsurance = false
-                }
-                
-                if let curencyCodeValue = rentalFees.currencyCode {
-                    currencyCode = curencyCodeValue
-                }
-            }
+        let advisementsArray = Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.advisements ?? Constant.MyClassConstants.viewResponse.destination?.resort?.advisements ?? []
+        
+        for advisement in advisementsArray {
+            advisement.title == Constant.MyClassConstants.additionalAdv ? Constant.MyClassConstants.additionalAdvisementsArray.append(advisement) : Constant.MyClassConstants.generalAdvisementsArray.append(advisement)
         }
+        
+        let insurance = Constant.MyClassConstants.exchangeFees?.insurance ?? Constant.MyClassConstants.rentalFees?.insurance
+        if insurance != nil {
+            showInsurance = true
+            isTripProtectionEnabled = insurance?.selected ?? false
+        } else {
+            showInsurance = false
+        }
+        
+        currencyCode = Constant.MyClassConstants.exchangeFees?.currencyCode ?? Constant.MyClassConstants.rentalFees?.currencyCode ?? "USA"
         
         //Register custom cell xib with tableview
         
@@ -342,67 +284,10 @@ class CheckOutViewController: UIViewController {
         navigationController?.navigationBar.isHidden = false
         emailTextToEnter = Session.sharedSession.contact?.emailAddress ?? ""
         
-        if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
-            if let exchangeFees = Constant.MyClassConstants.exchangeFees {
-                
-                if let shopExchangeFee = exchangeFees.shopExchange, let selectedPromotion = shopExchangeFee.selectedOfferName {
-                    self.recapSelectedPromotion = selectedPromotion
-                    if selectedPromotion == "" {
-                        Constant.MyClassConstants.isPromotionsEnabled = false
-                        destinationPromotionSelected = false
-                    } else {
-                        Constant.MyClassConstants.isPromotionsEnabled = true
-                        destinationPromotionSelected = true
-                    }
-                }
-                
-                /* FIXME(Frank) - REMOVE ME
-                if !exchangeFees.renewals.isEmpty {
-                    for renewal in exchangeFees.renewals {
-                        if renewal.isCoreProduct {
-                            renewalCoreProduct = Renewal()
-                            renewalCoreProduct?.id = renewal.id
-                            renewalCoreProduct?.productCode = renewal.productCode
-                        } else if !renewal.isCoreProduct {
-                            renewalNonCoreProduct = Renewal()
-                            renewalNonCoreProduct?.id = renewal.id
-                            renewalNonCoreProduct?.productCode = renewal.productCode
-                        }
-                    }
-                }
-                */
-                
-            }
-
-        } else {
-            
-            if let rentalFees = Constant.MyClassConstants.rentalFees {
-                
-                 if let rentalFee = rentalFees.rental, let selectedPromotion = rentalFee.selectedOfferName {
-                    self.recapSelectedPromotion = selectedPromotion
-                    if selectedPromotion == "" {
-                        Constant.MyClassConstants.isPromotionsEnabled = false
-                        destinationPromotionSelected = false
-                    } else {
-                        Constant.MyClassConstants.isPromotionsEnabled = true
-                        destinationPromotionSelected = true
-                    }
-                }
-                
-                /* FIXME(Frank) - REMOVE ME
-                if !rentalFees.renewals.isEmpty {
-                    for renewal in rentalFees.renewals {
-                        if renewal.isCoreProduct {
-                            renewalCoreProduct = renewal
-                        } else if !renewal.isCoreProduct {
-                            renewalNonCoreProduct = renewal
-                        }
-                    }
-                }
-                */
-            }
- 
-        }
+        let selectedOfferName = Constant.MyClassConstants.exchangeFees?.shopExchange?.selectedOfferName ?? Constant.MyClassConstants.rentalFees?.rental?.selectedOfferName
+        
+        Constant.MyClassConstants.isPromotionsEnabled = selectedOfferName != nil && selectedOfferName != ""
+        destinationPromotionSelected = selectedOfferName != nil && selectedOfferName != ""
         
         //FIXME(Frank) - what is this?
         NotificationCenter.default.addObserver(self, selector: #selector(updateResortHoldingTime), name: NSNotification.Name(rawValue: Constant.notificationNames.updateResortHoldingTime), object: nil)
@@ -428,10 +313,8 @@ class CheckOutViewController: UIViewController {
     }
     
     func checkPromotionsAvailable() {
-        if !Constant.MyClassConstants.filterRelinquishments.isEmpty {
-            if let  _ = Constant.MyClassConstants.filterRelinquishments[0].openWeek?.promotion {
-                isDepositPromotionAvailable = true
-            }
+        if !Constant.MyClassConstants.filterRelinquishments.isEmpty  && Constant.MyClassConstants.filterRelinquishments[0].openWeek?.promotion != nil {
+            isDepositPromotionAvailable = true
         }
     }
     
@@ -447,13 +330,11 @@ class CheckOutViewController: UIViewController {
             }
             
             if let exchangeFees = Constant.MyClassConstants.exchangeFees {
-                if let ePlusFee = exchangeFees.eplus {
-                    if ePlusFee.selected == true {
-                        totalFeesArray.add(Constant.MyClassConstants.eplus)
-                    }
+                if exchangeFees.eplus?.selected ?? false{
+                    totalFeesArray.add(Constant.MyClassConstants.eplus)
                 }
                 
-                if let _ = exchangeFees.unitSizeUpgrade {
+                if exchangeFees.unitSizeUpgrade != nil {
                     totalFeesArray.add(Constant.MyClassConstants.upgradeCost)
                 }
                 
@@ -470,10 +351,8 @@ class CheckOutViewController: UIViewController {
                 totalFeesArray.add(Constant.MyClassConstants.taxesTitle)
             }
             
-            if let rentalFees = Constant.MyClassConstants.rentalFees {
-                if !rentalFees.renewals.isEmpty {
-                    totalFeesArray.add(Constant.MyClassConstants.renewals)
-                }
+            if Constant.MyClassConstants.rentalFees?.renewals.isEmpty == false {
+                totalFeesArray.add(Constant.MyClassConstants.renewals)
             }
         }
         
@@ -486,11 +365,7 @@ class CheckOutViewController: UIViewController {
         
         let validEmail = isValidEmail(testStr: self.emailTextToEnter)
         if validEmail {
-            if sender.isOn {
-                self.updateEmailSwitchStauts = "on"
-            } else {
-                self.updateEmailSwitchStauts = "off"
-            }
+            self.updateEmailSwitchStauts = sender.isOn ? "on" : "off"
         } else {
             sender.setOn(false, animated: true)
             self.presentAlert(with: Constant.buttonTitles.updateSwitchTitle, message: Constant.AlertErrorMessages.emailAlertMessage)
@@ -1440,16 +1315,10 @@ extension CheckOutViewController: UITableViewDataSource {
                 }
                 
                 if indexPath.row == 0 && self.isTripProtectionEnabled {
-                    if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
-                        if let insuranceFee = Constant.MyClassConstants.exchangeFees?.insurance {
-                            cell.setTotalPrice(with: currencyCode, and: insuranceFee.price, and: countryCode)
-                        }
-                    } else {
-                        if let insuranceFee = Constant.MyClassConstants.rentalFees?.insurance {
-                            cell.setTotalPrice(with: currencyCode, and: insuranceFee.price, and: countryCode)
-                        }
+                    let insurance = Constant.MyClassConstants.exchangeFees?.insurance ?? Constant.MyClassConstants.rentalFees?.insurance
+                    if let price = insurance?.price {
+                            cell.setTotalPrice(with: currencyCode, and: price, and: countryCode)
                     }
-                    
                     cell.priceLabel.text = Constant.MyClassConstants.insurance
                     
                 } else {
@@ -1478,7 +1347,7 @@ extension CheckOutViewController: UITableViewDataSource {
                 for subviews in cell.subviews {
                     subviews.isHidden = false
                 }
-
+                var aux = recapSelectedPromotion
                 for promotion in Constant.MyClassConstants.recapPromotionsArray where promotion.offerName == recapSelectedPromotion {
                     cell.setPromotionPrice(with: currencyCode, and: promotion.amount, and: countryCode)
                     
@@ -1508,17 +1377,10 @@ extension CheckOutViewController: UITableViewDataSource {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.customCellNibNames.totalCostCell, for: indexPath) as? TotalCostCell else { return UITableViewCell() }
             cell.selectionStyle = .none
             
-            if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
-                //FIXME(Frank) - what is this ? - why assign the cell.setTotalPrice(...) twice?
-                if let exchnageFees = Constant.MyClassConstants.exchangeFees {
-                    cell.setTotalPrice(with: currencyCode, and: exchnageFees.total, and: countryCode)
-                }
-            } else {
-                //FIXME(Frank) - what is this ? - why assign the cell.setTotalPrice(...) twice?
-                if let rentalFees = Constant.MyClassConstants.rentalFees {
-                    cell.setTotalPrice(with: currencyCode, and: rentalFees.total, and: countryCode)
-                }
+            if let total = Constant.MyClassConstants.exchangeFees?.total ?? Constant.MyClassConstants.rentalFees?.total {
+                cell.setTotalPrice(with: currencyCode, and: total, and: countryCode)
             }
+            
             return cell
             
         case 9 :

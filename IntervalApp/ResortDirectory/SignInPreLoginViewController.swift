@@ -183,7 +183,7 @@ class SignInPreLoginViewController: UIViewController {
                 if completed {
                     guard let strongSelf = self else { return }
                     Constant.MyClassConstants.loginOriginationPoint = "Resort Directory - Sign In Modal"
-                    Helper.accessTokenDidChange(sender: strongSelf, isForSearch: (strongSelf.isForSearchVacation)!)
+                    Helper.accessTokenDidChange(sender: strongSelf, isForSearch: (strongSelf.isForSearchVacation))
                 }
             })
         } else {
