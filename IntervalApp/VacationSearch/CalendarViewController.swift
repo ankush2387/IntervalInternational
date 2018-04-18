@@ -22,7 +22,7 @@ class CalendarViewController: UIViewController {
     var dateArray = [Date]()
     var datesToAllow = [Date]()
 
-    var calendarContext: Constant.CalendarContext?
+    var calendarContext: CalendarContext?
     var didSelectDate: ((Date?) -> Void)?
     
     override func viewDidLoad() {
@@ -74,8 +74,7 @@ class CalendarViewController: UIViewController {
 
     //***** navigation back button action *****//
     func menuBackButtonPressed(_ sender: UIBarButtonItem) {
-        
-        _ = self.navigationController?.popViewController(animated: true)
+        self.navigationController?.popViewController(animated: true)
     }
     
     override func viewDidLayoutSubviews() {
@@ -113,7 +112,7 @@ extension CalendarViewController: FSCalendarDelegate {
         let selectedDate = df.date(from: dateStr)
  
         didSelectDate?(selectedDate)
-        _ = self.navigationController?.popViewController(animated: true)
+        self.navigationController?.popViewController(animated: true)
     }
     
     func calendar(_ calendar: FSCalendar, boundingRectWillChange bounds: CGRect, animated: Bool) {
@@ -149,7 +148,7 @@ extension CalendarViewController: FSCalendarDataSource {
                 guard let date = Constant.MyClassConstants.relinquishmentFloatDetialMinDate else { return Date() }
                 return date
             case .alertEndDate:
-                return getCalendar(for: calendar, andDate: Constant.MyClassConstants.alertWindowStartDate ?? Date());
+                return getCalendar(for: calendar, andDate: Constant.MyClassConstants.alertWindowStartDate ?? Date())
             default:
                 return getCalendar(for: calendar, andDate: Date());
             }
@@ -224,13 +223,8 @@ extension CalendarViewController: FSCalendarDelegateAppearance {
                 break
             }
         }
-        if date .isLessThanDate(Date()) {
-            return UIColor.lightGray
-        } else if date .isLessThanDate(startDT) {
-            return UIColor.lightGray
-        } else {
-            return UIColor.blue
-        }
+        return date.isLessThanDate(Date()) || date.isLessThanDate(startDT) ? .lightGray : .blue
+        
     }
 
 }

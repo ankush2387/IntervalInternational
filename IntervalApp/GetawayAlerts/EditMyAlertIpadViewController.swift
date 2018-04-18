@@ -166,7 +166,7 @@ class EditMyAlertIpadViewController: UIViewController {
         let storyboardName = isRunningOnIphone ? Constant.storyboardNames.vacationSearchIphone : Constant.storyboardNames.vacationSearchIPad
         let mainStoryboard: UIStoryboard = UIStoryboard(name: storyboardName, bundle: nil)
         if let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.calendarViewController) as? CalendarViewController {
-            viewController.calendarContext = Constant.CalendarContext.alertStartDate
+            viewController.calendarContext = CalendarContext.alertStartDate
             viewController.didSelectDate = { selectedDate in
                 Constant.MyClassConstants.alertWindowStartDate = selectedDate
             }
@@ -182,7 +182,7 @@ class EditMyAlertIpadViewController: UIViewController {
         let storyboardName = isRunningOnIphone ? Constant.storyboardNames.vacationSearchIphone : Constant.storyboardNames.vacationSearchIPad
         let mainStoryboard: UIStoryboard = UIStoryboard(name: storyboardName, bundle: nil)
         if let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.calendarViewController) as? CalendarViewController {
-            viewController.calendarContext = Constant.CalendarContext.alertEndDate
+            viewController.calendarContext = CalendarContext.alertEndDate
             viewController.didSelectDate = { selectedDate in
                 Constant.MyClassConstants.alertWindowEndDate = selectedDate
             }

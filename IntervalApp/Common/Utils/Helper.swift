@@ -1060,7 +1060,7 @@ public class Helper {
                     mainStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
                 }
                 let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.calendarViewController) as! CalendarViewController
-                viewController.calendarContext = Constant.CalendarContext.additionalInformationFloatWeek
+                viewController.calendarContext = CalendarContext.additionalInformationFloatWeek
                 viewController.didSelectDate = { selectedDate in
                     Constant.MyClassConstants.relinquishmentFloatDetialSelectedDate = selectedDate
                 }

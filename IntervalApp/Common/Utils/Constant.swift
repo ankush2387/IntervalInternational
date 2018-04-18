@@ -29,13 +29,6 @@ class Constant: NSObject {
         static var deviceIdiom = UIDevice().userInterfaceIdiom
     }
     
-    enum CalendarContext {
-        case additionalInformationFloatWeek
-        case alertStartDate
-        case alertEndDate
-        case availablePoits
-    }
-    
     //Getaways SearchResult CardFormDetail Data
     
     class GuestCertificateFormData {
