@@ -23,7 +23,7 @@ open class Resort {
     open var areaCode : Int = 0
     open var groupCode : String?
     open var rating : ResortRating?
-    open var tdiUrl : String?
+    open var tdiChart : TdiChart?
     open var webUrl : String?
     open var tier : String?
     open var qualityResortRating : String?
@@ -41,6 +41,9 @@ open class Resort {
     open lazy var advisements = [Advisement]()
     open var inventory : Inventory?
     open lazy var children = [Resort]()
+    open var restrictedFromDate : String?
+    open var restrictedToDate : String?
+    open lazy var reservationAttributes = [String]() // ReservationAttribute
     
     public init() {
     }
@@ -85,11 +88,6 @@ open class Resort {
         
         if summaryJSON["address"].exists() {
             self.address = Address(json: summaryJSON["address"])
-        } else {
-            self.address = Address()
-            self.address?.cityName = summaryJSON["cityName"].string
-            self.address?.territoryCode = summaryJSON["territoryCode"].string
-            self.address?.countryCode = summaryJSON["countryCode"].string
         }
         
         if summaryJSON["images"].exists() {
@@ -100,6 +98,14 @@ open class Resort {
         if summaryJSON["children"].exists() {
             let childrenArrary:[JSON] = summaryJSON["children"].arrayValue
             self.children = childrenArrary.map { Resort(summaryJSON:$0) }
+        }
+        
+        self.restrictedFromDate = summaryJSON["from"].string
+        self.restrictedToDate = summaryJSON["to"].string
+        
+        if summaryJSON["reservationAttributes"].exists() {
+            let reservationAttributesJsonArray:[JSON] = summaryJSON["reservationAttributes"].arrayValue
+            self.reservationAttributes = reservationAttributesJsonArray.map { $0.string! }
         }
     }
     
@@ -119,8 +125,12 @@ open class Resort {
         self.fax = detailJSON["fax"].string
         self.checkInTime = detailJSON["checkInTime"].string
         self.checkOutTime = detailJSON["checkOutTime"].string
-        self.tdiUrl = detailJSON["tdiUrl"].string
         self.webUrl = detailJSON["webUrl"].string
+        
+        if detailJSON["tdiChart"].exists() {
+            let tdiChartJSON = detailJSON["tdiChart"] as JSON!
+            self.tdiChart = TdiChart(json: tdiChartJSON!)
+        }
         
         if detailJSON["inventory"].exists() {
             let inventoryJSON = detailJSON["inventory"] as JSON!
@@ -144,7 +154,8 @@ open class Resort {
         
         if detailJSON["advisements"].exists() {
             let advisementsArray:[JSON] = detailJSON["advisements"].arrayValue
-            self.advisements = advisementsArray.map { Advisement(key: "Advisement",json:$0["advisement"]) }
+            //self.advisements = advisementsArray.map { Advisement(key: "Advisement",json:$0["advisement"]) }
+            self.advisements = advisementsArray.map { Advisement(json:$0) }
         }
         
         if detailJSON["videos"].exists() {
