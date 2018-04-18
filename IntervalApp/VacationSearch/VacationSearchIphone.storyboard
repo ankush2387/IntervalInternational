@@ -661,7 +661,9 @@ transaction.</string>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="qVN-Ng-HPx">
+
                                                     <rect key="frame" x="0.0" y="0.0" width="375" height="41.666666666666664"/>
+
                                                 </imageView>
                                             </subviews>
                                             <constraints>
@@ -1677,21 +1679,27 @@ transaction.</string>
                                                                                         </constraints>
                                                                                     </imageView>
                                                                                     <imageView userInteractionEnabled="NO" tag="3" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="empty_circle" translatesAutoresizingMaskIntoConstraints="NO" id="2Gv-Gg-hsh">
+
                                                                                         <rect key="frame" x="239" y="3.6666666666666856" width="30" height="30"/>
+
                                                                                         <constraints>
                                                                                             <constraint firstAttribute="width" constant="30" id="caV-og-irU"/>
                                                                                             <constraint firstAttribute="height" constant="30" id="jhm-fG-drY"/>
                                                                                         </constraints>
                                                                                     </imageView>
                                                                                     <imageView userInteractionEnabled="NO" tag="4" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="empty_circle" translatesAutoresizingMaskIntoConstraints="NO" id="mqE-ur-rcb">
+
                                                                                         <rect key="frame" x="274" y="3.6666666666666856" width="30" height="30"/>
+
                                                                                         <constraints>
                                                                                             <constraint firstAttribute="height" constant="30" id="Cez-B6-f52"/>
                                                                                             <constraint firstAttribute="width" constant="30" id="TJv-vI-pBG"/>
                                                                                         </constraints>
                                                                                     </imageView>
                                                                                     <imageView userInteractionEnabled="NO" tag="5" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="empty_circle" translatesAutoresizingMaskIntoConstraints="NO" id="XIC-PY-RsS">
+
                                                                                         <rect key="frame" x="309" y="3.6666666666666856" width="30" height="30"/>
+
                                                                                         <constraints>
                                                                                             <constraint firstAttribute="height" constant="30" id="fY6-fO-6Ny"/>
                                                                                             <constraint firstAttribute="width" constant="30" id="kYn-rP-bGa"/>
@@ -5135,6 +5143,7 @@ to confirm a larger unit.</string>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Interval accepts major credit and debit cards" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PCi-5M-ZhO">
                                                     <rect key="frame" x="20" y="5" width="335" height="17.666666666666668"/>
+                                                    <color key="backgroundColor" white="0.66666666666666663" alpha="0.24480950342465754" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" relation="lessThanOrEqual" constant="25" id="3Ty-Ly-VLD"/>
                                                     </constraints>
@@ -5281,7 +5290,7 @@ to confirm a larger unit.</string>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AOQ-1V-d7D" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="yg4-7c-MFU" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="8317.6000000000004" y="1517.9910044977512"/>
+            <point key="canvasLocation" x="8317.6000000000004" y="1517.3645320197045"/>
         </scene>
         <!--Promotions View Controller-->
         <scene sceneID="dPT-FU-d5s">
