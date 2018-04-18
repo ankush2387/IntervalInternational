@@ -28,8 +28,8 @@ class DetailedIssueViewController: UIViewController {
         menuButton.tintColor = UIColor.white
         //self.tabBarController?.delegate = self
         self.navigationItem.leftBarButtonItem = menuButton
-
-        // Do any additional setup after loading the view.
+        webView?.scalesPageToFit = true
+        webView?.contentMode = .scaleAspectFit
     }
     
     //***** Dismiss progress bar if back button is pressed. *****//
