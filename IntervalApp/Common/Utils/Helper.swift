@@ -1669,24 +1669,7 @@ public class Helper {
             } else {
                 
                 helperDelegate?.resortSearchComplete()
-                
-                /*
-                 let isRunningOnIphone = UIDevice.current.userInterfaceIdiom == .phone
-                 let storyboardName = isRunningOnIphone ? Constant.storyboardNames.vacationSearchIphone : Constant.storyboardNames.vacationSearchIPad
-                 let mainStoryboard: UIStoryboard = UIStoryboard(name: storyboardName, bundle: nil)
-                 var viewController: UIViewController
-                 if isRunningOnIphone {
-                 guard let Controller = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.vacationSearchController) as? SearchResultViewController else { return }
-                 viewController = Controller
-                 } else {
-                 guard let Controller = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.vacationSearchController) as? VacationSearchResultIPadController else { return }
-                 viewController = Controller
-                 }
-                 
-                 let transitionManager = TransitionManager()
-                 senderViewController.navigationController?.transitioningDelegate = transitionManager
-                 senderViewController.navigationController?.pushViewController(viewController, animated: true)
-                 */
+            
             }
             
         }) { error in
@@ -1705,7 +1688,7 @@ public class Helper {
             guard let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval() else { return senderVC.showHudAsync()}
             // Update active interval
             Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
-            self.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+            Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
             
             // Check not available checkIn dates for the active interval
             if activeInterval.fetchedBefore  && !activeInterval.hasCheckInDates()  {
@@ -1733,7 +1716,7 @@ public class Helper {
                                     
                                     // Update active interval
                                     Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
-                                    self.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                                    Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                                     datesCV.reloadData()
                                     senderVC.hideHudAsync()
         },
