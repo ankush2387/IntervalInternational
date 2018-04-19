@@ -55,7 +55,7 @@
                     <rect key="frame" x="57.5" y="70" width="260" height="100"/>
                 </imageView>
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Isc-WC-sIg" customClass="TPKeyboardAvoidingScrollView">
-                    <rect key="frame" x="16" y="220" width="343" height="394"/>
+                    <rect key="frame" x="16" y="220" width="343" height="397"/>
                     <subviews>
                         <stackView opaque="NO" contentMode="scaleAspectFit" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="kHa-jH-nk5">
                             <rect key="frame" x="8" y="8" width="327" height="250"/>
@@ -141,7 +141,7 @@
                 <constraint firstItem="Y3H-bp-pqt" firstAttribute="top" secondItem="7xY-1A-yAj" secondAttribute="bottom" constant="1" id="fBj-aR-egV"/>
                 <constraint firstItem="Isc-WC-sIg" firstAttribute="top" secondItem="7xY-1A-yAj" secondAttribute="bottom" constant="50" id="fnz-BX-h9B"/>
                 <constraint firstItem="7xY-1A-yAj" firstAttribute="centerX" secondItem="dPm-bX-MSX" secondAttribute="centerX" id="jeW-OP-SXi"/>
-                <constraint firstItem="w5U-Gy-gTv" firstAttribute="top" secondItem="Isc-WC-sIg" secondAttribute="bottom" constant="3" id="mi8-eb-unh"/>
+                <constraint firstItem="w5U-Gy-gTv" firstAttribute="top" secondItem="Isc-WC-sIg" secondAttribute="bottom" id="mi8-eb-unh"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="dPm-bX-MSX" secondAttribute="bottom" id="sAq-u7-uMX"/>
                 <constraint firstItem="7xY-1A-yAj" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="50" id="u3x-6i-hW0"/>
                 <constraint firstItem="w5U-Gy-gTv" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="udJ-ei-fVN"/>
