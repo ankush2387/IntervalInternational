@@ -25,7 +25,7 @@ open class RestrictedResort {
         
         if json["restricted"].exists() {
             let resortsJson:[JSON] = json["restricted"].arrayValue
-            self.resorts = resortsJson.map { Resort(summaryJSON: $0) }
+            self.resorts = resortsJson.map { Resort(json: $0) }
         }
     }
 }

@@ -99,7 +99,7 @@ open class ExchangeClient {
                 
                 switch statusCode {
                 case 200...209:
-                    onSuccess(json.arrayValue.map { Resort(summaryJSON: $0) })
+                    onSuccess(json.arrayValue.map { Resort(json: $0) })
                     
                 default:
                     onError(DarwinSDK.parseDarwinError(statusCode: statusCode, json: json))

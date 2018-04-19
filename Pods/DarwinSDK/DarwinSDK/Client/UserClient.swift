@@ -242,7 +242,6 @@ open class UserClient {
                 switch statusCode {
                     case 200...209:
                         var resortFavorites: [ResortFavorite] = json.arrayValue.map { ResortFavorite(json: $0) }
-                        //FIXME(Frank): Temp solution until API send back the list sorted by resort name
                         resortFavorites = resortFavorites.sorted { $0.resort?.resortName?.localizedCaseInsensitiveCompare($1.resort?.resortName ?? "") == ComparisonResult.orderedAscending }
                         onSuccess(resortFavorites)
 
