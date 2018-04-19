@@ -36,6 +36,7 @@ class CheckOutViewController: UIViewController {
     var isHeightZero = false
     var showLoader = false
     var showInsurance = false
+    var insuranceOfferHTML: String?
     var eplusAdded = false
     var destinationPromotionSelected = false
     var recapSelectedPromotion: String?
@@ -93,11 +94,13 @@ class CheckOutViewController: UIViewController {
             if let exchangeFees = Constant.MyClassConstants.exchangeFees {
  
                 if let insurance = exchangeFees.insurance {
+                    insuranceOfferHTML = insurance.insuranceOfferHTML
                     showInsurance = true
                     if let isInsuranceSelected = insurance.selected {
                         if isInsuranceSelected {
                             //FIXME(Frank): why 2 flags for the same? - what is this?
                             showInsurance = true
+                            
                             self.isTripProtectionEnabled = true
                         } else {
                             showInsurance = false
@@ -130,12 +133,13 @@ class CheckOutViewController: UIViewController {
             if let rentalFees = Constant.MyClassConstants.rentalFees {
            
                 if let insurance = rentalFees.insurance {
-
+                    insuranceOfferHTML = insurance.insuranceOfferHTML
                     showInsurance = true
                     if let isInsuranceSelected = insurance.selected {
                         if isInsuranceSelected {
                             //FIXME(Frank): why 2 flags for the same? - what is this?
                             showInsurance = true
+                            
                             self.isTripProtectionEnabled = true
                         } else {
                             showInsurance = false
@@ -1273,27 +1277,8 @@ extension CheckOutViewController: UITableViewDataSource {
                 cellWebView.delegate = self
                 cellWebView.addGestureRecognizer(tapRecognizer)
                 
-                //FIXME(Frank) - what is this: !Constant.MyClassConstants.isFromExchange ?
-                if showInsurance && !Constant.MyClassConstants.isFromExchange {
-                    
-                    // guard let str = Constant.MyClassConstants.rentalFees?.insurance?.insuranceOfferHTML else { return cell }
-                    if let rentalFees = Constant.MyClassConstants.rentalFees, let insuranceFee = rentalFees.insurance, let insuranceOfferHTML = insuranceFee.insuranceOfferHTML {
-                        cellWebView.loadHTMLString(insuranceOfferHTML, baseURL: nil)
-                        
-                        //FIXME(Frank) - why the next 3 lines apply only for Rental and not for Exchange?
-                        let noRadioValue = "document.getElementById('WASCInsuranceOfferOption1').checked  = true;"
-                        checkoutOptionTBLview.beginUpdates()
-                        checkoutOptionTBLview.endUpdates()
-                    } else {
-                        return cell
-                    }
-      
-                } else {
-                    
-                    //guard let str = Constant.MyClassConstants.exchangeFees[indexPath.row].insurance?.insuranceOfferHTML else { return cell }
-                    if let exchangeFees = Constant.MyClassConstants.exchangeFees, let insuranceFee = exchangeFees.insurance, let insuranceOfferHTML = insuranceFee.insuranceOfferHTML {
-                        cellWebView.loadHTMLString(insuranceOfferHTML, baseURL: nil)
-                    }
+                if showInsurance {
+                    cellWebView.loadHTMLString(insuranceOfferHTML.unwrappedString, baseURL: nil)
                 }
                 
                 cellWebView.backgroundColor = UIColor.gray
