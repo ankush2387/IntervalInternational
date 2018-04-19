@@ -82,7 +82,7 @@ class PaymentSelectionViewController: UIViewController {
             
             let myCalendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
             let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = Constant.MyClassConstants.dateTimeFormat
+            dateFormatter.dateFormat = Constant.MyClassConstants.dateFormat
             
             var expirationDate: Date?
             let expirationDateAsStringArray = expirationDateAsString.components(separatedBy: "-")
@@ -159,7 +159,7 @@ extension PaymentSelectionViewController: UITableViewDelegate {
                 
                 let myCalendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
                 let dateFormatter = DateFormatter()
-                dateFormatter.dateFormat = Constant.MyClassConstants.dateTimeFormat
+                dateFormatter.dateFormat = Constant.MyClassConstants.dateFormat
                 
                 let isCardExpired = isSelectedCreditCardExpired(selectedCreditCard: selectedCreditCard)
                 if let typeCode = selectedCreditCard.typeCode, let cardNumber = selectedCreditCard.cardNumber {
@@ -260,7 +260,7 @@ extension PaymentSelectionViewController: UITableViewDelegate {
                         if let expirationDate = myCalendar.date(from: dateComponents) {
                             let dateFormatter = DateFormatter()
                             dateFormatter.timeZone = Helper.createTimeZone()
-                            dateFormatter.dateFormat = Constant.MyClassConstants.dateTimeFormat
+                            dateFormatter.dateFormat = Constant.MyClassConstants.dateFormat
                             let expirationDateAsString: String = dateFormatter.string(from: expirationDate)
                             
                             //TODO: Card has Expired then updated the Expiration Date
@@ -396,7 +396,7 @@ extension PaymentSelectionViewController: UITableViewDataSource {
                 let myCalendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
                 let dateFormatter = DateFormatter()
                 dateFormatter.timeZone = Helper.createTimeZone()
-                dateFormatter.dateFormat = Constant.MyClassConstants.dateTimeFormat
+                dateFormatter.dateFormat = Constant.MyClassConstants.dateFormat
                 
                 let creditCard = creditCards[indexPath.row]
                 

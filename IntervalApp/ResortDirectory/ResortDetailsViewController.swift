@@ -494,6 +494,9 @@ extension ResortDetailsViewController: UITableViewDelegate {
                     return 200
                 }
                 
+            case 6, 7:
+                return UITableViewAutomaticDimension
+                
             default:
                 if let isOpen = tappedButtonDictionary[indexPath.section] {
                     if isOpen && indexPath.row > 0 {
@@ -528,7 +531,7 @@ extension ResortDetailsViewController: UITableViewDelegate {
                         case 5 :
                             return 50
                         case 6 :
-                            if Constant.MyClassConstants.resortsDescriptionArray.tdiUrl != nil {
+                            if Constant.MyClassConstants.resortsDescriptionArray.tdiChart?.url != nil {
                                 return 600
                             } else {
                                 return 0
@@ -720,7 +723,7 @@ extension ResortDetailsViewController: UITableViewDataSource {
                             return 0
                         }
                     case 6 :
-                        if Constant.MyClassConstants.resortsDescriptionArray.tdiUrl != nil {
+                        if Constant.MyClassConstants.resortsDescriptionArray.tdiChart?.url != nil {
                             return 1
                         } else {
                             return 0
@@ -996,7 +999,7 @@ extension ResortDetailsViewController: UITableViewDataSource {
         
                         case 6 :
                             availableCountryCell?.tdiImageView.backgroundColor = UIColor.lightGray
-                            if let urlString = Constant.MyClassConstants.resortsDescriptionArray.tdiUrl {
+                            if let urlString = Constant.MyClassConstants.resortsDescriptionArray.tdiChart?.url {
                                 let url = URL(string: urlString)
                                 availableCountryCell?.tdiImageView.setImageWith(url, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
                             } else {

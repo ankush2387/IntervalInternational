@@ -30,17 +30,18 @@ class CheckOutViewController: UIViewController {
     var isAgreedToFees = false
     let cellWebView = UIWebView()
     var showUpdateEmail = false
-    var updateEmailSwitchStauts = "off"
+    var updateEmail = false
     var emailTextToEnter = ""
     var tripRequestInProcess = false
     var isHeightZero = false
     var showLoader = false
     var showInsurance = false
+    var insuranceOfferHTML: String?
     var eplusAdded = false
     var destinationPromotionSelected = false
     var recapSelectedPromotion: String?
     var recapFeesTotal: Float?
-    var selectedRelinquishment = ExchangeRelinquishment()
+    var selectedRelinquishment: ExchangeRelinquishment?
     var isDepositPromotionAvailable = false
     var renewalCoreProduct: Renewal?
     var renewalNonCoreProduct: Renewal?
@@ -93,11 +94,13 @@ class CheckOutViewController: UIViewController {
             if let exchangeFees = Constant.MyClassConstants.exchangeFees {
  
                 if let insurance = exchangeFees.insurance {
+                    insuranceOfferHTML = insurance.insuranceOfferHTML
                     showInsurance = true
                     if let isInsuranceSelected = insurance.selected {
                         if isInsuranceSelected {
                             //FIXME(Frank): why 2 flags for the same? - what is this?
                             showInsurance = true
+                            
                             self.isTripProtectionEnabled = true
                         } else {
                             showInsurance = false
@@ -116,7 +119,7 @@ class CheckOutViewController: UIViewController {
             
         } else {
             
-            if let advisementsArray = Constant.MyClassConstants.viewResponse.resort?.advisements {
+            if let advisementsArray = Constant.MyClassConstants.viewResponse.destination?.resort?.advisements {
                 for advisement in advisementsArray {
                     
                     if advisement.title == Constant.MyClassConstants.additionalAdv {
@@ -130,12 +133,13 @@ class CheckOutViewController: UIViewController {
             if let rentalFees = Constant.MyClassConstants.rentalFees {
            
                 if let insurance = rentalFees.insurance {
-
+                    insuranceOfferHTML = insurance.insuranceOfferHTML
                     showInsurance = true
                     if let isInsuranceSelected = insurance.selected {
                         if isInsuranceSelected {
                             //FIXME(Frank): why 2 flags for the same? - what is this?
                             showInsurance = true
+                            
                             self.isTripProtectionEnabled = true
                         } else {
                             showInsurance = false
@@ -217,11 +221,15 @@ class CheckOutViewController: UIViewController {
                 showHudAsync()
                 imageSlider.isHidden = true
                 showLoader = true
-                
                 let confirmationDelivery = ConfirmationDelivery()
-                confirmationDelivery.emailAddress = self.emailTextToEnter
-                //FIXME(Frank) - why always false?
-                confirmationDelivery.updateProfile = false
+                if updateEmail {
+                    confirmationDelivery.emailAddress = self.emailTextToEnter
+                } else {
+                    if let email = Session.sharedSession.contact?.emailAddress {
+                      confirmationDelivery.emailAddress = email
+                    }
+                }
+                confirmationDelivery.updateProfile = updateEmail
                 
                 if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
                     self.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
@@ -483,17 +491,13 @@ class CheckOutViewController: UIViewController {
     
     //***** Function called switch state is 'On' so as to update user's email. *****//
     func udpateEmailSwitchPressed(_ sender: UISwitch) {
-        
-        let validEmail = isValidEmail(testStr: self.emailTextToEnter)
+        let validEmail = isValidEmail(testStr: emailTextToEnter)
         if validEmail {
-            if sender.isOn {
-                self.updateEmailSwitchStauts = "on"
-            } else {
-                self.updateEmailSwitchStauts = "off"
-            }
+            sender.isOn ? (updateEmail = true) : (updateEmail = false)
         } else {
+            updateEmail = false
             sender.setOn(false, animated: true)
-            self.presentAlert(with: Constant.buttonTitles.updateSwitchTitle, message: Constant.AlertErrorMessages.emailAlertMessage)
+            presentAlert(with: Constant.buttonTitles.updateSwitchTitle, message: Constant.AlertErrorMessages.emailAlertMessage)
         }
     }
     
@@ -1057,7 +1061,7 @@ extension CheckOutViewController: UITableViewDataSource {
                 return 30
             } else if indexPath.row != (Constant.MyClassConstants.generalAdvisementsArray.count) + 1 {
                 guard let title = (Constant.MyClassConstants.generalAdvisementsArray[indexPath.row].title)?.capitalized else { return 0 }
-                guard let description = Constant.MyClassConstants.generalAdvisementsArray[indexPath.row].description else { return 0 }
+                let description = Constant.MyClassConstants.generalAdvisementsArray[indexPath.row].description.joined(separator: ". ")
                 let heightTitle = heightForView(title, font: font, width: view.frame.size.width - 40)
                 let heightDescription = heightForView(description, font: font, width: view.frame.size.width - 40)
                 return heightTitle + heightDescription + 40 // here 40 is used for padding
@@ -1066,7 +1070,7 @@ extension CheckOutViewController: UITableViewDataSource {
                 guard let title = (Constant.MyClassConstants.additionalAdvisementsArray[indexPath.row].title)?.capitalized else { return 0 }
                 guard let description = Constant.MyClassConstants.additionalAdvisementsArray.last?.description else { return 0 }
                 let heightTitle = heightForView(title, font: font, width: view.frame.size.width - 40)
-                let heightDescription = heightForView(description, font: font, width: view.frame.size.width - 40)
+                let heightDescription = heightForView(description.joined(separator: ". "), font: font, width: view.frame.size.width - 40)
                 return heightTitle + heightDescription + 40 // here 40 is used for padding
             }
             
@@ -1162,12 +1166,12 @@ extension CheckOutViewController: UITableViewDataSource {
                 seprator.backgroundColor = .lightGray
                 cell.addSubview(seprator)
             } else {
-                if let openWeek = selectedRelinquishment.openWeek {
+                if let openWeek = selectedRelinquishment?.openWeek {
                     cell.resortName?.text = openWeek.resort?.resortName
                     cell.lblHeading.text = Constant.MyClassConstants.relinquishment
                     cell.resortDetailsButton.isHidden = false
                     cell.resortDetailsButton.addTarget(self, action: #selector(WhoWillBeCheckingInViewController.resortDetailsClicked(_:)), for: .touchUpInside)
-                } else if let deposits = selectedRelinquishment.deposit {
+                } else if let deposits = selectedRelinquishment?.deposit {
                     cell.resortName?.text = deposits.resort?.resortName
                     cell.lblHeading.text = Constant.MyClassConstants.relinquishment
                     cell.resortDetailsButton.isHidden = false
@@ -1210,10 +1214,10 @@ extension CheckOutViewController: UITableViewDataSource {
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.advisementsCell, for: indexPath) as? AdvisementsCell else { return UITableViewCell() }
                 if indexPath.row != (Constant.MyClassConstants.generalAdvisementsArray.count) + 1 {
                     cell.advisementType.text = (Constant.MyClassConstants.generalAdvisementsArray[indexPath.row].title)?.capitalized
-                    cell.advisementTextLabel.text = Constant.MyClassConstants.generalAdvisementsArray[indexPath.row].description
+                    cell.advisementTextLabel.text = Constant.MyClassConstants.generalAdvisementsArray[indexPath.row].description.joined(separator: ". ")
                 } else {
                     cell.advisementType.text = ""
-                    cell.advisementTextLabel.text = Constant.MyClassConstants.additionalAdvisementsArray.last?.description
+                    cell.advisementTextLabel.text = Constant.MyClassConstants.additionalAdvisementsArray.last?.description.joined(separator: ". ")
                 }
                 cell.advisementType.font = UIFont(name: Constant.fontName.helveticaNeue, size: 15.0)
                 cell.advisementTextLabel.font = UIFont(name: Constant.fontName.helveticaNeue, size: 15.0)
@@ -1273,27 +1277,8 @@ extension CheckOutViewController: UITableViewDataSource {
                 cellWebView.delegate = self
                 cellWebView.addGestureRecognizer(tapRecognizer)
                 
-                //FIXME(Frank) - what is this: !Constant.MyClassConstants.isFromExchange ?
-                if showInsurance && !Constant.MyClassConstants.isFromExchange {
-                    
-                    // guard let str = Constant.MyClassConstants.rentalFees?.insurance?.insuranceOfferHTML else { return cell }
-                    if let rentalFees = Constant.MyClassConstants.rentalFees, let insuranceFee = rentalFees.insurance, let insuranceOfferHTML = insuranceFee.insuranceOfferHTML {
-                        cellWebView.loadHTMLString(insuranceOfferHTML, baseURL: nil)
-                        
-                        //FIXME(Frank) - why the next 3 lines apply only for Rental and not for Exchange?
-                        let noRadioValue = "document.getElementById('WASCInsuranceOfferOption1').checked  = true;"
-                        checkoutOptionTBLview.beginUpdates()
-                        checkoutOptionTBLview.endUpdates()
-                    } else {
-                        return cell
-                    }
-      
-                } else {
-                    
-                    //guard let str = Constant.MyClassConstants.exchangeFees[indexPath.row].insurance?.insuranceOfferHTML else { return cell }
-                    if let exchangeFees = Constant.MyClassConstants.exchangeFees, let insuranceFee = exchangeFees.insurance, let insuranceOfferHTML = insuranceFee.insuranceOfferHTML {
-                        cellWebView.loadHTMLString(insuranceOfferHTML, baseURL: nil)
-                    }
+                if showInsurance {
+                    cellWebView.loadHTMLString(insuranceOfferHTML.unwrappedString, baseURL: nil)
                 }
                 
                 cellWebView.backgroundColor = UIColor.gray

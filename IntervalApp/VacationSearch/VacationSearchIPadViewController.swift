@@ -575,7 +575,17 @@ extension VacationSearchIPadViewController: DateAndPassengerSelectionTableViewCe
     //Function that invock when calendar button clicked
     func calendarIconClicked(_ sender: UIButton) {
         
-        self.performSegue(withIdentifier: Constant.segueIdentifiers.CalendarViewSegue, sender: nil)
+        let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
+        if let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.calendarViewController) as? CalendarViewController {
+            
+            viewController.didSelectDate = { [weak self] selectedDate in
+                self?.defaults.set(selectedDate, forKey: Constant.MyClassConstants.selectedDate)
+                Constant.MyClassConstants.vacationSearchShowDate = selectedDate.unsafelyUnwrapped
+                
+            }
+            navigationController?.pushViewController(viewController, animated: true)
+        }
+
     }
     
     func getSavedDestinationsResorts(storedData: Results <RealmLocalStorage>, searchCriteria: VacationSearchCriteria) {

@@ -25,7 +25,7 @@ open class ClubPoints {
         
         if json["resort"].exists() {
             let resortJson:JSON = json["resort"]
-            self.resort = Resort(summaryJSON:resortJson)
+            self.resort = Resort(json: resortJson)
         }
         
         if json["pointsSpent"].exists() {

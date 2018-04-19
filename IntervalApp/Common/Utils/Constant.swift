@@ -500,8 +500,8 @@ class Constant: NSObject {
         static var upgradeCost = "Unit-Size Upgrade".localized()
         static var guestCertificateTitle = "Guest Certificate".localized()
         static var renewals = "Renewals".localized()
-        static var exchangeFeeTitle = "Exchange Fee"
-        static var getawayFee = "Getaway Fee"
+        static var exchangeFeeTitle = "Exchange".localized()
+        static var getawayFee = "Getaway".localized()
         static var eplus = "EPlus"
         static var taxesTitle = "Taxes"
         static var emailRegex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
@@ -515,7 +515,6 @@ class Constant: NSObject {
         static var additionalAdv = "ADDITIONAL INFORMATION"
         static var dateFormat = "yyyy-MM-dd"
         static var monthDateFormat = "yyyy-MM"
-        static var dateTimeFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
         
         //use for no Availability Cell
         //FIXME(Frank): what mean this? - can showNearestCheckInDateSelectedMessage?
@@ -1416,7 +1415,6 @@ class Constant: NSObject {
     struct segueIdentifiers {
         
         static var dashboradSegueIdentifier = "dashboardSegue"
-        static var CalendarViewSegue = "CalendarViewSegue"
         static var detailDestinationSegue = "DetailDestinationSegue"
         static var privacyPolicyWebviewSegue = "privacyPolicySegue"
         static var searchResultSegue = "SearchResultSegue"

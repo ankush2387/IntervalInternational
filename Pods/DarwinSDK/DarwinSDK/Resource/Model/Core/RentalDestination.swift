@@ -1,23 +1,21 @@
 //
-//  ExchangeDestination.swift
+//  RentalDestination.swift
 //  DarwinSDK
 //
-//  Created by Frank Nogueiras on 2/27/17.
-//  Copyright © 2017 Interval International. All rights reserved.
+//  Created by Frank Nogueiras on 4/11/18.
+//  Copyright © 2018 Interval International. All rights reserved.
 //
 
 import Foundation
 import SwiftyJSON
 
-open class ExchangeDestination {
+open class RentalDestination {
     
     open var checkInDate : String?
     open var checkOutDate : String?
     open var resort : Resort?
     open var unit : InventoryUnit?
     open var pointsCost : Int?
-    open var cruise : Cruise?
-    open var upgradeCost : Money?
     
     public init() {
     }
@@ -37,20 +35,10 @@ open class ExchangeDestination {
             let unitJson:JSON = json["unit"]
             self.unit = InventoryUnit(json:unitJson)
         }
- 
+        
         if json["pointsCost"].exists() {
             self.pointsCost = json["pointsCost"].intValue
         }
-        
-        if json["cruise"].exists() {
-            let cruiseJson:JSON = json["cruise"]
-            self.cruise = Cruise(json:cruiseJson)
-        }
-        
-        if json["upgradeCost"].exists() {
-            let upgradeCostJson:JSON = json["upgradeCost"]
-            self.upgradeCost = Money(json:upgradeCostJson)
-        }
     }
-
+    
 }

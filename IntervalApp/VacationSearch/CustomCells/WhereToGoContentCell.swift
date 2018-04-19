@@ -13,6 +13,7 @@ class WhereToGoContentCell: UITableViewCell {
     //***** Outlets *****//
     @IBOutlet weak var sepratorView: UIView!
     @IBOutlet weak var sepratorOr: UILabel!
+    @IBOutlet weak var sepratorOrView: UIView!
     @IBOutlet weak var whereTogoTextLabel: UILabel!
     @IBOutlet weak var bedroomLabel: UILabel!
 

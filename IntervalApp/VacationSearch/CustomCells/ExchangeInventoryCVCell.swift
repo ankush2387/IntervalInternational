@@ -94,7 +94,7 @@ class ExchangeInventoryCVCell: UICollectionViewCell {
                 view.removeFromSuperview()
             }
             
-            var yPosition: CGFloat = 5
+            var yPosition: CGFloat = 10
             for promotion in promotions {
                 let imgV = UIImageView(frame: CGRect(x: 10, y: yPosition, width: 15, height: 15))
                 imgV.image = UIImage(named: Constant.assetImageNames.promoImage)
