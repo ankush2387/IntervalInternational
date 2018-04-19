@@ -85,9 +85,14 @@ open class Resort {
         if let gpsJSON = summaryJSON["gps"] as JSON? {
             self.coordinates = Coordinates(json: gpsJSON)
         }
-        
+
         if summaryJSON["address"].exists() {
             self.address = Address(json: summaryJSON["address"])
+        } else {
+            self.address = Address()
+            self.address?.cityName = summaryJSON["cityName"].string
+            self.address?.territoryCode = summaryJSON["territoryCode"].string
+            self.address?.countryCode = summaryJSON["countryCode"].string
         }
         
         if summaryJSON["images"].exists() {
@@ -106,6 +111,11 @@ open class Resort {
         if summaryJSON["reservationAttributes"].exists() {
             let reservationAttributesJsonArray:[JSON] = summaryJSON["reservationAttributes"].arrayValue
             self.reservationAttributes = reservationAttributesJsonArray.map { $0.string! }
+        }
+        
+        if summaryJSON["advisements"].exists() {
+            let advisementsArray:[JSON] = summaryJSON["advisements"].arrayValue
+            self.advisements = advisementsArray.map { Advisement(key: "Advisement",json:$0) }
         }
     }
     
