@@ -174,7 +174,7 @@ open class LookupClient {
                 switch statusCode {
                     case 200...209:
                         var videos: [Video] = json.arrayValue.map { Video(json: $0) }
-                        videos = videos.sorted { $0.name?.localizedCaseInsensitiveCompare($1.name ?? "") == ComparisonResult.orderedAscending }
+                        videos = videos.sorted { $0.name?.trim()?.localizedCaseInsensitiveCompare($1.name?.trim() ?? "") == ComparisonResult.orderedAscending }
                         onSuccess(videos)
                     
                     default:

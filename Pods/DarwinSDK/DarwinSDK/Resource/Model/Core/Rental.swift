@@ -14,6 +14,7 @@ open class Rental {
     open var discountAmount : Float = 0.0
     open lazy var prices = [InventoryPrice]()
     open lazy var promotions = [Promotion]()
+    open var originalPrice : Float?
     open var rentalPrice : InventoryPrice?
     open var selectedOfferName : String?
     open var confirmationNumber : String?
@@ -35,6 +36,8 @@ open class Rental {
             let promotionsArrary:[JSON] = json["promotions"].arrayValue
             self.promotions = promotionsArrary.map { Promotion(json:$0) }
         }
+        
+        self.originalPrice = json["originalPrice"].floatValue
         
         self.rentalPrice = InventoryPrice()
         self.rentalPrice?.price = json["price"].floatValue
