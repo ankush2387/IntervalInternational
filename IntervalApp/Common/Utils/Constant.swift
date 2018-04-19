@@ -515,7 +515,6 @@ class Constant: NSObject {
         static var additionalAdv = "ADDITIONAL INFORMATION"
         static var dateFormat = "yyyy-MM-dd"
         static var monthDateFormat = "yyyy-MM"
-        static var dateTimeFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
         
         //use for no Availability Cell
         //FIXME(Frank): what mean this? - can showNearestCheckInDateSelectedMessage?
