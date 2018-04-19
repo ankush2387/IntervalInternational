@@ -14,7 +14,7 @@
 		0887C97B1F6A99F5007F57C3 /* SearchFlexchangeButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0887C97A1F6A99F5007F57C3 /* SearchFlexchangeButtonCell.swift */; };
 		089416711F72D93A00F03229 /* SelectBedroomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 089416701F72D93A00F03229 /* SelectBedroomViewController.swift */; };
 		089416731F72D94300F03229 /* BedroomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 089416721F72D94300F03229 /* BedroomTableViewCell.swift */; };
-		0895D7141E966F0D004EAA91 /* ContainerContentTBLviewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0895D7131E966F0D004EAA91 /* ContainerContentTBLviewController.swift */; };
+		0895D7141E966F0D004EAA91 /* TdiInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0895D7131E966F0D004EAA91 /* TdiInfoViewController.swift */; };
 		08A4D4321F69A51B00C63CDC /* FlexchangeSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A4D4311F69A51B00C63CDC /* FlexchangeSearchViewController.swift */; };
 		08B10A231FD18311008C737F /* Seprator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B10A221FD18311008C737F /* Seprator.swift */; };
 		08E3BCF61F2A30F80021F2BC /* RelinquishmentDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08E3BCF51F2A30F80021F2BC /* RelinquishmentDetailsViewController.swift */; };
@@ -445,7 +445,7 @@
 		0887C97A1F6A99F5007F57C3 /* SearchFlexchangeButtonCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchFlexchangeButtonCell.swift; sourceTree = "<group>"; };
 		089416701F72D93A00F03229 /* SelectBedroomViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectBedroomViewController.swift; sourceTree = "<group>"; };
 		089416721F72D94300F03229 /* BedroomTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BedroomTableViewCell.swift; sourceTree = "<group>"; };
-		0895D7131E966F0D004EAA91 /* ContainerContentTBLviewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContainerContentTBLviewController.swift; sourceTree = "<group>"; };
+		0895D7131E966F0D004EAA91 /* TdiInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TdiInfoViewController.swift; sourceTree = "<group>"; };
 		08A4D4311F69A51B00C63CDC /* FlexchangeSearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlexchangeSearchViewController.swift; sourceTree = "<group>"; };
 		08B10A221FD18311008C737F /* Seprator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Seprator.swift; sourceTree = "<group>"; };
 		08E3BCF51F2A30F80021F2BC /* RelinquishmentDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelinquishmentDetailsViewController.swift; sourceTree = "<group>"; };
@@ -1812,7 +1812,7 @@
 				DC7EF4C71D709E9600E9E360 /* ClubPointSelectionViewController.swift */,
 				DC7EF4C81D709E9600E9E360 /* ClubPointTableViewCell.swift */,
 				DC7EF4C91D709E9600E9E360 /* ClubPointWithCheckBoxTableViewCell.swift */,
-				0895D7131E966F0D004EAA91 /* ContainerContentTBLviewController.swift */,
+				0895D7131E966F0D004EAA91 /* TdiInfoViewController.swift */,
 			);
 			path = "Club Point Selection";
 			sourceTree = "<group>";
@@ -2352,7 +2352,7 @@
 				DC7EF4CB1D709E9600E9E360 /* ClubPointSelectionViewController.swift in Sources */,
 				3A3A01371C99BD0B00B7EC37 /* ClubresortsViewController.swift in Sources */,
 				3AAA5A2D1C720F4500A5EA6D /* SWRevealViewController.m in Sources */,
-				0895D7141E966F0D004EAA91 /* ContainerContentTBLviewController.swift in Sources */,
+				0895D7141E966F0D004EAA91 /* TdiInfoViewController.swift in Sources */,
 				3A892F511CD3902F00AE6F45 /* WhereToGoCollectionViewCell.swift in Sources */,
 				3A06663A1F912C56002AA92A /* RenewalOtherOptionsVC.swift in Sources */,
 				3A3A01361C99BD0B00B7EC37 /* ClubpointTableViewCell.swift in Sources */,

@@ -50,8 +50,6 @@ class ClubPointSelectionViewController: UIViewController {
     @IBOutlet private weak var insidesecondview: UIView!
 
     var didSave: ((ClubPointsEntity) -> Void)?
-
-    let infoImageView = UIImageView()
     var selectedViewIndex = 0
     var labelsCollectionView: UICollectionView!
     var clublabel = ""
@@ -349,7 +347,7 @@ class ClubPointSelectionViewController: UIViewController {
             labelsCollectionView = UICollectionView(frame: frame, collectionViewLayout: layout)
             
             labelsCollectionView.register(UINib(nibName: Constant.customCellNibNames.clubPointsCell, bundle: nil), forCellWithReuseIdentifier: Constant.loginScreenReusableIdentifiers.cell)
-            labelsCollectionView.register(UINib(nibName: Constant.customCellNibNames.headerCell, bundle: nil), forCellWithReuseIdentifier: Constant.reUsableIdentifiers.clubHeaderCell)
+            labelsCollectionView.register(UINib(nibName: Constant.customCellNibNames.headerCell, bundle: nil), forCellWithReuseIdentifier: TdiCollectionViewCell().identifier)
             labelsCollectionView.tag = 70
             labelsCollectionView.isScrollEnabled = false
             labelsCollectionView.delegate = self
@@ -605,7 +603,7 @@ extension ClubPointSelectionViewController: UICollectionViewDataSource {
         
         if collectionView.tag == 70 {
             if indexPath.row == 0 {
-                guard let dateCell = collectionView.dequeueReusableCell(withReuseIdentifier: "HeaderCell", for: indexPath) as? TdiCollectionViewCell else { return UICollectionViewCell() }
+                guard let dateCell = collectionView.dequeueReusableCell(withReuseIdentifier: TdiCollectionViewCell().identifier, for: indexPath) as? TdiCollectionViewCell else { return UICollectionViewCell() }
                 dateCell.backgroundColor = IUIKColorPalette.titleBackdrop.color
                 dateCell.contentLabel.textColor = UIColor.black
                 
@@ -614,9 +612,10 @@ extension ClubPointSelectionViewController: UICollectionViewDataSource {
                 if Constant.MyClassConstants.matrixDescription == Constant.MyClassConstants.matrixTypeColor {
                     dateCell.contentLabel.text = Constant.MyClassConstants.season.capitalized
                 }
-                dateCell.addSubview(infoImageView)
                 dateCell.lineImage.isHidden = false
-                
+                dateCell.infoIconTapped = { [weak self] in
+                    self?.performSegue(withIdentifier: "ClubInfoSegue", sender: self)
+                }
                 return dateCell
             } else {
                 guard let contentCell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as? TdiCollectionViewCell else { return UICollectionViewCell() }
