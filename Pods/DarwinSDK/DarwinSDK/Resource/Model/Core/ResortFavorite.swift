@@ -22,7 +22,7 @@ open class ResortFavorite {
 
         if json["resort"].exists() {
             let resortJson:JSON = json["resort"]
-            self.resort = Resort(detailJSON:resortJson)
+            self.resort = Resort(json: resortJson)
         }
         
         self.createdDate = json["createdDate"].string ?? ""

@@ -1416,7 +1416,6 @@ class Constant: NSObject {
     struct segueIdentifiers {
         
         static var dashboradSegueIdentifier = "dashboardSegue"
-        static var CalendarViewSegue = "CalendarViewSegue"
         static var detailDestinationSegue = "DetailDestinationSegue"
         static var privacyPolicyWebviewSegue = "privacyPolicySegue"
         static var searchResultSegue = "SearchResultSegue"
