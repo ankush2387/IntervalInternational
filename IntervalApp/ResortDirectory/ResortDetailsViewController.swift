@@ -38,6 +38,7 @@ class ResortDetailsViewController: UIViewController {
     var presentViewModally = false
     var mapcell : UITableViewCell?
     var resortInfoHeight:CGFloat = 60.0
+    var tdiImage: UIImage?
 
     //***** Class private Variables *****//
     fileprivate var startIndex = 0
@@ -483,10 +484,8 @@ extension ResortDetailsViewController: UITableViewDelegate {
             return 50
         } else {
             switch indexPath.section {
-            case 0:
+            case 0, 1:
                 return tableView.frame.size.width / 2 + 100
-            case 1:
-                return UITableViewAutomaticDimension
             case 2:
                 if Constant.RunningDevice.deviceIdiom == .pad {
                     return 0
@@ -999,12 +998,28 @@ extension ResortDetailsViewController: UITableViewDataSource {
         
                         case 6 :
                             availableCountryCell?.tdiImageView.backgroundColor = UIColor.lightGray
-                            if let urlString = Constant.MyClassConstants.resortsDescriptionArray.tdiChart?.url {
-                                let url = URL(string: urlString)
-                                availableCountryCell?.tdiImageView.setImageWith(url, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
+                            
+                            availableCountryCell?.tdiImageView.contentMode = .scaleAspectFit
+                            
+                            if let tdiImage = tdiImage {
+                                availableCountryCell?.tdiImageView.image = tdiImage
                             } else {
-                                availableCountryCell?.tdiImageView.image = #imageLiteral(resourceName: "NoImageIcon")
+                                if let urlString = Constant.MyClassConstants.resortsDescriptionArray.tdiChart?.url {
+                                    let url = URL(string: urlString)
+                                    
+                                    availableCountryCell?.tdiImageView.sd_setImage(with: url, placeholderImage: #imageLiteral(resourceName: "NoImageIcon"), options: .cacheMemoryOnly) { [weak self] image, _, _, _ in
+                                        guard let strongSelf = self else { return }
+                                        DispatchQueue.main.async {
+                                            strongSelf.tdiImage = image
+                                            strongSelf.tableViewResorts.reloadData()
+                                        }
+                                    }
+                                    
+                                } else {
+                                    availableCountryCell?.tdiImageView.image = #imageLiteral(resourceName: "NoImageIcon")
+                                }
                             }
+                            
                         default :
                             
                             if let resortCategory = Constant.MyClassConstants.resortsDescriptionArray.rating?.categories {
