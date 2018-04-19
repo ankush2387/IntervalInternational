@@ -115,7 +115,7 @@ open class Resort {
         
         if summaryJSON["advisements"].exists() {
             let advisementsArray:[JSON] = summaryJSON["advisements"].arrayValue
-            self.advisements = advisementsArray.map { Advisement(key: "Advisement",json:$0) }
+            self.advisements = advisementsArray.map { Advisement(json:$0) }
         }
     }
     
