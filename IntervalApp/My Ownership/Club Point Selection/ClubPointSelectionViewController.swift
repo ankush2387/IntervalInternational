@@ -176,16 +176,16 @@ class ClubPointSelectionViewController: UIViewController {
         case "Studio":
             return UnitSize.STUDIO.rawValue
 
-        case "1 Bedroom":
+        case "1 Bedroom", "One Bedroom":
             return UnitSize.ONE_BEDROOM.rawValue
 
-        case "2 Bedroom":
+        case "2 Bedroom", "Two Bedroom":
             return UnitSize.TWO_BEDROOM.rawValue
 
-        case "3 Bedroom":
+        case "3 Bedroom", "Three Bedroom":
             return UnitSize.THREE_BEDROOM.rawValue
 
-        case "4 Bedroom":
+        case "4 Bedroom", "Four Bedroom":
             return UnitSize.FOUR_BEDROOM.rawValue
 
         default:
