@@ -1619,7 +1619,9 @@ public class Helper {
             showScrollingCalendar(vacationSearch:Constant.MyClassConstants.initialVacationSearch)
             
             if Constant.MyClassConstants.isFromSorting == false && Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType != VacationSearchType.COMBINED {
-                helperDelegate?.resortSearchComplete()
+                DispatchQueue.main.async {
+                    helperDelegate?.resortSearchComplete()
+                }
             } else {
                 executeExchangeSearchDates(senderVC: senderViewController)
             }
@@ -1665,15 +1667,12 @@ public class Helper {
             }
             showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
             senderViewController.hideHudAsync()
-            
-            if senderViewController.isKind(of: VacationSearchResultIPadController.self) || senderViewController.isKind(of: SearchResultViewController.self) || senderViewController.isKind(of: SortingViewController.self) || senderViewController.isKind(of:AllAvailableDestinationViewController.self) || senderViewController.isKind(of: AllAvailableDestinationsIpadViewController.self) || senderViewController.isKind(of: FlexChangeSearchIpadViewController.self) || senderViewController.isKind(of: FlexchangeSearchViewController.self) {
+            DispatchQueue.main.async {
                 helperDelegate?.resortSearchComplete()
-                
-            } else {
-                
-                helperDelegate?.resortSearchComplete()
-            
             }
+            
+            
+        
             
         }) { error in
             senderViewController.hideHudAsync()
@@ -1715,6 +1714,8 @@ public class Helper {
         
         ExchangeClient.searchDates(Session.sharedSession.userAccessToken, request: Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request,
                                    onSuccess: { (response) in
+                                    Constant.MyClassConstants.initialVacationSearch.rentalSearch?.inventory = []
+                                    Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.inventory = []
                                     Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.response = response
                                     
                                     // Update active interval
