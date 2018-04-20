@@ -661,9 +661,7 @@ transaction.</string>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="qVN-Ng-HPx">
-
                                                     <rect key="frame" x="0.0" y="0.0" width="375" height="41.666666666666664"/>
-
                                                 </imageView>
                                             </subviews>
                                             <constraints>
@@ -1353,7 +1351,7 @@ transaction.</string>
                                                     <rect key="frame" x="10" y="15" width="355" height="62"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aos-Rl-Ib3">
-                                                            <rect key="frame" x="0.0" y="0.0" width="355" height="27"/>
+                                                            <rect key="frame" x="177.66666666666666" y="0.0" width="0.0" height="27"/>
                                                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
                                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
@@ -1725,27 +1723,21 @@ transaction.</string>
                                                                                         </constraints>
                                                                                     </imageView>
                                                                                     <imageView userInteractionEnabled="NO" tag="3" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="empty_circle" translatesAutoresizingMaskIntoConstraints="NO" id="2Gv-Gg-hsh">
-
                                                                                         <rect key="frame" x="239" y="3.6666666666666856" width="30" height="30"/>
-
                                                                                         <constraints>
                                                                                             <constraint firstAttribute="width" constant="30" id="caV-og-irU"/>
                                                                                             <constraint firstAttribute="height" constant="30" id="jhm-fG-drY"/>
                                                                                         </constraints>
                                                                                     </imageView>
                                                                                     <imageView userInteractionEnabled="NO" tag="4" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="empty_circle" translatesAutoresizingMaskIntoConstraints="NO" id="mqE-ur-rcb">
-
                                                                                         <rect key="frame" x="274" y="3.6666666666666856" width="30" height="30"/>
-
                                                                                         <constraints>
                                                                                             <constraint firstAttribute="height" constant="30" id="Cez-B6-f52"/>
                                                                                             <constraint firstAttribute="width" constant="30" id="TJv-vI-pBG"/>
                                                                                         </constraints>
                                                                                     </imageView>
                                                                                     <imageView userInteractionEnabled="NO" tag="5" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="empty_circle" translatesAutoresizingMaskIntoConstraints="NO" id="XIC-PY-RsS">
-
                                                                                         <rect key="frame" x="309" y="3.6666666666666856" width="30" height="30"/>
-
                                                                                         <constraints>
                                                                                             <constraint firstAttribute="height" constant="30" id="fY6-fO-6Ny"/>
                                                                                             <constraint firstAttribute="width" constant="30" id="kYn-rP-bGa"/>
@@ -4534,10 +4526,10 @@ to confirm a larger unit.</string>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="DropArrowIcon" translatesAutoresizingMaskIntoConstraints="NO" id="ENy-Lg-gRo">
-                                                    <rect key="frame" x="322" y="5" width="33" height="40"/>
+                                                    <rect key="frame" x="322" y="5" width="33" height="40.666666666666664"/>
                                                 </imageView>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DZl-IC-HjV">
-                                                    <rect key="frame" x="320" y="0.0" width="55" height="50"/>
+                                                    <rect key="frame" x="320" y="0.0" width="55" height="50.666666666666664"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="55" id="TrC-dw-AXq"/>
                                                     </constraints>
@@ -4759,20 +4751,20 @@ to confirm a larger unit.</string>
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="84"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3EK-dq-PJe">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3EK-dq-PJe">
                                                     <rect key="frame" x="20" y="10" width="335" height="0.0"/>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IBN-4K-q23">
+                                                <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IBN-4K-q23">
                                                     <rect key="frame" x="27" y="10" width="321" height="18"/>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                                                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="749" text="or" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aLL-jk-gu7">
-                                                    <rect key="frame" x="176" y="45" width="22" height="18"/>
+                                                    <rect key="frame" x="176" y="33" width="22" height="46"/>
                                                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                                                     <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.61568627450000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -4781,14 +4773,15 @@ to confirm a larger unit.</string>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstAttribute="trailingMargin" secondItem="aLL-jk-gu7" secondAttribute="trailing" constant="162" id="4g1-A5-ccn"/>
+                                                <constraint firstItem="aLL-jk-gu7" firstAttribute="top" secondItem="IBN-4K-q23" secondAttribute="bottom" constant="5" id="Cy3-xQ-DJE"/>
                                                 <constraint firstItem="IBN-4K-q23" firstAttribute="top" secondItem="3EK-dq-PJe" secondAttribute="bottom" id="DfM-uX-eRy"/>
+                                                <constraint firstAttribute="bottom" secondItem="aLL-jk-gu7" secondAttribute="bottom" constant="5" id="RAu-lf-H4x"/>
                                                 <constraint firstItem="3EK-dq-PJe" firstAttribute="top" secondItem="dD8-5k-Dw3" secondAttribute="top" constant="10" id="RTE-S6-vDd"/>
                                                 <constraint firstItem="3EK-dq-PJe" firstAttribute="leading" secondItem="dD8-5k-Dw3" secondAttribute="leading" constant="20" id="STr-WT-8k7"/>
                                                 <constraint firstAttribute="trailing" secondItem="3EK-dq-PJe" secondAttribute="trailing" constant="20" id="UB7-yy-yPt"/>
                                                 <constraint firstItem="aLL-jk-gu7" firstAttribute="leading" secondItem="dD8-5k-Dw3" secondAttribute="leadingMargin" constant="161" id="aoj-ap-oHx"/>
                                                 <constraint firstItem="IBN-4K-q23" firstAttribute="leading" secondItem="dD8-5k-Dw3" secondAttribute="leadingMargin" constant="12" id="vNJ-1Q-FgM"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="IBN-4K-q23" secondAttribute="trailing" constant="12" id="yGg-El-ZU5"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="aLL-jk-gu7" secondAttribute="bottom" constant="10" id="zjc-fL-Ymi"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -4861,7 +4854,7 @@ to confirm a larger unit.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TGv-Xe-h2M" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4273" y="-1290"/>
+            <point key="canvasLocation" x="4272.8000000000002" y="-1290.5172413793105"/>
         </scene>
         <!--Payment Selection View Controller-->
         <scene sceneID="6qU-aw-Pzn">
@@ -7721,7 +7714,7 @@ transaction.</string>
         <segue reference="Gma-QI-cCT"/>
         <segue reference="Lp2-ch-oU8"/>
         <segue reference="jTg-f9-AVL"/>
-        <segue reference="Rpo-cQ-qF4"/>
+        <segue reference="ryk-nj-17Y"/>
         <segue reference="sGp-zH-9TZ"/>
         <segue reference="Uce-OZ-bfJ"/>
     </inferredMetricsTieBreakers>
