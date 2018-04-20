@@ -445,7 +445,7 @@ extension VacationSearchViewController: UICollectionViewDataSource {
             centerView.addSubview(unitLabel)
             
             let priceLabel = UILabel(frame: CGRect(x: 10, y: 35, width: centerView.frame.size.width - 20, height: 20))
-            if let pricefrom = deal.price?.fromPrice, let currencyCode = deal.price?.currencySymbol {
+            if let pricefrom = deal.price?.lowest, let currencyCode = deal.price?.currencySymbol {
                 
                 let fromAttributedString = NSMutableAttributedString(string: "From ".localized(), attributes: nil)
                 let amount = Int(pricefrom)

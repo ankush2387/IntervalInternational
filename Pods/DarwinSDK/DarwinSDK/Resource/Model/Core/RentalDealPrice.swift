@@ -11,8 +11,9 @@ import SwiftyJSON
 
 open class RentalDealPrice {
 
-	open var fromPrice : Float = 0.0
-    open var currencySymbol : String?
+	open var lowest: Float?
+    open var currencySymbol: String?
+    open var checkInDate: Date?
     
     public init(){
     }
@@ -20,7 +21,11 @@ open class RentalDealPrice {
     public convenience init(json:JSON){
         self.init()
         
+        self.lowest = json["lowest"].floatValue
         self.currencySymbol = json["currencySymbol"].string ?? ""
-        self.fromPrice = json["fromPrice"].floatValue
+        
+        if let dateStr = json["checkInDate"].string {
+            self.checkInDate = dateStr.dateFromShortFormat()
+        }
     }
 }

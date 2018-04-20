@@ -1065,7 +1065,7 @@ extension VacationSearchIPadViewController: UICollectionViewDataSource {
             centerView.addSubview(unitLabel)
             
             let priceLabel = UILabel(frame: CGRect(x: 10, y: 35, width: centerView.frame.size.width - 20, height: 20))
-            if let pricefrom = topTenDeals.price?.fromPrice, let currencyCode = topTenDeals.price?.currencySymbol {
+            if let pricefrom = topTenDeals.price?.lowest, let currencyCode = topTenDeals.price?.currencySymbol {
                 //FIXME(Frank): - all UIViewController for iPad should be removed
                 if let attributedAmount = pricefrom.currencyFormatter(for: currencyCode, for: nil, baseLineOffSet: 0) {
                     let fromAttributedString = NSMutableAttributedString(string: "From ", attributes: nil)

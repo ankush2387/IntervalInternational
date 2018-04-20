@@ -1256,8 +1256,8 @@ public class Helper {
             buildVersion += ".\(build)"
         }
         
-        if (Config.sharedInstance.getEnvironment() != Environment.production && Config.sharedInstance.getEnvironment() != Environment.production) {
-            let env = Config.sharedInstance.get(.Environment, defaultValue: "NONE").uppercased()
+        if DarwinSDK.sharedInstance.apiEnvironment != Environment.production {
+            let env = DarwinSDK.sharedInstance.apiEnvironment
             buildVersion += " (\(env))"
         }
         
