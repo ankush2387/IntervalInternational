@@ -344,7 +344,7 @@ transaction.</string>
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Z7H-la-zBu">
-                                <rect key="frame" x="0.0" y="132" width="375" height="597"/>
+                                <rect key="frame" x="0.0" y="132" width="375" height="646"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="536" id="xAh-Ay-Djq"/>
@@ -661,7 +661,7 @@ transaction.</string>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="qVN-Ng-HPx">
-                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="41.666666666666664"/>
+                                                    <rect key="frame" x="7" y="3" width="361" height="36"/>
                                                 </imageView>
                                             </subviews>
                                             <constraints>
@@ -1884,11 +1884,11 @@ transaction.</string>
                                                                     <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xru-gj-w8L">
                                                                         <rect key="frame" x="235" y="59" width="111" height="6"/>
                                                                         <subviews>
-                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1027" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9ur-qh-rof">
-                                                                                <rect key="frame" x="39" y="5" width="64" height="21"/>
+                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1027" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9ur-qh-rof">
+                                                                                <rect key="frame" x="13" y="5" width="90" height="21"/>
                                                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                                                 <constraints>
-                                                                                    <constraint firstAttribute="width" constant="64" id="8qG-6o-JJs"/>
+                                                                                    <constraint firstAttribute="width" constant="90" id="8qG-6o-JJs"/>
                                                                                     <constraint firstAttribute="height" constant="21" id="x9S-OV-sQ3"/>
                                                                                 </constraints>
                                                                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="20"/>
@@ -4526,10 +4526,10 @@ to confirm a larger unit.</string>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="DropArrowIcon" translatesAutoresizingMaskIntoConstraints="NO" id="ENy-Lg-gRo">
-                                                    <rect key="frame" x="322" y="5" width="33" height="40.666666666666664"/>
+                                                    <rect key="frame" x="322" y="5" width="33" height="40.333333333333336"/>
                                                 </imageView>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DZl-IC-HjV">
-                                                    <rect key="frame" x="320" y="0.0" width="55" height="50.666666666666664"/>
+                                                    <rect key="frame" x="320" y="0.0" width="55" height="50.333333333333336"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="55" id="TrC-dw-AXq"/>
                                                     </constraints>
@@ -7713,9 +7713,9 @@ transaction.</string>
         <segue reference="xan-e8-tse"/>
         <segue reference="Gma-QI-cCT"/>
         <segue reference="Lp2-ch-oU8"/>
-        <segue reference="jTg-f9-AVL"/>
+        <segue reference="KRw-si-7MT"/>
         <segue reference="ryk-nj-17Y"/>
-        <segue reference="sGp-zH-9TZ"/>
+        <segue reference="4gU-cx-AAf"/>
         <segue reference="Uce-OZ-bfJ"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
