@@ -73,6 +73,7 @@ class CheckOutViewController: UIViewController {
         if !Constant.MyClassConstants.hasAdditionalCharges {
             isAgreedToFees = true
         }
+        
         Constant.MyClassConstants.additionalAdvisementsArray.removeAll()
         Constant.MyClassConstants.generalAdvisementsArray.removeAll()
         
@@ -155,6 +156,8 @@ class CheckOutViewController: UIViewController {
                 }
             }
         }
+        
+        currencyCode = Constant.MyClassConstants.exchangeFees?.currencyCode ?? Constant.MyClassConstants.rentalFees?.currencyCode ?? "USA"
         
         //Register custom cell xib with tableview
         
@@ -350,67 +353,17 @@ class CheckOutViewController: UIViewController {
         navigationController?.navigationBar.isHidden = false
         emailTextToEnter = Session.sharedSession.contact?.emailAddress ?? ""
         
-        if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
-            if let exchangeFees = Constant.MyClassConstants.exchangeFees {
-                
-                if let shopExchangeFee = exchangeFees.shopExchange, let selectedPromotion = shopExchangeFee.selectedOfferName {
-                    self.recapSelectedPromotion = selectedPromotion
-                    if selectedPromotion == "" {
-                        Constant.MyClassConstants.isPromotionsEnabled = false
-                        destinationPromotionSelected = false
-                    } else {
-                        Constant.MyClassConstants.isPromotionsEnabled = true
-                        destinationPromotionSelected = true
-                    }
-                }
-                
-                /* FIXME(Frank) - REMOVE ME
-                if !exchangeFees.renewals.isEmpty {
-                    for renewal in exchangeFees.renewals {
-                        if renewal.isCoreProduct {
-                            renewalCoreProduct = Renewal()
-                            renewalCoreProduct?.id = renewal.id
-                            renewalCoreProduct?.productCode = renewal.productCode
-                        } else if !renewal.isCoreProduct {
-                            renewalNonCoreProduct = Renewal()
-                            renewalNonCoreProduct?.id = renewal.id
-                            renewalNonCoreProduct?.productCode = renewal.productCode
-                        }
-                    }
-                }
-                */
-                
-            }
-
-        } else {
-            
-            if let rentalFees = Constant.MyClassConstants.rentalFees {
-                
-                 if let rentalFee = rentalFees.rental, let selectedPromotion = rentalFee.selectedOfferName {
-                    self.recapSelectedPromotion = selectedPromotion
-                    if selectedPromotion == "" {
-                        Constant.MyClassConstants.isPromotionsEnabled = false
-                        destinationPromotionSelected = false
-                    } else {
-                        Constant.MyClassConstants.isPromotionsEnabled = true
-                        destinationPromotionSelected = true
-                    }
-                }
-                
-                /* FIXME(Frank) - REMOVE ME
-                if !rentalFees.renewals.isEmpty {
-                    for renewal in rentalFees.renewals {
-                        if renewal.isCoreProduct {
-                            renewalCoreProduct = renewal
-                        } else if !renewal.isCoreProduct {
-                            renewalNonCoreProduct = renewal
-                        }
-                    }
-                }
-                */
-            }
- 
+        let selectedOfferName = Constant.MyClassConstants.exchangeFees?.shopExchange?.selectedOfferName ?? Constant.MyClassConstants.rentalFees?.rental?.selectedOfferName
+        
+        Constant.MyClassConstants.recapPromotionsArray.removeAll()
+        if let promotions = Constant.MyClassConstants.exchangeFees?.shopExchange?.promotions ??  Constant.MyClassConstants.rentalFees?.rental?.promotions {
+            Constant.MyClassConstants.recapPromotionsArray = promotions
         }
+        
+        self.recapSelectedPromotion = selectedOfferName
+        
+        Constant.MyClassConstants.isPromotionsEnabled = selectedOfferName != nil && selectedOfferName != ""
+        destinationPromotionSelected = selectedOfferName != nil && selectedOfferName != ""
         
         //FIXME(Frank) - what is this?
         NotificationCenter.default.addObserver(self, selector: #selector(updateResortHoldingTime), name: NSNotification.Name(rawValue: Constant.notificationNames.updateResortHoldingTime), object: nil)
@@ -436,10 +389,8 @@ class CheckOutViewController: UIViewController {
     }
     
     func checkPromotionsAvailable() {
-        if !Constant.MyClassConstants.filterRelinquishments.isEmpty {
-            if let  _ = Constant.MyClassConstants.filterRelinquishments[0].openWeek?.promotion {
-                isDepositPromotionAvailable = true
-            }
+        if !Constant.MyClassConstants.filterRelinquishments.isEmpty  && Constant.MyClassConstants.filterRelinquishments[0].openWeek?.promotion != nil {
+            isDepositPromotionAvailable = true
         }
     }
     
@@ -455,13 +406,11 @@ class CheckOutViewController: UIViewController {
             }
             
             if let exchangeFees = Constant.MyClassConstants.exchangeFees {
-                if let ePlusFee = exchangeFees.eplus {
-                    if ePlusFee.selected == true {
-                        totalFeesArray.add(Constant.MyClassConstants.eplus)
-                    }
+                if exchangeFees.eplus?.selected ?? false{
+                    totalFeesArray.add(Constant.MyClassConstants.eplus)
                 }
                 
-                if let _ = exchangeFees.unitSizeUpgrade {
+                if exchangeFees.unitSizeUpgrade != nil {
                     totalFeesArray.add(Constant.MyClassConstants.upgradeCost)
                 }
                 
@@ -478,10 +427,8 @@ class CheckOutViewController: UIViewController {
                 totalFeesArray.add(Constant.MyClassConstants.taxesTitle)
             }
             
-            if let rentalFees = Constant.MyClassConstants.rentalFees {
-                if !rentalFees.renewals.isEmpty {
-                    totalFeesArray.add(Constant.MyClassConstants.renewals)
-                }
+            if Constant.MyClassConstants.rentalFees?.renewals.isEmpty == false {
+                totalFeesArray.add(Constant.MyClassConstants.renewals)
             }
         }
         
@@ -542,7 +489,7 @@ class CheckOutViewController: UIViewController {
                 
                 let processRequest = ExchangeProcessRecalculateRequest()
                 processRequest.fees = fees
-                ExchangeProcessClient.recalculateFees(Session.sharedSession.userAccessToken, process: processResort, request: processRequest, onSuccess: { response in
+                ExchangeProcessClient.recalculateFees(Session.sharedSession.userAccessToken, process: processResort, request: processRequest, onSuccess: { [unowned self] response in
                     
                     Constant.MyClassConstants.inventoryPriceTaxBreakdown = nil
                     if let taxBreakdown = response.view?.fees?.shopExchange?.inventoryPrice?.taxBreakdown {
@@ -592,7 +539,7 @@ class CheckOutViewController: UIViewController {
                 
                 let processRequest = RentalProcessRecapRecalculateRequest()
                 processRequest.fees = fees
-                RentalProcessClient.addCartPromotion(Session.sharedSession.userAccessToken, process: processResort, request: processRequest, onSuccess: { response in
+                RentalProcessClient.addCartPromotion(Session.sharedSession.userAccessToken, process: processResort, request: processRequest, onSuccess: { [unowned self] response in
                     if let updatedFees = response.view?.fees {
                         Constant.MyClassConstants.rentalFees? = updatedFees
                     }
@@ -1297,19 +1244,15 @@ extension CheckOutViewController: UITableViewDataSource {
                 
                 switch totalFeesArray[indexPath.row] as? String ?? "" {
                 case Constant.MyClassConstants.exchangeFeeTitle:
-                    //TODO(Frank): Temporal solution until ESB fix the issue with the original price
-                    //if let shopExchangeFee = Constant.MyClassConstants.exchangeFees?.shopExchange, let exchangePrice = shopExchangeFee.inventoryPrice {
-                    if let exchangeOriginalPrice = Constant.MyClassConstants.exchangeFeeOriginalPrice {
-                         cell.setTotalPrice(with: currencyCode, and: exchangeOriginalPrice, and: countryCode)
+                    if let shopExchangeFee = Constant.MyClassConstants.exchangeFees?.shopExchange, let exchangePrice = shopExchangeFee.originalPrice {
+                         cell.setTotalPrice(with: currencyCode, and: exchangePrice, and: countryCode)
                     }
                     
                     cell.priceLabel.text = Constant.MyClassConstants.exchangeFeeTitle
                     
                 case Constant.MyClassConstants.getawayFee:
-                    //TODO(Frank): Temporal solution until ESB fix the issue with the original price
-                    //if let rentalFee = Constant.MyClassConstants.rentalFees?.rental, let rentalPrice = rentalFee.rentalPrice {
-                    if let rentalOriginalPrice = Constant.MyClassConstants.rentalFeeOriginalPrice {
-                        cell.setTotalPrice(with: currencyCode, and: rentalOriginalPrice, and: countryCode)
+                    if let rentalFee = Constant.MyClassConstants.rentalFees?.rental, let rentalPrice = rentalFee.originalPrice {
+                        cell.setTotalPrice(with: currencyCode, and: rentalPrice, and: countryCode)
                     }
                     
                     cell.priceLabel.text = Constant.MyClassConstants.getawayFee
@@ -1425,16 +1368,10 @@ extension CheckOutViewController: UITableViewDataSource {
                 }
                 
                 if indexPath.row == 0 && self.isTripProtectionEnabled {
-                    if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
-                        if let insuranceFee = Constant.MyClassConstants.exchangeFees?.insurance {
-                            cell.setTotalPrice(with: currencyCode, and: insuranceFee.price, and: countryCode)
-                        }
-                    } else {
-                        if let insuranceFee = Constant.MyClassConstants.rentalFees?.insurance {
-                            cell.setTotalPrice(with: currencyCode, and: insuranceFee.price, and: countryCode)
-                        }
+                    let insurance = Constant.MyClassConstants.exchangeFees?.insurance ?? Constant.MyClassConstants.rentalFees?.insurance
+                    if let price = insurance?.price {
+                            cell.setTotalPrice(with: currencyCode, and: price, and: countryCode)
                     }
-                    
                     cell.priceLabel.text = Constant.MyClassConstants.insurance
                     
                 } else {
@@ -1463,7 +1400,6 @@ extension CheckOutViewController: UITableViewDataSource {
                 for subviews in cell.subviews {
                     subviews.isHidden = false
                 }
-
                 for promotion in Constant.MyClassConstants.recapPromotionsArray where promotion.offerName == recapSelectedPromotion {
                     cell.setPromotionPrice(with: currencyCode, and: promotion.amount, and: countryCode)
                     
@@ -1493,17 +1429,10 @@ extension CheckOutViewController: UITableViewDataSource {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.customCellNibNames.totalCostCell, for: indexPath) as? TotalCostCell else { return UITableViewCell() }
             cell.selectionStyle = .none
             
-            if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
-                //FIXME(Frank) - what is this ? - why assign the cell.setTotalPrice(...) twice?
-                if let exchnageFees = Constant.MyClassConstants.exchangeFees {
-                    cell.setTotalPrice(with: currencyCode, and: exchnageFees.total, and: countryCode)
-                }
-            } else {
-                //FIXME(Frank) - what is this ? - why assign the cell.setTotalPrice(...) twice?
-                if let rentalFees = Constant.MyClassConstants.rentalFees {
-                    cell.setTotalPrice(with: currencyCode, and: rentalFees.total, and: countryCode)
-                }
+            if let total = Constant.MyClassConstants.exchangeFees?.total ?? Constant.MyClassConstants.rentalFees?.total {
+                cell.setTotalPrice(with: currencyCode, and: total, and: countryCode)
             }
+            
             return cell
             
         case 9 :
