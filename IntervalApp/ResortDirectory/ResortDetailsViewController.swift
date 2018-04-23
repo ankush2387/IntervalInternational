@@ -895,7 +895,7 @@ extension ResortDetailsViewController: UITableViewDataSource {
                             var completeAddress = ""
                             if let address = Constant.MyClassConstants.resortsDescriptionArray.address {
                                 let addressLine = address.addressLines[0]
-                                completeAddress = "\n\nContact Information\n\(addressLine)\n\(address.cityName ?? ""),  \(address.territoryCode ?? "") \(address.postalCode ?? "")\n\n\(Constant.MyClassConstants.resortsDescriptionArray.phone ?? "")\n\(Constant.MyClassConstants.resortsDescriptionArray.webUrl ?? "")".localized()
+                                completeAddress = "\n\nContact Information\n\(addressLine)\n\(address.cityName ?? ""),  \(address.territoryCode ?? "") \(address.postalCode ?? "")"
                                 airportArray.append(completeAddress)
                             }
                             
@@ -909,6 +909,48 @@ extension ResortDetailsViewController: UITableViewDataSource {
                                     
                                 }
                             }
+                            
+                            if let phone = Constant.MyClassConstants.resortsDescriptionArray.phone {
+                                let textView = UITextView(frame: CGRect(x: 18.0, y: height + 20.0, width: UIScreen.main.bounds.width, height: 30.0))
+                               
+                                let linkAttributes = [
+                                    NSLinkAttributeName: NSURL(string: "tel://" + phone)!,
+                                    NSForegroundColorAttributeName: UIColor.blue,
+                                    NSFontAttributeName: UIFont(name: Constant.fontName.helveticaNeue, size: 15.0) as Any
+                                ] as [String : Any]
+
+                                // swiftlint:disable legacy_constructor
+                                let attributedString = NSMutableAttributedString(string: phone)
+                                attributedString.setAttributes(linkAttributes, range: NSMakeRange(0, phone.count))
+
+                                textView.attributedText = attributedString
+                                textView.isUserInteractionEnabled = true
+                                textView.isEditable = false
+                                
+                                availableCountryCell?.addSubview(textView)
+                                height += 30
+                            }
+                            
+                            if let url = Constant.MyClassConstants.resortsDescriptionArray.webUrl {
+                                let textView = UITextView(frame: CGRect(x: 18.0, y: height + 15.0, width: UIScreen.main.bounds.width, height: 30.0))
+                                
+                                let linkAttributes = [
+                                    NSLinkAttributeName: NSURL(string: "http://" + url)!,
+                                    NSForegroundColorAttributeName: UIColor.blue,
+                                    NSFontAttributeName: UIFont(name: Constant.fontName.helveticaNeue, size: 15.0) as Any
+                                    ] as [String : Any]
+                                
+                                let attributedString = NSMutableAttributedString(string: url)
+                                attributedString.setAttributes(linkAttributes, range: NSMakeRange(0, url.count))
+                                
+                                textView.attributedText = attributedString
+                                textView.isUserInteractionEnabled = true
+                                textView.isEditable = false
+                                
+                                availableCountryCell?.addSubview(textView)
+                                height += 10
+                            }
+                            
                             resortInfoHeight = height + 30
                             let indexPath = NSIndexPath(item: indexPath.row, section: indexPath.section)
                             //tableViewResorts.reloadData()
