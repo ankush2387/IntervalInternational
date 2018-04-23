@@ -1439,14 +1439,14 @@ extension VacationSearchViewController: SearchTableViewCellDelegate {
             var searchType: VacationSearchType
             let requestRental = RentalSearchRegionsRequest()
             let requestExchange = ExchangeSearchRegionsRequest()
-            
             //Seprate exchange, rental and search both region search
             switch segmentTitle {
             case Constant.segmentControlItems.exchange:
                 requestExchange.setCheckInToDate(checkInToDate)
                 requestExchange.travelParty = Constant.MyClassConstants.travelPartyInfo
+                requestExchange.relinquishmentsIds = availableRelinquishmentIdArray
                 searchType = VacationSearchType.EXCHANGE
-                
+
             case Constant.segmentControlItems.getaways:
                 requestRental.setCheckInToDate(checkInToDate)
                 searchType = VacationSearchType.RENTAL
