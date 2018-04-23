@@ -191,18 +191,24 @@ class SearchResultViewController: UIViewController {
     private func scrollToActiveDate() {
         let numberOfRecords = Constant.MyClassConstants.calendarDatesArray.count
         let vacationSearchCheckInDate = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate.unwrappedString
-        var calendarItemWithActiveDates: (item: CalendarItem, index: Int)?
+        var calendarItemWithinCheckInRange: CalendarItem?
         var foundMatch = false
-
+        
         for index in 0..<numberOfRecords {
             let calendarItem = Constant.MyClassConstants.calendarDatesArray[index]
             let calendarItemCheckInDate = calendarItem.checkInDate.unwrappedString
-
-            // Stores the first calendar item with valid check in/out intervals
-            if !calendarItem.intervalStartDate.unwrappedString.isEmpty
-                && !calendarItem.intervalEndDate.unwrappedString.isEmpty
-                && calendarItemWithActiveDates == nil {
-                calendarItemWithActiveDates = (calendarItem, index)
+            let vacationSeachCheckInMonth = Int(vacationSearchCheckInDate.dateFromString()?.formatDateAs("MM") ?? "")
+            let calendarItemCheckInMonth = Int(calendarItem.checkInDate?.dateFromString()?.formatDateAs("MM") ?? "")
+            
+            if let vacationSeachCheckInMonth = vacationSeachCheckInMonth,
+                let calendarItemCheckInMonth = calendarItemCheckInMonth, calendarItemWithinCheckInRange == nil {
+                let range = Range(ClosedRange(uncheckedBounds: (lower: calendarItemCheckInMonth - 1, upper: calendarItemCheckInMonth + 1)))
+                // Stores the first calendarItem with valid checkin date within the approved search range
+                // CalendarItems are already sorted, we can just take the first one
+                // https://jira.iilg.com/browse/MOBI-2062
+                if range ~= vacationSeachCheckInMonth {
+                    calendarItemWithinCheckInRange = calendarItem
+                }
             }
 
             // Scrolls to active date cell if match is found
@@ -213,26 +219,9 @@ class SearchResultViewController: UIViewController {
                 break
             }
         }
-
-        // If no match is found; perform this horrible hack because of the bad dataset implementation in this view controller...
-        if let calendarItemWithActiveDates = calendarItemWithActiveDates,
-            let cell = searchResultColelctionView.cellForItem(at: IndexPath(row: calendarItemWithActiveDates.index, section: 0)),
-            !Constant.MyClassConstants.calendarDatesArray.isEmpty,
-            !foundMatch {
-            intervalBucketClicked(calendarItem: calendarItemWithActiveDates.item, cell: cell) { [weak self] error in
-                guard let strongSelf = self else { return }
-                strongSelf.showHudAsync()
-                // Delay to allow tableview collectionview to reload... :(
-                let delayInSeconds = 2.0
-                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + delayInSeconds) {
-                    if case .some = error {
-                        strongSelf.presentErrorAlert(UserFacingCommonError.handleError(error))
-                        return
-                    }
-
-                    strongSelf.intervalDateItemClicked(Constant.MyClassConstants.calendarDatesArray[0])
-                }
-            }
+        
+        if let calendarItemWithinCheckInRange = calendarItemWithinCheckInRange, !foundMatch {
+            intervalDateItemClicked(calendarItemWithinCheckInRange)
         }
     }
 
