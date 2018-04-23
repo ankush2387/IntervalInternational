@@ -95,8 +95,8 @@ open class AvailabilitySectionItem {
         }
         
         if let exchangeAvailability = self.exchangeAvailability, let inventory = exchangeAvailability.inventory, !inventory.buckets.isEmpty {
-            for bucket in inventory.buckets {
-                if let unit = bucket.unit {
+            for exchangeBucket in inventory.buckets {
+                if let unit = exchangeBucket.unit {
                     let inventoryBucketUnit = AvailabilitySectionItemInventoryBucketUnit(unitSize: UnitSize.fromName(name: unit.unitSize),
                                                                                          kitchenType: KitchenType.fromName(name: unit.kitchenType),
                                                                                          publicSleepCapacity: unit.publicSleepCapacity,
@@ -106,15 +106,15 @@ open class AvailabilitySectionItem {
                     
                     let inventoryBucket = AvailabilitySectionItemInventoryBucket(key: inventoryBucketUnit.generateKey(),
                                                                                  vacationSearchType: unit.vacationSearchType,
-                                                                                 trackCodeCategory: TrackCodeCategory.fromName(name: bucket.trackCodeCategory),
+                                                                                 trackCodeCategory: TrackCodeCategory.fromName(name: exchangeBucket.trackCodeCategory),
                                                                                  checkInDate: inventory.checkInDate!,
                                                                                  checkOutDate: inventory.checkOutDate!,
                                                                                  unit: inventoryBucketUnit,
-                                                                                 promotions: bucket.promotions,
+                                                                                 promotions: exchangeBucket.promotions,
                                                                                  rentalPrices: nil,
                                                                                  currencyCode: nil,
-                                                                                 exchangePointsCost: bucket.pointsCost,
-                                                                                 exchangeMemberPointsRequired: bucket.memberPointsRequired)
+                                                                                 exchangePointsCost: exchangeBucket.pointsCost,
+                                                                                 exchangeMemberPointsRequired: exchangeBucket.memberPointsRequired)
                     
                     if var bucket = inventoryBuckets[inventoryBucket.key] {
                         bucket.vacationSearchType = VacationSearchType.COMBINED
@@ -130,12 +130,7 @@ open class AvailabilitySectionItem {
         
         var buckets = [AvailabilitySectionItemInventoryBucket]()
         buckets.append(contentsOf: inventoryBuckets.values)
-    
-        if buckets.isEmpty {
-            return nil
-        } else {
-            return buckets
-        }
+        return buckets.isEmpty ? nil : buckets
     }
     
 }

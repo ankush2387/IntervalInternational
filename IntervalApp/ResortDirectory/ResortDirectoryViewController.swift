@@ -106,11 +106,6 @@ class ResortDirectoryViewController: UIViewController {
         setNavigationBar()
     }
     
-    override func viewDidLayoutSubviews() {
-        
-        self.view.subviews.last?.frame = CGRect(x: -(self.view.subviews.last?.frame.width)!, y: 64, width: (self.view.subviews.last?.frame.width)!, height: (self.view.subviews.last?.frame.height)!)
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
         if Constant.MyClassConstants.showResortDetailsWhenClickedDone {
             self.view.subviews.last?.isHidden = false

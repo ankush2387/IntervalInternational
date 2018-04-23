@@ -55,43 +55,8 @@ class Config {
         }
     }
     
-    func getEnvironment() -> Environment {
-        let envStr = self.get(.Environment, defaultValue: "info").lowercased()
-        
-        switch envStr {
-        case "production":
-            return Environment.production
-            
-        case "staging":
-            return Environment.staging
-            
-        case "qa1":
-            return Environment.qa1
-            
-        case "qa2":
-            return Environment.qa2
-            
-        case "dev1":
-            return Environment.dev1
-            
-        case "dev2":
-            return Environment.dev2
-
-        case "production_mag":
-            return Environment.production_mag
-      
-        case "staging_mag":
-            return Environment.staging_mag
-
-        case "qa1_mag":
-            return Environment.qa1_mag
-            
-        case "qa2_mag":
-            return Environment.qa2_mag
-
-        default:
-            return Environment.production
-        }
+    func getEnvironment() -> String {
+        return self.get(.Environment, defaultValue: "info").lowercased()
     }
     
     func getLogLevel() -> XCGLogger.Level {

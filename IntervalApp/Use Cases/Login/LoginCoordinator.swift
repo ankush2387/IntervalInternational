@@ -28,7 +28,7 @@ final class LoginCoordinator: ComputationHelper {
     
     // MARK: - Private properties
     fileprivate let session = Session.sharedSession
-    private let configuration: Config
+    private let darwinSDK: DarwinSDK
     private let sessionStore: Session
     private let backgroundImages: [UIImage]
     private let userClientAPIStore: UserClientAPIStore
@@ -61,14 +61,14 @@ final class LoginCoordinator: ComputationHelper {
          encryptedStore: EncryptedItemDataStore,
          decryptedStore: DecryptedItemDataStore,
          messaging: Messaging,
-         configuration: Config,
+         darwinSDK: DarwinSDK,
          sessionStore: Session,
          userClientAPIStore: UserClientAPIStore,
          entityDataStore: EntityDataStore) {
         
         self.messaging = messaging
         self.sessionStore = sessionStore
-        self.configuration = configuration
+        self.darwinSDK = darwinSDK
         self.encryptedStore = encryptedStore
         self.decryptedStore = decryptedStore
         self.entityDataStore = entityDataStore
@@ -81,7 +81,7 @@ final class LoginCoordinator: ComputationHelper {
                   encryptedStore: Keychain(),
                   decryptedStore: UserDafaultsWrapper(),
                   messaging: Messaging.messaging(),
-                  configuration: Config.sharedInstance,
+                  darwinSDK: DarwinSDK.sharedInstance,
                   sessionStore: Session.sharedSession,
                   userClientAPIStore: ClientAPI.sharedInstance,
                   entityDataStore: EntityDataSource.sharedInstance)
@@ -97,7 +97,7 @@ final class LoginCoordinator: ComputationHelper {
                                        authProviderClientAPIStore: ClientAPI.sharedInstance,
                                        encryptedStore: encryptedStore,
                                        decryptedStore: UserDafaultsWrapper(),
-                                       configuration: Config.sharedInstance,
+                                       darwinSDK: DarwinSDK.sharedInstance,
                                        appBundle: AppBundle())
         
         viewModel.didLogin = didLogin
@@ -123,7 +123,7 @@ final class LoginCoordinator: ComputationHelper {
         }
 
         let contactID = String(contact.contactId)
-        let newNotificationTopic = "/topics/\(configuration.get(.Environment, defaultValue: "NONE").uppercased())\(contact.contactId)"
+        let newNotificationTopic = "/topics/\(darwinSDK.getPushNotificationsEnv().uppercased())\(contact.contactId)"
         
         if let notificationTopic = try? encryptedStore.getItem(for: Persistent.notificationTopic.key, and: contactID, ofType: String()),
             let oldNotificationTopic = notificationTopic, oldNotificationTopic != newNotificationTopic {

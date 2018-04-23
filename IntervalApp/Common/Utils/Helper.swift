@@ -1060,7 +1060,10 @@ public class Helper {
                     mainStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
                 }
                 let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.calendarViewController) as! CalendarViewController
-                viewController.requestedController = Constant.MyClassConstants.relinquishmentFlaotWeek
+                viewController.calendarContext = CalendarContext.additionalInformationFloatWeek
+                viewController.didSelectDate = { selectedDate in
+                    Constant.MyClassConstants.relinquishmentFloatDetialSelectedDate = selectedDate
+                }
                 let transitionManager = TransitionManager()
                 senderViewController.navigationController?.transitioningDelegate = transitionManager
                 senderViewController.navigationController?.pushViewController(viewController, animated: true)
@@ -1253,8 +1256,8 @@ public class Helper {
             buildVersion += ".\(build)"
         }
         
-        if (Config.sharedInstance.getEnvironment() != Environment.production && Config.sharedInstance.getEnvironment() != Environment.production) {
-            let env = Config.sharedInstance.get(.Environment, defaultValue: "NONE").uppercased()
+        if DarwinSDK.sharedInstance.apiEnvironment != Environment.production {
+            let env = DarwinSDK.sharedInstance.apiEnvironment
             buildVersion += " (\(env))"
         }
         

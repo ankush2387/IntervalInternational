@@ -1582,8 +1582,10 @@ extension GoogleMapViewController: UITableViewDataSource {
                     if let dicValue = Constant.MyClassConstants.destinations?[indexPath.row] {
                     if Constant.MyClassConstants.realmStoredDestIdOrCodeArray.contains(dicValue.destinationId ?? "") {
                         cell.addDestinationButton.isEnabled = false
+                        cell.addDestinationButton.alpha = 0.5
                     } else {
                         cell.addDestinationButton.isEnabled = true
+                        cell.addDestinationButton.alpha = 1
                     }
                     
                     cell.destinationMapIcon.isHidden = false
@@ -1620,7 +1622,9 @@ extension GoogleMapViewController: UITableViewDataSource {
                     let dicValue = Constant.MyClassConstants.resorts![indexPath.row]
                     if Constant.MyClassConstants.realmStoredDestIdOrCodeArray.contains(dicValue.resortCode ?? "") {
                         cell.addResortButton.isEnabled = false
+                        cell.addResortButton.alpha = 0.5
                     } else {
+                        cell.addResortButton.alpha = 1
                         cell.addResortButton.isEnabled = true
                     }
                     

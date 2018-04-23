@@ -38,6 +38,7 @@ class ResortDetailsViewController: UIViewController {
     var presentViewModally = false
     var mapcell : UITableViewCell?
     var resortInfoHeight:CGFloat = 60.0
+    var tdiImage: UIImage?
 
     //***** Class private Variables *****//
     fileprivate var startIndex = 0
@@ -483,16 +484,17 @@ extension ResortDetailsViewController: UITableViewDelegate {
             return 50
         } else {
             switch indexPath.section {
-            case 0:
+            case 0, 1:
                 return tableView.frame.size.width / 2 + 100
-            case 1:
-                return UITableViewAutomaticDimension
             case 2:
                 if Constant.RunningDevice.deviceIdiom == .pad {
                     return 0
                 } else {
                     return 200
                 }
+                
+            case 6, 7:
+                return UITableViewAutomaticDimension
                 
             default:
                 if let isOpen = tappedButtonDictionary[indexPath.section] {
@@ -893,7 +895,7 @@ extension ResortDetailsViewController: UITableViewDataSource {
                             var completeAddress = ""
                             if let address = Constant.MyClassConstants.resortsDescriptionArray.address {
                                 let addressLine = address.addressLines[0]
-                                completeAddress = "\n\nContact Information\n\(addressLine)\n\(address.cityName ?? ""),  \(address.territoryCode ?? "") \(address.postalCode ?? "")\n\n\(Constant.MyClassConstants.resortsDescriptionArray.phone ?? "")\n\(Constant.MyClassConstants.resortsDescriptionArray.webUrl ?? "")".localized()
+                                completeAddress = "\n\nContact Information\n\(addressLine)\n\(address.cityName ?? ""),  \(address.territoryCode ?? "") \(address.postalCode ?? "")"
                                 airportArray.append(completeAddress)
                             }
                             
@@ -907,6 +909,48 @@ extension ResortDetailsViewController: UITableViewDataSource {
                                     
                                 }
                             }
+                            
+                            if let phone = Constant.MyClassConstants.resortsDescriptionArray.phone {
+                                let textView = UITextView(frame: CGRect(x: 18.0, y: height + 20.0, width: UIScreen.main.bounds.width, height: 30.0))
+                               
+                                let linkAttributes = [
+                                    NSLinkAttributeName: NSURL(string: "tel://" + phone)!,
+                                    NSForegroundColorAttributeName: UIColor.blue,
+                                    NSFontAttributeName: UIFont(name: Constant.fontName.helveticaNeue, size: 15.0) as Any
+                                ] as [String : Any]
+
+                                // swiftlint:disable legacy_constructor
+                                let attributedString = NSMutableAttributedString(string: phone)
+                                attributedString.setAttributes(linkAttributes, range: NSMakeRange(0, phone.count))
+
+                                textView.attributedText = attributedString
+                                textView.isUserInteractionEnabled = true
+                                textView.isEditable = false
+                                
+                                availableCountryCell?.addSubview(textView)
+                                height += 30
+                            }
+                            
+                            if let url = Constant.MyClassConstants.resortsDescriptionArray.webUrl {
+                                let textView = UITextView(frame: CGRect(x: 18.0, y: height + 15.0, width: UIScreen.main.bounds.width, height: 30.0))
+                                
+                                let linkAttributes = [
+                                    NSLinkAttributeName: NSURL(string: "http://" + url)!,
+                                    NSForegroundColorAttributeName: UIColor.blue,
+                                    NSFontAttributeName: UIFont(name: Constant.fontName.helveticaNeue, size: 15.0) as Any
+                                    ] as [String : Any]
+                                
+                                let attributedString = NSMutableAttributedString(string: url)
+                                attributedString.setAttributes(linkAttributes, range: NSMakeRange(0, url.count))
+                                
+                                textView.attributedText = attributedString
+                                textView.isUserInteractionEnabled = true
+                                textView.isEditable = false
+                                
+                                availableCountryCell?.addSubview(textView)
+                                height += 10
+                            }
+                            
                             resortInfoHeight = height + 30
                             let indexPath = NSIndexPath(item: indexPath.row, section: indexPath.section)
                             //tableViewResorts.reloadData()
@@ -996,12 +1040,28 @@ extension ResortDetailsViewController: UITableViewDataSource {
         
                         case 6 :
                             availableCountryCell?.tdiImageView.backgroundColor = UIColor.lightGray
-                            if let urlString = Constant.MyClassConstants.resortsDescriptionArray.tdiChart?.url {
-                                let url = URL(string: urlString)
-                                availableCountryCell?.tdiImageView.setImageWith(url, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
+                            
+                            availableCountryCell?.tdiImageView.contentMode = .scaleAspectFit
+                            
+                            if let tdiImage = tdiImage {
+                                availableCountryCell?.tdiImageView.image = tdiImage
                             } else {
-                                availableCountryCell?.tdiImageView.image = #imageLiteral(resourceName: "NoImageIcon")
+                                if let urlString = Constant.MyClassConstants.resortsDescriptionArray.tdiChart?.url {
+                                    let url = URL(string: urlString)
+                                    
+                                    availableCountryCell?.tdiImageView.sd_setImage(with: url, placeholderImage: #imageLiteral(resourceName: "NoImageIcon"), options: .cacheMemoryOnly) { [weak self] image, _, _, _ in
+                                        guard let strongSelf = self else { return }
+                                        DispatchQueue.main.async {
+                                            strongSelf.tdiImage = image
+                                            strongSelf.tableViewResorts.reloadData()
+                                        }
+                                    }
+                                    
+                                } else {
+                                    availableCountryCell?.tdiImageView.image = #imageLiteral(resourceName: "NoImageIcon")
+                                }
                             }
+                            
                         default :
                             
                             if let resortCategory = Constant.MyClassConstants.resortsDescriptionArray.rating?.categories {

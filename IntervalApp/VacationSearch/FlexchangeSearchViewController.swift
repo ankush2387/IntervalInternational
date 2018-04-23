@@ -214,8 +214,13 @@ extension FlexchangeSearchViewController: UITableViewDelegate {
         
         //***** return height for  row in each section of tableview *****//
         switch indexPath.section {
-        case 0, 1 :
-            return 100
+        case 0:
+            return 80
+        case 1:
+            if (Constant.MyClassConstants.whatToTradeArray.count == 0 && Constant.MyClassConstants.pointsArray.count == 0) || indexPath.row == Constant.MyClassConstants.whatToTradeArray.count {
+                return 60
+            }
+            return UITableViewAutomaticDimension
         default :
             return 60
         }
@@ -378,7 +383,7 @@ extension FlexchangeSearchViewController: UITableViewDataSource {
                     subview.removeFromSuperview()
                 }
                 
-                let addLocationButton = IUIKButton(frame: CGRect(x: cell.contentView.bounds.width / 2 - (cell.contentView.bounds.width / 5) / 2, y: 15, width: cell.contentView.bounds.width / 5, height: 30))
+                let addLocationButton = IUIKButton(frame: CGRect(x: cell.contentView.bounds.width / 2 - 40, y: 15, width: 80, height: 30))
                 addLocationButton.setTitle(Constant.buttonTitles.add, for: UIControlState.normal)
                 addLocationButton.setTitleColor(IUIKColorPalette.primary3.color, for: UIControlState.normal)
                 addLocationButton.layer.borderColor = IUIKColorPalette.primary3.color.cgColor

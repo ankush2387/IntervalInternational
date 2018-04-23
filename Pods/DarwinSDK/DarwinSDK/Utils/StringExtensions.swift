@@ -30,6 +30,10 @@ extension String {
         return self.trimmingCharacters(in: CharacterSet.whitespaces)
     }
 
+    public func isEqualToString(find: String) -> Bool {
+        return String(format: self) == find
+    }
+    
     fileprivate func createDateFormatter(_ format:String) -> DateFormatter {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = format

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ContainerContentTBLviewController: UIViewController {
+class TdiInfoViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,6 +19,10 @@ class ContainerContentTBLviewController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    @IBAction private func doneButtonPressed(_ sender: UIButton) {
+        dismiss(animated: true)
     }
     
 }

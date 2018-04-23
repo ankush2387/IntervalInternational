@@ -153,7 +153,9 @@ final class AdditionalInformationViewController: UIViewController {
             strongSelf.pushPickerViewController(with: cellModels) { selectedIndex in
                 strongSelf.previouslySelectedCellModel = cellModels[selectedIndex]
                 strongSelf.viewModel.resort.next(resorts[selectedIndex])
-                strongSelf.tableView.reloadData()
+                strongSelf.viewModel.reload()
+                    .then(strongSelf.reloadData)
+                    .onViewError(strongSelf.presentErrorAlert)
                 strongSelf.navigationController?.popViewController(animated: true)
             }
         }
@@ -225,6 +227,7 @@ final class AdditionalInformationViewController: UIViewController {
             let format = "yyyy/MM/dd"
             var resortCalendars: [ResortCalendar]?
             
+            viewController.calendarContext = CalendarContext.additionalInformationFloatWeek
             viewController.didSelectDate = { [weak self] date in
                 guard let strongSelf = self else { return }
                 
