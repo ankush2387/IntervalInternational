@@ -216,7 +216,9 @@ class CheckOutViewController: UIViewController {
             let strAccept = self.cellWebView.stringByEvaluatingJavaScript(from: jsStringAccept)
             let strReject = self.cellWebView.stringByEvaluatingJavaScript(from: jsStringReject)
             
-            if (isAgreedToFees || !Constant.MyClassConstants.hasAdditionalCharges) && Constant.MyClassConstants.selectedCreditCard != nil && (strAccept == Constant.MyClassConstants.status || strReject == Constant.MyClassConstants.status || !showInsurance) && (isPromotionApplied || Constant.MyClassConstants.recapViewPromotionCodeArray.isEmpty) {
+            let total = Constant.MyClassConstants.exchangeFees?.total ?? Constant.MyClassConstants.rentalFees?.total ?? 0
+            
+            if (isAgreedToFees || !Constant.MyClassConstants.hasAdditionalCharges) && ((Constant.MyClassConstants.selectedCreditCard == nil && total == 0) || Constant.MyClassConstants.selectedCreditCard != nil ) && (strAccept == Constant.MyClassConstants.status || strReject == Constant.MyClassConstants.status || !showInsurance) && (isPromotionApplied || Constant.MyClassConstants.recapViewPromotionCodeArray.isEmpty) {
                 
                 showHudAsync()
                 imageSlider.isHidden = true
@@ -1493,16 +1495,8 @@ extension CheckOutViewController: UITableViewDataSource {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.customCellNibNames.totalCostCell, for: indexPath) as? TotalCostCell else { return UITableViewCell() }
             cell.selectionStyle = .none
             
-            if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
-                //FIXME(Frank) - what is this ? - why assign the cell.setTotalPrice(...) twice?
-                if let exchnageFees = Constant.MyClassConstants.exchangeFees {
-                    cell.setTotalPrice(with: currencyCode, and: exchnageFees.total, and: countryCode)
-                }
-            } else {
-                //FIXME(Frank) - what is this ? - why assign the cell.setTotalPrice(...) twice?
-                if let rentalFees = Constant.MyClassConstants.rentalFees {
-                    cell.setTotalPrice(with: currencyCode, and: rentalFees.total, and: countryCode)
-                }
+            if let total = Constant.MyClassConstants.exchangeFees?.total ?? Constant.MyClassConstants.rentalFees?.total {
+                cell.setTotalPrice(with: currencyCode, and: total, and: countryCode)
             }
             return cell
             
