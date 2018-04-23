@@ -146,7 +146,7 @@ class WhatToUseViewController: UIViewController {
                 
                 // check force renewals here
                 if let forceRenewals = Constant.MyClassConstants.exchangeProcessStartResponse.view?.forceRenewals {
-                    
+                    self?.hideHudAsync()
                     if Constant.RunningDevice.deviceIdiom == .phone {
                         
                         //self.dismiss(animated: true, completion: nil)
