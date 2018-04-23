@@ -916,9 +916,10 @@ extension ResortDetailsViewController: UITableViewDataSource {
                                 let linkAttributes = [
                                     NSLinkAttributeName: NSURL(string: "tel://" + phone)!,
                                     NSForegroundColorAttributeName: UIColor.blue,
-                                    NSFontAttributeName: UIFont(name: Constant.fontName.helveticaNeue, size: 15.0)!
+                                    NSFontAttributeName: UIFont(name: Constant.fontName.helveticaNeue, size: 15.0) as Any
                                 ] as [String : Any]
 
+                                // swiftlint:disable legacy_constructor
                                 let attributedString = NSMutableAttributedString(string: phone)
                                 attributedString.setAttributes(linkAttributes, range: NSMakeRange(0, phone.count))
 
@@ -936,7 +937,7 @@ extension ResortDetailsViewController: UITableViewDataSource {
                                 let linkAttributes = [
                                     NSLinkAttributeName: NSURL(string: "http://" + url)!,
                                     NSForegroundColorAttributeName: UIColor.blue,
-                                    NSFontAttributeName: UIFont(name: Constant.fontName.helveticaNeue, size: 15.0)!
+                                    NSFontAttributeName: UIFont(name: Constant.fontName.helveticaNeue, size: 15.0) as Any
                                     ] as [String : Any]
                                 
                                 let attributedString = NSMutableAttributedString(string: url)
