@@ -355,6 +355,13 @@ class CheckOutViewController: UIViewController {
         
         let selectedOfferName = Constant.MyClassConstants.exchangeFees?.shopExchange?.selectedOfferName ?? Constant.MyClassConstants.rentalFees?.rental?.selectedOfferName
         
+        Constant.MyClassConstants.recapPromotionsArray.removeAll()
+        if let promotions = Constant.MyClassConstants.exchangeFees?.shopExchange?.promotions ??  Constant.MyClassConstants.rentalFees?.rental?.promotions {
+            Constant.MyClassConstants.recapPromotionsArray = promotions
+        }
+        
+        self.recapSelectedPromotion = selectedOfferName
+        
         Constant.MyClassConstants.isPromotionsEnabled = selectedOfferName != nil && selectedOfferName != ""
         destinationPromotionSelected = selectedOfferName != nil && selectedOfferName != ""
         
@@ -482,7 +489,7 @@ class CheckOutViewController: UIViewController {
                 
                 let processRequest = ExchangeProcessRecalculateRequest()
                 processRequest.fees = fees
-                ExchangeProcessClient.recalculateFees(Session.sharedSession.userAccessToken, process: processResort, request: processRequest, onSuccess: { response in
+                ExchangeProcessClient.recalculateFees(Session.sharedSession.userAccessToken, process: processResort, request: processRequest, onSuccess: { [unowned self] response in
                     
                     Constant.MyClassConstants.inventoryPriceTaxBreakdown = nil
                     if let taxBreakdown = response.view?.fees?.shopExchange?.inventoryPrice?.taxBreakdown {
@@ -532,7 +539,7 @@ class CheckOutViewController: UIViewController {
                 
                 let processRequest = RentalProcessRecapRecalculateRequest()
                 processRequest.fees = fees
-                RentalProcessClient.addCartPromotion(Session.sharedSession.userAccessToken, process: processResort, request: processRequest, onSuccess: { response in
+                RentalProcessClient.addCartPromotion(Session.sharedSession.userAccessToken, process: processResort, request: processRequest, onSuccess: { [unowned self] response in
                     if let updatedFees = response.view?.fees {
                         Constant.MyClassConstants.rentalFees? = updatedFees
                     }
@@ -1237,19 +1244,15 @@ extension CheckOutViewController: UITableViewDataSource {
                 
                 switch totalFeesArray[indexPath.row] as? String ?? "" {
                 case Constant.MyClassConstants.exchangeFeeTitle:
-                    //TODO(Frank): Temporal solution until ESB fix the issue with the original price
-                    //if let shopExchangeFee = Constant.MyClassConstants.exchangeFees?.shopExchange, let exchangePrice = shopExchangeFee.inventoryPrice {
-                    if let exchangeOriginalPrice = Constant.MyClassConstants.exchangeFeeOriginalPrice {
-                         cell.setTotalPrice(with: currencyCode, and: exchangeOriginalPrice, and: countryCode)
+                    if let shopExchangeFee = Constant.MyClassConstants.exchangeFees?.shopExchange, let exchangePrice = shopExchangeFee.originalPrice {
+                         cell.setTotalPrice(with: currencyCode, and: exchangePrice, and: countryCode)
                     }
                     
                     cell.priceLabel.text = Constant.MyClassConstants.exchangeFeeTitle
                     
                 case Constant.MyClassConstants.getawayFee:
-                    //TODO(Frank): Temporal solution until ESB fix the issue with the original price
-                    //if let rentalFee = Constant.MyClassConstants.rentalFees?.rental, let rentalPrice = rentalFee.rentalPrice {
-                    if let rentalOriginalPrice = Constant.MyClassConstants.rentalFeeOriginalPrice {
-                        cell.setTotalPrice(with: currencyCode, and: rentalOriginalPrice, and: countryCode)
+                    if let rentalFee = Constant.MyClassConstants.rentalFees?.rental, let rentalPrice = rentalFee.originalPrice {
+                        cell.setTotalPrice(with: currencyCode, and: rentalPrice, and: countryCode)
                     }
                     
                     cell.priceLabel.text = Constant.MyClassConstants.getawayFee
@@ -1397,7 +1400,6 @@ extension CheckOutViewController: UITableViewDataSource {
                 for subviews in cell.subviews {
                     subviews.isHidden = false
                 }
-                var aux = recapSelectedPromotion
                 for promotion in Constant.MyClassConstants.recapPromotionsArray where promotion.offerName == recapSelectedPromotion {
                     cell.setPromotionPrice(with: currencyCode, and: promotion.amount, and: countryCode)
                     
