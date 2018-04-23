@@ -24,7 +24,7 @@ open class InventoryUnit {
     open var unitNumber : String?
     open var checkInDate : String?
     open var checkOutDate : String?
-    open var platinumScape : Bool = false
+    open var platinumEscape : Bool = false
     open var clubPoints : Int = 0
     open lazy var amenities = [InventoryUnitAmenity]()
     open lazy var prices = [InventoryPrice]()
@@ -71,7 +71,6 @@ open class InventoryUnit {
         self.unitNumber = json["unitNumber"].string ?? ""
         self.checkInDate = json["checkInDate"].string ?? ""
         self.checkOutDate = json["checkOutDate"].string ?? ""
-        self.platinumScape = json["platinumScape"].boolValue
         self.clubPoints = json["clubPoints"].intValue
         
         if json["amenities"].exists() {
@@ -87,6 +86,7 @@ open class InventoryUnit {
         if json["promotions"].exists() {
             let promotionsArrary:[JSON] = json["promotions"].arrayValue
             self.promotions = promotionsArrary.map { Promotion(json:$0) }
+            self.platinumEscape = self.promotions.first(where: { $0.isPlatinumEscape }) != nil
         }
         
         if json["lockOffUnits"].exists() {
