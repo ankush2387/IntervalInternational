@@ -29,10 +29,7 @@ class ExchangeOptionsCell: UITableViewCell {
         // Why Constant.MyClassConstants.exchangeFees is an array?
         // if let currencyCode = Constant.MyClassConstants.exchangeFees?.currencyCode {
         
-        var currencyCode = "USD"
-        if let selectedBucket = Constant.MyClassConstants.selectedAvailabilityInventoryBucket, let currencyCodeValue = selectedBucket.currencyCode {
-            currencyCode = currencyCodeValue
-        }
+        let currencyCode = Constant.MyClassConstants.exchangeFees?.currencyCode ?? Constant.MyClassConstants.rentalFees?.currencyCode ?? "USD"
         
         var countryCode: String?
         if let currentProfile = Session.sharedSession.contact {
