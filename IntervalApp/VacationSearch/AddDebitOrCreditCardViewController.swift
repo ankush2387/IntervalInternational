@@ -322,7 +322,11 @@ class AddDebitOrCreditCardViewController: UIViewController {
                 })
             
         } else {
-            self.presentAlert(with: Constant.MyClassConstants.newCardalertTitle, message: Constant.MyClassConstants.alertReqFieldMsg, hideCancelButton: true)
+            if Constant.GetawaySearchResultCardFormDetailData.cvv == "" {
+                self.presentAlert(with: "", message: "Please enter a valid security code.".localized(), hideCancelButton: true)
+            } else {
+                self.presentAlert(with: Constant.MyClassConstants.newCardalertTitle, message: Constant.MyClassConstants.alertReqFieldMsg, hideCancelButton: true)
+            }
         }
     }
     
