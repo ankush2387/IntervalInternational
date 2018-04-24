@@ -323,7 +323,7 @@ class AddDebitOrCreditCardViewController: UIViewController {
             
         } else {
             if Constant.GetawaySearchResultCardFormDetailData.cvv == "" {
-                self.presentAlert(with: "", message: Constant.MyClassConstants.cvvMessage, hideCancelButton: true)
+                self.presentAlert(with: "", message: "Please enter a valid security code.".localized(), hideCancelButton: true)
             } else {
                 self.presentAlert(with: Constant.MyClassConstants.newCardalertTitle, message: Constant.MyClassConstants.alertReqFieldMsg, hideCancelButton: true)
             }
