@@ -786,11 +786,7 @@ extension WhoWillBeCheckingInViewController: UITableViewDataSource {
                 }
             }
             
-            //FIXME(Frank): - review with Business if we can take USD as the default Currency Code
-            var currencyCode = "USD"
-            if let selectedBucket = Constant.MyClassConstants.selectedAvailabilityInventoryBucket, let currencyCodeValue = selectedBucket.currencyCode {
-                currencyCode = currencyCodeValue
-            }
+            let currencyCode = Constant.MyClassConstants.exchangeFees?.currencyCode ?? Constant.MyClassConstants.rentalFees?.currencyCode ?? "USD"
             
             var countryCode: String?
             if let currentProfile = Session.sharedSession.contact {
