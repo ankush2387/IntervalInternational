@@ -190,38 +190,14 @@ class SearchResultViewController: UIViewController {
 
     private func scrollToActiveDate() {
         let numberOfRecords = Constant.MyClassConstants.calendarDatesArray.count
-        let vacationSearchCheckInDate = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate.unwrappedString
-        var calendarItemWithinCheckInRange: CalendarItem?
-        var foundMatch = false
+        let vacationSearchCheckInDate = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate
         
         for index in 0..<numberOfRecords {
-            let calendarItem = Constant.MyClassConstants.calendarDatesArray[index]
-            let calendarItemCheckInDate = calendarItem.checkInDate.unwrappedString
-            let vacationSeachCheckInMonth = Int(vacationSearchCheckInDate.dateFromString()?.formatDateAs("MM") ?? "")
-            let calendarItemCheckInMonth = Int(calendarItem.checkInDate?.dateFromString()?.formatDateAs("MM") ?? "")
-            
-            if let vacationSeachCheckInMonth = vacationSeachCheckInMonth,
-                let calendarItemCheckInMonth = calendarItemCheckInMonth, calendarItemWithinCheckInRange == nil {
-                let range = Range(ClosedRange(uncheckedBounds: (lower: calendarItemCheckInMonth - 1, upper: calendarItemCheckInMonth + 1)))
-                // Stores the first calendarItem with valid checkin date within the approved search range
-                // CalendarItems are already sorted, we can just take the first one
-                // https://jira.iilg.com/browse/MOBI-2062
-                if range ~= vacationSeachCheckInMonth {
-                    calendarItemWithinCheckInRange = calendarItem
-                }
-            }
-
-            // Scrolls to active date cell if match is found
-            if vacationSearchCheckInDate == calendarItemCheckInDate,
-                !vacationSearchCheckInDate.isEmpty, !calendarItemCheckInDate.isEmpty {
+            let calendarItemCheckInDate = Constant.MyClassConstants.calendarDatesArray[index].checkInDate
+            if vacationSearchCheckInDate == calendarItemCheckInDate {
                 searchResultColelctionView.scrollToItem(at: IndexPath(row: index, section: 0), at: .centeredHorizontally, animated: true)
-                foundMatch = true
                 break
             }
-        }
-        
-        if let calendarItemWithinCheckInRange = calendarItemWithinCheckInRange, !foundMatch {
-            intervalDateItemClicked(calendarItemWithinCheckInRange)
         }
     }
 
