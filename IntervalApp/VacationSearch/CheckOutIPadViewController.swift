@@ -722,14 +722,8 @@ class CheckOutIPadViewController: UIViewController {
                 processResort.currentStep = ProcessStep.Recap
                 processResort.processId = Constant.MyClassConstants.exchangeProcessStartResponse.processId
                 
-                let shopExchange = ShopExchange()
-                shopExchange.selectedOfferName = Constant.MyClassConstants.exchangeFees?.shopExchange?.selectedOfferName
-                
-                let fees = ExchangeFees()
-                fees.shopExchange = shopExchange
-                
                 let processRequest = ExchangeProcessRecalculateRequest()
-                processRequest.fees = fees
+                processRequest.fees = Constant.MyClassConstants.exchangeFees
                 
                 ExchangeProcessClient.recalculateFees(Session.sharedSession.userAccessToken, process: processResort, request: processRequest, onSuccess: { response in
                     
@@ -830,14 +824,8 @@ class CheckOutIPadViewController: UIViewController {
                 processResort.currentStep = ProcessStep.Recap
                 processResort.processId = Constant.MyClassConstants.exchangeProcessStartResponse.processId
                 
-                let shopExchange = ShopExchange()
-                shopExchange.selectedOfferName = Constant.MyClassConstants.exchangeFees?.shopExchange?.selectedOfferName
-                
-                let fees = ExchangeFees()
-                fees.shopExchange = shopExchange
-                
                 let processRequest = ExchangeProcessRecalculateRequest()
-                processRequest.fees = fees
+                processRequest.fees = Constant.MyClassConstants.exchangeFees
                 
                 ExchangeProcessClient.recalculateFees(Session.sharedSession.userAccessToken, process: processResort, request: processRequest, onSuccess: { response in
                     

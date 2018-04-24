@@ -479,16 +479,9 @@ class CheckOutViewController: UIViewController {
                 processResort.currentStep = ProcessStep.Recap
                 processResort.processId = Constant.MyClassConstants.exchangeProcessStartResponse.processId
                 
-                let shopExchange = ShopExchange()
-                if let offerSelected = Constant.MyClassConstants.exchangeFees?.shopExchange?.selectedOfferName {
-                    shopExchange.selectedOfferName = offerSelected
-                }
-                
-                let fees = ExchangeFees()
-                fees.shopExchange = shopExchange
-                
                 let processRequest = ExchangeProcessRecalculateRequest()
-                processRequest.fees = fees
+                processRequest.fees = Constant.MyClassConstants.exchangeFees
+                
                 ExchangeProcessClient.recalculateFees(Session.sharedSession.userAccessToken, process: processResort, request: processRequest, onSuccess: { [unowned self] response in
                     
                     Constant.MyClassConstants.inventoryPriceTaxBreakdown = nil
