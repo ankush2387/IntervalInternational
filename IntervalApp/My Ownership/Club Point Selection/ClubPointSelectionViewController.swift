@@ -50,8 +50,6 @@ class ClubPointSelectionViewController: UIViewController {
     @IBOutlet private weak var insidesecondview: UIView!
 
     var didSave: ((ClubPointsEntity) -> Void)?
-
-    let infoImageView = UIImageView()
     var selectedViewIndex = 0
     var labelsCollectionView: UICollectionView!
     var clublabel = ""
@@ -178,16 +176,16 @@ class ClubPointSelectionViewController: UIViewController {
         case "Studio":
             return UnitSize.STUDIO.rawValue
 
-        case "1 Bedroom":
+        case "1 Bedroom", "One Bedroom":
             return UnitSize.ONE_BEDROOM.rawValue
 
-        case "2 Bedroom":
+        case "2 Bedroom", "Two Bedroom":
             return UnitSize.TWO_BEDROOM.rawValue
 
-        case "3 Bedroom":
+        case "3 Bedroom", "Three Bedroom":
             return UnitSize.THREE_BEDROOM.rawValue
 
-        case "4 Bedroom":
+        case "4 Bedroom", "Four Bedroom":
             return UnitSize.FOUR_BEDROOM.rawValue
 
         default:
@@ -349,7 +347,7 @@ class ClubPointSelectionViewController: UIViewController {
             labelsCollectionView = UICollectionView(frame: frame, collectionViewLayout: layout)
             
             labelsCollectionView.register(UINib(nibName: Constant.customCellNibNames.clubPointsCell, bundle: nil), forCellWithReuseIdentifier: Constant.loginScreenReusableIdentifiers.cell)
-            labelsCollectionView.register(UINib(nibName: Constant.customCellNibNames.headerCell, bundle: nil), forCellWithReuseIdentifier: Constant.reUsableIdentifiers.clubHeaderCell)
+            labelsCollectionView.register(UINib(nibName: Constant.customCellNibNames.headerCell, bundle: nil), forCellWithReuseIdentifier: TdiCollectionViewCell().identifier)
             labelsCollectionView.tag = 70
             labelsCollectionView.isScrollEnabled = false
             labelsCollectionView.delegate = self
@@ -383,8 +381,10 @@ class ClubPointSelectionViewController: UIViewController {
             for units in clubIntervalRow.units {
                 clubPointsArray.add(units.clubPoints)
                 if let unitSize = units.unitSize {
-                    let bedRoomString = Helper.getBedroomNumbers(bedroomType: unitSize)
-                    Constant.MyClassConstants.clubPointMatrixHeaderArray.add(bedRoomString)
+                    
+                    if let bedRoomString = UnitSize(rawValue: unitSize)?.friendlyName() {
+                        Constant.MyClassConstants.clubPointMatrixHeaderArray.add(bedRoomString)
+                    }
                 }
                 
             }
@@ -434,9 +434,7 @@ class ClubPointSelectionViewController: UIViewController {
         endmonthsecondbtn.text = "\(Helper.getMonthnameFromInt(monthNumber: fromEndComponents.month!)) \(fromEndComponents.year!)"
         
         if startmonthfirstbtn.text == startmonthsecondbtn.text && endmonthfirstbtn.text == endmonthsecondbtn.text {
-            equalWidthsBetweenFirstAndSecondTravelWindow.priority = 250
             secondView.isHidden = true
-            firstTravelWindowWidth.constant = view.frame.width
         }
     }
     
@@ -605,7 +603,7 @@ extension ClubPointSelectionViewController: UICollectionViewDataSource {
         
         if collectionView.tag == 70 {
             if indexPath.row == 0 {
-                guard let dateCell = collectionView.dequeueReusableCell(withReuseIdentifier: "HeaderCell", for: indexPath) as? TdiCollectionViewCell else { return UICollectionViewCell() }
+                guard let dateCell = collectionView.dequeueReusableCell(withReuseIdentifier: TdiCollectionViewCell().identifier, for: indexPath) as? TdiCollectionViewCell else { return UICollectionViewCell() }
                 dateCell.backgroundColor = IUIKColorPalette.titleBackdrop.color
                 dateCell.contentLabel.textColor = UIColor.black
                 
@@ -614,9 +612,10 @@ extension ClubPointSelectionViewController: UICollectionViewDataSource {
                 if Constant.MyClassConstants.matrixDescription == Constant.MyClassConstants.matrixTypeColor {
                     dateCell.contentLabel.text = Constant.MyClassConstants.season.capitalized
                 }
-                dateCell.addSubview(infoImageView)
                 dateCell.lineImage.isHidden = false
-                
+                dateCell.infoIconTapped = { [weak self] in
+                    self?.performSegue(withIdentifier: "ClubInfoSegue", sender: self)
+                }
                 return dateCell
             } else {
                 guard let contentCell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as? TdiCollectionViewCell else { return UICollectionViewCell() }

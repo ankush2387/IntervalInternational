@@ -224,7 +224,10 @@ class CreateAlertViewController: UIViewController {
         
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
         if let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.calendarViewController) as? CalendarViewController {
-            viewController.requestedDateWindow = Constant.MyClassConstants.start
+            viewController.calendarContext = CalendarContext.alertStartDate
+            viewController.didSelectDate = { selectedDate in
+                Constant.MyClassConstants.alertWindowStartDate = selectedDate
+            }
             navigationController?.pushViewController(viewController, animated: true)
         }
         
@@ -235,8 +238,10 @@ class CreateAlertViewController: UIViewController {
         
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
         if let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.calendarViewController) as? CalendarViewController {
-            viewController.requestedDateWindow = Constant.MyClassConstants.end
-            viewController.showNinetyDaysWindow = true
+            viewController.calendarContext = CalendarContext.alertEndDate
+            viewController.didSelectDate = { selectedDate in
+                Constant.MyClassConstants.alertWindowEndDate = selectedDate
+            }
             navigationController?.pushViewController(viewController, animated: true)
         }
     }

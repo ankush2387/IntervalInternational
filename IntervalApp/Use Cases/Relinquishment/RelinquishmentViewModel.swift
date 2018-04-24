@@ -13,6 +13,12 @@ import IntervalUIKit
 
 final class RelinquishmentViewModel {
     
+    // MARK: - Public properties
+    var hasRelinquishmentData: Bool {
+        guard let myUnits = myUnits else { return false }
+        return !myUnits.deposits.isEmpty || !myUnits.openWeeks.isEmpty || myUnits.pointsProgram?.availablePoints != nil
+    }
+    
     // MARK: - Private properties
     private let clientAPI: ExchangeClientAPIStore
     private let directoryClientAPIStore: DirectoryClientAPIStore
@@ -22,6 +28,7 @@ final class RelinquishmentViewModel {
     private let sectionTitle = ["Club Interval Gold Weeks".localized(), nil, "Points".localized(), "Interval Weeks".localized()]
     
     private enum Section: Int { case cigProgram, cigWeeks, points, intervalWeeks }
+    private var myUnits: MyUnits?
     private var relinquishments: [Section: [Relinquishment]] = [:]
     private var simpleCellViewModels: [Section: [SimpleCellViewModel]] = [:]
     
@@ -240,6 +247,7 @@ final class RelinquishmentViewModel {
     private func processRelinquishmentGroups(myUnits: MyUnits) -> Promise<Void> {
         return Promise { [unowned self] resolve, reject in
             
+            self.myUnits = myUnits
             Helper.storeInConstants(myUnits: myUnits)
             let relinquishmentGroups = self.relinquishmentManager.getRelinquishmentSections(myUnits: myUnits)
             
@@ -461,6 +469,10 @@ final class RelinquishmentViewModel {
                 message : extraInformationText.unwrappedString + "\n" + message
         }
         
+        if relinquishment.isDeposit(), let expirationDate = relinquishment.expirationDate?.dateFromString(), expirationDate.numberOfDaysToToday() < 0 {
+            extraInformationText = "This feature is not available through the mobile app. To extend your week, visit intervalworld.com."
+        }
+        
         return extraInformationText?.localized()
     }
     
@@ -594,4 +606,3 @@ final class RelinquishmentViewModel {
         }
     }
 }
-

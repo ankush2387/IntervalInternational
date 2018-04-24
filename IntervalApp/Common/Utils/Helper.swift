@@ -127,29 +127,29 @@ public class Helper {
         switch monthNumber {
             
         case 1:
-            return "Jan".localized()
+            return "Jan.".localized()
         case 2:
-            return "Feb".localized()
+            return "Feb.".localized()
         case 3:
-            return "Mar".localized()
+            return "Mar.".localized()
         case 4:
-            return "Apr".localized()
+            return "Apr.".localized()
         case 5:
             return "May".localized()
         case 6:
-            return "Jun".localized()
+            return "Jun.".localized()
         case 7:
-            return "Jul".localized()
+            return "Jul.".localized()
         case 8:
-            return "Aug".localized()
+            return "Aug.".localized()
         case 9:
-            return "Sep".localized()
+            return "Sep.".localized()
         case 10:
             return "Oct".localized()
         case 11:
-            return "Nov".localized()
+            return "Nov.".localized()
         case 12:
-            return "Dec".localized()
+            return "Dec.".localized()
         default:
             return ""
         }
@@ -332,9 +332,18 @@ public class Helper {
     }
     static func performSortingForMemberNumberWithViewResultAndNothingYet() {
         
-        Constant.activeAlertCount =  Constant.MyClassConstants.searchDateResponse.filter { $0.1.checkInDates.count > 0 }.count
-        Constant.MyClassConstants.searchDateResponse.sort { $0.0.alertId ?? 0 > $1.0.alertId ?? 0 }
-        Constant.MyClassConstants.searchDateResponse.sort { $0.1.checkInDates.count > $1.1.checkInDates.count }
+        // FIXME (FRANK) maybe move this to SDK? see mobi-2044
+        Constant.activeAlertCount = Constant.MyClassConstants.searchDateResponse.filter { $0.1.checkInDates.count > 0 }.count
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        Constant.MyClassConstants.searchDateResponse.sort {
+            let date1 = dateFormatter.date(from: $0.0.getCheckInDate())
+            let date2 = dateFormatter.date(from: $1.0.getCheckInDate())
+            if let d1 = date1, let d2 = date2 {
+                return d1 < d2
+            }
+            return false
+        }
         NotificationCenter.default.post(name:NSNotification.Name(rawValue: Constant.notificationNames.getawayAlertsNotification), object: nil)
     }
     
@@ -1051,7 +1060,10 @@ public class Helper {
                     mainStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
                 }
                 let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.calendarViewController) as! CalendarViewController
-                viewController.requestedController = Constant.MyClassConstants.relinquishmentFlaotWeek
+                viewController.calendarContext = CalendarContext.additionalInformationFloatWeek
+                viewController.didSelectDate = { selectedDate in
+                    Constant.MyClassConstants.relinquishmentFloatDetialSelectedDate = selectedDate
+                }
                 let transitionManager = TransitionManager()
                 senderViewController.navigationController?.transitioningDelegate = transitionManager
                 senderViewController.navigationController?.pushViewController(viewController, animated: true)
@@ -1244,8 +1256,8 @@ public class Helper {
             buildVersion += ".\(build)"
         }
         
-        if (Config.sharedInstance.getEnvironment() != Environment.production && Config.sharedInstance.getEnvironment() != Environment.production) {
-            let env = Config.sharedInstance.get(.Environment, defaultValue: "NONE").uppercased()
+        if DarwinSDK.sharedInstance.apiEnvironment != Environment.production {
+            let env = DarwinSDK.sharedInstance.apiEnvironment
             buildVersion += " (\(env))"
         }
         
@@ -1454,21 +1466,6 @@ public class Helper {
         }
         
     }
-    static func removeStoredGuestFormDetials() {
-        
-        Constant.GetawaySearchResultGuestFormDetailData.firstName = ""
-        Constant.GetawaySearchResultGuestFormDetailData.lastName = ""
-        Constant.GetawaySearchResultGuestFormDetailData.country = ""
-        Constant.GetawaySearchResultGuestFormDetailData.address1 = ""
-        Constant.GetawaySearchResultGuestFormDetailData.address2 = ""
-        Constant.GetawaySearchResultGuestFormDetailData.city = ""
-        Constant.GetawaySearchResultGuestFormDetailData.state = ""
-        Constant.GetawaySearchResultGuestFormDetailData.pinCode = ""
-        Constant.GetawaySearchResultGuestFormDetailData.email = ""
-        Constant.GetawaySearchResultGuestFormDetailData.homePhoneNumber = ""
-        Constant.GetawaySearchResultGuestFormDetailData.businessPhoneNumber = ""
-        
-    }
     
     //function to map bedroom size into integer string
     static func bedRoomSizeToStringInteger(bedRoomSize: String) -> String {
@@ -1675,24 +1672,7 @@ public class Helper {
             } else {
                 
                 helperDelegate?.resortSearchComplete()
-                
-                /*
-                 let isRunningOnIphone = UIDevice.current.userInterfaceIdiom == .phone
-                 let storyboardName = isRunningOnIphone ? Constant.storyboardNames.vacationSearchIphone : Constant.storyboardNames.vacationSearchIPad
-                 let mainStoryboard: UIStoryboard = UIStoryboard(name: storyboardName, bundle: nil)
-                 var viewController: UIViewController
-                 if isRunningOnIphone {
-                 guard let Controller = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.vacationSearchController) as? SearchResultViewController else { return }
-                 viewController = Controller
-                 } else {
-                 guard let Controller = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.vacationSearchController) as? VacationSearchResultIPadController else { return }
-                 viewController = Controller
-                 }
-                 
-                 let transitionManager = TransitionManager()
-                 senderViewController.navigationController?.transitioningDelegate = transitionManager
-                 senderViewController.navigationController?.pushViewController(viewController, animated: true)
-                 */
+            
             }
             
         }) { error in
@@ -1711,7 +1691,7 @@ public class Helper {
             guard let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval() else { return senderVC.showHudAsync()}
             // Update active interval
             Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
-            self.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+            Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
             
             // Check not available checkIn dates for the active interval
             if activeInterval.fetchedBefore  && !activeInterval.hasCheckInDates()  {
@@ -1739,7 +1719,7 @@ public class Helper {
                                     
                                     // Update active interval
                                     Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
-                                    self.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                                    Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                                     datesCV.reloadData()
                                     senderVC.hideHudAsync()
         },
@@ -2061,6 +2041,14 @@ public class Helper {
     }
     
     //
+    // Create the string of a price and currency
+    //
+    static func createPriceAndCurrency(currencyCode: String, price: Float) -> String {
+        let currencySymbol = Helper.resolveCurrencySymbol(currencyCode: currencyCode)
+        return String(format: "%@%.0f", currencySymbol, price)
+    }
+    
+    //
     // Resolve the TimeZone
     //
     static func createTimeZone() -> TimeZone {
@@ -2155,5 +2143,16 @@ public class Helper {
         return nil
     }
     
+    static func getProductNameFromProduct(product: Product?) -> String? {
+        guard let productName = product?.productName  else {
+            return nil
+        }
+        if productName == "INTERVAL" {
+            let fixProductName = "\(productName) Membership"
+            return fixProductName.capitalized
+        } else {
+            return productName.capitalized
+        }
+    }
 }
 

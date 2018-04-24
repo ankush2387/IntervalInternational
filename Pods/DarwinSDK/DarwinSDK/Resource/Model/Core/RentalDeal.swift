@@ -58,8 +58,12 @@ open class RentalDeal {
     }
     
     open func getCheckInDate() -> Date {
-        // FIXME(Frank): Derive a date in the middle of: deal.fromDate and deal.toDate
-        return self.fromDate!
+        if let price = price, let checkInDate = price.checkInDate {
+            return checkInDate
+        } else {
+            // FIXME(Frank): Derive a date in the middle of: deal.fromDate and deal.toDate
+            return self.fromDate!
+        }
     }
     
 }

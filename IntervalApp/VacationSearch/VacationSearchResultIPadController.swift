@@ -1696,7 +1696,7 @@ extension VacationSearchResultIPadController: RenewelViewControllerDelegate {
         
     }
     
-    func selectedRenewalFromWhoWillBeCheckingIn(renewalCoreProduct: Renewal?, renewalNonCoreProduct: Renewal?, selectedRelinquishment: ExchangeRelinquishment) {
+    func selectedRenewalFromWhoWillBeCheckingIn(renewalCoreProduct: Renewal?, renewalNonCoreProduct: Renewal?, selectedRelinquishment: ExchangeRelinquishment?) {
         self.dismiss(animated: false, completion: nil)
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
         guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: "WhoWillBeCheckingInIPadViewController") as? WhoWillBeCheckingInIPadViewController else { return }
@@ -1705,7 +1705,7 @@ extension VacationSearchResultIPadController: RenewelViewControllerDelegate {
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
-    func noThanks(selectedRelinquishment: ExchangeRelinquishment) {
+    func noThanks(selectedRelinquishment: ExchangeRelinquishment?) {
         self.dismiss(animated: true, completion: nil)
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
         guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: "WhoWillBeCheckingInIPadViewController") as? WhoWillBeCheckingInIPadViewController else { return }
@@ -1724,9 +1724,9 @@ extension VacationSearchResultIPadController: WhoWillBeCheckInDelegate {
     }
 }
 
-extension VacationSearchResultIPadController: ExchangeInventoryCVCellDelegate {
-    func infoIconPressed() {
-        self.performSegue(withIdentifier: "pointsInfoSegue", sender: self)
-    }
-}
+//extension VacationSearchResultIPadController: ExchangeInventoryCVCellDelegate {
+//    func infoIconPressed() {
+//        self.performSegue(withIdentifier: "pointsInfoSegue", sender: self)
+//    }
+//}
 

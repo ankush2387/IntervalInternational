@@ -12,11 +12,11 @@ import SwiftyJSON
 open class PrepareView {
     
     open lazy var actions = [String]() // ProcessAction
+    open var destination : RentalDestination?
     open lazy var promoCodes = [String]()
-    open var resort : Resort?
-    open var unit : InventoryUnit?
     open var fees : RentalFees?
     open var forceRenewals : ForceRenewals?
+    open var accommodationCertificateNumber: Int?
     
     public init() {
     }
@@ -29,25 +29,26 @@ open class PrepareView {
             self.actions = actionsArray.map { $0.string! }
         }
         
+        if json["destination"].exists() {
+            let destinationJson:JSON = json["destination"]
+            self.destination = RentalDestination(json:destinationJson)
+        }
+        
         if json["promoCodes"].exists() {
             let promoCodesArray:[JSON] = json["promoCodes"].arrayValue
             self.promoCodes = promoCodesArray.map { $0.string! }
         }
-        
-        if json["resort"].exists() {
-            self.resort = Resort(detailJSON: json["resort"])
-        }
-        
-        if json["unit"].exists() {
-            self.unit = InventoryUnit(json: json["unit"])
-        }
-        
+ 
         if json["fees"].exists() {
             self.fees = RentalFees(json: json["fees"])
         }
         
         if json["forceRenewals"].exists() {
             self.forceRenewals = ForceRenewals(json: json["forceRenewals"])
+        }
+        
+        if json["accommodationCertificateNumber"].exists() {
+            self.accommodationCertificateNumber = json["accommodationCertificateNumber"].intValue
         }
     }
     

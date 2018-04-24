@@ -15,8 +15,8 @@ open class ExchangeDestination {
     open var checkOutDate : String?
     open var resort : Resort?
     open var unit : InventoryUnit?
-    open var cruise : Cruise?
     open var pointsCost : Int?
+    open var cruise : Cruise?
     open var upgradeCost : Money?
     
     public init() {
@@ -30,21 +30,21 @@ open class ExchangeDestination {
         
         if json["resort"].exists() {
             let resortJson:JSON = json["resort"]
-            self.resort = Resort(summaryJSON:resortJson)
+            self.resort = Resort(json: resortJson)
         }
         
         if json["unit"].exists() {
             let unitJson:JSON = json["unit"]
             self.unit = InventoryUnit(json:unitJson)
         }
+ 
+        if json["pointsCost"].exists() {
+            self.pointsCost = json["pointsCost"].intValue
+        }
         
         if json["cruise"].exists() {
             let cruiseJson:JSON = json["cruise"]
             self.cruise = Cruise(json:cruiseJson)
-        }
-        
-        if json["pointsCost"].exists() {
-            self.pointsCost = json["pointsCost"].intValue
         }
         
         if json["upgradeCost"].exists() {

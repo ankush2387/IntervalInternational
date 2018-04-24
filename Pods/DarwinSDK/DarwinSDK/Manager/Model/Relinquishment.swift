@@ -88,13 +88,19 @@ open class Relinquishment {
         if let value = openWeek.waitList {
             waitList = value
         }
-       
+ 
         // OpenWeek: Additional Info
-        reservationAttributes = openWeek.reservationAttributes
-        if !reservationAttributes.isEmpty {
+        if !openWeek.reservationAttributes.isEmpty {
+            if openWeek.reservationAttributes.contains(ReservationAttribute.RESORT_CLUB.name) {
+                // Keep only RESORT_CLUB as ReservationAttributes
+                reservationAttributes.append(ReservationAttribute.RESORT_CLUB.name)
+            } else {
+                reservationAttributes = openWeek.reservationAttributes
+            }
+            
             fixWeekReservation = FixWeekReservation()
         }
-        
+
         // OpenWeek: More
         if let marterUnit = unit {
             // Set the relinqId for Master Unit
@@ -203,6 +209,14 @@ open class Relinquishment {
         if fixWeekReservation != nil {
             fixWeekReservation = FixWeekReservation()
         }
+    }
+    
+    open func refreshReservationAttributes(reservationAttributes: [ReservationAttribute]) {
+        refreshReservationAttributes(reservationAttributes: reservationAttributes.map { $0.name })
+    }
+    
+    open func refreshReservationAttributes(reservationAttributes: [String]) {
+        self.reservationAttributes = reservationAttributes
     }
     
     fileprivate func filterOutChechInDatesWithLessThan14DaysFromToday(checkInDates: [String]) -> [String] {
