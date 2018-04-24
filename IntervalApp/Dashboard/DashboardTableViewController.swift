@@ -240,6 +240,7 @@ class DashboardTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if dashboardArray[indexPath.section] == Constant.dashboardTableScreenReusableIdentifiers.upcoming {
             let exchangeNumber = String(Constant.MyClassConstants.upcomingTripsArray[indexPath.row].exchangeNumber ?? 0)
+            Constant.MyClassConstants.transactionType = Constant.MyClassConstants.upcomingTripsArray[indexPath.row].type ?? ""
              showHudAsync()
              ExchangeClient.getExchangeTripDetails(Session.sharedSession.userAccessToken, confirmationNumber: exchangeNumber, onSuccess: {[weak self] exchangeResponse in
                 
