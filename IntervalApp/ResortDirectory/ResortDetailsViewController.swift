@@ -884,7 +884,6 @@ extension ResortDetailsViewController: UITableViewDataSource {
                         
                         switch indexPath.section {
                         case 3 :
-                            availableCountryCell = tableView.dequeueReusableCell(withIdentifier: Constant.availableDestinationsTableViewController.availableDestinationPlaceTableViewCell) as? AvailableDestinationPlaceTableViewCell
                             availableCountryCell?.infoLabel.isHidden = false
                             var airportArray = [String]()
                             if let airportName = Constant.MyClassConstants.resortsDescriptionArray.nearestAiport?.name {
@@ -937,8 +936,7 @@ extension ResortDetailsViewController: UITableViewDataSource {
                                 phoneTextView.textColor = .blue
                                 phoneTextView.tintColor = .blue
                                 phoneTextView.isUserInteractionEnabled = true
-                                phoneTextView.isEditable = false
-                                
+                                phoneTextView.isEditable = false                                
                                 availableCountryCell?.addSubview(phoneTextView)
                                 height += 30
                             }
@@ -989,7 +987,7 @@ extension ResortDetailsViewController: UITableViewDataSource {
                                 let resortRating = Constant.MyClassConstants.resortsDescriptionArray.rating
                                 let numberOfMonths = resortRating?.months ?? 0
                                 let numberOfResponses = resortRating?.totalResponses ?? 0
-                                 ratingCell.textLabel?.numberOfLines = 0
+                                ratingCell.textLabel?.numberOfLines = 0
                                 ratingCell.textLabel?.textColor = IntervalThemeFactory.deviceTheme.textColorGray
                                 if numberOfMonths < 0 {
                                     ratingCell.textLabel?.text = "N/A".localized()
