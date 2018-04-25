@@ -1524,6 +1524,7 @@ extension SearchResultViewController: UICollectionViewDataSource {
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
+        guard tableView.numberOfRows(inSection: section) > 0 else { return nil }
         let headerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 40))
         let headerLabel = UILabel(frame: CGRect(x: 20, y: 0, width: tableView.frame.width - 60, height: 40))
         headerLabel.font = UIFont(name: Constant.fontName.helveticaNeue, size: 15)
