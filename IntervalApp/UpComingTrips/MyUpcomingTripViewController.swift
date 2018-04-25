@@ -194,7 +194,7 @@ extension MyUpcomingTripViewController: UITableViewDataSource {
                 return cell
             }
             cell.resortLocationLabel.text = addressDetails.postalAddresAsString().localized()
-            
+            cell.resortCodeLabel.text = upComingTrip.resort?.resortCode
             return cell
         }
     }
