@@ -585,17 +585,20 @@ final class RelinquishmentViewModel {
             let storedata = OpenWeeksStorage()
             let selectedOpenWeek = OpenWeeks()
             let relinquishmentList = TradeLocalData()
-            selectedOpenWeek.weekNumber = relinquishment.weekNumber.unwrappedString
+            
+            // after we come back from additional information view we need to make sure to check the fix week
+            selectedOpenWeek.weekNumber = relinquishment.fixWeekReservation?.weekNumber ?? relinquishment.weekNumber.unwrappedString
             selectedOpenWeek.relinquishmentID = relinquishment.relinquishmentId.unwrappedString
             selectedOpenWeek.relinquishmentYear = relinquishment.relinquishmentYear ?? 0
+            
             let unitDetails = ResortUnitDetails()
-            if let inventoryUnits = relinquishment.unit {
+            if let inventoryUnits = relinquishment.fixWeekReservation?.unit ?? relinquishment.unit {
                 unitDetails.kitchenType = inventoryUnits.unitDetailsUIFormatted
                 unitDetails.unitSize = inventoryUnits.unitCapacityUIFormatted
             }
             selectedOpenWeek.unitDetails.append(unitDetails)
-            resort.resortName = relinquishment.resort?.resortName ?? ""
-            resort.resortCode = relinquishment.resort?.resortCode ?? ""
+            resort.resortName = relinquishment.fixWeekReservation?.resort?.resortName ?? relinquishment.resort?.resortName ?? ""
+            resort.resortCode = relinquishment.fixWeekReservation?.resort?.resortCode ?? relinquishment.resort?.resortCode ?? ""
             selectedOpenWeek.resort.append(resort)
             relinquishmentList.openWeeks.append(selectedOpenWeek)
             storedata.openWeeks.append(relinquishmentList)
