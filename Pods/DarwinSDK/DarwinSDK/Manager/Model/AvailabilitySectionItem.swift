@@ -75,7 +75,7 @@ open class AvailabilitySectionItem {
                                                                                      kitchenType: KitchenType.fromName(name: unit.kitchenType),
                                                                                      publicSleepCapacity: unit.publicSleepCapacity,
                                                                                      privateSleepCapacity: unit.privateSleepCapacity,
-                                                                                     platinumScape: unit.platinumScape,
+                                                                                     platinumEscape: unit.platinumEscape,
                                                                                      priorityViewing: unit.priorityViewing)
                 
                 let inventoryBucket = AvailabilitySectionItemInventoryBucket(key: inventoryBucketUnit.generateKey(),
@@ -101,7 +101,7 @@ open class AvailabilitySectionItem {
                                                                                          kitchenType: KitchenType.fromName(name: unit.kitchenType),
                                                                                          publicSleepCapacity: unit.publicSleepCapacity,
                                                                                          privateSleepCapacity: unit.privateSleepCapacity,
-                                                                                         platinumScape: unit.platinumScape,
+                                                                                         platinumEscape: unit.platinumEscape,
                                                                                          priorityViewing: unit.priorityViewing);
                     
                     let inventoryBucket = AvailabilitySectionItemInventoryBucket(key: inventoryBucketUnit.generateKey(),
@@ -184,7 +184,7 @@ public struct AvailabilitySectionItemInventoryBucketUnit {
     public let kitchenType: KitchenType
     public let publicSleepCapacity: Int
     public let privateSleepCapacity: Int
-    public let platinumScape: Bool
+    public let platinumEscape: Bool
     public let priorityViewing: Bool
     
     public func generateKey() -> String {

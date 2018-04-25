@@ -190,48 +190,13 @@ class SearchResultViewController: UIViewController {
 
     private func scrollToActiveDate() {
         let numberOfRecords = Constant.MyClassConstants.calendarDatesArray.count
-        let vacationSearchCheckInDate = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate.unwrappedString
-        var calendarItemWithActiveDates: (item: CalendarItem, index: Int)?
-        var foundMatch = false
-
+        let vacationSearchCheckInDate = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate
+        
         for index in 0..<numberOfRecords {
-            let calendarItem = Constant.MyClassConstants.calendarDatesArray[index]
-            let calendarItemCheckInDate = calendarItem.checkInDate.unwrappedString
-
-            // Stores the first calendar item with valid check in/out intervals
-            if !calendarItem.intervalStartDate.unwrappedString.isEmpty
-                && !calendarItem.intervalEndDate.unwrappedString.isEmpty
-                && calendarItemWithActiveDates == nil {
-                calendarItemWithActiveDates = (calendarItem, index)
-            }
-
-            // Scrolls to active date cell if match is found
-            if vacationSearchCheckInDate == calendarItemCheckInDate,
-                !vacationSearchCheckInDate.isEmpty, !calendarItemCheckInDate.isEmpty {
+            let calendarItemCheckInDate = Constant.MyClassConstants.calendarDatesArray[index].checkInDate
+            if vacationSearchCheckInDate == calendarItemCheckInDate {
                 searchResultColelctionView.scrollToItem(at: IndexPath(row: index, section: 0), at: .centeredHorizontally, animated: true)
-                foundMatch = true
                 break
-            }
-        }
-
-        // If no match is found; perform this horrible hack because of the bad dataset implementation in this view controller...
-        if let calendarItemWithActiveDates = calendarItemWithActiveDates,
-            let cell = searchResultColelctionView.cellForItem(at: IndexPath(row: calendarItemWithActiveDates.index, section: 0)),
-            !Constant.MyClassConstants.calendarDatesArray.isEmpty,
-            !foundMatch {
-            intervalBucketClicked(calendarItem: calendarItemWithActiveDates.item, cell: cell) { [weak self] error in
-                guard let strongSelf = self else { return }
-                strongSelf.showHudAsync()
-                // Delay to allow tableview collectionview to reload... :(
-                let delayInSeconds = 2.0
-                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + delayInSeconds) {
-                    if case .some = error {
-                        strongSelf.presentErrorAlert(UserFacingCommonError.handleError(error))
-                        return
-                    }
-
-                    strongSelf.intervalDateItemClicked(Constant.MyClassConstants.calendarDatesArray[0])
-                }
             }
         }
     }
@@ -1559,6 +1524,7 @@ extension SearchResultViewController: UICollectionViewDataSource {
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
+        guard tableView.numberOfRows(inSection: section) > 0 else { return nil }
         let headerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 40))
         let headerLabel = UILabel(frame: CGRect(x: 20, y: 0, width: tableView.frame.width - 60, height: 40))
         headerLabel.font = UIFont(name: Constant.fontName.helveticaNeue, size: 15)

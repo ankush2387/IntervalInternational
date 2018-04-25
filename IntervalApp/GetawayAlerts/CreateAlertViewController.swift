@@ -109,7 +109,7 @@ class CreateAlertViewController: UIViewController {
             startDateDayNameLabel.text = String(startDateAlert[0])
             startDateMonthYearLabel.text = "\(Helper.getMonthnameFromInt(monthNumber: Int(startDateAlert[1]) ?? 0)) \(String(startDateAlert[3]))"
             startDateDayLabel.text = String(startDateAlert[2])
-            
+            travelWindowEndDateSelectionButton.isEnabled = true
         }
 
         if let date = (endDate)?.formatDateAs("EEEE MM dd YYYY") {
