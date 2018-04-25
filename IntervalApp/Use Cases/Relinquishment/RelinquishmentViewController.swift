@@ -68,7 +68,7 @@ final class RelinquishmentViewController: UIViewController {
         label.textAlignment = .center
         label.lineBreakMode = .byWordWrapping
         label.textColor = IntervalThemeFactory.deviceTheme.textColorGray
-        label.text = "Our membership records indicate that you are ineligible to place an exchange request at this time. Please review your relinquishment/deposit information and contact our Membership Services Department if your information needs revision."
+        label.text = "Our membership records indicate that you are ineligible to place an exchange request at this time. Please review your relinquishment/deposit information and contact our Membership Services Department if your information needs revision.".localized()
         tableView.backgroundView = label
     }
     
