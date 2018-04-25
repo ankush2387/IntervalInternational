@@ -517,7 +517,6 @@ extension ResortDetailsViewController: UITableViewDelegate {
                                     return CGFloat (count * 20 + 60)
                                 } else {
                                     return UITableViewAutomaticDimension
-                                    return CGFloat (count * 20 + 30)
                                 }
                                 
                             } else {
@@ -525,17 +524,15 @@ extension ResortDetailsViewController: UITableViewDelegate {
                                     return CGFloat (count * 20 + 160)
                                 } else {
                                     return UITableViewAutomaticDimension
-                                    return CGFloat (count * 20 + 60)
                                 }
                             }
                                 
                             } else {
                                 return UITableViewAutomaticDimension
-                                return 60 }
+                            }
 
                         case 5 :
                             return UITableViewAutomaticDimension
-                            return 50
                         case 6 :
                             if Constant.MyClassConstants.resortsDescriptionArray.tdiChart?.url != nil {
                                 return 600
@@ -547,12 +544,10 @@ extension ResortDetailsViewController: UITableViewDelegate {
                         }
                     } else {
                         return UITableViewAutomaticDimension
-                        return 60
                     }
                 } else {
                     if indexPath.row == 0 {
                         return UITableViewAutomaticDimension
-                        return 60
                     } else {
                         return 0
                     }
@@ -936,7 +931,7 @@ extension ResortDetailsViewController: UITableViewDataSource {
                                 phoneTextView.textColor = .blue
                                 phoneTextView.tintColor = .blue
                                 phoneTextView.isUserInteractionEnabled = true
-                                phoneTextView.isEditable = false                                
+                                phoneTextView.isEditable = false
                                 availableCountryCell?.addSubview(phoneTextView)
                                 height += 30
                             }
