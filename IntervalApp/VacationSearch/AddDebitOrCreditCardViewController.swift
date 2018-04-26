@@ -232,9 +232,9 @@ class AddDebitOrCreditCardViewController: UIViewController {
                 let calendar = CalendarHelperLocator.sharedInstance.provideHelper().createCalendar()
                 let date = calendar.date(from: dateComponents)
                 let dateFor = DateFormatter()
-                dateFor.dateFormat = Constant.MyClassConstants.dateTimeFormat
+                dateFor.dateFormat = Constant.MyClassConstants.dateFormat
                 dateFor.timeZone = Helper.createTimeZone()
-                
+                 
                 let expString: String = dateFor.string(from: date ?? Date())
                 debugPrint(expString)
                 newCreditCard.expirationDate = expString

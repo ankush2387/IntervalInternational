@@ -241,7 +241,9 @@ open class UserClient {
                 
                 switch statusCode {
                     case 200...209:
-                        onSuccess(json.arrayValue.map { ResortFavorite(json: $0) })
+                        var resortFavorites: [ResortFavorite] = json.arrayValue.map { ResortFavorite(json: $0) }
+                        resortFavorites = resortFavorites.sorted { $0.resort?.resortName?.localizedCaseInsensitiveCompare($1.resort?.resortName ?? "") == ComparisonResult.orderedAscending }
+                        onSuccess(resortFavorites)
 
                     default:
                         onError(DarwinSDK.parseDarwinError(statusCode:statusCode, json:json))

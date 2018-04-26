@@ -59,20 +59,8 @@ open class AvailabilitySection {
         info.append(destination.destinationName)
         
         if let address = destination.address {
-            if let cityName = address.cityName {
-                info.append(" ")
-                info.append(cityName)
-            }
-            
-            if let territoryCode = address.territoryCode {
-                info.append(" ")
-                info.append(territoryCode)
-            }
-            
-            if let countryCode = address.countryCode {
-                info.append(" ")
-                info.append(countryCode)
-            }
+            info.append(" ")
+            info.append(address.postalAddresAsString())
         }
 
         return info

@@ -63,7 +63,7 @@ open class OpenWeek {
         
         if json["resort"].exists() {
             let resortJson:JSON = json["resort"]
-            self.resort = Resort(detailJSON:resortJson)
+            self.resort = Resort(json: resortJson)
         }
         
         if json["unit"].exists() {

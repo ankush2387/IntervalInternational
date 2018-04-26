@@ -29,7 +29,7 @@ final class CellPromotionView: UIView {
 // MARK: - SDK Convenience Method
 extension CellPromotionView {
     func setPromotionUI(for bucket: AvailabilitySectionItemInventoryBucketUnit) {
-        switch (bucket.priorityViewing, bucket.platinumScape) {
+        switch (bucket.priorityViewing, bucket.platinumEscape) {
 
         // Frank will clarify what should happen if we get both true
         // For now PriorityView UI will supercede escapeView UI

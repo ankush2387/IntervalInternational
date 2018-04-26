@@ -32,7 +32,7 @@ class ProductCell: UITableViewCell {
                 } else {
                     innerView.layer.cornerRadius = 2
         }
-                if prod.billingEntity.unwrappedString.uppercased() != "NON" {
+        if prod.billingEntity.unwrappedString.uppercased() != BillingEntity.NonCorporate.rawValue {
                     lblExpireDate.text = nil
                     lblExpire.isHidden = true
                 } else {

@@ -575,7 +575,17 @@ extension VacationSearchIPadViewController: DateAndPassengerSelectionTableViewCe
     //Function that invock when calendar button clicked
     func calendarIconClicked(_ sender: UIButton) {
         
-        self.performSegue(withIdentifier: Constant.segueIdentifiers.CalendarViewSegue, sender: nil)
+        let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
+        if let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.calendarViewController) as? CalendarViewController {
+            
+            viewController.didSelectDate = { [weak self] selectedDate in
+                self?.defaults.set(selectedDate, forKey: Constant.MyClassConstants.selectedDate)
+                Constant.MyClassConstants.vacationSearchShowDate = selectedDate.unsafelyUnwrapped
+                
+            }
+            navigationController?.pushViewController(viewController, animated: true)
+        }
+
     }
     
     func getSavedDestinationsResorts(storedData: Results <RealmLocalStorage>, searchCriteria: VacationSearchCriteria) {
@@ -1055,7 +1065,7 @@ extension VacationSearchIPadViewController: UICollectionViewDataSource {
             centerView.addSubview(unitLabel)
             
             let priceLabel = UILabel(frame: CGRect(x: 10, y: 35, width: centerView.frame.size.width - 20, height: 20))
-            if let pricefrom = topTenDeals.price?.fromPrice, let currencyCode = topTenDeals.price?.currencySymbol {
+            if let pricefrom = topTenDeals.price?.lowest, let currencyCode = topTenDeals.price?.currencySymbol {
                 //FIXME(Frank): - all UIViewController for iPad should be removed
                 if let attributedAmount = pricefrom.currencyFormatter(for: currencyCode, for: nil, baseLineOffSet: 0) {
                     let fromAttributedString = NSMutableAttributedString(string: "From ", attributes: nil)

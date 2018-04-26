@@ -140,7 +140,7 @@ open class LookupClient {
                 
                 switch statusCode {
                     case 200...209:
-                        onSuccess(json.arrayValue.map { Resort(summaryJSON: $0) })
+                        onSuccess(json.arrayValue.map { Resort(json: $0) })
                     
                     default:
                         onError(DarwinSDK.parseDarwinError(statusCode: statusCode, json: json))
@@ -173,7 +173,9 @@ open class LookupClient {
                 
                 switch statusCode {
                     case 200...209:
-                        onSuccess(json.arrayValue.map { Video(json: $0) })
+                        var videos: [Video] = json.arrayValue.map { Video(json: $0) }
+                        videos = videos.sorted { $0.name?.trim()?.localizedCaseInsensitiveCompare($1.name?.trim() ?? "") == ComparisonResult.orderedAscending }
+                        onSuccess(videos)
                     
                     default:
                         onError(DarwinSDK.parseDarwinError(statusCode: statusCode, json: json))
@@ -203,14 +205,14 @@ open class LookupClient {
             // First, convert the search to text to regex pattern.  We'll replace all spaces into pipes, making each word
             // in the search text a unique value
             var regex = try NSRegularExpression(pattern: "\\s+", options: NSRegularExpression.Options.dotMatchesLineSeparators)
-            let patternStr = regex.stringByReplacingMatches(in: trimmedSearchStr, options: NSRegularExpression.MatchingOptions.withoutAnchoringBounds, range: NSMakeRange(0, trimmedSearchStr.characters.count), withTemplate: "|")
+            let patternStr = regex.stringByReplacingMatches(in: trimmedSearchStr, options: NSRegularExpression.MatchingOptions.withoutAnchoringBounds, range: NSMakeRange(0, trimmedSearchStr.count), withTemplate: "|")
             
             // Next, create a new regex to use as a matcher for each video
             regex = try NSRegularExpression(pattern:patternStr, options: NSRegularExpression.Options.dotMatchesLineSeparators)
             
             // Finally, filter the provided vidoes using the patternStr
             let filteredVideos = videos.filter {
-                let matches = regex.matches(in: $0.name!, options: NSRegularExpression.MatchingOptions.withoutAnchoringBounds, range: NSMakeRange(0,$0.name!.characters.count))
+                let matches = regex.matches(in: $0.name!, options: NSRegularExpression.MatchingOptions.withoutAnchoringBounds, range: NSMakeRange(0,$0.name!.count))
                 return matches.count > 0
             }
             

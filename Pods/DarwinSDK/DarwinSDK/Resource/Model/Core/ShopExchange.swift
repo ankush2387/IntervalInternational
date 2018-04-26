@@ -11,6 +11,7 @@ import SwiftyJSON
 
 open class ShopExchange {
     
+    open var originalPrice : Float?
     open var inventoryPrice : InventoryPrice?
     open var discountAmount : Float = 0.0
     open lazy var promotions = [Promotion]()
@@ -22,6 +23,8 @@ open class ShopExchange {
     
     public convenience init(json:JSON){
         self.init()
+        
+        self.originalPrice = json["originalPrice"].floatValue
         
         self.inventoryPrice = InventoryPrice()
         self.inventoryPrice?.price = json["price"].floatValue

@@ -30,21 +30,69 @@ class Constant: NSObject {
     }
     
     //Getaways SearchResult CardFormDetail Data
-    struct GetawaySearchResultGuestFormDetailData {
+    
+    class GuestCertificateFormData {
         
-        static var textFieldChangedInSection = -1
-        static var firstName = ""
-        static var lastName = ""
-        static var country = ""
-        static var address1 = ""
-        static var address2 = ""
-        static var city = ""
-        static var state = ""
-        static var pinCode = ""
-        static var email = ""
-        static var homePhoneNumber = ""
-        static var businessPhoneNumber = ""
+        var textFieldChangedInSection = -1
+        var firstName = ""
+        var lastName = ""
+        var country = ""
+        var countryCode = ""
+        var address1 = ""
+        var address2 = ""
+        var city = ""
+        var state = ""
+        var stateCode = ""
+        var pinCode = ""
+        var email = ""
+        var homePhoneNumber = ""
+        var businessPhoneNumber = ""
         
+        func isFilledOut() -> Bool {
+            return self.firstName != ""
+                && self.lastName != ""
+                && self.country != ""
+                && self.address1 != ""
+                && self.city != ""
+                && self.state != ""
+                && self.pinCode != ""
+                && self.email != ""
+                && self.homePhoneNumber != ""
+        }
+        
+        func toGuest() -> Guest {
+            let guest = Guest()
+            
+            guest.firstName = self.firstName
+            guest.lastName = self.lastName
+            guest.primaryTraveler = true
+            
+            let guestAddress = Address()
+            var address = [String]()
+            address.append(self.address1)
+            address.append(self.address2)
+            guestAddress.addressLines = address
+            
+            guestAddress.cityName = self.city
+            guestAddress.postalCode = self.pinCode
+            guestAddress.addressType = "HADDR"
+            guestAddress.territoryCode = self.stateCode
+            guestAddress.countryCode = self.countryCode
+            
+            var phoneNumbers = [Phone]()
+            let homePhoneNo = Phone()
+            homePhoneNo.phoneNumber = self.homePhoneNumber
+            // FIXME (FRANK/CHRIS) we need to get this data from the views
+            homePhoneNo.countryPhoneCode = "1"
+            homePhoneNo.phoneType = "HOME_PRIMARY"
+            homePhoneNo.areaCode = "305"
+            homePhoneNo.countryCode = self.countryCode
+            phoneNumbers.append(homePhoneNo)
+            
+            guest.phones = phoneNumbers
+            guest.address = guestAddress
+            return guest
+        }
     }
     
     struct AdditionalUnitDetailsData {
@@ -452,8 +500,8 @@ class Constant: NSObject {
         static var upgradeCost = "Unit-Size Upgrade".localized()
         static var guestCertificateTitle = "Guest Certificate".localized()
         static var renewals = "Renewals".localized()
-        static var exchangeFeeTitle = "Exchange Fee"
-        static var getawayFee = "Getaway Fee"
+        static var exchangeFeeTitle = "Exchange".localized()
+        static var getawayFee = "Getaway".localized()
         static var eplus = "EPlus"
         static var taxesTitle = "Taxes"
         static var emailRegex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
@@ -461,14 +509,12 @@ class Constant: NSObject {
         static var endingIn = "ending in"
         
         static var enableTaxes = false
-        static var enableGuestCertificate = false
         
         static var hasAdditionalCharges = false
         static var guestString = "guest"
         static var additionalAdv = "ADDITIONAL INFORMATION"
         static var dateFormat = "yyyy-MM-dd"
         static var monthDateFormat = "yyyy-MM"
-        static var dateTimeFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
         
         //use for no Availability Cell
         //FIXME(Frank): what mean this? - can showNearestCheckInDateSelectedMessage?
@@ -1369,7 +1415,6 @@ class Constant: NSObject {
     struct segueIdentifiers {
         
         static var dashboradSegueIdentifier = "dashboardSegue"
-        static var CalendarViewSegue = "CalendarViewSegue"
         static var detailDestinationSegue = "DetailDestinationSegue"
         static var privacyPolicyWebviewSegue = "privacyPolicySegue"
         static var searchResultSegue = "SearchResultSegue"

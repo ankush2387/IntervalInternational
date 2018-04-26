@@ -34,7 +34,9 @@ open class ExchangeProcessContinueToPayRequest {
         if (acknowledgeAndAgreeResortFees != nil) {
             dictionary["acknowledgeAndAgreeResortFees"] = self.acknowledgeAndAgreeResortFees as AnyObject?
         }
-        dictionary["creditCard"] = self.creditCardToDictionary() as AnyObject?
+        if self.creditCard != nil {
+            dictionary["creditCard"] = self.creditCardToDictionary() as AnyObject?
+        }
         if (saveCardIndicator != nil) {
             dictionary["saveCardIndicator"] = self.saveCardIndicator as AnyObject?
         }
@@ -44,13 +46,13 @@ open class ExchangeProcessContinueToPayRequest {
     
     private func creditCardToDictionary() -> Dictionary<String, AnyObject> {
         var dictionary = Dictionary<String, AnyObject>()
-        if (self.creditCard?.creditcardId)! > 0 {
-            dictionary["id"] = self.creditCard?.creditcardId as AnyObject?
+        if let creditcardId = self.creditCard?.creditcardId, creditcardId > 0 {
+            dictionary["id"] = creditcardId as AnyObject?
         } else {
             dictionary["type"] = self.creditCard?.typeCode as AnyObject?
             dictionary["cardHolderName"] = self.creditCard?.cardHolderName as AnyObject?
             dictionary["cardNumber"] = self.creditCard?.cardNumber as AnyObject?
-            dictionary["expirationDate"] = self.creditCard?.expirationDate! as AnyObject?
+            dictionary["expirationDate"] = self.creditCard?.expirationDate as AnyObject?
             dictionary["preferredCardIndicator"] = self.creditCard?.preferredCardIndicator as AnyObject?
             dictionary["saveCardIndicator"] = self.creditCard?.saveCardIndicator as AnyObject?
             dictionary["autoRenew"] = self.creditCard?.autoRenew as AnyObject?
@@ -69,8 +71,10 @@ open class ExchangeProcessContinueToPayRequest {
     
     private func billingAddressToDictionary() -> Dictionary<String, AnyObject> {
         var addressLinesArray = Array<AnyObject>()
-        for addressLine in (self.creditCard?.billingAddress?.addressLines)! {
-            addressLinesArray.append(addressLine as AnyObject)
+        if let addressLines = self.creditCard?.billingAddress?.addressLines {
+            for addressLine in addressLines {
+                addressLinesArray.append(addressLine as AnyObject)
+            }
         }
         
         var dictionary = Dictionary<String, AnyObject>()

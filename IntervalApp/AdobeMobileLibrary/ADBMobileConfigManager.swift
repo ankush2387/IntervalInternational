@@ -13,10 +13,10 @@ struct ADBMobileConfigManager {
     // MARK: - Public properties
     var isRunningInNonProdEnvironment: Bool {
         switch intervalConfig.getEnvironment() {
-        case  .staging, .qa1, .qa2, .dev1, .dev2, .production_mag, .staging_mag, .qa1_mag, .qa2_mag:
-            return true
-        default:
+        case  "production":
             return false
+        default:
+            return true
         }
     }
 

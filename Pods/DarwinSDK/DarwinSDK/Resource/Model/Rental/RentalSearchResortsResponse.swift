@@ -22,7 +22,7 @@ open class RentalSearchResortsResponse {
         
         if json["resorts"].exists() {
             let resortsArray:[JSON] = json["resorts"].arrayValue
-            self.resorts = resortsArray.map { Resort(detailJSON:$0) }
+            self.resorts = resortsArray.map { Resort(json: $0) }
         }
         
         self.totalResorts = json["totalResorts"].intValue

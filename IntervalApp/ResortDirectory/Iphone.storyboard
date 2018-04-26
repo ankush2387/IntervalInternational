@@ -1131,21 +1131,21 @@
                                             <outlet property="tdiImageView" destination="2MS-g8-WJ1" id="a3L-Xk-15N"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SearchCell" id="8v2-4b-zcm" customClass="ResortDirectoryResortCell" customModule="IntervalApp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="565" width="375" height="44"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SearchCell" rowHeight="75" id="8v2-4b-zcm" customClass="ResortDirectoryResortCell" customModule="IntervalApp" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="565" width="375" height="75"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="8v2-4b-zcm" id="z0e-69-gHl">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="75"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hp8-nG-TY6" customClass="IUIKButton" customModule="IntervalUIKit">
-                                                    <rect key="frame" x="40" y="7" width="295" height="30"/>
+                                                    <rect key="frame" x="40" y="15" width="295" height="45"/>
                                                     <color key="backgroundColor" red="0.94117647058823528" green="0.43529411764705883" blue="0.21176470588235294" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="30" id="D76-EQ-Vbg"/>
+                                                        <constraint firstAttribute="height" constant="45" id="MSO-8P-BVb"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="18"/>
-                                                    <state key="normal" title="Search Vacation">
+                                                    <state key="normal" title="Search Vacations">
                                                         <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     </state>
                                                     <userDefinedRuntimeAttributes>
@@ -1159,9 +1159,10 @@
                                                 </button>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="hp8-nG-TY6" firstAttribute="centerX" secondItem="z0e-69-gHl" secondAttribute="centerX" id="HRd-kh-2GI"/>
-                                                <constraint firstItem="hp8-nG-TY6" firstAttribute="leading" secondItem="z0e-69-gHl" secondAttribute="leadingMargin" constant="32" id="g9d-x1-RU8"/>
-                                                <constraint firstItem="hp8-nG-TY6" firstAttribute="centerY" secondItem="z0e-69-gHl" secondAttribute="centerY" id="lU6-bK-fRW"/>
+                                                <constraint firstAttribute="bottom" secondItem="hp8-nG-TY6" secondAttribute="bottom" constant="15" id="49U-GF-CoC"/>
+                                                <constraint firstItem="hp8-nG-TY6" firstAttribute="leading" secondItem="z0e-69-gHl" secondAttribute="leading" constant="40" id="6RP-Bg-ohI"/>
+                                                <constraint firstAttribute="trailing" secondItem="hp8-nG-TY6" secondAttribute="trailing" constant="40" id="aJ8-5i-D0l"/>
+                                                <constraint firstItem="hp8-nG-TY6" firstAttribute="top" secondItem="z0e-69-gHl" secondAttribute="top" constant="15" id="fkL-Mj-6uF"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
@@ -1540,6 +1541,6 @@
         <segue reference="LB4-mY-QYy"/>
         <segue reference="KTW-Os-bqS"/>
         <segue reference="1yd-In-YGU"/>
-        <segue reference="fTF-me-bqG"/>
+        <segue reference="PVi-Ym-AGy"/>
     </inferredMetricsTieBreakers>
 </document>

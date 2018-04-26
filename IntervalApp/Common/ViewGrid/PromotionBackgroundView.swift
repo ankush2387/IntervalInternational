@@ -61,11 +61,7 @@ final class PromotionBackgroundView: NSObject {
     }
 
     // MARK: - Private properties
-    // Note: Need to make lower/upper limit more dynamic if we want to use in very large views.
-    // For now this should work for most scenarios.
-    static private let bezierLowerLimit = 0
-    static private let bezierUpperLimit = 1016
-    static private let genericCellDimension: (width: CGFloat, height: CGFloat) = (width: 375, height: 73)
+    static private let genericCellDimension: (width: CGFloat, height: CGFloat) = (width: 375, height: 80)
 
     // MARK: - Drawing Methods
     public class func drawPromotionUI(with targetFrame: CGRect = PromotionBackgroundView.genericFrame,
@@ -74,41 +70,11 @@ final class PromotionBackgroundView: NSObject {
 
         guard let context = UIGraphicsGetCurrentContext() else { throw CommonErrors.emptyInstance }
         guard let promotionType = promotionType else { throw CommonErrors.emptyInstance }
-        drawGrid(for: promotionType, and: context, within: targetFrame, while: resizing)
-        drawPromotionLabel(for: promotionType, and: context, within: targetFrame)
-    }
-
-    private static func drawGrid(for promotionType: PromotionType,
-                                 and context: CGContext,
-                                 within targetFrame: CGRect,
-                                 while resizing: ResizingBehavior) {
-
-        // Resize to Target Frame
         context.saveGState()
         let targetRect = CGRect(x: 0, y: 0, width: genericCellDimension.width, height: genericCellDimension.height)
         let resizedFrame: CGRect = resizing.apply(rect: targetRect, target: targetFrame)
-        context.translateBy(x: resizedFrame.minX, y: resizedFrame.minY)
-        context.scaleBy(x: resizedFrame.width / genericCellDimension.width,
-                        y: resizedFrame.height / genericCellDimension.height)
-
-        var startingMoveCoordinateX = 294.5
-        var startingAddLineCoordinateX = -155.5
-        let startingMoveCoordinateY = -214.5
-        let startingAddLineCoordinateY = 118.5
-
-        (bezierLowerLimit...bezierUpperLimit).forEach { _ in
-            let bezierPath = UIBezierPath()
-            bezierPath.move(to: CGPoint(x: startingMoveCoordinateX, y: startingMoveCoordinateY))
-            bezierPath.addLine(to: CGPoint(x: startingAddLineCoordinateX, y: startingAddLineCoordinateY))
-            promotionType.UIConfiguration.promotionGridColor.setStroke()
-            bezierPath.lineWidth = 1
-            bezierPath.lineCapStyle = .square
-            bezierPath.stroke()
-            startingMoveCoordinateX += 5
-            startingAddLineCoordinateX += 5
-        }
-
         context.restoreGState()
+        drawPromotionLabel(for: promotionType, and: context, within: resizedFrame)
     }
 
     private static func drawPromotionLabel(for promotionType: PromotionType,
@@ -116,8 +82,8 @@ final class PromotionBackgroundView: NSObject {
                                            within targetFrame: CGRect) {
 
         context.saveGState()
-        context.translateBy(x: 19.5, y: 0)
-        context.rotate(by: CGFloat.pi / 2)
+        context.translateBy(x: 0, y: (targetFrame.height + genericFrame.height) / 2)
+        context.rotate(by: -CGFloat.pi / 2)
         let textRect = CGRect(x: 0, y: 0, width: targetFrame.height, height: 20)
         let textPath = UIBezierPath(rect: textRect)
 

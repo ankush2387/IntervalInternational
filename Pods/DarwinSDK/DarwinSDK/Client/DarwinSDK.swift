@@ -31,18 +31,22 @@ open class DarwinSDK {
     var environment = Environment.production
     var clientId : String = ""
     var clientSecret : String = ""
-    
-    open func config(_ environment:Environment, client:String, secret:String) {
-        self.config(environment:environment, client: client, secret: secret, logLevel: .info)
+   
+    open var apiEnvironment: Environment {
+        return self.environment
     }
     
-    open func config(_ environment:Environment, client:String, secret:String, logger:XCGLogger) {
+    open func config(_ env: String, client: String, secret: String) {
+        self.config(env: env, client: client, secret: secret, logLevel: .info)
+    }
+    
+    open func config(_ env: String, client: String, secret: String, logger: XCGLogger) {
         DarwinSDK.logger = logger
-        self.config(environment:environment, client: client, secret: secret, logLevel: logger.outputLevel)
+        self.config(env: env, client: client, secret: secret, logLevel: logger.outputLevel)
     }
     
-    open func config(environment:Environment, client:String, secret:String, logLevel:XCGLogger.Level) {
-        self.environment = environment
+    open func config(env: String, client:String, secret:String, logLevel:XCGLogger.Level) {
+        self.environment = resolveEnvironment(env)
         self.clientId = client
         self.clientSecret = secret
         
@@ -50,7 +54,7 @@ open class DarwinSDK {
                                showThreadName: true, showLevel: true, showFileNames: true,
                                showLineNumbers: true, showDate: true, writeToFile: nil, fileLevel: nil)
     }
-    
+
     open func getApiUri(withContextAndVersion:Bool = true) -> String {
         switch self.environment {
         case .production:
@@ -102,6 +106,46 @@ open class DarwinSDK {
             return withContextAndVersion ? "https://qa2-mag.ii-apps.com/tokenize/v1" : "https://qa2-mag.ii-apps.com"
         default:
             return withContextAndVersion ? "https://api.intervalintl.com/tokenize/v1" : "https://api.intervalintl.com"
+        }
+    }
+
+    open func getPushNotificationsEnv() -> String {
+        switch self.environment {
+        case .production, .production_mag:
+            return "prod"
+        case .staging, .qa1, .qa2, .staging_mag, .qa1_mag, .qa2_mag:
+            return "qa"
+        case .dev1, .dev2:
+            return "dev"
+        default:
+            return "prod"
+        }
+    }
+    
+    fileprivate func resolveEnvironment(_ env: String) -> Environment {
+        switch env {
+        case "production":
+            return Environment.production
+        case "staging":
+            return Environment.staging
+        case "qa1":
+            return Environment.qa1
+        case "qa2":
+            return Environment.qa2
+        case "dev1":
+            return Environment.dev1
+        case "dev2":
+            return Environment.dev2
+        case "production_mag":
+            return Environment.production_mag
+        case "staging_mag":
+            return Environment.staging_mag
+        case "qa1_mag":
+            return Environment.qa1_mag
+        case "qa2_mag":
+            return Environment.qa2_mag
+        default:
+            return Environment.production
         }
     }
     

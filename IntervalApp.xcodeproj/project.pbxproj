@@ -14,7 +14,7 @@
 		0887C97B1F6A99F5007F57C3 /* SearchFlexchangeButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0887C97A1F6A99F5007F57C3 /* SearchFlexchangeButtonCell.swift */; };
 		089416711F72D93A00F03229 /* SelectBedroomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 089416701F72D93A00F03229 /* SelectBedroomViewController.swift */; };
 		089416731F72D94300F03229 /* BedroomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 089416721F72D94300F03229 /* BedroomTableViewCell.swift */; };
-		0895D7141E966F0D004EAA91 /* ContainerContentTBLviewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0895D7131E966F0D004EAA91 /* ContainerContentTBLviewController.swift */; };
+		0895D7141E966F0D004EAA91 /* TdiInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0895D7131E966F0D004EAA91 /* TdiInfoViewController.swift */; };
 		08A4D4321F69A51B00C63CDC /* FlexchangeSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A4D4311F69A51B00C63CDC /* FlexchangeSearchViewController.swift */; };
 		08B10A231FD18311008C737F /* Seprator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B10A221FD18311008C737F /* Seprator.swift */; };
 		08E3BCF61F2A30F80021F2BC /* RelinquishmentDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08E3BCF51F2A30F80021F2BC /* RelinquishmentDetailsViewController.swift */; };
@@ -162,6 +162,7 @@
 		3A9983DB1DE72A5A00CE44A5 /* MMSlidingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9983DA1DE72A5A00CE44A5 /* MMSlidingButton.swift */; };
 		3A9983E11DE7331C00CE44A5 /* Confirmation.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3A9983E01DE7331C00CE44A5 /* Confirmation.storyboard */; };
 		3A9AFE651F597A3500BDDD6D /* FloatLabelTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9AFE641F597A3500BDDD6D /* FloatLabelTextField.swift */; };
+		3AA499162073CC2D0000E880 /* AddButtonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA499152073CC2D0000E880 /* AddButtonTableViewCell.swift */; };
 		3AA6BC251EA8BD1A00B5DD7F /* CheckCollectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3AA6BC241EA8BD1A00B5DD7F /* CheckCollectionCell.xib */; };
 		3AA6BC271EA91CDB00B5DD7F /* HeaderCollectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3AA6BC261EA91CDB00B5DD7F /* HeaderCollectionCell.xib */; };
 		3AA88B541F44DAD8001ADC4C /* ExchangeInventoryCVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA88B531F44DAD8001ADC4C /* ExchangeInventoryCVCell.swift */; };
@@ -394,6 +395,7 @@
 		DC7EF5131D709F8800E9E360 /* ResortFavoritesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC7EF5021D709F8800E9E360 /* ResortFavoritesTableViewCell.swift */; };
 		DC7EF5141D709F8800E9E360 /* ResortInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC7EF5031D709F8800E9E360 /* ResortInfoTableViewCell.swift */; };
 		DC7EF5151D709F8800E9E360 /* SignInPreLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC7EF5041D709F8800E9E360 /* SignInPreLoginViewController.swift */; };
+		E856E2992087B368000D1016 /* CalendarContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = E856E2982087B368000D1016 /* CalendarContext.swift */; };
 		E9057F911F02DDA000E20047 /* ShareActivityImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9057F901F02DDA000E20047 /* ShareActivityImage.swift */; };
 		E9057F931F02DDBA00E20047 /* ShareActivityMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9057F921F02DDBA00E20047 /* ShareActivityMessage.swift */; };
 		E9057F951F02DDCB00E20047 /* ShareActivityURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9057F941F02DDCB00E20047 /* ShareActivityURL.swift */; };
@@ -444,7 +446,7 @@
 		0887C97A1F6A99F5007F57C3 /* SearchFlexchangeButtonCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchFlexchangeButtonCell.swift; sourceTree = "<group>"; };
 		089416701F72D93A00F03229 /* SelectBedroomViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectBedroomViewController.swift; sourceTree = "<group>"; };
 		089416721F72D94300F03229 /* BedroomTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BedroomTableViewCell.swift; sourceTree = "<group>"; };
-		0895D7131E966F0D004EAA91 /* ContainerContentTBLviewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContainerContentTBLviewController.swift; sourceTree = "<group>"; };
+		0895D7131E966F0D004EAA91 /* TdiInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TdiInfoViewController.swift; sourceTree = "<group>"; };
 		08A4D4311F69A51B00C63CDC /* FlexchangeSearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlexchangeSearchViewController.swift; sourceTree = "<group>"; };
 		08B10A221FD18311008C737F /* Seprator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Seprator.swift; sourceTree = "<group>"; };
 		08E3BCF51F2A30F80021F2BC /* RelinquishmentDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelinquishmentDetailsViewController.swift; sourceTree = "<group>"; };
@@ -594,6 +596,7 @@
 		3A9983DA1DE72A5A00CE44A5 /* MMSlidingButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MMSlidingButton.swift; sourceTree = "<group>"; };
 		3A9983E01DE7331C00CE44A5 /* Confirmation.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Confirmation.storyboard; sourceTree = "<group>"; };
 		3A9AFE641F597A3500BDDD6D /* FloatLabelTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatLabelTextField.swift; sourceTree = "<group>"; };
+		3AA499152073CC2D0000E880 /* AddButtonTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddButtonTableViewCell.swift; sourceTree = "<group>"; };
 		3AA6BC241EA8BD1A00B5DD7F /* CheckCollectionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CheckCollectionCell.xib; sourceTree = "<group>"; };
 		3AA6BC261EA91CDB00B5DD7F /* HeaderCollectionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HeaderCollectionCell.xib; sourceTree = "<group>"; };
 		3AA88B531F44DAD8001ADC4C /* ExchangeInventoryCVCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExchangeInventoryCVCell.swift; sourceTree = "<group>"; };
@@ -837,6 +840,7 @@
 		DC7EF5041D709F8800E9E360 /* SignInPreLoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInPreLoginViewController.swift; sourceTree = "<group>"; };
 		E2CBCD7E8490E488AB822061 /* Pods_IntervalApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_IntervalApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E2E6B03CA5A0D1EC27418E99 /* Pods-IntervalAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IntervalAppTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-IntervalAppTests/Pods-IntervalAppTests.debug.xcconfig"; sourceTree = "<group>"; };
+		E856E2982087B368000D1016 /* CalendarContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarContext.swift; sourceTree = "<group>"; };
 		E9057F901F02DDA000E20047 /* ShareActivityImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareActivityImage.swift; sourceTree = "<group>"; };
 		E9057F921F02DDBA00E20047 /* ShareActivityMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareActivityMessage.swift; sourceTree = "<group>"; };
 		E9057F941F02DDCB00E20047 /* ShareActivityURL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareActivityURL.swift; sourceTree = "<group>"; };
@@ -1152,6 +1156,7 @@
 				3A59DE191F015FDE005280D3 /* SortingOptionCell.swift */,
 				0887C97A1F6A99F5007F57C3 /* SearchFlexchangeButtonCell.swift */,
 				3A06663D1F912EE3002AA92A /* RenewalAdditionalCell.swift */,
+				3AA499152073CC2D0000E880 /* AddButtonTableViewCell.swift */,
 			);
 			path = CustomCells;
 			sourceTree = "<group>";
@@ -1205,6 +1210,7 @@
 				3A9AFE641F597A3500BDDD6D /* FloatLabelTextField.swift */,
 				08B10A221FD18311008C737F /* Seprator.swift */,
 				3AC21E1320762A7000BD6134 /* ExchangePointType.swift */,
+				E856E2982087B368000D1016 /* CalendarContext.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -1809,7 +1815,7 @@
 				DC7EF4C71D709E9600E9E360 /* ClubPointSelectionViewController.swift */,
 				DC7EF4C81D709E9600E9E360 /* ClubPointTableViewCell.swift */,
 				DC7EF4C91D709E9600E9E360 /* ClubPointWithCheckBoxTableViewCell.swift */,
-				0895D7131E966F0D004EAA91 /* ContainerContentTBLviewController.swift */,
+				0895D7131E966F0D004EAA91 /* TdiInfoViewController.swift */,
 			);
 			path = "Club Point Selection";
 			sourceTree = "<group>";
@@ -2115,12 +2121,13 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-IntervalAppTests/Pods-IntervalAppTests-resources.sh",
-				"$PODS_CONFIGURATION_BUILD_DIR/Brightcove-Player-SDK/BCOVPUIResources.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/Brightcove-Player-SDK/BCOVPUIResources.bundle",
 				"${PODS_ROOT}/GoogleMaps/Maps/Frameworks/GoogleMaps.framework/Versions/A/Resources/GoogleMaps.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/BCOVPUIResources.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleMaps.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -2284,13 +2291,16 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-IntervalApp/Pods-IntervalApp-resources.sh",
-				"$PODS_CONFIGURATION_BUILD_DIR/Brightcove-Player-SDK/BCOVPUIResources.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/Brightcove-Player-SDK/BCOVPUIResources.bundle",
 				"${PODS_ROOT}/GoogleMaps/Maps/Frameworks/GoogleMaps.framework/Versions/A/Resources/GoogleMaps.bundle",
-				$PODS_CONFIGURATION_BUILD_DIR/HockeySDK/HockeySDKResources.bundle,
+
+				"${PODS_CONFIGURATION_BUILD_DIR}/HockeySDK/HockeySDKResources.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/BCOVPUIResources.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleMaps.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/HockeySDKResources.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -2349,7 +2359,7 @@
 				DC7EF4CB1D709E9600E9E360 /* ClubPointSelectionViewController.swift in Sources */,
 				3A3A01371C99BD0B00B7EC37 /* ClubresortsViewController.swift in Sources */,
 				3AAA5A2D1C720F4500A5EA6D /* SWRevealViewController.m in Sources */,
-				0895D7141E966F0D004EAA91 /* ContainerContentTBLviewController.swift in Sources */,
+				0895D7141E966F0D004EAA91 /* TdiInfoViewController.swift in Sources */,
 				3A892F511CD3902F00AE6F45 /* WhereToGoCollectionViewCell.swift in Sources */,
 				3A06663A1F912C56002AA92A /* RenewalOtherOptionsVC.swift in Sources */,
 				3A3A01361C99BD0B00B7EC37 /* ClubpointTableViewCell.swift in Sources */,
@@ -2536,6 +2546,7 @@
 				DC7EF5151D709F8800E9E360 /* SignInPreLoginViewController.swift in Sources */,
 				E95A30BB1EF9693700AB64DB /* CheckoutPromotionCell.swift in Sources */,
 				3AAA5A2E1C720F4500A5EA6D /* CustomCollectionCell.swift in Sources */,
+				E856E2992087B368000D1016 /* CalendarContext.swift in Sources */,
 				DC7EF4F01D709F2900E9E360 /* FeaturedDestinationsCell.swift in Sources */,
 				3A892F531CD3902F00AE6F45 /* WhoIsTravelingCell.swift in Sources */,
 				3A3F91CF1CF07A2300FDA975 /* GetawayCell.swift in Sources */,
@@ -2597,6 +2608,7 @@
 				3AE1A6191F6AC5D50069A118 /* FlexChangeSearchIpadViewController.swift in Sources */,
 				3AA88B541F44DAD8001ADC4C /* ExchangeInventoryCVCell.swift in Sources */,
 				E9C5EF381F19555B00E658DA /* UIViewController+Swipe.swift in Sources */,
+				3AA499162073CC2D0000E880 /* AddButtonTableViewCell.swift in Sources */,
 				3C4F17291FA39204001EF71F /* Float+CurrencyFormatter.swift in Sources */,
 				3A59DE181F015E5F005280D3 /* SortingViewController.swift in Sources */,
 				3A0B25D81CD241790080BF3F /* PolicyListTBLCell.swift in Sources */,
@@ -2780,7 +2792,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer: Frank Nogueiras (438L8U78T7)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 114;
+				CURRENT_PROJECT_VERSION = 117;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 4CR2ZD7GRK;
 				ENABLE_BITCODE = NO;
@@ -2820,7 +2832,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer: Frank Nogueiras (438L8U78T7)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 114;
+				CURRENT_PROJECT_VERSION = 117;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 4CR2ZD7GRK;
 				ENABLE_BITCODE = NO;

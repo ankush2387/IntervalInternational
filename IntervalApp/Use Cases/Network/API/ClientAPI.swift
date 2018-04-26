@@ -116,6 +116,12 @@ extension ClientAPI: ExchangeClientAPIStore {
                                                     onError: reject)
         }
     }
+    
+    func readResorts(for accessToken: DarwinAccessToken, relinquishmentID: String, and resortCode: String) -> Promise<[Resort]> {
+        return Promise { resolve, reject in
+            ExchangeClient.getResortsByClub(accessToken, relinquishmentId: relinquishmentID, clubCode: resortCode, onSuccess: resolve, onError: reject)
+        }
+    }
 }
 
 extension ClientAPI: DirectoryClientAPIStore {

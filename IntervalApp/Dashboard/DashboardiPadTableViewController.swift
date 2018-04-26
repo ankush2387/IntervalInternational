@@ -730,7 +730,7 @@ extension DashboardIPadTableViewController: UICollectionViewDataSource {
             centerView.addSubview(unitLabel)
             
             let priceLabel = UILabel(frame: CGRect(x: 10, y: 35, width: centerView.frame.size.width - 20, height: 20))
-            if let price = topTenDeals.price?.fromPrice, let currencyCode = topTenDeals.price?.currencySymbol {
+            if let price = topTenDeals.price?.lowest, let currencyCode = topTenDeals.price?.currencySymbol {
                 priceLabel.text = "From $" + String(price) + " Wk.".localized()
                 //FIXME(Frank): - all UIViewController for iPad should be removed
                 if let attributedAmount = price.currencyFormatter(for: "From \(currencyCode) Wk.", for: nil, baseLineOffSet: 0) {
