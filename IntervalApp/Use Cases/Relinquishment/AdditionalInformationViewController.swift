@@ -91,7 +91,7 @@ final class AdditionalInformationViewController: UIViewController {
     }
     
     private func createModels(for inventoryUnit: InventoryUnit) -> SingleSelectionCellModel {
-        let text = selectedType == .unitNumber ? inventoryUnit.unitNumber : inventoryUnit.unitSize
+        let text = selectedType == .unitNumber ? inventoryUnit.unitNumber : UnitSize.fromName(name: inventoryUnit.unitSize).friendlyName()
         return SingleSelectionCellModel(cellTitle: text.unwrappedString)
     }
 
@@ -112,7 +112,7 @@ final class AdditionalInformationViewController: UIViewController {
                     let selectedInventoryUnit = units[selectedIndex]
                     strongSelf.previouslySelectedCellModel = cellModels[selectedIndex]
                     strongSelf.viewModel.unitNumberVM?.textFieldValue.next(selectedInventoryUnit.unitNumber)
-                    strongSelf.viewModel.numberOfBedroomsVM?.textFieldValue.next(selectedInventoryUnit.unitSize)
+                    strongSelf.viewModel.numberOfBedroomsVM?.textFieldValue.next(UnitSize.fromName(name: selectedInventoryUnit.unitSize).friendlyName())
                     strongSelf.tableView.reloadData()
                     strongSelf.navigationController?.popViewController(animated: true)
                 }
@@ -125,7 +125,7 @@ final class AdditionalInformationViewController: UIViewController {
                             let selectedInventoryUnit = unitSizes[selectedIndex]
                             strongSelf.previouslySelectedCellModel = cellModels[selectedIndex]
                             strongSelf.viewModel.unitNumberVM?.textFieldValue.next(selectedInventoryUnit.unitNumber)
-                            strongSelf.viewModel.numberOfBedroomsVM?.textFieldValue.next(selectedInventoryUnit.unitSize)
+                            strongSelf.viewModel.numberOfBedroomsVM?.textFieldValue.next(UnitSize.fromName(name: selectedInventoryUnit.unitSize).friendlyName())
                             strongSelf.tableView.reloadData()
                             strongSelf.navigationController?.popViewController(animated: true)
                         }
