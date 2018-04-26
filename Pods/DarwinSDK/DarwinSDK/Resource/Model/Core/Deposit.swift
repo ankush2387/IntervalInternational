@@ -29,6 +29,7 @@ open class Deposit {
     open var waitList : Bool? = false
     open var waitListNumber : Int = 0
     open var insurancePurchase : String?
+    open var homeReplacementWeek : Bool = false
     open lazy var virtualWeekActions = [String]() // VirtualWeekAction
     open var promotion : Promotion?
     
@@ -62,7 +63,7 @@ open class Deposit {
         self.checkInDate = json["checkInDate"].string ?? ""
         self.checkOutDate = json["checkOutDate"].string ?? ""
         self.expirationDate = json["expirationDate"].string ?? ""
-      
+        
         if json["resort"].exists() {
             let resortJson:JSON = json["resort"]
             self.resort = Resort(json: resortJson)
@@ -74,6 +75,7 @@ open class Deposit {
         }
 
         self.supplementalWeek = json["supplementalWeek"].boolValue
+        self.homeReplacementWeek = json["homeReplacementWeek"].boolValue
         self.waitList = json["waitlist"].boolValue
         self.waitListNumber = json["waitListNumber"].intValue
         self.insurancePurchase = json["insurancePurchase"].string ?? ""

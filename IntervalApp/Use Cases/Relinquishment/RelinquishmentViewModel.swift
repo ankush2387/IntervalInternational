@@ -453,6 +453,12 @@ final class RelinquishmentViewModel {
             
         }
         
+        if relinquishment.homeReplacementWeek {
+            let message = "This unit is a cancellation replacement for a previous exchange."
+            extraInformationText = extraInformationText.unwrappedString.isEmpty ?
+                message : extraInformationText.unwrappedString + "\n" + message
+        }
+        
         if relinquishment.memberUnitLocked && !relinquishment.hasActions() && relinquishment.hasResortPhoneNumber() {
             let message = "Unit not available due to resort lock. Please contact resort/club."
             extraInformationText = extraInformationText.unwrappedString.isEmpty ?
