@@ -112,7 +112,7 @@ final class AdditionalInformationViewController: UIViewController {
                     let selectedInventoryUnit = units[selectedIndex]
                     strongSelf.previouslySelectedCellModel = cellModels[selectedIndex]
                     strongSelf.viewModel.unitNumberVM?.textFieldValue.next(selectedInventoryUnit.unitNumber)
-                    strongSelf.viewModel.numberOfBedroomsVM?.textFieldValue.next(UnitSize.fromName(name: selectedInventoryUnit.unitSize).friendlyName())
+                    strongSelf.viewModel.numberOfBedroomsVM?.textFieldValue.next(UnitSize.fromName(name: selectedInventoryUnit.unitSize).friendlyName().localized())
                     strongSelf.tableView.reloadData()
                     strongSelf.navigationController?.popViewController(animated: true)
                 }
