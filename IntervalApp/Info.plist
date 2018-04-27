@@ -31,7 +31,7 @@
 		<key>DarwinSecret</key>
 		<string>ee9acaa2-f08a-11e1-bc20-96c6dd6a022c</string>
 		<key>Environment</key>
-		<string>QA1</string>
+		<string>DEV2</string>
 		<key>LogLevel</key>
 		<string>Debug</string>
 	</dict>

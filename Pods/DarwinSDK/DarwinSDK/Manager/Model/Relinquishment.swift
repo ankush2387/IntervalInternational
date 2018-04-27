@@ -49,6 +49,7 @@ open class Relinquishment {
     open var expirationDate : String?
     open var programPoints : Int = 0
     open var insurancePurchase : String?
+    open var homeReplacementWeek : Bool = false
     
     // Extra
     open var saved : Bool = false
@@ -133,6 +134,7 @@ open class Relinquishment {
         
         // Deposit: Virtual Week Actions
         virtualWeekActions = deposit.virtualWeekActions
+        homeReplacementWeek = deposit.homeReplacementWeek
         
         // Deposit: Flags
         if let value = deposit.waitList {
