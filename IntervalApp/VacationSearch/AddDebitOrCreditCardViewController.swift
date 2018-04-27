@@ -816,6 +816,12 @@ extension AddDebitOrCreditCardViewController: UIPickerViewDelegate {
                 Helper.getStates(countryCode: Constant.GetawaySearchResultCardFormDetailData.countryCode, CompletionBlock: { [weak self] error in
                     if let Error = error {
                         self?.presentErrorAlert(UserFacingCommonError.handleError(Error))
+                    } else if Constant.stateListArray.count == 0 {
+                        DispatchQueue.main.async {
+                            Constant.GetawaySearchResultCardFormDetailData.state = "N/A".localized()
+                            Constant.GetawaySearchResultCardFormDetailData.stateCode = " "
+                            self?.cardDetailTBLview.reloadData()
+                        }
                     }
                 })
                 
