@@ -219,7 +219,9 @@ class CheckOutViewController: UIViewController {
             let strAccept = self.cellWebView.stringByEvaluatingJavaScript(from: jsStringAccept)
             let strReject = self.cellWebView.stringByEvaluatingJavaScript(from: jsStringReject)
             
-            if (isAgreedToFees || !Constant.MyClassConstants.hasAdditionalCharges) && Constant.MyClassConstants.selectedCreditCard != nil && (strAccept == Constant.MyClassConstants.status || strReject == Constant.MyClassConstants.status || !showInsurance) && (isPromotionApplied || Constant.MyClassConstants.recapViewPromotionCodeArray.isEmpty) {
+            let total = Constant.MyClassConstants.exchangeFees?.total ?? Constant.MyClassConstants.rentalFees?.total ?? 0
+            
+            if (isAgreedToFees || !Constant.MyClassConstants.hasAdditionalCharges) && ((Constant.MyClassConstants.selectedCreditCard == nil && total == 0) || Constant.MyClassConstants.selectedCreditCard != nil ) && (strAccept == Constant.MyClassConstants.status || strReject == Constant.MyClassConstants.status || !showInsurance) && (isPromotionApplied || Constant.MyClassConstants.recapViewPromotionCodeArray.isEmpty) {
                 
                 showHudAsync()
                 imageSlider.isHidden = true
