@@ -52,6 +52,8 @@ class SearchResultViewController: UIViewController {
     var showInfoIcon = false
     static let whoWillBeCheckingInViewController = "WhoWillBeCheckingInViewController"
     
+    var selectedIntervalStartDate: String?
+    
     // MARK: - Timer to show availability header
     func runTimer() {
         
@@ -95,6 +97,7 @@ class SearchResultViewController: UIViewController {
         availabilitySurroundingMatchSection = nil
         
         let sections = Constant.MyClassConstants.initialVacationSearch.createSections()
+        availabilitySections = sections
         if sections.isEmpty {
             title = "No Availability".localized()
             searchResultTableView.tableHeaderView = Helper.noResortView(senderView: self.view)
@@ -103,7 +106,7 @@ class SearchResultViewController: UIViewController {
             searchResultTableView.tableHeaderView = UIView()
 
             //FIXME(Frank): Analyze if keep the availabilitySections or availabilityExactMatchSection & availabilitySurroundingMatchSection
-            availabilitySections = sections
+            
             for section in sections {
                 if section.exactMatch {
                     availabilityExactMatchSection = section
@@ -118,9 +121,26 @@ class SearchResultViewController: UIViewController {
         searchResultColelctionView.reloadData()
         
         var index = 0
-        for (calendarItemIndex, calendarItem) in Constant.MyClassConstants.calendarDatesArray.enumerated() where calendarItem.checkInDate == Constant.MyClassConstants.initialVacationSearch.searchCheckInDate {
-            index = calendarItemIndex
-            break
+        
+        if let date = selectedIntervalStartDate {
+            // so we do this in case there is no availability
+            for (calendarItemIndex, calendarItem) in Constant.MyClassConstants.calendarDatesArray.enumerated() where calendarItem.intervalStartDate == date {
+                index = calendarItemIndex
+                break
+            }
+            // we do this when there is availability but we click on a bucket
+            if index == 0, let checkInDate = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval()?.checkInDates?[0] {
+                for (calendarItemIndex, calendarItem) in Constant.MyClassConstants.calendarDatesArray.enumerated() where calendarItem.checkInDate == checkInDate {
+                    index = calendarItemIndex
+                    break
+                }
+                
+            }
+        } else {
+            for (calendarItemIndex, calendarItem) in Constant.MyClassConstants.calendarDatesArray.enumerated() where calendarItem.checkInDate == Constant.MyClassConstants.initialVacationSearch.searchCheckInDate {
+                index = calendarItemIndex
+                break
+            }
         }
         let indexPath = IndexPath(item: index, section: 0)
         searchResultColelctionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
@@ -240,6 +260,8 @@ class SearchResultViewController: UIViewController {
         // Resolve the next active interval based on the Calendar interval selected
         guard let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.resolveNextActiveIntervalFor(intervalStartDate: calendarItem.intervalStartDate!, intervalEndDate: calendarItem.intervalEndDate!) else { return }
         
+        selectedIntervalStartDate = calendarItem.intervalStartDate
+        
         // Fetch CheckIn dates only in the active interval doesn't have CheckIn dates
         if activeInterval.hasCheckInDates() == false {
             
@@ -251,14 +273,13 @@ class SearchResultViewController: UIViewController {
                 
                 RentalClient.searchDates(Session.sharedSession.userAccessToken, request: Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request,
                                          onSuccess: { [weak self] (response) in
-                                            
+                                            Constant.MyClassConstants.initialVacationSearch.rentalSearch?.inventory = []
                                             Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.response = response
                                             // Update active interval
                                             Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
                                             Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch) {
                                                 DispatchQueue.main.async {
-                                                    self?.searchResultColelctionView.reloadSections(IndexSet(integer: 0))
-                                                    self?.hideHudAsync()
+                                                    self?.resortSearchComplete()
                                                     completionBlock?(nil)
                                                 }
                                             }
@@ -275,13 +296,14 @@ class SearchResultViewController: UIViewController {
                 
                 ExchangeClient.searchDates(Session.sharedSession.userAccessToken, request: Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request,
                                            onSuccess: { [weak self](response) in
-                                            
+                                            Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.inventory = nil
                                             Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.response = response
                                             Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
-                                            
-                                            Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                                             self?.hideHudAsync()
-                                            self?.searchResultColelctionView.reloadSections(IndexSet(integer: 0))
+                                            Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                                            DispatchQueue.main.async {
+                                                self?.resortSearchComplete()
+                                            }
                                             completionBlock?(nil)
                 },
                                            
@@ -300,25 +322,40 @@ class SearchResultViewController: UIViewController {
                 
                 // Execute Rental Search Dates
                 RentalClient.searchDates(Session.sharedSession.userAccessToken, request: Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request,
-                                         onSuccess: { (response) in
+                     onSuccess: { (response) in
+                        
+                        Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.response = response
+                        // Update active interval
+                        Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
+                        // Check not available checkIn dates for the active interval for Rental
+                        if activeInterval.hasCheckInDates() == false {
+                            Constant.MyClassConstants.rentalHasNotAvailableCheckInDatesAfterSelectInterval = true
+                        }
+                        
+                        
+                        ExchangeClient.searchDates(Session.sharedSession.userAccessToken, request: Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request,
+                           onSuccess: { [weak self](response) in
+                            Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.inventory = nil
+                            Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.response = response
+                            
+                            // Update active interval
+                            Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
+                            Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                            DispatchQueue.main.async {
+                                self?.resortSearchComplete()
+                            }
+                            completionBlock?(nil)
+                        },
+                           onError: { [weak self] error in
+                            self?.presentErrorAlert(UserFacingCommonError.handleError(error))
+                        })
                                             
-                                            Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.response = response
-                                            // Update active interval
-                                            Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
-                                            // Check not available checkIn dates for the active interval for Rental
-                                            if activeInterval.hasCheckInDates() == false {
-                                                Constant.MyClassConstants.rentalHasNotAvailableCheckInDatesAfterSelectInterval = true
-                                            }
                                             
-                                            // Run Exchange Search Dates
-                                            Helper.executeExchangeSearchDatesAfterSelectInterval(senderVC: self, datesCV: self.searchResultColelctionView, activeInterval: activeInterval)
-                                            completionBlock?(nil)
                                             
                 },
-                                         onError: { error in
-                                            // Run Exchange Search Dates
-                                            Helper.executeExchangeSearchDatesAfterSelectInterval(senderVC: self, datesCV: self.searchResultColelctionView, activeInterval: activeInterval)
-                                            completionBlock?(error)
+                 onError: { error in
+                    // Run Exchange Search Dates
+                    completionBlock?(error)
                 })
                 
             default:
@@ -343,7 +380,7 @@ class SearchResultViewController: UIViewController {
         if let selectedDate = calendarItem.checkInDate?.dateFromShortFormat() {
             intervalPrint(selectedDate)
             Constant.MyClassConstants.vacationSearchShowDate = selectedDate
-            
+            selectedIntervalStartDate = nil
             Helper.helperDelegate = self as HelperDelegate
             
             guard let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval() else { return }
@@ -1509,11 +1546,7 @@ extension SearchResultViewController: UICollectionViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        if section == 0 {
-            return 0
-        } else {
-            return 0
-        }
+        return 0
     }
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
