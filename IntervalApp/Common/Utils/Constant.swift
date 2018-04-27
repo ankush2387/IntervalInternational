@@ -30,21 +30,69 @@ class Constant: NSObject {
     }
     
     //Getaways SearchResult CardFormDetail Data
-    struct GetawaySearchResultGuestFormDetailData {
+    
+    class GuestCertificateFormData {
         
-        static var textFieldChangedInSection = -1
-        static var firstName = ""
-        static var lastName = ""
-        static var country = ""
-        static var address1 = ""
-        static var address2 = ""
-        static var city = ""
-        static var state = ""
-        static var pinCode = ""
-        static var email = ""
-        static var homePhoneNumber = ""
-        static var businessPhoneNumber = ""
+        var textFieldChangedInSection = -1
+        var firstName = ""
+        var lastName = ""
+        var country = ""
+        var countryCode = ""
+        var address1 = ""
+        var address2 = ""
+        var city = ""
+        var state = ""
+        var stateCode = ""
+        var pinCode = ""
+        var email = ""
+        var homePhoneNumber = ""
+        var businessPhoneNumber = ""
         
+        func isFilledOut() -> Bool {
+            return self.firstName != ""
+                && self.lastName != ""
+                && self.country != ""
+                && self.address1 != ""
+                && self.city != ""
+                && self.state != ""
+                && self.pinCode != ""
+                && self.email != ""
+                && self.homePhoneNumber != ""
+        }
+        
+        func toGuest() -> Guest {
+            let guest = Guest()
+            
+            guest.firstName = self.firstName
+            guest.lastName = self.lastName
+            guest.primaryTraveler = true
+            
+            let guestAddress = Address()
+            var address = [String]()
+            address.append(self.address1)
+            address.append(self.address2)
+            guestAddress.addressLines = address
+            
+            guestAddress.cityName = self.city
+            guestAddress.postalCode = self.pinCode
+            guestAddress.addressType = "HADDR"
+            guestAddress.territoryCode = self.stateCode
+            guestAddress.countryCode = self.countryCode
+            
+            var phoneNumbers = [Phone]()
+            let homePhoneNo = Phone()
+            homePhoneNo.phoneNumber = self.homePhoneNumber
+            // FIXME (FRANK/CHRIS) we need to get this data from the views
+            homePhoneNo.countryPhoneCode = "1"
+            homePhoneNo.phoneType = "HOME_PRIMARY"
+            homePhoneNo.areaCode = "305"
+            homePhoneNo.countryCode = self.countryCode
+            phoneNumbers.append(homePhoneNo)
+            
+            guest.phones = phoneNumbers
+            guest.address = guestAddress
+            return guest
+        }
     }
     
     struct AdditionalUnitDetailsData {
@@ -189,7 +237,6 @@ class Constant: NSObject {
         
         //***** New creditcard screen constant string *****//
         static var newCardalertTitle = "Credit Card Information".localized()
-        static var newCardalertMess = "Card already exist.".localized()
         static var alertReqFieldMsg = "Please fill out all required fields.".localized()
         static var noResultError = "No Result".localized()
         static var tryAgainError = "Try Again".localized()
@@ -204,8 +251,8 @@ class Constant: NSObject {
         static var whoWillBeCheckingInHeaderTextArray = ["From the list below, who on your membership will be checking in?".localized(), "", "Guest Name".localized(), "Guest Address", "Guest Contact info".localized(), ""]
         
         //***** checkout screen table header footer string array *****//
-        static var checkOutScreenHeaderTextArray = ["", "Promotions".localized(), "Exchange Options".localized(), "Add Trip Protection(Recommended)".localized(), "Your Booking Costs".localized(), "", "", "", "Payment Method".localized(), "Confirmation Email".localized()]
-        static var checkOutScreenHeaderIPadTextArray = ["", "Promotions".localized(), "Exchange Options".localized(), "Add Trip Protection(Recommended)".localized(), "Payment Method".localized(), "Confirmation Email".localized(), "", "", "", ""]
+        static var checkOutScreenHeaderTextArray = ["", "Promotions".localized(), "Exchange Options".localized(), "Trip Protection".localized(), "Your Booking Costs".localized(), "", "", "", "Payment Method".localized(), "Confirmation Email".localized()]
+        static var checkOutScreenHeaderIPadTextArray = ["", "Promotions".localized(), "Exchange Options".localized(), "Trip Protection".localized(), "Payment Method".localized(), "Confirmation Email".localized(), "", "", "", ""]
         
         //***** Initializing plicy list table cell content array *****//
         static var policyListTblCellContentArray = ["Terms & Conditions".localized(), "Privacy Policy".localized(), "Legal Information".localized(), "Contact Us".localized(), "Email Us".localized(), "Our Offices".localized(), "Version \(Helper.getBuildVersion())".localized()]
@@ -453,8 +500,8 @@ class Constant: NSObject {
         static var upgradeCost = "Unit-Size Upgrade".localized()
         static var guestCertificateTitle = "Guest Certificate".localized()
         static var renewals = "Renewals".localized()
-        static var exchangeFeeTitle = "Exchange Fee"
-        static var getawayFee = "Getaway Fee"
+        static var exchangeFeeTitle = "Exchange".localized()
+        static var getawayFee = "Getaway".localized()
         static var eplus = "EPlus"
         static var taxesTitle = "Taxes"
         static var emailRegex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
@@ -462,14 +509,12 @@ class Constant: NSObject {
         static var endingIn = "ending in"
         
         static var enableTaxes = false
-        static var enableGuestCertificate = false
         
         static var hasAdditionalCharges = false
         static var guestString = "guest"
         static var additionalAdv = "ADDITIONAL INFORMATION"
         static var dateFormat = "yyyy-MM-dd"
         static var monthDateFormat = "yyyy-MM"
-        static var dateTimeFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
         
         //use for no Availability Cell
         //FIXME(Frank): what mean this? - can showNearestCheckInDateSelectedMessage?
@@ -745,7 +790,7 @@ class Constant: NSObject {
         static var maximumLimitReachedMessage = "Maximum limit reached".localized()
         static var bedroomSizeAlertMessage = "Please select at least one master or lock-off portion. ".localized()
         static var feesAlertMessage = "Slide to Agree to Fees ".localized()
-        static var insuranceSelectionMessage = "Select trip protection or choose \("\"No I decline coverage.\"")".localized()
+        static var insuranceSelectionMessage = "Please select an insurance option.".localized()
         static var paymentSelectionMessage = "Please enter a valid credit card. ".localized()
         static var promotionsMessage = "Please select any promotions. ".localized()
         static var feesPaymentMessage = "I acknowledge and agree that the mandatory resort fees will be payable to the resort. Fees are per person and per day".localized()
@@ -753,7 +798,7 @@ class Constant: NSObject {
         static var termsConditionMessage = "I have read and accepted the Terms and Conditions and Privacy Policy".localized()
         static var agreePayMessage = "Slide to Agree and Pay".localized()
         static var operationFailedMessage =  "Unable to perform back button operatin due to server error, Try again!".localized()
-        static var availablePointToolDefaultSelectedDateAlert =  "if no date is selected the Available Points Balance displayed is based on today's date.".localized()
+        static var availablePointToolDefaultSelectedDateAlert =  "If no date is selected, the Available Points Balance displayed is based on today's date.".localized()
         static var holdingTimeLostMessage = "The booking time has expired and your selection is no longer on hold. You will now be returned to the search results.".localized()
         static var searchVacationTitle = "Search Vacation".localized()
         static var searchVacationMessage = "Please select any destination or resort".localized()
@@ -923,7 +968,7 @@ class Constant: NSObject {
         static var privacyLegalViewController = "Privacy/Legal".localized()
         static var vacationSearchDestinationController = "Select Destinations or Resorts".localized()
         static var searchResultViewController = "Search Results".localized()
-        static var availablePointToolViewController = "Available Point Tool".localized()
+        static var availablePointToolViewController = "Available Points Tool".localized()
         static var floatDetailViewController = "Additional Unit Details".localized()
         static var clubresortsViewController = "Club Resorts".localized()
         static var bedroomSizeViewController = "Bedroom Size".localized()
@@ -1370,7 +1415,6 @@ class Constant: NSObject {
     struct segueIdentifiers {
         
         static var dashboradSegueIdentifier = "dashboardSegue"
-        static var CalendarViewSegue = "CalendarViewSegue"
         static var detailDestinationSegue = "DetailDestinationSegue"
         static var privacyPolicyWebviewSegue = "privacyPolicySegue"
         static var searchResultSegue = "SearchResultSegue"
@@ -1489,7 +1533,7 @@ class Constant: NSObject {
         static let expirationdateInformationLabelText = "Expiration Date:".localized()
         static let pointsearnedByInformationLabelText = "Points Earned by:".localized()
         static let availablePointsinformationLabelText = "Available Points".localized()
-        static let pointbalanceInformationlableText = "if no date is selected the Available Points Balance displayed is based on today's date.".localized()
+        static let pointbalanceInformationlableText = "If no date is selected, the Available Points Balance displayed is based on today's date.".localized()
         static let donebuttoncellIdentifier = "donebuttoncell"
         struct availablePointsAsOfTableViewCell {
             static let pointasOflabelText = "Points as of:".localized()
@@ -1578,6 +1622,7 @@ class Constant: NSObject {
     struct memberShipViewController {
         static let ownershipDetailCellIdentifier = "ownershipDetailCell"
         static let membershipDetailCellIdentifier = "membershipDetailCell"
+        static let membershipProductCellIdentifier = "membershipProductCell"
         static let ownershipHeaderTitletext = "Ownerships".localized()
         static let switchMembershipAlertMessage = "You have chosen to use a different membership account. Please note, benefit and exchange access may change. Would you like to continue?".localized()
         static let switchMembershipAlertTitle = "You are Switchinig Memberships".localized()

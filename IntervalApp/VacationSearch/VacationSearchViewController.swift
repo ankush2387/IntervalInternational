@@ -252,23 +252,31 @@ class VacationSearchViewController: UIViewController {
     //***** Calendar icon pressed action to present calendar controller *****//
     func calendarIconClicked(_ sender: IUIKButton) {
         ADBMobile.trackAction(Constant.omnitureEvents.event66, data: nil)
-        self.performSegue(withIdentifier: Constant.segueIdentifiers.CalendarViewSegue, sender: nil)
+        
+        let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+        if let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.calendarViewController) as? CalendarViewController {
+            
+            viewController.didSelectDate = { [weak self] selectedDate in
+                self?.defaults.set(selectedDate, forKey: Constant.MyClassConstants.selectedDate)
+                Constant.MyClassConstants.vacationSearchShowDate = selectedDate.unsafelyUnwrapped
+
+            }
+            navigationController?.pushViewController(viewController, animated: true)
+        }
     }
     
     //***** Add location pressed action to show map screen with list of location to select *****//
-    func addLocationInSection0Pressed(_ sender: IUIKButton) {
+    func addLocationPressed() {
         Constant.MyClassConstants.selectionType = 0
-        let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.iphone, bundle: nil)
+        let mainStoryboard = UIStoryboard(name: Constant.storyboardNames.iphone, bundle: nil)
         let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.resortDirectoryViewController) as! GoogleMapViewController
         viewController.sourceController = Constant.MyClassConstants.vacationSearch
         Constant.MyClassConstants.runningFunctionality = Constant.MyClassConstants.vacationSearch
-        let transitionManager = TransitionManager()
-        navigationController?.transitioningDelegate = transitionManager
         navigationController?.pushViewController(viewController, animated: true)
     }
     
     //***** Add location pressed action to show map screen with list of location to select *****//
-    func addRelinquishmentSectionButtonPressed(_ sender: IUIKButton) {
+    func addRelinquishmentSectionButtonPressed() {
         showHudAsync()
         
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
@@ -437,7 +445,7 @@ extension VacationSearchViewController: UICollectionViewDataSource {
             centerView.addSubview(unitLabel)
             
             let priceLabel = UILabel(frame: CGRect(x: 10, y: 35, width: centerView.frame.size.width - 20, height: 20))
-            if let pricefrom = deal.price?.fromPrice, let currencyCode = deal.price?.currencySymbol {
+            if let pricefrom = deal.price?.lowest, let currencyCode = deal.price?.currencySymbol {
                 
                 let fromAttributedString = NSMutableAttributedString(string: "From ".localized(), attributes: nil)
                 let amount = Int(pricefrom)
@@ -528,7 +536,7 @@ extension VacationSearchViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
         let headerView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 50))
-        let headerTextLabel = UILabel(frame: CGRect(x: 15, y: 5, width: self.view.bounds.width - 30, height: 50))
+        let headerTextLabel = UILabel(frame: CGRect(x: 15, y: 0, width: self.view.bounds.width - 30, height: 50))
         
         if segmentTitle != Constant.segmentControlItems.getaways {
             
@@ -556,13 +564,13 @@ extension VacationSearchViewController: UITableViewDelegate {
         
         if tableView.numberOfSections == 6 || tableView.numberOfSections == 7 {
             if section < 4 {
-                return 55
+                return 50
             } else {
                 return 0
             }
         } else {
             if section < 3 {
-                return 55
+                return 50
             } else {
                 return 0
             }
@@ -589,11 +597,12 @@ extension VacationSearchViewController: UITableViewDelegate {
                         if Constant.MyClassConstants.whereTogoContentArray.count > 0 {
                             ADBMobile.trackAction(Constant.omnitureEvents.event7, data: nil)
                             Constant.MyClassConstants.whereTogoContentArray.removeObject(at: indexPath.row)
-                            
+                            tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
+                            DispatchQueue.main.async {
+                                tableView.reloadData()
+                            }
                         }
-                        tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
-                        
-                    } catch {
+                 } catch {
                         self.presentErrorAlert(UserFacingCommonError.generic)
                     }
                 }
@@ -802,23 +811,10 @@ extension VacationSearchViewController: UITableViewDataSource {
                 if indexPath.section == 0 {
                     
                     if Constant.MyClassConstants.whereTogoContentArray.count == 0 || indexPath.row == Constant.MyClassConstants.whereTogoContentArray.count {
-                        
-                        let cell = tableView.dequeueReusableCell(withIdentifier: Constant.dashboardTableScreenReusableIdentifiers.cellIdentifier, for: indexPath)
-                        cell.selectionStyle = UITableViewCellSelectionStyle.none
-                        for subview in cell.subviews {
-                            subview.removeFromSuperview()
+                        guard let cell = tableView.dequeueReusableCell(withIdentifier: AddButtonTableViewCell.identifier, for: indexPath) as? AddButtonTableViewCell else { return UITableViewCell() }
+                        cell.addButtonTapped = { [weak self] in
+                            self?.addLocationPressed()
                         }
-                        let cell_width = cell.contentView.bounds.width
-                        let addLocationButton = IUIKButton(frame: CGRect(x: cell_width / 2 - (cell_width / 5) / 2, y: 15, width: cell_width / 5, height: 30))
-                        addLocationButton.setTitle(Constant.buttonTitles.add, for: UIControlState.normal)
-                        addLocationButton.setTitleColor(IUIKColorPalette.primary3.color, for: UIControlState.normal)
-                        addLocationButton.layer.borderColor = IUIKColorPalette.primary3.color.cgColor
-                        addLocationButton.layer.cornerRadius = 6
-                        addLocationButton.layer.borderWidth = 2
-                        addLocationButton.addTarget(self, action: #selector(VacationSearchViewController.addLocationInSection0Pressed(_:)), for: .touchUpInside)
-                        cell.backgroundColor = UIColor.clear
-                        cell.addSubview(addLocationButton)
-                        
                         return cell
                     } else {
                         
@@ -873,24 +869,12 @@ extension VacationSearchViewController: UITableViewDataSource {
                     //***** Checking array content to configure and return content cell or calendar cell *****//
                     
                     if Constant.MyClassConstants.whatToTradeArray.count == 0 || indexPath.row == Constant.MyClassConstants.whatToTradeArray.count {
-                        
-                        let cell = tableView.dequeueReusableCell(withIdentifier: Constant.dashboardTableScreenReusableIdentifiers.cellIdentifier, for: indexPath)
-                        cell.selectionStyle = UITableViewCellSelectionStyle.none
-                        for subview in cell.subviews {
-                            subview.removeFromSuperview()
+                        guard let cell = tableView.dequeueReusableCell(withIdentifier: AddButtonTableViewCell.identifier, for: indexPath) as? AddButtonTableViewCell else { return UITableViewCell() }
+                        cell.addButtonTapped = { [weak self] in
+                            self?.addRelinquishmentSectionButtonPressed()
                         }
-                        let cell_width = cell.contentView.bounds.width
-                        let addLocationButton = IUIKButton(frame: CGRect(x: cell_width / 2 - (cell_width / 5) / 2, y: 15, width: cell_width / 5, height: 30))
-                        addLocationButton.setTitle(Constant.buttonTitles.add, for: UIControlState.normal)
-                        addLocationButton.setTitleColor(IUIKColorPalette.primary3.color, for: UIControlState.normal)
-                        addLocationButton.layer.borderColor = IUIKColorPalette.primary3.color.cgColor
-                        addLocationButton.layer.cornerRadius = 6
-                        addLocationButton.layer.borderWidth = 2
-                        addLocationButton.addTarget(self, action: #selector(VacationSearchViewController.addRelinquishmentSectionButtonPressed(_:)), for: .touchUpInside)
-                        
-                        cell.addSubview(addLocationButton)
-                        cell.backgroundColor = UIColor.clear
                         return cell
+                        
                     } else {
                         
                         guard let cell = tableView.dequeueReusableCell(withIdentifier: "WhereToGoContentCell", for: indexPath) as? WhereToGoContentCell else { return UITableViewCell() }
@@ -1145,24 +1129,13 @@ extension VacationSearchViewController: UITableViewDataSource {
                 //***** Checking array content to configure and return content cell or add button cell *****//
                 
                 if Constant.MyClassConstants.whereTogoContentArray.count == 0 || indexPath.row == Constant.MyClassConstants.whereTogoContentArray.count {
-                    
-                    let cell = tableView.dequeueReusableCell(withIdentifier: Constant.dashboardTableScreenReusableIdentifiers.cellIdentifier, for: indexPath)
-                    
-                    cell.selectionStyle = UITableViewCellSelectionStyle.none
-                    for subview in cell.subviews {
-                        subview.removeFromSuperview()
+                    guard let cell = tableView.dequeueReusableCell(withIdentifier: AddButtonTableViewCell.identifier, for: indexPath) as? AddButtonTableViewCell else {
+                        return UITableViewCell()
                     }
-                    
-                    let cell_width = cell.contentView.bounds.width
-                    let addLocationButton = IUIKButton(frame: CGRect(x: cell_width / 2 - (cell_width / 5) / 2, y: 15, width: cell_width / 5, height: 30))
-                    addLocationButton.setTitle(Constant.buttonTitles.add, for: UIControlState.normal)
-                    addLocationButton.setTitleColor(IUIKColorPalette.primary3.color, for: UIControlState.normal)
-                    addLocationButton.layer.borderColor = IUIKColorPalette.primary3.color.cgColor
-                    addLocationButton.layer.cornerRadius = 4
-                    addLocationButton.layer.borderWidth = 2
-                    cell.addSubview(addLocationButton)
-                    cell.backgroundColor = UIColor.clear
-                    addLocationButton.addTarget(self, action: #selector(VacationSearchViewController.addLocationInSection0Pressed(_:)), for: .touchUpInside)
+                    cell.selectionStyle = UITableViewCellSelectionStyle.none
+                    cell.addButtonTapped = { [weak self] in
+                        self?.addLocationPressed()
+                    }
                     return cell
                 } else {
                     
@@ -1466,14 +1439,14 @@ extension VacationSearchViewController: SearchTableViewCellDelegate {
             var searchType: VacationSearchType
             let requestRental = RentalSearchRegionsRequest()
             let requestExchange = ExchangeSearchRegionsRequest()
-            
             //Seprate exchange, rental and search both region search
             switch segmentTitle {
             case Constant.segmentControlItems.exchange:
                 requestExchange.setCheckInToDate(checkInToDate)
                 requestExchange.travelParty = Constant.MyClassConstants.travelPartyInfo
+                requestExchange.relinquishmentsIds = availableRelinquishmentIdArray
                 searchType = VacationSearchType.EXCHANGE
-                
+
             case Constant.segmentControlItems.getaways:
                 requestRental.setCheckInToDate(checkInToDate)
                 searchType = VacationSearchType.RENTAL
@@ -1632,8 +1605,7 @@ extension VacationSearchViewController: SearchTableViewCellDelegate {
                             Constant.MyClassConstants.initialVacationSearch = VacationSearch(settings, exchangeSearchCriteria)
                         }
                         
-                        ExchangeClient.searchDates(Session.sharedSession.userAccessToken, request:Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request, onSuccess: { response in
-                            
+                        ExchangeClient.searchDates(Session.sharedSession.userAccessToken, request:Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request, onSuccess: { [weak self] response in
                             sender.isEnabled = true
                             Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.response = response
                             
@@ -1643,12 +1615,12 @@ extension VacationSearchViewController: SearchTableViewCellDelegate {
                             Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
                             Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                             // Check not available checkIn dates for the active interval
-                            activeInterval.hasCheckInDates() ? self.exchangeSearchAvailability(activeInterval: activeInterval) : self.noAvailabilityResults()
+                            activeInterval.hasCheckInDates() ? self?.exchangeSearchAvailability(activeInterval: activeInterval) : self?.noAvailabilityResults()
                             
-                        }, onError: { error in
+                        }, onError: { [weak self] error in
                             sender.isEnabled = true
-                            self.hideHudAsync()
-                            self.presentErrorAlert(UserFacingCommonError.handleError(error))
+                            self?.hideHudAsync()
+                            self?.presentErrorAlert(UserFacingCommonError.handleError(error))
                         })
                     }
                     

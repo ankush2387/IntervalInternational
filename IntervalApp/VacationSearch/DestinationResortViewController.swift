@@ -96,8 +96,8 @@ class DestinationResortViewController: UIViewController {
             let advisements = Constant.MyClassConstants.exchangeViewResponse.destination?.unit?.amenities.count ?? 0
             isSepratorNeeded = advisements > 0 ? true : false
         } else {
-            advisements = Constant.MyClassConstants.viewResponse.resort?.advisements
-            let advisements = Constant.MyClassConstants.viewResponse.resort?.amenities.count ?? 0
+            advisements = Constant.MyClassConstants.viewResponse.destination?.resort?.advisements
+            let advisements = Constant.MyClassConstants.viewResponse.destination?.resort?.amenities.count ?? 0
             isSepratorNeeded = advisements > 0 ? true : false
         }
         guard let resortAdvisements = advisements else { return UIView() }
@@ -118,7 +118,7 @@ class DestinationResortViewController: UIViewController {
                 descriptionLabel.numberOfLines = 0
                 descriptionLabel.lineBreakMode = NSLineBreakMode.byWordWrapping
                 descriptionLabel.font = UIFont(name: Constant.fontName.helveticaNeue, size: 16.0)
-                descriptionLabel.text = advisement.description
+                descriptionLabel.text = advisement.description.joined(separator: ". ")
                 descriptionLabel.sizeToFit()
                 advisementView?.addSubview(descriptionLabel)
                 advisementSectionHeight = advisementSectionHeight + descriptionLabel.frame.height + 10
@@ -129,7 +129,7 @@ class DestinationResortViewController: UIViewController {
                 descriptionLabel.numberOfLines = 0
                 descriptionLabel.lineBreakMode = NSLineBreakMode.byWordWrapping
                 descriptionLabel.font = UIFont(name: Constant.fontName.helveticaNeue, size: 16.0)
-                descriptionLabel.text = advisement.description
+                descriptionLabel.text = advisement.description.joined(separator: ". ")
                 descriptionLabel.sizeToFit()
                 additionalAdvisementView?.addSubview(descriptionLabel)
                 additionalAdvisementCellHeight = additionalAdvisementCellHeight + descriptionLabel.frame.height + 10
@@ -155,8 +155,8 @@ class DestinationResortViewController: UIViewController {
             let advisements = Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.advisements.count ?? 0
             isSepratorNeeded = advisements > 0 ? true : false
         } else {
-            inventoryUnit = Constant.MyClassConstants.viewResponse.unit
-            let advisements = Constant.MyClassConstants.viewResponse.resort?.advisements.count ?? 0
+            inventoryUnit = Constant.MyClassConstants.viewResponse.destination?.unit
+            let advisements = Constant.MyClassConstants.viewResponse.destination?.resort?.advisements.count ?? 0
             isSepratorNeeded = advisements > 0 ? true : false
         }
         guard let unitDetils = inventoryUnit else { return UIView() }
@@ -231,7 +231,7 @@ extension DestinationResortViewController: UITableViewDataSource {
                 guard let advisements = Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.advisements else { return 0 }
                 return advisements.count > 0 ? 1 : 0
             } else {
-                 guard let advisements = Constant.MyClassConstants.viewResponse.resort?.advisements else { return 0 }
+                 guard let advisements = Constant.MyClassConstants.viewResponse.destination?.resort?.advisements else { return 0 }
                 return advisements.count > 0 ? 1 : 0
             }
         case 4:
@@ -246,7 +246,7 @@ extension DestinationResortViewController: UITableViewDataSource {
                 }
                
             } else {
-                guard let amenities = Constant.MyClassConstants.viewResponse.unit?.amenities else { return 0 }
+                guard let amenities = Constant.MyClassConstants.viewResponse.destination?.unit?.amenities else { return 0 }
                 if amenities.isEmpty {
                     return 0
                 } else {
@@ -266,7 +266,7 @@ extension DestinationResortViewController: UITableViewDataSource {
                 }
                
             } else {
-                guard let advisement = Constant.MyClassConstants.viewResponse.resort?.advisements else { return 0 }
+                guard let advisement = Constant.MyClassConstants.viewResponse.destination?.resort?.advisements else { return 0 }
                 if advisement.isEmpty {
                     return 0
                 } else {
@@ -334,7 +334,7 @@ extension DestinationResortViewController: UITableViewDataSource {
             if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
                 imagesArray = Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.images ?? []
             } else {
-                imagesArray = Constant.MyClassConstants.viewResponse.resort?.images ?? []
+                imagesArray = Constant.MyClassConstants.viewResponse.destination?.resort?.images ?? []
                 
             }
             
@@ -358,11 +358,11 @@ extension DestinationResortViewController: UITableViewDataSource {
                 
             } else {
                 
-                cell.resortName?.text = Constant.MyClassConstants.viewResponse.resort?.resortName
-                if let address = Constant.MyClassConstants.viewResponse.resort?.address {
+                cell.resortName?.text = Constant.MyClassConstants.viewResponse.destination?.resort?.resortName
+                if let address = Constant.MyClassConstants.viewResponse.destination?.resort?.address {
                     cell.resortAddress?.text = address.postalAddresAsString()
                 }
-                cell.resortCode?.text = Constant.MyClassConstants.viewResponse.resort?.resortCode
+                cell.resortCode?.text = Constant.MyClassConstants.viewResponse.destination?.resort?.resortCode
             }
             return cell
             
@@ -400,7 +400,7 @@ extension DestinationResortViewController: UITableViewDataSource {
             } else {
                 
                 //for rental process
-                if let checkInDate = Constant.MyClassConstants.viewResponse.unit?.checkInDate?.dateFromString(for: Constant.MyClassConstants.dateFormat) {
+                if let checkInDate = Constant.MyClassConstants.viewResponse.destination?.unit?.checkInDate?.dateFromString(for: Constant.MyClassConstants.dateFormat) {
                     
                     let checkInDateComponents = Calendar.current.dateComponents([.day, .weekday, .month, .year], from: checkInDate)
                     cell.checkInDayDateLabel.text = String(checkInDateComponents.day ?? 0).localized()
@@ -412,7 +412,7 @@ extension DestinationResortViewController: UITableViewDataSource {
                     cell.checkInMonthYearLabel.text = ""
                 }
             
-                if let checkOutDate = Constant.MyClassConstants.viewResponse.unit?.checkOutDate?.dateFromString(for: Constant.MyClassConstants.dateFormat) {
+                if let checkOutDate = Constant.MyClassConstants.viewResponse.destination?.unit?.checkOutDate?.dateFromString(for: Constant.MyClassConstants.dateFormat) {
                     
                     let checkOutDateComponents = Calendar.current.dateComponents([.day, .weekday, .month, .year], from: checkOutDate)
                     //updating date label with date components.
@@ -463,12 +463,12 @@ extension DestinationResortViewController: UITableViewDataSource {
                 
             } else {
                 // for rental search
-                if let roomSize = Constant.MyClassConstants.viewResponse.unit?.unitSize, let kitchen = Constant.MyClassConstants.viewResponse.unit?.kitchenType {
+                if let roomSize = Constant.MyClassConstants.viewResponse.destination?.unit?.unitSize, let kitchen = Constant.MyClassConstants.viewResponse.destination?.unit?.kitchenType {
                     guard let roomSize = UnitSize(rawValue: roomSize) else { return cell }
                     guard let kitchenSize = KitchenType(rawValue: kitchen) else { return cell }
                     cell.bedroomKitchenLabel.text = Helper.getBedroomNumbers(bedroomType: roomSize.rawValue).appending(", ").appending(Helper.getKitchenEnums(kitchenType: kitchenSize.rawValue))
                 }
-                if let totalSleeps = Constant.MyClassConstants.viewResponse.unit?.publicSleepCapacity, let privateSleeps = Constant.MyClassConstants.viewResponse.unit?.privateSleepCapacity {
+                if let totalSleeps = Constant.MyClassConstants.viewResponse.destination?.unit?.publicSleepCapacity, let privateSleeps = Constant.MyClassConstants.viewResponse.destination?.unit?.privateSleepCapacity {
                     cell.sleepLabel.text = "Sleeps \(totalSleeps) Total, \(privateSleeps) Private"
                 }
                 return cell

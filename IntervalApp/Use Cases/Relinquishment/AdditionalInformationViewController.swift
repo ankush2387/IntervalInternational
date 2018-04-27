@@ -87,11 +87,11 @@ final class AdditionalInformationViewController: UIViewController {
     }
     
     private func createModels(for resort: Resort) -> SingleSelectionCellModel {
-        return SingleSelectionCellModel(cellTitle: resort.resortName.unwrappedString)
+        return SingleSelectionCellModel(cellTitle: "\(resort.resortName.unwrappedString) - \(resort.resortCode.unwrappedString)")
     }
     
     private func createModels(for inventoryUnit: InventoryUnit) -> SingleSelectionCellModel {
-        let text = selectedType == .unitNumber ? inventoryUnit.unitNumber : inventoryUnit.unitSize
+        let text = selectedType == .unitNumber ? inventoryUnit.unitNumber : UnitSize.fromName(name: inventoryUnit.unitSize).friendlyName()
         return SingleSelectionCellModel(cellTitle: text.unwrappedString)
     }
 
@@ -112,7 +112,7 @@ final class AdditionalInformationViewController: UIViewController {
                     let selectedInventoryUnit = units[selectedIndex]
                     strongSelf.previouslySelectedCellModel = cellModels[selectedIndex]
                     strongSelf.viewModel.unitNumberVM?.textFieldValue.next(selectedInventoryUnit.unitNumber)
-                    strongSelf.viewModel.numberOfBedroomsVM?.textFieldValue.next(selectedInventoryUnit.unitSize)
+                    strongSelf.viewModel.numberOfBedroomsVM?.textFieldValue.next(UnitSize.fromName(name: selectedInventoryUnit.unitSize).friendlyName().localized())
                     strongSelf.tableView.reloadData()
                     strongSelf.navigationController?.popViewController(animated: true)
                 }
@@ -125,7 +125,7 @@ final class AdditionalInformationViewController: UIViewController {
                             let selectedInventoryUnit = unitSizes[selectedIndex]
                             strongSelf.previouslySelectedCellModel = cellModels[selectedIndex]
                             strongSelf.viewModel.unitNumberVM?.textFieldValue.next(selectedInventoryUnit.unitNumber)
-                            strongSelf.viewModel.numberOfBedroomsVM?.textFieldValue.next(selectedInventoryUnit.unitSize)
+                            strongSelf.viewModel.numberOfBedroomsVM?.textFieldValue.next(UnitSize.fromName(name: selectedInventoryUnit.unitSize).friendlyName())
                             strongSelf.tableView.reloadData()
                             strongSelf.navigationController?.popViewController(animated: true)
                         }
@@ -153,7 +153,9 @@ final class AdditionalInformationViewController: UIViewController {
             strongSelf.pushPickerViewController(with: cellModels) { selectedIndex in
                 strongSelf.previouslySelectedCellModel = cellModels[selectedIndex]
                 strongSelf.viewModel.resort.next(resorts[selectedIndex])
-                strongSelf.tableView.reloadData()
+                strongSelf.viewModel.reload()
+                    .then(strongSelf.reloadData)
+                    .onViewError(strongSelf.presentErrorAlert)
                 strongSelf.navigationController?.popViewController(animated: true)
             }
         }
@@ -225,6 +227,7 @@ final class AdditionalInformationViewController: UIViewController {
             let format = "yyyy/MM/dd"
             var resortCalendars: [ResortCalendar]?
             
+            viewController.calendarContext = CalendarContext.additionalInformationFloatWeek
             viewController.didSelectDate = { [weak self] date in
                 guard let strongSelf = self else { return }
                 

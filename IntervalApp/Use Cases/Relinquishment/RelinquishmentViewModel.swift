@@ -13,6 +13,12 @@ import IntervalUIKit
 
 final class RelinquishmentViewModel {
     
+    // MARK: - Public properties
+    var hasRelinquishmentData: Bool {
+        guard let myUnits = myUnits else { return false }
+        return !myUnits.deposits.isEmpty || !myUnits.openWeeks.isEmpty || myUnits.pointsProgram?.availablePoints != nil
+    }
+    
     // MARK: - Private properties
     private let clientAPI: ExchangeClientAPIStore
     private let directoryClientAPIStore: DirectoryClientAPIStore
@@ -22,6 +28,7 @@ final class RelinquishmentViewModel {
     private let sectionTitle = ["Club Interval Gold Weeks".localized(), nil, "Points".localized(), "Interval Weeks".localized()]
     
     private enum Section: Int { case cigProgram, cigWeeks, points, intervalWeeks }
+    private var myUnits: MyUnits?
     private var relinquishments: [Section: [Relinquishment]] = [:]
     private var simpleCellViewModels: [Section: [SimpleCellViewModel]] = [:]
     
@@ -240,6 +247,7 @@ final class RelinquishmentViewModel {
     private func processRelinquishmentGroups(myUnits: MyUnits) -> Promise<Void> {
         return Promise { [unowned self] resolve, reject in
             
+            self.myUnits = myUnits
             Helper.storeInConstants(myUnits: myUnits)
             let relinquishmentGroups = self.relinquishmentManager.getRelinquishmentSections(myUnits: myUnits)
             
@@ -445,6 +453,12 @@ final class RelinquishmentViewModel {
             
         }
         
+        if relinquishment.homeReplacementWeek {
+            let message = "This unit is a cancellation replacement for a previous exchange."
+            extraInformationText = extraInformationText.unwrappedString.isEmpty ?
+                message : extraInformationText.unwrappedString + "\n" + message
+        }
+        
         if relinquishment.memberUnitLocked && !relinquishment.hasActions() && relinquishment.hasResortPhoneNumber() {
             let message = "Unit not available due to resort lock. Please contact resort/club."
             extraInformationText = extraInformationText.unwrappedString.isEmpty ?
@@ -459,6 +473,10 @@ final class RelinquishmentViewModel {
             }
             extraInformationText = extraInformationText.unwrappedString.isEmpty ?
                 message : extraInformationText.unwrappedString + "\n" + message
+        }
+        
+        if relinquishment.isDeposit(), let expirationDate = relinquishment.expirationDate?.dateFromString(), expirationDate.numberOfDaysToToday() < 0 {
+            extraInformationText = "This feature is not available through the mobile app. To extend your week, visit intervalworld.com."
         }
         
         return extraInformationText?.localized()
@@ -573,17 +591,20 @@ final class RelinquishmentViewModel {
             let storedata = OpenWeeksStorage()
             let selectedOpenWeek = OpenWeeks()
             let relinquishmentList = TradeLocalData()
-            selectedOpenWeek.weekNumber = relinquishment.weekNumber.unwrappedString
+            
+            // after we come back from additional information view we need to make sure to check the fix week
+            selectedOpenWeek.weekNumber = relinquishment.fixWeekReservation?.weekNumber ?? relinquishment.weekNumber.unwrappedString
             selectedOpenWeek.relinquishmentID = relinquishment.relinquishmentId.unwrappedString
             selectedOpenWeek.relinquishmentYear = relinquishment.relinquishmentYear ?? 0
+            
             let unitDetails = ResortUnitDetails()
-            if let inventoryUnits = relinquishment.unit {
+            if let inventoryUnits = relinquishment.fixWeekReservation?.unit ?? relinquishment.unit {
                 unitDetails.kitchenType = inventoryUnits.unitDetailsUIFormatted
                 unitDetails.unitSize = inventoryUnits.unitCapacityUIFormatted
             }
             selectedOpenWeek.unitDetails.append(unitDetails)
-            resort.resortName = relinquishment.resort?.resortName ?? ""
-            resort.resortCode = relinquishment.resort?.resortCode ?? ""
+            resort.resortName = relinquishment.fixWeekReservation?.resort?.resortName ?? relinquishment.resort?.resortName ?? ""
+            resort.resortCode = relinquishment.fixWeekReservation?.resort?.resortCode ?? relinquishment.resort?.resortCode ?? ""
             selectedOpenWeek.resort.append(resort)
             relinquishmentList.openWeeks.append(selectedOpenWeek)
             storedata.openWeeks.append(relinquishmentList)
@@ -594,4 +615,3 @@ final class RelinquishmentViewModel {
         }
     }
 }
-

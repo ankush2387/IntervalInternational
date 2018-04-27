@@ -52,6 +52,8 @@ class SearchResultViewController: UIViewController {
     var showInfoIcon = false
     static let whoWillBeCheckingInViewController = "WhoWillBeCheckingInViewController"
     
+    var selectedIntervalStartDate: String?
+    
     // MARK: - Timer to show availability header
     func runTimer() {
         
@@ -95,6 +97,7 @@ class SearchResultViewController: UIViewController {
         availabilitySurroundingMatchSection = nil
         
         let sections = Constant.MyClassConstants.initialVacationSearch.createSections()
+        availabilitySections = sections
         if sections.isEmpty {
             title = "No Availability".localized()
             searchResultTableView.tableHeaderView = Helper.noResortView(senderView: self.view)
@@ -103,7 +106,7 @@ class SearchResultViewController: UIViewController {
             searchResultTableView.tableHeaderView = UIView()
 
             //FIXME(Frank): Analyze if keep the availabilitySections or availabilityExactMatchSection & availabilitySurroundingMatchSection
-            availabilitySections = sections
+            
             for section in sections {
                 if section.exactMatch {
                     availabilityExactMatchSection = section
@@ -118,9 +121,26 @@ class SearchResultViewController: UIViewController {
         searchResultColelctionView.reloadData()
         
         var index = 0
-        for (calendarItemIndex, calendarItem) in Constant.MyClassConstants.calendarDatesArray.enumerated() where calendarItem.checkInDate == Constant.MyClassConstants.initialVacationSearch.searchCheckInDate {
-            index = calendarItemIndex
-            break
+        
+        if let date = selectedIntervalStartDate {
+            // so we do this in case there is no availability
+            for (calendarItemIndex, calendarItem) in Constant.MyClassConstants.calendarDatesArray.enumerated() where calendarItem.intervalStartDate == date {
+                index = calendarItemIndex
+                break
+            }
+            // we do this when there is availability but we click on a bucket
+            if index == 0, let checkInDate = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval()?.checkInDates?[0] {
+                for (calendarItemIndex, calendarItem) in Constant.MyClassConstants.calendarDatesArray.enumerated() where calendarItem.checkInDate == checkInDate {
+                    index = calendarItemIndex
+                    break
+                }
+                
+            }
+        } else {
+            for (calendarItemIndex, calendarItem) in Constant.MyClassConstants.calendarDatesArray.enumerated() where calendarItem.checkInDate == Constant.MyClassConstants.initialVacationSearch.searchCheckInDate {
+                index = calendarItemIndex
+                break
+            }
         }
         let indexPath = IndexPath(item: index, section: 0)
         searchResultColelctionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
@@ -190,49 +210,13 @@ class SearchResultViewController: UIViewController {
 
     private func scrollToActiveDate() {
         let numberOfRecords = Constant.MyClassConstants.calendarDatesArray.count
-        let vacationSearchCheckInDate = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate.unwrappedString
-        var calendarItemWithActiveDates: (item: CalendarItem, index: Int)?
-        var foundMatch = false
-
+        let vacationSearchCheckInDate = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate
+        
         for index in 0..<numberOfRecords {
-            let calendarItem = Constant.MyClassConstants.calendarDatesArray[index]
-            let calendarItemCheckInDate = calendarItem.checkInDate.unwrappedString
-
-            // Stores the first calendar item with valid check in/out intervals
-            if !calendarItem.intervalStartDate.unwrappedString.isEmpty
-                && !calendarItem.intervalEndDate.unwrappedString.isEmpty
-                && calendarItemWithActiveDates == nil {
-                calendarItemWithActiveDates = (calendarItem, index)
-            }
-
-            // Scrolls to active date cell if match is found
-            if vacationSearchCheckInDate == calendarItemCheckInDate,
-                !vacationSearchCheckInDate.isEmpty, !calendarItemCheckInDate.isEmpty {
+            let calendarItemCheckInDate = Constant.MyClassConstants.calendarDatesArray[index].checkInDate
+            if vacationSearchCheckInDate == calendarItemCheckInDate {
                 searchResultColelctionView.scrollToItem(at: IndexPath(row: index, section: 0), at: .centeredHorizontally, animated: true)
-                foundMatch = true
                 break
-            }
-        }
-
-        // If no match is found; perform this horrible hack because of the bad dataset implementation in this view controller...
-        if let calendarItemWithActiveDates = calendarItemWithActiveDates,
-            let cell = searchResultColelctionView.cellForItem(at: IndexPath(row: calendarItemWithActiveDates.index, section: 0)),
-            !Constant.MyClassConstants.calendarDatesArray.isEmpty,
-            !foundMatch {
-            intervalBucketClicked(calendarItem: calendarItemWithActiveDates.item, cell: cell) { [weak self] error in
-                guard let strongSelf = self else { return }
-                strongSelf.showHudAsync()
-                // Delay to allow tableview collectionview to reload... :(
-                let delayInSeconds = 2.0
-                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + delayInSeconds) {
-
-                    if case .some = error {
-                        strongSelf.presentErrorAlert(UserFacingCommonError.handleError(error))
-                        return
-                    }
-
-                    strongSelf.intervalDateItemClicked(Constant.MyClassConstants.calendarDatesArray[0])
-                }
             }
         }
     }
@@ -276,6 +260,8 @@ class SearchResultViewController: UIViewController {
         // Resolve the next active interval based on the Calendar interval selected
         guard let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.resolveNextActiveIntervalFor(intervalStartDate: calendarItem.intervalStartDate!, intervalEndDate: calendarItem.intervalEndDate!) else { return }
         
+        selectedIntervalStartDate = calendarItem.intervalStartDate
+        
         // Fetch CheckIn dates only in the active interval doesn't have CheckIn dates
         if activeInterval.hasCheckInDates() == false {
             
@@ -287,14 +273,13 @@ class SearchResultViewController: UIViewController {
                 
                 RentalClient.searchDates(Session.sharedSession.userAccessToken, request: Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request,
                                          onSuccess: { [weak self] (response) in
-                                            
+                                            Constant.MyClassConstants.initialVacationSearch.rentalSearch?.inventory = []
                                             Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.response = response
                                             // Update active interval
                                             Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
                                             Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch) {
                                                 DispatchQueue.main.async {
-                                                    self?.searchResultColelctionView.reloadSections(IndexSet(integer: 0))
-                                                    self?.hideHudAsync()
+                                                    self?.resortSearchComplete()
                                                     completionBlock?(nil)
                                                 }
                                             }
@@ -310,14 +295,15 @@ class SearchResultViewController: UIViewController {
                 Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request.checkInToDate = calendarItem.intervalEndDate?.dateFromShortFormat()
                 
                 ExchangeClient.searchDates(Session.sharedSession.userAccessToken, request: Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request,
-                                           onSuccess: { (response) in
-                                            
+                                           onSuccess: { [weak self](response) in
+                                            Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.inventory = nil
                                             Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.response = response
                                             Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
-                                            
+                                            self?.hideHudAsync()
                                             Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
-                                            self.hideHudAsync()
-                                            self.searchResultColelctionView.reloadSections(IndexSet(integer: 0))
+                                            DispatchQueue.main.async {
+                                                self?.resortSearchComplete()
+                                            }
                                             completionBlock?(nil)
                 },
                                            
@@ -336,25 +322,40 @@ class SearchResultViewController: UIViewController {
                 
                 // Execute Rental Search Dates
                 RentalClient.searchDates(Session.sharedSession.userAccessToken, request: Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request,
-                                         onSuccess: { (response) in
+                     onSuccess: { (response) in
+                        
+                        Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.response = response
+                        // Update active interval
+                        Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
+                        // Check not available checkIn dates for the active interval for Rental
+                        if activeInterval.hasCheckInDates() == false {
+                            Constant.MyClassConstants.rentalHasNotAvailableCheckInDatesAfterSelectInterval = true
+                        }
+                        
+                        
+                        ExchangeClient.searchDates(Session.sharedSession.userAccessToken, request: Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request,
+                           onSuccess: { [weak self](response) in
+                            Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.inventory = nil
+                            Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.response = response
+                            
+                            // Update active interval
+                            Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
+                            Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                            DispatchQueue.main.async {
+                                self?.resortSearchComplete()
+                            }
+                            completionBlock?(nil)
+                        },
+                           onError: { [weak self] error in
+                            self?.presentErrorAlert(UserFacingCommonError.handleError(error))
+                        })
                                             
-                                            Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.response = response
-                                            // Update active interval
-                                            Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
-                                            // Check not available checkIn dates for the active interval for Rental
-                                            if activeInterval.hasCheckInDates() == false {
-                                                Constant.MyClassConstants.rentalHasNotAvailableCheckInDatesAfterSelectInterval = true
-                                            }
                                             
-                                            // Run Exchange Search Dates
-                                            Helper.executeExchangeSearchDatesAfterSelectInterval(senderVC: self, datesCV: self.searchResultColelctionView, activeInterval: activeInterval)
-                                            completionBlock?(nil)
                                             
                 },
-                                         onError: { error in
-                                            // Run Exchange Search Dates
-                                            Helper.executeExchangeSearchDatesAfterSelectInterval(senderVC: self, datesCV: self.searchResultColelctionView, activeInterval: activeInterval)
-                                            completionBlock?(error)
+                 onError: { error in
+                    // Run Exchange Search Dates
+                    completionBlock?(error)
                 })
                 
             default:
@@ -372,14 +373,14 @@ class SearchResultViewController: UIViewController {
     
     //*****Function for more button press *****//
     func intervalDateItemClicked(_ calendarItem: CalendarItem) {
-        showHudAsync()
+        self.showHudAsync()
         
         searchResultTableView.reloadData()
         
         if let selectedDate = calendarItem.checkInDate?.dateFromShortFormat() {
             intervalPrint(selectedDate)
             Constant.MyClassConstants.vacationSearchShowDate = selectedDate
-            
+            selectedIntervalStartDate = nil
             Helper.helperDelegate = self as HelperDelegate
             
             guard let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval() else { return }
@@ -400,11 +401,12 @@ class SearchResultViewController: UIViewController {
                 request.resortCodes = activeInterval.resortCodes
                 
                 RentalClient.searchResorts(Session.sharedSession.userAccessToken, request: request,
-                                           onSuccess: { (response) in
+                                           onSuccess: { [weak self](response) in
+                                            guard let strongSelf = self else { return }
                                             // Update Rental inventory
                                             Constant.MyClassConstants.initialVacationSearch.rentalSearch?.inventory = response.resorts
                                             // Run Exchange Search Dates
-                                            Helper.executeExchangeSearchAvailabilityAfterSelectCheckInDate(activeInterval: activeInterval, checkInDate: selectedDate, senderVC: self)
+                                            Helper.executeExchangeSearchAvailabilityAfterSelectCheckInDate(activeInterval: activeInterval, checkInDate: selectedDate, senderVC: strongSelf)
                 },
                                            onError: { [weak self] error in
                                             self?.hideHudAsync()
@@ -413,6 +415,8 @@ class SearchResultViewController: UIViewController {
             default:
                 break
             }
+        } else {
+            self.hideHudAsync()
         }
 
     }
@@ -485,7 +489,7 @@ class SearchResultViewController: UIViewController {
             //FIXME(Frank) - more of the same BAD use of globals for everything - this is madness
             Constant.MyClassConstants.onsiteArray.removeAllObjects()
             Constant.MyClassConstants.nearbyArray.removeAllObjects()
-            guard let resortAmenities = response.view?.resort?.amenities else { return }
+            guard let resortAmenities = response.view?.destination?.resort?.amenities else { return }
             for amenity in resortAmenities {
                 guard let amenityName = amenity.amenityName else { return }
                 if !amenity.nearby {
@@ -557,20 +561,19 @@ class SearchResultViewController: UIViewController {
             
             // Apply Business Rules - https://jira.iilg.com/browse/MOBI-1834
             // - If the SearchType selected was "All/Combined", then present the "What To Use?" screen.
-            if Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.COMBINED {
-                self?.navigateToWhatToUseViewController(hasSearchAllAvailability: selectedAvailabilityBucket.vacationSearchType.isCombined())
-            } else {
-                if response.count > 1 {
-                    // - If more than 1 relinquishment can be used, then present the "What To Use?" screen.
+           //In case of search both type we need to check selected inventory type
+                switch selectedAvailabilityBucket.vacationSearchType {
+                case VacationSearchType.EXCHANGE:
+                    if response.count > 1 || response[0].destination?.upgradeCost != nil  {
+                        self?.navigateToWhatToUseViewController(hasSearchAllAvailability: selectedAvailabilityBucket.vacationSearchType.isExchange())
+                    } else {
+                        self?.startExchangeProcess()
+                    }
+                case VacationSearchType.COMBINED:
                     self?.navigateToWhatToUseViewController(hasSearchAllAvailability: selectedAvailabilityBucket.vacationSearchType.isCombined())
-                } else if response.count == 1, let destination = response[0].destination, let _ = destination.upgradeCost {
-                    // - If only 1 relinquishment can be used and the destination has upgradeCost, then present the "What To Use?" screen.
-                    self?.navigateToWhatToUseViewController(hasSearchAllAvailability: selectedAvailabilityBucket.vacationSearchType.isCombined())
-                } else {
-                    // - Skip the "What To Use?" screen and go directy to the Start Process.
-                    self?.startExchangeProcess()
+                default:
+                    break
                 }
-            }
          },
          onError: { [weak self] error in
             self?.hideHudAsync()
@@ -984,9 +987,7 @@ extension SearchResultViewController: UICollectionViewDelegate {
             if indexPath.section == 0 {
                 Constant.MyClassConstants.runningFunctionality = Constant.MyClassConstants.vacationSearchFunctionalityCheck
                 Constant.MyClassConstants.isFromSearchResult = true
-                
                 showHudAsync()
-                
                 if let resort = resolveResort(index: collectionView.tag) {
                     DirectoryClient.getResortDetails(Constant.MyClassConstants.systemAccessToken, resortCode: resort.code, onSuccess: {[weak self](response) in
                         Constant.MyClassConstants.resortsDescriptionArray = response
@@ -1012,132 +1013,109 @@ extension SearchResultViewController: UICollectionViewDelegate {
             } else {
                 
                 showHudAsync()
+                let resortTableSection = collectionView.superview?.superview?.tag ?? 0
+                let resortTableRow = collectionView.tag
                 
-                let selectedBucketIndex = indexPath.row // indexPath.item
-                // FIXME(Frank) - what is this ?
-                Constant.MyClassConstants.selectedAvailabilityInventoryBucketIndex = selectedBucketIndex
-                
-                // FIXME(Frank) - what is this ?
-                // it is used in renewal screen to change the title of header
-                Constant.MyClassConstants.isChangeNoThanksButtonTitle = false
-                
-                if Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange() {
-                    selectedSection = collectionView.superview?.superview?.tag ?? 0
-                    selectedRow = collectionView.tag
-                    
-                    if selectedSection == 0 {
+                switch Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType {
+                case VacationSearchType.RENTAL:
+                    switch resortTableSection {
+                    case 0:
                         if let exactMatchSection = availabilityExactMatchSection, !exactMatchSection.items.isEmpty {
-                            if let resort = exactMatchSection.items[selectedRow].getResort() {
+                            if let resort = exactMatchSection.items[resortTableRow].getResort() {
                                 Constant.MyClassConstants.selectedAvailabilityResort = resort
-                                
-                                if let inventoryBuckets = exactMatchSection.items[selectedRow].getInventoryBuckets() {
-                                    let bucket = inventoryBuckets[selectedBucketIndex]
+                                if let inventoryBuckets = exactMatchSection.items[resortTableRow].getInventoryBuckets() {
+                                    let bucket = inventoryBuckets[indexPath.row]
                                     // FIXME(Frank) - what is this ?
+                                    //FIXME(Gandhi) - for now i am accessing as it is but we can make changes later
                                     Constant.MyClassConstants.selectedAvailabilityInventoryBucket = bucket
-                                    
-                                    self.filterRelinquishments(resort, bucket)
-                                }
-                            }
-                        } else if let surroundingMatchSection = availabilitySurroundingMatchSection, !surroundingMatchSection.items.isEmpty {
-                            if let resort = surroundingMatchSection.items[selectedRow].getResort() {
-                                Constant.MyClassConstants.selectedAvailabilityResort = resort
-                                
-                                if let inventoryBuckets = surroundingMatchSection.items[selectedRow].getInventoryBuckets() {
-                                    let bucket = inventoryBuckets[selectedBucketIndex]
-                                    // FIXME(Frank) - what is this ?
-                                    Constant.MyClassConstants.selectedAvailabilityInventoryBucket = bucket
-                                    
-                                    self.filterRelinquishments(resort, bucket)
-                                }
-                            }
-                        }
-                    }
-                    
-                } else if Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental() {
-                    selectedSection = collectionView.superview?.superview?.tag ?? 0
-                    selectedRow = collectionView.tag
-                    
-                    if selectedSection == 0 {
-                        if let exactMatchSection = availabilityExactMatchSection, !exactMatchSection.items.isEmpty {
-                            if let resort = exactMatchSection.items[selectedRow].getResort() {
-                                Constant.MyClassConstants.selectedAvailabilityResort = resort
-                                
-                                if let inventoryBuckets = exactMatchSection.items[selectedRow].getInventoryBuckets() {
-                                    let bucket = inventoryBuckets[selectedBucketIndex]
-                                    // FIXME(Frank) - what is this ?
-                                    Constant.MyClassConstants.selectedAvailabilityInventoryBucket = bucket
-                                    
-                                    //FIXME(Frank) - we already have Constant.MyClassConstants.selectedAvailabilityInventoryBucket
-                                    // that can or not contains the "rentalPrices" - why a new global definition?
                                     if let rentalPrices = bucket.rentalPrices {
                                         Constant.MyClassConstants.rentalPrices = rentalPrices
                                     }
-                                    
                                     self.startRentalProcess(resort, bucket)
                                 }
                             }
                         } else if let surroundingMatchSection = availabilitySurroundingMatchSection, !surroundingMatchSection.items.isEmpty {
-                            if let resort = surroundingMatchSection.items[selectedRow].getResort() {
+                            if let resort = surroundingMatchSection.items[resortTableRow].getResort() {
                                 Constant.MyClassConstants.selectedAvailabilityResort = resort
-                                
-                                if let inventoryBuckets = surroundingMatchSection.items[selectedRow].getInventoryBuckets() {
-                                    let bucket = inventoryBuckets[selectedBucketIndex]
+                                if let inventoryBuckets = surroundingMatchSection.items[resortTableRow].getInventoryBuckets() {
+                                    let bucket = inventoryBuckets[indexPath.row]
                                     // FIXME(Frank) - what is this ?
+                                    //FIXME(Gandhi) - for now i am accessing as it is but we can make changes later
                                     Constant.MyClassConstants.selectedAvailabilityInventoryBucket = bucket
-                                    
-                                    //FIXME(Frank) - we already have Constant.MyClassConstants.selectedAvailabilityInventoryBucket
-                                    // that can or not contains the "rentalPrices" - why a new global definition?
-                                    if let prices = bucket.rentalPrices {
-                                        Constant.MyClassConstants.rentalPrices = prices
+                                    if let rentalPrices = bucket.rentalPrices {
+                                        Constant.MyClassConstants.rentalPrices = rentalPrices
                                     }
-                                    
                                     self.startRentalProcess(resort, bucket)
                                 }
                             }
                         }
-                    }
-                    
-                } else if Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isCombined() {
-                    selectedSection = collectionView.superview?.superview?.tag ?? 0
-                    selectedRow = collectionView.tag
-                    
-                    if selectedSection == 0 {
-                        if let exactMatchSection = availabilityExactMatchSection, !exactMatchSection.items.isEmpty {
-                            if let resort = exactMatchSection.items[selectedRow].getResort() {
+                    case 1:
+                        if let surroundingMatchSection = availabilitySurroundingMatchSection, !surroundingMatchSection.items.isEmpty {
+                            if let resort = surroundingMatchSection.items[resortTableRow].getResort() {
                                 Constant.MyClassConstants.selectedAvailabilityResort = resort
-                                
-                                if let inventoryBuckets = exactMatchSection.items[selectedRow].getInventoryBuckets() {
-                                    let bucket = inventoryBuckets[selectedBucketIndex]
+                                if let inventoryBuckets = surroundingMatchSection.items[resortTableRow].getInventoryBuckets() {
+                                    let bucket = inventoryBuckets[indexPath.row]
                                     // FIXME(Frank) - what is this ?
+                                    //FIXME(Gandhi) - for now i am accessing as it is but we can make changes later
                                     Constant.MyClassConstants.selectedAvailabilityInventoryBucket = bucket
-                                    
-                                    //FIXME(Frank) - we already have Constant.MyClassConstants.selectedAvailabilityInventoryBucket
-                                    // that can or not contains the "rentalPrices" - why a new global definition?
                                     if let rentalPrices = bucket.rentalPrices {
                                         Constant.MyClassConstants.rentalPrices = rentalPrices
                                     }
-                                    
-                                    // Set the pointsCost should apply only for Exchange
-                                    if let selectedBucket = Constant.MyClassConstants.selectedAvailabilityInventoryBucket, let pointsCost = selectedBucket.exchangePointsCost, let memberPointsRequired = selectedBucket.exchangeMemberPointsRequired, pointsCost != memberPointsRequired {
-                                        showInfoIcon = true
-                                    }
-                                    
-                                    if bucket.vacationSearchType.isCombined() || bucket.vacationSearchType.isExchange() {
-                                        self.filterRelinquishments(resort, bucket)
-                                    } else if bucket.vacationSearchType.isRental() {
-                                        // FIXME(Frank) - what is this ?
-                                        Constant.MyClassConstants.filterRelinquishments.removeAll()
-                                        
-                                        self.navigateToWhatToUseViewController(hasSearchAllAvailability: false)
-                                    }
+                                    self.startRentalProcess(resort, bucket)
+                                }
+                            }
+                        }
+                    default:
+                        break
+                    }
+                    
+                case VacationSearchType.EXCHANGE:
+                    switch resortTableSection {
+                    case 0:
+                        if let exactMatchSection = availabilityExactMatchSection, !exactMatchSection.items.isEmpty {
+                            if let resort = exactMatchSection.items[resortTableRow].getResort() {
+                                Constant.MyClassConstants.selectedAvailabilityResort = resort
+                                if let inventoryBuckets = exactMatchSection.items[resortTableRow].getInventoryBuckets() {
+                                    let bucket = inventoryBuckets[indexPath.row]
+                                    // FIXME(Frank) - what is this ?
+                                    Constant.MyClassConstants.selectedAvailabilityInventoryBucket = bucket
+                                    self.filterRelinquishments(resort, bucket)
                                 }
                             }
                         } else if let surroundingMatchSection = availabilitySurroundingMatchSection, !surroundingMatchSection.items.isEmpty {
-                            if let resort = surroundingMatchSection.items[selectedRow].getResort() {
+                            if let resort = surroundingMatchSection.items[resortTableRow].getResort() {
                                 Constant.MyClassConstants.selectedAvailabilityResort = resort
-                                
-                                if let inventoryBuckets = surroundingMatchSection.items[selectedRow].getInventoryBuckets() {
-                                    let bucket = inventoryBuckets[selectedBucketIndex]
+                                if let inventoryBuckets = surroundingMatchSection.items[resortTableRow].getInventoryBuckets() {
+                                    let bucket = inventoryBuckets[indexPath.row]
+                                    // FIXME(Frank) - what is this ?
+                                    Constant.MyClassConstants.selectedAvailabilityInventoryBucket = bucket
+                                    self.filterRelinquishments(resort, bucket)
+                                }
+                            }
+                        }
+                    case 1:
+                        if let surroundingMatchSection = availabilitySurroundingMatchSection, !surroundingMatchSection.items.isEmpty {
+                            if let resort = surroundingMatchSection.items[resortTableRow].getResort() {
+                                Constant.MyClassConstants.selectedAvailabilityResort = resort
+                                if let inventoryBuckets = surroundingMatchSection.items[resortTableRow].getInventoryBuckets() {
+                                    let bucket = inventoryBuckets[indexPath.row]
+                                    // FIXME(Frank) - what is this ?
+                                    Constant.MyClassConstants.selectedAvailabilityInventoryBucket = bucket
+                                    self.filterRelinquishments(resort, bucket)
+                                }
+                            }
+                        }
+                    default:
+                        break
+                    }
+                case VacationSearchType.COMBINED:
+                    switch resortTableSection {
+                    case 0:
+                        if let exactMatchSection = availabilityExactMatchSection, !exactMatchSection.items.isEmpty {
+                            if let resort = exactMatchSection.items[resortTableRow].getResort() {
+                                Constant.MyClassConstants.selectedAvailabilityResort = resort
+                                if let inventoryBuckets = exactMatchSection.items[resortTableRow].getInventoryBuckets() {
+                                    let bucket = inventoryBuckets[indexPath.row]
                                     // FIXME(Frank) - what is this ?
                                     Constant.MyClassConstants.selectedAvailabilityInventoryBucket = bucket
                                     
@@ -1152,18 +1130,63 @@ extension SearchResultViewController: UICollectionViewDelegate {
                                     } else if bucket.vacationSearchType.isRental() {
                                         // FIXME(Frank) - what is this ?
                                         Constant.MyClassConstants.filterRelinquishments.removeAll()
-                                        
-                                        self.navigateToWhatToUseViewController(hasSearchAllAvailability: false)
+                                        self.startRentalProcess(resort, bucket)
+                                    }
+                                }
+                            }
+                        } else if let surroundingMatchSection = availabilitySurroundingMatchSection, !surroundingMatchSection.items.isEmpty {
+                            if let resort = surroundingMatchSection.items[resortTableRow].getResort() {
+                                Constant.MyClassConstants.selectedAvailabilityResort = resort
+                                if let inventoryBuckets = surroundingMatchSection.items[resortTableRow].getInventoryBuckets() {
+                                    let bucket = inventoryBuckets[indexPath.row]
+                                    // FIXME(Frank) - what is this ?
+                                    Constant.MyClassConstants.selectedAvailabilityInventoryBucket = bucket
+                                    
+                                    //FIXME(Frank) - we already have Constant.MyClassConstants.selectedAvailabilityInventoryBucket
+                                    // that can or not contains the "rentalPrices" - why a new global definition?
+                                    if let prices = bucket.rentalPrices {
+                                        Constant.MyClassConstants.rentalPrices = prices
+                                    }
+                                    
+                                    if bucket.vacationSearchType.isCombined() || bucket.vacationSearchType.isExchange() {
+                                        self.filterRelinquishments(resort, bucket)
+                                    } else if bucket.vacationSearchType.isRental() {
+                                        // FIXME(Frank) - what is this ?
+                                        Constant.MyClassConstants.filterRelinquishments.removeAll()
+                                        self.startRentalProcess(resort, bucket)
                                     }
                                 }
                             }
                         }
-                    
-                    } else {
-                        /// ????
-                        intervalPrint("Why?")
-                        
+                    case 1:
+                        if let surroundingMatchSection = availabilitySurroundingMatchSection, !surroundingMatchSection.items.isEmpty {
+                            if let resort = surroundingMatchSection.items[resortTableRow].getResort() {
+                                Constant.MyClassConstants.selectedAvailabilityResort = resort
+                                if let inventoryBuckets = surroundingMatchSection.items[resortTableRow].getInventoryBuckets() {
+                                    let bucket = inventoryBuckets[indexPath.row]
+                                    // FIXME(Frank) - what is this ?
+                                    Constant.MyClassConstants.selectedAvailabilityInventoryBucket = bucket
+                                    
+                                    //FIXME(Frank) - we already have Constant.MyClassConstants.selectedAvailabilityInventoryBucket
+                                    // that can or not contains the "rentalPrices" - why a new global definition?
+                                    if let prices = bucket.rentalPrices {
+                                        Constant.MyClassConstants.rentalPrices = prices
+                                    }
+                                    if bucket.vacationSearchType.isCombined() || bucket.vacationSearchType.isExchange() {
+                                        self.filterRelinquishments(resort, bucket)
+                                    } else if bucket.vacationSearchType.isRental() {
+                                        // FIXME(Frank) - what is this ?
+                                        Constant.MyClassConstants.filterRelinquishments.removeAll()
+                                        self.startRentalProcess(resort, bucket)
+                                    }
+                                }
+                            }
+                        }
+                    default:
+                        break
                     }
+                default:
+                    break
                 }
             }
         }
@@ -1224,74 +1247,29 @@ extension SearchResultViewController: UICollectionViewDataSource {
             if section == 0 {
                 return 1
             } else {
-                selectedSection = collectionView.superview?.superview?.tag ?? 0
-                selectedRow = collectionView.tag
-           
-                if selectedSection == 0 {
-                    switch Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType {
-                        
-                    case VacationSearchType.RENTAL:
-                        if let exactMatchSection = availabilityExactMatchSection, !exactMatchSection.items.isEmpty {
-                            return exactMatchSection.items.count
-                        } else if let surroundingMatchSection = availabilitySurroundingMatchSection, !surroundingMatchSection.items.isEmpty {
-                            return surroundingMatchSection.items.count
-                        } else {
-                            return 0
-                        }
-                        
-                    case VacationSearchType.EXCHANGE:
-                        if let exactMatchSection = availabilityExactMatchSection, !exactMatchSection.items.isEmpty {
-                            return exactMatchSection.items.count
-                        } else if let surroundingMatchSection = availabilitySurroundingMatchSection, !surroundingMatchSection.items.isEmpty {
-                            return surroundingMatchSection.items.count
-                        } else {
-                            return 0
-                        }
-                        
-                    case VacationSearchType.COMBINED:
-                        if let exactMatchSection = availabilityExactMatchSection, !exactMatchSection.items.isEmpty {
-                            return exactMatchSection.items.count
-                        } else if let surroundingMatchSection = availabilitySurroundingMatchSection, !surroundingMatchSection.items.isEmpty {
-                            return surroundingMatchSection.items.count
-                        } else {
-                            return 0
-                        }
-                        
-                    default:
-                        return 0
+                let resortTableSection = collectionView.superview?.superview?.tag ?? 0
+                let resorTableRow = collectionView.tag
+                switch resortTableSection {
+                case 0:
+                    if let exactMatchSection = availabilityExactMatchSection, !exactMatchSection.items.isEmpty {
+                        let availabilityBucket = exactMatchSection.items[resorTableRow].getInventoryBuckets()
+                        return availabilityBucket?.count ?? 0
+                    } else if let surroundingMatchSection = availabilitySurroundingMatchSection, !surroundingMatchSection.items.isEmpty {
+                        let availabilityBucket = surroundingMatchSection.items[resorTableRow].getInventoryBuckets()
+                        return availabilityBucket?.count ?? 0
+
                     }
-                    
-                } else {
-                    
-                    switch Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType {
-                        
-                    case VacationSearchType.RENTAL:
-                        if let surroundingMatchSection = availabilitySurroundingMatchSection, !surroundingMatchSection.items.isEmpty {
-                            return surroundingMatchSection.items.count
-                        } else {
-                            return 0
-                        }
-       
-                    case VacationSearchType.EXCHANGE:
-                        if let surroundingMatchSection = availabilitySurroundingMatchSection, !surroundingMatchSection.items.isEmpty {
-                            return surroundingMatchSection.items.count
-                        } else {
-                           return 0
-                        }
-                        
-                    case VacationSearchType.COMBINED:
-                        if let surroundingMatchSection = availabilitySurroundingMatchSection, !surroundingMatchSection.items.isEmpty {
-                            return surroundingMatchSection.items.count
-                        } else {
-                            return 0
-                        }
-                        
-                    default:
-                        return 0
+                case 1:
+                    if let surroundingMatchSection = availabilitySurroundingMatchSection, !surroundingMatchSection.items.isEmpty {
+                        let availabilityBucket = surroundingMatchSection.items[resorTableRow].getInventoryBuckets()
+                        return availabilityBucket?.count ?? 0
                     }
+                default:
+                    return 0
                 }
             }
         }
+        return 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -1345,146 +1323,141 @@ extension SearchResultViewController: UICollectionViewDataSource {
             
             switch Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType {
             case VacationSearchType.RENTAL:
-                selectedSection = collectionView.superview?.superview?.tag ?? 0
-                selectedRow = collectionView.tag
-                
-                var availabilityResort: AvailabilitySectionItemResort?
-                var availabilityBuckets: [AvailabilitySectionItemInventoryBucket]?
-                
-                if selectedSection == 0 {
+                let resortTableSection = collectionView.superview?.superview?.tag ?? 0
+                let resortTableRow = collectionView.tag
+                switch resortTableSection {
+                case 0:
                     if let exactMatchSection = availabilityExactMatchSection, !exactMatchSection.items.isEmpty {
-                        availabilityResort = exactMatchSection.items[selectedRow].getResort()
-                        
-                        if let inventoryBuckets = exactMatchSection.items[selectedRow].getInventoryBuckets() {
-                            availabilityBuckets = inventoryBuckets
+                        if indexPath.section == 0 {
+                            if let availabilityResort = exactMatchSection.items[resortTableRow].getResort() {
+                                let cell = self.getResortInfoCollectionCell(indexPath: indexPath, collectionView: collectionView, resort: availabilityResort)
+                                return cell
+                            }
+                        } else {
+                            if let buckets = exactMatchSection.items[resortTableRow].getInventoryBuckets() {
+                                let cell = self.getRentalCollectionCell(indexPath: indexPath, collectionView: collectionView)
+                                cell.setBucket(bucket: buckets[indexPath.item])
+                                return cell
+                            }
                         }
                     } else if let surroundingMatchSection = availabilitySurroundingMatchSection, !surroundingMatchSection.items.isEmpty {
-                        availabilityResort = surroundingMatchSection.items[selectedRow].getResort()
-                        
-                        if let inventoryBuckets = surroundingMatchSection.items[selectedRow].getInventoryBuckets() {
-                            availabilityBuckets = inventoryBuckets
+                        if indexPath.section == 0 {
+                            if let availabilityResort = surroundingMatchSection.items[resortTableRow].getResort() {
+                                let cell = self.getResortInfoCollectionCell(indexPath: indexPath, collectionView: collectionView, resort: availabilityResort)
+                                return cell
+                            }
+                        } else {
+                            if let buckets = surroundingMatchSection.items[resortTableRow].getInventoryBuckets() {
+                                let cell = self.getRentalCollectionCell(indexPath: indexPath, collectionView: collectionView)
+                                cell.setBucket(bucket: buckets[indexPath.item])
+                                return cell
+                            }
                         }
                     }
-                } else if let surroundingMatchSection = availabilitySurroundingMatchSection, !surroundingMatchSection.items.isEmpty {
-                    availabilityResort = surroundingMatchSection.items[selectedRow].getResort()
-                    
-                    if let inventoryBuckets = surroundingMatchSection.items[selectedRow].getInventoryBuckets() {
-                        availabilityBuckets = inventoryBuckets
+                case 1:
+                    if let surroundingMatchSection = availabilitySurroundingMatchSection, !surroundingMatchSection.items.isEmpty {
+                        if indexPath.section == 0 {
+                            if let availabilityResort = surroundingMatchSection.items[resortTableRow].getResort() {
+                                let cell = self.getResortInfoCollectionCell(indexPath: indexPath, collectionView: collectionView, resort: availabilityResort)
+                                return cell
+                            }
+                        } else {
+                            if let buckets = surroundingMatchSection.items[resortTableRow].getInventoryBuckets() {
+                                let cell = self.getRentalCollectionCell(indexPath: indexPath, collectionView: collectionView)
+                                cell.setBucket(bucket: buckets[indexPath.item])
+                                return cell
+                            }
+                        }
                     }
+                default:
+                   return UICollectionViewCell()
                 }
                 
-                if indexPath.section == 0 {
-                    if let resort = availabilityResort {
-                        let cell = self.getResortInfoCollectionCell(indexPath: indexPath, collectionView: collectionView, resort: resort)
-                        return cell
-                    }
-                } else {
-                    if let buckets = availabilityBuckets {
-                        let cell = self.getRentalCollectionCell(indexPath: indexPath, collectionView: collectionView)
-                        if indexPath.item <= buckets.count - 1 {
-                            cell.setBucket(bucket: buckets[indexPath.item])
-                        }
-                        return cell
-                    }
-                }
-
             case VacationSearchType.EXCHANGE:
-                selectedSection = collectionView.superview?.superview?.tag ?? 0
-                selectedRow = collectionView.tag
                 
-                if selectedSection == 0 {
+                let resortTableSection = collectionView.superview?.superview?.tag ?? 0
+                let resortTableRow = collectionView.tag
+                
+                switch resortTableSection {
+                case 0:
                     if let exactMatchSection = availabilityExactMatchSection, !exactMatchSection.items.isEmpty {
                         if indexPath.section == 0 {
-                            if let resort = exactMatchSection.items[selectedRow].getResort() {
+                            if let resort = exactMatchSection.items[resortTableRow].getResort() {
                                 let cell = self.getResortInfoCollectionCell(indexPath: indexPath, collectionView: collectionView, resort: resort)
                                 return cell
                             }
                         } else {
-                            if let inventoryBuckets = exactMatchSection.items[selectedRow].getInventoryBuckets() {
+                            if let inventoryBuckets = exactMatchSection.items[resortTableRow].getInventoryBuckets() {
                                 let cell = self.getExchangeCollectionCell(indexPath: indexPath, collectionView: collectionView)
-                                if indexPath.item <= inventoryBuckets.count - 1 {
-                                    let bucket = inventoryBuckets[indexPath.item]
-                                    cell.setBucket(bucket: bucket)
-                                    cell.showNotEnoughPoint = {
-                                        self.showNotEnoughPointModel()
-                                    }
+                                let bucket = inventoryBuckets[indexPath.item]
+                                cell.setBucket(bucket: bucket)
+                                cell.showNotEnoughPoint = {
+                                    self.showNotEnoughPointModel()
                                 }
                                 return cell
                             }
                         }
                     } else if let surroundingMatchSection = availabilitySurroundingMatchSection, !surroundingMatchSection.items.isEmpty {
                         if indexPath.section == 0 {
-                            if let resort = surroundingMatchSection.items[selectedRow].getResort() {
+                            if let resort = surroundingMatchSection.items[resortTableRow].getResort() {
                                 let cell = self.getResortInfoCollectionCell(indexPath: indexPath, collectionView: collectionView, resort: resort)
                                 return cell
                             }
                         } else {
-                            if let inventoryBuckets = surroundingMatchSection.items[selectedRow].getInventoryBuckets() {
+                            if let inventoryBuckets = surroundingMatchSection.items[resortTableRow].getInventoryBuckets() {
                                 let cell = self.getExchangeCollectionCell(indexPath: indexPath, collectionView: collectionView)
-                                if indexPath.item <= inventoryBuckets.count - 1 {
-                                    let bucket = inventoryBuckets[indexPath.item]
-                                    cell.setBucket(bucket: bucket)
-                                    cell.showNotEnoughPoint = {
-                                        self.showNotEnoughPointModel()
-                                    }
+                                let bucket = inventoryBuckets[indexPath.item]
+                                cell.setBucket(bucket: bucket)
+                                cell.showNotEnoughPoint = {
+                                    self.showNotEnoughPointModel()
                                 }
                                 return cell
                             }
                         }
                     }
-                    
-                } else {
-                    //FIXME(Frank) - Why?
+                case 1:
                     if let surroundingMatchSection = availabilitySurroundingMatchSection, !surroundingMatchSection.items.isEmpty {
                         if indexPath.section == 0 {
-                            if let resort = surroundingMatchSection.items[selectedRow].getResort() {
+                            if let resort = surroundingMatchSection.items[resortTableRow].getResort() {
                                 let cell = self.getResortInfoCollectionCell(indexPath: indexPath, collectionView: collectionView, resort: resort)
                                 return cell
                             }
                         } else {
-                            if let inventoryBuckets = surroundingMatchSection.items[selectedRow].getInventoryBuckets() {
+                            if let inventoryBuckets = surroundingMatchSection.items[resortTableRow].getInventoryBuckets() {
                                 let cell = self.getExchangeCollectionCell(indexPath: indexPath, collectionView: collectionView)
-                                if indexPath.item <= inventoryBuckets.count - 1 {
-                                    let bucket = inventoryBuckets[indexPath.item]
-                                    cell.setBucket(bucket: bucket)
-                                    cell.showNotEnoughPoint = {
-                                        self.showNotEnoughPointModel()
-                                    }
+                                let bucket = inventoryBuckets[indexPath.item]
+                                cell.setBucket(bucket: bucket)
+                                cell.showNotEnoughPoint = {
+                                    self.showNotEnoughPointModel()
                                 }
                                 return cell
                             }
                         }
                     }
+                default:
+                    return UICollectionViewCell()
                 }
-
+                
             case VacationSearchType.COMBINED:
-                selectedSection = collectionView.superview?.superview?.tag ?? 0
-                selectedRow = collectionView.tag
                 
-                if selectedSection == 0 {
+                let resortTableSection = collectionView.superview?.superview?.tag ?? 0
+                let resortTableRow = collectionView.tag
+                
+                switch resortTableSection {
+                case 0:
                     if let exactMatchSection = availabilityExactMatchSection, !exactMatchSection.items.isEmpty {
                         if indexPath.section == 0 {
-                            if let resort = exactMatchSection.items[selectedRow].getResort() {
+                            if let resort = exactMatchSection.items[resortTableRow].getResort() {
                                 let cell = self.getResortInfoCollectionCell(indexPath: indexPath, collectionView: collectionView, resort: resort)
                                 return cell
                             }
                         } else {
-                            if let inventoryBuckets = exactMatchSection.items[selectedRow].getInventoryBuckets() {
-                                //Gandhi: I am adding validation but this is not good
-                                // we need to return only number of inventory count + 1 for colleciotnview
-                                // right now its running accoring to resot count
-                                if indexPath.item <= inventoryBuckets.count - 1 {
+                            if let inventoryBuckets = exactMatchSection.items[resortTableRow].getInventoryBuckets() {
                                 let bucket = inventoryBuckets[indexPath.item]
-                                
                                 if bucket.vacationSearchType.isCombined() {
-                                    guard let collectionSuperviewTag = collectionView.superview?.superview?.tag else { return UICollectionViewCell() }
-                                    
-                                    if collectionSuperviewTag == 0 {
-                                        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.reUsableIdentifiers.searchBothInventoryCell, for: indexPath) as? SearchBothInventoryCVCell else { return UICollectionViewCell() }
-                                        cell.setBucket(bucket: bucket)
-                                        return cell
-                                    }
-     
+                                    guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.reUsableIdentifiers.searchBothInventoryCell, for: indexPath) as? SearchBothInventoryCVCell else { return UICollectionViewCell() }
+                                    cell.setBucket(bucket: bucket)
+                                    return cell
                                 } else if bucket.vacationSearchType.isExchange() {
                                     let cell = self.getExchangeCollectionCell(indexPath: indexPath, collectionView: collectionView)
                                     let bucket = inventoryBuckets[indexPath.item]
@@ -1493,37 +1466,26 @@ extension SearchResultViewController: UICollectionViewDataSource {
                                         self.showNotEnoughPointModel()
                                     }
                                     return cell
-                                    
                                 } else if bucket.vacationSearchType.isRental() {
                                     let cell = self.getRentalCollectionCell(indexPath: indexPath, collectionView: collectionView)
                                     cell.setBucket(bucket: bucket)
-                                    return cell
-                                }
-                                } else {
-                                    guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.reUsableIdentifiers.searchBothInventoryCell, for: indexPath) as? SearchBothInventoryCVCell else { return UICollectionViewCell() }
                                     return cell
                                 }
                             }
                         }
                     } else if let surroundingMatchSection = availabilitySurroundingMatchSection, !surroundingMatchSection.items.isEmpty {
                         if indexPath.section == 0 {
-                            if let resort = surroundingMatchSection.items[selectedRow].getResort() {
+                            if let resort = surroundingMatchSection.items[resortTableRow].getResort() {
                                 let cell = self.getResortInfoCollectionCell(indexPath: indexPath, collectionView: collectionView, resort: resort)
                                 return cell
                             }
                         } else {
-                            if let inventoryBuckets = surroundingMatchSection.items[selectedRow].getInventoryBuckets() {
+                            if let inventoryBuckets = surroundingMatchSection.items[resortTableRow].getInventoryBuckets() {
                                 let bucket = inventoryBuckets[indexPath.item]
-                                
                                 if bucket.vacationSearchType.isCombined() {
-                                    guard let collectionSuperviewTag = collectionView.superview?.superview?.tag else { return UICollectionViewCell() }
-                                    
-                                    if collectionSuperviewTag == 1 {
-                                        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.reUsableIdentifiers.searchBothInventoryCell, for: indexPath) as? SearchBothInventoryCVCell else { return UICollectionViewCell() }
-                                        cell.setBucket(bucket: bucket)
-                                        return cell
-                                    }
-                                    
+                                    guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.reUsableIdentifiers.searchBothInventoryCell, for: indexPath) as? SearchBothInventoryCVCell else { return UICollectionViewCell() }
+                                    cell.setBucket(bucket: bucket)
+                                    return cell
                                 } else if bucket.vacationSearchType.isExchange() {
                                     let cell = self.getExchangeCollectionCell(indexPath: indexPath, collectionView: collectionView)
                                     cell.setBucket(bucket: bucket)
@@ -1531,7 +1493,6 @@ extension SearchResultViewController: UICollectionViewDataSource {
                                         self.showNotEnoughPointModel()
                                     }
                                     return cell
-                                    
                                 } else if bucket.vacationSearchType.isRental() {
                                     let cell = self.getRentalCollectionCell(indexPath: indexPath, collectionView: collectionView)
                                     cell.setBucket(bucket: bucket)
@@ -1540,28 +1501,20 @@ extension SearchResultViewController: UICollectionViewDataSource {
                             }
                         }
                     }
-                    
-                } else {
-                    //FIXME(Frank) - Why?
+                case 1:
                     if let surroundingMatchSection = availabilitySurroundingMatchSection, !surroundingMatchSection.items.isEmpty {
                         if indexPath.section == 0 {
-                            if let resort = surroundingMatchSection.items[selectedRow].getResort() {
+                            if let resort = surroundingMatchSection.items[resortTableRow].getResort() {
                                 let cell = self.getResortInfoCollectionCell(indexPath: indexPath, collectionView: collectionView, resort: resort)
                                 return cell
                             }
                         } else {
-                            if let inventoryBuckets = surroundingMatchSection.items[selectedRow].getInventoryBuckets() {
+                            if let inventoryBuckets = surroundingMatchSection.items[resortTableRow].getInventoryBuckets() {
                                 let bucket = inventoryBuckets[indexPath.item]
-                                
                                 if bucket.vacationSearchType.isCombined() {
-                                    guard let collectionSuperviewTag = collectionView.superview?.superview?.tag else { return UICollectionViewCell() }
-                                    
-                                    if collectionSuperviewTag == 1 {
-                                        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.reUsableIdentifiers.searchBothInventoryCell, for: indexPath) as? SearchBothInventoryCVCell else { return UICollectionViewCell() }
-                                        cell.setBucket(bucket: bucket)
-                                        return cell
-                                    }
-                                    
+                                    guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.reUsableIdentifiers.searchBothInventoryCell, for: indexPath) as? SearchBothInventoryCVCell else { return UICollectionViewCell() }
+                                    cell.setBucket(bucket: bucket)
+                                    return cell
                                 } else if bucket.vacationSearchType.isExchange() {
                                     let cell = self.getExchangeCollectionCell(indexPath: indexPath, collectionView: collectionView)
                                     cell.setBucket(bucket: bucket)
@@ -1569,7 +1522,6 @@ extension SearchResultViewController: UICollectionViewDataSource {
                                         self.showNotEnoughPointModel()
                                     }
                                     return cell
-                                    
                                 } else if bucket.vacationSearchType.isRental() {
                                     let cell = self.getRentalCollectionCell(indexPath: indexPath, collectionView: collectionView)
                                     cell.setBucket(bucket: bucket)
@@ -1578,26 +1530,23 @@ extension SearchResultViewController: UICollectionViewDataSource {
                             }
                         }
                     }
+                default:
+                    return UICollectionViewCell()
                 }
- 
-            default:
-                return UICollectionViewCell()
-            }
+               
+        default:
+            return UICollectionViewCell()
         }
-        
-        return UICollectionViewCell()
     }
+    return UICollectionViewCell()
+}
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 40
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        if section == 0 {
-            return 0
-        } else {
-            return 0
-        }
+        return 0
     }
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
@@ -1608,6 +1557,7 @@ extension SearchResultViewController: UICollectionViewDataSource {
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
+        guard tableView.numberOfRows(inSection: section) > 0 else { return nil }
         let headerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 40))
         let headerLabel = UILabel(frame: CGRect(x: 20, y: 0, width: tableView.frame.width - 60, height: 40))
         headerLabel.font = UIFont(name: Constant.fontName.helveticaNeue, size: 15)
@@ -1617,20 +1567,14 @@ extension SearchResultViewController: UICollectionViewDataSource {
         if !availabilitySections.isEmpty {
             for availabilitySection in availabilitySections {
                 if availabilitySection.exactMatch == true && section == 0 {
-                    // FIXME(Frank): Why? - this is not GOOD
-                    //headerLabel.text = Constant.CommonLocalisedString.exactString + Constant.MyClassConstants.vacationSearchResultHeaderLabel
                     headerLabel.text = availabilitySection.header
                     headerView.backgroundColor = Constant.CommonColor.headerGreenColor
                     break
                 } else if availabilitySection.exactMatch == false && section == 1 {
-                    // FIXME(Frank): Why? - this is not GOOD
-                    //headerLabel.text = Constant.CommonLocalisedString.surroundingString + Constant.MyClassConstants.vacationSearchResultHeaderLabel
                     headerLabel.text = availabilitySection.header
                     headerView.backgroundColor = IUIKColorPalette.primary1.color
                     break
                 } else {
-                    // FIXME(Frank): Why? - this is not GOOD
-                    //headerLabel.text = Constant.CommonLocalisedString.surroundingString + Constant.MyClassConstants.vacationSearchResultHeaderLabel
                     headerLabel.text = availabilitySection.header
                     headerView.backgroundColor = IUIKColorPalette.primary1.color
                 }
@@ -1658,66 +1602,46 @@ extension SearchResultViewController: UITableViewDelegate {
     // Mark : - TableHeight
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
-        if indexPath.section == 0 {
-            
+        switch indexPath.section {
+        case 0:
             if indexPath.row == 0 && Constant.MyClassConstants.isShowAvailability == true {
                 return 110
+            } else if Constant.MyClassConstants.isShowAvailability == true {
+                if let exactMatchSection = availabilityExactMatchSection, !exactMatchSection.items.isEmpty,
+                    let inventoryBuckets = exactMatchSection.items[indexPath.row - 1].getInventoryBuckets() {
+                    let resort = exactMatchSection.items[indexPath.row - 1].getResort()
+                    resortNameLabelHeight = getHeightForResortName(text: resort?.name)
+                    return CGFloat(inventoryBuckets.count * 80 + resortImageCellHeight + resortNameLabelHeight)
+                } else if let surroundingMatchSection = availabilitySurroundingMatchSection, !surroundingMatchSection.items.isEmpty,
+                    let inventoryBuckets = surroundingMatchSection.items[indexPath.row - 1].getInventoryBuckets() {
+                    let resort = surroundingMatchSection.items[indexPath.row - 1].getResort()
+                    resortNameLabelHeight = getHeightForResortName(text: resort?.name)
+                    return CGFloat(inventoryBuckets.count * 80 + resortImageCellHeight + resortNameLabelHeight)
+                }
             } else {
-                if Constant.MyClassConstants.isShowAvailability == true {
-                    let selectedRow = indexPath.row - 1
-                    
-                    if let exactMatchSection = availabilityExactMatchSection, !exactMatchSection.items.isEmpty,
-                        let inventoryBuckets = exactMatchSection.items[selectedRow].getInventoryBuckets() {
-                        let resort = exactMatchSection.items[selectedRow].getResort()
-                        resortNameLabelHeight = getHeightForResortName(text: resort?.name)
-                        return CGFloat(inventoryBuckets.count * 80 + resortImageCellHeight + resortNameLabelHeight)
-                    } else if let surroundingMatchSection = availabilitySurroundingMatchSection, !surroundingMatchSection.items.isEmpty,
-                        let inventoryBuckets = surroundingMatchSection.items[selectedRow].getInventoryBuckets() {
-                        let resort = surroundingMatchSection.items[selectedRow].getResort()
-                        resortNameLabelHeight = getHeightForResortName(text: resort?.name)
-                        return CGFloat(inventoryBuckets.count * 80 + resortImageCellHeight + resortNameLabelHeight)
-                    }
-                    
-                    return 0
-
-                } else {
-                    
-                    let selectedRow = indexPath.row
-                    
-                    if let exactMatchSection = availabilityExactMatchSection, !exactMatchSection.items.isEmpty,
-                        let inventoryBuckets = exactMatchSection.items[selectedRow].getInventoryBuckets() {
-                        let resort = exactMatchSection.items[selectedRow].getResort()
-                        resortNameLabelHeight = getHeightForResortName(text: resort?.name)
-                        return CGFloat(inventoryBuckets.count * 80 + resortImageCellHeight + resortNameLabelHeight)
-                    } else if let surroundingMatchSection = availabilitySurroundingMatchSection, !surroundingMatchSection.items.isEmpty,
-                        let inventoryBuckets = surroundingMatchSection.items[selectedRow].getInventoryBuckets() {
-                        let resort = surroundingMatchSection.items[selectedRow].getResort()
-                        resortNameLabelHeight = getHeightForResortName(text: resort?.name)
-                        return CGFloat(inventoryBuckets.count * 80 + resortImageCellHeight + resortNameLabelHeight)
-                    }
-                    
-                    return 0
+                if let exactMatchSection = availabilityExactMatchSection, !exactMatchSection.items.isEmpty,
+                    let inventoryBuckets = exactMatchSection.items[indexPath.row ].getInventoryBuckets() {
+                    let resort = exactMatchSection.items[indexPath.row ].getResort()
+                    resortNameLabelHeight = getHeightForResortName(text: resort?.name)
+                    return CGFloat(inventoryBuckets.count * 80 + resortImageCellHeight + resortNameLabelHeight)
+                } else if let surroundingMatchSection = availabilitySurroundingMatchSection, !surroundingMatchSection.items.isEmpty,
+                    let inventoryBuckets = surroundingMatchSection.items[indexPath.row].getInventoryBuckets() {
+                    let resort = surroundingMatchSection.items[indexPath.row].getResort()
+                    resortNameLabelHeight = getHeightForResortName(text: resort?.name)
+                    return CGFloat(inventoryBuckets.count * 80 + resortImageCellHeight + resortNameLabelHeight)
                 }
             }
-            
-        } else {
-            //FIXME(Frank) - Why?
-            let selectedRow = indexPath.row
-            
-            if let exactMatchSection = availabilityExactMatchSection, !exactMatchSection.items.isEmpty,
-                let inventoryBuckets = exactMatchSection.items[selectedRow].getInventoryBuckets() {
-                let resort = exactMatchSection.items[selectedRow].getResort()
-                resortNameLabelHeight = getHeightForResortName(text: resort?.name)
-                return CGFloat(inventoryBuckets.count * 80 + resortImageCellHeight + resortNameLabelHeight)
-            } else if let surroundingMatchSection = availabilitySurroundingMatchSection, !surroundingMatchSection.items.isEmpty,
-                let inventoryBuckets = surroundingMatchSection.items[selectedRow].getInventoryBuckets() {
-                let resort = surroundingMatchSection.items[selectedRow].getResort()
+        case 1:
+            if let surroundingMatchSection = availabilitySurroundingMatchSection, !surroundingMatchSection.items.isEmpty,
+                let inventoryBuckets = surroundingMatchSection.items[indexPath.row].getInventoryBuckets() {
+                let resort = surroundingMatchSection.items[indexPath.row].getResort()
                 resortNameLabelHeight = getHeightForResortName(text: resort?.name)
                 return CGFloat(inventoryBuckets.count * 80 + resortImageCellHeight + resortNameLabelHeight)
             }
-            
+        default:
             return 0
         }
+        return 0
     }
 }
 
@@ -1741,8 +1665,9 @@ extension SearchResultViewController: UITableViewDataSource {
             
             guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.reUsableIdentifiers.availabilityCell, for: indexPath) as? SearchTableViewCell else { return UITableViewCell() }
             cell.tag = indexPath.section
+    
             if Constant.MyClassConstants.isShowAvailability == true && indexPath.section == 0 {
-                
+
                 cell.resortInfoCollectionView.tag = indexPath.row - 1
                 cell.resortInfoCollectionView.accessibilityValue = String(indexPath.section)
             } else {
@@ -1751,8 +1676,7 @@ extension SearchResultViewController: UITableViewDataSource {
             }
             
             cell.resortInfoCollectionView.reloadData()
-            cell.resortInfoCollectionView
-                .isScrollEnabled = false
+            cell.resortInfoCollectionView.isScrollEnabled = false
             cell.layer.borderWidth = 0.5
             cell.layer.borderColor = UIColor.lightGray.cgColor
             return cell
@@ -1768,20 +1692,28 @@ extension SearchResultViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         //***** Return number of rows in section required in tableview *****//
-        if section == 0, let exactMatchSection = availabilityExactMatchSection, !exactMatchSection.items.isEmpty {
-            if Constant.MyClassConstants.isShowAvailability == true {
-                return exactMatchSection.items.count + 1
-            } else {
-                return exactMatchSection.items.count
+        switch section {
+        case 0:
+            if let exactMatchSection = availabilityExactMatchSection, !exactMatchSection.items.isEmpty {
+                if Constant.MyClassConstants.isShowAvailability == true {
+                    return exactMatchSection.items.count + 1
+                } else {
+                    return exactMatchSection.items.count
+                }
+            } else if let surroundingMatchSection = availabilitySurroundingMatchSection, !surroundingMatchSection.items.isEmpty {
+                if Constant.MyClassConstants.isShowAvailability == true {
+                    return surroundingMatchSection.items.count + 1
+                } else {
+                    return surroundingMatchSection.items.count
+                }
             }
-        } else if section == 0, let surroundingMatchSection = availabilitySurroundingMatchSection, !surroundingMatchSection.items.isEmpty {
-            if Constant.MyClassConstants.isShowAvailability == true {
-                return surroundingMatchSection.items.count + 1
-            } else {
+        case 1:
+            if let surroundingMatchSection = availabilitySurroundingMatchSection, !surroundingMatchSection.items.isEmpty {
                 return surroundingMatchSection.items.count
             }
+        default:
+            return 0
         }
-        
         return 0
     }
 }
@@ -1872,7 +1804,7 @@ extension SearchResultViewController: RenewelViewControllerDelegate {
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
-    func selectedRenewalFromWhoWillBeCheckingIn(renewalCoreProduct: Renewal?, renewalNonCoreProduct: Renewal?, selectedRelinquishment: ExchangeRelinquishment) {
+    func selectedRenewalFromWhoWillBeCheckingIn(renewalCoreProduct: Renewal?, renewalNonCoreProduct: Renewal?, selectedRelinquishment: ExchangeRelinquishment?) {
         self.dismiss(animated: false, completion: nil)
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
         guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: SearchResultViewController.whoWillBeCheckingInViewController) as? WhoWillBeCheckingInViewController else { return }
@@ -1882,7 +1814,7 @@ extension SearchResultViewController: RenewelViewControllerDelegate {
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
-    func noThanks(selectedRelinquishment: ExchangeRelinquishment) {
+    func noThanks(selectedRelinquishment: ExchangeRelinquishment?) {
         self.dismiss(animated: true, completion: nil)
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
         guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: SearchResultViewController.whoWillBeCheckingInViewController) as? WhoWillBeCheckingInViewController else { return }
@@ -1938,4 +1870,3 @@ extension SearchResultViewController: WhoWillBeCheckInDelegate {
         self.navigationController?.pushViewController(viewController, animated: true)
     }
 }
-

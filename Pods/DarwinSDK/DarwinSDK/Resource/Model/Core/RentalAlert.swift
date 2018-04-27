@@ -40,7 +40,7 @@ open class RentalAlert {
 
 		if json["resorts"].exists() {
 			let resortsJsonArray:[JSON] = json["resorts"].arrayValue
-            self.resorts = resortsJsonArray.map { Resort(summaryJSON:$0) }
+            self.resorts = resortsJsonArray.map { Resort(json: $0) }
         }
  
 		if json["selections"].exists() {

@@ -25,6 +25,7 @@ class CheckOutIPadViewController: UIViewController {
     //Class variables
     var isPromotionsEnabled = true
     var isTripProtectionEnabled = false
+    var isGuestCertificateEnabled = false
     var bookingCostRequiredRows = 1
     var promotionSelectedIndex = 0
     var isAgreed: Bool = false
@@ -46,7 +47,7 @@ class CheckOutIPadViewController: UIViewController {
     var recapFeesTotal: Float?
     var isDepositPromotionAvailable = false
     var totalFeesArray = NSMutableArray()
-    var filterRelinquishments = ExchangeRelinquishment()
+    var filterRelinquishments: ExchangeRelinquishment?
     var totalRowsInCost = 0
     var renewalCoreProduct: Renewal?
     var renewalNonCoreProduct: Renewal?
@@ -65,6 +66,7 @@ class CheckOutIPadViewController: UIViewController {
         
         self.emailTextToEnter = Session.sharedSession.contact?.emailAddress ?? ""
         self.checkoutTableView.reloadData()
+        self.isGuestCertificateEnabled = Constant.MyClassConstants.exchangeFees?.guestCertificate != nil || Constant.MyClassConstants.rentalFees?.guestCertificate != nil
         
         if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
             
@@ -199,7 +201,7 @@ class CheckOutIPadViewController: UIViewController {
                 
             } else {
                 
-                for advisement in (Constant.MyClassConstants.viewResponse.resort?.advisements)! {
+                for advisement in (Constant.MyClassConstants.viewResponse.destination?.resort?.advisements)! {
                     
                     if advisement.title == Constant.MyClassConstants.additionalAdv {
                         Constant.MyClassConstants.additionalAdvisementsArray.append(advisement)
@@ -334,8 +336,7 @@ class CheckOutIPadViewController: UIViewController {
                         Constant.MyClassConstants.exchangeContinueToPayResponse = response
                         
                         let selectedCard = Constant.MyClassConstants.selectedCreditCard
-                        
-                        Helper.removeStoredGuestFormDetials()
+                                                
                         self.isAgreed = true
                         self.hideHudAsync()
                         self.checkoutTableView.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with: .automatic)
@@ -517,11 +518,11 @@ class CheckOutIPadViewController: UIViewController {
         if sender.tag == 0 {
             self.performSegue(withIdentifier: Constant.segueIdentifiers.showResortDetailsSegue, sender: nil)
         } else {
-            if let clubPointResortCode = filterRelinquishments.clubPoints?.resort?.resortCode {
+            if let clubPointResortCode = filterRelinquishments?.clubPoints?.resort?.resortCode {
                 getRelinquishmentDetails(resortCode: clubPointResortCode)
-            } else if let openWeekResortCode = filterRelinquishments.openWeek?.resort?.resortCode {
+            } else if let openWeekResortCode = filterRelinquishments?.openWeek?.resort?.resortCode {
                 getRelinquishmentDetails(resortCode: openWeekResortCode)
-            } else if let depositResortCode = filterRelinquishments.deposit?.resort?.resortCode {
+            } else if let depositResortCode = filterRelinquishments?.deposit?.resort?.resortCode {
                 getRelinquishmentDetails(resortCode: depositResortCode)
             }
         }
@@ -721,14 +722,8 @@ class CheckOutIPadViewController: UIViewController {
                 processResort.currentStep = ProcessStep.Recap
                 processResort.processId = Constant.MyClassConstants.exchangeProcessStartResponse.processId
                 
-                let shopExchange = ShopExchange()
-                shopExchange.selectedOfferName = Constant.MyClassConstants.exchangeFees?.shopExchange?.selectedOfferName
-                
-                let fees = ExchangeFees()
-                fees.shopExchange = shopExchange
-                
                 let processRequest = ExchangeProcessRecalculateRequest()
-                processRequest.fees = fees
+                processRequest.fees = Constant.MyClassConstants.exchangeFees
                 
                 ExchangeProcessClient.recalculateFees(Session.sharedSession.userAccessToken, process: processResort, request: processRequest, onSuccess: { response in
                     
@@ -829,14 +824,8 @@ class CheckOutIPadViewController: UIViewController {
                 processResort.currentStep = ProcessStep.Recap
                 processResort.processId = Constant.MyClassConstants.exchangeProcessStartResponse.processId
                 
-                let shopExchange = ShopExchange()
-                shopExchange.selectedOfferName = Constant.MyClassConstants.exchangeFees?.shopExchange?.selectedOfferName
-                
-                let fees = ExchangeFees()
-                fees.shopExchange = shopExchange
-                
                 let processRequest = ExchangeProcessRecalculateRequest()
-                processRequest.fees = fees
+                processRequest.fees = Constant.MyClassConstants.exchangeFees
                 
                 ExchangeProcessClient.recalculateFees(Session.sharedSession.userAccessToken, process: processResort, request: processRequest, onSuccess: { response in
                     
@@ -952,10 +941,10 @@ extension CheckOutIPadViewController: UITableViewDataSource {
                 return totalRowsInCost
                 
             case 2:
-                if self.isTripProtectionEnabled && Constant.MyClassConstants.enableGuestCertificate {
+                if self.isTripProtectionEnabled && self.isGuestCertificateEnabled {
                     return 2
                     
-                } else if !self.isTripProtectionEnabled && !Constant.MyClassConstants.enableGuestCertificate {
+                } else if !self.isTripProtectionEnabled && !self.isGuestCertificateEnabled {
                     return 0
                 } else {
                     return 1
@@ -1033,7 +1022,7 @@ extension CheckOutIPadViewController: UITableViewDataSource {
         case 2:
             switch indexPath.section {
             case 2 :
-                if !self.isTripProtectionEnabled && !Constant.MyClassConstants.enableGuestCertificate {
+                if !self.isTripProtectionEnabled && !self.isGuestCertificateEnabled {
                     isHeightZero = true
                     return 0
                 } else {
@@ -1065,16 +1054,16 @@ extension CheckOutIPadViewController: UITableViewDataSource {
                     guard let font = UIFont(name: Constant.fontName.helveticaNeue, size: 16.0) else { return 0 }
                     var height: CGFloat
                     if Constant.RunningDevice.deviceIdiom == .pad {
-                        height = heightForView(Constant.MyClassConstants.generalAdvisementsArray[indexPath.row].description ?? "", font: font, width: (view.frame.size.width / 2) - 10)
+                        height = heightForView(Constant.MyClassConstants.generalAdvisementsArray[indexPath.row].description.joined(separator: ". ") ?? "", font: font, width: (view.frame.size.width / 2) - 10)
                         return height + 50
                     } else {
-                        height = heightForView(Constant.MyClassConstants.generalAdvisementsArray[indexPath.row].description ?? "", font: font, width: view.frame.size.width - 10)
+                        height = heightForView(Constant.MyClassConstants.generalAdvisementsArray[indexPath.row].description.joined(separator: ". ") ?? "", font: font, width: view.frame.size.width - 10)
                         return height + 50
                     }
                 } else {
                     guard let font = UIFont(name: Constant.fontName.helveticaNeue, size: 16.0) else { return 50 }
                     guard let description = Constant.MyClassConstants.additionalAdvisementsArray.last?.description else { return 50 }
-                    let height = heightForView(description, font: font, width: view.frame.size.width - 20)
+                    let height = heightForView(description.joined(separator: ". "), font: font, width: view.frame.size.width - 20)
                     return height + 50
                 }
             case 2:
@@ -1383,12 +1372,12 @@ extension CheckOutIPadViewController: UITableViewDataSource {
                     }
                 } else {
                     
-                    if let openWeek = filterRelinquishments.openWeek {
+                    if let openWeek = filterRelinquishments?.openWeek {
                         cell.resortName?.text = openWeek.resort?.resortName
                         cell.lblHeading.text = Constant.MyClassConstants.relinquishment
                         cell.resortDetailsButton.isHidden = false
                         cell.resortDetailsButton.addTarget(self, action: #selector(WhoWillBeCheckingInViewController.resortDetailsClicked(_:)), for: .touchUpInside)
-                    } else if let deposits = filterRelinquishments.deposit {
+                    } else if let deposits = filterRelinquishments?.deposit {
                         cell.resortName?.text = deposits.resort?.resortName
                         cell.lblHeading.text = Constant.MyClassConstants.relinquishment
                         cell.resortDetailsButton.isHidden = false
@@ -1428,10 +1417,10 @@ extension CheckOutIPadViewController: UITableViewDataSource {
                     guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.advisementsCell, for: indexPath) as? AdvisementsCell else { return UITableViewCell() }
                     if indexPath.row != (Constant.MyClassConstants.generalAdvisementsArray.count) + 1 {
                         cell.advisementType.text = (Constant.MyClassConstants.generalAdvisementsArray[indexPath.row].title)?.capitalized
-                        cell.advisementTextLabel.text = Constant.MyClassConstants.generalAdvisementsArray[indexPath.row].description
+                        cell.advisementTextLabel.text = Constant.MyClassConstants.generalAdvisementsArray[indexPath.row].description.joined(separator: ". ")
                     } else {
                         cell.advisementType.text = ""
-                        cell.advisementTextLabel.text = Constant.MyClassConstants.additionalAdvisementsArray.last?.description
+                        cell.advisementTextLabel.text = Constant.MyClassConstants.additionalAdvisementsArray.last?.description.joined(separator: ". ")
                     }
                     cell.advisementType.font = UIFont(name: Constant.fontName.helveticaNeue, size: 15.0)
                     cell.advisementTextLabel.font = UIFont(name: Constant.fontName.helveticaNeue, size: 15.0)

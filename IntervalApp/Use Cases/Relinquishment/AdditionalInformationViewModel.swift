@@ -41,6 +41,13 @@ final class AdditionalInformationViewModel {
     private let sectionTitle = [nil, "Resort Unit Details".localized(), "Reservation Details".localized()]
     private enum Section: Int { case resortDetails, unitDetails, reservationDetails }
     private var simpleCellViewModels: [Section: [SimpleCellViewModel?]] = [:]
+    private var resortsForClub: [Resort]?
+
+    private var requiresReservationDetailSection: Bool {
+        return relinquishment.requireReservationNumber()
+            || relinquishment.requireUnitNumberAndUnitSize()
+            || relinquishment.requireCheckInDateAndWeekNumber()
+    }
     
     // MARK: - Init
     init(relinquishment: Relinquishment,
@@ -69,25 +76,9 @@ final class AdditionalInformationViewModel {
             }
         
             self.resort.observeNext { [unowned self] resort in
-                let resortName = resort?.resortName ?? ""
-                let resortCode = resort?.resortCode ?? ""
-                let newHeaderText = "\(resortName) / \(resortCode)"
-                let formattedHeaderText = self.createResortUnitDetailsHeaderText(with: newHeaderText,
-                                                                             userSelection: true)
-                self.resortUnitDetailsViewModel?.headerLabelText.next(formattedHeaderText)
                 self.relinquishment.resort = resort
                 self.relinquishment.fixWeekReservation?.resort = resort
-
-                self.reservationNumberVM?.textFieldValue.next(nil)
-                self.reservationNumberVM?.isEditing.next(true)
-                self.unitNumberVM?.isTappableTextField.next(true)
-                self.unitNumberVM?.textFieldValue.next(nil)
-                self.numberOfBedroomsVM?.isTappableTextField.next(true)
-                self.numberOfBedroomsVM?.textFieldValue.next(nil)
-                self.checkInDateVM?.textFieldValue.next(nil)
-                self.numberOfBedroomsVM?.isTappableTextField.next(true)
-                self.checkInDateVM?.isTappableTextField.next(true)
-
+                self.setResortUnitDetailsViewModel().then(self.enableReservationDetailInput)
                 }.dispose(in: self.disposeBag)
 
             self.directoryClientAPIStore.readResort(for: accessToken, and: resortCode)
@@ -97,6 +88,21 @@ final class AdditionalInformationViewModel {
                 .then(self.setReservationDetailsViewModel)
                 .then(resolve)
                 .onError { _ in reject(UserFacingCommonError.noData) }
+        }
+    }
+    
+    func reload() -> Promise<Void> {
+        return Promise { [unowned self] resolve, reject in
+            guard let resort = self.resort.value else {
+                return reject(UserFacingCommonError.noData)
+            }
+
+            self.relinquishment.refreshReservationAttributes(reservationAttributes: resort.reservationAttributes)
+            self.setResortUnitDetailsViewModel()
+                .then(self.setReservationDetailsViewModel)
+                .then(self.enableReservationDetailInput)
+                .then(resolve)
+                .onError(reject)
         }
     }
 
@@ -118,6 +124,19 @@ final class AdditionalInformationViewModel {
     }
 
     // MARK: - Private functions
+    private func enableReservationDetailInput() -> Promise<Void> {
+        self.reservationNumberVM?.textFieldValue.next(nil)
+        self.reservationNumberVM?.isEditing.next(true)
+        self.unitNumberVM?.isTappableTextField.next(true)
+        self.unitNumberVM?.textFieldValue.next(nil)
+        self.numberOfBedroomsVM?.isTappableTextField.next(true)
+        self.numberOfBedroomsVM?.textFieldValue.next(nil)
+        self.checkInDateVM?.textFieldValue.next(nil)
+        self.numberOfBedroomsVM?.isTappableTextField.next(true)
+        self.checkInDateVM?.isTappableTextField.next(true)
+        return Promise.resolve()
+    }
+    
     private func updateResortInRelinquishment(with resort: Resort) -> Promise<Void> {
         self.resort.next(resort)
         return Promise.resolve()
@@ -140,34 +159,53 @@ final class AdditionalInformationViewModel {
         switch sectionIdentifier {
         case .resortDetails:
             return AdditionalInformationHeaderView.height
-        case .unitDetails, .reservationDetails:
+
+        case .unitDetails:
             return relinquishment.requireClubResort() ? SimpleLabelHeaderView.estimatedHeight() : 0
+
+        case .reservationDetails:
+            return requiresReservationDetailSection ? SimpleLabelHeaderView.estimatedHeight() : 0
         }
     }
     
     func viewForHeader(in section: Int) -> UIView? {
         guard let sectionIdentifier = Section(rawValue: section) else { return nil }
         switch sectionIdentifier {
+
         case .resortDetails:
             return AdditionalInformationHeaderView.headerView()
-        case .unitDetails, .reservationDetails:
+
+        case .unitDetails:
             guard let headerView = SimpleLabelHeaderView.headerView() as? SimpleLabelHeaderView else { return nil }
             headerView.headerType = .sectionHeaderGray
             headerView.viewModel = SimpleLabelHeaderViewModel(headerTitle: title(for: section))
-            return relinquishment.requireUnitNumberAndUnitSize() ? headerView : nil
+            return relinquishment.requireClubResort() ? headerView : nil
+
+        case .reservationDetails:
+            guard let headerView = SimpleLabelHeaderView.headerView() as? SimpleLabelHeaderView else { return nil }
+            headerView.headerType = .sectionHeaderGray
+            headerView.viewModel = SimpleLabelHeaderViewModel(headerTitle: title(for: section))
+            return requiresReservationDetailSection ? headerView : nil
         }
     }
 
     func getResortsForClub() -> Promise<[Resort]> {
         return Promise { [unowned self] resolve, reject in
-            guard let accessToken = self.sessionStore.userAccessToken else {
-                reject(UserFacingCommonError.invalidSession)
+            guard let accessToken = self.sessionStore.userAccessToken,
+                let relinquishmentID = self.relinquishment.relinquishmentId,
+                let resortCode = self.resort.value?.resortCode else {
+                reject(UserFacingCommonError.generic)
                 return
             }
 
-            self.directoryClientAPIStore.readResorts(for: accessToken, and: self.resort.value?.resortCode ?? "")
-                .then(resolve)
-                .onError { _ in reject(UserFacingCommonError.noData) }
+            if let resortsForClub = self.resortsForClub {
+                resolve(resortsForClub)
+            } else {
+                self.exchangeClientAPIStore.readResorts(for: accessToken, relinquishmentID: relinquishmentID, and: resortCode)
+                    .then(self.storeResortsInViewModel)
+                    .then(resolve)
+                    .onError { _ in reject(UserFacingCommonError.noData) }
+            }
         }
     }
 
@@ -265,6 +303,11 @@ final class AdditionalInformationViewModel {
         }
     }
 
+    private func storeResortsInViewModel(resorts: [Resort]) -> Promise<[Resort]> {
+        resortsForClub = resorts
+        return Promise.resolve(resorts)
+    }
+
     private func setResortDetailViewModel() -> Promise<Void> {
         let resort = self.relinquishment.resort
         let defaultResortImage = resort?.getDefaultImage()
@@ -280,13 +323,25 @@ final class AdditionalInformationViewModel {
     }
 
     private func setResortUnitDetailsViewModel() -> Promise<Void> {
-        resortUnitDetailsViewModel = SimpleDisclosureIndicatorCellViewModel(headerLabelText: createResortUnitDetailsHeaderText(with: "Select a Club Resort".localized()))
-        if !relinquishment.requireClubResort() {
-            resortUnitDetailsViewModel?.cellHeight.next(0)
-            resortUnitDetailsViewModel?.isEditing.next(false)
+
+        if let resortUnitDetailsViewModel = resortUnitDetailsViewModel {
+            let resortName = self.relinquishment.resort?.resortName ?? ""
+            let resortCode = self.relinquishment.resort?.resortCode ?? ""
+            let newHeaderText = "\(resortName) / \(resortCode)"
+            let formattedHeaderText = self.createResortUnitDetailsHeaderText(with: newHeaderText, userSelection: true)
+            resortUnitDetailsViewModel.headerLabelText.next(formattedHeaderText)
+
+        } else {
+            let headerText = createResortUnitDetailsHeaderText(with: "Select a Club Resort".localized())
+            resortUnitDetailsViewModel = SimpleDisclosureIndicatorCellViewModel(headerLabelText: headerText)
+            if !relinquishment.requireClubResort() {
+                resortUnitDetailsViewModel?.cellHeight.next(0)
+                resortUnitDetailsViewModel?.isEditing.next(false)
+            }
+
+            simpleCellViewModels[.unitDetails] = [resortUnitDetailsViewModel]
         }
 
-        simpleCellViewModels[.unitDetails] = [resortUnitDetailsViewModel]
         return Promise.resolve()
     }
 

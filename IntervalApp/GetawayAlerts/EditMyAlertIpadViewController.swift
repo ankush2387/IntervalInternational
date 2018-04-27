@@ -73,9 +73,10 @@ class EditMyAlertIpadViewController: UIViewController {
             }
             self.hideHudAsync()
             self.setupView()
+            alertStatusButton.isOn = alert.enabled ?? false
+        } else {
+            self.setupView()
         }
-        self.setupView()
-        
         // omniture tracking with event 40
         omnitureTrackingForEvent40()
         omnitureTrackingForEvent76()
@@ -165,7 +166,10 @@ class EditMyAlertIpadViewController: UIViewController {
         let storyboardName = isRunningOnIphone ? Constant.storyboardNames.vacationSearchIphone : Constant.storyboardNames.vacationSearchIPad
         let mainStoryboard: UIStoryboard = UIStoryboard(name: storyboardName, bundle: nil)
         if let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.calendarViewController) as? CalendarViewController {
-            viewController.requestedDateWindow = Constant.MyClassConstants.start
+            viewController.calendarContext = CalendarContext.alertStartDate
+            viewController.didSelectDate = { selectedDate in
+                Constant.MyClassConstants.alertWindowStartDate = selectedDate
+            }
             let transitionManager = TransitionManager()
             self.navigationController?.transitioningDelegate = transitionManager
             self.navigationController?.pushViewController(viewController, animated: true)
@@ -178,8 +182,10 @@ class EditMyAlertIpadViewController: UIViewController {
         let storyboardName = isRunningOnIphone ? Constant.storyboardNames.vacationSearchIphone : Constant.storyboardNames.vacationSearchIPad
         let mainStoryboard: UIStoryboard = UIStoryboard(name: storyboardName, bundle: nil)
         if let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.calendarViewController) as? CalendarViewController {
-            viewController.requestedDateWindow = Constant.MyClassConstants.end
-            viewController.showNinetyDaysWindow = true
+            viewController.calendarContext = CalendarContext.alertEndDate
+            viewController.didSelectDate = { selectedDate in
+                Constant.MyClassConstants.alertWindowEndDate = selectedDate
+            }
             navigationController?.pushViewController(viewController, animated: true)
         }
     }

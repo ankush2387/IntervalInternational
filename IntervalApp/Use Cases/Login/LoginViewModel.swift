@@ -45,20 +45,20 @@ final class LoginViewModel {
     
     var versionLabel: (text: String?, isHidden: Bool) {
         
-        switch configuration.getEnvironment() {
+        switch darwinSDK.apiEnvironment {
             
         case .production:
             return (nil, true)
             
         default:
-            let environment = configuration.get(.Environment, defaultValue: "NONE").uppercased()
+            let environment = darwinSDK.apiEnvironment
             let text = "\("Version: ".localized()) \(appBundle.appVersion).\(appBundle.build) \(environment) (\(appBundle.gitCommit))"
             return (text, false)
         }
     }
 
     // MARK: - Private properties
-    private let configuration: Config
+    private let darwinSDK: DarwinSDK
     private let encryptedStore: EncryptedItemDataStore
     private let decryptedStore: DecryptedItemDataStore
     private let userClientAPIStore: UserClientAPIStore
@@ -73,13 +73,13 @@ final class LoginViewModel {
          authProviderClientAPIStore: AuthProviderClientAPIStore,
          encryptedStore: EncryptedItemDataStore,
          decryptedStore: DecryptedItemDataStore,
-         configuration: Config,
+         darwinSDK: DarwinSDK,
          appBundle: AppBundle) {
 
         appSettings = Observable(nil)
         self.appBundle = appBundle
         self.sessionStore = sessionStore
-        self.configuration = configuration
+        self.darwinSDK = darwinSDK
         self.encryptedStore = encryptedStore
         self.decryptedStore = decryptedStore
         self.userClientAPIStore = userClientAPIStore

@@ -102,7 +102,7 @@ class SideMenuiPadTableViewController: UIViewController, UITableViewDataSource {
     @objc(tableView:heightForRowAtIndexPath:) func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         //***** return height for  row in each section of tableview *****//
         var height = 0
-        (indexPath.row == 0) ? (height = 100) :  (height = 70)
+        (indexPath.row == 0) ? (height = 140) :  (height = 70)
         return CGFloat(height)
     }
     
@@ -117,7 +117,7 @@ class SideMenuiPadTableViewController: UIViewController, UITableViewDataSource {
             let imageview = UIImageView()
             let screenSize: CGRect = UIScreen.main.bounds
             let actualSizeRequired = CGFloat(screenSize.width / 2 - 50) - 250
-            imageview.frame = CGRect(x: actualSizeRequired / 2, y: 0, width: 250, height: 88)
+            imageview.frame = CGRect(x: actualSizeRequired / 2, y: 20, width: 250, height: 88)
             imageview.image = UIImage(named: Constant.MyClassConstants.logoMenuImage)
             imageview.contentMode = UIViewContentMode.scaleAspectFit
             cell.contentView.addSubview(imageview)
