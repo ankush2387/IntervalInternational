@@ -33,7 +33,6 @@ class nonCoreProductView: UIView {
     func initializeView() {
         Bundle.main.loadNibNamed("nonCoreProduct", owner: self, options: [:])
         addSubview(contentView)
-        contentView.backgroundColor = UIColor.blue
         contentView.frame = self.bounds
         contentView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
     }

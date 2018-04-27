@@ -1622,6 +1622,7 @@ class Constant: NSObject {
     struct memberShipViewController {
         static let ownershipDetailCellIdentifier = "ownershipDetailCell"
         static let membershipDetailCellIdentifier = "membershipDetailCell"
+        static let membershipProductCellIdentifier = "membershipProductCell"
         static let ownershipHeaderTitletext = "Ownerships".localized()
         static let switchMembershipAlertMessage = "You have chosen to use a different membership account. Please note, benefit and exchange access may change. Would you like to continue?".localized()
         static let switchMembershipAlertTitle = "You are Switchinig Memberships".localized()

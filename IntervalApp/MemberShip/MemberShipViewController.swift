@@ -14,18 +14,23 @@ class MemberShipViewController: UIViewController {
     
     //** Outlets
     @IBOutlet weak var tableView: UITableView!
+    
+    let productCellHeight:CGFloat = 85.0
+    let memberShipCellHeight:CGFloat = 338.0
+    let ownerShipCellHeight:CGFloat = 332.0
 
     @IBAction func switchMemberShipButtonIsTapped(_ sender: UIButton) {
         CreateActionSheet()
     }
     
     /** Class variables */
-    fileprivate let numberOfSection = 2
+    fileprivate let numberOfSection = 3
     fileprivate let numberOfRowInSection = 1
     var previousSelectedMembershipCellIndex: IndexPath?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.separatorColor = .clear
         title = Constant.ControllerTitles.memberShipViewController
         displayMenuButton()
         getContactMembershipInfo()
@@ -169,12 +174,14 @@ extension MemberShipViewController: UITableViewDataSource {
         case 3:
             return Session.sharedSession.contact?.memberships?.count ?? 0
         default:
-            if section == 1 {
-                return Session.sharedSession.selectedMembership?.ownerships?.count ?? 0
-            } else {
+            if section == 0 {
                 return numberOfRowInSection
+            } else if (section == 2) {
+                return numberOfRowInSection
+            } else {
+                let extraViews = (Session.sharedSession.selectedMembership?.products?.count ?? 0)
+                return extraViews
             }
-            
         }
     }
     // MARK: Cell for a row
@@ -208,7 +215,7 @@ extension MemberShipViewController: UITableViewDataSource {
             return cell
         
         default:
-            if indexPath.section == 1 {
+            if indexPath.section == 2 {
                 guard let ownershipCell = tableView.dequeueReusableCell(withIdentifier: Constant.memberShipViewController.ownershipDetailCellIdentifier) as? OwnerShipDetailTableViewCell else { return UITableViewCell() }
                 
                 if let membership = Session.sharedSession.selectedMembership, let ownerships = membership.ownerships {
@@ -216,7 +223,7 @@ extension MemberShipViewController: UITableViewDataSource {
                 }
    
                 return ownershipCell
-            } else {
+            } else if indexPath.section == 0 {
                 guard let membershipCell = tableView.dequeueReusableCell(withIdentifier: Constant.memberShipViewController.membershipDetailCellIdentifier) as? MemberShipDetailTableViewCell else { return UITableViewCell() }
                 
                 guard let profile = Session.sharedSession.contact else { return UITableViewCell() }
@@ -228,14 +235,36 @@ extension MemberShipViewController: UITableViewDataSource {
                 }
                 
                 membershipCell.setupCell(profile: profile, membership: membership)
-
                 return membershipCell
+                
+            } else {
+                guard let memberProductCell = tableView.dequeueReusableCell(withIdentifier: Constant.memberShipViewController.membershipProductCellIdentifier) as? ProductCell else { return UITableViewCell() }
+                
+                 guard let membership = Session.sharedSession.selectedMembership else { return UITableViewCell() }
+                if let products = membership.products {
+                    if products.count > 1 {
+                        memberProductCell.bottomHorizontalSeparator.isHidden = true
+                    }
+                   let sortedProducts = products.sorted { $0.coreProduct && !$1.coreProduct }
+                   memberProductCell.setUpMemberProductData(membership: membership, prod: sortedProducts[indexPath.row])
+                }
+                return memberProductCell
             }
         }
     }
+    
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        if section == 1 && tableView.tag != 3 {
+            let headerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 20))
+            headerView.backgroundColor = .white
+            return headerView
+        }
+        return nil
+    }
+    
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
-        if section == 1 && tableView.tag != 3 {
+        if section == 2 && tableView.tag != 3 {
             let headerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 40))
             let seprator = Seprator(x: 0, y: 0, width: headerView.frame.size.width, height: 1)
                 headerView.addSubview(seprator)
@@ -257,22 +286,23 @@ extension for tableview delegate
 extension MemberShipViewController: UITableViewDelegate {
 	/** This function is used to return Height for footer In section */
 	func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-
-        return 0
+        switch section {
+        case 1:
+            return 20
+        default:
+            return 0.0
+        }
 	}
 	
 	/** This function is used to return Height for header In section */
 	func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
 
         switch section {
-        case 0 :
-            return 0
-        case 1 :
+        case 2 :
             return 40
         default :
             return 0
         }
-
 	}
 	
 	/** This function is used to return Height for a row at particular index In section */
@@ -283,10 +313,11 @@ extension MemberShipViewController: UITableViewDelegate {
             
         default:
             if indexPath.section == 0 {
-                let extraViews = (Session.sharedSession.selectedMembership?.products?.count)! - 1
-                return CGFloat((80 * extraViews) + 440)
+                return memberShipCellHeight
+            } else if indexPath.section == 1 {
+                return productCellHeight
             } else {
-               return 332
+               return ownerShipCellHeight
             }
         }
 	}

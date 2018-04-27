@@ -78,7 +78,7 @@ public class Helper {
             }
             return dateFromString
         case "Month":
-            dateFormatter.dateFormat = "LLL"
+            dateFormatter.dateFormat = "LL"
             let dateFromString = dateFormatter.string(from: dateString as Date)
             return dateFromString
         case "Weekday":
