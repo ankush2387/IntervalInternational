@@ -251,8 +251,8 @@ class Constant: NSObject {
         static var whoWillBeCheckingInHeaderTextArray = ["From the list below, who on your membership will be checking in?".localized(), "", "Guest Name".localized(), "Guest Address", "Guest Contact info".localized(), ""]
         
         //***** checkout screen table header footer string array *****//
-        static var checkOutScreenHeaderTextArray = ["", "Promotions".localized(), "Exchange Options".localized(), "Add Trip Protection(Recommended)".localized(), "Your Booking Costs".localized(), "", "", "", "Payment Method".localized(), "Confirmation Email".localized()]
-        static var checkOutScreenHeaderIPadTextArray = ["", "Promotions".localized(), "Exchange Options".localized(), "Add Trip Protection(Recommended)".localized(), "Payment Method".localized(), "Confirmation Email".localized(), "", "", "", ""]
+        static var checkOutScreenHeaderTextArray = ["", "Promotions".localized(), "Exchange Options".localized(), "Trip Protection".localized(), "Your Booking Costs".localized(), "", "", "", "Payment Method".localized(), "Confirmation Email".localized()]
+        static var checkOutScreenHeaderIPadTextArray = ["", "Promotions".localized(), "Exchange Options".localized(), "Trip Protection".localized(), "Payment Method".localized(), "Confirmation Email".localized(), "", "", "", ""]
         
         //***** Initializing plicy list table cell content array *****//
         static var policyListTblCellContentArray = ["Terms & Conditions".localized(), "Privacy Policy".localized(), "Legal Information".localized(), "Contact Us".localized(), "Email Us".localized(), "Our Offices".localized(), "Version \(Helper.getBuildVersion())".localized()]
@@ -790,7 +790,7 @@ class Constant: NSObject {
         static var maximumLimitReachedMessage = "Maximum limit reached".localized()
         static var bedroomSizeAlertMessage = "Please select at least one master or lock-off portion. ".localized()
         static var feesAlertMessage = "Slide to Agree to Fees ".localized()
-        static var insuranceSelectionMessage = "Select trip protection or choose \("\"No I decline coverage.\"")".localized()
+        static var insuranceSelectionMessage = "Please select an insurance option.".localized()
         static var paymentSelectionMessage = "Please enter a valid credit card. ".localized()
         static var promotionsMessage = "Please select any promotions. ".localized()
         static var feesPaymentMessage = "I acknowledge and agree that the mandatory resort fees will be payable to the resort. Fees are per person and per day".localized()
