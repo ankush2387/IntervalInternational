@@ -53,6 +53,8 @@ class UpComingTripDetailController: UIViewController, UITextViewDelegate {
         requiredRowsForRelinquishment()
         navigationController?.navigationBar.isHidden = false
         title = Constant.ControllerTitles.upComingTripDetailController
+        upcomingTripDetailTbleview.estimatedRowHeight = 100
+        upcomingTripDetailTbleview.rowHeight = UITableViewAutomaticDimension
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -384,7 +386,7 @@ extension UpComingTripDetailController: UITableViewDelegate {
             } else if requiredRowsArray[indexPath.row]  == Constant.upComingTripDetailControllerReusableIdentifiers.modifyInsuranceCell {
                 return 80
             } else {
-                return 280
+                return UITableViewAutomaticDimension
             }
         case 4:
             return UITableViewAutomaticDimension
@@ -608,55 +610,8 @@ extension UpComingTripDetailController: UITableViewDataSource {
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.upComingTripDetailControllerReusableIdentifiers.unitCell, for: indexPath) as? UpComingTripCell else {
                     return UITableViewCell()
                 }
-                
-                if Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment?.accommodationCertificate != nil {
-                   
-                    if let fromDate = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment?.accommodationCertificate?.travelWindow?.fromDate, let checkInDate = fromDate.dateFromShortFormat() {
-             
-                        let myComponents1 = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: checkInDate)
-                        if let day = myComponents1.day, let month = myComponents1.month, let year = myComponents1.year {
-                            cell.checkInDateLabel.text = "\(Helper.getMonthnameFromInt(monthNumber: month)) \(cell.checkInDateLabel.text ?? ""))".localized()
-                            
-                            cell.checkInMonthYearLabel.text = "\(year)".localized()
-                            debugPrint(year)
-                            cell.checkInDateLabel.text = "\(day)".localized()
-                            if cell.checkInDateLabel.text?.count == 1 {
-                                cell.checkInDateLabel.text = "0\(day)".localized()
-                            }
-                        }
-                        cell.resortFixedWeekLabel.text = ""
-                        
-                    }
-                    
-                    if let unitSize = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment?.accommodationCertificate?.unit?.unitSize, let kitchen = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment?.accommodationCertificate?.unit?.kitchenType {
-                        
-                        cell.bedRoomKitechenType.text =  "\(unitSize) \(Helper.getKitchenEnums(kitchenType: kitchen))".localized()
-                    }
-                    cell.sleepsTotalOrPrivate.text = "Sleeps \((Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment?.accommodationCertificate?.unit?.publicSleepCapacity) ?? 0) total, \((Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment?.accommodationCertificate?.unit?.privateSleepCapacity) ?? 0) Private".localized()
-                
-                } else {
-       
-                    // FIXME(Frank): Relinquishment is a Deposit ??? - AGAIN?
-                    
-                    if let checkInDate = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment?.deposit?.checkInDate?.dateFromShortFormat() {
-                        let myComponents1 = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: checkInDate)
-                        if let day = myComponents1.day, let checkinDate = cell.checkInDateLabel.text, let month = myComponents1.month {
-                            cell.checkInDateLabel.text = "\(day)".localized()
-                            if cell.checkInDateLabel.text?.count == 1 {
-                                cell.checkInDateLabel.text = "0\(day)".localized()
-                                cell.checkInDateLabel.text = "\(Helper.getMonthnameFromInt(monthNumber: month)) \(checkinDate)".localized()
-                            }
-                        }
-                    }
-       
-                    cell.checkInMonthYearLabel.text = String(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment?.deposit?.relinquishmentYear ?? 0).localized()
-                    
-                    cell.resortFixedWeekLabel.text = "Week \(Constant.getWeekNumber(weekType: Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment?.deposit?.weekNumber ?? "").localized())".localized()
-                    
-                    cell.bedRoomKitechenType.text =  "\(Helper.getBedroomNumbers(bedroomType: Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment?.deposit?.unit?.unitSize ?? "")) \(Helper.getKitchenEnums(kitchenType: (Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment?.deposit?.unit?.kitchenType) ?? ""))".localized()
-                    
-                    cell.sleepsTotalOrPrivate.text = "Sleeps \(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment?.deposit?.unit?.publicSleepCapacity ?? 0) total, \(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment?.deposit?.unit?.privateSleepCapacity ?? 0) Private".localized()
-                    
+                if let deposits = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment?.deposit {
+                    cell.setDepositInformation(with: deposits)
                 }
                 return cell
                 
@@ -701,9 +656,11 @@ extension UpComingTripDetailController: UITableViewDataSource {
             
             if requiredRowsArray[indexPath.row] == Constant.upComingTripDetailControllerReusableIdentifiers.guestCertificateCell {
                 
-                guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.upComingTripDetailControllerReusableIdentifiers.guestCertificateCell, for: indexPath) as? GuestCertificateCell else {
-                    
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: GuestCertificateCell.identifier, for: indexPath) as? GuestCertificateCell else {
                     return UITableViewCell()
+                }
+                if let guest = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.ancillaryProducts?.guestCertificate?.guest {
+                    cell.setGuestInfo(with: guest)
                 }
                 cell.backgroundColor = IUIKColorPalette.contentBackground.color
                 return cell
@@ -833,41 +790,38 @@ extension UpComingTripDetailController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
         let headerView = UIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 40))
-        let headerTextLabel = UILabel(frame: CGRect(x: 10, y: 5, width: view.bounds.width - 200, height: 40))
+        let headerTextLabel = UILabel(frame: CGRect(x: 20, y: 0, width: view.bounds.width - 200, height: 40))
+        headerTextLabel.textColor = IUIKColorPalette.primaryText.color
+        headerTextLabel.font = UIFont(name: Constant.fontName.helveticaNeue, size: 15)
+        headerView.backgroundColor = IntervalThemeFactory.deviceTheme.backgroundColorGray
         
         if section == 2 {
-            headerView.backgroundColor = IUIKColorPalette.tertiary1.color
             headerTextLabel.text = Constant.MyClassConstants.relinquishment.localized()
-            headerTextLabel.textColor = IUIKColorPalette.primaryText.color
             headerView.addSubview(headerTextLabel)
-            return headerView
         } else {
-            headerView.backgroundColor = IUIKColorPalette.tertiary1.color
             headerTextLabel.text = Constant.UpComingTripHeaderCellSting.additionalProducts.localized()
-            headerTextLabel.textColor = IUIKColorPalette.primaryText.color
             headerView.addSubview(headerTextLabel)
-            return headerView
         }
+        
+        return headerView
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         
-        if section == 5 {
-            
-            if requiredRowsArray.count > 0 {
-                
+        switch section {
+        case 2 :
+            if !requiredRowsArrayRelinquishment.isEmpty {
                 return 40
             } else {
                 return 0
             }
-        } else if section == 2 {
-            
-            if requiredRowsArrayRelinquishment.count > 0 {
+        case 3 :
+            if !requiredRowsArray.isEmpty {
                 return 40
             } else {
                 return 0
             }
-        } else {
+        default :
             return 0
         }
     }
