@@ -484,8 +484,10 @@ extension ResortDetailsViewController: UITableViewDelegate {
             return 50
         } else {
             switch indexPath.section {
-            case 0, 1:
+            case 0:
                 return tableView.frame.size.width / 2 + 100
+            case 1:
+                return UITableViewAutomaticDimension
             case 2:
                 if Constant.RunningDevice.deviceIdiom == .pad {
                     return 0
@@ -514,21 +516,23 @@ extension ResortDetailsViewController: UITableViewDelegate {
                                 if Constant.RunningDevice.deviceIdiom == .pad {
                                     return CGFloat (count * 20 + 60)
                                 } else {
-                                    return CGFloat (count * 20 + 30)
+                                    return UITableViewAutomaticDimension
                                 }
                                 
                             } else {
                                 if Constant.RunningDevice.deviceIdiom == .pad {
                                     return CGFloat (count * 20 + 160)
                                 } else {
-                                    return CGFloat (count * 20 + 60)
+                                    return UITableViewAutomaticDimension
                                 }
                             }
                                 
-                            } else { return 60 }
+                            } else {
+                                return UITableViewAutomaticDimension
+                            }
 
                         case 5 :
-                            return 50
+                            return UITableViewAutomaticDimension
                         case 6 :
                             if Constant.MyClassConstants.resortsDescriptionArray.tdiChart?.url != nil {
                                 return 600
@@ -539,11 +543,11 @@ extension ResortDetailsViewController: UITableViewDelegate {
                             return 600
                         }
                     } else {
-                        return 60
+                        return UITableViewAutomaticDimension
                     }
                 } else {
                     if indexPath.row == 0 {
-                        return 60
+                        return UITableViewAutomaticDimension
                     } else {
                         return 0
                     }
@@ -911,31 +915,32 @@ extension ResortDetailsViewController: UITableViewDataSource {
                             }
                             
                             if let phone = Constant.MyClassConstants.resortsDescriptionArray.phone {
-                                let textView = UITextView(frame: CGRect(x: 18.0, y: height + 20.0, width: UIScreen.main.bounds.width, height: 30.0))
+                                let phoneTextView = UITextView(frame: CGRect(x: 18.0, y: height + 20.0, width: UIScreen.main.bounds.width - 36.0, height: 30.0))
                                
                                 let linkAttributes = [
-                                    NSLinkAttributeName: NSURL(string: "tel://" + phone)!,
-                                    NSForegroundColorAttributeName: UIColor.blue,
+                                    NSLinkAttributeName: NSURL(string: "tel://" + phone ) ?? "",
+                                    NSForegroundColorAttributeName: UIColor.red,
                                     NSFontAttributeName: UIFont(name: Constant.fontName.helveticaNeue, size: 15.0) as Any
                                 ] as [String : Any]
 
                                 // swiftlint:disable legacy_constructor
                                 let attributedString = NSMutableAttributedString(string: phone)
                                 attributedString.setAttributes(linkAttributes, range: NSMakeRange(0, phone.count))
-
-                                textView.attributedText = attributedString
-                                textView.isUserInteractionEnabled = true
-                                textView.isEditable = false
                                 
-                                availableCountryCell?.addSubview(textView)
+                                phoneTextView.attributedText = attributedString
+                                phoneTextView.textColor = .blue
+                                phoneTextView.tintColor = .blue
+                                phoneTextView.isUserInteractionEnabled = true
+                                phoneTextView.isEditable = false
+                                availableCountryCell?.addSubview(phoneTextView)
                                 height += 30
                             }
                             
                             if let url = Constant.MyClassConstants.resortsDescriptionArray.webUrl {
-                                let textView = UITextView(frame: CGRect(x: 18.0, y: height + 15.0, width: UIScreen.main.bounds.width, height: 30.0))
+                                let urlTextView = UITextView(frame: CGRect(x: 18.0, y: height + 15.0, width: UIScreen.main.bounds.width, height: 30.0))
                                 
                                 let linkAttributes = [
-                                    NSLinkAttributeName: NSURL(string: "http://" + url)!,
+                                    NSLinkAttributeName: NSURL(string: "http://" + url) ?? "",
                                     NSForegroundColorAttributeName: UIColor.blue,
                                     NSFontAttributeName: UIFont(name: Constant.fontName.helveticaNeue, size: 15.0) as Any
                                     ] as [String : Any]
@@ -943,20 +948,19 @@ extension ResortDetailsViewController: UITableViewDataSource {
                                 let attributedString = NSMutableAttributedString(string: url)
                                 attributedString.setAttributes(linkAttributes, range: NSMakeRange(0, url.count))
                                 
-                                textView.attributedText = attributedString
-                                textView.isUserInteractionEnabled = true
-                                textView.isEditable = false
+                                urlTextView.attributedText = attributedString
+                                urlTextView.tintColor = .blue
+                                urlTextView.textColor = .blue
+                                urlTextView.isUserInteractionEnabled = true
+                                urlTextView.isEditable = false
                                 
-                                availableCountryCell?.addSubview(textView)
+                                availableCountryCell?.addSubview(urlTextView)
                                 height += 10
                             }
                             
                             resortInfoHeight = height + 30
-                            let indexPath = NSIndexPath(item: indexPath.row, section: indexPath.section)
-                            //tableViewResorts.reloadData()
-                            tableViewResorts.reloadRows(at: [indexPath as IndexPath], with: .automatic)
-                            
                         case 4 :
+                            availableCountryCell = tableView.dequeueReusableCell(withIdentifier: Constant.availableDestinationsTableViewController.availableDestinationPlaceTableViewCell) as? AvailableDestinationPlaceTableViewCell
                             availableCountryCell?.infoLabel.isHidden = false
                             availableCountryCell?.infoLabel.numberOfLines = 0
                             if nearbyArray.count > 0 {
@@ -978,6 +982,7 @@ extension ResortDetailsViewController: UITableViewDataSource {
                                 let resortRating = Constant.MyClassConstants.resortsDescriptionArray.rating
                                 let numberOfMonths = resortRating?.months ?? 0
                                 let numberOfResponses = resortRating?.totalResponses ?? 0
+                                ratingCell.textLabel?.numberOfLines = 0
                                 ratingCell.textLabel?.textColor = IntervalThemeFactory.deviceTheme.textColorGray
                                 if numberOfMonths < 0 {
                                     ratingCell.textLabel?.text = "N/A".localized()
