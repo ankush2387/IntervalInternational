@@ -157,25 +157,45 @@ class RenewelViewController: UIViewController {
                     let renewalPairA = firstRenewComboProduct.renewalComboProducts[0]
                     let renewalPairB = firstRenewComboProduct.renewalComboProducts[1]
                     
-                    if renewalPairA.isCoreProduct {
-
-                        renewalCoreProduct = Renewal()
-                        renewalCoreProduct?.id = renewalPairA.id
-                        renewalCoreProduct?.productCode = renewalPairA.productCode
+                    // Tag 0 - Renew Combo, Tag 1 - Renew Core
+                    if sender.tag == 0 {
+                        if renewalPairA.isCoreProduct {
+                            
+                            renewalCoreProduct = Renewal()
+                            renewalCoreProduct?.id = renewalPairA.id
+                            renewalCoreProduct?.productCode = renewalPairA.productCode
+                            renewalCoreProduct?.price = renewalPairA.price
+                        } else {
+                            renewalNonCoreProduct = Renewal()
+                            renewalNonCoreProduct?.id = renewalPairA.id
+                            renewalNonCoreProduct?.productCode = renewalPairA.productCode
+                            renewalNonCoreProduct?.price = renewalPairA.price
+                        }
+                        
+                        if renewalPairB.isCoreProduct {
+                            renewalCoreProduct = Renewal()
+                            renewalCoreProduct?.id = renewalPairB.id
+                            renewalCoreProduct?.productCode = renewalPairB.productCode
+                            renewalCoreProduct?.price = renewalPairB.price
+                        } else {
+                            renewalNonCoreProduct = Renewal()
+                            renewalNonCoreProduct?.id = renewalPairB.id
+                            renewalNonCoreProduct?.productCode = renewalPairB.productCode
+                            renewalNonCoreProduct?.price = renewalPairB.price
+                        }
                     } else {
-                        renewalNonCoreProduct = Renewal()
-                        renewalNonCoreProduct?.id = renewalPairA.id
-                        renewalNonCoreProduct?.productCode = renewalPairA.productCode
-                    }
-
-                    if renewalPairB.isCoreProduct {
-                        renewalCoreProduct = Renewal()
-                        renewalCoreProduct?.id = renewalPairB.id
-                        renewalCoreProduct?.productCode = renewalPairB.productCode
-                    } else {
-                        renewalNonCoreProduct = Renewal()
-                        renewalNonCoreProduct?.id = renewalPairB.id
-                        renewalNonCoreProduct?.productCode = renewalPairB.productCode
+                        if renewalPairA.isCoreProduct {
+                            
+                            renewalCoreProduct = Renewal()
+                            renewalCoreProduct?.id = renewalPairA.id
+                            renewalCoreProduct?.productCode = renewalPairA.productCode
+                            renewalCoreProduct?.price = renewalPairA.price
+                        } else {
+                            renewalNonCoreProduct = Renewal()
+                            renewalNonCoreProduct?.id = renewalPairA.id
+                            renewalNonCoreProduct?.productCode = renewalPairA.productCode
+                            renewalNonCoreProduct?.price = renewalPairA.price
+                        }
                     }
                 }
             }
@@ -339,22 +359,34 @@ extension RenewelViewController: UITableViewDataSource {
                 
             } else {
                 let comboLowestTerm = forceRenewals.comboProducts[0].renewalComboProducts[0].term
-                term = "\((comboLowestTerm ?? 12)/12)-year"
-                for comboProduct in (forceRenewals.comboProducts) {
+                term = "\((comboLowestTerm ?? 12) / 12)-year"
+                for comboProduct in forceRenewals.comboProducts {
                     for renewalComboProduct in comboProduct.renewalComboProducts where renewalComboProduct.term == comboLowestTerm {
+                        
+                        //Section-0 Combo Option, Section-1 Core Option
+                        if indexPath.section == 0 {
                             //hide renewal image here
                             cell.renewelImageView?.isHidden = true
-                            
                             // show core and non core here
-                            
                             cell.renewelCoreImageView?.isHidden = false
                             cell.renewelnonCoreImageView?.isHidden = false
+                        } else {
+                            //Show only core
+                            cell.renewelImageView?.isHidden = false
+                            cell.renewelCoreImageView?.isHidden = true
+                            cell.renewelnonCoreImageView?.isHidden = true
+                        }
+                        
                             
                             // currency code
                         if let currencyCode = forceRenewals.currencyCode {
                             if renewalComboProduct.isCoreProduct {
                                 if let productCode = renewalComboProduct.productCode {
-                                    cell.renewelCoreImageView?.image = UIImage(named: productCode)
+                                    if indexPath.section == 0 {
+                                        cell.renewelCoreImageView?.image = UIImage(named: productCode)
+                                    } else {
+                                        cell.renewelImageView?.image = UIImage(named: productCode)
+                                    }
                                 }
                                 
                                 priceAndCurrency = Helper.createPriceAndCurrency(currencyCode: currencyCode, price: renewalComboProduct.price)
@@ -373,7 +405,7 @@ extension RenewelViewController: UITableViewDataSource {
                                     cell.renewelLbl?.attributedText = attributeString
                                 }
                                 
-                            } else {
+                            } else if indexPath.section == 0 {
                                
                                 if let productCode = renewalComboProduct.productCode {
                                     cell.renewelnonCoreImageView?.image = UIImage(named: productCode)
@@ -413,8 +445,7 @@ extension RenewelViewController: UITableViewDataSource {
                                 }
                                 break
                                 
-                            }
-
+                             }
                         }
                         
                      }
