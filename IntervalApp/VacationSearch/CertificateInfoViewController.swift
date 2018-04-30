@@ -17,7 +17,7 @@ class CertificateInfoViewController: UIViewController {
 
         let attributedString = NSMutableAttributedString(string: "Individuals under the age of 21 are not eligible to receive a Guest Certificate.")
         attributedString.addAttribute(NSForegroundColorAttributeName, value: UIColor.red, range: NSRange(location: 12, length: 36))
-       // messageLabel.attributedText = attributedString
+        messageLabel.attributedText = attributedString
         
     }
 

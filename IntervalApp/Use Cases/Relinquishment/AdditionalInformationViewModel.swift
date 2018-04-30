@@ -76,7 +76,6 @@ final class AdditionalInformationViewModel {
             }
         
             self.resort.observeNext { [unowned self] resort in
-                self.relinquishment.resort = resort
                 self.relinquishment.fixWeekReservation?.resort = resort
                 self.setResortUnitDetailsViewModel().then(self.enableReservationDetailInput)
                 }.dispose(in: self.disposeBag)
@@ -340,8 +339,8 @@ final class AdditionalInformationViewModel {
     private func setResortUnitDetailsViewModel() -> Promise<Void> {
 
         if let resortUnitDetailsViewModel = resortUnitDetailsViewModel {
-            let resortName = self.relinquishment.resort?.resortName ?? ""
-            let resortCode = self.relinquishment.resort?.resortCode ?? ""
+            let resortName = self.resort.value?.resortName ?? ""
+            let resortCode = self.resort.value?.resortCode ?? ""
             let newHeaderText = "\(resortName) / \(resortCode)"
             let formattedHeaderText = self.createResortUnitDetailsHeaderText(with: newHeaderText, userSelection: true)
             resortUnitDetailsViewModel.headerLabelText.next(formattedHeaderText)
