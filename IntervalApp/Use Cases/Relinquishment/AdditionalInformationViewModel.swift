@@ -279,19 +279,34 @@ final class AdditionalInformationViewModel {
             
             if !self.relinquishment.requireUnitNumberAndUnitSize() {
                 fixWeekReservation.unit = nil
+            } else if fixWeekReservation.unit?.unitNumber?.isEmpty == true || fixWeekReservation.unit?.unitSize?.isEmpty == true {
+                reject(UserFacingCommonError.handleError("Please select a unit type.".localized()))
+                return
+            } else {
+                guard let unitSize = fixWeekReservation.unit?.unitSize else { return }
+                fixWeekReservation.unit?.unitSize = UnitSize.fromFriendlyName(unitSize)?.rawValue
             }
             
             if !self.relinquishment.requireCheckInDateAndWeekNumber() {
                 fixWeekReservation.checkInDate = nil
                 fixWeekReservation.weekNumber = nil
+            } else if fixWeekReservation.checkInDate?.isEmpty == true || fixWeekReservation.weekNumber?.isEmpty == true {
+                reject(UserFacingCommonError.handleError("Please select a check in date.".localized()))
+                return
             }
             
             if !self.relinquishment.requireReservationNumber() {
                 fixWeekReservation.reservationNumber = nil
+            } else if fixWeekReservation.reservationNumber?.isEmpty == true {
+                reject(UserFacingCommonError.handleError("Please enter a reservation number.".localized()))
+                return
             }
             
             if !self.relinquishment.requireClubResort() {
                 fixWeekReservation.resort = nil
+            } else if fixWeekReservation.resort?.resortCode?.isEmpty == true {
+                reject(UserFacingCommonError.handleError("Please select a resort.".localized()))
+                return
             }
             
             self.exchangeClientAPIStore.writeFixWeekReservation(for: accessToken,
