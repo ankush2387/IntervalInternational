@@ -770,6 +770,10 @@ extension AddDebitOrCreditCardViewController: UIPickerViewDelegate {
                 
             } else {
                 let creditCardType = Constant.MyClassConstants.allowedCreditCardType[row]
+                // this should be changed on the ESB side but for now
+                if creditCardType.name == "MASTER CARD" {
+                    return "MASTERCARD".localized()
+                }
                 return creditCardType.name
             }
             
@@ -798,7 +802,11 @@ extension AddDebitOrCreditCardViewController: UIPickerViewDelegate {
             } else if dropDownSelectionRow == 2 {
                 
                 let cardType = Constant.MyClassConstants.allowedCreditCardType[row]
-                Constant.GetawaySearchResultCardFormDetailData.cardType = cardType.name ?? ""
+                var name = cardType.name ?? ""
+                if name == "MASTER CARD" {
+                    name = "MASTERCARD".localized()
+                }
+                Constant.GetawaySearchResultCardFormDetailData.cardType = name
                 
             } else {
                 
