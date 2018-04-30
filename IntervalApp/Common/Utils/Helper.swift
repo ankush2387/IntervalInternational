@@ -1342,7 +1342,7 @@ public class Helper {
     static func cardTypeCodeMapping(cardType: String) -> String {
         switch cardType {
         case "MC":
-            return "Master card"
+            return "Mastercard"
             
         case "AX":
             return "American Express"
