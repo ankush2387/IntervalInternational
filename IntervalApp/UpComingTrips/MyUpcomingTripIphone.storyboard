@@ -1,24 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="GhM-vd-SHY">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="GhM-vd-SHY">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
-    <customFonts key="customFonts">
-        <array key="HelveticaNeue.ttc">
-            <string>HelveticaNeue</string>
-            <string>HelveticaNeue-Bold</string>
-            <string>HelveticaNeue-Medium</string>
-        </array>
-        <array key="HelveticaNeueLights.ttc">
-            <string>HelveticaNeue-Light</string>
-        </array>
-    </customFonts>
     <scenes>
         <!--Reveal View Controller-->
         <scene sceneID="w99-L9-Snn">
@@ -851,7 +841,7 @@
                                                 <constraint firstItem="5Ik-v7-n7S" firstAttribute="leading" secondItem="lb5-p9-Y81" secondAttribute="leadingMargin" constant="7" id="XGr-cd-MdM"/>
                                                 <constraint firstItem="JqH-OT-vdP" firstAttribute="top" secondItem="eeZ-0u-awt" secondAttribute="bottom" constant="2" id="Ylu-p2-SNH"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="5Ik-v7-n7S" secondAttribute="trailing" constant="15" id="cuR-nK-NtI"/>
-                                                <constraint firstItem="JqH-OT-vdP" firstAttribute="leading" secondItem="lb5-p9-Y81" secondAttribute="leading" constant="22" id="yOI-aG-RL5"/>
+                                                <constraint firstItem="JqH-OT-vdP" firstAttribute="leading" secondItem="lb5-p9-Y81" secondAttribute="leading" constant="27" id="yOI-aG-RL5"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
@@ -870,6 +860,7 @@
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Dec 25" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OAE-wo-hhZ">
                                                     <rect key="frame" x="22" y="11" width="48" height="20"/>
                                                     <constraints>
+                                                        <constraint firstAttribute="width" constant="70" id="CEv-PY-8lb"/>
                                                         <constraint firstAttribute="height" constant="20" id="fhH-mX-DNA"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
@@ -908,7 +899,7 @@
                                                 </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="8ZO-u2-TjN" firstAttribute="leading" secondItem="NoI-AS-RnE" secondAttribute="leading" constant="22" id="0Ez-67-5ZF"/>
+                                                <constraint firstItem="8ZO-u2-TjN" firstAttribute="leading" secondItem="NoI-AS-RnE" secondAttribute="leading" constant="27" id="0Ez-67-5ZF"/>
                                                 <constraint firstItem="cdi-K9-Ep4" firstAttribute="top" secondItem="NoI-AS-RnE" secondAttribute="topMargin" constant="9" id="1dA-bz-eEm"/>
                                                 <constraint firstItem="luT-yI-R4r" firstAttribute="top" secondItem="OAE-wo-hhZ" secondAttribute="bottom" id="8U1-kS-lx3"/>
                                                 <constraint firstItem="OAE-wo-hhZ" firstAttribute="leading" secondItem="NoI-AS-RnE" secondAttribute="leadingMargin" constant="7" id="AT6-KG-zTw"/>
