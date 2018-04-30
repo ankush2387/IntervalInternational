@@ -347,7 +347,7 @@ final class AdditionalInformationViewModel {
 
         } else {
             let headerText = createResortUnitDetailsHeaderText(with: "Select a Club Resort".localized())
-            resortUnitDetailsViewModel = SimpleDisclosureIndicatorCellViewModel(headerLabelText: headerText)
+            resortUnitDetailsViewModel = SimpleDisclosureIndicatorCellViewModel(headerLabelText: headerText, image: #imageLiteral(resourceName: "ForwardArrowIcon"))
             if !relinquishment.requireClubResort() {
                 resortUnitDetailsViewModel?.cellHeight.next(0)
                 resortUnitDetailsViewModel?.isEditing.next(false)

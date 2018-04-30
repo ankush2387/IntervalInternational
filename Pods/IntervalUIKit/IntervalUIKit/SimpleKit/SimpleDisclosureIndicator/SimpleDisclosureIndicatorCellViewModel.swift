@@ -10,13 +10,15 @@ import UIKit
 
 final public class SimpleDisclosureIndicatorCellViewModel {
 
+    public var image: Observable<UIImage?>
     public var isEditing: Observable<Bool>
     public var cellHeight: Observable<CGFloat> = Observable(80)
     public var headerLabelText: Observable<NSAttributedString?>
 
-    public init(headerLabelText: NSAttributedString? = nil, isEditing: Bool = true) {
+    public init(headerLabelText: NSAttributedString? = nil, isEditing: Bool = true, image: UIImage? = nil) {
         self.headerLabelText = Observable(headerLabelText)
         self.isEditing = Observable(isEditing)
+        self.image = Observable(image)
     }
 }
 
