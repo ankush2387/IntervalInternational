@@ -28,7 +28,7 @@ final class AdditionalInformationViewModel {
     }
 
     var resortPhoneNumber: String? {
-        return resort.value?.phone ?? relinquishment.resort?.phone
+        return relinquishment.resort?.phone
     }
 
     // MARK: - Private properties

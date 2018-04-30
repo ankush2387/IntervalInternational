@@ -289,7 +289,11 @@ extension AdditionalInformationViewController: UITableViewDataSource, SimpleView
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = viewModel.viewForHeader(in: section)
-        if let headerView = headerView as? AdditionalInformationHeaderView { headerView.callButtonTapped = callResort }
+        if let headerView = headerView as? AdditionalInformationHeaderView {
+            headerView.callButtonTapped = callResort
+            headerView.setCell(headerText: "Don't have your resort details? Call your resort.".localized(),
+                               hideCallButton: viewModel.resortPhoneNumber == nil)
+        }
         return headerView
     }
 
