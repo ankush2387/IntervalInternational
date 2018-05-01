@@ -133,7 +133,17 @@ extension CalendarViewController: FSCalendarDelegate {
 extension CalendarViewController: FSCalendarDataSource {
     
     func getCalendar(for calendar: FSCalendar, andDate date: Date) -> Date {
-        return calendar.date(withYear: (date as NSDate).fs_year, month: (date as NSDate).fs_month, day: (date as NSDate).fs_day)
+        var cal = Calendar.current
+        guard let timeZone = TimeZone(identifier: "UTC") else { return date }
+        cal.timeZone = timeZone
+        let components = cal.dateComponents([.day, .month, .year], from: date)
+        let yearOpt = components.year
+        let monthOpt = components.month
+        let dayOpt = components.day
+        if let year = yearOpt, let month = monthOpt, let day = dayOpt {
+            return calendar.date(withYear: year, month: month, day: day)
+        }
+        return date
     }
     
     func minimumDate(for calendar: FSCalendar) -> Date {
@@ -150,10 +160,10 @@ extension CalendarViewController: FSCalendarDataSource {
             case .alertEndDate:
                 return getCalendar(for: calendar, andDate: Constant.MyClassConstants.alertWindowStartDate ?? Date())
             default:
-                return getCalendar(for: calendar, andDate: Date());
+                return getCalendar(for: calendar, andDate: Date())
             }
         } else {
-            return getCalendar(for: calendar, andDate: Date());
+            return getCalendar(for: calendar, andDate: Date())
         }
         
     }
