@@ -804,7 +804,7 @@ class Constant: NSObject {
         static var searchVacationMessage = "Please select any destination or resort".localized()
         static var travellingDetailMessage = "Traveling: Tue Oct 15, 2015 - Sun May 20, 2018".localized()
         static var vacationSearchMessage = "We were unable to find any availability for the destination you requested. Please select additional travel dates by scrolling above or return to your search criteria and select another destination.".localized()
-        static var vactionSearchDateMessage = "No availability found.".localized()
+        static var vactionSearchDateMessage = "No availability found".localized()
         static var userInterestMessage = "How's about you go favorite some resorts and when you come back they will be here all warm and toasty waiting for you!".localized()
         static var goGetMessage = "Go on Get! ".localized()
         static var noDatesMessage = "No Dates availabel".localized()
