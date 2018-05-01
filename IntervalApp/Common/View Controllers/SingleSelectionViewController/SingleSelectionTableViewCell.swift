@@ -42,16 +42,7 @@ final class SingleSelectionTableViewCell: UITableViewCell {
         }
 
         cellTitleLabel.attributedText = attributedText
-
-        if case .checkMark = cellType {
-            cellImageView.image = isSelected ? #imageLiteral(resourceName: "Select-On") : #imageLiteral(resourceName: "Select-Off")
-        } else {
-            cellImageView.image = #imageLiteral(resourceName: "ForwardArrowIcon")
-            cellBackgroundView.layer.borderWidth = 2
-            cellBackgroundView.layer.cornerRadius = 5
-            cellBackgroundView.layer.borderColor = isSelected ?
-                IntervalThemeFactory.deviceTheme.textColorDarkOrange.cgColor : IntervalThemeFactory.deviceTheme.backgroundColorGray.cgColor
-        }
+        setImage(for: cellType)
     }
 
     override func awakeFromNib() {
@@ -59,15 +50,37 @@ final class SingleSelectionTableViewCell: UITableViewCell {
         selectionView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(cellTapped)))
     }
 
+    // MARK: - Public functions
+    func deselectCell() {
+        cellBackgroundView.layer.borderColor = IntervalThemeFactory.deviceTheme.backgroundColorGray.cgColor
+    }
+    
     // MARK: - Private properties
     @objc private func cellTapped() {
-        if case .checkMark = cellType {
+        
+        switch cellType {
+        case .checkMark:
             isSelected = true
             cellImageView.image = #imageLiteral(resourceName: "Select-On")
-        } else {
+            
+        case .disclosure:
             cellBackgroundView.layer.borderColor = IntervalThemeFactory.deviceTheme.textColorDarkOrange.cgColor
         }
-
+    
         tapped?()
+    }
+    
+    private func setImage(for cellType: SingleSelectionCellUIType) {
+        switch cellType {
+        case .checkMark:
+            cellImageView.image = isSelected ? #imageLiteral(resourceName: "Select-On") : #imageLiteral(resourceName: "Select-Off")
+            
+        case .disclosure:
+            cellImageView.image = #imageLiteral(resourceName: "ForwardArrowIcon")
+            cellBackgroundView.layer.borderWidth = 2
+            cellBackgroundView.layer.cornerRadius = 5
+            cellBackgroundView.layer.borderColor = isSelected ?
+                IntervalThemeFactory.deviceTheme.textColorDarkOrange.cgColor : IntervalThemeFactory.deviceTheme.backgroundColorGray.cgColor
+        }
     }
 }

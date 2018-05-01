@@ -15,6 +15,7 @@ final class SingleSelectionViewController: UITableViewController {
 
     // MARK: - Private properties
     private let viewModel: SingleSelectionViewModel
+    private var selectedCells: [SingleSelectionTableViewCell] = []
 
     // MARK: - Lifecycle
     init(viewModel: SingleSelectionViewModel) {
@@ -46,9 +47,17 @@ final class SingleSelectionViewController: UITableViewController {
                      cellType: viewModel.cellUIType)
 
         cell.tapped = { [weak self] in
+            var index = 0
+            self?.selectedCells.forEach {
+                if index != indexPath.row {
+                    $0.deselectCell()
+                }
+                index += 1
+            }
             self?.didSelectRow?(indexPath.row)
         }
 
+        selectedCells.append(cell)
         return cell
     }
     
