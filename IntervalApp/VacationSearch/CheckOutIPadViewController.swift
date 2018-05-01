@@ -1054,16 +1054,16 @@ extension CheckOutIPadViewController: UITableViewDataSource {
                     guard let font = UIFont(name: Constant.fontName.helveticaNeue, size: 16.0) else { return 0 }
                     var height: CGFloat
                     if Constant.RunningDevice.deviceIdiom == .pad {
-                        height = heightForView(Constant.MyClassConstants.generalAdvisementsArray[indexPath.row].description.joined(separator: ". ") ?? "", font: font, width: (view.frame.size.width / 2) - 10)
+                        height = heightForView(Constant.MyClassConstants.generalAdvisementsArray[indexPath.row].description.joined(separator: "") ?? "", font: font, width: (view.frame.size.width / 2) - 10)
                         return height + 50
                     } else {
-                        height = heightForView(Constant.MyClassConstants.generalAdvisementsArray[indexPath.row].description.joined(separator: ". ") ?? "", font: font, width: view.frame.size.width - 10)
+                        height = heightForView(Constant.MyClassConstants.generalAdvisementsArray[indexPath.row].description.joined(separator: "") ?? "", font: font, width: view.frame.size.width - 10)
                         return height + 50
                     }
                 } else {
                     guard let font = UIFont(name: Constant.fontName.helveticaNeue, size: 16.0) else { return 50 }
                     guard let description = Constant.MyClassConstants.additionalAdvisementsArray.last?.description else { return 50 }
-                    let height = heightForView(description.joined(separator: ". "), font: font, width: view.frame.size.width - 20)
+                    let height = heightForView(description.joined(separator: ""), font: font, width: view.frame.size.width - 20)
                     return height + 50
                 }
             case 2:
@@ -1417,10 +1417,10 @@ extension CheckOutIPadViewController: UITableViewDataSource {
                     guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.advisementsCell, for: indexPath) as? AdvisementsCell else { return UITableViewCell() }
                     if indexPath.row != (Constant.MyClassConstants.generalAdvisementsArray.count) + 1 {
                         cell.advisementType.text = (Constant.MyClassConstants.generalAdvisementsArray[indexPath.row].title)?.capitalized
-                        cell.advisementTextLabel.text = Constant.MyClassConstants.generalAdvisementsArray[indexPath.row].description.joined(separator: ". ")
+                        cell.advisementTextLabel.text = Constant.MyClassConstants.generalAdvisementsArray[indexPath.row].description.joined(separator: "")
                     } else {
                         cell.advisementType.text = ""
-                        cell.advisementTextLabel.text = Constant.MyClassConstants.additionalAdvisementsArray.last?.description.joined(separator: ". ")
+                        cell.advisementTextLabel.text = Constant.MyClassConstants.additionalAdvisementsArray.last?.description.joined(separator: "")
                     }
                     cell.advisementType.font = UIFont(name: Constant.fontName.helveticaNeue, size: 15.0)
                     cell.advisementTextLabel.font = UIFont(name: Constant.fontName.helveticaNeue, size: 15.0)

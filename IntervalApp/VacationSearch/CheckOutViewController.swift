@@ -1003,7 +1003,7 @@ extension CheckOutViewController: UITableViewDataSource {
                 return 30
             } else if indexPath.row != (Constant.MyClassConstants.generalAdvisementsArray.count) + 1 {
                 guard let title = (Constant.MyClassConstants.generalAdvisementsArray[indexPath.row].title)?.capitalized else { return 0 }
-                let description = Constant.MyClassConstants.generalAdvisementsArray[indexPath.row].description.joined(separator: ". ")
+                let description = Constant.MyClassConstants.generalAdvisementsArray[indexPath.row].description.joined(separator: "")
                 let heightTitle = heightForView(title, font: font, width: view.frame.size.width - 40)
                 let heightDescription = heightForView(description, font: font, width: view.frame.size.width - 40)
                 return heightTitle + heightDescription + 40 // here 40 is used for padding
@@ -1012,7 +1012,7 @@ extension CheckOutViewController: UITableViewDataSource {
                 guard let title = (Constant.MyClassConstants.additionalAdvisementsArray[indexPath.row].title)?.capitalized else { return 0 }
                 guard let description = Constant.MyClassConstants.additionalAdvisementsArray.last?.description else { return 0 }
                 let heightTitle = heightForView(title, font: font, width: view.frame.size.width - 40)
-                let heightDescription = heightForView(description.joined(separator: ". "), font: font, width: view.frame.size.width - 40)
+                let heightDescription = heightForView(description.joined(separator: ""), font: font, width: view.frame.size.width - 40)
                 return heightTitle + heightDescription + 40 // here 40 is used for padding
             }
             
@@ -1156,10 +1156,10 @@ extension CheckOutViewController: UITableViewDataSource {
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.advisementsCell, for: indexPath) as? AdvisementsCell else { return UITableViewCell() }
                 if indexPath.row != (Constant.MyClassConstants.generalAdvisementsArray.count) + 1 {
                     cell.advisementType.text = (Constant.MyClassConstants.generalAdvisementsArray[indexPath.row].title)?.capitalized
-                    cell.advisementTextLabel.text = Constant.MyClassConstants.generalAdvisementsArray[indexPath.row].description.joined(separator: ". ")
+                    cell.advisementTextLabel.text = Constant.MyClassConstants.generalAdvisementsArray[indexPath.row].description.joined(separator: "")
                 } else {
                     cell.advisementType.text = ""
-                    cell.advisementTextLabel.text = Constant.MyClassConstants.additionalAdvisementsArray.last?.description.joined(separator: ". ")
+                    cell.advisementTextLabel.text = Constant.MyClassConstants.additionalAdvisementsArray.last?.description.joined(separator: "")
                 }
                 cell.advisementType.font = UIFont(name: Constant.fontName.helveticaNeue, size: 15.0)
                 cell.advisementTextLabel.font = UIFont(name: Constant.fontName.helveticaNeue, size: 15.0)

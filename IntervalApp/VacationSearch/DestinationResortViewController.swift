@@ -118,7 +118,7 @@ class DestinationResortViewController: UIViewController {
                 descriptionLabel.numberOfLines = 0
                 descriptionLabel.lineBreakMode = NSLineBreakMode.byWordWrapping
                 descriptionLabel.font = UIFont(name: Constant.fontName.helveticaNeue, size: 16.0)
-                descriptionLabel.text = advisement.description.joined(separator: ". ")
+                descriptionLabel.text = advisement.description.joined(separator: "")
                 descriptionLabel.sizeToFit()
                 advisementView?.addSubview(descriptionLabel)
                 advisementSectionHeight = advisementSectionHeight + descriptionLabel.frame.height + 10
@@ -129,7 +129,7 @@ class DestinationResortViewController: UIViewController {
                 descriptionLabel.numberOfLines = 0
                 descriptionLabel.lineBreakMode = NSLineBreakMode.byWordWrapping
                 descriptionLabel.font = UIFont(name: Constant.fontName.helveticaNeue, size: 16.0)
-                descriptionLabel.text = advisement.description.joined(separator: ". ")
+                descriptionLabel.text = advisement.description.joined(separator: "")
                 descriptionLabel.sizeToFit()
                 additionalAdvisementView?.addSubview(descriptionLabel)
                 additionalAdvisementCellHeight = additionalAdvisementCellHeight + descriptionLabel.frame.height + 10
