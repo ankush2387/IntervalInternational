@@ -123,19 +123,20 @@ open class RelinquishmentManager {
         //  OpenWeeks without actions
         //  Deposits without actions
         //
+        // sorting now first by resort name, then year, then week
         
-        // Resort Name (ASC - alphabetical: A -> Z)
-        sections.cigPointsWeeks.sort(by: {$0.resort?.resortName?.localizedCaseInsensitiveCompare(
-            ($1.resort?.resortName!)!) == ComparisonResult.orderedAscending})
-        sections.pointsWeeks.sort(by: {$0.resort?.resortName?.localizedCaseInsensitiveCompare(
-            ($1.resort?.resortName!)!) == ComparisonResult.orderedAscending})
-        sections.intervalWeeks.sort(by: {$0.resort?.resortName?.localizedCaseInsensitiveCompare(
-            ($1.resort?.resortName!)!) == ComparisonResult.orderedAscending})
+        typealias RelinquishmentSortEntity = (resortName: String, relinquishmentYear: Int, weekNumber: String)
+        let removeOptionals = { (relinquishment: Relinquishment) -> RelinquishmentSortEntity in
+            return (relinquishment.resort?.resortName?.uppercased() ?? "", relinquishment.relinquishmentYear ?? 9999, relinquishment.weekNumber?.uppercased() ?? "")
+        }
         
-        // Relinquishment Year (alphabetical: A -> Z)
-        sections.cigPointsWeeks.sort(by: {$0.relinquishmentYear! < $1.relinquishmentYear!})
-        sections.pointsWeeks.sort(by: {$0.relinquishmentYear! < $1.relinquishmentYear!})
-        sections.intervalWeeks.sort(by: {$0.relinquishmentYear! < $1.relinquishmentYear!})
+        let resortNameRelinquishmentYearAndWeekNumber = { (relinquishmentA: Relinquishment, relinquishmentB: Relinquishment) -> Bool in
+            return removeOptionals(relinquishmentA) < removeOptionals(relinquishmentB)
+        }
+        
+        sections.cigPointsWeeks.sort(by: resortNameRelinquishmentYearAndWeekNumber)
+        sections.pointsWeeks.sort(by: resortNameRelinquishmentYearAndWeekNumber)
+        sections.intervalWeeks.sort(by: resortNameRelinquishmentYearAndWeekNumber)
        
         return sections
     }

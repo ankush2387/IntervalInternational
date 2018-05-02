@@ -28,7 +28,7 @@ open class Airport {
         if json["distance"].exists() {
 			let distanceJSON : JSON = json["distance"] as JSON!
             self.distanceInMiles = distanceJSON["miles"].intValue
-            self.distanceInMiles = distanceJSON["kilometers"].intValue
+            self.distanceInKilometers = distanceJSON["kilometers"].intValue
         }
     }
 
