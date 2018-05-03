@@ -1674,7 +1674,6 @@ extension SearchResultViewController: UITableViewDataSource {
                 cell.resortInfoCollectionView.tag = indexPath.row
                 cell.resortInfoCollectionView.accessibilityValue = String(indexPath.section)
             }
-            
             cell.resortInfoCollectionView.reloadData()
             cell.resortInfoCollectionView.isScrollEnabled = false
             cell.layer.borderWidth = 0.5
