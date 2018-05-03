@@ -39,9 +39,8 @@ class SearchResultMapviewController: UIViewController {
         super.viewDidLoad()
         if UIDevice.current.userInterfaceIdiom == .pad {
             self.view.bringSubview(toFront: dragView)
-        } else {
-            
         }
+        
         self.title = Constant.ControllerTitles.searchResultViewController
         bottomResortHeight = self.view.frame.height / 3 + 50
         let menuButton = UIBarButtonItem(title: Constant.AlertPromtMessages.done, style: .plain, target: self, action: #selector(SearchResultMapviewController.doneButtonPressed(_:)))
